@@ -68,6 +68,8 @@
 #define bp_debug(x...) banshee_log_debug ("player", x)
 #endif
 
+#define BP_BUFFER_LEN_MICROSECONDS 1000000
+
 typedef struct BansheePlayer BansheePlayer;
 
 typedef void (* BansheePlayerEosCallback)          (BansheePlayer *player);
@@ -100,6 +102,7 @@ struct BansheePlayer {
 
     // Pipeline Elements
     GstElement *playbin;
+    GstElement *audiosink;
     GstElement *audiotee;
     GstElement *audiobin;
     GstElement *equalizer;
