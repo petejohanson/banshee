@@ -108,7 +108,8 @@ namespace Banshee.MediaEngine
         Error = 64,
         Volume = 128,
         Metadata = 256,
-        TrackInfoUpdated = 512
+        TrackInfoUpdated = 512,
+        RequestNexttrack = 1024
     }
     
     public enum PlayerState 
