@@ -263,27 +263,14 @@ namespace Banshee.PlaybackController
         
         bool IBasicPlaybackController.Next (bool restart)
         {
-            TrackInfo tmp_track = CurrentTrack;
-
-            if (next_stack.Count > 0) {
-                CurrentTrack = next_stack.Pop ();
-                if (tmp_track != null) {
-                    previous_stack.Push (tmp_track);
-                }
-            } else {
-                TrackInfo next_track = QueryTrack (Direction.Next, restart);
-                if (next_track != null) {
-                    if (tmp_track != null) {
-                        previous_stack.Push (tmp_track);
-                    }
-                } else {
-                    return true;
-                }
-                
-                CurrentTrack = next_track;
+            if (CurrentTrack != null) {
+                previous_stack.Push (CurrentTrack);
             }
-            
-            QueuePlayTrack ();
+
+            CurrentTrack = CalcNextTrack (Direction.Next, restart);
+            if (CurrentTrack != null) {
+                QueuePlayTrack ();
+            }
             return true;
         }
         
@@ -293,19 +280,26 @@ namespace Banshee.PlaybackController
                 next_stack.Push (current_track);
             }
 
-            if (previous_stack.Count > 0) {
-                CurrentTrack = previous_stack.Pop ();
-            } else {
-                TrackInfo track = CurrentTrack = QueryTrack (Direction.Previous, restart);
-                if (track != null) {
-                    CurrentTrack = track;
-                } else {
-                    return true;
-                }
+            CurrentTrack = CalcNextTrack (Direction.Previous, restart);
+            if (CurrentTrack == null) {
+                QueuePlayTrack ();
             }
             
-            QueuePlayTrack ();
             return true;
+        }
+
+        private TrackInfo CalcNextTrack (Direction direction, bool restart)
+        {
+            if (direction == Direction.Previous) {
+                if (previous_stack.Count > 0) {
+                    return previous_stack.Pop ();
+                }
+            } else if (direction == Direction.Next) {
+                if (next_stack.Count > 0) {
+                    return next_stack.Pop ();
+                }
+            }
+            return QueryTrack (direction, restart);
         }
         
         private TrackInfo QueryTrack (Direction direction, bool restart)
