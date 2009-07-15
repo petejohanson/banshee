@@ -89,7 +89,8 @@ namespace Banshee.PlaybackController
             
             player_engine = ServiceManager.PlayerEngine;
             player_engine.PlayWhenIdleRequest += OnPlayerEnginePlayWhenIdleRequest;
-            player_engine.ConnectEvent (OnPlayerEvent, 
+            player_engine.ConnectEvent (OnPlayerEvent,
+                PlayerEvent.RequestNexttrack |
                 PlayerEvent.EndOfStream | 
                 PlayerEvent.StartOfStream |
                 PlayerEvent.StateChange |
@@ -164,6 +165,9 @@ namespace Banshee.PlaybackController
                         transition_track_started = true;
                     }
                     break;
+                case PlayerEvent.RequestNexttrack:
+                    RequestTrackHandler ();
+                    break;
             }       
         }
         
@@ -174,8 +178,14 @@ namespace Banshee.PlaybackController
                 error_transition_id = 0;
             }
         }
-        
+
         private bool EosTransition ()
+        {
+            player_engine.IncrementLastPlayed ();
+            return true;
+        }
+        
+        private bool RequestTrackHandler ()
         {
             if (!StopWhenFinished) {
                 if (RepeatMode == PlaybackRepeatMode.RepeatSingle) {
