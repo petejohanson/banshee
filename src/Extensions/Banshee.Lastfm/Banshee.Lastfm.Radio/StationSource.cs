@@ -294,11 +294,11 @@ namespace Banshee.Lastfm.Radio
 
         bool IBasicPlaybackController.First ()
         {
-            return ((IBasicPlaybackController)this).Next (false);
+            return ((IBasicPlaybackController)this).Next (false, true);
         }
         
         private bool playback_requested;    
-        bool IBasicPlaybackController.Next (bool restart)
+        bool IBasicPlaybackController.Next (bool restart, bool userRequested)
         {
             TrackInfo next = NextTrack;
             if (next != null) {
@@ -372,7 +372,7 @@ namespace Banshee.Lastfm.Radio
 
                             if (playback_requested) {
                                 if (this == ServiceManager.PlaybackController.Source ) {
-                                    ((IBasicPlaybackController)this).Next (false);
+                                    ((IBasicPlaybackController)this).Next (false, true);
                                 }
                                 playback_requested = false;
                             }

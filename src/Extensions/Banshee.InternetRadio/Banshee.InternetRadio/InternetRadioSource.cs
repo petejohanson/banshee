@@ -279,7 +279,7 @@ namespace Banshee.InternetRadio
             return false;
         }
         
-        public bool Next (bool restart)
+        public bool Next (bool restart, bool userRequested)
         {
             RadioTrackInfo radio_track = ServiceManager.PlaybackController.CurrentTrack as RadioTrackInfo;
             if (radio_track != null && radio_track.PlayNextStream ()) {

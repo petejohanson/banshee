@@ -233,9 +233,9 @@ namespace Banshee.PlaybackController
 
             player_engine.IncrementLastPlayed ();
             
-            if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart)) {
+            if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart, true)) {
             } else {
-                ((IBasicPlaybackController)this).Next (restart);
+                ((IBasicPlaybackController)this).Next (restart, true);
             }
             
             OnTransition ();
@@ -271,7 +271,7 @@ namespace Banshee.PlaybackController
             return true;
         }
         
-        bool IBasicPlaybackController.Next (bool restart)
+        bool IBasicPlaybackController.Next (bool restart, bool userRequested)
         {
             if (CurrentTrack != null) {
                 previous_stack.Push (CurrentTrack);
