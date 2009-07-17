@@ -351,7 +351,8 @@ namespace Banshee.MediaEngine
 
             IncrementLastPlayed ();
             
-            FindSupportingEngine (uri);
+            PlayerEngine supportingEngine = FindSupportingEngine (uri);
+            SwitchToEngine (supportingEngine);
             CheckPending ();
             
             if (track != null) {
@@ -381,34 +382,39 @@ namespace Banshee.MediaEngine
             }
         }
         
-        private void FindSupportingEngine (SafeUri uri)
+        private PlayerEngine FindSupportingEngine (SafeUri uri)
         {
             foreach (PlayerEngine engine in engines) {
                 foreach (string extension in engine.ExplicitDecoderCapabilities) {
                     if (!uri.AbsoluteUri.EndsWith (extension)) {
                         continue;
-                    } else if (active_engine != engine) {
-                        Close ();
-                        pending_engine = engine;
-                        Log.DebugFormat ("Switching engine to: {0}", engine.GetType ());
                     }
-                    return;
+                    return engine;
                 }
             }
         
             foreach (PlayerEngine engine in engines) {
                 foreach (string scheme in engine.SourceCapabilities) {
                     bool supported = scheme == uri.Scheme;
-                    if (supported && active_engine != engine) {
-                        Close ();
-                        pending_engine = engine;
-                        Log.DebugFormat ("Switching engine to: {0}", engine.GetType ());
-                        return;
-                    } else if (supported) {
-                        return;
+                    if (supported) {
+                        return engine;
                     }
                 }
             }
+            // If none of our engines support this URI, return the currently active one.
+            // There doesn't seem to be anything better to do.
+            return active_engine;
+        }
+
+        private bool SwitchToEngine (PlayerEngine switchTo)
+        {
+            if (active_engine != switchTo) {
+                Close ();
+                pending_engine = switchTo;
+                Log.DebugFormat ("Switching engine to: {0}", switchTo.GetType ());
+                return true;
+            }
+            return false;
         }
         
         public void Close ()
