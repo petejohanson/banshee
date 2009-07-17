@@ -47,6 +47,8 @@ namespace Banshee.MediaEngine
         
         private TrackInfo current_track;
         private SafeUri current_uri;
+        private TrackInfo pending_track;
+        private SafeUri pending_uri;
         private PlayerState current_state = PlayerState.NotReady;
         private PlayerState last_state = PlayerState.NotReady;
         
@@ -98,6 +100,40 @@ namespace Banshee.MediaEngine
             HandleOpen (uri);
         }
 
+        public void SetNextTrack (TrackInfo track)
+        {
+            pending_track = track;
+            pending_uri = track.Uri;
+
+            HandleNextTrack (pending_uri);
+        }
+
+        public void SetNextTrack (SafeUri uri)
+        {
+            pending_uri = uri;
+            pending_track = new UnknownTrackInfo (uri);
+
+            HandleNextTrack (uri);
+        }
+
+        private void HandleNextTrack (SafeUri uri)
+        {
+            if (current_state != PlayerState.Playing) {
+                // Pre-buffering the next track only makes sense when we're currently playing
+                // Instead, just open.
+                HandleOpen (uri);
+                Play ();
+                return;
+            }
+
+            try {
+                // Setting the next track doesn't change the player state.
+                SetNextTrackUri (uri);
+            } catch (Exception e) {
+                Log.Exception ("Failed to pre-buffer next track", e);
+            }
+        }
+
         private void HandleOpen (SafeUri uri)
         {
             if (current_state != PlayerState.Idle && current_state != PlayerState.NotReady && current_state != PlayerState.Contacting) {
@@ -116,6 +152,13 @@ namespace Banshee.MediaEngine
         public abstract void Play ();
 
         public abstract void Pause ();
+
+        public virtual void SetNextTrackUri (SafeUri uri)
+        {
+            // Opening files on SetNextTrack is a sane default behaviour.
+            // This only wants to be overridden if the PlayerEngine sends out RequestNextTrack signals before EoS
+            OpenUri (uri);
+        }
 
         public virtual void VideoExpose (IntPtr displayContext, bool direct)
         {
@@ -163,6 +206,13 @@ namespace Banshee.MediaEngine
         
         protected virtual void OnEventChanged (PlayerEventArgs args)
         {
+            if (args.Event == PlayerEvent.StartOfStream && pending_track != null) {
+                Log.DebugFormat ("OnEventChanged called with StartOfStream.  Replacing current_track: \"{0}\" with pending_track: \"{1}\"", current_track.DisplayTrackTitle, pending_track.DisplayTrackTitle);
+                current_track = pending_track;
+                current_uri = pending_uri;
+                pending_track = null;
+                pending_uri = null;
+            }
             if (ThreadAssist.InMainThread) {
                 RaiseEventChanged (args);
             } else {

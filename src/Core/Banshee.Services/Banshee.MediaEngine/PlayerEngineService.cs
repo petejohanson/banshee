@@ -302,7 +302,40 @@ namespace Banshee.MediaEngine
         {
             OpenCheck (new SafeUri (uri));
         }
-        
+
+
+        public void SetNextTrack (TrackInfo track)
+        {
+            if (active_engine != FindSupportingEngine (track.Uri)) {
+                if (active_engine.CurrentState == PlayerState.Playing) {
+                    // If we're playing and the current engine can't handle the next track then treat this as setting
+                    // no next track for the engine, since it's not going to receive this next track.
+                    track = null;
+                } else {
+                    // If we're not playing, then switch engines and Open
+                    SwitchToEngine (FindSupportingEngine (track.Uri));
+                    CheckPending ();
+                }
+            }
+            active_engine.SetNextTrack (track);
+        }
+
+        public void SetNextTrack (SafeUri uri)
+        {
+            if (active_engine != FindSupportingEngine (uri)) {
+                if (active_engine.CurrentState == PlayerState.Playing) {
+                    // If we're playing and the current engine can't handle the next track then treat this as setting
+                    // no next track for the engine, since it's not going to receive this next track.
+                    uri = null;
+                } else {
+                    // If we're not playing, then switch engines and Open
+                    SwitchToEngine (FindSupportingEngine (uri));
+                    CheckPending ();
+                }
+            }
+            active_engine.SetNextTrack (uri);
+        }
+
         public void OpenPlay (TrackInfo track)
         {
             OpenPlay (track, true);
