@@ -229,8 +229,8 @@ namespace Banshee.GStreamer
         private void OnEos (IntPtr player)
         {
             Close (false);
-            OnEventChanged (PlayerEvent.RequestNexttrack);
             OnEventChanged (PlayerEvent.EndOfStream);
+            OnEventChanged (PlayerEvent.RequestNexttrack);
         }
         
         private void OnIterate (IntPtr player)
