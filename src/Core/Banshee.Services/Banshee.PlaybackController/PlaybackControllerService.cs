@@ -192,7 +192,7 @@ namespace Banshee.PlaybackController
                     QueuePlayTrack ();
                 } else {
                     last_was_skipped = false;
-                    Next ();
+                    Next (RepeatMode == PlaybackRepeatMode.RepeatSingle, false);
                 }
             } else {
                 OnStopped ();
@@ -221,10 +221,15 @@ namespace Banshee.PlaybackController
         
         public void Next ()
         {
-            Next (RepeatMode == PlaybackRepeatMode.RepeatAll);
+            Next (RepeatMode == PlaybackRepeatMode.RepeatAll, true);
+        }
+
+        public void Next (bool restart)
+        {
+            Next (restart, true);
         }
         
-        public void Next (bool restart)
+        public void Next (bool restart, bool userRequested)
         {
             CancelErrorTransition ();
             
@@ -233,9 +238,9 @@ namespace Banshee.PlaybackController
 
             player_engine.IncrementLastPlayed ();
             
-            if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart, true)) {
+            if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart, userRequested)) {
             } else {
-                ((IBasicPlaybackController)this).Next (restart, true);
+                ((IBasicPlaybackController)this).Next (restart, userRequested);
             }
             
             OnTransition ();
@@ -279,7 +284,11 @@ namespace Banshee.PlaybackController
 
             CurrentTrack = CalcNextTrack (Direction.Next, restart);
             if (CurrentTrack != null) {
-                QueuePlayTrack ();
+                if (userRequested) {
+                    QueuePlayTrack ();
+                } else {
+                    player_engine.SetNextTrack (CurrentTrack);
+                }
             }
             return true;
         }
