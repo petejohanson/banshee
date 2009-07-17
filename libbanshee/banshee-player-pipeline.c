@@ -211,6 +211,31 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
     return TRUE;
 }
 
+static gboolean 
+bp_next_track_starting (gpointer player)
+{
+    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
+    
+    bp_debug ("[gapless] Triggering track-change signal");
+    if (((BansheePlayer *)player)->next_track_starting_cb != NULL) {
+        ((BansheePlayer *)player)->next_track_starting_cb (player);
+    }
+    ((BansheePlayer *)player)->timeout_id = 0;
+    return FALSE;
+}
+
+static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *player)
+{
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+    // Playbin2 doesn't (yet) have any way to notify us when the current track has actually finished playing on the
+    // hardware.  Fake this for now by adding a t2imer with length equal to the hardware buffer.
+    player->timeout_id = g_timeout_add (((guint64)BP_BUFFER_LEN_MICROSECONDS) / 1000, &bp_next_track_starting, player);
+    
+    if (player->about_to_finish_cb != NULL) {
+        player->about_to_finish_cb (player);
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Internal Functions
 // ---------------------------------------------------------------------------
@@ -229,8 +254,12 @@ _bp_pipeline_construct (BansheePlayer *player)
     
     // Playbin is the core element that handles autoplugging (finding the right
     // source and decoder elements) based on source URI and stream content
-    player->playbin = gst_element_factory_make ("playbin", "playbin");
+    player->playbin = gst_element_factory_make ("playbin2", "playbin");
     g_return_val_if_fail (player->playbin != NULL, FALSE);
+    
+    // Connect a proxy about-to-finish callback that will generate a next-track-starting callback.
+    // This can be removed once playbin2 generates its own next-track signal.
+    g_signal_connect (player->playbin, "about-to-finish", G_CALLBACK (bp_about_to_finish_callback), player);
 
     // Try to find an audio sink, prefer gconf, which typically is set to auto these days,
     // fall back on auto, which should work on windows, and as a last ditch, try alsa
