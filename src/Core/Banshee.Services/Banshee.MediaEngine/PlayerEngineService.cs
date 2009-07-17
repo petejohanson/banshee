@@ -245,6 +245,10 @@ namespace Banshee.MediaEngine
                     CurrentTrack.SavePlaybackError (StreamPlaybackError.None);
                 }
             }
+
+            if (args.Event == PlayerEvent.StartOfStream) {
+                incremented_last_played = false;
+            }
             
             RaiseEvent (args);
             
@@ -382,18 +386,14 @@ namespace Banshee.MediaEngine
                 return;
             }
 
-            IncrementLastPlayed ();
-            
             PlayerEngine supportingEngine = FindSupportingEngine (uri);
             SwitchToEngine (supportingEngine);
             CheckPending ();
             
             if (track != null) {
                 active_engine.Open (track);
-                incremented_last_played = false;
             } else if (uri != null) {
                 active_engine.Open (uri);
-                incremented_last_played = false;
             }
 
             if (play) {

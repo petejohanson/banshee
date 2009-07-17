@@ -236,7 +236,9 @@ namespace Banshee.PlaybackController
             Source = NextSource;
             raise_started_after_transition = true;
 
-            player_engine.IncrementLastPlayed ();
+            if (userRequested) {
+                player_engine.IncrementLastPlayed ();
+            }
             
             if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart, userRequested)) {
             } else {
