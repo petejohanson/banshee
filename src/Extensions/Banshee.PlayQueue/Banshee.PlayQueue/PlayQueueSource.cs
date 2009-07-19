@@ -243,19 +243,38 @@ namespace Banshee.PlayQueue
             if (userRequested) {
                 RemovePlayingTrack ();
             }
-            
-            if (Count == 0) {
+
+            bool stillPlaying = false;
+            if (ServiceManager.PlayerEngine.CurrentTrack != null) {
+                // AbsoluteUri seems a reasonable way of determining when two TrackInfos are the same
+                // I'm not sure if it's both necessary and sufficient, though.
+                stillPlaying = 
+                    ServiceManager.PlayerEngine.CurrentTrack.Uri.AbsoluteUri == TrackModel[0].Uri.AbsoluteUri;
+            }
+
+            if (Count == 0 || (stillPlaying && Count == 1)) {
                 ServiceManager.PlaybackController.Source = PriorSource;
                 if (was_playing) {
                     ServiceManager.PlaybackController.PriorTrack = prior_playback_track;
-                    ServiceManager.PlaybackController.Next (restart);
+                    ServiceManager.PlaybackController.Next (restart, userRequested);
                 } else {
                     ServiceManager.PlayerEngine.Close ();
                 }
                 return true;
             }
+
+            DatabaseTrackInfo next;
+            if (userRequested || !stillPlaying) {
+                next = (DatabaseTrackInfo)TrackModel[0];
+            } else {
+                next = (DatabaseTrackInfo)TrackModel[1];
+            }
             
-            ServiceManager.PlayerEngine.OpenPlay ((DatabaseTrackInfo)TrackModel[0]);
+            if (userRequested) {
+                ServiceManager.PlayerEngine.OpenPlay (next);
+            } else {
+                ServiceManager.PlayerEngine.SetNextTrack (next);
+            }
             return true;
         }
         
