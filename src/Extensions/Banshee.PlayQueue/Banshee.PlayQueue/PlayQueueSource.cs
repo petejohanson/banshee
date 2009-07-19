@@ -240,7 +240,9 @@ namespace Banshee.PlayQueue
         
         bool IBasicPlaybackController.Next (bool restart, bool userRequested)
         {
-            RemovePlayingTrack ();
+            if (userRequested) {
+                RemovePlayingTrack ();
+            }
             
             if (Count == 0) {
                 ServiceManager.PlaybackController.Source = PriorSource;
