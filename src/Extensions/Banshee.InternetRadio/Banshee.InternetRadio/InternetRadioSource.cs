@@ -281,6 +281,18 @@ namespace Banshee.InternetRadio
         
         public bool Next (bool restart, bool userRequested)
         {
+            /*
+             * TODO: It should be technically possible to handle userRequested=False
+             * correctly here, but the current implementation is quite hostile.
+             * For the moment, just SetNextTrack (null), and go on to OpenPlay if
+             * the engine isn't currently playing.
+             */
+            if (!userRequested) {
+                ServiceManager.PlayerEngine.SetNextTrack ((SafeUri)null);
+                if (ServiceManager.PlayerEngine.IsPlaying ()) {
+                    return true;
+                }
+            }
             RadioTrackInfo radio_track = ServiceManager.PlaybackController.CurrentTrack as RadioTrackInfo;
             if (radio_track != null && radio_track.PlayNextStream ()) {
                 return true;
