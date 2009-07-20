@@ -277,6 +277,17 @@ namespace Banshee.GStreamer
 
         private void OnAboutToFinish (IntPtr player)
         {
+            /*
+             * This is needed to make Shuffle-by-* work.
+             * Shuffle-by-* uses the LastPlayed field to determine what track in the grouping to play next.
+             * Therefore, we need to update this before requesting the next track.
+             *
+             * This will be overridden by IncrementLastPlayed () called by 
+             * PlaybackControllerService's EndOfStream handler.
+             */
+            CurrentTrack.LastPlayed = DateTime.Now;
+            CurrentTrack.Save ();
+            
             OnEventChanged (PlayerEvent.RequestNexttrack);
             // Gapless playback with Playbin2 requires that the about-to-finish callback does not return until
             // the next uri has been set.  Block here for a second or until the RequestNextTrack event has 
