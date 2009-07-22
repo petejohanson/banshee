@@ -80,6 +80,7 @@ SOURCES =  \
 	Hyena.Widgets/AnimatedWidget.cs \
 	Hyena.Widgets/ComplexMenuItem.cs \
 	Hyena.Widgets/GenericToolItem.cs \
+	Hyena.Widgets/HigMessageDialog.cs \
 	Hyena.Widgets/ImageButton.cs \
 	Hyena.Widgets/MenuButton.cs \
 	Hyena.Widgets/MessageBar.cs \

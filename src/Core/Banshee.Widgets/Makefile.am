@@ -7,7 +7,6 @@ SOURCES =  \
 	Banshee.Widgets/DateButton.cs \
 	Banshee.Widgets/DictionaryComboBox.cs \
 	Banshee.Widgets/DiscUsageDisplay.cs \
-	Banshee.Widgets/HigMessageDialog.cs \
 	Banshee.Widgets/HoverImageButton.cs \
 	Banshee.Widgets/LinearProgress.cs \
 	Banshee.Widgets/LinkLabel.cs \

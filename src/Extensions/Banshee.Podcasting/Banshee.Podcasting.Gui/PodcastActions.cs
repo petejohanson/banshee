@@ -33,6 +33,7 @@ using Mono.Unix;
 using Gtk;
 
 using Hyena;
+using Hyena.Widgets;
 using Migo.Syndication;
 
 using Banshee.Base;

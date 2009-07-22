@@ -56,7 +56,7 @@ namespace Banshee.Gui.Widgets
         private uint progress_bounce_id;
         private object tooltips;
         
-        Banshee.Widgets.HigMessageDialog cancel_dialog;
+        Hyena.Widgets.HigMessageDialog cancel_dialog;
         
         public UserJobTile (Job job) : base (3, 2, false)
         {
@@ -132,7 +132,7 @@ namespace Banshee.Gui.Widgets
                 parent = ServiceManager.Get<GtkElementsService> ().PrimaryWindow;
             }
             
-            cancel_dialog = new Banshee.Widgets.HigMessageDialog (parent, 
+            cancel_dialog = new Hyena.Widgets.HigMessageDialog (parent, 
                 DialogFlags.Modal, MessageType.Question, ButtonsType.None,
                 job.Title == null
                     ? Catalog.GetString ("Stop Operation")

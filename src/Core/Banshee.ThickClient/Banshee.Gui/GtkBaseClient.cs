@@ -209,7 +209,7 @@ namespace Banshee.Gui
                     break;
             }
               
-            Banshee.Widgets.HigMessageDialog dialog = new Banshee.Widgets.HigMessageDialog (
+            Hyena.Widgets.HigMessageDialog dialog = new Hyena.Widgets.HigMessageDialog (
                 window, Gtk.DialogFlags.Modal, mtype, Gtk.ButtonsType.Close, entry.Message, entry.Details);
             
             dialog.Title = String.Empty;

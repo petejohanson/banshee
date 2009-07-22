@@ -32,6 +32,7 @@ using Mono.Unix;
 using Gtk;
 
 using Hyena;
+using Hyena.Widgets;
 
 using Banshee.Query;
 using Banshee.Sources;
