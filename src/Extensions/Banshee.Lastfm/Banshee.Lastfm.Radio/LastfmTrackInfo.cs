@@ -33,6 +33,8 @@ using System.Web;
 
 using Gdk;
 
+using Hyena;
+
 using Banshee.Base;
 using Banshee.Collection;
 using Media.Playlists.Xspf;

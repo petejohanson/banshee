@@ -30,6 +30,7 @@ using System;
 using Gtk;
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Jobs;
 
 using Banshee.ServiceStack;
@@ -75,7 +76,7 @@ namespace Banshee.Gui.Dialogs
         private void AddJob(Job job)
         {
             if (job.Has (PriorityHints.DataLossIfStopped)) {
-                Banshee.Base.ThreadAssist.ProxyToMain(delegate {
+                ThreadAssist.ProxyToMain(delegate {
                     TreeIter iter = (ListView.Model as ListStore).Prepend();
                     (ListView.Model as ListStore).SetValue(iter, 0, job.Title);
                     (ListView.Model as ListStore).SetValue(iter, 1, job);
@@ -101,7 +102,7 @@ namespace Banshee.Gui.Dialogs
                 }
                     
                 if(ListView.Model.GetValue(iter, 1) == job) {
-                    Banshee.Base.ThreadAssist.ProxyToMain(delegate {
+                    ThreadAssist.ProxyToMain(delegate {
                         (ListView.Model as ListStore).Remove(ref iter);
                     });
                     break;

@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using Gtk;
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Data;
 using Hyena.Data.Gui;
 using Hyena.Widgets;
@@ -132,7 +133,7 @@ namespace Banshee.Sources.Gui
             }
             
             ServiceManager.SourceManager.ActiveSourceChanged += delegate {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     browser_container.Visible = ActiveSourceCanHasBrowser ? BrowserVisible.Get () : false;
                 });
             };
@@ -161,7 +162,7 @@ namespace Banshee.Sources.Gui
             ScrolledWindow window = null;
 
             //if (!Banshee.Base.ApplicationContext.CommandLine.Contains ("no-smooth-scroll")) {
-            if (Banshee.Base.ApplicationContext.CommandLine.Contains ("smooth-scroll")) {
+            if (ApplicationContext.CommandLine.Contains ("smooth-scroll")) {
                 window = new SmoothScrolledWindow ();
             } else {
                 window = new ScrolledWindow ();

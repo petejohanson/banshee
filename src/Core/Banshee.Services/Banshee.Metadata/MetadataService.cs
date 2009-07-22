@@ -31,6 +31,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+using Hyena;
+
 using Banshee.Kernel;
 using Banshee.Collection;
 
@@ -142,7 +144,7 @@ namespace Banshee.Metadata
             
             IMetadataLookupJob lookup_job = (IMetadataLookupJob)job;
             if (RemoveJob (lookup_job)) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate { 
+                ThreadAssist.ProxyToMain (delegate { 
                     OnHaveResult (lookup_job.Track, lookup_job.ResultTags); 
                 });
             }

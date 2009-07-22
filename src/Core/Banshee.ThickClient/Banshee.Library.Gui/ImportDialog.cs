@@ -31,6 +31,8 @@ using System.Collections.Generic;
 using Gtk;
 using Glade;
 
+using Hyena;
+
 using Banshee.Sources;
 using Banshee.ServiceStack;
 using Banshee.Gui;
@@ -162,7 +164,7 @@ namespace Banshee.Library.Gui
         private void OnSourceAdded (SourceAddedArgs args)
         {
             if(args.Source is IImportSource) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     AddSource ((IImportSource)args.Source);
                 });
             }
@@ -171,7 +173,7 @@ namespace Banshee.Library.Gui
         private void OnSourceRemoved (SourceEventArgs args)
         {
             if (args.Source is IImportSource) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     TreeIter iter;
                     if (FindSourceIter (out iter, (IImportSource)args.Source)) {
                         source_model.Remove (ref iter);
@@ -183,7 +185,7 @@ namespace Banshee.Library.Gui
         private void OnSourceUpdated (SourceEventArgs args)
         {
             if (args.Source is IImportSource) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     TreeIter iter;
                     if(FindSourceIter (out iter, (IImportSource)args.Source)) {
                         source_model.SetValue (iter, 1, args.Source.Name);

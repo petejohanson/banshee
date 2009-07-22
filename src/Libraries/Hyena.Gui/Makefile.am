@@ -46,6 +46,8 @@ SOURCES =  \
 	Hyena.Gui/CleanRoomStartup.cs \
 	Hyena.Gui/CompositeUtils.cs \
 	Hyena.Gui/Contrast.cs \
+	Hyena.Gui/ActionManager.cs \
+	Hyena.Gui/HyenaActionGroup.cs \
 	Hyena.Gui/EditableEraseAction.cs \
 	Hyena.Gui/EditableInsertAction.cs \
 	Hyena.Gui/EditableUndoAdapter.cs \
@@ -77,6 +79,7 @@ SOURCES =  \
 	Hyena.Widgets/AnimatedVBox.cs \
 	Hyena.Widgets/AnimatedWidget.cs \
 	Hyena.Widgets/ComplexMenuItem.cs \
+	Hyena.Widgets/GenericToolItem.cs \
 	Hyena.Widgets/ImageButton.cs \
 	Hyena.Widgets/MenuButton.cs \
 	Hyena.Widgets/MessageBar.cs \

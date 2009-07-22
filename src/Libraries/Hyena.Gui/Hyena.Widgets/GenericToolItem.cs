@@ -1,11 +1,10 @@
 //
-// BansheeListModel.cs
+// GenericToolItem.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
-//   Gabriel Burt <gburt@novell.com>
 //
-// Copyright (C) 2007 Novell, Inc.
+// Copyright (C) 2006-2007 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,44 +27,22 @@
 //
 
 using System;
+using Gtk;
 
-using Hyena;
-using Hyena.Data;
-using Hyena.Collections;
-using Banshee.ServiceStack;
-
-namespace Banshee.Collection
+namespace Hyena.Widgets
 {
-    public abstract class BansheeListModel<T> : BaseListModel<T>, IDBusExportable
+    public class GenericToolItem<T> : ToolItem where T : Widget
     {
-        private IDBusExportable parent;
-
-        public BansheeListModel ()
+        private T widget;
+        
+        public GenericToolItem (T widget)
         {
+            this.widget = widget;
+            Add (widget);
         }
-
-        public BansheeListModel (IDBusExportable parent)
-        {
-            Parent = parent;
-        }
-
-        public virtual string ServiceName {
-            get { return GetType().Name; }
-        }
-
-        public virtual IDBusExportable Parent {
-            set { parent = value; }
-            get { return parent; }
-        }
-
-        protected override void OnCleared ()
-        {
-            ThreadAssist.ProxyToMain (base.OnCleared);
-        }
-
-        protected override void OnReloaded ()
-        {
-            ThreadAssist.ProxyToMain (base.OnReloaded);
+        
+        public T Widget {
+            get { return widget; }
         }
     }
 }

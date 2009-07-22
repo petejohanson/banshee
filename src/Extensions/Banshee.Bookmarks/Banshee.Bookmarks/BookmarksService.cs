@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Gtk;
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Data.Sqlite;
 
 using Banshee.Base;
@@ -12,7 +13,6 @@ using Banshee.Collection.Database;
 using Banshee.MediaEngine;
 using Banshee.Gui;
 using Banshee.ServiceStack;
-using Hyena;
 
 namespace Banshee.Bookmarks
 {
@@ -151,7 +151,7 @@ namespace Banshee.Bookmarks
             ImageMenuItem select_item = new ImageMenuItem(bookmark.Name.Replace("_", "__"));
             select_item.Image = new Image(Stock.JumpTo, IconSize.Menu);
             select_item.Activated += delegate {
-                Console.WriteLine ("item delegate, main thread? {0}", Banshee.Base.ThreadAssist.InMainThread);
+                Console.WriteLine ("item delegate, main thread? {0}", ThreadAssist.InMainThread);
                 bookmark.JumpTo();
             };
             bookmark_menu.Append(select_item);
@@ -235,7 +235,7 @@ namespace Banshee.Bookmarks
 
         public Bookmark(int track_id, uint position)
         {
-            Console.WriteLine ("Bookmark, main thread? {0}", Banshee.Base.ThreadAssist.InMainThread);
+            Console.WriteLine ("Bookmark, main thread? {0}", ThreadAssist.InMainThread);
             this.track_id = track_id;
             this.position = position;
             this.created_at = DateTime.Now;

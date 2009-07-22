@@ -35,6 +35,7 @@ using Mono.Unix;
 using Gtk;
 
 using Hyena;
+
 using Banshee.Base;
 using Banshee.Collection;
 using Banshee.ServiceStack;
@@ -72,8 +73,8 @@ namespace Banshee.GnomeBackend
             uia_service.UIManager.AddUiFromResource ("GlobalUI.xml");
             
             UpdateActions ();
-            uia_service.TrackActions.SelectionChanged += delegate { Banshee.Base.ThreadAssist.ProxyToMain (UpdateActions); };
-            ServiceManager.SourceManager.ActiveSourceChanged += delegate { Banshee.Base.ThreadAssist.ProxyToMain (UpdateActions); };
+            uia_service.TrackActions.SelectionChanged += delegate { ThreadAssist.ProxyToMain (UpdateActions); };
+            ServiceManager.SourceManager.ActiveSourceChanged += delegate { ThreadAssist.ProxyToMain (UpdateActions); };
         }
         
         public void Dispose ()

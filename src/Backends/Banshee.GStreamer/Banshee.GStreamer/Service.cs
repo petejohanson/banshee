@@ -53,7 +53,7 @@ namespace Banshee.GStreamer
         
         void IExtensionService.Initialize ()
         {
-            bool debugging = Banshee.Base.ApplicationContext.Debugging;
+            bool debugging = ApplicationContext.Debugging;
             if (debugging) {
                 native_log_handler = new BansheeLogHandler (NativeLogHandler);
             }
@@ -118,7 +118,7 @@ namespace Banshee.GStreamer
         
         private static void OnTestMediaProfile (object o, TestProfileArgs args)
         {
-            bool no_test = Banshee.Base.ApplicationContext.EnvironmentIsSet ("BANSHEE_PROFILES_NO_TEST");
+            bool no_test = ApplicationContext.EnvironmentIsSet ("BANSHEE_PROFILES_NO_TEST");
             bool available = false;
             
             foreach (Pipeline.Process process in args.Profile.Pipeline.GetPendingProcessesById ("gstreamer")) {

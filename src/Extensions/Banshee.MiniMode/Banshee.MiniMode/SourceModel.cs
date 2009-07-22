@@ -30,6 +30,8 @@
 using System;
 using Gtk;
 
+using Hyena;
+
 using Banshee.ServiceStack;
 using Banshee.Sources;
 using Banshee.Sources.Gui;
@@ -92,7 +94,7 @@ namespace Banshee.MiniMode
             }
 
             source.ChildSourceAdded += delegate (SourceEventArgs e) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     AddSource(e.Source, AppendNode(iter));
                 });
             };

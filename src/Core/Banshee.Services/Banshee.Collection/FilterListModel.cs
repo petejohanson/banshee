@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 
+using Hyena;
 using Hyena.Data;
 using Banshee.ServiceStack;
 
@@ -70,7 +71,7 @@ namespace Banshee.Collection
         
         private void HandleSelectionChanged (object sender, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.SpawnFromMain (ReloadBrowsingModel);
+            ThreadAssist.SpawnFromMain (ReloadBrowsingModel);
         } 
 
         private void ReloadBrowsingModel ()

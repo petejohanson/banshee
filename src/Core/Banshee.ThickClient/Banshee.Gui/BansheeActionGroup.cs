@@ -31,109 +31,28 @@ using System.Collections.Generic;
 
 using Gtk;
 
+using Hyena.Gui;
+
 using Banshee.Base;
 using Banshee.ServiceStack;
 using Banshee.Sources;
 
 namespace Banshee.Gui
 {
-    public class BansheeActionGroup : ActionGroup
+    public class BansheeActionGroup : HyenaActionGroup
     {
         private InterfaceActionService action_service;
         private Dictionary<string, string> labels = new Dictionary<string, string> ();
         private Dictionary<string, string> icons = new Dictionary<string, string> ();
-        private List<uint> ui_merge_ids = new List<uint> ();
-
-        private bool important_by_default = true;
-        protected bool ImportantByDefault {
-            get { return important_by_default; }
-            set { important_by_default = value; }
-        }
 
         public BansheeActionGroup (string name)
             : this (ServiceManager.Get<InterfaceActionService> (), name)
         {
         }
         
-        public BansheeActionGroup (InterfaceActionService action_service, string name) : base (name)
+        public BansheeActionGroup (InterfaceActionService action_service, string name) : base (action_service, name)
         {
             this.action_service = action_service;
-        }
-
-        public void AddUiFromFile (string ui_file)
-        {
-            Banshee.Base.ThreadAssist.AssertInMainThread ();
-            ui_merge_ids.Add (Actions.AddUiFromFile (ui_file, System.Reflection.Assembly.GetCallingAssembly ()));
-        }
-
-        public void Register ()
-        {
-            if (Actions.FindActionGroup (this.Name) == null) {
-                Actions.AddActionGroup (this);
-            }
-        }
-
-        public void UnRegister ()
-        {
-            if (Actions.FindActionGroup (this.Name) != null) {
-                Actions.RemoveActionGroup (this);
-            }
-        }
-
-        public override void Dispose ()
-        {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
-                UnRegister ();
-
-                foreach (uint merge_id in ui_merge_ids) {
-                    if (merge_id > 0) {
-                        Actions.UIManager.RemoveUi (merge_id);
-                    }
-                }
-                ui_merge_ids.Clear ();
-
-                base.Dispose ();
-            });
-        }
-
-        public new void Add (params ActionEntry [] action_entries)
-        {
-            if (ImportantByDefault) {
-                AddImportant (action_entries);
-            } else {
-                base.Add (action_entries);
-            }
-        }
-        
-        public void AddImportant (params ActionEntry [] action_entries)
-        {
-            base.Add (action_entries);
-            
-            foreach (ActionEntry entry in action_entries) {
-                this[entry.name].IsImportant = true;
-            }
-        }
-
-        public void AddImportant (params ToggleActionEntry [] action_entries)
-        {
-            base.Add (action_entries);
-            
-            foreach (ToggleActionEntry entry in action_entries) {
-                this[entry.name].IsImportant = true;
-            }
-        }
-        
-        public void Remove (string actionName)
-        {
-            Gtk.Action action = this[actionName];
-            if (action != null) {
-                Remove (action);
-            }
-        }
-
-        public void UpdateActions (bool visible, bool sensitive, params string [] action_names)
-        {
-            UpdateActions (visible, sensitive, null, action_names);
         }
 
         public void UpdateActions (bool visible, bool sensitive, Source source, params string [] action_names)
@@ -141,16 +60,6 @@ namespace Banshee.Gui
             foreach (string name in action_names) {
                 UpdateAction (name, visible, sensitive, source);
             }
-        }
-
-        public void UpdateAction (string action_name, bool visible_and_sensitive)
-        {
-            UpdateAction (action_name, visible_and_sensitive, visible_and_sensitive);
-        }
-        
-        public void UpdateAction (string action_name, bool visible, bool sensitive)
-        {
-            UpdateAction (action_name, visible, sensitive, null);
         }
 
         public void UpdateAction (string action_name, bool visible, bool sensitive, Source source)
@@ -179,37 +88,6 @@ namespace Banshee.Gui
                     action.IconName = icon;
                 }
             }
-        }
-        
-        public static void UpdateAction (Gtk.Action action, bool visible_and_sensitive)
-        {
-            UpdateAction (action, visible_and_sensitive, visible_and_sensitive);
-        }
-        
-        public static void UpdateAction (Gtk.Action action, bool visible, bool sensitive)
-        {
-            action.Visible = visible;
-            action.Sensitive = visible && sensitive;
-        }
-        
-        protected void ShowContextMenu (string menu_name)
-        {
-            Gtk.Menu menu = Actions.UIManager.GetWidget (menu_name) as Menu;
-            if (menu == null || menu.Children.Length == 0) {
-                return;
-            }
-
-            int visible_children = 0;
-            foreach (Widget child in menu)
-                if (child.Visible)
-                    visible_children++;
-
-            if (visible_children == 0) {
-                return;
-            }
-
-            menu.Show (); 
-            menu.Popup (null, null, null, 0, Gtk.Global.CurrentEventTime);
         }
         
         public InterfaceActionService Actions {

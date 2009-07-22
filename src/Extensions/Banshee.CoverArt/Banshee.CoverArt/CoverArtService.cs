@@ -32,6 +32,8 @@ using System.Data;
 using Gtk;
 using Mono.Unix;
 
+using Hyena;
+
 using Banshee.Base;
 using Banshee.Collection;
 using Banshee.Collection.Database;
@@ -43,7 +45,6 @@ using Banshee.Library;
 using Banshee.Metadata;
 using Banshee.Networking;
 using Banshee.Sources;
-using Hyena;
 
 namespace Banshee.CoverArt
 {
@@ -98,7 +99,7 @@ namespace Banshee.CoverArt
         
         private void Initialize ()
         {            
-            Banshee.Base.ThreadAssist.AssertInMainThread ();
+            ThreadAssist.AssertInMainThread ();
             actions = new ActionGroup ("CoverArt");
             
             ActionEntry[] action_list = new ActionEntry [] {
@@ -125,7 +126,7 @@ namespace Banshee.CoverArt
                 return;
             }
 
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 Gtk.Action fetch_action = action_service.GlobalActions["FetchCoverArtAction"];
                 if (fetch_action != null) {
                     action_service.GlobalActions.Remove (fetch_action);

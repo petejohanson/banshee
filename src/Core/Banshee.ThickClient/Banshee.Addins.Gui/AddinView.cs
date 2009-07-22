@@ -30,6 +30,8 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 
+using Hyena;
+
 using Mono.Addins;
 
 namespace Banshee.Addins.Gui
@@ -57,7 +59,7 @@ namespace Banshee.Addins.Gui
             foreach (Addin addin in AddinManager.Registry.GetAddins ()) {
                 if (addin.Name != addin.Id && addin.Description != null && 
                     addin.Description.Category != null && !addin.Description.Category.StartsWith ("required:") &&
-                    (!addin.Description.Category.Contains ("Debug") || Banshee.Base.ApplicationContext.Debugging)) {
+                    (!addin.Description.Category.Contains ("Debug") || ApplicationContext.Debugging)) {
                     AppendAddin (addin);
                 }
             }

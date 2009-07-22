@@ -30,7 +30,8 @@ using System;
 using Gtk;
 using Mono.Unix;
 
-using Banshee.Base;
+using Hyena;
+
 using Banshee.ServiceStack;
 using Banshee.MediaEngine;
 using Banshee.Collection;

@@ -91,7 +91,7 @@ namespace Banshee.Library
 
         protected void LogError (string path, string msg)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 ErrorSource error_source = ServiceManager.SourceManager.MusicLibrary.ErrorSource;
                 error_source.AddMessage (path, msg);
     

@@ -32,6 +32,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using Mono.Unix;
 
+using Hyena;
+
 using Banshee.Library;
 using Banshee.Playlist;
 using Banshee.SmartPlaylist;

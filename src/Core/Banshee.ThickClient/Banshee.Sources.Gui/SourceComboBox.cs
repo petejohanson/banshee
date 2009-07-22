@@ -29,6 +29,8 @@
 using System;
 using Gtk;
 
+using Hyena;
+
 using Banshee.ServiceStack;
 using Banshee.Sources;
 
@@ -49,11 +51,11 @@ namespace Banshee.Sources.Gui
             Model = store;
             
             ServiceManager.SourceManager.ActiveSourceChanged += delegate { 
-                Banshee.Base.ThreadAssist.ProxyToMain (UpdateActiveSource);
+                ThreadAssist.ProxyToMain (UpdateActiveSource);
             };
             
             ServiceManager.SourceManager.SourceUpdated += delegate {
-                Banshee.Base.ThreadAssist.ProxyToMain (QueueDraw);                    
+                ThreadAssist.ProxyToMain (QueueDraw);                    
             };
             
             store.Refresh ();

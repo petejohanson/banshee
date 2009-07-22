@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
 using Hyena.Gui;
 using Hyena.Data;
 using Hyena.Data.Gui;
@@ -281,7 +282,7 @@ namespace Nereid
         private TrackListModel previous_track_model = null;
         private void OnActiveSourceChanged (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 Source source = ServiceManager.SourceManager.ActiveSource;
     
                 view_container.SearchSensitive = source != null && source.CanSearch;
@@ -330,7 +331,7 @@ namespace Nereid
         private void OnSourcePropertyChanged (object o, PropertyChangeEventArgs args)
         {
             if (args.PropertyName == "Nereid.SourceContents") {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     UpdateSourceContents (previous_source);
                 });
             }
@@ -392,7 +393,7 @@ namespace Nereid
         private void OnSourceUpdated (SourceEventArgs args)
         {
             if (args.Source == ServiceManager.SourceManager.ActiveSource) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     UpdateSourceInformation ();
                     view_container.Title = args.Source.Name;
                 });
@@ -502,7 +503,7 @@ namespace Nereid
 
         private void HandleTrackModelReloaded (object sender, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (UpdateSourceInformation);
+            ThreadAssist.ProxyToMain (UpdateSourceInformation);
         }
 
         private void UpdateSourceInformation ()

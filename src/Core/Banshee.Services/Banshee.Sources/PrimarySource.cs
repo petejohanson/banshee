@@ -661,7 +661,7 @@ namespace Banshee.Sources
             if (notify || finished) {
                 OnTracksAdded ();
                 if (finished) {
-                    Banshee.Base.ThreadAssist.ProxyToMain (OnUserNotifyUpdated);
+                    ThreadAssist.ProxyToMain (OnUserNotifyUpdated);
                 }
             }
         }

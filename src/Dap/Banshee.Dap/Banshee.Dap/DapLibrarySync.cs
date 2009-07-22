@@ -199,7 +199,7 @@ namespace Banshee.Dap
         internal void Sync ()
         {
             if (Enabled) {
-                Banshee.Base.ThreadAssist.AssertNotInMainThread ();
+                ThreadAssist.AssertNotInMainThread ();
 
                 CalculateSync ();
 

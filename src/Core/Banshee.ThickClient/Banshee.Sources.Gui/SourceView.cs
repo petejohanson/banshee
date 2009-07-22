@@ -33,6 +33,7 @@ using Gtk;
 using Cairo;
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Gui.Theming;
 using Hyena.Gui.Theatrics;
 
@@ -103,11 +104,11 @@ namespace Banshee.Sources.Gui
         private void ConnectEvents ()
         {
             ServiceManager.SourceManager.ActiveSourceChanged += delegate (SourceEventArgs args) {
-                Banshee.Base.ThreadAssist.ProxyToMain (ResetSelection);
+                ThreadAssist.ProxyToMain (ResetSelection);
             };
             
             ServiceManager.SourceManager.SourceUpdated += delegate (SourceEventArgs args) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     lock (args.Source) {
                         TreeIter iter = store.FindSource (args.Source);
                         if (!TreeIter.Zero.Equals (iter)) {
@@ -119,11 +120,11 @@ namespace Banshee.Sources.Gui
             };
             
             ServiceManager.PlaybackController.NextSourceChanged += delegate {
-                Banshee.Base.ThreadAssist.ProxyToMain (QueueDraw);
+                ThreadAssist.ProxyToMain (QueueDraw);
             };
             
             notify_stage.ActorStep += delegate (Actor<TreeIter> actor) {
-                Banshee.Base.ThreadAssist.AssertInMainThread ();
+                ThreadAssist.AssertInMainThread ();
                 if (!store.IterIsValid (actor.Target)) {
                     return false;
                 }
@@ -337,7 +338,7 @@ namespace Banshee.Sources.Gui
         
         private void OnSourceUserNotifyUpdated (object o, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 TreeIter iter = store.FindSource ((Source)o);
                 if (iter.Equals (TreeIter.Zero)) {
                     return;

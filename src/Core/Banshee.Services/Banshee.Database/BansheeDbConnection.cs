@@ -66,9 +66,9 @@ namespace Banshee.Database
             migrator = new BansheeDbFormatMigrator (this);
             configuration = new DatabaseConfigurationClient (this);
             
-            if (Banshee.Base.ApplicationContext.CommandLine.Contains ("debug-sql")) {
+            if (ApplicationContext.CommandLine.Contains ("debug-sql")) {
                 Hyena.Data.Sqlite.HyenaSqliteCommand.LogAll = true;
-                WarnIfCalledFromThread = Banshee.Base.ThreadAssist.MainThread;
+                WarnIfCalledFromThread = ThreadAssist.MainThread;
             }
         }
 

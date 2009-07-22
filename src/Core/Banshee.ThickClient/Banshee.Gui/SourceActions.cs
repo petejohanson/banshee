@@ -135,7 +135,7 @@ namespace Banshee.Gui
 
         private void HandleActiveSourceChanged (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 UpdateActions ();
                 
                 if (last_source != null) {
@@ -155,7 +155,7 @@ namespace Banshee.Gui
         
         private void HandleActiveSourceUpdated (object o, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 UpdateActions (true);
             });
         }

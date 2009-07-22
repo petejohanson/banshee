@@ -31,6 +31,7 @@ using System.Collections.Generic;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Data;
 using Hyena.Collections;
 
@@ -60,7 +61,7 @@ namespace Banshee.Sources
         
         private void OnReloaded ()
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 EventHandler handler = Reloaded;
                 if (handler != null) {
                     handler (this, EventArgs.Empty);
@@ -70,7 +71,7 @@ namespace Banshee.Sources
         
         private void OnCleared ()
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 EventHandler handler = Cleared;
                 if (handler != null) {
                     handler (this, EventArgs.Empty);

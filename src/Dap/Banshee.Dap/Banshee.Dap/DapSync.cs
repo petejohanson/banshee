@@ -272,8 +272,8 @@ namespace Banshee.Dap
 
         public void Sync ()
         {
-            if (Banshee.Base.ThreadAssist.InMainThread) {
-                Banshee.Base.ThreadAssist.SpawnFromMain (delegate {
+            if (ThreadAssist.InMainThread) {
+                ThreadAssist.SpawnFromMain (delegate {
                     sync_limiter.Execute ();
                 });
             } else {

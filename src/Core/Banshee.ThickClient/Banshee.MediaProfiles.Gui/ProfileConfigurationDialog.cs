@@ -32,6 +32,8 @@ using Mono.Unix;
 
 using Gtk;
 
+using Hyena;
+
 using Banshee.MediaProfiles;
 using Banshee.Base;
 

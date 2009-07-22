@@ -30,10 +30,10 @@ using System;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
 using Hyena.Jobs;
 using Hyena.Gui;
 
-using Banshee.Base;
 using Banshee.ServiceStack;
 
 namespace Banshee.Gui.Widgets

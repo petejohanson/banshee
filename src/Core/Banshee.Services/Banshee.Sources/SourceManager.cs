@@ -31,6 +31,8 @@ using System.Collections.Generic;
 
 using Mono.Addins;
 
+using Hyena;
+
 using Banshee.ServiceStack;
 using Banshee.Library;
 
@@ -136,7 +138,7 @@ namespace Banshee.Sources
         
         public void AddSource(Source source, bool isDefault)
         {
-            Banshee.Base.ThreadAssist.AssertInMainThread ();
+            ThreadAssist.AssertInMainThread ();
             if(source == null || ContainsSource (source)) {
                 return;
             }
@@ -218,7 +220,7 @@ namespace Banshee.Sources
                 }
             }
 
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 if(source == active_source) {
                     SetActiveSource(default_source);
                 }
@@ -254,7 +256,7 @@ namespace Banshee.Sources
         
         private void OnSourceUpdated(object o, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 SourceEventHandler handler = SourceUpdated;
                 if(handler != null) {
                     SourceEventArgs evargs = new SourceEventArgs();
@@ -324,7 +326,7 @@ namespace Banshee.Sources
         
         public void SetActiveSource(Source source, bool notify)
         {
-            Banshee.Base.ThreadAssist.AssertInMainThread ();
+            ThreadAssist.AssertInMainThread ();
             if(source == null || !source.CanActivate || active_source == source) {
                 return;
             }

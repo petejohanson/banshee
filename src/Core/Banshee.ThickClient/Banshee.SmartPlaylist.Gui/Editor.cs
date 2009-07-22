@@ -5,6 +5,7 @@ using Glade;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Query;
 using Hyena.Query.Gui;
  

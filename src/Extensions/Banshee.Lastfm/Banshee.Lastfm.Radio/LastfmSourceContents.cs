@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
+
 using Banshee.Widgets;
 using Banshee.Sources;
 using Banshee.ServiceStack;
@@ -146,7 +148,7 @@ namespace Banshee.Lastfm.Radio
         private void HandleConnectionStateChanged (object sender, ConnectionStateChangedArgs args)
         {
             if (args.State == ConnectionState.Connected) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     if (lastfm != null && lastfm.Account != null) {
                         UpdateForUser (lastfm.Account.UserName);
                     }

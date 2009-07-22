@@ -269,7 +269,7 @@ namespace Banshee.Lastfm.Recommendations
         private void UpdateForArtist (string artist_name, LastfmData<SimilarArtist> similar_artists, 
             LastfmData<ArtistTopAlbum> top_albums, LastfmData<ArtistTopTrack> top_tracks)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 album_box.Title = String.Format (album_title_format, artist);
                 track_box.Title = String.Format (track_title_format, artist);
                 

@@ -31,11 +31,11 @@ using System.Collections.Generic;
 
 using Gtk;
 
+using Hyena;
 using Hyena.Jobs;
 using Hyena.Widgets;
 using Hyena.Gui.Theatrics;
 
-using Banshee.Base;
 using Banshee.ServiceStack;
 
 namespace Banshee.Gui.Widgets
@@ -48,7 +48,7 @@ namespace Banshee.Gui.Widgets
         
         public UserJobTileHost () : base (0.0f, 0.0f, 1.0f, 1.0f)
         {
-            Banshee.Base.ThreadAssist.AssertInMainThread ();
+            ThreadAssist.AssertInMainThread ();
             LeftPadding = 4;
             
             box = new AnimatedVBox ();
@@ -81,7 +81,7 @@ namespace Banshee.Gui.Widgets
                 }
                 
                 if ((job.DelayShow && job.Progress < 0.33) || !job.DelayShow) {
-                    Banshee.Base.ThreadAssist.AssertInMainThread ();
+                    ThreadAssist.AssertInMainThread ();
                     UserJobTile tile = new UserJobTile (job);
                     job_tiles.Add (job, tile);
                     job_start_times.Add (job, DateTime.Now);
@@ -114,7 +114,7 @@ namespace Banshee.Gui.Widgets
         {
             lock (this) {
                 if (job_tiles.ContainsKey (job)) {
-                    Banshee.Base.ThreadAssist.AssertInMainThread ();
+                    ThreadAssist.AssertInMainThread ();
                     UserJobTile tile = job_tiles[job];
                     box.Remove (tile);
                     job_tiles.Remove (job);

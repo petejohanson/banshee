@@ -89,7 +89,7 @@ namespace Banshee.FileSystemQueue
             actions_loaded = true;
             
             UpdateActions ();
-            ServiceManager.SourceManager.ActiveSourceChanged += delegate { Banshee.Base.ThreadAssist.ProxyToMain (UpdateActions); };
+            ServiceManager.SourceManager.ActiveSourceChanged += delegate { ThreadAssist.ProxyToMain (UpdateActions); };
             TrackModel.Reloaded += OnTrackModelReloaded;
             
             Reload ();
@@ -140,7 +140,7 @@ namespace Banshee.FileSystemQueue
 
                     importer.Finished += delegate {
                         if (visible) {
-                            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                            ThreadAssist.ProxyToMain (delegate {
                                 TrackInfo current_track = ServiceManager.PlaybackController.CurrentTrack;
                                 // Don't switch to FSQ if the current item is a video
                                 if (current_track == null || !current_track.HasAttribute (TrackMediaAttributes.VideoStream)) {

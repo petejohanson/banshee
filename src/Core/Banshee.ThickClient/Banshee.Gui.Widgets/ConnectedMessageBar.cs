@@ -29,11 +29,12 @@
 using System;
 using Gtk;
 
+using Hyena;
 using Hyena.Data;
+using Hyena.Widgets;
+
 using Banshee.Sources;
 using Banshee.ServiceStack;
-
-using Hyena.Widgets;
 using Banshee.Sources.Gui;
 using Banshee.Base;
 

@@ -31,7 +31,8 @@ using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
 
-using Banshee.Base;
+using Hyena;
+
 using Banshee.Query;
 using Banshee.Sources;
 using Banshee.Library;
@@ -141,7 +142,7 @@ namespace Banshee.Gui
                 current_source = new_source;
             }
             
-            Banshee.Base.ThreadAssist.ProxyToMain (UpdateActions);
+            ThreadAssist.ProxyToMain (UpdateActions);
         }
 
         private void HandleActionsChanged (object sender, EventArgs args)
@@ -156,7 +157,7 @@ namespace Banshee.Gui
 
         private void HandleSelectionChanged (object sender, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 OnSelectionChanged ();
                 UpdateActions ();
             });

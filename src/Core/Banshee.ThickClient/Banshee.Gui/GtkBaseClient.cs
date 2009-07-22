@@ -108,6 +108,7 @@ namespace Banshee.Gui
             Gtk.Window.DefaultIconName = default_icon_name;
 
             ThreadAssist.InitializeMainThread ();
+            ThreadAssist.ProxyToMainHandler = Banshee.ServiceStack.Application.Invoke;
             
             Gdk.Global.ProgramClass = Application.InternalName;
 

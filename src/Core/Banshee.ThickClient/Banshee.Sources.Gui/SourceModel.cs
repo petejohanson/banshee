@@ -30,6 +30,8 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 
+using Hyena;
+
 using Banshee.Sources;
 using Banshee.ServiceStack;
 
@@ -87,14 +89,14 @@ namespace Banshee.Sources.Gui
         
         private void OnSourceAdded (SourceAddedArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 AddSource (args.Source);
             });
         }
         
         private void OnSourceRemoved (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 RemoveSource (args.Source);
             });
         }
@@ -269,14 +271,14 @@ namespace Banshee.Sources.Gui
         
         private void OnSourceChildSourceAdded (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 AddSource (args.Source, FindSource (args.Source.Parent));
             });
         }
         
         private void OnSourceChildSourceRemoved (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 RemoveSource (args.Source);
             });
         }
