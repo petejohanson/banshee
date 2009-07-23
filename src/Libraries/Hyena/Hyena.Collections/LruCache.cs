@@ -54,17 +54,25 @@ namespace Hyena.Collections
     {
         private Dictionary<TKey, CacheEntry<TKey, TValue>> cache;
         private int max_count;
-        
+        private long hits;
+        private long misses;
+        private double? minimum_hit_ratio;
+
         public LruCache () : this (1024)
         {
         }
         
-        public LruCache (int maxCount)
+        public LruCache (int maxCount) : this (maxCount, null)
+        {
+        }
+
+        public LruCache (int maxCount, double? minimumHitRatio)
         {
             max_count = maxCount;
+            minimum_hit_ratio = minimumHitRatio;
             cache = new Dictionary<TKey, CacheEntry<TKey, TValue>> ();
         }
-        
+
         public void Add (TKey key, TValue value)
         {
             lock (cache) {
@@ -79,6 +87,9 @@ namespace Hyena.Collections
                 entry.Value = value;
                 Ref (ref entry);
                 cache.Add (key, entry);
+
+                misses++;
+                EnsureMinimumHitRatio ();
                 
                 if (Count >= max_count) {
                     TKey expire = FindOldestEntry ();
@@ -94,6 +105,16 @@ namespace Hyena.Collections
                 return cache.ContainsKey (key);
             }
         }
+
+        public void Remove (TKey key)
+        {
+            lock (cache) {
+                if (Contains (key)) {
+                    ExpireItem (cache[key].Value);
+                    cache.Remove (key);
+                }
+            }
+        }
         
         public bool TryGetValue (TKey key, out TValue value)
         {
@@ -103,11 +124,21 @@ namespace Hyena.Collections
                     value = entry.Value;
                     Ref (ref entry);
                     cache[key] = entry;
+                    hits++;
                     return true;
                 }
                 
+                misses++;
+                EnsureMinimumHitRatio ();
                 value = default (TValue);
                 return false;
+            }
+        }
+
+        private void EnsureMinimumHitRatio ()
+        {
+            if (minimum_hit_ratio != null && Count >= MaxCount && HitRatio < minimum_hit_ratio) {
+                MaxCount = Count + 1;
             }
         }
         
@@ -162,6 +193,21 @@ namespace Hyena.Collections
         
         public int Count {
             get { lock (cache) { return cache.Count; } }
+        }
+
+        public double? MinimumHitRatio { get { return minimum_hit_ratio; } }
+
+        public long Hits { get { return hits; } }
+        public long Misses { get { return misses; } }
+
+        public double HitRatio {
+            get {
+                if (misses == 0) {
+                    return 1.0;
+                } else {
+                    return ((double)hits) / ((double)(hits + misses));
+                }
+            }
         }
     }
 }
