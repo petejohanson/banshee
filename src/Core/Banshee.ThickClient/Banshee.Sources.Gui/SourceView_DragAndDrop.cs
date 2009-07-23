@@ -34,6 +34,8 @@ using Mono.Unix;
 using Gtk;
 using Gdk;
 
+using Hyena.Gui;
+
 using Banshee.Sources;
 using Banshee.Library;
 using Banshee.ServiceStack;
@@ -220,7 +222,7 @@ namespace Banshee.Sources.Gui
                     if (sources.Count > 0) {
                         drop_source.MergeSourceInput (sources[0], SourceMergeType.Source);
                     }
-                } else if (data.Target.Name == Banshee.Gui.DragDrop.DragDropTarget.UriList.Target) {
+                } else if (data.Target.Name == DragDropTarget.UriList.Target) {
                     foreach (string uri in DragDropUtilities.SplitSelectionData (data)) {
                         // TODO if we dropped onto a playlist, add ourselves
                         // to it after importing (or if already imported, find

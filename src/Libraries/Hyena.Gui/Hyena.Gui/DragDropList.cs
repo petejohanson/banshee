@@ -33,7 +33,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Gtk;
 
-namespace Banshee.Gui.DragDrop 
+namespace Hyena.Gui
 {   
     public class DragDropList<T> : List<T>
     {

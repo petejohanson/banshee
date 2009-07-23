@@ -46,6 +46,7 @@ SOURCES =  \
 	Hyena.Gui/CleanRoomStartup.cs \
 	Hyena.Gui/CompositeUtils.cs \
 	Hyena.Gui/Contrast.cs \
+	Hyena.Gui/DragDropList.cs \
 	Hyena.Gui/ActionManager.cs \
 	Hyena.Gui/HyenaActionGroup.cs \
 	Hyena.Gui/EditableEraseAction.cs \
