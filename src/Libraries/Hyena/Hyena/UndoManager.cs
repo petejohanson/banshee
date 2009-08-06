@@ -85,9 +85,7 @@ namespace Hyena
 
                 try_merge = true;
 
-                if(undo_stack.Count == 1) {
-                    OnUndoChanged();
-                }
+                OnUndoChanged();
             }
         }
 
@@ -119,9 +117,7 @@ namespace Hyena
 
             try_merge = true;
 
-            if(pop_from.Count == 0 || push_to.Count == 1) {
-                OnUndoChanged();
-            }
+            OnUndoChanged();
         }
 
         public bool CanUndo {
@@ -130,6 +126,22 @@ namespace Hyena
 
         public bool CanRedo { 
             get { return redo_stack.Count > 0; }
+        }
+
+        public IUndoAction UndoAction {
+            get {
+                lock (this) {
+                    return CanUndo ? undo_stack.Peek () : null;
+                }
+            }
+        }
+
+        public IUndoAction RedoAction {
+            get {
+                lock (this) {
+                    return CanRedo ? redo_stack.Peek () : null;
+                }
+            }
         }
     }
 }
