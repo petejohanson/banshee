@@ -99,7 +99,7 @@ namespace Banshee.Gui
         protected void Initialize (bool registerCommonServices)
         {
             // Set the process name so system process listings and commands are pretty
-            PlatformHacks.TrySetProcessName (Application.InternalName);
+            ApplicationContext.TrySetProcessName (Application.InternalName);
             
             Application.Initialize ();
             
