@@ -32,6 +32,8 @@ using System.Text.RegularExpressions;
 
 using Mono.Unix;
 
+using Hyena;
+
 namespace Banshee.Base
 {
     public static class CoverArtSpec

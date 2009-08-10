@@ -29,7 +29,7 @@
 using System;
 using System.IO;
 
-namespace Banshee.Base
+namespace Hyena
 {
     public static class XdgBaseDirectorySpec
     {

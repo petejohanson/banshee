@@ -119,7 +119,8 @@ SOURCES =  \
 	Hyena/Tests/StringUtilTests.cs \
 	Hyena/Tests/TestBase.cs \
 	Hyena/Timer.cs \
-	Hyena/UndoManager.cs
+	Hyena/UndoManager.cs \
+	Hyena/XdgBaseDirectorySpec.cs
 
 include $(top_srcdir)/build/build.mk
 

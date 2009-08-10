@@ -15,7 +15,6 @@ SOURCES =  \
 	Banshee.Base/Tests/FileNamePatternTests.cs \
 	Banshee.Base/Tests/TaglibReadWriteTests.cs \
 	Banshee.Base/UriList.cs \
-	Banshee.Base/XdgBaseDirectorySpec.cs \
 	Banshee.Collection/AlbumInfo.cs \
 	Banshee.Collection/ArtistInfo.cs \
 	Banshee.Collection/CacheableItem.cs \
