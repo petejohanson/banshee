@@ -494,6 +494,9 @@ namespace Banshee.PlayQueue
                     ServiceManager.PlaybackController.PriorTrack = prior_playback_track;
                     ServiceManager.PlaybackController.Next (restart, userRequested);
                 } else {
+                    if (!userRequested) {
+                        ServiceManager.PlaybackController.SetNextTrack (null);
+                    }
                     ServiceManager.PlayerEngine.Close ();
                 }
                 return true;
