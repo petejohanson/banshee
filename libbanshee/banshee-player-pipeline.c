@@ -115,9 +115,10 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
             gst_message_parse_state_changed (message, &old, &new, &pending);
 
             if (new == GST_STATE_READY) {            
-                // Explicitly set the buffer length to a value above the default.
-                // This increases the deadline for setting the URI after about-to-finish is triggered
-                // when using playbin2 for gapless playback.
+                // Explicitly set the buffer length.
+                // We need to know the buffer length so that we can emit a fake track-changed signal at something
+                // approximating the right time, at least until playbin2 can do this for us.  
+                // The easiest way to do this is to set the buffer to a known length.
                 // 
                 // gconfaudiosink only has a real audiosink in it once it's made a transition to READY.
                 bp_set_audiosink_buffer_length (player, BP_BUFFER_LEN_MICROSECONDS);
@@ -228,7 +229,7 @@ static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *pla
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     // Playbin2 doesn't (yet) have any way to notify us when the current track has actually finished playing on the
-    // hardware.  Fake this for now by adding a t2imer with length equal to the hardware buffer.
+    // hardware.  Fake this for now by adding a timer with length equal to the hardware buffer.
     player->timeout_id = g_timeout_add (((guint64)BP_BUFFER_LEN_MICROSECONDS) / 1000, &bp_next_track_starting, player);
     
     if (player->about_to_finish_cb != NULL) {
