@@ -89,7 +89,8 @@ namespace Banshee.PlaybackController
             
             player_engine = ServiceManager.PlayerEngine;
             player_engine.PlayWhenIdleRequest += OnPlayerEnginePlayWhenIdleRequest;
-            player_engine.ConnectEvent (OnPlayerEvent, 
+            player_engine.ConnectEvent (OnPlayerEvent,
+                PlayerEvent.RequestNexttrack |
                 PlayerEvent.EndOfStream | 
                 PlayerEvent.StartOfStream |
                 PlayerEvent.StateChange |
@@ -164,6 +165,9 @@ namespace Banshee.PlaybackController
                         transition_track_started = true;
                     }
                     break;
+                case PlayerEvent.RequestNexttrack:
+                    RequestTrackHandler ();
+                    break;
             }       
         }
         
@@ -174,15 +178,21 @@ namespace Banshee.PlaybackController
                 error_transition_id = 0;
             }
         }
-        
+
         private bool EosTransition ()
+        {
+            player_engine.IncrementLastPlayed ();
+            return true;
+        }
+        
+        private bool RequestTrackHandler ()
         {
             if (!StopWhenFinished) {
                 if (RepeatMode == PlaybackRepeatMode.RepeatSingle) {
                     QueuePlayTrack ();
                 } else {
                     last_was_skipped = false;
-                    Next ();
+                    Next (RepeatMode == PlaybackRepeatMode.RepeatSingle, false);
                 }
             } else {
                 OnStopped ();
@@ -211,21 +221,28 @@ namespace Banshee.PlaybackController
         
         public void Next ()
         {
-            Next (RepeatMode == PlaybackRepeatMode.RepeatAll);
+            Next (RepeatMode == PlaybackRepeatMode.RepeatAll, true);
+        }
+
+        public void Next (bool restart)
+        {
+            Next (restart, true);
         }
         
-        public void Next (bool restart)
+        public void Next (bool restart, bool userRequested)
         {
             CancelErrorTransition ();
             
             Source = NextSource;
             raise_started_after_transition = true;
 
-            player_engine.IncrementLastPlayed ();
+            if (userRequested) {
+                player_engine.IncrementLastPlayed ();
+            }
             
-            if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart)) {
+            if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart, userRequested)) {
             } else {
-                ((IBasicPlaybackController)this).Next (restart);
+                ((IBasicPlaybackController)this).Next (restart, userRequested);
             }
             
             OnTransition ();
@@ -261,29 +278,20 @@ namespace Banshee.PlaybackController
             return true;
         }
         
-        bool IBasicPlaybackController.Next (bool restart)
+        bool IBasicPlaybackController.Next (bool restart, bool userRequested)
         {
-            TrackInfo tmp_track = CurrentTrack;
-
-            if (next_stack.Count > 0) {
-                CurrentTrack = next_stack.Pop ();
-                if (tmp_track != null) {
-                    previous_stack.Push (tmp_track);
-                }
-            } else {
-                TrackInfo next_track = QueryTrack (Direction.Next, restart);
-                if (next_track != null) {
-                    if (tmp_track != null) {
-                        previous_stack.Push (tmp_track);
-                    }
-                } else {
-                    return true;
-                }
-                
-                CurrentTrack = next_track;
+            if (CurrentTrack != null) {
+                previous_stack.Push (CurrentTrack);
             }
-            
-            QueuePlayTrack ();
+
+            CurrentTrack = CalcNextTrack (Direction.Next, restart);
+            if (CurrentTrack != null) {
+                if (userRequested) {
+                    QueuePlayTrack ();
+                } else {
+                    player_engine.SetNextTrack (CurrentTrack);
+                }
+            }
             return true;
         }
         
@@ -293,19 +301,26 @@ namespace Banshee.PlaybackController
                 next_stack.Push (current_track);
             }
 
-            if (previous_stack.Count > 0) {
-                CurrentTrack = previous_stack.Pop ();
-            } else {
-                TrackInfo track = CurrentTrack = QueryTrack (Direction.Previous, restart);
-                if (track != null) {
-                    CurrentTrack = track;
-                } else {
-                    return true;
-                }
+            CurrentTrack = CalcNextTrack (Direction.Previous, restart);
+            if (CurrentTrack == null) {
+                QueuePlayTrack ();
             }
             
-            QueuePlayTrack ();
             return true;
+        }
+
+        private TrackInfo CalcNextTrack (Direction direction, bool restart)
+        {
+            if (direction == Direction.Previous) {
+                if (previous_stack.Count > 0) {
+                    return previous_stack.Pop ();
+                }
+            } else if (direction == Direction.Next) {
+                if (next_stack.Count > 0) {
+                    return next_stack.Pop ();
+                }
+            }
+            return QueryTrack (direction, restart);
         }
         
         private TrackInfo QueryTrack (Direction direction, bool restart)

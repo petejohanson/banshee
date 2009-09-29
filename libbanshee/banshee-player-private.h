@@ -68,6 +68,8 @@
 #define bp_debug(x...) banshee_log_debug ("player", x)
 #endif
 
+#define BP_BUFFER_LEN_MICROSECONDS 1000000
+
 typedef struct BansheePlayer BansheePlayer;
 
 typedef void (* BansheePlayerEosCallback)          (BansheePlayer *player);
@@ -79,6 +81,8 @@ typedef void (* BansheePlayerIterateCallback)      (BansheePlayer *player);
 typedef void (* BansheePlayerBufferingCallback)    (BansheePlayer *player, gint buffering_progress);
 typedef void (* BansheePlayerTagFoundCallback)     (BansheePlayer *player, const gchar *tag, const GValue *value);
 typedef void (* BansheePlayerVisDataCallback)      (BansheePlayer *player, gint channels, gint samples, gfloat *data, gint bands, gfloat *spectrum);
+typedef void (* BansheePlayerNextTrackStartingCallback)     (BansheePlayer *player);
+typedef void (* BansheePlayerAboutToFinishCallback)         (BansheePlayer *player);
 typedef GstElement * (* BansheePlayerVideoPipelineSetupCallback) (BansheePlayer *player, GstBus *bus);
 
 typedef enum {
@@ -96,10 +100,13 @@ struct BansheePlayer {
     BansheePlayerBufferingCallback buffering_cb;
     BansheePlayerTagFoundCallback tag_found_cb;
     BansheePlayerVisDataCallback vis_data_cb;
+    BansheePlayerNextTrackStartingCallback next_track_starting_cb;
+    BansheePlayerAboutToFinishCallback about_to_finish_cb;
     BansheePlayerVideoPipelineSetupCallback video_pipeline_setup_cb;
 
     // Pipeline Elements
     GstElement *playbin;
+    GstElement *audiosink;
     GstElement *audiotee;
     GstElement *audiobin;
     GstElement *equalizer;
@@ -156,6 +163,8 @@ struct BansheePlayer {
     gdouble album_peak;
     gdouble track_gain;
     gdouble track_peak;
+    
+    guint timeout_id;
 };
 
 #endif /* _BANSHEE_PLAYER_PRIVATE_H */

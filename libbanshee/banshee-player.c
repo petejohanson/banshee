@@ -180,6 +180,11 @@ bp_stop (BansheePlayer *player, gboolean nullstate)
         state = GST_STATE_NULL;
     }
     
+    if (player->timeout_id != 0) {
+        g_source_remove (player->timeout_id);
+        player->timeout_id = 0;
+    }
+    
     bp_debug ("bp_stop: setting state to %s", 
         state == GST_STATE_NULL ? "GST_STATE_NULL" : "GST_STATE_PAUSED");
     
@@ -195,7 +200,21 @@ bp_pause (BansheePlayer *player)
 P_INVOKE void
 bp_play (BansheePlayer *player)
 {
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+    if (player->timeout_id != 0) {
+        g_source_remove (player->timeout_id);
+        player->timeout_id = 0;
+    }
     bp_pipeline_set_state (player, GST_STATE_PLAYING);
+}
+
+P_INVOKE gboolean
+bp_set_next_track (BansheePlayer *player, const gchar *uri)
+{
+    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
+    g_return_val_if_fail (player->playbin != NULL, FALSE);
+    g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);
+    return TRUE;
 }
 
 P_INVOKE gboolean
@@ -347,4 +366,16 @@ bp_get_error_quarks (GQuark *core, GQuark *library, GQuark *resource, GQuark *st
     *library = GST_LIBRARY_ERROR;
     *resource = GST_RESOURCE_ERROR;
     *stream = GST_STREAM_ERROR;
+}
+
+P_INVOKE void
+bp_set_next_track_starting_callback (BansheePlayer *player, BansheePlayerNextTrackStartingCallback cb)
+{
+    SET_CALLBACK (next_track_starting_cb);
+}
+
+P_INVOKE void
+bp_set_about_to_finish_callback (BansheePlayer *player, BansheePlayerAboutToFinishCallback cb)
+{
+    SET_CALLBACK (about_to_finish_cb);
 }

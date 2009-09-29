@@ -245,6 +245,10 @@ namespace Banshee.MediaEngine
                     CurrentTrack.SavePlaybackError (StreamPlaybackError.None);
                 }
             }
+
+            if (args.Event == PlayerEvent.StartOfStream) {
+                incremented_last_played = false;
+            }
             
             RaiseEvent (args);
             
@@ -302,7 +306,40 @@ namespace Banshee.MediaEngine
         {
             OpenCheck (new SafeUri (uri));
         }
-        
+
+
+        public void SetNextTrack (TrackInfo track)
+        {
+            if (active_engine != FindSupportingEngine (track.Uri)) {
+                if (active_engine.CurrentState == PlayerState.Playing) {
+                    // If we're playing and the current engine can't handle the next track then treat this as setting
+                    // no next track for the engine, since it's not going to receive this next track.
+                    track = null;
+                } else {
+                    // If we're not playing, then switch engines and Open
+                    SwitchToEngine (FindSupportingEngine (track.Uri));
+                    CheckPending ();
+                }
+            }
+            active_engine.SetNextTrack (track);
+        }
+
+        public void SetNextTrack (SafeUri uri)
+        {
+            if (active_engine != FindSupportingEngine (uri)) {
+                if (active_engine.CurrentState == PlayerState.Playing) {
+                    // If we're playing and the current engine can't handle the next track then treat this as setting
+                    // no next track for the engine, since it's not going to receive this next track.
+                    uri = null;
+                } else {
+                    // If we're not playing, then switch engines and Open
+                    SwitchToEngine (FindSupportingEngine (uri));
+                    CheckPending ();
+                }
+            }
+            active_engine.SetNextTrack (uri);
+        }
+
         public void OpenPlay (TrackInfo track)
         {
             OpenPlay (track, true);
@@ -349,17 +386,14 @@ namespace Banshee.MediaEngine
                 return;
             }
 
-            IncrementLastPlayed ();
-            
-            FindSupportingEngine (uri);
+            PlayerEngine supportingEngine = FindSupportingEngine (uri);
+            SwitchToEngine (supportingEngine);
             CheckPending ();
             
             if (track != null) {
                 active_engine.Open (track);
-                incremented_last_played = false;
             } else if (uri != null) {
                 active_engine.Open (uri);
-                incremented_last_played = false;
             }
 
             if (play) {
@@ -381,34 +415,39 @@ namespace Banshee.MediaEngine
             }
         }
         
-        private void FindSupportingEngine (SafeUri uri)
+        private PlayerEngine FindSupportingEngine (SafeUri uri)
         {
             foreach (PlayerEngine engine in engines) {
                 foreach (string extension in engine.ExplicitDecoderCapabilities) {
                     if (!uri.AbsoluteUri.EndsWith (extension)) {
                         continue;
-                    } else if (active_engine != engine) {
-                        Close ();
-                        pending_engine = engine;
-                        Log.DebugFormat ("Switching engine to: {0}", engine.GetType ());
                     }
-                    return;
+                    return engine;
                 }
             }
         
             foreach (PlayerEngine engine in engines) {
                 foreach (string scheme in engine.SourceCapabilities) {
                     bool supported = scheme == uri.Scheme;
-                    if (supported && active_engine != engine) {
-                        Close ();
-                        pending_engine = engine;
-                        Log.DebugFormat ("Switching engine to: {0}", engine.GetType ());
-                        return;
-                    } else if (supported) {
-                        return;
+                    if (supported) {
+                        return engine;
                     }
                 }
             }
+            // If none of our engines support this URI, return the currently active one.
+            // There doesn't seem to be anything better to do.
+            return active_engine;
+        }
+
+        private bool SwitchToEngine (PlayerEngine switchTo)
+        {
+            if (active_engine != switchTo) {
+                Close ();
+                pending_engine = switchTo;
+                Log.DebugFormat ("Switching engine to: {0}", switchTo.GetType ());
+                return true;
+            }
+            return false;
         }
         
         public void Close ()
@@ -644,7 +683,8 @@ namespace Banshee.MediaEngine
             | PlayerEvent.Error
             | PlayerEvent.Volume
             | PlayerEvent.Metadata
-            | PlayerEvent.TrackInfoUpdated;
+            | PlayerEvent.TrackInfoUpdated
+            | PlayerEvent.RequestNexttrack;
         
         private const PlayerEvent event_default_mask = event_all_mask & ~PlayerEvent.Iterate;
         

@@ -478,10 +478,10 @@ namespace Banshee.PlayQueue
 
         bool IBasicPlaybackController.First ()
         {
-            return ((IBasicPlaybackController)this).Next (false);
+            return ((IBasicPlaybackController)this).Next (false, true);
         }
         
-        bool IBasicPlaybackController.Next (bool restart)
+        bool IBasicPlaybackController.Next (bool restart, bool userRequested)
         {
             if (current_track != null && ServiceManager.PlayerEngine.CurrentTrack == current_track) {
                 int index = TrackModel.IndexOf (current_track) + 1;
@@ -492,14 +492,18 @@ namespace Banshee.PlayQueue
                 ServiceManager.PlaybackController.Source = PriorSource;
                 if (was_playing) {
                     ServiceManager.PlaybackController.PriorTrack = prior_playback_track;
-                    ServiceManager.PlaybackController.Next (restart);
+                    ServiceManager.PlaybackController.Next (restart, userRequested);
                 } else {
                     ServiceManager.PlayerEngine.Close ();
                 }
                 return true;
             }
 
-            ServiceManager.PlayerEngine.OpenPlay (current_track);
+            if (userRequested) {
+                ServiceManager.PlayerEngine.OpenPlay (current_track);
+            } else {
+                ServiceManager.PlayerEngine.SetNextTrack (current_track);
+            }
             return true;
         }
         
