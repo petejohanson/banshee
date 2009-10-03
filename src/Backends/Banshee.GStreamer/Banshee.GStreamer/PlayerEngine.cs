@@ -695,7 +695,7 @@ namespace Banshee.GStreamer
         private static extern void bp_set_tag_found_callback (HandleRef player,
             GstTaggerTagFoundCallback cb);
 
-        [DllImport ("libbanshee")]
+        [DllImport ("libbanshee.dll")]
         private static extern void bp_set_next_track_starting_callback (HandleRef player,
             BansheePlayerNextTrackStartingCallback cb);
 
