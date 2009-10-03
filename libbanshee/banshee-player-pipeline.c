@@ -246,7 +246,6 @@ _bp_pipeline_construct (BansheePlayer *player)
 {
     GstBus *bus;
     GstPad *teepad;
-    GstElement *audiosink;
     GstElement *audiosinkqueue;
     GstElement *eq_audioconvert = NULL;
     GstElement *eq_audioconvert2 = NULL;
