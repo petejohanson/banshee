@@ -89,7 +89,7 @@ namespace Banshee.GStreamer
         private int pending_volume = -1;
         private bool xid_is_set = false;
 
-        private bool GaplessEnabled;
+        private bool gapless_enabled;
         private EventWaitHandle next_track_set;
         
         private event VisualizationDataHandler data_available = null;
@@ -174,9 +174,9 @@ namespace Banshee.GStreamer
             
             InstallPreferences ();
             ReplayGainEnabled = ReplayGainEnabledSchema.Get ();
-            GaplessEnabled = GaplessEnabledSchema.Get ();
+            gapless_enabled = GaplessEnabledSchema.Get ();
 
-            if (GaplessEnabled) {
+            if (gapless_enabled) {
                 bp_set_about_to_finish_callback (handle, about_to_finish_callback);
             }
         }
@@ -269,7 +269,7 @@ namespace Banshee.GStreamer
 
         private void OnNextTrackStarting (IntPtr player)
         {
-            if (GaplessEnabled) {
+            if (gapless_enabled) {
                 OnEventChanged (PlayerEvent.EndOfStream);
                 OnEventChanged (PlayerEvent.StartOfStream);
             }
@@ -623,7 +623,7 @@ namespace Banshee.GStreamer
             gapless_preference = service["general"]["misc"].Add (new SchemaPreference<bool> (GaplessEnabledSchema,
                 Catalog.GetString ("Enable _gapless playback (EXPERIMENTAL)"),
                 Catalog.GetString ("Eliminate the small playback gap on track change.  Useful for concept albums & classical music."),
-                delegate { GaplessEnabled = GaplessEnabledSchema.Get (); }
+                delegate { gapless_enabled = GaplessEnabledSchema.Get (); }
             ));                            
         }
         
