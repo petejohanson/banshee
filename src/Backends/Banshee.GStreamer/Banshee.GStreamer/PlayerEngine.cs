@@ -264,7 +264,7 @@ namespace Banshee.GStreamer
         {
             Close (false);
             OnEventChanged (PlayerEvent.EndOfStream);
-            OnEventChanged (PlayerEvent.RequestNexttrack);
+            OnEventChanged (PlayerEvent.RequestNextTrack);
         }
 
         private void OnNextTrackStarting (IntPtr player)
@@ -288,7 +288,7 @@ namespace Banshee.GStreamer
             CurrentTrack.LastPlayed = DateTime.Now;
             CurrentTrack.Save ();
             
-            OnEventChanged (PlayerEvent.RequestNexttrack);
+            OnEventChanged (PlayerEvent.RequestNextTrack);
             // Gapless playback with Playbin2 requires that the about-to-finish callback does not return until
             // the next uri has been set.  Block here for a second or until the RequestNextTrack event has 
             // finished triggering.

@@ -90,7 +90,7 @@ namespace Banshee.PlaybackController
             player_engine = ServiceManager.PlayerEngine;
             player_engine.PlayWhenIdleRequest += OnPlayerEnginePlayWhenIdleRequest;
             player_engine.ConnectEvent (OnPlayerEvent,
-                PlayerEvent.RequestNexttrack |
+                PlayerEvent.RequestNextTrack |
                 PlayerEvent.EndOfStream | 
                 PlayerEvent.StartOfStream |
                 PlayerEvent.StateChange |
@@ -165,7 +165,7 @@ namespace Banshee.PlaybackController
                         transition_track_started = true;
                     }
                     break;
-                case PlayerEvent.RequestNexttrack:
+                case PlayerEvent.RequestNextTrack:
                     RequestTrackHandler ();
                     break;
             }       

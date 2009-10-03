@@ -684,7 +684,7 @@ namespace Banshee.MediaEngine
             | PlayerEvent.Volume
             | PlayerEvent.Metadata
             | PlayerEvent.TrackInfoUpdated
-            | PlayerEvent.RequestNexttrack;
+            | PlayerEvent.RequestNextTrack;
         
         private const PlayerEvent event_default_mask = event_all_mask & ~PlayerEvent.Iterate;
         
