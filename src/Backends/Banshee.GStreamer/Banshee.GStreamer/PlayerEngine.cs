@@ -174,11 +174,7 @@ namespace Banshee.GStreamer
             
             InstallPreferences ();
             ReplayGainEnabled = ReplayGainEnabledSchema.Get ();
-            gapless_enabled = GaplessEnabledSchema.Get ();
-
-            if (gapless_enabled) {
-                bp_set_about_to_finish_callback (handle, about_to_finish_callback);
-            }
+            GaplessEnabled = GaplessEnabledSchema.Get ();
         }
         
         public override void Dispose ()
@@ -269,7 +265,7 @@ namespace Banshee.GStreamer
 
         private void OnNextTrackStarting (IntPtr player)
         {
-            if (gapless_enabled) {
+            if (GaplessEnabled) {
                 OnEventChanged (PlayerEvent.EndOfStream);
                 OnEventChanged (PlayerEvent.StartOfStream);
             }
@@ -552,6 +548,20 @@ namespace Banshee.GStreamer
             set { bp_replaygain_set_enabled (handle, value); }
         }
 
+        private bool GaplessEnabled {
+            get { return gapless_enabled; }
+            set 
+            {
+                gapless_enabled = value;
+                if (value) {
+                    bp_set_about_to_finish_callback (handle, about_to_finish_callback);
+                } else {
+                    bp_set_about_to_finish_callback (handle, null);
+                }
+            }
+        }
+
+
 #region ISupportClutter
 
         private IntPtr clutter_video_sink;
@@ -578,6 +588,7 @@ namespace Banshee.GStreamer
             }
         }
 
+
         private IntPtr OnVideoPipelineSetup (IntPtr player, IntPtr bus)
         {
             try {
@@ -602,7 +613,6 @@ namespace Banshee.GStreamer
         }
 
 #endregion
-        
 #region Preferences
 
         private PreferenceBase replaygain_preference;
@@ -623,7 +633,7 @@ namespace Banshee.GStreamer
             gapless_preference = service["general"]["misc"].Add (new SchemaPreference<bool> (GaplessEnabledSchema,
                 Catalog.GetString ("Enable _gapless playback (EXPERIMENTAL)"),
                 Catalog.GetString ("Eliminate the small playback gap on track change.  Useful for concept albums & classical music."),
-                delegate { gapless_enabled = GaplessEnabledSchema.Get (); }
+                delegate { GaplessEnabled = GaplessEnabledSchema.Get (); }
             ));                            
         }
         
