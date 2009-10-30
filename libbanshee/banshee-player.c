@@ -213,6 +213,11 @@ bp_set_next_track (BansheePlayer *player, const gchar *uri)
 {
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
     g_return_val_if_fail (player->playbin != NULL, FALSE);
+    if (uri == NULL && player->timeout_id != 0) {
+        g_source_remove (player->timeout_id);
+        player->timeout_id = 0;
+        return TRUE;
+    }
     g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);
     return TRUE;
 }

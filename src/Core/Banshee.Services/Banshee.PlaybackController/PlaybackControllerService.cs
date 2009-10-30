@@ -192,7 +192,7 @@ namespace Banshee.PlaybackController
                     QueuePlayTrack ();
                 } else {
                     last_was_skipped = false;
-                    Next (RepeatMode == PlaybackRepeatMode.RepeatSingle, false);
+                    Next (RepeatMode == PlaybackRepeatMode.RepeatAll, false);
                 }
             } else {
                 OnStopped ();
@@ -285,12 +285,11 @@ namespace Banshee.PlaybackController
             }
 
             CurrentTrack = CalcNextTrack (Direction.Next, restart);
-            if (CurrentTrack != null) {
-                if (userRequested) {
-                    QueuePlayTrack ();
-                } else {
-                    player_engine.SetNextTrack (CurrentTrack);
-                }
+            if (!userRequested) {
+                // A RequestNextTrack event should always result in SetNextTrack being called.  null is acceptable.
+                player_engine.SetNextTrack (CurrentTrack);
+            } else if (CurrentTrack != null) {
+                QueuePlayTrack ();
             }
             return true;
         }
@@ -302,7 +301,7 @@ namespace Banshee.PlaybackController
             }
 
             CurrentTrack = CalcNextTrack (Direction.Previous, restart);
-            if (CurrentTrack == null) {
+            if (CurrentTrack != null) {
                 QueuePlayTrack ();
             }
             

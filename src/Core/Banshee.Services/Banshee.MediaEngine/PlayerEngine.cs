@@ -103,7 +103,7 @@ namespace Banshee.MediaEngine
         public void SetNextTrack (TrackInfo track)
         {
             pending_track = track;
-            pending_uri = track.Uri;
+            pending_uri = track != null ? track.Uri : null;
 
             HandleNextTrack (pending_uri);
         }

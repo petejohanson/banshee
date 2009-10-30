@@ -310,7 +310,7 @@ namespace Banshee.MediaEngine
 
         public void SetNextTrack (TrackInfo track)
         {
-            if (active_engine != FindSupportingEngine (track.Uri)) {
+            if (track != null && active_engine != FindSupportingEngine (track.Uri)) {
                 if (active_engine.CurrentState == PlayerState.Playing) {
                     // If we're playing and the current engine can't handle the next track then treat this as setting
                     // no next track for the engine, since it's not going to receive this next track.
@@ -326,7 +326,7 @@ namespace Banshee.MediaEngine
 
         public void SetNextTrack (SafeUri uri)
         {
-            if (active_engine != FindSupportingEngine (uri)) {
+            if (uri != null && active_engine != FindSupportingEngine (uri)) {
                 if (active_engine.CurrentState == PlayerState.Playing) {
                     // If we're playing and the current engine can't handle the next track then treat this as setting
                     // no next track for the engine, since it's not going to receive this next track.
