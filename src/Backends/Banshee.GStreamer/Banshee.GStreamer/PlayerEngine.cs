@@ -261,7 +261,9 @@ namespace Banshee.GStreamer
         {
             Close (false);
             OnEventChanged (PlayerEvent.EndOfStream);
-            OnEventChanged (PlayerEvent.RequestNextTrack);
+            if (!GaplessEnabled) {
+                OnEventChanged (PlayerEvent.RequestNextTrack);
+            }
         }
 
         private void OnNextTrackStarting (IntPtr player)
