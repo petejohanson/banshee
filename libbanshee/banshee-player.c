@@ -180,9 +180,9 @@ bp_stop (BansheePlayer *player, gboolean nullstate)
         state = GST_STATE_NULL;
     }
     
-    if (player->timeout_id != 0) {
-        g_source_remove (player->timeout_id);
-        player->timeout_id = 0;
+    if (player->next_track_starting_timer_id != 0) {
+        g_source_remove (player->next_track_starting_timer_id);
+        player->next_track_starting_timer_id = 0;
     }
     
     bp_debug ("bp_stop: setting state to %s", 
@@ -201,9 +201,9 @@ P_INVOKE void
 bp_play (BansheePlayer *player)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
-    if (player->timeout_id != 0) {
-        g_source_remove (player->timeout_id);
-        player->timeout_id = 0;
+    if (player->next_track_starting_timer_id != 0) {
+        g_source_remove (player->next_track_starting_timer_id);
+        player->next_track_starting_timer_id = 0;
     }
     bp_pipeline_set_state (player, GST_STATE_PLAYING);
 }
@@ -213,9 +213,13 @@ bp_set_next_track (BansheePlayer *player, const gchar *uri)
 {
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
     g_return_val_if_fail (player->playbin != NULL, FALSE);
-    if (uri == NULL && player->timeout_id != 0) {
-        g_source_remove (player->timeout_id);
-        player->timeout_id = 0;
+    if (uri == NULL && player->next_track_starting_timer_id != 0) {
+        // URI == NULL indicates that there is not a next track to play.
+        // This means that there will not be a next track *starting*, so
+        // we have to disable the timer so that we don't fire a spurious
+        // next-track-starting signal.
+        g_source_remove (player->next_track_starting_timer_id);
+        player->next_track_starting_timer_id = 0;
         return TRUE;
     }
     g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);

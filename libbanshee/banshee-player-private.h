@@ -165,7 +165,11 @@ struct BansheePlayer {
     gdouble track_gain;
     gdouble track_peak;
     
-    guint timeout_id;
+    // Work around playbin2 not giving any notification about when a
+    // track changes.  We know how long playbin's buffer is, so we know
+    // how long after about-to-finish is raised the track will end.
+    // Use this timer to fire a signal when that happens.
+    guint next_track_starting_timer_id;
 };
 
 #endif /* _BANSHEE_PLAYER_PRIVATE_H */

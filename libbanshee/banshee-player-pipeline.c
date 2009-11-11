@@ -221,7 +221,7 @@ bp_next_track_starting (gpointer player)
     if (((BansheePlayer *)player)->next_track_starting_cb != NULL) {
         ((BansheePlayer *)player)->next_track_starting_cb (player);
     }
-    ((BansheePlayer *)player)->timeout_id = 0;
+    ((BansheePlayer *)player)->next_track_starting_timer_id = 0;
     return FALSE;
 }
 
@@ -230,7 +230,9 @@ static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *pla
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     // Playbin2 doesn't (yet) have any way to notify us when the current track has actually finished playing on the
     // hardware.  Fake this for now by adding a timer with length equal to the hardware buffer.
-    player->timeout_id = g_timeout_add (((guint64)BP_BUFFER_LEN_MICROSECONDS) / 1000, &bp_next_track_starting, player);
+    player->next_track_starting_timer_id = g_timeout_add (((guint64)BP_BUFFER_LEN_MICROSECONDS) / 1000, 
+                                                          &bp_next_track_starting, 
+                                                          player);
     
     if (player->about_to_finish_cb != NULL) {
         player->about_to_finish_cb (player);
