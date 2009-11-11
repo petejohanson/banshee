@@ -310,35 +310,43 @@ namespace Banshee.MediaEngine
 
         public void SetNextTrack (TrackInfo track)
         {
-            if (track != null && active_engine != FindSupportingEngine (track.Uri)) {
-                if (active_engine.CurrentState == PlayerState.Playing) {
-                    // If we're playing and the current engine can't handle the next track then treat this as setting
-                    // no next track for the engine, since it's not going to receive this next track.
-                    track = null;
-                } else {
-                    // If we're not playing, then switch engines and Open
-                    SwitchToEngine (FindSupportingEngine (track.Uri));
-                    CheckPending ();
-                }
+            if (track != null && EnsureActiveEngineCanPlay (track.Uri)) {
+                active_engine.SetNextTrack (track);
+            } else {
+                active_engine.SetNextTrack ((TrackInfo) null);
             }
-            active_engine.SetNextTrack (track);
         }
 
         public void SetNextTrack (SafeUri uri)
         {
-            if (uri != null && active_engine != FindSupportingEngine (uri)) {
+            if (EnsureActiveEngineCanPlay (uri)) {
+                active_engine.SetNextTrack (uri);
+            } else {
+                active_engine.SetNextTrack ((SafeUri) null);
+            }
+        }
+
+        private bool EnsureActiveEngineCanPlay (SafeUri uri)
+        {
+            if (uri == null) {
+                // No engine can play the null URI.
+                return false;
+            }
+            if (active_engine != FindSupportingEngine (uri)) {
                 if (active_engine.CurrentState == PlayerState.Playing) {
-                    // If we're playing and the current engine can't handle the next track then treat this as setting
-                    // no next track for the engine, since it's not going to receive this next track.
-                    uri = null;
+                    // If we're currently playing then we can't switch engines now.
+                    // We can't ensure the active engine can play this URI.
+                    return false;
                 } else {
-                    // If we're not playing, then switch engines and Open
+                    // If we're not playing, we can switch the active engine to
+                    // something that will play this URI.
                     SwitchToEngine (FindSupportingEngine (uri));
                     CheckPending ();
+                    return true;
                 }
             }
-            active_engine.SetNextTrack (uri);
-        }
+            return true;
+        }            
 
         public void OpenPlay (TrackInfo track)
         {
