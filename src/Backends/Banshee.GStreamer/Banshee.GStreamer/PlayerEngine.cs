@@ -634,8 +634,8 @@ namespace Banshee.GStreamer
                 delegate { ReplayGainEnabled = ReplayGainEnabledSchema.Get (); }
             ));
             gapless_preference = service["general"]["misc"].Add (new SchemaPreference<bool> (GaplessEnabledSchema,
-                String.Format (Catalog.GetString ("{0} (EXPERIMENTAL)"), Catalog.GetString ("Enable _gapless playback")),
-                Catalog.GetString ("Eliminate the small playback gap on track change.  Useful for concept albums & classical music."),
+                Catalog.GetString ("Enable _gapless playback"),
+                Catalog.GetString ("Eliminate the small playback gap on track change.  Useful for concept albums and classical music."),
                 delegate { GaplessEnabled = GaplessEnabledSchema.Get (); }
             ));                            
         }
@@ -662,8 +662,8 @@ namespace Banshee.GStreamer
 
         public static readonly SchemaEntry<bool> GaplessEnabledSchema = new SchemaEntry<bool> (
             "player_engine", "gapless_playback_enabled",
-            false,
-            "Enable gapless playback (EXPERIMENTAL)",
+            true,
+            "Enable gapless playback",
             "Eliminate the small playback gap on track change.  Useful for concept albums & classical music.  EXPERIMENTAL"
         );
                                                                                               
