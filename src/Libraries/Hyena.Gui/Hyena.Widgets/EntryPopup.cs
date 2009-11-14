@@ -44,23 +44,23 @@ namespace Hyena.Widgets
         {
             Text = text;
         }
-        
+
         public EntryPopup () : base (Gtk.WindowType.Popup)
         {
             CanFocus = true;
             Resizable = false;
             TypeHint = Gdk.WindowTypeHint.Utility;
             Modal = true;
-            
+
             Frame frame = new Frame ();
             frame.Shadow = ShadowType.EtchedIn;
             Add (frame);
-            
+
             HBox box = new HBox ();
             text_entry = new Entry();
             box.PackStart (text_entry, true, true, 0);
             box.BorderWidth = 3;
-            
+
             frame.Add (box);
             frame.ShowAll ();
 
@@ -78,22 +78,22 @@ namespace Hyena.Widgets
                 if (args.Event.Key == Gdk.Key.Escape || 
                     args.Event.Key == Gdk.Key.Return ||
                     args.Event.Key == Gdk.Key.Tab) {
-                    
+
                     HidePopup ();
                 }
 
                 InitializeDelayedHide ();
             };
 
-            text_entry.KeyPressEvent += (o, a) => OnKeyPressed (a);            
-            
+            text_entry.KeyPressEvent += (o, a) => OnKeyPressed (a);
+
             text_entry.Changed += (o, a) => {
                 if (GdkWindow.IsVisible) {
                     OnChanged (a);
                 }
             };
         }
-        
+
         public new bool HasFocus {
             get { return text_entry.HasFocus; }
             set { text_entry.HasFocus = value; }
@@ -103,7 +103,7 @@ namespace Hyena.Widgets
             get { return text_entry.Text; }
             set { text_entry.Text = value; }
         }
-        
+
         public Entry Entry {
             get { return text_entry; }
         }
@@ -119,7 +119,7 @@ namespace Hyena.Widgets
             get { return timeout; }
             set { timeout = value; }
         }
-        
+
         private bool hide_when_focus_lost = true;
         public bool HideOnFocusOut {
             get { return hide_when_focus_lost; }
@@ -131,7 +131,7 @@ namespace Hyena.Widgets
             get { return reset_when_hiding; }
             set { reset_when_hiding = value; }
         }
-        
+
         public override void Dispose ()
         {
             text_entry.Dispose ();
@@ -142,7 +142,7 @@ namespace Hyena.Widgets
         {
             text_entry.GrabFocus ();
         }
-            
+
         private void ResetDelayedHide ()
         {
             if (timeout_id > 0) {
@@ -150,7 +150,7 @@ namespace Hyena.Widgets
                 timeout_id = 0;
             }
         }
-        
+
         private void InitializeDelayedHide ()
         {
             ResetDelayedHide ();
@@ -159,12 +159,12 @@ namespace Hyena.Widgets
                             return false;
                         });
         }
-        
+
         private void HidePopup ()
         {
             ResetDelayedHide ();
             Hide ();
-            
+
             if (reset_when_hiding) {
                 text_entry.Text = String.Empty;
             }
@@ -196,7 +196,7 @@ namespace Hyena.Widgets
 
             return base.OnFocusOutEvent (evnt);
         }
-        
+
         protected override bool OnExposeEvent (Gdk.EventExpose evnt)
         {
             InitializeDelayedHide ();
@@ -212,7 +212,7 @@ namespace Hyena.Widgets
 
             return base.OnButtonReleaseEvent (evnt);
         }
-        
+
         protected override bool OnButtonPressEvent (Gdk.EventButton evnt)
         {
             if (!text_entry.HasFocus && hide_when_focus_lost) {

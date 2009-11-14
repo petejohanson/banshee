@@ -47,7 +47,7 @@ namespace Banshee.Collection.Database
             "itemid", "ItemID",
             Catalog.GetString ("Value"), "CoreCache.ItemID", false
         );
-        
+
         private string select_all_fmt;
 
         public DatabaseQueryFilterModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel, 
@@ -56,7 +56,7 @@ namespace Banshee.Collection.Database
         {
             this.field = field;
             this.select_all_fmt = select_all_fmt;
-            
+
             ReloadFragmentFormat = @"
                 FROM CoreTracks, CoreCache{0}
                     WHERE CoreCache.ModelID = {1} AND CoreCache.ItemID = {2} {3}
@@ -64,9 +64,9 @@ namespace Banshee.Collection.Database
 
             QueryFields = new QueryFieldSet (query_filter_field);
         }
-        
+
         public override bool CachesValues { get { return true; } }
-        
+
         public override string GetSqlFilter ()
         {
             if (Selection.AllSelected)
@@ -96,7 +96,7 @@ namespace Banshee.Collection.Database
                         //sql = field.ToSql (NullQueryValue.IsNullOrEmpty, NullQueryValue.Instance, true);
                         sql = field.ToSql (NullQueryValue.IsNullOrEmpty, NullQueryValue.Instance);
                     }
-                    
+
                     if (sql != null) {
                         if (first) {
                             first = false;
@@ -110,22 +110,22 @@ namespace Banshee.Collection.Database
             sb.Append (")");
             return first ? null : sb.ToString ();
         }
-        
+
         protected override string ItemToFilterValue (object o)
         {
             throw new NotImplementedException ();
         }
-        
+
         public override string FilterColumn {
             get { return String.Empty; }
         }
-        
+
         public override void UpdateSelectAllItem (long count)
         {
             select_all_item.Title = String.Format (select_all_fmt, count);
         }
     }
-    
+
     /*public class DatabaseNumericQueryFilterModel<T> : DatabaseQueryFilterModel<T>
     {
         public DatabaseNumericQueryFilterModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel, 

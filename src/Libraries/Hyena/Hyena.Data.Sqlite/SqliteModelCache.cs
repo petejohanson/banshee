@@ -70,7 +70,7 @@ namespace Hyena.Data.Sqlite
             this.connection = connection;
             this.model = model;
             this.provider = provider;
-            
+
             CheckCacheTable ();
 
             if (model.SelectAggregates != null) {
@@ -131,7 +131,7 @@ namespace Hyena.Data.Sqlite
                     @"SELECT OrderID, ItemID FROM {0} WHERE {0}.ModelID = {1}",
                     CacheTableName, uid
                 );
-                
+ 
                 reload_sql = String.Format (@"
                     DELETE FROM {0} WHERE ModelID = {1};
                     INSERT INTO {0} (ModelID, ItemID) SELECT DISTINCT {1}, {2} ",
@@ -182,7 +182,7 @@ namespace Hyena.Data.Sqlite
                 delete_selection_command = new HyenaSqliteCommand (String.Format (
                     "DELETE FROM {0} WHERE ModelID = {1}", CacheTableName, selection_uid
                 ));
-                
+
                 save_selection_command = new HyenaSqliteCommand (String.Format (
                     "INSERT INTO {0} (ModelID, ItemID) SELECT {1}, ItemID FROM {0} WHERE ModelID = {2} LIMIT ?, ?",
                     CacheTableName, selection_uid, uid
@@ -217,7 +217,7 @@ namespace Hyena.Data.Sqlite
         protected virtual string CacheModelsTableName {
             get { return "HyenaCacheModels"; }
         }
-        
+
         protected virtual string CacheTableName {
             get { return "HyenaCache"; }
         }
@@ -241,11 +241,11 @@ namespace Hyena.Data.Sqlite
 
             if (!where_fragment.Equals (last_indexof_where_fragment)) {
                 last_indexof_where_fragment = where_fragment;
-                
+
                 if (!where_fragment.Trim ().ToLower ().StartsWith ("and ")) {
                     where_fragment = " AND " + where_fragment;
                 }
-            
+
                 string sql = String.Format ("{0} {1} LIMIT ?, 1", select_str, where_fragment);
                 indexof_command = new HyenaSqliteCommand (sql);
             }
@@ -260,17 +260,17 @@ namespace Hyena.Data.Sqlite
                         return target_id - FirstOrderId;
                     }
                 }
-    
+ 
                 return -1;
             }
         }
-        
+
         public long IndexOf (ICacheableItem item)
         {
             if (item == null || item.CacheModelId != CacheId) {
                 return -1;
             }
-            
+
             return IndexOf (item.CacheEntryId);
         }
 
@@ -346,7 +346,7 @@ namespace Hyena.Data.Sqlite
             {
                 connection.Execute (delete_selection_command);
                 saved_selection = true;
-                
+
                 if (!has_select_all_item && model.Selection.FocusedIndex != -1) {
                     T item = GetValue (model.Selection.FocusedIndex);
                     if (item != null) {
@@ -421,7 +421,7 @@ namespace Hyena.Data.Sqlite
                 }
             }
         }
-        
+
         public void UpdateAggregates ()
         {
             using (IDataReader reader = connection.Query (count_command, uid)) {
@@ -435,7 +435,7 @@ namespace Hyena.Data.Sqlite
                 }
             }
         }
-        
+
         private long FindOrCreateCacheModelId (string id)
         {
             long model_id = connection.Query<long> (String.Format (

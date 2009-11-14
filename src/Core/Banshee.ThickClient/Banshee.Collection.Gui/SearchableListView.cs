@@ -55,7 +55,7 @@ namespace Banshee.Collection.Gui
         public QueryNode LastQuery { 
             get { return last_query; }
         }
-        
+
         public virtual bool SelectOnRowFound {
             get { return false; }
         }
@@ -76,15 +76,15 @@ namespace Banshee.Collection.Gui
 
         private QueryNode BuildQueryTree (QueryFieldSet fields, Operator op, string target)
         {
-            return BuildQueryTree (fields, op, target, false);    
+            return BuildQueryTree (fields, op, target, false);
         }
-        
+
         private QueryNode BuildQueryTree (QueryFieldSet fields, Operator op, string target, bool force)
         {
             if (fields == null || op == null || String.IsNullOrEmpty (target)) {
                 return null;
             }
-            
+
             QueryListNode root = new QueryListNode (Keyword.Or);
 
             foreach (QueryField field in fields) {
@@ -97,7 +97,7 @@ namespace Banshee.Collection.Gui
             if (!force && root.ChildCount == 0) {
                 return BuildQueryTree (fields, op, target, true);
             }
-            
+
             return root.Trim ();
         }
 
@@ -106,18 +106,18 @@ namespace Banshee.Collection.Gui
             if (query == null || String.IsNullOrEmpty (target)) {
                 return;
             }
-            
+
             foreach (QueryTermNode node in query.GetTerms ()) {
                 node.Value = QueryValue.CreateFromStringValue (target, node.Field);
             }
         }
-        
+
         private bool PerformSearch (string target)
         {
             if (String.IsNullOrEmpty (target)) {
                 return false;
             }
-            
+
             ISearchable model = Model as ISearchable;
             if (model == null) {
                 return false;
@@ -129,7 +129,7 @@ namespace Banshee.Collection.Gui
             } else {
                 UpdateQueryTree (last_query, target);
             }
-            
+
             int i = model.IndexOf (last_query, search_offset);
             if (i >= 0) {
                 SelectRow (i);
@@ -142,7 +142,7 @@ namespace Banshee.Collection.Gui
         private void SelectRow (int i)
         {
             CenterOn (i);
-            
+
             Selection.FocusedIndex = i;
             if (SelectOnRowFound) {
                 Selection.Clear (false);
@@ -151,7 +151,7 @@ namespace Banshee.Collection.Gui
 
             InvalidateList ();
         }
-        
+
         private void PositionPopup (EntryPopup popup)
         {
             if (popup == null) {
@@ -163,15 +163,15 @@ namespace Banshee.Collection.Gui
             int widget_height, widget_width;
 
             popup.Realize ();
-            
+
             Gdk.Window widget_window = EventWindow; 
             Gdk.Screen widget_screen = widget_window.Screen;
-            
+
             Gtk.Requisition popup_req;
-            
+
             widget_window.GetOrigin (out widget_x, out widget_y);
             widget_window.GetSize (out widget_width, out widget_height);
-            
+
             popup_req = popup.Requisition;
 
             if (widget_x + widget_width > widget_screen.Width) {
@@ -199,21 +199,21 @@ namespace Banshee.Collection.Gui
                 Char.IsPunctuation (c) ||
                 Char.IsSymbol (c);
         }
-        
+
         protected override bool OnKeyPressEvent (Gdk.EventKey press)
         {
             char input = Convert.ToChar (Gdk.Keyval.ToUnicode (press.KeyValue));
             if (!IsCharValid (input) || Model as ISelectable == null) {
                 return base.OnKeyPressEvent (press);
             }
-            
+
             if (search_popup == null) {
                 search_popup = new EntryPopup ();
                 search_popup.Changed += (o, a) => {
                     search_offset = 0;
                     PerformSearch (search_popup.Text);
                 };
-                
+
                 search_popup.KeyPressed += OnPopupKeyPressed;
             }
 
@@ -236,7 +236,7 @@ namespace Banshee.Collection.Gui
             switch (key) {
                 case Gdk.Key.Up:
                 case Gdk.Key.KP_Up:
-                    search_backward = true;                    
+                    search_backward = true;
                     break;
                 case Gdk.Key.g:
                 case Gdk.Key.G:
@@ -257,7 +257,7 @@ namespace Banshee.Collection.Gui
                     break;
                 case Gdk.Key.Down:
                 case Gdk.Key.KP_Down:
-                    search_forward = true;    
+                    search_forward = true;
                     break;
             }
 
