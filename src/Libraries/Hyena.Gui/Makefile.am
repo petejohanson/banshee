@@ -86,6 +86,7 @@ SOURCES =  \
 	Hyena.Widgets/AnimatedVBox.cs \
 	Hyena.Widgets/AnimatedWidget.cs \
 	Hyena.Widgets/ComplexMenuItem.cs \
+	Hyena.Widgets/EntryPopup.cs \
 	Hyena.Widgets/ImageButton.cs \
 	Hyena.Widgets/MenuButton.cs \
 	Hyena.Widgets/MessageBar.cs \

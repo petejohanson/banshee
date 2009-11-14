@@ -48,7 +48,7 @@ using Banshee.PlaybackController;
 namespace Banshee.Collection.Database
 {       
     public class DatabaseTrackListModel : TrackListModel, IExportableModel, 
-        ICacheableDatabaseModel, IFilterable, ISortable, ICareAboutView
+        ICacheableDatabaseModel, IFilterable, ISortable, ICareAboutView, ISearchable
     {
         private readonly BansheeDbConnection connection;
         private IDatabaseTrackModelProvider provider;
@@ -319,6 +319,23 @@ namespace Banshee.Collection.Database
             cache.Reload ();
         }
 
+        private QueryFieldSet query_fields = BansheeQuery.FieldSet;
+        public QueryFieldSet QueryFields {
+            get { return query_fields; }
+            protected set { query_fields = value; }
+        }
+        
+        public int IndexOf (QueryNode query, long offset)
+        {
+            lock (this) {
+                if (query == null) {
+                    return -1;
+                }
+                
+                return (int) cache.IndexOf (query.ToSql (QueryFields), offset);
+            }
+        }
+        
         public override int IndexOf (TrackInfo track)
         {
             lock (this) {

@@ -1,10 +1,10 @@
 //
-// IDatabaseTrackModelCache.cs
+// ISearchable.cs
 //
 // Author:
-//   Gabriel Burt <gburt@novell.com>
+//   Neil Loknath <neil.loknath@gmail.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright (C) 2009 Neil Loknath
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,27 +27,13 @@
 //
 
 using System;
-using System.Data;
-using Banshee.Collection;
-using Hyena.Data.Sqlite;
 using Hyena.Query;
 
 namespace Banshee.Collection.Database
 {
-    public interface IDatabaseTrackModelCache
+    public interface ISearchable
     {
-        void Clear ();
-        void SaveSelection ();
-        void UpdateAggregates ();
-        void RestoreSelection ();
-        long Count { get; }
-        void Reload ();
-        long IndexOf (string where_fragment, long offset);
-        long IndexOf (Hyena.Data.ICacheableItem item);
-        long IndexOf (object item_entry_id);
-        TrackInfo GetSingle (string random_fragment, params object [] args);
-        TrackInfo GetValue (long index);
-        long CacheId { get; }
-        event Action<IDataReader> AggregatesUpdated;
+        QueryFieldSet QueryFields { get; }
+        int IndexOf (QueryNode query, long offset);
     }
 }

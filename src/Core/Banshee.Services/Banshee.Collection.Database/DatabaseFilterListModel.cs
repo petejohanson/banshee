@@ -35,13 +35,14 @@ using System.Collections.Generic;
 using Hyena;
 using Hyena.Data;
 using Hyena.Data.Sqlite;
+using Hyena.Query;
 
 using Banshee.Collection;
 using Banshee.Database;
 
 namespace Banshee.Collection.Database
 {   
-    public abstract class DatabaseFilterListModel<T, U> : FilterListModel<U>, ICacheableDatabaseModel
+    public abstract class DatabaseFilterListModel<T, U> : FilterListModel<U>, ICacheableDatabaseModel, ISearchable
         where T : U, new () where U : ICacheableItem, new()
     {
         private readonly BansheeModelCache<T> cache;
@@ -216,6 +217,24 @@ namespace Banshee.Collection.Database
             }
             if (notify) {
                 OnReloaded ();
+            }
+        }
+
+        private QueryFieldSet query_fields;
+        public QueryFieldSet QueryFields {
+            get { return query_fields; }
+            protected set { query_fields = value; }
+        }
+        
+        public int IndexOf (QueryNode query, long offset)
+        {
+            lock (cache) {
+                if (query == null) {
+                    return -1;
+                }
+                
+                int index = (int) cache.IndexOf (query.ToSql (QueryFields), offset);
+                return index >= 0 ? index + 1 : index;
             }
         }
         

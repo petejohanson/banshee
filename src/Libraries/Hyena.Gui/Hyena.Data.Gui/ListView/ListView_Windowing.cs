@@ -46,6 +46,10 @@ namespace Hyena.Data.Gui
         protected Rectangle ListAllocation {
             get { return list_rendering_alloc; }
         }
+
+        protected Gdk.Window EventWindow {
+            get { return event_window; }
+        }
         
         protected override void OnRealized ()
         {

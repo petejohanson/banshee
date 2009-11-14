@@ -28,6 +28,7 @@ SOURCES =  \
 	Banshee.Collection.Gui/DefaultColumnController.cs \
 	Banshee.Collection.Gui/PersistentColumnController.cs \
 	Banshee.Collection.Gui/QueryFilterView.cs \
+	Banshee.Collection.Gui/SearchableListView.cs \
 	Banshee.Collection.Gui/TerseTrackListView.cs \
 	Banshee.Collection.Gui/TrackFilterListView.cs \
 	Banshee.Collection.Gui/TrackListView.cs \

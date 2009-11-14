@@ -44,7 +44,7 @@ using Banshee.Gui;
 
 namespace Banshee.Collection.Gui
 {
-    public class BaseTrackListView : ListView<TrackInfo>
+    public class BaseTrackListView : SearchableListView<TrackInfo>
     {
         public BaseTrackListView () : base ()
         {
@@ -67,6 +67,10 @@ namespace Banshee.Collection.Gui
             };
         }
 
+        public override bool SelectOnRowFound {
+            get { return true; }
+        }
+        
         private static TargetEntry [] source_targets = new TargetEntry [] {
             ListViewDragDropTarget.ModelSelection,
             Banshee.Gui.DragDrop.DragDropTarget.UriList
@@ -75,7 +79,7 @@ namespace Banshee.Collection.Gui
         protected override TargetEntry [] DragDropSourceEntries {
             get { return source_targets; }
         }
-        
+
         protected override bool OnKeyPressEvent (Gdk.EventKey press)
         {
             // Have o act the same as enter - activate the selection
