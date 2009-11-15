@@ -39,11 +39,14 @@ using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 
+using Hyena;
+
 namespace Banshee.Web
 {
     public abstract class BaseHttpServer
     {
         protected Socket server;
+        private bool running;
         private int backlog;
         private ushort port;
 
@@ -65,6 +68,14 @@ namespace Banshee.Web
             get { return name; }
         }
 
+        public bool IsBound {
+            get { return server != null && server.IsBound; }
+        }
+
+        public bool IsRunning {
+            get { return running; }
+        }
+
         private EndPoint end_point = new IPEndPoint (IPAddress.Any, 80);
         protected EndPoint EndPoint {
             get { return end_point; }
@@ -72,17 +83,11 @@ namespace Banshee.Web
                 if (value == null) {
                     throw new ArgumentNullException ("end_point");
                 }
-                if (running) {
+                if (IsBound) {
                     throw new InvalidOperationException ("Cannot set EndPoint while running.");
                 }
                 end_point = value;
             }
-        }
-
-        private bool running;
-        public bool Running {
-            get { return running; }
-            protected set { running = value; }
         }
 
         private int chunk_length = 8192;
@@ -99,7 +104,7 @@ namespace Banshee.Web
             Start (10);
         }
 
-        public virtual void Start (int backlog)
+        public void Start (int backlog)
         {
             if (backlog < 0) {
                 throw new ArgumentOutOfRangeException ("backlog");
@@ -133,11 +138,19 @@ namespace Banshee.Web
 
         private void ServerLoop ()
         {
-            server = new Socket (this.EndPoint.AddressFamily, SocketType.Stream, ProtocolType.IP);
-            server.Bind (this.EndPoint);
+            if (!BindServerSocket ()) {
+                running = false;
+                return;
+            }
+
             server.Listen (backlog);
 
-            port = (ushort)(server.LocalEndPoint as IPEndPoint).Port;
+            IPEndPoint ip_endpoint;
+            if ((ip_endpoint = server.LocalEndPoint as IPEndPoint) != null) {
+                port = (ushort) ip_endpoint.Port;
+            }
+
+            Log.DebugFormat ("{0} listening for connections on port {1}", name, port);
 
             while (true) {
                 try {
@@ -162,11 +175,24 @@ namespace Banshee.Web
                 while (HandleRequest(client));
             } catch (IOException) {
             } catch (Exception e) {
-                Hyena.Log.Exception (e);
+                Log.Exception (e);
             } finally {
                 clients.Remove (client);
                 client.Close ();
             }
+        }
+
+        protected virtual bool BindServerSocket ()
+        {
+            server = new Socket (this.EndPoint.AddressFamily, SocketType.Stream, ProtocolType.IP);
+            try {
+                server.Bind (this.EndPoint);
+            } catch (System.Net.Sockets.SocketException e) {
+                Log.Exception (e);
+                return false;
+            }
+
+            return true;
         }
 
         protected virtual long ParseRangeRequest (string line)
