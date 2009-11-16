@@ -90,9 +90,7 @@ namespace Hyena.Query
 
             if (op == Contains   || op == DoesNotContain ||
                 op == StartsWith || op == EndsWith) {
-                return orig.Replace ("\\", "\\\\")
-                           .Replace ("%", "\\%")
-                           .Replace ("_", "\\_");
+                return StringUtil.EscapeLike (orig);
             }
 
             return orig;

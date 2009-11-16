@@ -9,6 +9,7 @@ SUBDIRS = \
 	Banshee.InternetArchive \
 	Banshee.InternetRadio \
 	Banshee.Lastfm \
+	Banshee.LibraryWatcher \
 	Banshee.MiniMode \
 	Banshee.MultimediaKeys \
 	Banshee.NotificationArea \
@@ -22,5 +23,6 @@ SUBDIRS = \
 	Banshee.Torrent \
 	Banshee.RemoteAudio \
 	Banshee.Wikipedia
+
 
 MAINTAINERCLEANFILES = Makefile.in

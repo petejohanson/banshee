@@ -328,5 +328,14 @@ namespace Hyena
                 position = index + 1;
             }
         }
+
+        private static readonly char[] escaped_like_chars = new char[] {'\\', '%', '_'};
+        public static string EscapeLike (string s)
+        {
+            if (s.IndexOfAny (escaped_like_chars) != -1) {
+                return s.Replace (@"\", @"\\").Replace ("%", @"\%").Replace ("_", @"\_");
+            }
+            return s;
+        }
     }
 }

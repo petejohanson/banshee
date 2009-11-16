@@ -1,0 +1,22 @@
+<Addin
+    id="Banshee.LibraryWatcher"
+    version="1.0"
+    compatVersion="1.0"
+    copyright="© 2008-2009 Christian Martellini, Alexander Hixon, Alexander Kojevnikov. Licensed under the MIT X11 license."
+    name="Library Watcher"
+    category="Hardware"
+    description="Automatically update music and video libraries"
+    author="Christian Martellini, Alexander Hixon, Alexander Kojevnikov"
+    url="http://banshee-project.org/"
+    defaultEnabled="true">
+
+  <Dependencies>
+    <Addin id="Banshee.Services" version="1.0"/>
+    <Addin id="Banshee.ThickClient" version="1.0"/>
+  </Dependencies>
+
+  <Extension path="/Banshee/ServiceManager/Service">
+    <Service class="Banshee.LibraryWatcher.LibraryWatcherService"/>
+  </Extension>
+
+</Addin>
