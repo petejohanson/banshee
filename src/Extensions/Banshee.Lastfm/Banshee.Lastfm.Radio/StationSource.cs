@@ -297,7 +297,7 @@ namespace Banshee.Lastfm.Radio
             return ((IBasicPlaybackController)this).Next (false, true);
         }
 
-        private bool playback_requested;    
+        private bool playback_requested;
         bool IBasicPlaybackController.Next (bool restart, bool userRequested)
         {
             TrackInfo next = NextTrack;

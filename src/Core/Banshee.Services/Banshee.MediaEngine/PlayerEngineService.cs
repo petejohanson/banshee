@@ -345,7 +345,7 @@ namespace Banshee.MediaEngine
                 }
             }
             return true;
-        }            
+        }
 
         public void OpenPlay (TrackInfo track)
         {

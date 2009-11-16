@@ -231,7 +231,7 @@ namespace Banshee.GStreamer
                 next_track_set.Set ();
                 bp_set_next_track (handle, IntPtr.Zero);
                 return;
-            }            
+            }
             IntPtr uri_ptr = GLib.Marshaller.StringToPtrGStrdup (uri.AbsoluteUri);
             try {
                 bp_set_next_track (handle, uri_ptr);
@@ -280,14 +280,14 @@ namespace Banshee.GStreamer
             // Shuffle-by-* uses the LastPlayed field to determine what track in the grouping to play next.
             // Therefore, we need to update this before requesting the next track.
             //
-            // This will be overridden by IncrementLastPlayed () called by 
+            // This will be overridden by IncrementLastPlayed () called by
             // PlaybackControllerService's EndOfStream handler.
             CurrentTrack.LastPlayed = DateTime.Now;
             CurrentTrack.Save ();
-            
+
             OnEventChanged (PlayerEvent.RequestNextTrack);
             // Gapless playback with Playbin2 requires that the about-to-finish callback does not return until
-            // the next uri has been set.  Block here for a second or until the RequestNextTrack event has 
+            // the next uri has been set.  Block here for a second or until the RequestNextTrack event has
             // finished triggering.
             if (!next_track_set.WaitOne (1000, false)) {
                 Log.Debug ("[Gapless] Timed out while waiting for next_track_set to be raised");
@@ -553,7 +553,7 @@ namespace Banshee.GStreamer
 
         private bool GaplessEnabled {
             get { return gapless_enabled; }
-            set 
+            set
             {
                 gapless_enabled = value;
                 if (value) {
@@ -638,7 +638,7 @@ namespace Banshee.GStreamer
                 Catalog.GetString ("Enable _gapless playback"),
                 Catalog.GetString ("Eliminate the small playback gap on track change.  Useful for concept albums and classical music."),
                 delegate { GaplessEnabled = GaplessEnabledSchema.Get (); }
-            ));                            
+            ));
         }
 
         private void UninstallPreferences ()
@@ -667,7 +667,7 @@ namespace Banshee.GStreamer
             "Enable gapless playback",
             "Eliminate the small playback gap on track change.  Useful for concept albums & classical music.  EXPERIMENTAL"
         );
-                                                                                              
+
 
 #endregion
 

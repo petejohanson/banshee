@@ -184,7 +184,7 @@ namespace Banshee.PlaybackController
             player_engine.IncrementLastPlayed ();
             return true;
         }
-        
+
         private bool RequestTrackHandler ()
         {
             if (!StopWhenFinished) {
@@ -228,7 +228,7 @@ namespace Banshee.PlaybackController
         {
             Next (restart, true);
         }
-        
+
         public void Next (bool restart, bool userRequested)
         {
             CancelErrorTransition ();
