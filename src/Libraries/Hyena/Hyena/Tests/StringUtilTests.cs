@@ -128,13 +128,8 @@ namespace Hyena.Tests
             Assert.AreEqual (null, StringUtil.RemoveNewlines (null));
             Assert.AreEqual ("foobar", StringUtil.RemoveNewlines (@"foo
 bar"));
-            Assert.AreEqual ("foobar baz", StringUtil.RemoveNewlines (@"foo
-bar
-baz"));
-            Assert.AreEqual ("haswindows newline andunix", StringUtil.RemoveNewlines (@"has
-windows
- newline
-andunix"));
+            Assert.AreEqual ("foobar baz", StringUtil.RemoveNewlines ("foo\nbar \nbaz"));
+            Assert.AreEqual ("haswindows newline andunix", StringUtil.RemoveNewlines ("has\nwindows\r\n newline \nandunix"));
         }
 
         [Test]
