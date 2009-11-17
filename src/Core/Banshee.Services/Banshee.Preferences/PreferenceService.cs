@@ -56,7 +56,8 @@ namespace Banshee.Preferences
             policies.Add (new SchemaPreference<bool> (LibrarySchema.CopyOnImport,
                 Catalog.GetString ("Co_py files to media folders when importing")));
 
-            policies.Add (Banshee.Metadata.SaveTrackMetadataService.WriteEnabled);
+            policies.Add (Banshee.Metadata.SaveTrackMetadataService.WriteMetadataEnabled);
+            policies.Add (Banshee.Metadata.SaveTrackMetadataService.WriteRatingsAndPlayCountsEnabled);
             policies.Add (Banshee.Metadata.SaveTrackMetadataService.RenameEnabled);
 
             // Misc section

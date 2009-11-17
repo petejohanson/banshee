@@ -134,6 +134,11 @@ namespace Banshee.Streaming
 
         public static void TrackInfoMerge (TrackInfo track, TagLib.File file, bool preferTrackInfo)
         {
+            TrackInfoMerge (track, file, preferTrackInfo, false);
+        }
+
+        public static void TrackInfoMerge (TrackInfo track, TagLib.File file, bool preferTrackInfo, bool import_rating_and_play_count)
+        {
             // TODO support these as arrays:
             // Performers[] (track artists), AlbumArtists[], Composers[], Genres[]
 
@@ -170,6 +175,13 @@ namespace Banshee.Streaming
                 track.DiscCount = Choose ((int)file.Tag.DiscCount, track.DiscCount, preferTrackInfo);
                 track.Year = Choose ((int)file.Tag.Year, track.Year, preferTrackInfo);
                 track.Bpm = Choose ((int)file.Tag.BeatsPerMinute, track.Bpm, preferTrackInfo);
+
+                if (import_rating_and_play_count) {
+                    int file_rating = 0, file_playcount = 0;
+                    StreamRatingTagger.GetRatingAndPlayCount (file, ref file_rating, ref file_playcount);
+                    track.Rating = Choose (file_rating, track.Rating, preferTrackInfo);
+                    track.PlayCount = Choose (file_playcount, track.PlayCount, preferTrackInfo);
+                }
             } else {
                 track.MediaAttributes = TrackMediaAttributes.AudioStream;
                 if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.LocalPath)) {
@@ -239,7 +251,7 @@ namespace Banshee.Streaming
             } catch {}
         }
 
-        public static bool SaveToFile (TrackInfo track)
+        public static bool SaveToFile (TrackInfo track, bool write_metadata, bool write_rating_and_play_count)
         {
             // FIXME taglib# does not seem to handle writing metadata to video files well at all atm
             // so not allowing
@@ -254,31 +266,39 @@ namespace Banshee.Streaming
                 return false;
             }
 
-            file.Tag.Performers = new string [] { track.ArtistName };
-            file.Tag.PerformersSort = new string [] { track.ArtistNameSort };
-            file.Tag.Album = track.AlbumTitle;
-            file.Tag.AlbumSort = track.AlbumTitleSort;
-            file.Tag.AlbumArtists = track.AlbumArtist == null ? new string [0] : new string [] {track.AlbumArtist};
-            file.Tag.AlbumArtistsSort = (track.AlbumArtistSort == null ? new string [0] : new string [] {track.AlbumArtistSort});
-            // Bug in taglib-sharp-2.0.3.0: Crash if you send it a genre of "{ null }"
-            // on a song with both ID3v1 and ID3v2 metadata. It's happy with "{}", though.
-            // (see http://forum.taglib-sharp.com/viewtopic.php?f=5&t=239 )
-            file.Tag.Genres = (track.Genre == null) ? new string[] {} : new string [] { track.Genre };
-            file.Tag.Title = track.TrackTitle;
-            file.Tag.TitleSort = track.TrackTitleSort;
-            file.Tag.Track = (uint)track.TrackNumber;
-            file.Tag.TrackCount = (uint)track.TrackCount;
-            file.Tag.Composers = new string [] { track.Composer };
-            file.Tag.Conductor = track.Conductor;
-            file.Tag.Grouping = track.Grouping;
-            file.Tag.Copyright = track.Copyright;
-            file.Tag.Comment = track.Comment;
-            file.Tag.Disc = (uint)track.DiscNumber;
-            file.Tag.DiscCount = (uint)track.DiscCount;
-            file.Tag.Year = (uint)track.Year;
-            file.Tag.BeatsPerMinute = (uint)track.Bpm;
+            if (write_metadata) {
+                file.Tag.Performers = new string [] { track.ArtistName };
+                file.Tag.PerformersSort = new string [] { track.ArtistNameSort };
+                file.Tag.Album = track.AlbumTitle;
+                file.Tag.AlbumSort = track.AlbumTitleSort;
+                file.Tag.AlbumArtists = track.AlbumArtist == null ? new string [0] : new string [] {track.AlbumArtist};
+                file.Tag.AlbumArtistsSort = (track.AlbumArtistSort == null ? new string [0] : new string [] {track.AlbumArtistSort});
+                // Bug in taglib-sharp-2.0.3.0: Crash if you send it a genre of "{ null }"
+                // on a song with both ID3v1 and ID3v2 metadata. It's happy with "{}", though.
+                // (see http://forum.taglib-sharp.com/viewtopic.php?f=5&t=239 )
+                file.Tag.Genres = (track.Genre == null) ? new string[] {} : new string [] { track.Genre };
+                file.Tag.Title = track.TrackTitle;
+                file.Tag.TitleSort = track.TrackTitleSort;
+                file.Tag.Track = (uint)track.TrackNumber;
+                file.Tag.TrackCount = (uint)track.TrackCount;
+                file.Tag.Composers = new string [] { track.Composer };
+                file.Tag.Conductor = track.Conductor;
+                file.Tag.Grouping = track.Grouping;
+                file.Tag.Copyright = track.Copyright;
+                file.Tag.Comment = track.Comment;
+                file.Tag.Disc = (uint)track.DiscNumber;
+                file.Tag.DiscCount = (uint)track.DiscCount;
+                file.Tag.Year = (uint)track.Year;
+                file.Tag.BeatsPerMinute = (uint)track.Bpm;
 
-            SaveIsCompilation (file, track.IsCompilation);
+                SaveIsCompilation (file, track.IsCompilation);
+            }
+
+            if (write_rating_and_play_count) {
+                // FIXME move StreamRatingTagger to taglib#
+                StreamRatingTagger.StoreRatingAndPlayCount (track.Rating, track.PlayCount, file);
+            }
+
             file.Save ();
 
             track.FileSize = Banshee.IO.File.GetSize (track.Uri);

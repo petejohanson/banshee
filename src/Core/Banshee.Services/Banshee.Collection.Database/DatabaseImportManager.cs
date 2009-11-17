@@ -40,6 +40,7 @@ using Banshee.Base;
 using Banshee.Sources;
 using Banshee.Collection;
 using Banshee.Collection.Database;
+using Banshee.Configuration.Schema;
 using Banshee.ServiceStack;
 using Banshee.Streaming;
 
@@ -175,7 +176,7 @@ namespace Banshee.Collection.Database
             try {
                 track = new DatabaseTrackInfo ();
                 track.Uri = uri;
-                StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (uri));
+                StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (uri), false, true);
 
                 track.PrimarySource = trackPrimarySourceChooser (track);
 
