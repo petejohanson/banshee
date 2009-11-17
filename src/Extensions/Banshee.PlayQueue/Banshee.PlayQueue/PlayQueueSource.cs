@@ -34,6 +34,7 @@ using System.Linq;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Collections;
 using Hyena.Data.Sqlite;
 
@@ -139,14 +140,14 @@ namespace Banshee.PlayQueue
         public HeaderWidget CreateHeaderWidget ()
         {
             var header_widget = new HeaderWidget (populate_mode, populate_from_name);
-            header_widget.ModeChanged += delegate (object sender, ModeChangedEventArgs e) {
+            header_widget.ModeChanged += delegate (object sender, EventArgs<PlaybackShuffleMode> e) {
                 populate_mode = e.Value;
                 PopulateModeSchema.Set ((int) e.Value);
                 UpdatePlayQueue ();
                 OnUpdated ();
             };
 
-            header_widget.SourceChanged += delegate (object sender, SourceChangedEventArgs e) {
+            header_widget.SourceChanged += delegate (object sender, EventArgs<DatabaseSource> e) {
                 populate_from = e.Value;
                 if (populate_from == null) {
                     populate_from_name = String.Empty;

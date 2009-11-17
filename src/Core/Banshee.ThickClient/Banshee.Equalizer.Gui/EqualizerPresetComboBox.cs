@@ -28,6 +28,7 @@
 
 using System;
 using Gtk;
+using Hyena;
 
 namespace Banshee.Equalizer.Gui
 {
@@ -61,12 +62,12 @@ namespace Banshee.Equalizer.Gui
                 AddEqualizerSetting(eq);
             }
 
-            manager.EqualizerAdded += delegate (object o, EqualizerSettingEventArgs args) {
-                AddEqualizerSetting (args.EqualizerSetting);
+            manager.EqualizerAdded += delegate (object o, EventArgs<EqualizerSetting> args) {
+                AddEqualizerSetting (args.Value);
             };
 
-            manager.EqualizerRemoved += delegate (object o, EqualizerSettingEventArgs args) {
-                RemoveEqualizerSetting (args.EqualizerSetting);
+            manager.EqualizerRemoved += delegate (object o, EventArgs<EqualizerSetting> args) {
+                RemoveEqualizerSetting (args.Value);
             };
         }
 

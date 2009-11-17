@@ -34,6 +34,7 @@ using System.Collections;
 using Gtk;
 using Gdk;
 
+using Hyena;
 using Banshee.ServiceStack;
 using Banshee.MediaEngine;
 
@@ -146,7 +147,7 @@ namespace Banshee.Equalizer.Gui
             }
 
             if (AmplifierChanged != null) {
-                AmplifierChanged (this, new AmplifierChangedEventArgs (scale.Value));
+                AmplifierChanged (this, new EventArgs<int> (scale.Value));
             }
         }
 
@@ -206,7 +207,7 @@ namespace Banshee.Equalizer.Gui
     }
 
     public delegate void EqualizerChangedEventHandler (object o, EqualizerChangedEventArgs args);
-    public delegate void AmplifierChangedEventHandler (object o, AmplifierChangedEventArgs args);
+    public delegate void AmplifierChangedEventHandler (object o, EventArgs<int> args);
 
     public sealed class EqualizerChangedEventArgs : EventArgs
     {
@@ -221,20 +222,6 @@ namespace Banshee.Equalizer.Gui
 
         public uint Band {
             get { return this.band; }
-        }
-
-        public int Value {
-            get { return this.value; }
-        }
-    }
-
-    public sealed class AmplifierChangedEventArgs : EventArgs
-    {
-        private int value;
-
-        public AmplifierChangedEventArgs (int value)
-        {
-            this.value = value;
         }
 
         public int Value {

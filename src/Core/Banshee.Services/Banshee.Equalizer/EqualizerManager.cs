@@ -33,6 +33,7 @@ using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
 
+using Hyena;
 using Banshee.Base;
 using Banshee.MediaEngine;
 using Banshee.ServiceStack;
@@ -44,6 +45,7 @@ namespace Banshee.Equalizer
         private List<EqualizerSetting> equalizers = new List<EqualizerSetting> ();
         private string path;
 
+        public delegate void EqualizerSettingEventHandler (object o, Hyena.EventArgs<EqualizerSetting> args);
         public event EqualizerSettingEventHandler EqualizerAdded;
         public event EqualizerSettingEventHandler EqualizerRemoved;
         public event EqualizerSettingEventHandler EqualizerChanged;
@@ -235,7 +237,7 @@ namespace Banshee.Equalizer
         {
             EqualizerSettingEventHandler handler = EqualizerAdded;
             if (handler != null) {
-                handler (this, new EqualizerSettingEventArgs (eq));
+                handler (this, new EventArgs<EqualizerSetting> (eq));
             }
         }
 
@@ -243,7 +245,7 @@ namespace Banshee.Equalizer
         {
             EqualizerSettingEventHandler handler = EqualizerRemoved;
             if (handler != null) {
-                handler (this, new EqualizerSettingEventArgs (eq));
+                handler (this, new EventArgs<EqualizerSetting> (eq));
             }
         }
 
@@ -251,7 +253,7 @@ namespace Banshee.Equalizer
         {
             EqualizerSettingEventHandler handler = EqualizerChanged;
             if (handler != null) {
-                handler (this, new EqualizerSettingEventArgs (eq));
+                handler (this, new EventArgs<EqualizerSetting> (eq));
             }
         }
 

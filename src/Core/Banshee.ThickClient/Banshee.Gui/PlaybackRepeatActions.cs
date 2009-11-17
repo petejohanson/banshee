@@ -107,13 +107,13 @@ namespace Banshee.Gui
             Active.Activate ();
         }
 
-        private void OnRepeatModeChanged (object o, RepeatModeChangedEventArgs args)
+        private void OnRepeatModeChanged (object o, EventArgs<PlaybackRepeatMode> args)
         {
-            if (active_action.Value != (int)args.RepeatMode) {
+            if (active_action.Value != (int)args.Value) {
                 // This happens only when changing the mode using DBus.
                 // In this case we need to locate the action by its value.
                 foreach (RadioAction action in this) {
-                    if (action.Value == (int)args.RepeatMode) {
+                    if (action.Value == (int)args.Value) {
                         active_action = action;
                         break;
                     }

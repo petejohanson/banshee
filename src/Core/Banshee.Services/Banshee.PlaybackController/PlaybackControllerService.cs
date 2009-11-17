@@ -80,8 +80,8 @@ namespace Banshee.PlaybackController
         public event EventHandler NextSourceChanged;
         public event EventHandler TrackStarted;
         public event EventHandler Transition;
-        public event EventHandler<ShuffleModeChangedEventArgs> ShuffleModeChanged;
-        public event EventHandler<RepeatModeChangedEventArgs> RepeatModeChanged;
+        public event EventHandler<EventArgs<PlaybackShuffleMode>> ShuffleModeChanged;
+        public event EventHandler<EventArgs<PlaybackRepeatMode>> RepeatModeChanged;
 
         public PlaybackControllerService ()
         {
@@ -460,9 +460,9 @@ namespace Banshee.PlaybackController
             get { return shuffle_mode; }
             set {
                 shuffle_mode = value;
-                EventHandler<ShuffleModeChangedEventArgs> handler = ShuffleModeChanged;
+                EventHandler<EventArgs<PlaybackShuffleMode>> handler = ShuffleModeChanged;
                 if (handler != null) {
-                    handler (this, new ShuffleModeChangedEventArgs (shuffle_mode));
+                    handler (this, new EventArgs<PlaybackShuffleMode> (shuffle_mode));
                 }
             }
         }
@@ -471,9 +471,9 @@ namespace Banshee.PlaybackController
             get { return repeat_mode; }
             set {
                 repeat_mode = value;
-                EventHandler<RepeatModeChangedEventArgs> handler = RepeatModeChanged;
+                EventHandler<EventArgs<PlaybackRepeatMode>> handler = RepeatModeChanged;
                 if (handler != null) {
-                    handler (this, new RepeatModeChangedEventArgs (repeat_mode));
+                    handler (this, new EventArgs<PlaybackRepeatMode> (repeat_mode));
                 }
             }
         }
