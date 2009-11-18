@@ -52,7 +52,7 @@ namespace Banshee.Metadata
         public static SchemaPreference<bool> WriteRatingsAndPlayCountsEnabled = new SchemaPreference<bool> (
                 LibrarySchema.WriteRatingsAndPlayCounts,
                 Catalog.GetString ("Write _ratings and play counts to files"),
-                Catalog.GetString ("Enable this option to save rating and playcount metadata inside supported audio files."));
+                Catalog.GetString ("Enable this option to save rating and playcount metadata inside supported audio files"));
 
         public static SchemaPreference<bool> RenameEnabled = new SchemaPreference<bool> (
                 LibrarySchema.MoveOnInfoSave,
