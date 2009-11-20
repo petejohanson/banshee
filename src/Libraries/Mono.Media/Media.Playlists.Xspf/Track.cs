@@ -49,7 +49,7 @@ namespace Media.Playlists.Xspf
 
         private Playlist parent;
 
-        private XmlNode ctor_node;
+        private XmlNode extension_node;
 
         public Track()
         {
@@ -70,7 +70,7 @@ namespace Media.Playlists.Xspf
 
             LoadBase(node, xmlns);
 
-            ctor_node = node;
+            extension_node = node.SelectSingleNode ("xspf:extension", xmlns);
 
             album = XmlUtil.ReadString(node, xmlns, "xspf:album");
 
@@ -100,10 +100,14 @@ namespace Media.Playlists.Xspf
             }
         }
 
-        // XXX: Better solution could probably be achieved?
+        // TODO: Better solution could probably be achieved?
         public string GetExtendedValue (string key)
         {
-            foreach (XmlNode n in ctor_node) {
+            if (extension_node == null) {
+                return null;
+            }
+            
+            foreach (XmlNode n in extension_node) {
                 if (n.LocalName == key) {
                     return n.InnerText;
                 }
