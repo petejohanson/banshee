@@ -52,9 +52,9 @@ namespace Banshee.Dap
         private string conf_ns;
         private SchemaEntry<bool> enabled, sync_entire_library;
         private SchemaEntry<string[]> playlist_ids;
-        private SchemaPreference<bool> enabled_pref;
+        //private SchemaPreference<bool> enabled_pref;
         private SmartPlaylistSource sync_src, to_add, to_remove;
-        private Section library_prefs_section;
+        //private Section library_prefs_section;
 
         #region Public Properties
 
@@ -67,7 +67,8 @@ namespace Banshee.Dap
         }
 
         public Section PrefsSection {
-            get { return library_prefs_section; }
+            //get { return library_prefs_section; }
+            get { return null; }
         }
 
         public LibrarySource Library {
@@ -129,10 +130,10 @@ namespace Banshee.Dap
             playlist_ids = sync.Dap.CreateSchema<string[]> (conf_ns, "playlist_ids", new string [0],
                 "If sync_entire_library is false, this contains a list of playlist ids specifically to sync", "");
 
-            library_prefs_section = new Section (String.Format ("{0} sync", library.Name), library.Name, 0);
-            enabled_pref = library_prefs_section.Add<bool> (enabled);
-            enabled_pref.ShowDescription = true;
-            enabled_pref.ShowLabel = false;
+            //library_prefs_section = new Section (String.Format ("{0} sync", library.Name), library.Name, 0);
+            //enabled_pref = library_prefs_section.Add<bool> (enabled);
+            //enabled_pref.ShowDescription = true;
+            //enabled_pref.ShowLabel = false;
         }
 
         private void BuildSyncLists ()
@@ -185,9 +186,9 @@ namespace Banshee.Dap
             sync_src.RefreshAndReload ();
             to_add.RefreshAndReload ();
             to_remove.RefreshAndReload ();
-            enabled_pref.Name = String.Format ("{0} ({1})",
+            /*enabled_pref.Name = String.Format ("{0} ({1})",
                 enabled.ShortDescription,
-                String.Format (Catalog.GetString ("{0} to add, {1} to remove"), to_add.Count, to_remove.Count));
+                String.Format (Catalog.GetString ("{0} to add, {1} to remove"), to_add.Count, to_remove.Count));*/
         }
 
         public override string ToString ()

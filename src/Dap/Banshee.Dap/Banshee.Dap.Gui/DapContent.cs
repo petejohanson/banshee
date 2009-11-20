@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 
 using Gtk;
 
@@ -34,8 +35,12 @@ using Hyena;
 using Hyena.Data;
 using Hyena.Widgets;
 
+using Mono.Unix;
+
 using Banshee.Dap;
 using Banshee.Sources.Gui;
+using Banshee.ServiceStack;
+using Banshee.Preferences;
 using Banshee.Preferences.Gui;
 
 namespace Banshee.Dap.Gui
@@ -53,6 +58,7 @@ namespace Banshee.Dap.Gui
         public DapContent (DapSource source) : base (source)
         {
             dap = source;
+
             BuildWidgets ();
             BuildActions ();
             dap.Properties.PropertyChanged += OnPropertyChanged;
@@ -68,6 +74,41 @@ namespace Banshee.Dap.Gui
             title = new Label ();
             SetTitleText (dap.Name);
             title.Xalign = 0.0f;
+
+            // Define custom preference widgetry
+            var hbox = new HBox ();
+            var table = new Table ((uint)dap.Sync.Libraries.Count (), 2, false) {
+                RowSpacing = 6,
+                ColumnSpacing = 6
+            };
+            uint i = 0;
+            foreach (var library in dap.Sync.Libraries) {
+                // Translators: {0} is the name of a library, eg 'Music' or 'Podcasts'
+                var label = new Label (String.Format (Catalog.GetString ("{0}:"), library.Name)) { Xalign = 1f };
+                table.Attach (label, 0, 1, i, i + 1);
+
+                var combo = ComboBox.NewText ();
+                combo.RowSeparatorFunc = (model, iter) => { return (string)model.GetValue (iter, 0) == "---"; };
+                combo.AppendText (Catalog.GetString ("Manage manually"));
+                combo.AppendText (Catalog.GetString ("Sync entire library"));
+
+                var playlists = library.Children.Where (c => c is Banshee.Playlist.AbstractPlaylistSource).ToList ();
+                if (playlists.Count > 0) {
+                    combo.AppendText ("---");
+
+                    foreach (var playlist in playlists) {
+                        // Translators: {0} is the name of a playlist
+                        combo.AppendText (String.Format (Catalog.GetString ("Sync from '{0}'"), playlist.Name));
+                    }
+                }
+
+                combo.Active = 0;
+                table.Attach (combo, 1, 2, i, i + 1);
+                i++;
+            }
+            hbox.PackStart (table, false, false, 0);
+            hbox.ShowAll ();
+            dap.Preferences["sync"]["library-options"].DisplayWidget = hbox;
 
             Banshee.Preferences.Gui.NotebookPage properties = new Banshee.Preferences.Gui.NotebookPage (dap.Preferences);
             properties.BorderWidth = 0;

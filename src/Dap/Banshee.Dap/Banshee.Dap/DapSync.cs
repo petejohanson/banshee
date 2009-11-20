@@ -61,8 +61,8 @@ namespace Banshee.Dap
         private string conf_ns;
         private List<DapLibrarySync> library_syncs = new List<DapLibrarySync> ();
         private SchemaEntry<bool> manually_manage, auto_sync;
-        private Section dap_prefs_section;
-        private PreferenceBase manually_manage_pref;//, auto_sync_pref;
+        private Section sync_prefs;
+        //private PreferenceBase manually_manage_pref;//, auto_sync_pref;
         private SchemaPreference<bool> auto_sync_pref;
         private List<Section> pref_sections = new List<Section> ();
         private RateLimiter sync_limiter;
@@ -127,22 +127,27 @@ namespace Banshee.Dap
             );
 
             auto_sync = dap.CreateSchema<bool> (conf_ns, "auto_sync", false,
-                Catalog.GetString ("Automatically sync the device when plugged in or when the libraries change"),
+                Catalog.GetString ("Sync when first plugged in and when the libraries change"),
                 Catalog.GetString ("Begin synchronizing the device as soon as the device is plugged in or the libraries change.")
             );
 
-            dap_prefs_section = new Section ("dap", Catalog.GetString ("Sync Preferences"), 0);
-            pref_sections.Add (dap_prefs_section);
+            sync_prefs = new Section ("sync", Catalog.GetString ("Sync Preferences"), 0);// { ShowLabel = false };
+            pref_sections.Add (sync_prefs);
 
-            manually_manage_pref = dap_prefs_section.Add (manually_manage);
+            /*manually_manage_pref = sync_prefs.Add (manually_manage);
+            manually_manage_pref.Visible = false;
             manually_manage_pref.ShowDescription = true;
             manually_manage_pref.ShowLabel = false;
-            manually_manage_pref.ValueChanged += OnManuallyManageChanged;
+            manually_manage_pref.ValueChanged += OnManuallyManageChanged;*/
 
-            auto_sync_pref = dap_prefs_section.Add (auto_sync);
+            sync_prefs.Add (new VoidPreference ("library-options"));
+
+            auto_sync_pref = sync_prefs.Add (auto_sync);
             auto_sync_pref.ValueChanged += OnAutoSyncChanged;
 
-            //manually_manage_pref.Changed += OnEnabledChanged;
+            //var library_prefs = new Section ("library-sync", Catalog.GetString ("Library Sync"), 1);
+            //pref_sections.Add (library_prefs);
+
             //auto_sync_pref.Changed += delegate { OnUpdated (); };
             //OnEnabledChanged (null);
         }
@@ -155,12 +160,11 @@ namespace Banshee.Dap
 
         private void BuildSyncLists ()
         {
-            int i = 0;
             foreach (LibrarySource source in Libraries) {
                 DapLibrarySync library_sync = new DapLibrarySync (this, source);
                 library_syncs.Add (library_sync);
-                pref_sections.Add (library_sync.PrefsSection);
-                library_sync.PrefsSection.Order = ++i;
+                //pref_sections.Add (library_sync.PrefsSection);
+                //library_sync.PrefsSection.Order = ++i;
 
                 source.TracksAdded += OnLibraryChanged;
                 source.TracksDeleted += OnLibraryChanged;
@@ -170,19 +174,19 @@ namespace Banshee.Dap
             dap.TracksDeleted += OnDapChanged;
         }
 
-        private void OnManuallyManageChanged (Root preference)
+        /*private void OnManuallyManageChanged (Root preference)
         {
             UpdateSensitivities ();
             OnUpdated ();
-        }
+        }*/
 
         private void UpdateSensitivities ()
         {
             bool sync_enabled = Enabled;
             auto_sync_pref.Sensitive = sync_enabled;
-            foreach (DapLibrarySync lib_sync in library_syncs) {
+            /*foreach (DapLibrarySync lib_sync in library_syncs) {
                 lib_sync.PrefsSection.Sensitive = sync_enabled;
-            }
+            }*/
         }
 
         private void OnAutoSyncChanged (Root preference)
@@ -221,7 +225,7 @@ namespace Banshee.Dap
             }
          }
 
-        private IEnumerable<LibrarySource> Libraries {
+        internal IEnumerable<LibrarySource> Libraries {
             get {
                 List<Source> sources = new List<Source> (ServiceManager.SourceManager.Sources);
                 sources.Sort (delegate (Source a, Source b) {
