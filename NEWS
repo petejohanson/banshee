@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.1 - Released October 13, 2009
+WELCOME TO BANSHEE 1.5.2 - Released November 20, 2009
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,87 +10,55 @@ WELCOME TO BANSHEE 1.5.1 - Released October 13, 2009
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.5.1
+  * Learn More: http://banshee-project.org/download/archives/1.5.2
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.5.1 brings many big changes, new features, and fixes!
+    Banshee 1.5.2 brings many big changes, new features, and fixes!
 
     New Features:
 
-      * Play Queue Auto DJ keeps the tunes coming
-      * Shuffle by album and artist
-      * Shuffle by weighted rating and score mode
-      * Add tooltips for ellipsized ListView text
-      * Keep the playing song visible in the track list
-      * Add support for WebOS devices
-      * Add support for the Samsung Galaxy Android Phone
+      * The Internet Archive extension
+      * The iTunes importer
+      * Metadata ratings and playcount import and export
+      * Add support for Pulse and Droid phones
+      * Use new Last.fm API
 
     Enhancements:
 
-      * When user picks new sort column, default to sort ascending
-      * Drop the " Library" suffix on the Music and Video sources
-      * Add thin highlight to ListView selection for 3D effect
-      * Keyboard shortcut (ESC) to clear the search box (BGO #558938)
-      * Expose LAME's "preset" option (BGO #563303)
-      * Added a --gconf-base-key for running sandboxed (BGO #585546)
-      * Trim URL pasted from clipboard to podcast dialog (BGO  #585679)
-      * Allow selection of multiple folders on import (BGO#586946)
-      * Support playlists on Android G1 devices (BGO #583335)
-      * Better support for devices running Rockbox
-      * Set video sync folder for Android and WebOS devices
-      * Made the error message label selectable (BGO #589741)
-      * Save and load the Gtk.AccelMap (BGO #579013)
-      * Added taglib/oga mimetype to the vorbis audio profile (BGO #586999)
-      * Auto-completion for composer, conductor, grouping and copyright (BGO #592129)
-      * Added the 'comment' search filter (BGO #380524)
-      * Selectable song properties (BGO #586106)
-      * Show a tooltip in track editor when the property is truncated (BGO #589782)
+      * Many accessibility enhancements
+      * When sorting by score also sort by playcount (bgo#598431)
+      * Add WICD support (bgo#596918)
+      * Add the USB id for the Palm Pre in developer mode
+      * Improve the import media dialog (bgo#559013)
+      * Allow seeking in DAAP streams
+      * Tooltip for the AutoDJ source combobox (bgo#598504)
+      * Improve recognition of Android devices
+      * Recognize Samsung Galaxy device in debug mode
+      * PlaybackError query field (bgo#590946)
+      * Additional tokens for file system organization (bgo#489861)
+      * Remember direction when sorting the list view (bgo#590869)
+      * Cleaner track change notification popup (bgo#565453)
+      * Move Last.fm settings to the preferences dialog
+      * Double click toggles fullscreen in Now Playing (bgo#577971)
 
     Notable bug fixes:
 
-      * Fix blank MimeTypes for tracks ripped before 1.4 (BGO #536590)
-      * Fix a Bit Rate column sizing glitch (BGO #584587)
-      * Fix browser positioning when Banshee is maximised (BGO #575834)
-      * Fix compilation metadata reading and writing (BGO #563283)
-      * Work with new notification-daemon (BGO #565876)
-      * Avoid needlessly syncing iPods twice
-      * Deterministically sort sources to avoid fluttering
-      * Look for Rhythmbox db at both new and old paths
-      * Fix bug with scrobbling after skipping a track (BGO #584614)
-      * Fix crash in equalizer (BGO #548912)
-      * Fix an exception on startup when DBus is disabled (BGO #573050)
-      * Fix off-by-one-day date querying bug (BGO #546844)
-      * Fix a UI/spacing glitch in the Smart Playlist Editor (BGO #571288)
-      * Don't hide the track info popup while it has focus (BGO #544592)
-      * Prevent endless "Searching for CD metadata..." (BGO #527788)
-      * Fix Last.fm now-playing for non-decimal track lengths (BGO #586460)
-      * Dispose the SqliteCommand after it's executed (BGO #586498)
-      * Fix notification area popup positioning on multi-monitor systems (BGO #586589)
-      * Fix the playing indicator when song in list more than once (BGO #585798)
-      * Fix crash when opening the profile conf dialog (BGO #587308)
-      * Fix crash stopping jobs on shutdown (BGO #587373)
-      * Fix notification area popup flashing (BGO #587703)
-      * Trim filename dots and spaces to be NTFS compliant (BGO #588350)
-      * Stop playing from audio CD when it's ejected (BGO #475094)
-      * Don't update DateUpdated stamp when transient fields change (BGO #585896)
-      * Fix DAP content page title not changing when device renamed (BGO #589290)
-      * Set the Podcast flag on import based on genre (BGO #589831)
-      * Fix hang when slider dragged to track change (BGO #539395).
-      * Prevent slider jumping around after seeking in stream (BGO #591016)
-      * Fix Last.fm logos on dark themes (BGO #588094)
-      * --query-X option sometimes returned an error (BGO #591291)
-      * Build and runtime fixes for FreeBSD
-      * Fix editor always prompting to save podcasts (BGO #584880)
-      * Fix rounding when updating the track score
-      * Fix initial track score calculation (BGO #594568)
-      * Fix playback buttons' a11y (BGO #595294)
-      * Fix crasher on PPC (BGO #547218)
+      * Fix the playcount update (bgo#563021)
+      * Correct default button in message dialogs (bgo#599495)
+      * Hide shuffle menu when shuffling is disabled (bgo#599465)
+      * Fix bug with AutoDJ updating LastPlayed erroneously (bgo#594701)
+      * Fix next playback source (bgo#599834)
+      * Fix adding tracks to the play queue (bgo#600498)
+      * Fix up iPod podcast support (bgo#434237)
+      * Fix cover art pick up for multi-disc albums (bgo#591982)
+      * Fix the play queue when StopWhenFinished is on (bgo#563021)
+      * Fix race when saving track metadata (bgo#598321)
 
-      * 131 bugs were fixed since 1.5.0
+      * 49 bugs were fixed since 1.5.1
 
 
 ===============================================================================
@@ -100,9 +68,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.5.1 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.5.1/banshee-1-1.5.1.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.5.1/banshee-1-1.5.1.tar.gz
+    * Banshee 1.5.2 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.tar.gz
 
 Packages
 --------
@@ -118,13 +86,13 @@ Packages
 
     Binaries for Mac OS X 10.4 and 10.5:
 
-    * http://download.banshee-project.org/banshee/stable/1.5.1/banshee-1-1.5.1.macosx.intel.dmg
+    * http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.5.1/banshee-1-1.5.1.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.1/banshee-1-1.5.1.sha1sum
+    * http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.changes
+    * http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.sha1sum
 
 
 ===============================================================================
@@ -186,7 +154,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.1
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.2
 
 
 ===============================================================================
