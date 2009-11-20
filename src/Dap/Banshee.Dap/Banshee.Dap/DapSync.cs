@@ -48,6 +48,15 @@ namespace Banshee.Dap
 {
     public sealed class DapSync : IDisposable
     {
+        // Get these strings in now, so we can use them after a string freeze
+        // Translators: {0} is the name of a library, eg 'Music' or 'Podcasts'
+        internal string reserved1 = Catalog.GetString ("{0}:");
+        internal string reserved2 = Catalog.GetString ("Manage manually");
+        internal string reserved3 = Catalog.GetString ("Sync entire library");
+        // Translators: {0} is the name of a playlist
+        internal string reserved4 = Catalog.GetString ("Sync from '{0}'");
+        internal string reserved5 = Catalog.GetString ("Sync when first plugged in and when the libraries change");
+
         private DapSource dap;
         private string conf_ns;
         private List<DapLibrarySync> library_syncs = new List<DapLibrarySync> ();
