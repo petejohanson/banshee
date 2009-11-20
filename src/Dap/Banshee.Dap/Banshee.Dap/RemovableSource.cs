@@ -54,6 +54,7 @@ namespace Banshee.Dap
 
             Order = 410;
             Properties.SetString ("UnmapSourceActionIconName", "media-eject");
+            Properties.SetString ("UnmapSourceActionLabel", Catalog.GetString ("Disconnect"));
             Properties.SetString ("GtkActionPath", "/RemovableSourceContextMenu");
             AfterInitialized ();
 
@@ -68,7 +69,6 @@ namespace Banshee.Dap
             set {
                 base.Name = value;
                 StorageName = value;
-                Properties.SetString ("UnmapSourceActionLabel", String.Format (Catalog.GetString ("Eject {0}"), value));
             }
         }
 
@@ -105,14 +105,14 @@ namespace Banshee.Dap
                 ServiceManager.PlayerEngine.Close ();
             }
 
-            SetStatus (String.Format (Catalog.GetString ("Ejecting {0}..."), GenericName), false);
+            SetStatus (String.Format (Catalog.GetString ("Disconnecting {0}..."), GenericName), false);
 
             ThreadPool.QueueUserWorkItem (delegate {
                 try {
                     Eject ();
                 } catch (Exception e) {
                     ThreadAssist.ProxyToMain (delegate {
-                        SetStatus (String.Format (Catalog.GetString ("Could not eject {0}: {1}"),
+                        SetStatus (String.Format (Catalog.GetString ("Could not disconnect {0}: {1}"),
                             GenericName, e.Message), true);
                     });
 

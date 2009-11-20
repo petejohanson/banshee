@@ -47,7 +47,7 @@ namespace Banshee.Dap.Gui
         {
             AddImportant (
                 new ActionEntry ("SyncDapAction", null,
-                    Catalog.GetString ("Synchronize"), null,
+                    Catalog.GetString ("Sync"), null,
                     String.Empty, OnSyncDap)
             );
 
@@ -84,8 +84,6 @@ namespace Banshee.Dap.Gui
             DapSource dap = Dap;
             if (dap != null) {
                 UpdateAction ("SyncDapAction", dap.Sync.Enabled && !dap.Sync.AutoSync);
-                /* Translators: {0} is the name of the digital audio player */
-                this["SyncDapAction"].Label = String.Format (Catalog.GetString ("Synchronize {0}"), dap.Name);
             }
         }
 
