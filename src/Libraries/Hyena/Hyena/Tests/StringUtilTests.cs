@@ -203,14 +203,15 @@ href=http://lkjdflkjdflkjj>baz foo< /a> bar"));
             AssertSearchKey ("Ź", "z");
             AssertSearchKey ("ż", "z");
             AssertSearchKey ("Ż", "z");
-        }
 
-        // Test that combining diacritics are preserved, and combined, for non-Latin characters.
-        [Test]
-        public void TestPreserveDiacritics ()
-        {
-            AssertSearchKey ("\u304c", "\u304c");
-            AssertSearchKey ("\u304b\u3099", "\u304c");
+            // Hiragana
+            AssertSearchKey ("\u304c", "\u304b");
+
+            // Cyrillic
+            AssertSearchKey ("\u0451", "\u0435");
+            AssertSearchKey ("\u0401", "\u0435");
+            AssertSearchKey ("\u0439", "\u0438");
+            AssertSearchKey ("\u0419", "\u0438");
         }
 
         // Test that some non-Latin characters are converted to Latin counterparts.

@@ -185,11 +185,11 @@ namespace Hyena
             val = val.ToLower ();
             StringBuilder sb = new StringBuilder ();
             UnicodeCategory category;
-            bool previous_was_latin = false;
+            bool previous_was_letter = false;
             bool got_space = false;
 
-            // Normalizing to KD splits into (base, combining) so we can check for Latin
-            // characters and then strip off any NonSpacingMarks following them
+            // Normalizing to KD splits into (base, combining) so we can check for letters
+            // and then strip off any NonSpacingMarks following them
             foreach (char orig_c in val.TrimStart ().Normalize (NormalizationForm.FormKD)) {
 
                 // Check for a special case *before* whitespace. This way, if
@@ -208,7 +208,7 @@ namespace Hyena
                 category = Char.GetUnicodeCategory (c);
                 if (category == UnicodeCategory.OtherPunctuation) {
                     // Skip punctuation
-                } else if (!(previous_was_latin && category == UnicodeCategory.NonSpacingMark)) {
+                } else if (!(previous_was_letter && category == UnicodeCategory.NonSpacingMark)) {
                     if (got_space) {
                         sb.Append (" ");
                         got_space = false;
@@ -217,7 +217,7 @@ namespace Hyena
                 }
 
                 // Can ignore A-Z because we've already lowercased the char
-                previous_was_latin = (c >= 'a' && c <= 'z');
+                previous_was_letter = Char.IsLetter (c);
             }
 
             string result = sb.ToString ();
