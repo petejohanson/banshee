@@ -99,17 +99,22 @@ namespace Hyena.Data.Gui
             cell_context.Layout = pango_layout;
 
             Theme.DrawFrameBackground (cairo_context, Allocation, true);
-            if (header_visible && column_controller != null) {
+            if (header_visible && LayoutStyle != DataViewLayoutStyle.Grid && column_controller != null) {
                 PaintHeader (damage);
             }
 
-            if (HasFocus)
+            if (HasFocus) {
                 Theme.DrawFrameBorderFocused (cairo_context, Allocation);
-            else
+            } else {
                 Theme.DrawFrameBorder (cairo_context, Allocation);
+            }
 
             if (Model != null) {
-                PaintRows (damage);
+                if (LayoutStyle == DataViewLayoutStyle.List) {
+                    PaintList (damage);
+                } else {
+                    PaintGrid (damage);
+                }
             }
 
             PaintDraggingColumn (damage);
@@ -119,6 +124,8 @@ namespace Hyena.Data.Gui
 
             return true;
         }
+
+#region Header Rendering
 
         private void PaintHeader (Rectangle clip)
         {
@@ -201,7 +208,11 @@ namespace Hyena.Data.Gui
             }
         }
 
-        private void PaintRows (Rectangle clip)
+#endregion
+
+#region List Rendering
+
+        private void PaintList (Rectangle clip)
         {
             // TODO factor this out?
             // Render the sort effect to the GdkWindow.
@@ -422,6 +433,62 @@ namespace Hyena.Data.Gui
             cairo_context.Stroke ();
         }
 
+#endregion
+
+#region Grid Rendering
+
+        private void PaintGrid (Rectangle clip)
+        {
+            clip.Intersect (list_rendering_alloc);
+            cairo_context.Rectangle (clip.X, clip.Y, clip.Width, clip.Height);
+            cairo_context.Clip ();
+
+            cell_context.Clip = clip;
+            cell_context.TextAsForeground = false;
+
+            int rows_in_view = RowsInView;
+            int columns_in_view = GridColumnsInView;
+            int cell_height = RowHeight;
+            int cell_width = GridCellWidth + ((list_rendering_alloc.Width -
+                columns_in_view * GridCellWidth) / columns_in_view);
+            int vadjustment_value = VadjustmentValue;
+
+            int first_model_row = vadjustment_value / (row_height * columns_in_view);
+            int last_model_row = Math.Min (model.Count, first_model_row + rows_in_view * columns_in_view);
+            int offset = list_rendering_alloc.Y - vadjustment_value % row_height;
+
+            var grid_cell_alloc = new Rectangle () {
+                X = list_rendering_alloc.X,
+                Y = offset,
+                Width = GridCellWidth,
+                Height = GridCellHeight
+            };
+
+            Console.WriteLine ("FIRST = {0}, LAST = {1}", first_model_row, last_model_row);
+
+            for (int model_row_index = first_model_row, view_row_index = 0, view_column_index = 0;
+                model_row_index < last_model_row; model_row_index++) {
+
+                var item = model[model_row_index];
+                PaintCell (item, 0, model_row_index, grid_cell_alloc,
+                    IsRowOpaque (item), IsRowBold (item), StateType.Normal, false);
+
+                if (++view_column_index % columns_in_view == 0) {
+                    view_row_index++;
+                    view_column_index = 0;
+
+                    grid_cell_alloc.Y += cell_height;
+                    grid_cell_alloc.X = list_rendering_alloc.X;
+                } else {
+                    grid_cell_alloc.X += cell_width;
+                }
+            }
+
+            cairo_context.ResetClip ();
+        }
+
+#endregion
+
         private void InvalidateList ()
         {
             if (IsRealized) {
@@ -474,6 +541,10 @@ namespace Hyena.Data.Gui
         private int row_height = 32;
         public int RowHeight {
             get {
+                if (LayoutStyle == DataViewLayoutStyle.Grid) {
+                    return GridCellHeight;
+                }
+
                 if (RecomputeRowHeight) {
                     row_height = RowHeightProvider != null
                         ? RowHeightProvider (this)
@@ -487,6 +558,24 @@ namespace Hyena.Data.Gui
 
                 return row_height;
             }
+        }
+
+        private DataViewLayoutStyle layout_style = DataViewLayoutStyle.List;
+        public DataViewLayoutStyle LayoutStyle {
+            get { return layout_style; }
+            set {
+                layout_style = value;
+                MoveResize (Allocation);
+                InvalidateList ();
+            }
+        }
+
+        public int GridCellWidth {
+            get { return 100; }
+        }
+
+        public int GridCellHeight {
+            get { return 100; }
         }
     }
 }

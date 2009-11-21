@@ -523,7 +523,7 @@ namespace Hyena.Data.Gui
         private int header_height = 0;
         private int HeaderHeight {
             get {
-                if (!header_visible) {
+                if (!header_visible || LayoutStyle != DataViewLayoutStyle.List) {
                     return 0;
                 }
 

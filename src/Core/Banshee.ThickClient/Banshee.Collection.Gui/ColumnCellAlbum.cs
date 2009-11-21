@@ -85,8 +85,11 @@ namespace Banshee.Collection.Gui
             AlbumInfo album = (AlbumInfo)BoundObject;
 
             bool is_default = false;
+            int actual_image_size = LayoutStyle == DataViewLayoutStyle.Grid
+                ? (int)Math.Max (Math.Min (cellWidth, cellHeight) - 10, 0)
+                : image_size;
             ImageSurface image = artwork_manager == null ? null
-                : artwork_manager.LookupScaleSurface (album.ArtworkId, image_size, true);
+                : artwork_manager.LookupScaleSurface (album.ArtworkId, actual_image_size, true);
 
             if (image == null) {
                 image = default_cover_image;
@@ -94,12 +97,18 @@ namespace Banshee.Collection.Gui
             }
 
             // int image_render_size = is_default ? image.Height : (int)cellHeight - 8;
-            int image_render_size = image_size;
-            int x = image_spacing;
+            int image_render_size = actual_image_size;
+            int x = LayoutStyle == DataViewLayoutStyle.Grid
+                ? ((int)cellWidth - image_render_size) / 2
+                : image_spacing;
             int y = ((int)cellHeight - image_render_size) / 2;
 
             ArtworkRenderer.RenderThumbnail (context.Context, image, false, x, y,
                 image_render_size, image_render_size, !is_default, context.Theme.Context.Radius);
+
+            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+                return;
+            }
 
             int fl_width = 0, fl_height = 0, sl_width = 0, sl_height = 0;
             Cairo.Color text_color = context.Theme.Colors.GetWidgetColor (GtkColorClass.Text, state);

@@ -42,7 +42,8 @@ namespace Banshee.Collection.Gui
     {
         public AlbumListView () : base ()
         {
-            ColumnCellAlbum renderer = new ColumnCellAlbum ();
+            LayoutStyle = DataViewLayoutStyle.Grid;
+            ColumnCellAlbum renderer = new ColumnCellAlbum () { LayoutStyle = LayoutStyle };
             column_controller.Add (new Column ("Album", renderer, 1.0));
             ColumnController = column_controller;
 
