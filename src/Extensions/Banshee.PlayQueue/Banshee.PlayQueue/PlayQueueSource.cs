@@ -119,7 +119,7 @@ namespace Banshee.PlayQueue
             Offset = Math.Min (
                 CurrentOffsetSchema.Get (),
                 ServiceManager.DbConnection.Query<long> (@"
-                    SELECT MAX(ViewOrder)
+                    SELECT MAX(ViewOrder) + 1
                     FROM CorePlaylistEntries
                     WHERE PlaylistID = ?", DbId));
         }
