@@ -18,6 +18,7 @@ SOURCES =  \
 	Hyena.Data.Gui/ColumnCellText.cs \
 	Hyena.Data.Gui/ColumnController.cs \
 	Hyena.Data.Gui/ColumnHeaderCellText.cs \
+	Hyena.Data.Gui/DataViewLayoutStyle.cs \
 	Hyena.Data.Gui/IHeaderCell.cs \
 	Hyena.Data.Gui/IInteractiveCell.cs \
 	Hyena.Data.Gui/IListView.cs \
