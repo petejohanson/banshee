@@ -193,9 +193,9 @@ namespace Banshee.Podcasting.Gui
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
         {
             PodcastFeedModel feed_model;
-            yield return feed_model = new PodcastFeedModel (src, src.DatabaseTrackModel, ServiceManager.DbConnection, String.Format ("PodcastFeeds-{0}", src.UniqueId));
             yield return new PodcastUnheardFilterModel (src.DatabaseTrackModel);
             yield return new DownloadStatusFilterModel (src.DatabaseTrackModel);
+            yield return feed_model = new PodcastFeedModel (src, src.DatabaseTrackModel, ServiceManager.DbConnection, String.Format ("PodcastFeeds-{0}", src.UniqueId));
 
             if (src == this) {
                 this.feed_model = feed_model;
