@@ -112,7 +112,7 @@ namespace Banshee.Podcasting.Gui
 
             Properties.SetString ("GtkActionPath", "/PodcastSourcePopup");
 
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", new PodcastSourceContents ());
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<PodcastSourceContents> ());
             Properties.Set<bool> ("Nereid.SourceContentsPropagate", true);
 
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
