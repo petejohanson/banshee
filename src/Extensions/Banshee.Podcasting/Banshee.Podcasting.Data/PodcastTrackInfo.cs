@@ -93,6 +93,10 @@ namespace Banshee.Podcasting.Data
             get { return Item.Feed; }
         }
 
+        public string PodcastTitle {
+            get { return Feed.Title; }
+        }
+
         private FeedItem item;
         public FeedItem Item {
             get {

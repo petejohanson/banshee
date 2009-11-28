@@ -57,9 +57,12 @@ namespace Banshee.Podcasting.Gui
     {
         private uint actions_id;
         private DatabaseSource last_source;
+        private PodcastSource podcast_source;
 
         public PodcastActions (PodcastSource source) : base (ServiceManager.Get<InterfaceActionService> (), "Podcast")
         {
+            this.podcast_source = source;
+
             AddImportant (
                 new ActionEntry (
                     "PodcastUpdateAllAction", Stock.Refresh,
@@ -481,7 +484,7 @@ namespace Banshee.Podcasting.Gui
         {
             Feed feed = ActiveFeedModel.FocusedItem;
             if (feed != null) {
-                new PodcastFeedPropertiesDialog (feed).Run ();
+                new PodcastFeedPropertiesDialog (podcast_source, feed).Run ();
             }
         }
 

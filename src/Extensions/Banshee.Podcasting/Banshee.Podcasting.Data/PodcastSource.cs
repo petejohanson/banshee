@@ -128,6 +128,8 @@ namespace Banshee.Podcasting.Gui
                       <column modify-default=""AlbumColumn"">
                         <title>{0}</title>
                         <long-title>{0}</long-title>
+                        <sort-key>PodcastTitle</sort-key>
+                        <renderer property=""ExternalObject.PodcastTitle""/>
                       </column>
                       <column>
                           <visible>true</visible>
