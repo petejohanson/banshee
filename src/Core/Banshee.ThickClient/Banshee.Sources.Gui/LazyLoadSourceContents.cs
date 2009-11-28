@@ -34,7 +34,7 @@ using Banshee.Sources;
 
 namespace Banshee.Sources.Gui
 {
-    public class LazyLoadSourceContents<T> : ISourceContents where T : ISourceContents
+    public class LazyLoadSourceContents<T> : ISourceContents, IDisposable where T : ISourceContents
     {
         private object [] args;
         private ISourceContents actual_contents;
@@ -55,6 +55,14 @@ namespace Banshee.Sources.Gui
         public LazyLoadSourceContents (params object [] args)
         {
             this.args = args;
+        }
+
+        public void Dispose ()
+        {
+            var disposable = actual_contents as IDisposable;
+            if (disposable != null) {
+                disposable.Dispose ();
+            }
         }
 
         public bool SetSource (ISource source)
