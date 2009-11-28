@@ -43,9 +43,7 @@ namespace Banshee.Sources.Gui
                 if (actual_contents == null) {
                     lock (this) {
                         if (actual_contents == null) {
-                            using (new Hyena.Timer (String.Format ("Creating new {0}", typeof(T).Name))) {
                             actual_contents = (T) Activator.CreateInstance (typeof(T), args);
-                            }
                         }
                     }
                 }
