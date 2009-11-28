@@ -88,6 +88,7 @@ SOURCES =  \
 	Banshee.Gui.Widgets/ConnectedMessageBar.cs \
 	Banshee.Gui.Widgets/ConnectedSeekSlider.cs \
 	Banshee.Gui.Widgets/ConnectedVolumeButton.cs \
+	Banshee.Gui.Widgets/CoverArtDisplay.cs \
 	Banshee.Gui.Widgets/LargeTrackInfoDisplay.cs \
 	Banshee.Gui.Widgets/MainMenu.cs \
 	Banshee.Gui.Widgets/NextButton.cs \
