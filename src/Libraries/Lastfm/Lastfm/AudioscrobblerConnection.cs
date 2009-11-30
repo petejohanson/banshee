@@ -426,7 +426,7 @@ namespace Lastfm
                 resp = current_web_req.EndGetResponse (ar);
             }
             catch (Exception e) {
-                Log.Warning ("Failed to handshake: {0}", e.ToString (), false);
+                Log.Warning ("Failed to handshake", e.ToString (), false);
 
                 // back off for a time before trying again
                 state = State.Idle;
