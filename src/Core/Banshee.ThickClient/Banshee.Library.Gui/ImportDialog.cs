@@ -33,6 +33,7 @@ using Glade;
 
 using Mono.Unix;
 
+using Banshee.Configuration.Schema;
 using Banshee.Sources;
 using Banshee.ServiceStack;
 using Banshee.Gui;

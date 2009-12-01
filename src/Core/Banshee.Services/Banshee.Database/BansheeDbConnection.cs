@@ -85,7 +85,13 @@ namespace Banshee.Database
                 }
 
                 // Update cached sorting keys
-                SortKeyUpdater.Update ();
+                BeginTransaction ();
+                try {
+                    SortKeyUpdater.Update ();
+                    CommitTransaction ();
+                } catch {
+                    RollbackTransaction ();
+                }
             }
         }
 

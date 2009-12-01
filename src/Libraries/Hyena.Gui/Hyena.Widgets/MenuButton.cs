@@ -73,6 +73,7 @@ namespace Hyena.Widgets
                 alignment.Add (arrow);
                 box.PackStart (alignment, false, false, 5);
                 size_widget = box;
+                FocusChain = new Widget[] {toggle_button, box};
             } else {
                 toggle_button.Add (button_widget);
                 size_widget = toggle_button;

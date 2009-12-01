@@ -53,6 +53,15 @@ namespace Banshee.NowPlaying
             GtkElementsService service = ServiceManager.Get<GtkElementsService> ();
 
             contents = new NowPlayingContents ();
+            contents.ButtonPressEvent += (o, a) => {
+                if (a.Event.Type == Gdk.EventType.TwoButtonPress) {
+                    var iaservice = ServiceManager.Get<InterfaceActionService> ();
+                    var action = iaservice.ViewActions["FullScreenAction"] as Gtk.ToggleAction;
+                    if (action != null && action.Sensitive) {
+                        action.Active = !action.Active;
+                    }
+                }
+            };
 
             // This is my really sweet hack - it's where the video widget
             // is sent when the source is not active. This keeps the video

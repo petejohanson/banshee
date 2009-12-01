@@ -64,6 +64,9 @@ namespace Banshee.GStreamer
     public class PlayerEngine : Banshee.MediaEngine.PlayerEngine,
         IEqualizer, IVisualizationDataSource, ISupportClutter
     {
+        internal static string reserved1 = Catalog.GetString ("Enable _gapless playback");
+        internal static string reserved2 = Catalog.GetString ("Eliminate the small playback gap on track change.  Useful for concept albums and classical music");
+
         private uint GST_CORE_ERROR = 0;
         private uint GST_LIBRARY_ERROR = 0;
         private uint GST_RESOURCE_ERROR = 0;

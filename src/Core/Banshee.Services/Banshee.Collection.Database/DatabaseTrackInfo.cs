@@ -39,6 +39,8 @@ using Hyena.Query;
 using Banshee.Base;
 using Banshee.Configuration.Schema;
 using Banshee.Database;
+using Banshee.Metadata;
+using Banshee.Preferences;
 using Banshee.Query;
 using Banshee.Sources;
 using Banshee.ServiceStack;
@@ -70,6 +72,33 @@ namespace Banshee.Collection.Database
         public DatabaseTrackInfo (DatabaseTrackInfo original) : base ()
         {
             Provider.Copy (original, this);
+        }
+
+        // Changing these fields shouldn't change DateUpdated (which triggers file save)
+        private static readonly HashSet<QueryField> transient_fields;
+
+        static DatabaseTrackInfo ()
+        {
+            transient_fields = new HashSet<QueryField> () {
+                BansheeQuery.ScoreField,
+                BansheeQuery.SkipCountField,
+                BansheeQuery.LastSkippedField,
+                BansheeQuery.LastPlayedField,
+                BansheeQuery.PlaybackErrorField,
+                BansheeQuery.PlayCountField,
+                BansheeQuery.RatingField
+            };
+            Action<Root> handler = delegate {
+                if (SaveTrackMetadataService.WriteRatingsAndPlayCountsEnabled.Value) {
+                    transient_fields.Remove (BansheeQuery.PlayCountField);
+                    transient_fields.Remove (BansheeQuery.RatingField);
+                } else {
+                    transient_fields.Add (BansheeQuery.PlayCountField);
+                    transient_fields.Add (BansheeQuery.RatingField);
+                }
+            };
+            SaveTrackMetadataService.WriteRatingsAndPlayCountsEnabled.ValueChanged += handler;
+            handler (null);
         }
 
         public override void OnPlaybackFinished (double percentCompleted)
@@ -126,17 +155,6 @@ namespace Banshee.Collection.Database
         {
             Save (NotifySaved);
         }
-
-        // Changing these fields shouldn't change DateUpdated (which triggers file save)
-        private static HashSet<QueryField> transient_fields = new HashSet<QueryField> {
-            BansheeQuery.ScoreField,
-            BansheeQuery.SkipCountField,
-            BansheeQuery.LastSkippedField,
-            BansheeQuery.PlayCountField,
-            BansheeQuery.LastPlayedField,
-            BansheeQuery.RatingField,
-            BansheeQuery.PlaybackErrorField
-        };
 
         public void Save (bool notify, params QueryField [] fields_changed)
         {

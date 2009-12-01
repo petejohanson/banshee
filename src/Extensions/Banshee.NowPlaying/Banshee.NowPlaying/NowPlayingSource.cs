@@ -47,10 +47,7 @@ namespace Banshee.NowPlaying
 
         public NowPlayingSource () : base ("now-playing", Catalog.GetString ("Now Playing"), 10, "now-playing")
         {
-            now_playing_interface = new NowPlayingInterface ();
-
             Properties.SetString ("Icon.Name", "applications-multimedia");
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", now_playing_interface);
             Properties.Set<bool> ("Nereid.SourceContents.HeaderVisible", false);
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
 
@@ -104,6 +101,11 @@ namespace Banshee.NowPlaying
 
         public override void Activate ()
         {
+            if (now_playing_interface == null) {
+                now_playing_interface = new NowPlayingInterface ();
+                Properties.Set<ISourceContents> ("Nereid.SourceContents", now_playing_interface);
+            }
+
             if (now_playing_interface != null) {
                 now_playing_interface.OverrideFullscreen ();
             }

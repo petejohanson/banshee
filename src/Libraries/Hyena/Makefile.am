@@ -111,6 +111,7 @@ SOURCES =  \
 	Hyena/CryptoUtil.cs \
 	Hyena/DateTimeUtil.cs \
 	Hyena/Delegates.cs \
+	Hyena/EventArgs.cs \
 	Hyena/IUndoAction.cs \
 	Hyena/Log.cs \
 	Hyena/PlatformUtil.cs \

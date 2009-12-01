@@ -56,7 +56,7 @@ namespace Banshee.Database
         // NOTE: Whenever there is a change in ANY of the database schema,
         //       this version MUST be incremented and a migration method
         //       MUST be supplied to match the new version number
-        protected const int CURRENT_VERSION = 36;
+        protected const int CURRENT_VERSION = 37;
         protected const int CURRENT_METADATA_VERSION = 6;
 
 #region Migration Driver
@@ -824,6 +824,17 @@ namespace Banshee.Database
                 )
             ");
 
+            return true;
+        }
+
+#endregion
+
+#region Version 37
+
+        [DatabaseVersion (37)]
+        private bool Migrate_37 ()
+        {
+            SortKeyUpdater.ForceUpdate ();
             return true;
         }
 

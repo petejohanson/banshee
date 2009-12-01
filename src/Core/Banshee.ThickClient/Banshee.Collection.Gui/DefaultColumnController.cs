@@ -129,7 +129,7 @@ namespace Banshee.Collection.Gui
             disc_combined_column.Title = Catalog.GetString ("Disc #");
             disc_combined_column.LongTitle = Catalog.GetString ("Disc & Count");
 
-            ColumnCellPositiveInt br_cell = new ColumnCellPositiveInt (null, true, 3, 3);
+            ColumnCellPositiveInt br_cell = new ColumnCellPositiveInt (null, true, 3, 4);
             br_cell.TextFormat  = Catalog.GetString ("{0} kbps");
             bitrate_column      = Create (BansheeQuery.BitRateField, 0.10, false, br_cell);
 

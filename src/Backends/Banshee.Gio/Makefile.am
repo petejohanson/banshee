@@ -10,8 +10,7 @@ SOURCES =  \
 	Banshee.IO.Gio/Provider.cs \
 	Banshee.IO.Gio/Tests.cs
 
-RESOURCES =  \
-	Banshee.Gio.addin.xml
+RESOURCES = Banshee.Gio.addin.xml
 
 if ENABLE_GIO
 include $(top_srcdir)/build/build.mk

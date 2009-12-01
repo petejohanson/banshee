@@ -128,13 +128,13 @@ namespace Banshee.Gui
             Active.Activate ();
         }
 
-        private void OnShuffleModeChanged (object o, ShuffleModeChangedEventArgs args)
+        private void OnShuffleModeChanged (object o, EventArgs<PlaybackShuffleMode> args)
         {
-            if (active_action.Value != (int)args.ShuffleMode) {
+            if (active_action.Value != (int)args.Value) {
                 // This happens only when changing the mode using DBus.
                 // In this case we need to locate the action by its value.
                 foreach (RadioAction action in this) {
-                    if (action.Value == (int)args.ShuffleMode) {
+                    if (action.Value == (int)args.Value) {
                         active_action = action;
                         break;
                     }

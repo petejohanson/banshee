@@ -492,7 +492,9 @@ namespace Banshee.Dap.MassStorage
 
                 if (track.LastSyncedStamp >= Hyena.DateTimeUtil.ToDateTime (track.FileModifiedStamp)) {
                     Log.DebugFormat ("Copying Metadata to File Since Sync time >= Updated Time");
-                    Banshee.Streaming.StreamTagger.SaveToFile (copied_track);
+                    bool write_metadata = Metadata.SaveTrackMetadataService.WriteMetadataEnabled.Value;
+                    bool write_ratings_and_playcounts = Metadata.SaveTrackMetadataService.WriteRatingsAndPlayCountsEnabled.Value;
+                    Banshee.Streaming.StreamTagger.SaveToFile (copied_track, write_metadata, write_ratings_and_playcounts);
                 }
 
                 copied_track.Save (false);

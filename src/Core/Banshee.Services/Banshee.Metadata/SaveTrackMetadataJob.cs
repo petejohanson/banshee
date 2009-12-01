@@ -63,7 +63,8 @@ namespace Banshee.Metadata
             );
         }
 
-        public bool WriteEnabled { get; set; }
+        public bool WriteMetadataEnabled { get; set; }
+        public bool WriteRatingsAndPlayCountsEnabled { get; set; }
         public bool RenameEnabled { get; set; }
 
         private HyenaSqliteCommand update_synced_at;
@@ -75,9 +76,9 @@ namespace Banshee.Metadata
             bool wrote = false;
             bool renamed = false;
             try {
-                if (WriteEnabled) {
+                if (WriteMetadataEnabled || WriteRatingsAndPlayCountsEnabled) {
                     Hyena.Log.DebugFormat ("Saving metadata for {0}", track);
-                    wrote = StreamTagger.SaveToFile (track);
+                    wrote = StreamTagger.SaveToFile (track, WriteMetadataEnabled, WriteRatingsAndPlayCountsEnabled);
                 }
 
                 if (RenameEnabled) {

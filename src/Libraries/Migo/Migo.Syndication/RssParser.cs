@@ -91,7 +91,10 @@ namespace Migo.Syndication
         public Feed UpdateFeed (Feed feed)
         {
             try {
-                feed.Title            = StringUtil.RemoveNewlines (GetXmlNodeText (doc, "/rss/channel/title"));
+                if (feed.Title == null || feed.Title.Trim () == "" || feed.Title == Mono.Unix.Catalog.GetString ("Unknown Podcast")) {
+                    feed.Title = StringUtil.RemoveNewlines (GetXmlNodeText (doc, "/rss/channel/title"));
+                }
+
                 feed.Description      = StringUtil.RemoveNewlines (GetXmlNodeText (doc, "/rss/channel/description"));
                 feed.Copyright        = GetXmlNodeText (doc, "/rss/channel/copyright");
                 feed.ImageUrl         = GetXmlNodeText (doc, "/rss/channel/itunes:image/@href");

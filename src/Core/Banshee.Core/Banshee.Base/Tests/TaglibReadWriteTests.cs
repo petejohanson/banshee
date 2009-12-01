@@ -180,13 +180,13 @@ namespace Banshee.Base.Tests
             change (track);
 
             // Save changes
-            bool saved = StreamTagger.SaveToFile (track);
+            bool saved = StreamTagger.SaveToFile (track, true, true);
             Assert.IsTrue (saved);
 
             // Read changes
             file = StreamTagger.ProcessUri (uri);
             track = new TrackInfo ();
-            StreamTagger.TrackInfoMerge (track, file);
+            StreamTagger.TrackInfoMerge (track, file, false, true);
 
             // Verify changes
             verify (track);
@@ -200,6 +200,8 @@ namespace Banshee.Base.Tests
             track.TrackNumber = 4;
             track.DiscNumber = 4;
             track.Year = 1999;
+            track.Rating = 2;
+            track.PlayCount = 3;
         }
 
         private void VerifyTrack (TrackInfo track)
@@ -210,6 +212,8 @@ namespace Banshee.Base.Tests
             Assert.AreEqual (4, track.TrackNumber);
             Assert.AreEqual (4, track.DiscNumber);
             Assert.AreEqual (1999, track.Year);
+            Assert.AreEqual (2, track.Rating);
+            Assert.AreEqual (3, track.PlayCount);
         }
 
         private Type unix_io_type;

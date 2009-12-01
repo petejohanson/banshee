@@ -38,10 +38,7 @@
 #include <gst/base/gstadapter.h>
 #include <gdk/gdk.h>
 #include <gst/fft/gstfftf32.h>
-
-#ifdef HAVE_GST_PBUTILS
-#  include <gst/pbutils/pbutils.h>
-#endif
+#include <gst/pbutils/pbutils.h>
 
 #ifdef GDK_WINDOWING_X11
 #  include <gdk/gdkx.h>
@@ -135,9 +132,7 @@ struct BansheePlayer {
     GSList *missing_element_details;
     GSList *missing_element_details_handled;
     gboolean handle_missing_elements;
-    #ifdef HAVE_GST_PBUTILS
     GstInstallPluginsContext *install_plugins_context;
-    #endif
     
     // ReplayGain State
     gboolean replaygain_enabled;

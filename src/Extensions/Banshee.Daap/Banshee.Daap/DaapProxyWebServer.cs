@@ -53,14 +53,19 @@ namespace Banshee.Daap
         {
         }
 
-        public override void Start (int backlog)
+        protected override bool BindServerSocket ()
         {
-            try {
-                base.Start (backlog);
-            } catch (System.Net.Sockets.SocketException) {
+            if (!base.BindServerSocket ()) {
                 EndPoint = new IPEndPoint(IPAddress.Any, 0);
-                base.Start (backlog);
+                try {
+                    server.Bind (EndPoint);
+                } catch (System.Net.Sockets.SocketException e) {
+                    Hyena.Log.Exception (e);
+                    return false;
+                }
             }
+
+            return true;
         }
 
         public void RegisterDatabase(DAAP.Database database)

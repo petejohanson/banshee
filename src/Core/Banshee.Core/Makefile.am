@@ -63,6 +63,7 @@ SOURCES =  \
 	Banshee.Kernel/Scheduler.cs \
 	Banshee.Streaming/CommonTags.cs \
 	Banshee.Streaming/StreamPlaybackError.cs \
+	Banshee.Streaming/StreamRatingTagger.cs \
 	Banshee.Streaming/StreamTag.cs \
 	Banshee.Streaming/StreamTagger.cs
 

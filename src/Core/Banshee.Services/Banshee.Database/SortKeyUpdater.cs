@@ -52,7 +52,6 @@ namespace Banshee.Database
         protected static void ForceUpdate (string new_locale)
         {
             ServiceManager.DbConnection.Execute (@"
-                    BEGIN;
                     UPDATE CoreArtists SET
                         NameSortKey       = HYENA_COLLATION_KEY(COALESCE(NameSort, Name, ?)),
                         NameLowered       = HYENA_SEARCH_KEY(COALESCE(Name, ?));
@@ -65,8 +64,7 @@ namespace Banshee.Database
 
                     UPDATE CoreTracks SET
                         TitleSortKey      = HYENA_COLLATION_KEY(COALESCE(TitleSort, Title, ?)),
-                        TitleLowered      = HYENA_SEARCH_KEY(COALESCE(Title, ?));
-                    COMMIT",
+                        TitleLowered      = HYENA_SEARCH_KEY(COALESCE(Title, ?));",
                 ArtistInfo.UnknownArtistName, ArtistInfo.UnknownArtistName,
                 AlbumInfo.UnknownAlbumTitle, ArtistInfo.UnknownArtistName,
                 AlbumInfo.UnknownAlbumTitle, ArtistInfo.UnknownArtistName,

@@ -77,5 +77,12 @@ namespace Banshee.Configuration.Schema
             "Write metadata back to audio files",
             "If enabled, metadata (tags) will be written back to audio files when using the track metadata editor."
         );
+
+        public static readonly SchemaEntry<bool> WriteRatingsAndPlayCounts = new SchemaEntry<bool>(
+            "library", "write_rating",
+            false,
+            "Store ratings within supported files",
+            "If enabled, rating and playcount metadata will be written back to audio files."
+        );
     }
 }

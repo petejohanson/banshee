@@ -32,6 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Hyena;
 using Banshee.PlaybackController;
 using Banshee.Sources;
 
@@ -39,8 +40,8 @@ namespace Banshee.PlayQueue
 {
     public class HeaderWidget : HBox
     {
-        public event EventHandler<ModeChangedEventArgs> ModeChanged;
-        public event EventHandler<SourceChangedEventArgs> SourceChanged;
+        public event EventHandler<EventArgs<PlaybackShuffleMode>> ModeChanged;
+        public event EventHandler<EventArgs<DatabaseSource>> SourceChanged;
 
         private readonly List<Widget> sensitive_widgets = new List<Widget> ();
         private readonly Dictionary<string, PlaybackShuffleMode> modes = new Dictionary<string, PlaybackShuffleMode> {
@@ -66,7 +67,7 @@ namespace Banshee.PlayQueue
                 }
                 var handler = ModeChanged;
                 if (handler != null) {
-                    handler (this, new ModeChangedEventArgs (value));
+                    handler (this, new EventArgs<PlaybackShuffleMode> (value));
                 }
             };
 
@@ -78,7 +79,7 @@ namespace Banshee.PlayQueue
             source_combo_box.Changed += delegate {
                 var handler = SourceChanged;
                 if (handler != null) {
-                    handler (this, new SourceChangedEventArgs (source_combo_box.Source));
+                    handler (this, new EventArgs<DatabaseSource> (source_combo_box.Source));
                 }
             };
 
@@ -95,34 +96,6 @@ namespace Banshee.PlayQueue
                 }
                 return false;
             });
-        }
-    }
-
-    public sealed class ModeChangedEventArgs : EventArgs
-    {
-        private PlaybackShuffleMode value;
-
-        public ModeChangedEventArgs (PlaybackShuffleMode value)
-        {
-            this.value = value;
-        }
-
-        public PlaybackShuffleMode Value {
-            get { return this.value; }
-        }
-    }
-
-    public sealed class SourceChangedEventArgs : EventArgs
-    {
-        private DatabaseSource value;
-
-        public SourceChangedEventArgs (DatabaseSource value)
-        {
-            this.value = value;
-        }
-
-        public DatabaseSource Value {
-            get { return this.value; }
         }
     }
 }

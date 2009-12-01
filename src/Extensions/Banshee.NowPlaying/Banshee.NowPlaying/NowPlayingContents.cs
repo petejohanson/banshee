@@ -33,16 +33,20 @@ using Banshee.Gui.Widgets;
 
 namespace Banshee.NowPlaying
 {
-    public class NowPlayingContents : Table, IDisposable
+    public class NowPlayingContents : EventBox, IDisposable
     {
+        private Table table;
         private Widget video_display;
         private bool video_display_initial_shown = false;
 
         private TrackInfoDisplay track_info_display;
 
-        public NowPlayingContents () : base (1, 1, false)
+        public NowPlayingContents ()
         {
-            NoShowAll = true;
+            VisibleWindow = false;
+            Child = table = new Table (1, 1, false) { Visible = true };
+
+            table.NoShowAll = true;
 
             video_display = new XOverlayVideoDisplay ();
 
@@ -51,12 +55,12 @@ namespace Banshee.NowPlaying
                 ivideo_display.IdleStateChanged += OnVideoDisplayIdleStateChanged;
             }
 
-            Attach (video_display, 0, 1, 0, 1,
+            table.Attach (video_display, 0, 1, 0, 1,
                 AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Expand | AttachOptions.Fill, 0, 0);
 
             track_info_display = new NowPlayingTrackInfoDisplay ();
-            Attach (track_info_display, 0, 1, 0, 1,
+            table.Attach (track_info_display, 0, 1, 0, 1,
                 AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Expand | AttachOptions.Fill, 0, 0);
         }
