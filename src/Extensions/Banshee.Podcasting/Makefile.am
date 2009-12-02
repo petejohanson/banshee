@@ -38,14 +38,17 @@ SOURCES =  \
 	Banshee.Podcasting/PodcastService.cs \
 	Banshee.Podcasting/PodcastService_Interface.cs
 
-RESOURCES =  \
-	Banshee.Podcasting.addin.xml \
+DIST_RESOURCES =  \
 	Resources/ActiveSourceUI.xml \
 	Resources/GlobalUI.xml
+
+RESOURCES =  \
+	Banshee.Podcasting.addin.xml \
+	$(DIST_RESOURCES)
 
 if ENABLE_PODCAST
 include $(top_srcdir)/build/build.mk
 else
-EXTRA_DIST = $(SOURCES) $(RESOURCES)
+EXTRA_DIST = $(SOURCES) $(DIST_RESOURCES) Banshee.Podcasting.addin.xml.in
 endif
 

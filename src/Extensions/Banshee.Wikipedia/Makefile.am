@@ -12,6 +12,6 @@ RESOURCES = Banshee.Wikipedia.addin.xml
 if HAVE_WEBKIT
 include $(top_srcdir)/build/build.mk
 else
-EXTRA_DIST = $(SOURCES) $(RESOURCES)
+EXTRA_DIST = $(SOURCES) Banshee.Wikipedia.addin.xml.in
 endif
 

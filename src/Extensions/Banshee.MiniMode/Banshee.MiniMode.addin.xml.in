@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Addin 
-    id="Banshee.CoverArt"
+    id="Banshee.MiniMode"
     version="1.0"
     compatVersion="1.0"
     copyright="© 2008 Novell Inc. Licensed under the MIT X11 license."
-    name="Cover Art Fetching"
-    category="User Interface"
-    description="Provides UI to enable the user to fetch cover art"
-    author="James Willcox"
+    _name="Mini Mode"
+    _description="Mini Mode allows controlling Banshee through a small window with only playback controls and track information."
+    author="Felipe Almeida Lessa, Aaron Bockover, Bertrand Lorentz"
     url="http://banshee-project.org/"
-    defaultEnabled="true">
+    defaultEnabled="false">
 
   <Dependencies>
     <Addin id="Banshee.Services" version="1.0"/>
     <Addin id="Banshee.ThickClient" version="1.0"/>
-    <Service name="InterfaceActionService"/>
   </Dependencies>
 
   <Extension path="/Banshee/ServiceManager/Service">
-    <Service class="Banshee.CoverArt.CoverArtService"/>
+    <Service class="Banshee.MiniMode.MiniModeService"/>
   </Extension>
-
 
 </Addin>

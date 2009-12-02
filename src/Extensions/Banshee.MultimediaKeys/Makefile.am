@@ -5,10 +5,10 @@ INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES = Banshee.MultimediaKeys/MultimediaKeysService.cs 
 
-RESOURCES = Resources/Banshee.MultimediaKeys.addin.xml
+RESOURCES = Banshee.MultimediaKeys.addin.xml
 
 if ENABLE_GNOME
 include $(top_srcdir)/build/build.mk
 else
-EXTRA_DIST = $(SOURCES) $(RESOURCES)
+EXTRA_DIST = $(SOURCES) Banshee.MultimediaKeys.addin.xml.in
 endif
