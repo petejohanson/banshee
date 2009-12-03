@@ -784,6 +784,12 @@ namespace Hyena.Data.Gui
             }
         }
 
+        [Obsolete ("Use GetModelRowAt (x, y) instead.")]
+        protected int GetRowAtY (int y)
+        {
+            return GetModelRowAt (0, y);
+        }
+
         protected Cairo.PointD GetViewPointForModelRow (int row)
         {
             return LayoutStyle == DataViewLayoutStyle.Grid

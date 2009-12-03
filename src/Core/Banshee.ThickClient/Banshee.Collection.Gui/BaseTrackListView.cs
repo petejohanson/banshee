@@ -163,8 +163,8 @@ namespace Banshee.Collection.Gui
                 PlaylistSource playlist = ServiceManager.SourceManager.ActiveSource as PlaylistSource;
                 if (playlist != null) {
                     //Gtk.Drag.
-                    int row = GetRowAtY (y);
-                    if (row != GetRowAtY (y + RowHeight / 2)) {
+                    int row = GetModelRowAt (0, y);
+                    if (row != GetModelRowAt (0, y + RowHeight / 2)) {
                         row += 1;
                     }
 
