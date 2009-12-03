@@ -197,13 +197,13 @@ namespace Hyena.Data.Gui
         protected int GetDragRow (int y)
         {
             y = TranslateToListY (y);
-            int row = GetRowAtY (y);
+            int row = GetModelRowAt (0, y);
 
             if (row == -1) {
                 return -1;
             }
 
-            if (row != GetRowAtY (y + RowHeight / 2)) {
+            if (row != GetModelRowAt (0, y + RowHeight / 2)) {
                 row++;
             }
 

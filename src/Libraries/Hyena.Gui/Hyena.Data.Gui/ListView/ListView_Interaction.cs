@@ -141,7 +141,7 @@ namespace Hyena.Data.Gui
             }
 
             // Scroll if needed
-            double y_at_row = GetYAtRow (row_index);
+            double y_at_row = GetViewPointForModelRow (row_index).Y;
             if (align_y) {
                 if (y_at_row < VadjustmentValue) {
                     ScrollTo (y_at_row);
@@ -359,10 +359,17 @@ namespace Hyena.Data.Gui
             int page_offset = VadjustmentValue % RowHeight;
             y = (y + page_offset) % RowHeight;
 
-            icell_area.X = cached_column.X1 + Allocation.X;
-            icell_area.Y = (int)GetYAtRow (row_index) + list_interaction_alloc.Y + Allocation.Y;
-            icell_area.Width = cached_column.Width;
-            icell_area.Height = RowHeight;
+            var view_point = GetViewPointForModelRow (row_index);
+            icell_area.Y = (int)view_point.Y + list_interaction_alloc.Y + Allocation.Y;
+            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+                icell_area.X = (int)view_point.X + Allocation.X;
+                icell_area.Width = GridCellWidth;
+                icell_area.Height = GridCellHeight;
+            } else {
+                icell_area.X = cached_column.X1 + Allocation.X;
+                icell_area.Width = cached_column.Width;
+                icell_area.Height = RowHeight;
+            }
 
             // Send the cell a synthesized input event
             if (evnt_motion != null) {
@@ -387,7 +394,7 @@ namespace Hyena.Data.Gui
             x -= list_interaction_alloc.X;
             y -= list_interaction_alloc.Y;
 
-            row_index = GetRowAtY (y);
+            row_index = GetModelRowAt (x, y);
             if (row_index < 0 || row_index >= Model.Count) {
                 return false;
             }
@@ -467,11 +474,12 @@ namespace Hyena.Data.Gui
                 return true;
             }
 
+            int x = (int)evnt.X - list_interaction_alloc.X;
             int y = (int)evnt.Y - list_interaction_alloc.Y;
 
             GrabFocus ();
 
-            int row_index = GetRowAtY (y);
+            int row_index = GetModelRowAt (x, y);
 
             if (row_index < 0 || row_index >= Model.Count) {
                 Gtk.Drag.SourceUnset (this);
@@ -520,7 +528,7 @@ namespace Hyena.Data.Gui
                     }
                 }
 
-                FocusRow (row_index);
+                FocusModelRow (row_index);
 
                 // Now that we've worked out the selections, open the context menu
                 if (evnt.Button == 3) {
@@ -586,11 +594,12 @@ namespace Hyena.Data.Gui
                 return true;
             }
 
+            int x = (int)evnt.X - list_interaction_alloc.X;
             int y = (int)evnt.Y - list_interaction_alloc.Y;
 
             GrabFocus ();
 
-            int row_index = GetRowAtY (y);
+            int row_index = GetModelRowAt (x, y);
 
             if (row_index >= Model.Count) {
                 return true;
@@ -606,7 +615,7 @@ namespace Hyena.Data.Gui
                 if (Selection.Count > 1) {
                     Selection.Clear (false);
                     Selection.Select (row_index);
-                    FocusRow (row_index);
+                    FocusModelRow (row_index);
                     InvalidateList ();
                 }
             }
@@ -752,26 +761,37 @@ namespace Hyena.Data.Gui
             return false;
         }
 
-        protected int GetRowAtY (int y)
+        protected int GetModelRowAt (int x, int y)
         {
             if (y < 0) {
                 return -1;
             }
 
-            int page_offset = VadjustmentValue % RowHeight;
-            int first_row = VadjustmentValue / RowHeight;
-            int row_offset = (y + page_offset) / RowHeight;
-
-            return first_row + row_offset;
+            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+                int v_page_offset = VadjustmentValue % GridCellHeight;
+                int h_page_offset = HadjustmentValue % GridCellWidth;
+                int first_row = VadjustmentValue / GridCellHeight;
+                int first_col = HadjustmentValue / GridCellWidth;
+                int row_offset = (y + v_page_offset) / GridCellHeight;
+                int col_offset = Math.Min ((x + h_page_offset) / GridCellWidth, GridColumnsInView);
+                int model_row = ((first_row + row_offset) * GridColumnsInView) + first_col + col_offset;
+                return model_row;
+            } else {
+                int v_page_offset = VadjustmentValue % RowHeight;
+                int first_row = VadjustmentValue / RowHeight;
+                int row_offset = (y + v_page_offset) / RowHeight;
+                return first_row + row_offset;
+            }
         }
 
-        protected double GetYAtRow (int row)
+        protected Cairo.PointD GetViewPointForModelRow (int row)
         {
-            double y = (double)RowHeight * row;
-            return y;
+            return LayoutStyle == DataViewLayoutStyle.Grid
+                ? new Cairo.PointD (0, (double)RowHeight * row)
+                : new Cairo.PointD (0, (double)RowHeight * row);
         }
 
-        private void FocusRow (int index)
+        private void FocusModelRow (int index)
         {
             Selection.FocusedIndex = index;
         }
@@ -847,17 +867,17 @@ namespace Hyena.Data.Gui
 
         public void ScrollTo (int index)
         {
-            ScrollTo (GetYAtRow (index));
+            ScrollTo (GetViewPointForModelRow (index).Y);
         }
 
         public void CenterOn (int index)
         {
-            ScrollTo (index - RowsInView/2 + 1);
+            ScrollTo (index - RowsInView / 2 + 1);
         }
 
         public bool IsRowVisible (int index)
         {
-            double y = GetYAtRow (index);
+            double y = GetViewPointForModelRow (index).Y;
             return vadjustment.Value <= y && y < vadjustment.Value + vadjustment.PageSize;
         }
 
@@ -865,7 +885,7 @@ namespace Hyena.Data.Gui
         {
             if (Selection != null && Selection.Count > 0 && !Selection.AllSelected) {
                 bool selection_in_view = false;
-                int first_row = GetRowAtY (0);
+                int first_row = GetModelRowAt (0, 0);
                 for (int i = 0; i < RowsInView; i++) {
                     if (Selection.Contains (first_row + i)) {
                         selection_in_view = true;

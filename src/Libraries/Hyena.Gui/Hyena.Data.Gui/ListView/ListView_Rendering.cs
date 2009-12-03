@@ -455,7 +455,7 @@ namespace Hyena.Data.Gui
 
             int offset = list_rendering_alloc.Y - vadjustment_value % RowHeight;
             int first_model_row = (int)Math.Floor (vadjustment_value / (double)RowHeight) * columns_in_view;
-            int last_model_row = Math.Min (model.Count, first_model_row + rows_in_view * columns_in_view) - 1;
+            int last_model_row = Math.Min (model.Count, first_model_row + rows_in_view * columns_in_view);
 
             var grid_cell_alloc = new Rectangle () {
                 X = list_rendering_alloc.X,
@@ -464,8 +464,25 @@ namespace Hyena.Data.Gui
                 Height = GridCellHeight
             };
 
+            selected_rows.Clear ();
+
             for (int model_row_index = first_model_row, view_row_index = 0, view_column_index = 0;
-                model_row_index <= last_model_row; model_row_index++) {
+                model_row_index < last_model_row; model_row_index++) {
+
+                if (Selection != null && Selection.Contains (model_row_index)) {
+                    selected_rows.Add (model_row_index);
+
+                    var selection_color = Theme.Colors.GetWidgetColor (GtkColorClass.Background, StateType.Selected);
+                    if (!HasFocus || HeaderFocused) {
+                        selection_color = CairoExtensions.ColorShade (selection_color, 1.1);
+                    }
+
+                    Theme.DrawRowSelection (cairo_context,
+                        grid_cell_alloc.X, grid_cell_alloc.Y,
+                        grid_cell_alloc.Width, grid_cell_alloc.Height,
+                        true, true, selection_color, CairoCorners.All);
+                }
+
                 var item = model[model_row_index];
                 PaintCell (item, 0, model_row_index, grid_cell_alloc,
                     IsRowOpaque (item), IsRowBold (item), StateType.Normal, false);
