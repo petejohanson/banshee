@@ -806,7 +806,7 @@ namespace Hyena.Data.Gui
             if (vadjustment != null && model != null) {
                 vadjustment.Upper = LayoutStyle == DataViewLayoutStyle.List
                     ? RowHeight * model.Count
-                    : (RowHeight * model.Count) / GridColumnsInView;
+                    : (int)Math.Ceiling (model.Count / (double)GridColumnsInView) * RowHeight;
                 vadjustment.StepIncrement = RowHeight;
                 if (vadjustment.Value + vadjustment.PageSize > vadjustment.Upper) {
                     vadjustment.Value = vadjustment.Upper - vadjustment.PageSize;
