@@ -453,9 +453,9 @@ namespace Hyena.Data.Gui
                 columns_in_view * GridCellWidth) / columns_in_view);
             int vadjustment_value = VadjustmentValue;
 
-            int first_model_row = vadjustment_value / (row_height * columns_in_view);
-            int last_model_row = Math.Min (model.Count, first_model_row + rows_in_view * columns_in_view);
-            int offset = list_rendering_alloc.Y - vadjustment_value % row_height;
+            int offset = list_rendering_alloc.Y - vadjustment_value % RowHeight;
+            int first_model_row = (int)Math.Floor (vadjustment_value / (double)RowHeight) * columns_in_view;
+            int last_model_row = Math.Min (model.Count, first_model_row + rows_in_view * columns_in_view) - 1;
 
             var grid_cell_alloc = new Rectangle () {
                 X = list_rendering_alloc.X,
@@ -464,11 +464,8 @@ namespace Hyena.Data.Gui
                 Height = GridCellHeight
             };
 
-            Console.WriteLine ("FIRST = {0}, LAST = {1}", first_model_row, last_model_row);
-
             for (int model_row_index = first_model_row, view_row_index = 0, view_column_index = 0;
-                model_row_index < last_model_row; model_row_index++) {
-
+                model_row_index <= last_model_row; model_row_index++) {
                 var item = model[model_row_index];
                 PaintCell (item, 0, model_row_index, grid_cell_alloc,
                     IsRowOpaque (item), IsRowBold (item), StateType.Normal, false);

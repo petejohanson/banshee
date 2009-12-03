@@ -176,7 +176,7 @@ namespace Hyena.Data.Gui
         }
 
         protected int RowsInView {
-            get { return (int) Math.Ceiling ((list_rendering_alloc.Height + RowHeight) / (double) RowHeight); }
+            get { return (int)Math.Ceiling ((list_rendering_alloc.Height + RowHeight) / (double)RowHeight); }
         }
 
         protected int GridColumnsInView {
