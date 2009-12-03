@@ -47,6 +47,7 @@ namespace Banshee.Collection.Gui
     public class ArtworkManager : IService
     {
         private Dictionary<int, SurfaceCache> scale_caches  = new Dictionary<int, SurfaceCache> ();
+        private HashSet<int> cacheable_cover_sizes = new HashSet<int> ();
 
         private class SurfaceCache : LruCache<string, Cairo.ImageSurface>
         {
@@ -69,6 +70,11 @@ namespace Banshee.Collection.Gui
             } catch (Exception e) {
                 Log.Error ("Could not migrate old album artwork to new location.", e.Message, true);
             }
+
+            AddCachedSize (36);
+            AddCachedSize (48);
+            AddCachedSize (64);
+            AddCachedSize (300);
         }
 
         private void MigrateLegacyAlbumArt ()
@@ -201,14 +207,33 @@ namespace Banshee.Collection.Gui
                 try {
                     Pixbuf pixbuf = new Pixbuf (orig_path);
                     Pixbuf scaled_pixbuf = pixbuf.ScaleSimple (size, size, Gdk.InterpType.Bilinear);
-                    Directory.CreateDirectory (Path.GetDirectoryName (path));
-                    scaled_pixbuf.Save (path, "jpeg");
+
+                    if (IsCachedSize (size)) {
+                        Directory.CreateDirectory (Path.GetDirectoryName (path));
+                        scaled_pixbuf.Save (path, "jpeg");
+                    }
+
                     DisposePixbuf (pixbuf);
                     return scaled_pixbuf;
                 } catch {}
             }
 
             return null;
+        }
+
+        public void AddCachedSize (int size)
+        {
+            cacheable_cover_sizes.Add (size);
+        }
+
+        public bool IsCachedSize (int size)
+        {
+            return cacheable_cover_sizes.Contains (size);
+        }
+
+        public IEnumerable<int> CachedSizes ()
+        {
+            return cacheable_cover_sizes;
         }
 
         private static int dispose_count = 0;
