@@ -112,7 +112,7 @@ namespace Banshee.Podcasting.Gui
 
             Properties.SetString ("GtkActionPath", "/PodcastSourcePopup");
 
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", new PodcastSourceContents ());
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<PodcastSourceContents> ());
             Properties.Set<bool> ("Nereid.SourceContentsPropagate", true);
 
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
@@ -128,6 +128,8 @@ namespace Banshee.Podcasting.Gui
                       <column modify-default=""AlbumColumn"">
                         <title>{0}</title>
                         <long-title>{0}</long-title>
+                        <sort-key>PodcastTitle</sort-key>
+                        <renderer property=""ExternalObject.PodcastTitle""/>
                       </column>
                       <column>
                           <visible>true</visible>
@@ -193,9 +195,9 @@ namespace Banshee.Podcasting.Gui
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
         {
             PodcastFeedModel feed_model;
-            yield return feed_model = new PodcastFeedModel (src, src.DatabaseTrackModel, ServiceManager.DbConnection, String.Format ("PodcastFeeds-{0}", src.UniqueId));
             yield return new PodcastUnheardFilterModel (src.DatabaseTrackModel);
             yield return new DownloadStatusFilterModel (src.DatabaseTrackModel);
+            yield return feed_model = new PodcastFeedModel (src, src.DatabaseTrackModel, ServiceManager.DbConnection, String.Format ("PodcastFeeds-{0}", src.UniqueId));
 
             if (src == this) {
                 this.feed_model = feed_model;

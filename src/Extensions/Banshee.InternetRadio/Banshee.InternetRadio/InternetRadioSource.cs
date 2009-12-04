@@ -49,7 +49,6 @@ namespace Banshee.InternetRadio
 {
     public class InternetRadioSource : PrimarySource, IDisposable, IBasicPlaybackController
     {
-        private InternetRadioSourceContents source_contents;
         private uint ui_id;
 
         public InternetRadioSource () : base (Catalog.GetString ("Radio"), Catalog.GetString ("Radio"), "internet-radio", 220)
@@ -76,9 +75,8 @@ namespace Banshee.InternetRadio
 
             Properties.SetString ("GtkActionPath", "/InternetRadioContextMenu");
 
-            source_contents = new InternetRadioSourceContents ();
             Properties.Set<bool> ("Nereid.SourceContentsPropagate", true);
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", source_contents);
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<InternetRadioSourceContents> ());
 
             Properties.SetString ("TrackEditorActionLabel", Catalog.GetString ("Edit Station"));
             Properties.Set<InvokeHandler> ("TrackEditorActionHandler", delegate {

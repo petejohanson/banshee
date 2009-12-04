@@ -62,8 +62,6 @@ bp_slist_destroy (GSList *list)
     g_slist_free (list);
 }
 
-#ifdef HAVE_GST_PBUTILS
-
 static void
 bp_missing_elements_handle_install_failed (BansheePlayer *player)
 {
@@ -98,8 +96,6 @@ bp_missing_elements_handle_install_result (GstInstallPluginsReturn result, gpoin
     player->install_plugins_context = NULL;
 }
 
-#endif
-
 // ---------------------------------------------------------------------------
 // Internal Functions
 // ---------------------------------------------------------------------------
@@ -111,17 +107,14 @@ void _bp_missing_elements_destroy (BansheePlayer *player)
     bp_slist_destroy (player->missing_element_details);
     bp_slist_destroy (player->missing_element_details_handled);
     
-    #ifdef HAVE_GST_PBUTILS
     if (player->install_plugins_context != NULL) {
         gst_install_plugins_context_free (player->install_plugins_context);
     }
-    #endif
 }
 
 void
 _bp_missing_elements_process_message (BansheePlayer *player, GstMessage *message)
 {
-    #ifdef HAVE_GST_PBUTILS
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     g_return_if_fail (message != NULL);
     
@@ -142,13 +135,11 @@ _bp_missing_elements_process_message (BansheePlayer *player, GstMessage *message
         bp_debug ("Saving missing element details ('%s')", detail);
         player->missing_element_details = g_slist_append (player->missing_element_details, detail);  
     }
-    #endif
 }
 
 void
 _bp_missing_elements_handle_state_changed (BansheePlayer *player, GstState old, GstState new)
 {
-    #ifdef HAVE_GST_PBUTILS
     GstInstallPluginsReturn install_return;
     gchar **details;
     GSList *node;
@@ -201,6 +192,4 @@ _bp_missing_elements_handle_state_changed (BansheePlayer *player, GstState old, 
     g_slist_free (player->missing_element_details);
     player->missing_element_details = NULL;
     player->handle_missing_elements = FALSE;
-    
-    #endif
 }

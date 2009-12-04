@@ -461,6 +461,10 @@ namespace Banshee.Dap.Ipod
                     return;
                 }
 
+                if (track.Duration.Equals (TimeSpan.Zero)) {
+                    throw new Exception (Catalog.GetString ("Track duration is zero"));
+                }
+
                 IpodTrackInfo ipod_track = new IpodTrackInfo (track);
                 ipod_track.Uri = fromUri;
                 ipod_track.PrimarySource = this;

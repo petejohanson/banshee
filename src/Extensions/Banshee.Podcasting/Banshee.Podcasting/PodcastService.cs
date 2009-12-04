@@ -52,7 +52,7 @@ using Banshee.Configuration;
 
 namespace Banshee.Podcasting
 {
-    public partial class PodcastService : IExtensionService, IDisposable, IDelayedInitializeService
+    public partial class PodcastService : IExtensionService, IDisposable, IInitializeService
     {
         private readonly string tmp_download_path = Paths.Combine (Paths.ExtensionCacheRoot, "podcasting", "partial-downloads");
         private uint refresh_timeout_id = 0;
@@ -211,13 +211,16 @@ namespace Banshee.Podcasting
 
         public void Initialize ()
         {
+            ThreadAssist.SpawnFromMain (ThreadedInitialize);
         }
 
-        public void DelayedInitialize ()
+        private void ThreadedInitialize ()
         {
             download_manager = new DownloadManager (2, tmp_download_path);
-            download_manager_iface = new DownloadManagerInterface (download_manager);
-            download_manager_iface.Initialize ();
+            ThreadAssist.BlockingProxyToMain (delegate {
+                download_manager_iface = new DownloadManagerInterface (download_manager);
+                download_manager_iface.Initialize ();
+            });
 
             feeds_manager = new FeedsManager (ServiceManager.DbConnection, download_manager, null);
 
@@ -231,7 +234,8 @@ namespace Banshee.Podcasting
                 Hyena.Log.Exception ("Couldn't migrate podcast download cache", e);
             }
 
-            InitializeInterface ();
+            ThreadAssist.BlockingProxyToMain (InitializeInterface);
+
             feeds_manager.PodcastStorageDirectory = source.BaseDirectory;
             feeds_manager.FeedManager.ItemAdded += OnItemAdded;
             feeds_manager.FeedManager.ItemChanged += OnItemChanged;

@@ -81,11 +81,11 @@ namespace Banshee.Gui
                     Catalog.GetString ("Enter or leave fullscreen mode"), OnFullScreen, false),
             });
 
-            /*Add (new ToggleActionEntry [] {
+            Add (new ToggleActionEntry [] {
                 new ToggleActionEntry ("ShowCoverArtAction", null,
                     Catalog.GetString ("Show Cover _Art"), null,
                     Catalog.GetString ("Toggle display of album cover art"), null, false),
-            });*/
+            });
 
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.StateChange);
             OnFullScreen (null, EventArgs.Empty);

@@ -40,12 +40,14 @@ namespace Banshee.Podcasting.Gui
 {
     internal class PodcastFeedPropertiesDialog : Dialog
     {
+        private PodcastSource source;
         private Feed feed;
         private SyncPreferenceComboBox new_episode_option_combo;
         private Entry name_entry;
 
-        public PodcastFeedPropertiesDialog (Feed feed)
+        public PodcastFeedPropertiesDialog (PodcastSource source, Feed feed)
         {
+            this.source = source;
             this.feed = feed;
 
             Title = feed.Title;
@@ -216,9 +218,19 @@ namespace Banshee.Podcasting.Gui
             if (args.ResponseId == Gtk.ResponseType.Ok) {
                 FeedAutoDownload new_sync_pref = new_episode_option_combo.ActiveSyncPreference;
 
-                if (feed.AutoDownload != new_sync_pref || feed.Title != name_entry.Text) {
+                bool changed = false;
+                if (feed.AutoDownload != new_sync_pref) {
                     feed.AutoDownload = new_sync_pref;
+                    changed = true;
+                }
+
+                if (feed.Title != name_entry.Text) {
                     feed.Title = name_entry.Text;
+                    source.Reload ();
+                    changed = true;
+                }
+
+                if (changed) {
                     feed.Save ();
                 }
             }

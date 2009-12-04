@@ -92,6 +92,11 @@ namespace Banshee.Podcasting.Gui
                         PodcastItems.PubDate {0}", ascDesc);
                     break;
 
+                case "PodcastTitle":
+                    sort_query = String.Format (@"
+                        HYENA_COLLATION_KEY(PodcastSyndications.Title) {0}, PodcastItems.PubDate DESC", ascDesc);
+                    break;
+
                 case "IsNew":
                     sort_query = String.Format (@"
                         -PodcastItems.IsRead {0}, PodcastItems.PubDate DESC", ascDesc);

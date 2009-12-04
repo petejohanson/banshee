@@ -188,21 +188,25 @@ namespace Banshee.Sources
                 return true;
 
             // If it's the artist or album name, then we care, since it affects the browser
+            // FIXME this should be based on what filters (aka browsers) are active.  InternetRadio,
+            // for example, has only a Genre filter.
             if (field == Banshee.Query.BansheeQuery.ArtistField || field == Banshee.Query.BansheeQuery.AlbumField) {
                 return true;
             }
 
-            ISortableColumn sort_column = (TrackModel is DatabaseTrackListModel)
-                ? (TrackModel as DatabaseTrackListModel).SortColumn : null;
+            if (DatabaseTrackModel == null) {
+                Log.Error ("DatabaseTrackModel should not be null in DatabaseSource.NeedsReloadWhenFieldChanged");
+                return false;
+            }
 
             // If it's the field we're sorting by, then yes, we care
+            var sort_column = DatabaseTrackModel.SortColumn;
             if (sort_column != null && sort_column.Field == field) {
                 return true;
             }
 
             // Make sure the query isn't dependent on this field
-            QueryNode query = (TrackModel is DatabaseTrackListModel)
-                ? (TrackModel as DatabaseTrackListModel).Query : null;
+            QueryNode query = DatabaseTrackModel.Query;
             if (query != null) {
                 if (query != last_query) {
                     query_fields = new List<QueryField> (query.GetFields ());

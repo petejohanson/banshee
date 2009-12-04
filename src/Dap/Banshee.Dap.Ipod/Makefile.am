@@ -29,6 +29,6 @@ uninstall-hook:
 	done;
 
 else
-EXTRA_DIST = $(SOURCES) $(RESOURCES)
+EXTRA_DIST = $(SOURCES) Banshee.Dap.Ipod.addin.xml.in
 endif
 

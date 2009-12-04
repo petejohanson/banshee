@@ -33,6 +33,13 @@ OUTPUT_FILES = \
 	$(ASSEMBLY_FILE) \
 	$(ASSEMBLY_FILE).mdb
 
+# If there are any files ending in .addin.xml.in, pull translations out of them
+ADDIN_XML_IN_EXPANDED = $(wildcard $(srcdir)/*.addin.xml.in)
+addin_xml_in_files = $(subst $(srcdir)/, , $(ADDIN_XML_IN_EXPANDED))
+addin_xmldir = $(srcdir)
+ADDIN_XML_CLEAN = $(shell if [ ! "x$(addin_xml_in_files)" = "x" ]; then echo "*.addin.xml"; else echo ""; fi)
+@INTLTOOL_XML_NOMERGE_RULE@
+
 moduledir = $(INSTALL_DIR_RESOLVED)
 module_SCRIPTS = $(OUTPUT_FILES)
 
@@ -78,9 +85,9 @@ install-data-local: $(THEME_ICONS_SOURCE)
 uninstall-local: $(THEME_ICONS_SOURCE)
 	@$(INSTALL_ICONS) -u "$(DESTDIR)$(pkgdatadir)" "$(srcdir)" $(THEME_ICONS_RELATIVE)
 
-EXTRA_DIST = $(SOURCES_BUILD) $(RESOURCES_EXPANDED) $(THEME_ICONS_SOURCE)
+EXTRA_DIST = $(SOURCES_BUILD) $(RESOURCES_EXPANDED) $(THEME_ICONS_SOURCE) $(ADDIN_XML_IN_EXPANDED)
 
 CLEANFILES = $(OUTPUT_FILES)
-DISTCLEANFILES = *.pidb
+DISTCLEANFILES = *.pidb $(ADDIN_XML_CLEAN)
 MAINTAINERCLEANFILES = Makefile.in
 

@@ -64,6 +64,8 @@ namespace Nereid
         private HBox footer_toolbar;
         private HPaned views_pane;
         private ViewContainer view_container;
+        private VBox source_box;
+        private CoverArtDisplay cover_art_display;
 
         // Major Interaction Components
         private SourceView source_view;
@@ -177,7 +179,7 @@ namespace Nereid
 
         private void BuildViews ()
         {
-            VBox source_box = new VBox ();
+            source_box = new VBox ();
 
             views_pane = new HPaned ();
             PersistentPaneController.Control (views_pane, SourceViewWidth);
@@ -195,6 +197,8 @@ namespace Nereid
             source_box.PackStart (source_scroll, true, true, 0);
             source_box.PackStart (new UserJobTileHost (), false, false, 0);
 
+            UpdateCoverArtDisplay ();
+
             source_view.SetSizeRequest (125, -1);
             view_container.SetSizeRequest (425, -1);
 
@@ -206,6 +210,30 @@ namespace Nereid
             views_pane.Show ();
 
             primary_vbox.PackStart (views_pane, true, true, 0);
+        }
+
+        private void UpdateCoverArtDisplay ()
+        {
+            if (ShowCoverArt.Get ()) {
+                if (cover_art_display == null && source_box != null) {
+                    cover_art_display = new CoverArtDisplay () { Visible = true };
+                    source_box.SizeAllocated += OnSourceBoxSizeAllocated;
+                    cover_art_display.HeightRequest = SourceViewWidth.Get ();
+                    source_box.PackStart (cover_art_display, false, false, 0);
+                    source_box.ShowAll ();
+                }
+            } else if (cover_art_display != null) {
+                cover_art_display.Hide ();
+                source_box.Remove (cover_art_display);
+                source_box.SizeAllocated -= OnSourceBoxSizeAllocated;
+                cover_art_display.Dispose ();
+                cover_art_display = null;
+            }
+        }
+
+        private void OnSourceBoxSizeAllocated (object o, EventArgs args)
+        {
+            cover_art_display.HeightRequest = source_box.Allocation.Width;
         }
 
         private void BuildFooter ()
@@ -262,6 +290,12 @@ namespace Nereid
 
             ActionService.TrackActions ["SearchForSameArtistAction"].Activated += OnProgrammaticSearch;
             ActionService.TrackActions ["SearchForSameAlbumAction"].Activated += OnProgrammaticSearch;
+
+            (ActionService.ViewActions ["ShowCoverArtAction"] as Gtk.ToggleAction).Active = ShowCoverArt.Get ();
+            ActionService.ViewActions ["ShowCoverArtAction"].Activated += (o, a) => {
+                ShowCoverArt.Set ((o as Gtk.ToggleAction).Active);
+                UpdateCoverArtDisplay ();
+            };
 
             // UI events
             view_container.SearchEntry.Changed += OnSearchEntryChanged;
@@ -569,7 +603,7 @@ namespace Nereid
 
         public static readonly SchemaEntry<bool> ShowCoverArt = new SchemaEntry<bool> (
             "player_window", "show_cover_art",
-            true,
+            false,
             "Show cover art",
             "Show cover art below source view if available"
         );
