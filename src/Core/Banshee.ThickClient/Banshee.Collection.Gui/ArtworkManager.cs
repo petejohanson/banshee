@@ -189,7 +189,7 @@ namespace Banshee.Collection.Gui
                         Directory.Create (System.IO.Path.GetDirectoryName (path));
                         scaled_pixbuf.Save (path, "jpeg");
                     } else {
-                        Log.InformationFormat ("Uncached artwork size {0} requested from {1}", size, System.Environment.StackTrace);
+                        Log.InformationFormat ("Uncached artwork size {0} requested", size);
                     }
 
                     DisposePixbuf (pixbuf);
