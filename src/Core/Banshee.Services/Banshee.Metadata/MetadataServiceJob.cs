@@ -101,6 +101,8 @@ namespace Banshee.Metadata
                    Hyena.Log.Exception (e);
                 }
             }
+
+            service.OnHaveResult (this);
         }
 
         public virtual IBasicTrackInfo Track {

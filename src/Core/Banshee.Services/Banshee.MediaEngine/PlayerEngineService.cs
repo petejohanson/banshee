@@ -184,7 +184,7 @@ namespace Banshee.MediaEngine
 
         private void OnMetadataServiceHaveResult (object o, MetadataLookupResultArgs args)
         {
-            if (CurrentTrack != null && args.Track == CurrentTrack) {
+            if (CurrentTrack != null && CurrentTrack.TrackEqual (args.Track as TrackInfo)) {
                 foreach (StreamTag tag in args.ResultTags) {
                     StreamTagger.TrackInfoMerge (CurrentTrack, tag);
                 }
