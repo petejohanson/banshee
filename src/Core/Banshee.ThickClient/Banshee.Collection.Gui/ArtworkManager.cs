@@ -79,52 +79,6 @@ namespace Banshee.Collection.Gui
             }
         }
 
-        const int CUR_VERSION = 2;
-        private void MigrateCacheDir ()
-        {
-            int version = CacheVersion;
-            if (version == CUR_VERSION) {
-                return;
-            }
-
-            var root_path = CoverArtSpec.RootPath;
-
-            if (version < 1) {
-                string legacy_artwork_path = Paths.Combine (Paths.LegacyApplicationData, "covers");
-
-                if (!Directory.Exists (root_path)) {
-                    Directory.Create (CoverArtSpec.RootPath);
-
-                    if (Directory.Exists (legacy_artwork_path)) {
-                        Directory.Move (new SafeUri (legacy_artwork_path), new SafeUri (root_path));
-                    }
-                }
-
-                if (Directory.Exists (legacy_artwork_path)) {
-                    Log.InformationFormat ("Deleting old (Banshee < 1.0) artwork cache directory {0}", legacy_artwork_path);
-                    Directory.Delete (legacy_artwork_path, true);
-                }
-            }
-
-            if (version < 2) {
-                int deleted = 0;
-                foreach (string dir in Directory.GetDirectories (root_path)) {
-                    int size;
-                    string dirname = System.IO.Path.GetFileName (dir);
-                    if (Int32.TryParse (dirname, out size) && !IsCachedSize (size)) {
-                        Directory.Delete (dir, true);
-                        deleted++;
-                    }
-                }
-
-                if (deleted > 0) {
-                    Log.InformationFormat ("Deleted {0} extraneous album-art cache directories", deleted);
-                }
-            }
-
-            CacheVersion = CUR_VERSION;
-        }
-
         public Cairo.ImageSurface LookupSurface (string id)
         {
             return LookupScaleSurface (id, 0);
@@ -282,6 +236,54 @@ namespace Banshee.Collection.Gui
             get { return "ArtworkManager"; }
         }
 
+#region Cache Directory Versioning/Migration
+
+        private const int CUR_VERSION = 2;
+        private void MigrateCacheDir ()
+        {
+            int version = CacheVersion;
+            if (version == CUR_VERSION) {
+                return;
+            }
+
+            var root_path = CoverArtSpec.RootPath;
+
+            if (version < 1) {
+                string legacy_artwork_path = Paths.Combine (Paths.LegacyApplicationData, "covers");
+
+                if (!Directory.Exists (root_path)) {
+                    Directory.Create (CoverArtSpec.RootPath);
+
+                    if (Directory.Exists (legacy_artwork_path)) {
+                        Directory.Move (new SafeUri (legacy_artwork_path), new SafeUri (root_path));
+                    }
+                }
+
+                if (Directory.Exists (legacy_artwork_path)) {
+                    Log.InformationFormat ("Deleting old (Banshee < 1.0) artwork cache directory {0}", legacy_artwork_path);
+                    Directory.Delete (legacy_artwork_path, true);
+                }
+            }
+
+            if (version < 2) {
+                int deleted = 0;
+                foreach (string dir in Directory.GetDirectories (root_path)) {
+                    int size;
+                    string dirname = System.IO.Path.GetFileName (dir);
+                    if (Int32.TryParse (dirname, out size) && !IsCachedSize (size)) {
+                        Directory.Delete (dir, true);
+                        deleted++;
+                    }
+                }
+
+                if (deleted > 0) {
+                    Log.InformationFormat ("Deleted {0} extraneous album-art cache directories", deleted);
+                }
+            }
+
+            CacheVersion = CUR_VERSION;
+        }
+
         private static SafeUri cache_version_file = new SafeUri (Paths.Combine (CoverArtSpec.RootPath, ".cache_version"));
         private static int CacheVersion {
             get {
@@ -302,6 +304,8 @@ namespace Banshee.Collection.Gui
                 }
             }
         }
+
+#endregion
 
     }
 }
