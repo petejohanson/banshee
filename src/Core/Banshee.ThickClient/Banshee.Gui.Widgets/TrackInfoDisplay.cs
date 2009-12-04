@@ -318,7 +318,7 @@ namespace Banshee.Gui.Widgets
         }
 
         protected virtual int MissingIconSizeRequest {
-            get { return 32; }
+            get { return ArtworkSizeRequest; }
         }
 
         private void OnPlayerEvent (PlayerEventArgs args)
