@@ -140,7 +140,7 @@ namespace Hyena.Data.Sqlite
             } else {
                 select_str = String.Format (
                     @"SELECT {0}, OrderID, {2}.ItemID FROM {1}
-                        INNER JOIN {2} 
+                        INNER JOIN {2}
                             ON {3} = {2}.ItemID
                         WHERE
                             {2}.ModelID = {4} {5} {6}",
@@ -260,7 +260,7 @@ namespace Hyena.Data.Sqlite
                         return target_id - FirstOrderId;
                     }
                 }
- 
+
                 return -1;
             }
         }

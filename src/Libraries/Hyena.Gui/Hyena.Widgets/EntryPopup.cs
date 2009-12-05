@@ -75,7 +75,7 @@ namespace Hyena.Widgets
             };
 
             text_entry.KeyReleaseEvent += delegate (object o, KeyReleaseEventArgs args) {
-                if (args.Event.Key == Gdk.Key.Escape || 
+                if (args.Event.Key == Gdk.Key.Escape ||
                     args.Event.Key == Gdk.Key.Return ||
                     args.Event.Key == Gdk.Key.Tab) {
 

@@ -52,7 +52,7 @@ namespace Banshee.Collection.Gui
         private QueryFieldSet last_query_fields = null;
 
         private QueryNode last_query = null;
-        public QueryNode LastQuery { 
+        public QueryNode LastQuery {
             get { return last_query; }
         }
 
@@ -164,7 +164,7 @@ namespace Banshee.Collection.Gui
 
             popup.Realize ();
 
-            Gdk.Window widget_window = EventWindow; 
+            Gdk.Window widget_window = EventWindow;
             Gdk.Screen widget_screen = widget_window.Screen;
 
             Gtk.Requisition popup_req;
@@ -184,7 +184,7 @@ namespace Banshee.Collection.Gui
 
             if (widget_y + widget_height + popup_req.Height > widget_screen.Height) {
                 y = widget_screen.Height - popup_req.Height;
-            } else if (widget_y + widget_height < 0) { 
+            } else if (widget_y + widget_height < 0) {
                 y = 0;
             } else {
                 y = widget_y + widget_height;
@@ -195,7 +195,7 @@ namespace Banshee.Collection.Gui
 
         private bool IsCharValid (char c)
         {
-            return Char.IsLetterOrDigit (c) || 
+            return Char.IsLetterOrDigit (c) ||
                 Char.IsPunctuation (c) ||
                 Char.IsSymbol (c);
         }
