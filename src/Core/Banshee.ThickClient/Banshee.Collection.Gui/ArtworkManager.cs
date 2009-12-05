@@ -200,6 +200,22 @@ namespace Banshee.Collection.Gui
             return null;
         }
 
+        public void ClearCacheFor (string id)
+        {
+            // Clear from the in-memory cache
+            foreach (int size in scale_caches.Keys) {
+                scale_caches[size].Remove (id);
+            }
+
+            // And delete from disk
+            foreach (int size in CachedSizes ()) {
+                var uri = new SafeUri (CoverArtSpec.GetPathForSize (id, size));
+                if (File.Exists (uri)) {
+                    File.Delete (uri);
+                }
+            }
+        }
+
         public void AddCachedSize (int size)
         {
             cacheable_cover_sizes.Add (size);

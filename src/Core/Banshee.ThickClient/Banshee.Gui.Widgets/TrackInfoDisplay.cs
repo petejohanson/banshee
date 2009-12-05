@@ -135,7 +135,7 @@ namespace Banshee.Gui.Widgets
             return CoverArtEditor.For (display,
                 (x, y) => display.IsWithinCoverart (x, y),
                 () => display.CurrentTrack,
-                () => display.LoadImage (display.CurrentTrack, false, true)
+                () => {}
             );
         }
 
@@ -191,7 +191,7 @@ namespace Banshee.Gui.Widgets
             if (current_track == null) {
                 LoadCurrentTrack ();
             } else {
-                LoadImage (current_track, false, true);
+                LoadImage (current_track, true);
             }
         }
 
@@ -399,17 +399,17 @@ namespace Banshee.Gui.Widgets
 
             incoming_track = track;
 
-            LoadImage (track, force_reload, false);
+            LoadImage (track, force_reload);
 
             if (stage.Actor == null) {
                 stage.Reset ();
             }
         }
 
-        private void LoadImage (TrackInfo track, bool track_updated, bool force)
+        private void LoadImage (TrackInfo track, bool force)
         {
             string artwork_id = track.ArtworkId;
-            if (current_artwork_id != artwork_id || force || (track_updated && IsMissingImage (current_image))) {
+            if (current_artwork_id != artwork_id || force) {
                 current_artwork_id = artwork_id;
                 incoming_image = artwork_manager.LookupScaleSurface (artwork_id, ArtworkSizeRequest);
             }

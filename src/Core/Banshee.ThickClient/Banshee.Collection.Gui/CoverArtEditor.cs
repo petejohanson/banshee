@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 using Mono.Unix;
@@ -53,31 +54,134 @@ namespace Banshee.Collection.Gui
     {
         public static Widget For (Widget widget, Func<int, int, bool> is_sensitive, Func<TrackInfo> get_track, System.Action on_updated)
         {
-            var box = new EventBox ();
-            box.Child = widget;
-
-            Gtk.Drag.SourceSet (box, Gdk.ModifierType.Button1Mask, new TargetEntry [] { DragDropTarget.UriList }, Gdk.DragAction.Copy | Gdk.DragAction.Move);
-            box.DragDataGet += (o, a) => {
-                var uri = GetCoverArtPath (get_track ());
-                if (uri != null) {
-                    a.SelectionData.Set (Gdk.Atom.Intern (DragDropTarget.UriList.Target, false), 8, System.Text.Encoding.UTF8.GetBytes (uri));
-                    a.RetVal = true;
-                }
+            return new EditorBox (widget) {
+                IsSensitive = is_sensitive,
+                GetTrack = get_track,
+                OnUpdated = on_updated
             };
-
-            return box;
         }
 
-        private static string GetCoverArtPath (TrackInfo track)
+        private class EditorBox : EventBox
         {
-            if (track != null) {
-                var uri = new SafeUri (CoverArtSpec.GetPath (track.ArtworkId));
-                if (Banshee.IO.File.Exists (uri)) {
-                    return uri.AbsoluteUri;
+            public Func<int, int, bool> IsSensitive;
+            public Func<TrackInfo> GetTrack;
+            public System.Action OnUpdated;
+
+            public EditorBox (Widget child)
+            {
+                Child = child;
+
+                ButtonPressEvent += (o, a) => {
+                    if (a.Event.Button == 3 && IsSensitive ((int)a.Event.X, (int)a.Event.Y)) {
+                        var menu = new Menu ();
+
+                        var choose = new MenuItem (Catalog.GetString ("Choose New Cover Art..."));
+                        choose.Activated += delegate {
+                            var track = GetTrack ();
+                            if (track != null) {
+                                var dialog = new Banshee.Gui.Dialogs.ImageFileChooserDialog ();
+                                var resp = dialog.Run ();
+                                string filename = dialog.Filename;
+                                dialog.Destroy ();
+                                if (resp == (int)Gtk.ResponseType.Ok) {
+                                    SetCoverArt (track, filename);
+                                }
+                            }
+                        };
+
+                        var delete = new MenuItem (Catalog.GetString ("Delete This Cover Art"));
+                        delete.Activated += delegate {
+                            var track = GetTrack ();
+                            if (track != null) {
+                                DeleteCoverArt (track);
+                                NotifyUpdated (track);
+                            }
+                        };
+
+                        var uri = GetCoverArtPath (GetTrack ());
+                        choose.Sensitive = uri != null;
+                        if (uri == null || !Banshee.IO.File.Exists (uri)) {
+                            delete.Sensitive = false;
+                        }
+
+                        menu.Append (choose);
+                        menu.Append (delete);
+                        menu.ShowAll ();
+                        menu.Popup ();
+                    }
+                };
+
+                Gtk.Drag.SourceSet (this, Gdk.ModifierType.Button1Mask, new TargetEntry [] { DragDropTarget.UriList }, Gdk.DragAction.Copy | Gdk.DragAction.Move);
+                DragDataGet += (o, a) => {
+                    var uri = GetCoverArtPath (GetTrack ());
+                    if (uri != null) {
+                        if (Banshee.IO.File.Exists (uri)) {
+                            a.SelectionData.Set (
+                                Gdk.Atom.Intern (DragDropTarget.UriList.Target, false), 8,
+                                Encoding.UTF8.GetBytes (uri.AbsoluteUri)
+                            );
+                        }
+                    }
+                };
+
+                Gtk.Drag.DestSet (this, Gtk.DestDefaults.All, new TargetEntry [] { DragDropTarget.UriList }, Gdk.DragAction.Copy);
+                DragDataReceived += (o, a) => {
+                    SetCoverArt (GetTrack (), Encoding.UTF8.GetString (a.SelectionData.Data));
+                };
+            }
+
+            private void SetCoverArt (TrackInfo track, string path)
+            {
+                if (track == null)
+                    return;
+
+                var from_uri = new SafeUri (new System.Uri (path));
+
+                var to_uri = new SafeUri (CoverArtSpec.GetPathForNewFile (track.ArtworkId, from_uri.AbsoluteUri));
+                if (to_uri != null) {
+                    // Make sure the incoming file exists
+                    if (!Banshee.IO.File.Exists (from_uri)) {
+                        Hyena.Log.WarningFormat ("New cover art file not found: {0}", path);
+                        return;
+                    }
+
+                    DeleteCoverArt (track);
+                    Banshee.IO.File.Copy (from_uri, to_uri, true);
+                    NotifyUpdated (track);
+
+                    Hyena.Log.DebugFormat ("Got new cover art file for {0}: {1}", track.DisplayAlbumTitle, path);
                 }
             }
 
-            return null;
+            private void NotifyUpdated (TrackInfo track)
+            {
+                var cur = ServiceManager.PlayerEngine.CurrentTrack;
+                if (cur != null && cur.TrackEqual (track)) {
+                    ServiceManager.PlayerEngine.TrackInfoUpdated ();
+                }
+
+                OnUpdated ();
+            }
+
+            private void DeleteCoverArt (TrackInfo track)
+            {
+                if (track != null) {
+                    var uri = new SafeUri (CoverArtSpec.GetPath (track.ArtworkId));
+                    if (Banshee.IO.File.Exists (uri)) {
+                        Banshee.IO.File.Delete (uri);
+                    }
+                    ServiceManager.Get<ArtworkManager> ().ClearCacheFor (track.ArtworkId);
+                }
+            }
+
+            private SafeUri GetCoverArtPath (TrackInfo track)
+            {
+                if (track != null) {
+                    return new SafeUri (CoverArtSpec.GetPath (track.ArtworkId));
+                }
+
+                return null;
+            }
         }
     }
 }

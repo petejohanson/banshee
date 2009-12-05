@@ -36,6 +36,7 @@ using Gtk;
 using Hyena.Gui;
 using Hyena.Widgets;
 
+using Banshee.Base;
 using Banshee.Kernel;
 using Banshee.Sources;
 using Banshee.ServiceStack;
@@ -158,7 +159,7 @@ namespace Banshee.Gui.TrackEditor
                 CoverArtEditor.For (header_image,
                     (x, y) => true,
                     () => CurrentTrack,
-                    () => { LoadCoverArt (CurrentTrack); }
+                    () => LoadCoverArt (CurrentTrack)
                 )
             );
 
@@ -419,9 +420,12 @@ namespace Banshee.Gui.TrackEditor
             if (current_track == null)
                 return;
 
-            ArtworkManager artwork = ServiceManager.Get<ArtworkManager> ();
-            Gdk.Pixbuf cover_art = artwork.LookupScalePixbuf (current_track.ArtworkId, 64);
+            var artwork = ServiceManager.Get<ArtworkManager> ();
+            var cover_art = artwork.LookupScalePixbuf (current_track.ArtworkId, 64);
+
+            header_image.Clear ();
             header_image.Pixbuf = cover_art;
+
             if (cover_art == null) {
                 header_image.IconName = "media-optical";
                 header_image.PixelSize = 64;
@@ -429,6 +433,8 @@ namespace Banshee.Gui.TrackEditor
             } else {
                 header_image_frame.ShadowType = ShadowType.In;
             }
+
+            header_image.QueueDraw ();
         }
 
         public void ForeachNonCurrentTrack (EditorTrackOperationClosure closure)
