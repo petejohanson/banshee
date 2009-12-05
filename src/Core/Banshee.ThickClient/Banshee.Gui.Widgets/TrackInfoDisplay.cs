@@ -123,6 +123,25 @@ namespace Banshee.Gui.Widgets
                 PlayerEvent.StateChange);
 
             WidgetFlags |= WidgetFlags.NoWindow;
+
+            Events |= Gdk.EventMask.ButtonPressMask;
+
+            ButtonPressEvent += (o, a) => { ShowPopupMenu (); };
+            PopupMenu += (o, a) => { ShowPopupMenu (); };
+        }
+
+        public static Widget GetEditable (TrackInfoDisplay display)
+        {
+            return CoverArtEditor.For (display,
+                (x, y) => display.IsWithinCoverart (x, y),
+                () => display.CurrentTrack,
+                () => display.LoadImage (display.CurrentTrack, false, true)
+            );
+        }
+
+        private void ShowPopupMenu ()
+        {
+            Console.WriteLine ("Context menu for track info display!");
         }
 
         public override void Dispose ()
@@ -300,6 +319,12 @@ namespace Banshee.Gui.Widgets
                 ArtworkSizeRequest, ArtworkSizeRequest,
                 !IsMissingImage (image), 0,
                 IsMissingImage (image), BackgroundColor);
+        }
+
+        protected virtual bool IsWithinCoverart (int x, int y)
+        {
+            return x >= Allocation.X && y >= Allocation.Y &&
+                x <= (Allocation.X + ArtworkSizeRequest) && y <= (Allocation.Y + ArtworkSizeRequest);
         }
 
         protected bool IsMissingImage (ImageSurface pb)

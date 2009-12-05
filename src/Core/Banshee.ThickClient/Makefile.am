@@ -25,6 +25,7 @@ SOURCES =  \
 	Banshee.Collection.Gui/ColumnCellTrack.cs \
 	Banshee.Collection.Gui/ColumnCellTrackAndCount.cs \
 	Banshee.Collection.Gui/ColumnCellTrackNumber.cs \
+	Banshee.Collection.Gui/CoverArtEditor.cs \
 	Banshee.Collection.Gui/DefaultColumnController.cs \
 	Banshee.Collection.Gui/PersistentColumnController.cs \
 	Banshee.Collection.Gui/QueryFilterView.cs \
