@@ -193,17 +193,24 @@ namespace Banshee.Collection.Gui
             popup.Move (x, y);
         }
 
-        private bool IsCharValid (char c)
+        /*private bool IsCharValid (char c)
         {
             return Char.IsLetterOrDigit (c) ||
                 Char.IsPunctuation (c) ||
                 Char.IsSymbol (c);
-        }
+        }*/
 
         protected override bool OnKeyPressEvent (Gdk.EventKey press)
         {
-            char input = Convert.ToChar (Gdk.Keyval.ToUnicode (press.KeyValue));
+            // TODO this pops it up whenever any key is pressed, like a normal TreeView.
+            // But, Banshee has single-char keybindings, so for now at least, require
+            // ? (== shift / on US keyboards, at least) to be pressed.
+            /*char input = Convert.ToChar (Gdk.Keyval.ToUnicode (press.KeyValue));
             if (!IsCharValid (input) || Model as ISelectable == null) {
+                return base.OnKeyPressEvent (press);
+            }*/
+
+            if (press.Key != Gdk.Key.question) {
                 return base.OnKeyPressEvent (press);
             }
 
@@ -220,7 +227,7 @@ namespace Banshee.Collection.Gui
             PositionPopup (search_popup);
             search_popup.HasFocus = true;
             search_popup.Show ();
-            search_popup.Text = String.Format ("{0}{1}", search_popup.Text, input);
+            search_popup.Text = String.Format ("{0}{1}", search_popup.Text, "");//input);
             search_popup.Entry.Position = search_popup.Text.Length;
             return true;
         }
@@ -240,18 +247,19 @@ namespace Banshee.Collection.Gui
                     break;
                 case Gdk.Key.g:
                 case Gdk.Key.G:
-                    if ((press.State & Gdk.ModifierType.ControlMask) != 0 &&
-                        (press.State & Gdk.ModifierType.ShiftMask) != 0) {
-                        search_backward = true;
-                    } else if ((press.State & Gdk.ModifierType.ControlMask) != 0) {
-                        search_forward = true;
+                    if ((press.State & Gdk.ModifierType.ControlMask) != 0) {
+                        if ((press.State & Gdk.ModifierType.ShiftMask) != 0) {
+                            search_backward = true;
+                        } else {
+                            search_forward = true;
+                        }
                     }
                     break;
                 case Gdk.Key.F3:
                 case Gdk.Key.KP_F3:
                     if ((press.State & Gdk.ModifierType.ShiftMask) != 0) {
                         search_backward = true;
-                    } else if (press.State == Gdk.ModifierType.None) {
+                    } else {
                         search_forward = true;
                     }
                     break;
@@ -270,6 +278,8 @@ namespace Banshee.Collection.Gui
                 search_offset = search_offset == 0 ? 0 : search_offset - 1;
                 PerformSearch (search_popup.Text);
             }
+
+            args.RetVal = search_forward || search_backward;
         }
     }
 }
