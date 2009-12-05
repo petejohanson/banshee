@@ -98,7 +98,7 @@ namespace Banshee.InternetArchive
                 Properties.Set<Gtk.Widget> ("Nereid.SourceContents.HeaderWidget", header_widget);
             }
 
-            Properties.Set<Gtk.Widget> ("Nereid.SourceContents", new SearchView (this));
+            Properties.Set<Banshee.Sources.Gui.ISourceContents> ("Nereid.SourceContents", new Banshee.Sources.Gui.LazyLoadSourceContents<SearchView> (this));
         }
 
         public void SetSearch (SearchDescription settings)

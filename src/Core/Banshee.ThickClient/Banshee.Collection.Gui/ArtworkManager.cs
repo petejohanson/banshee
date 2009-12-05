@@ -27,7 +27,6 @@
 //
 
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -40,6 +39,7 @@ using Hyena.Gui;
 using Hyena.Collections;
 
 using Banshee.Base;
+using Banshee.IO;
 using Banshee.ServiceStack;
 
 namespace Banshee.Collection.Gui
@@ -47,13 +47,14 @@ namespace Banshee.Collection.Gui
     public class ArtworkManager : IService
     {
         private Dictionary<int, SurfaceCache> scale_caches  = new Dictionary<int, SurfaceCache> ();
-            
+        private HashSet<int> cacheable_cover_sizes = new HashSet<int> ();
+
         private class SurfaceCache : LruCache<string, Cairo.ImageSurface>
         {
             public SurfaceCache (int max_items) : base (max_items)
             {
             }
-        
+
             protected override void ExpireItem (Cairo.ImageSurface item)
             {
                 if (item != null) {
@@ -61,102 +62,84 @@ namespace Banshee.Collection.Gui
                 }
             }
         }
-    
+
         public ArtworkManager ()
         {
+            AddCachedSize (36);
+            AddCachedSize (40);
+            AddCachedSize (42);
+            AddCachedSize (48);
+            AddCachedSize (64);
+            AddCachedSize (300);
+
             try {
-                MigrateLegacyAlbumArt ();
+                MigrateCacheDir ();
             } catch (Exception e) {
-                Log.Error ("Could not migrate old album artwork to new location.", e.Message, true);
+                Log.Exception ("Could not migrate album artwork cache directory", e);
             }
         }
-        
-        private void MigrateLegacyAlbumArt ()
-        {
-            if (Directory.Exists (CoverArtSpec.RootPath)) {
-                return;
-            }
-            
-            // FIXME: Replace with Directory.Move for release
-            
-            Directory.CreateDirectory (CoverArtSpec.RootPath);
-            
-            string legacy_artwork_path = Path.Combine (Paths.LegacyApplicationData, "covers");
-            int artwork_count = 0;
-            
-            if (Directory.Exists (legacy_artwork_path)) {
-                foreach (string path in Directory.GetFiles (legacy_artwork_path)) {
-                    string dest_path = Path.Combine (CoverArtSpec.RootPath, Path.GetFileName (path));
-                        
-                    File.Copy (path, dest_path);
-                    artwork_count++;
-                }
-            }
-            
-            Log.Debug (String.Format ("Migrated {0} album art images.", artwork_count));
-        }
-        
+
         public Cairo.ImageSurface LookupSurface (string id)
         {
             return LookupScaleSurface (id, 0);
         }
-        
+
         public Cairo.ImageSurface LookupScaleSurface (string id, int size)
         {
             return LookupScaleSurface (id, size, false);
         }
-        
+
         public Cairo.ImageSurface LookupScaleSurface (string id, int size, bool useCache)
         {
             SurfaceCache cache = null;
             Cairo.ImageSurface surface = null;
-            
+
             if (id == null) {
                 return null;
             }
-            
+
             if (useCache && scale_caches.TryGetValue (size, out cache) && cache.TryGetValue (id, out surface)) {
                 return surface;
             }
-        
+
             Pixbuf pixbuf = LookupScalePixbuf (id, size);
             if (pixbuf == null || pixbuf.Handle == IntPtr.Zero) {
                 return null;
             }
-            
+
             try {
                 surface = PixbufImageSurface.Create (pixbuf);
                 if (surface == null) {
                     return null;
                 }
-                
+
                 if (!useCache) {
                     return surface;
                 }
-                
+
                 if (cache == null) {
                     int bytes = 4 * size * size;
                     int max = (1 << 20) / bytes;
-                    
-                    Log.DebugFormat ("Creating new surface cache for {0} KB (max) images, capped at 1 MB ({1} items)",
-                        bytes, max);
-                        
+
+                    Log.DebugFormat ("Creating new surface cache for {0}px, {1} KB (max) images, capped at 1 MB ({2} items)",
+                        size, bytes, max);
+
                     cache = new SurfaceCache (max);
                     scale_caches.Add (size, cache);
                 }
-                
+
                 cache.Add (id, surface);
                 return surface;
             } finally {
                 DisposePixbuf (pixbuf);
             }
         }
-        
+
         public Pixbuf LookupPixbuf (string id)
         {
             return LookupScalePixbuf (id, 0);
         }
-        
+
         public Pixbuf LookupScalePixbuf (string id, int size)
         {
             if (id == null || (size != 0 && size < 10)) {
@@ -165,7 +148,7 @@ namespace Banshee.Collection.Gui
 
             // Find the scaled, cached file
             string path = CoverArtSpec.GetPathForSize (id, size);
-            if (File.Exists (path)) {
+            if (File.Exists (new SafeUri (path))) {
                 try {
                     return new Pixbuf (path);
                 } catch {
@@ -174,51 +157,88 @@ namespace Banshee.Collection.Gui
             }
 
             string orig_path = CoverArtSpec.GetPathForSize (id, 0);
-            bool orig_exists = File.Exists (orig_path);
+            bool orig_exists = File.Exists (new SafeUri (orig_path));
 
             if (!orig_exists) {
                 // It's possible there is an image with extension .cover that's waiting
                 // to be converted into a jpeg
-                string unconverted_path = Path.ChangeExtension (orig_path, "cover");
-                if (File.Exists (unconverted_path)) {
+                string unconverted_path = System.IO.Path.ChangeExtension (orig_path, "cover");
+                if (File.Exists (new SafeUri (unconverted_path))) {
                     try {
                         Pixbuf pixbuf = new Pixbuf (unconverted_path);
                         if (pixbuf.Width < 50 || pixbuf.Height < 50) {
                             Hyena.Log.DebugFormat ("Ignoring cover art {0} because less than 50x50", unconverted_path);
                             return null;
                         }
-                        
+
                         pixbuf.Save (orig_path, "jpeg");
                         orig_exists = true;
                     } catch {
                     } finally {
-                        File.Delete (unconverted_path);
+                        File.Delete (new SafeUri (unconverted_path));
                     }
                 }
             }
-            
+
             if (orig_exists && size >= 10) {
                 try {
                     Pixbuf pixbuf = new Pixbuf (orig_path);
                     Pixbuf scaled_pixbuf = pixbuf.ScaleSimple (size, size, Gdk.InterpType.Bilinear);
-                    Directory.CreateDirectory (Path.GetDirectoryName (path));
-                    scaled_pixbuf.Save (path, "jpeg");
+
+                    if (IsCachedSize (size)) {
+                        Directory.Create (System.IO.Path.GetDirectoryName (path));
+                        scaled_pixbuf.Save (path, "jpeg");
+                    } else {
+                        Log.InformationFormat ("Uncached artwork size {0} requested", size);
+                    }
+
                     DisposePixbuf (pixbuf);
                     return scaled_pixbuf;
                 } catch {}
             }
-            
+
             return null;
         }
-        
+
+        public void ClearCacheFor (string id)
+        {
+            // Clear from the in-memory cache
+            foreach (int size in scale_caches.Keys) {
+                scale_caches[size].Remove (id);
+            }
+
+            // And delete from disk
+            foreach (int size in CachedSizes ()) {
+                var uri = new SafeUri (CoverArtSpec.GetPathForSize (id, size));
+                if (File.Exists (uri)) {
+                    File.Delete (uri);
+                }
+            }
+        }
+
+        public void AddCachedSize (int size)
+        {
+            cacheable_cover_sizes.Add (size);
+        }
+
+        public bool IsCachedSize (int size)
+        {
+            return cacheable_cover_sizes.Contains (size);
+        }
+
+        public IEnumerable<int> CachedSizes ()
+        {
+            return cacheable_cover_sizes;
+        }
+
         private static int dispose_count = 0;
         public static void DisposePixbuf (Pixbuf pixbuf)
         {
             if (pixbuf != null && pixbuf.Handle != IntPtr.Zero) {
                 pixbuf.Dispose ();
                 pixbuf = null;
-                
-                // There is an issue with disposing Pixbufs where we need to explicitly 
+
+                // There is an issue with disposing Pixbufs where we need to explicitly
                 // call the GC otherwise it doesn't get done in a timely way.  But if we
                 // do it every time, it slows things down a lot; so only do it every 100th.
                 if (++dispose_count % 100 == 0) {
@@ -227,9 +247,81 @@ namespace Banshee.Collection.Gui
                 }
             }
         }
-        
+
         string IService.ServiceName {
             get { return "ArtworkManager"; }
         }
+
+#region Cache Directory Versioning/Migration
+
+        private const int CUR_VERSION = 2;
+        private void MigrateCacheDir ()
+        {
+            int version = CacheVersion;
+            if (version == CUR_VERSION) {
+                return;
+            }
+
+            var root_path = CoverArtSpec.RootPath;
+
+            if (version < 1) {
+                string legacy_artwork_path = Paths.Combine (Paths.LegacyApplicationData, "covers");
+
+                if (!Directory.Exists (root_path)) {
+                    Directory.Create (CoverArtSpec.RootPath);
+
+                    if (Directory.Exists (legacy_artwork_path)) {
+                        Directory.Move (new SafeUri (legacy_artwork_path), new SafeUri (root_path));
+                    }
+                }
+
+                if (Directory.Exists (legacy_artwork_path)) {
+                    Log.InformationFormat ("Deleting old (Banshee < 1.0) artwork cache directory {0}", legacy_artwork_path);
+                    Directory.Delete (legacy_artwork_path, true);
+                }
+            }
+
+            if (version < 2) {
+                int deleted = 0;
+                foreach (string dir in Directory.GetDirectories (root_path)) {
+                    int size;
+                    string dirname = System.IO.Path.GetFileName (dir);
+                    if (Int32.TryParse (dirname, out size) && !IsCachedSize (size)) {
+                        Directory.Delete (dir, true);
+                        deleted++;
+                    }
+                }
+
+                if (deleted > 0) {
+                    Log.InformationFormat ("Deleted {0} extraneous album-art cache directories", deleted);
+                }
+            }
+
+            CacheVersion = CUR_VERSION;
+        }
+
+        private static SafeUri cache_version_file = new SafeUri (Paths.Combine (CoverArtSpec.RootPath, ".cache_version"));
+        private static int CacheVersion {
+            get {
+                if (Banshee.IO.File.Exists (cache_version_file)) {
+                    using (var reader = new System.IO.StreamReader (Banshee.IO.File.OpenRead (cache_version_file))) {
+                        int version;
+                        if (Int32.TryParse (reader.ReadLine (), out version)) {
+                            return version;
+                        }
+                    }
+                }
+
+                return 0;
+            }
+            set {
+                using (var writer = new System.IO.StreamWriter (Banshee.IO.File.OpenWrite (cache_version_file, true))) {
+                    writer.Write (value.ToString ());
+                }
+            }
+        }
+
+#endregion
+
     }
 }

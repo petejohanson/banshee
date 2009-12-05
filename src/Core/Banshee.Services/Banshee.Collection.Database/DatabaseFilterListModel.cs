@@ -60,8 +60,8 @@ namespace Banshee.Collection.Database
         protected readonly U select_all_item;
         private HyenaSqliteConnection connection;
 
-        public DatabaseFilterListModel (string name, string label, Banshee.Sources.DatabaseSource source, 
-                                        DatabaseTrackListModel trackModel, HyenaSqliteConnection connection, SqliteModelProvider<T> provider, U selectAllItem, string uuid) 
+        public DatabaseFilterListModel (string name, string label, Banshee.Sources.DatabaseSource source,
+                                        DatabaseTrackListModel trackModel, HyenaSqliteConnection connection, SqliteModelProvider<T> provider, U selectAllItem, string uuid)
             : base (trackModel)
         {
             this.source = source;
@@ -179,7 +179,7 @@ namespace Banshee.Collection.Database
             }
         }
 
-        public override int Count { 
+        public override int Count {
             get { return (int) count; }
         }
 

@@ -50,7 +50,7 @@ namespace Banshee.Collection.Database
 
         private string select_all_fmt;
 
-        public DatabaseQueryFilterModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel, 
+        public DatabaseQueryFilterModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel,
             HyenaSqliteConnection connection, string select_all_fmt, string uuid, QueryField field, string filter_column)
             : base (field.Name, field.Label, source, trackModel, connection, QueryFilterInfo<T>.CreateProvider (filter_column, field), new QueryFilterInfo<T> (), String.Format ("{0}-{1}", uuid, field.Name))
         {
@@ -128,7 +128,7 @@ namespace Banshee.Collection.Database
 
     /*public class DatabaseNumericQueryFilterModel<T> : DatabaseQueryFilterModel<T>
     {
-        public DatabaseNumericQueryFilterModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel, 
+        public DatabaseNumericQueryFilterModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel,
             BansheeDbConnection connection, SqliteModelProvider<T> provider, U selectAllItem, string uuid, QueryField field)
             : base (source, trackModel
     }*/

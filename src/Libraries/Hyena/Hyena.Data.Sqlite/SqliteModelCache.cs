@@ -131,7 +131,7 @@ namespace Hyena.Data.Sqlite
                     @"SELECT OrderID, ItemID FROM {0} WHERE {0}.ModelID = {1}",
                     CacheTableName, uid
                 );
- 
+
                 reload_sql = String.Format (@"
                     DELETE FROM {0} WHERE ModelID = {1};
                     INSERT INTO {0} (ModelID, ItemID) SELECT DISTINCT {1}, {2} ",

@@ -145,7 +145,6 @@
     <Compile Include="Banshee.Web\Browser.cs" />
     <Compile Include="Banshee.Streaming\RadioTrackInfo.cs" />
     <Compile Include="Banshee.Equalizer\EqualizerSetting.cs" />
-    <Compile Include="Banshee.Equalizer\EqualizerSettingEvent.cs" />
     <Compile Include="Banshee.Equalizer\EqualizerManager.cs" />
     <Compile Include="Banshee.MediaEngine\IEqualizer.cs" />
     <Compile Include="Banshee.Sources\ErrorSource.cs" />
@@ -300,6 +299,8 @@
     <Compile Include="Banshee.Collection.Database\RandomByScore.cs" />
     <Compile Include="Banshee.Collection.Database\RandomBySlot.cs" />
     <Compile Include="Banshee.Query\PlaybackErrorQueryValue.cs" />
+    <Compile Include="Banshee.Collection.Database\Shuffler.cs" />
+    <Compile Include="Banshee.Web\BaseHttpServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Services.addin.xml" />

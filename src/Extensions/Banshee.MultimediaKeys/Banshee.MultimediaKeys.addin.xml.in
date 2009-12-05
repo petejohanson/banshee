@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Addin 
-    id="Banshee.Torrent"
+    id="Banshee.MultimediaKeys"
     version="1.0"
     compatVersion="1.0"
     copyright="© 2008 Novell Inc. Licensed under the MIT X11 license."
-    name="Torrent Downloader"
-    category=""
-    description="Adds support for downloading BitTorrent files from podcasts."
-    author="Alan McGovern"
+    _name="Multimedia Keys"
+    category="User Interface"
+    _description="Provides support for handling playback through the use of keyboard controls."
+    author="Aaron Bockover"
     url="http://banshee-project.org/"
     defaultEnabled="true">
 
@@ -16,7 +16,7 @@
   </Dependencies>
 
   <Extension path="/Banshee/ServiceManager/Service">
-    <Service class="Banshee.Torrent.TorrentService"/>
+    <Service class="Banshee.MultimediaKeys.MultimediaKeysService"/>
   </Extension>
-
+  
 </Addin>

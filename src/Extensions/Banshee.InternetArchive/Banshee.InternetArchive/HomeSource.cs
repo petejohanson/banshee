@@ -70,7 +70,7 @@ namespace Banshee.InternetArchive
             //Properties.SetStringList ("Icon.Name", "video-x-generic", "video", "source-library");
             Properties.SetString ("ActiveSourceUIResource", "HomeSourceActiveUI.xml");
             Properties.SetString ("GtkActionPath", "/IaHomeSourcePopup");
-            Properties.Set<Gtk.Widget> ("Nereid.SourceContents", new HomeView (this));
+            Properties.Set<Banshee.Sources.Gui.ISourceContents> ("Nereid.SourceContents", new Banshee.Sources.Gui.LazyLoadSourceContents<HomeView> (this));
 
             actions = new Actions (this);
 

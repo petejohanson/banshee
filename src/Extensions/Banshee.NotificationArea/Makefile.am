@@ -22,12 +22,15 @@ SOURCES =  \
 
 SOURCES += $(NOTIFY_SHARP_SOURCES)
 
-RESOURCES =  \
-	Banshee.NotificationArea.addin.xml \
+DIST_RESOURCES =  \
 	Resources/NotificationAreaMenu.xml
 
+RESOURCES =  \
+	Banshee.NotificationArea.addin.xml \
+	$(DIST_RESOURCES)
+
 if ENABLE_OSX
-EXTRA_DIST = $(SOURCES) $(RESOURCES)
+EXTRA_DIST = $(SOURCES) $(DIST_RESOURCES) Banshee.NotificationArea.addin.xml.in
 else
 include $(top_srcdir)/build/build.mk
 module_SCRIPTS += Banshee.NotificationArea.dll.config

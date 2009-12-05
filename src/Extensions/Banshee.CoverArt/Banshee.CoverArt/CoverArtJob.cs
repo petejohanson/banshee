@@ -54,7 +54,7 @@ namespace Banshee.CoverArt
     {
         private DateTime last_scan = DateTime.MinValue;
         private TimeSpan retry_every = TimeSpan.FromDays (7);
-        
+
         public CoverArtJob (DateTime lastScan) : base (Catalog.GetString ("Downloading Cover Art"))
         {
             last_scan = lastScan;
@@ -71,7 +71,7 @@ namespace Banshee.CoverArt
                     WHERE
                         CoreTracks.PrimarySourceID = ? AND
                         CoreTracks.DateUpdatedStamp > ? AND
-                        CoreTracks.AlbumID = CoreAlbums.AlbumID AND 
+                        CoreTracks.AlbumID = CoreAlbums.AlbumID AND
                         CoreAlbums.ArtistID = CoreArtists.ArtistID AND
                         CoreTracks.AlbumID NOT IN (
                             SELECT AlbumID FROM CoverArtDownloads WHERE
@@ -80,12 +80,12 @@ namespace Banshee.CoverArt
             );
 
             SelectCommand = new HyenaSqliteCommand (@"
-                SELECT DISTINCT CoreAlbums.AlbumID, CoreAlbums.Title, CoreArtists.Name, CoreTracks.Uri 
+                SELECT DISTINCT CoreAlbums.AlbumID, CoreAlbums.Title, CoreArtists.Name, CoreTracks.Uri, CoreTracks.TrackID
                     FROM CoreTracks, CoreArtists, CoreAlbums
                     WHERE
                         CoreTracks.PrimarySourceID = ? AND
                         CoreTracks.DateUpdatedStamp > ? AND
-                        CoreTracks.AlbumID = CoreAlbums.AlbumID AND 
+                        CoreTracks.AlbumID = CoreAlbums.AlbumID AND
                         CoreAlbums.ArtistID = CoreArtists.ArtistID AND
                         CoreTracks.AlbumID NOT IN (
                             SELECT AlbumID FROM CoverArtDownloads WHERE
@@ -101,25 +101,31 @@ namespace Banshee.CoverArt
             CanCancel = true;
             DelayShow = true;
         }
-        
+
         public void Start ()
         {
             Register ();
         }
 
+        private class CoverartTrackInfo : DatabaseTrackInfo
+        {
+            public int DbId {
+                set { TrackId = value; }
+            }
+        }
+
         protected override void IterateCore (HyenaDataReader reader)
         {
-            DatabaseTrackInfo track = new DatabaseTrackInfo ();
-
-            track.AlbumTitle = reader.Get<string> (1);
-            track.ArtistName = reader.Get<string> (2);
-            track.PrimarySource = ServiceManager.SourceManager.MusicLibrary;
-            track.Uri = new SafeUri (reader.Get<string> (3));
-            track.AlbumId = reader.Get<int> (0);
-            //Console.WriteLine ("have album {0}/{1} for track uri {2}", track.AlbumId, track.AlbumTitle, track.Uri);
+            var track = new CoverartTrackInfo () {
+                AlbumTitle = reader.Get<string> (1),
+                ArtistName = reader.Get<string> (2),
+                PrimarySource = ServiceManager.SourceManager.MusicLibrary,
+                Uri = new SafeUri (reader.Get<string> (3)),
+                DbId = reader.Get<int> (4),
+                AlbumId = reader.Get<int> (0)
+            };
 
             Status = String.Format (Catalog.GetString ("{0} - {1}"), track.ArtistName, track.AlbumTitle);
-
             FetchForTrack (track);
         }
 

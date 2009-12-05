@@ -2,7 +2,7 @@ dnl Granularly define the version components
 dnl Remember to also update the Display Version
 m4_define([banshee_version_major], [1])
 m4_define([banshee_version_minor], [5])
-m4_define([banshee_version_micro], [1])
+m4_define([banshee_version_micro], [3])
 
 dnl set to 0 when doing an official release
 m4_define([banshee_version_pre_release], [0])
@@ -23,7 +23,7 @@ m4_define([banshee_version],
 
 dnl this can sometimes differ manually
 m4_define([banshee_display_version],
-	["1.6 Beta 2"])
+	["1.6 Beta 4"])
 
 m4_define([banshee_api_version],
 	[banshee_version_major.banshee_version_minor])
@@ -129,11 +129,6 @@ else
 	AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, false)
 	AM_CONDITIONAL(ENABLE_GNOME, false)
 fi
-
-AC_ARG_ENABLE(custom-widget-a11y, 
-	AC_HELP_STRING([--enable-custom-widget-a11y], [Enable custom widget accessibility]), 
-	enable_atk="yes", enable_atk="no")
-AM_CONDITIONAL(ENABLE_ATK, test "x$enable_atk" = "xyes")
 
 dnl DAP support (each module is optional)
 BANSHEE_CHECK_DAP_MTP
@@ -340,7 +335,7 @@ ${PACKAGE}-${VERSION}
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
-    Custom a11y:       ${enable_atk} (requires gtk-sharp 2.12 from svn)
+    Custom a11y:       ${gtksharp_with_a11y} (requires gtk-sharp >= 2.12.10)
     Release Build:     ${enable_release}
     Vendor Build ID:   ${vendor_build_id}
 

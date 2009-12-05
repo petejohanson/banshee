@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -111,6 +111,8 @@
     <Compile Include="Banshee.Collection\TrackFilterType.cs" />
     <Compile Include="Banshee.Base\PlatformHacks.cs" />
     <Compile Include="Banshee.Streaming\CommonTags.cs" />
+    <Compile Include="Banshee.Streaming\SaveTrackMetadataJob.cs" />
+    <Compile Include="Banshee.Streaming\StreamRatingTagger.cs" />
     <Compile Include="Banshee.Streaming\StreamTag.cs" />
     <Compile Include="Banshee.Streaming\StreamTagger.cs" />
     <Compile Include="Banshee.Streaming\StreamPlaybackError.cs" />

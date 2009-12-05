@@ -46,8 +46,8 @@ using Banshee.Database;
 using Banshee.PlaybackController;
 
 namespace Banshee.Collection.Database
-{ 
-    public class DatabaseTrackListModel : TrackListModel, IExportableModel, 
+{
+    public class DatabaseTrackListModel : TrackListModel, IExportableModel,
         ICacheableDatabaseModel, IFilterable, ISortable, ICareAboutView, ISearchable
     {
         private readonly BansheeDbConnection connection;
@@ -132,7 +132,7 @@ namespace Banshee.Collection.Database
         {
             SortQuery = (SortColumn == null || SortColumn.SortType == SortType.None)
                 ? (SortColumn != null && source is Banshee.Playlist.PlaylistSource)
-                    ? "CorePlaylistEntries.ViewOrder ASC, CorePlaylistEntries.EntryID ASC" 
+                    ? "CorePlaylistEntries.ViewOrder ASC, CorePlaylistEntries.EntryID ASC"
                     : BansheeQuery.GetSort ("Artist", true)
                 : BansheeQuery.GetSort (SortColumn.SortKey, SortColumn.SortType == SortType.Ascending);
         }
@@ -399,9 +399,9 @@ namespace Banshee.Collection.Database
 
         public string UserQuery {
             get { return user_query; }
-            set { 
+            set {
                 lock (this) {
-                    user_query = value; 
+                    user_query = value;
                     have_new_user_query = true;
                 }
             }
@@ -409,7 +409,7 @@ namespace Banshee.Collection.Database
 
         public string ForcedSortQuery {
             get { return forced_sort_query ? sort_query : null; }
-            set { 
+            set {
                 forced_sort_query = value != null;
                 sort_query = value;
                 if (cache != null) {
@@ -495,7 +495,7 @@ namespace Banshee.Collection.Database
             get { return (int) cache.CacheId; }
         }
 
-        public ISortableColumn SortColumn { 
+        public ISortableColumn SortColumn {
             get { return sort_column; }
         }
 
@@ -504,7 +504,7 @@ namespace Banshee.Collection.Database
             set { rows_in_view = value; }
         }
 
-        int IExportableModel.GetLength () 
+        int IExportableModel.GetLength ()
         {
             return Count;
         }

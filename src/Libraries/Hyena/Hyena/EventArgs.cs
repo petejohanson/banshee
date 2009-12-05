@@ -1,10 +1,10 @@
 //
-// EqualizerSettingEvent.cs
+// EventArgs.cs
 //
 // Author:
-//   Aaron Bockover <abockover@novell.com>
+//   Alexander Kojevnikov <alexander@kojevnikov.com>
 //
-// Copyright (C) 2006-2007 Novell, Inc.
+// Copyright (C) 2009 Alexander Kojevnikov
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -26,23 +26,19 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-
-namespace Banshee.Equalizer
+namespace Hyena
 {
-    public delegate void EqualizerSettingEventHandler (object o, EqualizerSettingEventArgs args);
-    
-    public class EqualizerSettingEventArgs : EventArgs
+    public class EventArgs<T> : System.EventArgs
     {
-        private EqualizerSetting eq;
-        
-        public EqualizerSettingEventArgs (EqualizerSetting eq)
+        private readonly T value;
+
+        public EventArgs (T value)
         {
-            this.eq = eq;
+            this.value = value;
         }
-        
-        public EqualizerSetting EqualizerSetting {
-            get { return eq; }
+
+        public T Value {
+            get { return value; }
         }
     }
 }

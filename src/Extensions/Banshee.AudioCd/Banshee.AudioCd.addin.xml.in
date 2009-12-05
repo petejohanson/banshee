@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Addin 
-    id="Banshee.MultimediaKeys"
+    id="Banshee.AudioCd"
     version="1.0"
     compatVersion="1.0"
     copyright="© 2008 Novell Inc. Licensed under the MIT X11 license."
-    name="Multimedia Keys"
-    category="User Interface"
-    description="Provides support for handling playback through the use of keyboard controls."
+    _name="Audio CD Support"
+    category="Hardware"
+    _description="Provides support for listening to and ripping Audio CDs."
     author="Aaron Bockover"
     url="http://banshee-project.org/"
     defaultEnabled="true">
@@ -16,7 +16,7 @@
   </Dependencies>
 
   <Extension path="/Banshee/ServiceManager/Service">
-    <Service class="Banshee.MultimediaKeys.MultimediaKeysService"/>
+    <Service class="Banshee.AudioCd.AudioCdService"/>
   </Extension>
-  
+
 </Addin>

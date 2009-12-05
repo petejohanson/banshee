@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using Mono.Unix;
 
 using Lastfm;
+using Lastfm.Gui;
 using Hyena.Data;
 
 using Banshee.Base;
@@ -49,7 +50,7 @@ using Banshee.Sources.Gui;
 using Browser = Lastfm.Browser;
 
 namespace Banshee.Lastfm.Radio
-{   
+{
     public class LastfmSource : Source, IDisposable
     {
         private const string lastfm = "Last.fm";
@@ -84,9 +85,9 @@ namespace Banshee.Lastfm.Radio
             if (LastfmCore.UserAgent == null) {
                 LastfmCore.UserAgent = Banshee.Web.Browser.UserAgent;
             }
-            
+
             Browser.Open = Banshee.Web.Browser.Open;
-            
+
             connection = LastfmCore.Radio;
             Network network = ServiceManager.Get<Network> ();
             connection.UpdateNetworkState (network.Connected);
@@ -101,12 +102,11 @@ namespace Banshee.Lastfm.Radio
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
             Properties.SetString ("GtkActionPath", "/LastfmSourcePopup");
             Properties.SetString ("Icon.Name", "lastfm-audioscrobbler");
-            Properties.SetString ("SourcePropertiesActionLabel", Catalog.GetString ("Edit Last.fm Settings"));
             Properties.SetString ("SortChildrenActionLabel", Catalog.GetString ("Sort Stations by"));
             Properties.Set<LastfmColumnController> ("TrackView.ColumnController", new LastfmColumnController ());
 
             // FIXME this is temporary until we split the GUI part from the non-GUI part
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LastfmSourceContents ());
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<LastfmSourceContents> ());
             Properties.Set<bool> ("Nereid.SourceContents.HeaderVisible", false);
 
             actions = new LastfmActions (this);
@@ -124,7 +124,7 @@ namespace Banshee.Lastfm.Radio
             Connection.Dispose ();
             UninstallPreferences ();
             actions.Dispose ();
-            
+
             actions = null;
             connection = null;
             account = null;
@@ -135,7 +135,7 @@ namespace Banshee.Lastfm.Radio
             if (!isFile || String.IsNullOrEmpty (uri)) {
                 return;
             }
-            
+
             // Handle lastfm:// URIs
             if (uri.StartsWith ("lastfm://")) {
                 StationSource.CreateFromUrl (this, uri);
@@ -160,15 +160,15 @@ namespace Banshee.Lastfm.Radio
                 Catalog.GetString ("Total Play Count"),
                 SortType.Descending, new PlayCountComparer ())
         };
-        
+
         public override SourceSortType[] ChildSortTypes {
             get { return sort_types; }
         }
-        
+
         public override SourceSortType DefaultChildSort {
             get { return SortNameAscending; }
         }
-        
+
         private string last_username;
         private bool last_was_subscriber = false;
         public void SetUserName (string username)
@@ -209,7 +209,7 @@ namespace Banshee.Lastfm.Radio
         }
 
         public override bool HasProperties {
-            get { return true; }
+            get { return false; }
         }
 
         private void HandleConnectionStateChanged (object sender, ConnectionStateChangedArgs args)
@@ -221,12 +221,12 @@ namespace Banshee.Lastfm.Radio
         {
             bool have_user = Account.UserName != null;
             bool have_session_key = Account.SessionKey != null;
-            
+
             if (have_session_key) {
                 LastSessionKeySchema.Set (Account.SessionKey);
                 LastIsSubscriberSchema.Set (Account.Subscriber);
             }
-            
+
             if (have_user) {
                 SetUserName (Account.UserName);
             } else {
@@ -257,11 +257,15 @@ namespace Banshee.Lastfm.Radio
         internal static void SetStatus (SourceMessage status_message, LastfmSource lastfm, bool error, ConnectionState state)
         {
             status_message.FreezeNotify ();
-            if (error && (state == ConnectionState.NoAccount || state == ConnectionState.InvalidAccount)) {
-                status_message.AddAction (new MessageAction (Catalog.GetString ("Account Settings"),
-                    delegate { lastfm.Actions.ShowLoginDialog (); }));
-                status_message.AddAction (new MessageAction (Catalog.GetString ("Join Last.fm"),
-                    delegate { lastfm.Account.SignUp (); }));
+            if (error) {
+                if (state == ConnectionState.NoAccount || state == ConnectionState.InvalidAccount || state == ConnectionState.NotAuthorized) {
+                    status_message.AddAction (new MessageAction (Catalog.GetString ("Account Settings"),
+                        delegate { lastfm.Actions.ShowLoginDialog (); }));
+                }
+                if (state == ConnectionState.NoAccount || state == ConnectionState.InvalidAccount) {
+                    status_message.AddAction (new MessageAction (Catalog.GetString ("Join Last.fm"),
+                        delegate { lastfm.Account.SignUp (); }));
+                }
             }
             status_message.ThawNotify ();
         }
@@ -279,7 +283,7 @@ namespace Banshee.Lastfm.Radio
 
             service.InstallWidgetAdapters += OnPreferencesServiceInstallWidgetAdapters;
             pref_page = new Banshee.Preferences.SourcePage (this);
-            pref_section = pref_page.Add (new Section ("mediatypes", Catalog.GetString ("Account"), 20));
+            pref_section = pref_page.Add (new Section ("lastfm-account", Catalog.GetString ("Account"), 20));
             pref_section.ShowLabel = false;
 
             user_pref = new SchemaPreference<string> (LastUserSchema, Catalog.GetString ("_Username"));
@@ -349,8 +353,12 @@ namespace Banshee.Lastfm.Radio
 
             signup_button.Visible = String.IsNullOrEmpty (user_pref.Value);
 
+            var button_box = new Gtk.HBox () { Spacing = 6 };
+            button_box.PackStart (new Badge (account) { Visible = true}, false, false, 0);
+            button_box.PackStart (signup_button, true, true, 0);
+
             user_pref.DisplayWidget = auth_box;
-            pref_section["lastfm-signup"].DisplayWidget = signup_button;
+            pref_section["lastfm-signup"].DisplayWidget = button_box;
         }
 
         public override string PreferencesPageId {

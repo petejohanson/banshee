@@ -25,6 +25,7 @@ SOURCES =  \
 	Banshee.Collection.Gui/ColumnCellTrack.cs \
 	Banshee.Collection.Gui/ColumnCellTrackAndCount.cs \
 	Banshee.Collection.Gui/ColumnCellTrackNumber.cs \
+	Banshee.Collection.Gui/CoverArtEditor.cs \
 	Banshee.Collection.Gui/DefaultColumnController.cs \
 	Banshee.Collection.Gui/PersistentColumnController.cs \
 	Banshee.Collection.Gui/QueryFilterView.cs \
@@ -89,6 +90,7 @@ SOURCES =  \
 	Banshee.Gui.Widgets/ConnectedMessageBar.cs \
 	Banshee.Gui.Widgets/ConnectedSeekSlider.cs \
 	Banshee.Gui.Widgets/ConnectedVolumeButton.cs \
+	Banshee.Gui.Widgets/CoverArtDisplay.cs \
 	Banshee.Gui.Widgets/LargeTrackInfoDisplay.cs \
 	Banshee.Gui.Widgets/MainMenu.cs \
 	Banshee.Gui.Widgets/NextButton.cs \
@@ -146,6 +148,7 @@ SOURCES =  \
 	Banshee.Sources.Gui/FilteredListSourceContents.cs \
 	Banshee.Sources.Gui/ISourceContents.cs \
 	Banshee.Sources.Gui/ITrackModelSourceContents.cs \
+	Banshee.Sources.Gui/LazyLoadSourceContents.cs \
 	Banshee.Sources.Gui/ObjectListSourceContents.cs \
 	Banshee.Sources.Gui/SourceComboBox.cs \
 	Banshee.Sources.Gui/SourceIconResolver.cs \
@@ -165,7 +168,4 @@ RESOURCES =  \
 	Resources/jcastro.png
 
 include $(top_srcdir)/build/build.mk
-
-module_SCRIPTS += Banshee.ThickClient.dll.config
-EXTRA_DIST += Banshee.ThickClient.dll.config
 

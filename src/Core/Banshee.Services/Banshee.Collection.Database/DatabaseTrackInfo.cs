@@ -39,6 +39,8 @@ using Hyena.Query;
 using Banshee.Base;
 using Banshee.Configuration.Schema;
 using Banshee.Database;
+using Banshee.Metadata;
+using Banshee.Preferences;
 using Banshee.Query;
 using Banshee.Sources;
 using Banshee.ServiceStack;
@@ -62,7 +64,7 @@ namespace Banshee.Collection.Database
         }
 
         private bool artist_changed = false, album_changed = false;
-        
+
         public DatabaseTrackInfo () : base ()
         {
         }
@@ -72,11 +74,38 @@ namespace Banshee.Collection.Database
             Provider.Copy (original, this);
         }
 
+        // Changing these fields shouldn't change DateUpdated (which triggers file save)
+        private static readonly HashSet<QueryField> transient_fields;
+
+        static DatabaseTrackInfo ()
+        {
+            transient_fields = new HashSet<QueryField> () {
+                BansheeQuery.ScoreField,
+                BansheeQuery.SkipCountField,
+                BansheeQuery.LastSkippedField,
+                BansheeQuery.LastPlayedField,
+                BansheeQuery.PlaybackErrorField,
+                BansheeQuery.PlayCountField,
+                BansheeQuery.RatingField
+            };
+            Action<Root> handler = delegate {
+                if (SaveTrackMetadataService.WriteRatingsAndPlayCountsEnabled.Value) {
+                    transient_fields.Remove (BansheeQuery.PlayCountField);
+                    transient_fields.Remove (BansheeQuery.RatingField);
+                } else {
+                    transient_fields.Add (BansheeQuery.PlayCountField);
+                    transient_fields.Add (BansheeQuery.RatingField);
+                }
+            };
+            SaveTrackMetadataService.WriteRatingsAndPlayCountsEnabled.ValueChanged += handler;
+            handler (null);
+        }
+
         public override void OnPlaybackFinished (double percentCompleted)
         {
             if (ProviderRefresh()) {
                 base.OnPlaybackFinished (percentCompleted);
-                Save (true, BansheeQuery.ScoreField, BansheeQuery.SkipCountField, BansheeQuery.LastSkippedField, 
+                Save (true, BansheeQuery.ScoreField, BansheeQuery.SkipCountField, BansheeQuery.LastSkippedField,
                     BansheeQuery.PlayCountField, BansheeQuery.LastPlayedField);
             }
         }
@@ -86,7 +115,7 @@ namespace Banshee.Collection.Database
             if (PrimarySource != null && PrimarySource.TrackEqualHandler != null) {
                 return PrimarySource.TrackEqualHandler (this, track);
             }
-            
+
             DatabaseTrackInfo db_track = track as DatabaseTrackInfo;
             if (db_track == null) {
                 return base.TrackEqual (track);
@@ -107,7 +136,7 @@ namespace Banshee.Collection.Database
         {
             return a != null && b != null && a.TrackId == b.TrackId;
         }
-        
+
         public DatabaseArtistInfo Artist {
             get { return DatabaseArtistInfo.FindOrCreate (ArtistName, ArtistNameSort); }
         }
@@ -127,30 +156,19 @@ namespace Banshee.Collection.Database
             Save (NotifySaved);
         }
 
-        // Changing these fields shouldn't change DateUpdated (which triggers file save)
-        private static HashSet<QueryField> transient_fields = new HashSet<QueryField> {
-            BansheeQuery.ScoreField,
-            BansheeQuery.SkipCountField,
-            BansheeQuery.LastSkippedField,
-            BansheeQuery.PlayCountField,
-            BansheeQuery.LastPlayedField,
-            BansheeQuery.RatingField,
-            BansheeQuery.PlaybackErrorField
-        };
-
         public void Save (bool notify, params QueryField [] fields_changed)
         {
-            // If either the artist or album changed, 
+            // If either the artist or album changed,
             if (ArtistId == 0 || AlbumId == 0 || artist_changed == true || album_changed == true) {
                 DatabaseArtistInfo artist = Artist;
                 ArtistId = artist.DbId;
-           
+
                 DatabaseAlbumInfo album = Album;
                 AlbumId = album.DbId;
-                
+
                 // TODO get rid of unused artists/albums
             }
-            
+
             if (fields_changed.Length == 0 || !transient_fields.IsSupersetOf (fields_changed)) {
                 DateUpdated = DateTime.Now;
             }
@@ -170,7 +188,7 @@ namespace Banshee.Collection.Database
                 }
             }
         }
-        
+
         protected virtual void ProviderSave ()
         {
             Provider.Save (this);
@@ -180,12 +198,12 @@ namespace Banshee.Collection.Database
         {
             ProviderRefresh ();
         }
-        
+
         protected virtual bool ProviderRefresh ()
         {
             return Provider.Refresh (this);
         }
-        
+
         private int track_id;
         [DatabaseColumn ("TrackID", Constraints = DatabaseColumnConstraints.PrimaryKey)]
         public int TrackId {
@@ -211,7 +229,7 @@ namespace Banshee.Collection.Database
             get { return artist_id; }
             set { artist_id = value; }
         }
-        
+
         private int album_id;
         [DatabaseColumn ("AlbumID")]
         public int AlbumId {
@@ -308,7 +326,7 @@ namespace Banshee.Collection.Database
                 album_changed = true;
             }
         }
-        
+
         [VirtualDatabaseColumn ("ArtistNameSort", "CoreAlbums", "AlbumID", "AlbumID")]
         protected string AlbumArtistSortField {
             get { return AlbumArtistSort; }
@@ -326,7 +344,7 @@ namespace Banshee.Collection.Database
                 album_changed = true;
             }
         }
-        
+
         [VirtualDatabaseColumn ("IsCompilation", "CoreAlbums", "AlbumID", "AlbumID")]
         protected bool IsCompilationField {
             get { return IsCompilation; }
@@ -340,28 +358,28 @@ namespace Banshee.Collection.Database
                 album_changed = true;
             }
         }
-        
+
         private static string CleanseString (string input, string old_val)
         {
             if (input == old_val)
                 return null;
-                    
+
             if (input != null)
                 input = input.Trim ();
-            
+
             if (input == old_val)
                 return null;
-            
+
             return input;
         }
-        
+
         private int tag_set_id;
         [DatabaseColumn]
         public int TagSetID {
             get { return tag_set_id; }
             set { tag_set_id = value; }
         }
-        
+
         [DatabaseColumn ("MusicBrainzID")]
         public override string MusicBrainzId {
             get { return base.MusicBrainzId; }
@@ -373,13 +391,13 @@ namespace Banshee.Collection.Database
             get { return Uri == null ? null : Uri.AbsoluteUri; }
             set { Uri = value == null ? null : new SafeUri (value); }
         }
-        
+
         [DatabaseColumn]
         public override string MimeType {
             get { return base.MimeType; }
             set { base.MimeType = value; }
         }
-        
+
         [DatabaseColumn]
         public override long FileSize {
             get { return base.FileSize; }
@@ -397,30 +415,30 @@ namespace Banshee.Collection.Database
             get { return base.LastSyncedStamp; }
             set { base.LastSyncedStamp = value; }
         }
-        
+
         [DatabaseColumn ("Attributes")]
         public override TrackMediaAttributes MediaAttributes {
             get { return base.MediaAttributes; }
             set { base.MediaAttributes = value; }
         }
-        
+
         [DatabaseColumn ("Title")]
         public override string TrackTitle {
             get { return base.TrackTitle; }
             set { base.TrackTitle = value; }
         }
-        
+
         [DatabaseColumn ("TitleSort")]
         public override string TrackTitleSort {
             get { return base.TrackTitleSort; }
             set { base.TrackTitleSort = value; }
         }
-        
+
         [DatabaseColumn("TitleSortKey", Select = false)]
         internal byte[] TrackTitleSortKey {
             get { return Hyena.StringUtil.SortKey (TrackTitleSort ?? DisplayTrackTitle); }
         }
-        
+
         [DatabaseColumn(Select = false)]
         internal string TitleLowered {
             get { return Hyena.StringUtil.SearchKey (DisplayTrackTitle); }
@@ -430,19 +448,19 @@ namespace Banshee.Collection.Database
         public override string MetadataHash {
             get { return base.MetadataHash; }
         }
-        
+
         [DatabaseColumn]
         public override int TrackNumber {
             get { return base.TrackNumber; }
             set { base.TrackNumber = value; }
         }
-        
+
         [DatabaseColumn]
         public override int TrackCount {
             get { return base.TrackCount; }
             set { base.TrackCount = value; }
         }
-        
+
         [DatabaseColumn ("Disc")]
         public override int DiscNumber {
             get { return base.DiscNumber; }
@@ -454,13 +472,13 @@ namespace Banshee.Collection.Database
             get { return base.DiscCount; }
             set { base.DiscCount = value; }
         }
-        
+
         [DatabaseColumn]
         public override TimeSpan Duration {
             get { return base.Duration; }
             set { base.Duration = value; }
         }
-        
+
         [DatabaseColumn]
         public override int Year {
             get { return base.Year; }
@@ -508,7 +526,7 @@ namespace Banshee.Collection.Database
             get { return base.Comment; }
             set { base.Comment = value; }
         }
-        
+
         [DatabaseColumn("BPM")]
         public override int Bpm {
             get { return base.Bpm; }
@@ -520,7 +538,7 @@ namespace Banshee.Collection.Database
             get { return base.BitRate; }
             set { base.BitRate = value; }
         }
-        
+
         [DatabaseColumn("Rating")]
         protected int rating;
         public override int Rating {
@@ -543,19 +561,19 @@ namespace Banshee.Collection.Database
                 }
             }
         }
-        
+
         [DatabaseColumn]
         public override int PlayCount {
             get { return base.PlayCount; }
             set { base.PlayCount = value; }
         }
-        
+
         [DatabaseColumn]
         public override int SkipCount {
             get { return base.SkipCount; }
             set { base.SkipCount = value; }
         }
-        
+
         private long external_id;
         [DatabaseColumn ("ExternalID")]
         public long ExternalId {
@@ -572,7 +590,7 @@ namespace Banshee.Collection.Database
                 return external_object;
             }
         }
-        
+
         [DatabaseColumn ("LastPlayedStamp")]
         public override DateTime LastPlayed {
             get { return base.LastPlayed; }
@@ -584,7 +602,7 @@ namespace Banshee.Collection.Database
             get { return base.LastSkipped; }
             set { base.LastSkipped = value; }
         }
-        
+
         [DatabaseColumn ("DateAddedStamp")]
         public override DateTime DateAdded {
             get { return base.DateAdded; }
@@ -597,7 +615,7 @@ namespace Banshee.Collection.Database
             get { return date_updated; }
             set { date_updated = value; }
         }
-        
+
         [DatabaseColumn ("LastStreamError")]
         protected StreamPlaybackError playback_error;
         public override StreamPlaybackError PlaybackError {
@@ -606,8 +624,8 @@ namespace Banshee.Collection.Database
                 if (playback_error == value) {
                     return;
                 }
-                
-                playback_error = value; 
+
+                playback_error = value;
             }
         }
 
@@ -620,7 +638,7 @@ namespace Banshee.Collection.Database
                 // Get out quick, no URI set yet.
                 return copy_success;
             }
-            
+
             bool in_library = old_uri.AbsolutePath.StartsWith (PrimarySource.BaseDirectoryWithSeparator);
 
             if (!in_library && (LibrarySchema.CopyOnImport.Get () || force_copy)) {

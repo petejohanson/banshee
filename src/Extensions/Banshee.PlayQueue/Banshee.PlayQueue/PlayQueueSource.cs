@@ -34,6 +34,7 @@ using System.Linq;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Collections;
 using Hyena.Data.Sqlite;
 
@@ -74,14 +75,14 @@ namespace Banshee.PlayQueue
         private DatabaseSource populate_from = null;
         private int played_songs_number = PlayedSongsNumberSchema.Get ();
         private int upcoming_songs_number = UpcomingSongsNumberSchema.Get ();
-        
+
         public PlayQueueSource () : base (Catalog.GetString ("Play Queue"), null)
         {
             BindToDatabase ();
             TypeUniqueId = DbId.ToString ();
             Initialize ();
             AfterInitialized ();
-            
+
             Order = 20;
             Properties.SetString ("Icon.Name", "source-playlist");
             Properties.SetString ("RemoveTracksActionLabel", Catalog.GetString ("Remove From Play Queue"));
@@ -93,11 +94,11 @@ namespace Banshee.PlayQueue
             ServiceManager.PlaybackController.TrackStarted += OnTrackStarted;
 
             ServiceManager.SourceManager.AddSource (this);
-            
+
             // TODO change this Gtk.Action code so that the actions can be removed.  And so this
             // class doesn't depend on Gtk/ThickClient.
             actions = new PlayQueueActions (this);
-            
+
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.SetString ("GtkActionPath", "/PlayQueueContextMenu");
 
@@ -106,7 +107,7 @@ namespace Banshee.PlayQueue
             ServiceManager.SourceManager.MusicLibrary.TracksDeleted += HandleTracksDeleted;
             ServiceManager.SourceManager.VideoLibrary.TracksChanged += HandleTracksChanged;
             ServiceManager.SourceManager.VideoLibrary.TracksDeleted += HandleTracksDeleted;
-            
+
             populate_from = ServiceManager.SourceManager.Sources.FirstOrDefault (
                 source => source.Name == populate_from_name) as DatabaseSource;
             if (populate_from != null) {
@@ -118,7 +119,7 @@ namespace Banshee.PlayQueue
             Offset = Math.Min (
                 CurrentOffsetSchema.Get (),
                 ServiceManager.DbConnection.Query<long> (@"
-                    SELECT MAX(ViewOrder)
+                    SELECT MAX(ViewOrder) + 1
                     FROM CorePlaylistEntries
                     WHERE PlaylistID = ?", DbId));
         }
@@ -135,18 +136,18 @@ namespace Banshee.PlayQueue
 
             Properties.Set<Gtk.Widget> ("Nereid.SourceContents.HeaderWidget", header_widget);
         }
-        
+
         public HeaderWidget CreateHeaderWidget ()
         {
             var header_widget = new HeaderWidget (populate_mode, populate_from_name);
-            header_widget.ModeChanged += delegate (object sender, ModeChangedEventArgs e) {
+            header_widget.ModeChanged += delegate (object sender, EventArgs<PlaybackShuffleMode> e) {
                 populate_mode = e.Value;
                 PopulateModeSchema.Set ((int) e.Value);
                 UpdatePlayQueue ();
                 OnUpdated ();
             };
 
-            header_widget.SourceChanged += delegate (object sender, SourceChangedEventArgs e) {
+            header_widget.SourceChanged += delegate (object sender, EventArgs<DatabaseSource> e) {
                 populate_from = e.Value;
                 if (populate_from == null) {
                     populate_from_name = String.Empty;
@@ -175,7 +176,7 @@ namespace Banshee.PlayQueue
         {
             EnqueueId (DatabaseTrackInfo.GetTrackIdForUri (uri), prepend, false);
         }
-        
+
         public void EnqueueTrack (TrackInfo track, bool prepend)
         {
             DatabaseTrackInfo db_track = track as DatabaseTrackInfo;
@@ -185,7 +186,7 @@ namespace Banshee.PlayQueue
                 EnqueueUri (track.Uri.AbsoluteUri, prepend);
             }
         }
-        
+
         private void EnqueueId (int trackId, bool prepend, bool generated)
         {
             if (trackId <= 0) {
@@ -237,11 +238,11 @@ namespace Banshee.PlayQueue
             OnTracksAdded ();
             NotifyUser ();
         }
-        
+
         IDBusExportable IDBusExportable.Parent {
             get { return ServiceManager.SourceManager; }
         }
-        
+
         string IService.ServiceName {
             get { return "PlayQueue"; }
         }
@@ -378,14 +379,14 @@ namespace Banshee.PlayQueue
                 Clear ();
             }
         }
-        
+
         private void BindToDatabase ()
         {
             int result = ServiceManager.DbConnection.Query<int> (
                 "SELECT PlaylistID FROM CorePlaylists WHERE Special = 1 AND Name = ? LIMIT 1",
                 special_playlist_name
             );
-            
+
             if (result != 0) {
                 DbId = result;
             } else {
@@ -520,7 +521,7 @@ namespace Banshee.PlayQueue
         {
             return ((IBasicPlaybackController)this).Next (false);
         }
-        
+
         bool IBasicPlaybackController.Next (bool restart)
         {
             if (current_track != null && ServiceManager.PlayerEngine.CurrentTrack == current_track) {
@@ -542,7 +543,7 @@ namespace Banshee.PlayQueue
             ServiceManager.PlayerEngine.OpenPlay (current_track);
             return true;
         }
-        
+
         bool IBasicPlaybackController.Previous (bool restart)
         {
             if (current_track != null && ServiceManager.PlayerEngine.CurrentTrack == current_track) {
@@ -554,7 +555,7 @@ namespace Banshee.PlayQueue
             }
             return true;
         }
-        
+
         private void UpdatePlayQueue ()
         {
             // Find the ViewOrder of the current_track.

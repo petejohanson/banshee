@@ -10,5 +10,9 @@ AC_DEFUN([BANSHEE_CHECK_GTK_SHARP],
 	PKG_CHECK_MODULES(GLIBSHARP,
 		glib-sharp-2.0 >= $GTKSHARP_REQUIRED)
 	AC_SUBST(GLIBSHARP_LIBS)
+
+    PKG_CHECK_MODULES(GTKSHARP_A11Y, gtk-sharp-2.0 >= 2.12.10, gtksharp_with_a11y=yes, gtksharp_with_a11y=no)
+	AM_CONDITIONAL(ENABLE_ATK, test "x$gtksharp_with_a11y" = "xyes")
+
 ])
 

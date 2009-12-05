@@ -39,11 +39,14 @@ using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 
+using Hyena;
+
 namespace Banshee.Web
 {
     public abstract class BaseHttpServer
     {
         protected Socket server;
+        private bool running;
         private int backlog;
         private ushort port;
 
@@ -65,6 +68,14 @@ namespace Banshee.Web
             get { return name; }
         }
 
+        public bool IsBound {
+            get { return server != null && server.IsBound; }
+        }
+
+        public bool IsRunning {
+            get { return running; }
+        }
+
         private EndPoint end_point = new IPEndPoint (IPAddress.Any, 80);
         protected EndPoint EndPoint {
             get { return end_point; }
@@ -72,17 +83,11 @@ namespace Banshee.Web
                 if (value == null) {
                     throw new ArgumentNullException ("end_point");
                 }
-                if (running) {
+                if (IsBound) {
                     throw new InvalidOperationException ("Cannot set EndPoint while running.");
                 }
-                end_point = value; 
+                end_point = value;
             }
-        }
-
-        private bool running;
-        public bool Running {
-            get { return running; }
-            protected set { running = value; }
         }
 
         private int chunk_length = 8192;
@@ -98,13 +103,13 @@ namespace Banshee.Web
         {
             Start (10);
         }
-        
-        public virtual void Start (int backlog) 
+
+        public void Start (int backlog)
         {
             if (backlog < 0) {
                 throw new ArgumentOutOfRangeException ("backlog");
             }
-            
+
             if (running) {
                 return;
             }
@@ -117,10 +122,10 @@ namespace Banshee.Web
             thread.Start ();
         }
 
-        public virtual void Stop () 
+        public virtual void Stop ()
         {
             running = false;
-            
+
             if (server != null) {
                 server.Close ();
                 server = null;
@@ -130,21 +135,29 @@ namespace Banshee.Web
                 client.Close ();
             }
         }
-        
+
         private void ServerLoop ()
         {
-            server = new Socket (this.EndPoint.AddressFamily, SocketType.Stream, ProtocolType.IP);
-            server.Bind (this.EndPoint);
+            if (!BindServerSocket ()) {
+                running = false;
+                return;
+            }
+
             server.Listen (backlog);
 
-            port = (ushort)(server.LocalEndPoint as IPEndPoint).Port;
+            IPEndPoint ip_endpoint;
+            if ((ip_endpoint = server.LocalEndPoint as IPEndPoint) != null) {
+                port = (ushort) ip_endpoint.Port;
+            }
+
+            Log.DebugFormat ("{0} listening for connections on port {1}", name, port);
 
             while (true) {
                 try {
                     if (!running) {
                         break;
                     }
-                    
+
                     Socket client = server.Accept ();
                     clients.Add (client);
                     ThreadPool.QueueUserWorkItem (HandleConnection, client);
@@ -153,8 +166,8 @@ namespace Banshee.Web
                 }
             }
         }
-        
-        private void HandleConnection (object o) 
+
+        private void HandleConnection (object o)
         {
             Socket client = (Socket) o;
 
@@ -162,11 +175,24 @@ namespace Banshee.Web
                 while (HandleRequest(client));
             } catch (IOException) {
             } catch (Exception e) {
-                Hyena.Log.Exception (e);
+                Log.Exception (e);
             } finally {
                 clients.Remove (client);
                 client.Close ();
             }
+        }
+
+        protected virtual bool BindServerSocket ()
+        {
+            server = new Socket (this.EndPoint.AddressFamily, SocketType.Stream, ProtocolType.IP);
+            try {
+                server.Bind (this.EndPoint);
+            } catch (System.Net.Sockets.SocketException e) {
+                Log.Exception (e);
+                return false;
+            }
+
+            return true;
         }
 
         protected virtual long ParseRangeRequest (string line)
@@ -185,25 +211,25 @@ namespace Banshee.Web
 
             return offset;
         }
-        
-        protected virtual bool HandleRequest (Socket client) 
+
+        protected virtual bool HandleRequest (Socket client)
         {
             if (client == null || !client.Connected) {
                 return false;
             }
-            
+
             bool keep_connection = true;
-            
+
             using (StreamReader reader = new StreamReader (new NetworkStream (client, false))) {
                 string request_line = reader.ReadLine ();
-                
+
                 if (request_line == null) {
                     return false;
                 }
 
                 List <string> request_headers = new List <string> ();
                 string line = null;
-                
+
                 do {
                     line = reader.ReadLine ();
                     if (line.ToLower () == "connection: close") {
@@ -213,7 +239,7 @@ namespace Banshee.Web
                 } while (line != String.Empty && line != null);
 
                 string [] split_request_line = request_line.Split ();
-                
+
                 if (split_request_line.Length < 3) {
                     WriteResponse (client, HttpStatusCode.BadRequest, "Bad Request");
                     return keep_connection;
@@ -233,13 +259,13 @@ namespace Banshee.Web
         }
 
         protected abstract void HandleValidRequest(Socket client, string [] split_request, string [] request_headers);
-            
-        protected void WriteResponse (Socket client, HttpStatusCode code, string body) 
+
+        protected void WriteResponse (Socket client, HttpStatusCode code, string body)
         {
             WriteResponse (client, code, Encoding.UTF8.GetBytes (body));
         }
-        
-        protected virtual void WriteResponse (Socket client, HttpStatusCode code, byte [] body) 
+
+        protected virtual void WriteResponse (Socket client, HttpStatusCode code, byte [] body)
         {
             if (client == null || !client.Connected) {
                 return;
@@ -247,19 +273,19 @@ namespace Banshee.Web
             else if (body == null) {
                 throw new ArgumentNullException ("body");
             }
-            
+
             StringBuilder headers = new StringBuilder ();
             headers.AppendFormat ("HTTP/1.1 {0} {1}\r\n", (int) code, code.ToString ());
             headers.AppendFormat ("Content-Length: {0}\r\n", body.Length);
             headers.Append ("Content-Type: text/html\r\n");
             headers.Append ("Connection: close\r\n");
             headers.Append ("\r\n");
-            
+
             using (BinaryWriter writer = new BinaryWriter (new NetworkStream (client, false))) {
                 writer.Write (Encoding.UTF8.GetBytes (headers.ToString ()));
                 writer.Write (body);
             }
-            
+
             client.Close ();
         }
 
@@ -267,7 +293,7 @@ namespace Banshee.Web
         {
             WriteResponseStream (client, response, length, filename, 0);
         }
-        
+
         protected virtual void WriteResponseStream (Socket client, Stream response, long length, string filename, long offset)
         {
             if (client == null || !client.Connected) {
@@ -296,26 +322,26 @@ namespace Banshee.Web
                 if (length > 0) {
                     headers.AppendFormat ("Content-Length: {0}\r\n", length);
                 }
-                
+
                 if (filename != null) {
                     headers.AppendFormat ("Content-Disposition: attachment; filename=\"{0}\"\r\n",
                         filename.Replace ("\"", "\\\""));
                 }
-                
+
                 headers.Append ("Connection: close\r\n");
                 headers.Append ("\r\n");
-                
+
                 writer.Write (Encoding.UTF8.GetBytes (headers.ToString ()));
-                    
+
                 using (BinaryReader reader = new BinaryReader (response)) {
                     while (true) {
                         byte [] buffer = reader.ReadBytes (ChunkLength);
                         if (buffer == null) {
                             break;
                         }
-                        
+
                         writer.Write(buffer);
-                        
+
                         if (buffer.Length < ChunkLength) {
                             break;
                         }

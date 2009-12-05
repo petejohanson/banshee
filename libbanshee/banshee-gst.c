@@ -36,12 +36,9 @@
 #include <stdarg.h>
 
 #include <gst/gst.h>
+#include <gst/pbutils/pbutils.h>
 
 #include "banshee-gst.h"
-
-#ifdef HAVE_GST_PBUTILS
-#  include <gst/pbutils/pbutils.h>
-#endif
 
 static gboolean gstreamer_initialized = FALSE;
 static gboolean banshee_debugging;
@@ -60,9 +57,7 @@ gstreamer_initialize (gboolean debugging, BansheeLogHandler log_handler)
 
     gst_init (NULL, NULL);
     
-    #ifdef HAVE_GST_PBUTILS
     gst_pb_utils_init ();
-    #endif
     
     gstreamer_initialized = TRUE;
 }

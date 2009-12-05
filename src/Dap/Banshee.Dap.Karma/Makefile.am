@@ -24,5 +24,5 @@ uninstall-hook:
 		rm -f $(DESTDIR)$(moduledir)/`basename $$ASM`; \
 	done;
 else
-EXTRA_DIST = $(SOURCES) $(RESOURCES)
+EXTRA_DIST = $(SOURCES) Banshee.Dap.Karma.addin.xml.in
 endif
