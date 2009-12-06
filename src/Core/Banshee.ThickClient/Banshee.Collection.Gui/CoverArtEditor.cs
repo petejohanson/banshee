@@ -34,6 +34,7 @@ using Mono.Unix;
 using Mono.Addins;
 using Gtk;
 
+using Hyena;
 using Hyena.Gui;
 using Hyena.Widgets;
 
@@ -77,24 +78,32 @@ namespace Banshee.Collection.Gui
 
                         var choose = new MenuItem (Catalog.GetString ("Choose New Cover Art..."));
                         choose.Activated += delegate {
-                            var track = GetTrack ();
-                            if (track != null) {
-                                var dialog = new Banshee.Gui.Dialogs.ImageFileChooserDialog ();
-                                var resp = dialog.Run ();
-                                string filename = dialog.Filename;
-                                dialog.Destroy ();
-                                if (resp == (int)Gtk.ResponseType.Ok) {
-                                    SetCoverArt (track, filename);
+                            try {
+                                var track = GetTrack ();
+                                if (track != null) {
+                                    var dialog = new Banshee.Gui.Dialogs.ImageFileChooserDialog ();
+                                    var resp = dialog.Run ();
+                                    string filename = dialog.Filename;
+                                    dialog.Destroy ();
+                                    if (resp == (int)Gtk.ResponseType.Ok) {
+                                        SetCoverArt (track, filename);
+                                    }
                                 }
+                            } catch (Exception e) {
+                                Log.Exception (e);
                             }
                         };
 
                         var delete = new MenuItem (Catalog.GetString ("Delete This Cover Art"));
                         delete.Activated += delegate {
-                            var track = GetTrack ();
-                            if (track != null) {
-                                DeleteCoverArt (track);
-                                NotifyUpdated (track);
+                            try {
+                                var track = GetTrack ();
+                                if (track != null) {
+                                    DeleteCoverArt (track);
+                                    NotifyUpdated (track);
+                                }
+                            } catch (Exception e) {
+                                Log.Exception (e);
                             }
                         };
 
@@ -113,20 +122,28 @@ namespace Banshee.Collection.Gui
 
                 Gtk.Drag.SourceSet (this, Gdk.ModifierType.Button1Mask, new TargetEntry [] { DragDropTarget.UriList }, Gdk.DragAction.Copy | Gdk.DragAction.Move);
                 DragDataGet += (o, a) => {
-                    var uri = GetCoverArtPath (GetTrack ());
-                    if (uri != null) {
-                        if (Banshee.IO.File.Exists (uri)) {
-                            a.SelectionData.Set (
-                                Gdk.Atom.Intern (DragDropTarget.UriList.Target, false), 8,
-                                Encoding.UTF8.GetBytes (uri.AbsoluteUri)
-                            );
+                    try {
+                        var uri = GetCoverArtPath (GetTrack ());
+                        if (uri != null) {
+                            if (Banshee.IO.File.Exists (uri)) {
+                                a.SelectionData.Set (
+                                    Gdk.Atom.Intern (DragDropTarget.UriList.Target, false), 8,
+                                    Encoding.UTF8.GetBytes (uri.AbsoluteUri)
+                                );
+                            }
                         }
+                    } catch (Exception e) {
+                        Log.Exception (e);
                     }
                 };
 
                 Gtk.Drag.DestSet (this, Gtk.DestDefaults.All, new TargetEntry [] { DragDropTarget.UriList }, Gdk.DragAction.Copy);
                 DragDataReceived += (o, a) => {
-                    SetCoverArt (GetTrack (), Encoding.UTF8.GetString (a.SelectionData.Data));
+                    try {
+                        SetCoverArt (GetTrack (), Encoding.UTF8.GetString (a.SelectionData.Data));
+                    } catch (Exception e) {
+                        Log.Exception (e);
+                    }
                 };
             }
 
@@ -139,6 +156,11 @@ namespace Banshee.Collection.Gui
 
                 var to_uri = new SafeUri (CoverArtSpec.GetPathForNewFile (track.ArtworkId, from_uri.AbsoluteUri));
                 if (to_uri != null) {
+                    // Make sure it's not the same file we already have
+                    if (from_uri.Equals (to_uri)) {
+                        return;
+                    }
+
                     // Make sure the incoming file exists
                     if (!Banshee.IO.File.Exists (from_uri)) {
                         Hyena.Log.WarningFormat ("New cover art file not found: {0}", path);
