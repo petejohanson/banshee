@@ -60,9 +60,9 @@ namespace Banshee.Dap.Ipod
             {
                 this.volume = volume;
 
-                MountPoint = volume.GetPropertyString ("volume.mount_point");
+                MountPoint = volume.MountPoint;
                 Label = volume.GetPropertyString ("volume.label");
-                IsMountedReadOnly = volume.GetPropertyBoolean ("volume.is_mounted_read_only");
+                IsMountedReadOnly = volume.IsReadOnly;
                 Uuid = volume.GetPropertyString ("volume.uuid");
             }
 

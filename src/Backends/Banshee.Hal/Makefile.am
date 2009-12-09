@@ -10,6 +10,7 @@ SOURCES =  \
 	Banshee.HalBackend/DeviceMediaCapabilities.cs \
 	Banshee.HalBackend/DiscVolume.cs \
 	Banshee.HalBackend/DiskDevice.cs \
+	Banshee.HalBackend/DkDisk.cs \
 	Banshee.HalBackend/HardwareManager.cs \
 	Banshee.HalBackend/UsbDevice.cs \
 	Banshee.HalBackend/Volume.cs \
