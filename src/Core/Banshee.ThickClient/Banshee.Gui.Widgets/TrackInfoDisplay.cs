@@ -366,7 +366,8 @@ namespace Banshee.Gui.Widgets
 
         private bool IdleTimeout ()
         {
-            if (ServiceManager.PlayerEngine.CurrentTrack == null ||
+            if (ServiceManager.PlayerEngine == null ||
+                ServiceManager.PlayerEngine.CurrentTrack == null ||
                 ServiceManager.PlayerEngine.CurrentState == PlayerState.Idle) {
                 incoming_track = null;
                 incoming_image = null;
