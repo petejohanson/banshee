@@ -100,7 +100,7 @@ namespace Hyena.Data.Sqlite
         private volatile bool dispose_requested = false;
         private volatile int results_ready = 0;
         private AutoResetEvent queue_signal = new AutoResetEvent (false);
-        private ManualResetEvent result_ready_signal = new ManualResetEvent (false);
+        internal ManualResetEvent ResultReadySignal = new ManualResetEvent (false);
 
         private volatile Thread transaction_thread = null;
         private ManualResetEvent transaction_signal = new ManualResetEvent (true);
@@ -109,10 +109,6 @@ namespace Hyena.Data.Sqlite
         public Thread WarnIfCalledFromThread {
             get { return warn_if_called_from_thread; }
             set { warn_if_called_from_thread = value; }
-        }
-
-        internal ManualResetEvent ResultReadySignal {
-            get { return result_ready_signal; }
         }
 
         public event EventHandler<ExecutingEventArgs> Executing;
@@ -402,9 +398,9 @@ namespace Hyena.Data.Sqlite
         internal void ClaimResult ()
         {
             lock (command_queue) {
-                results_ready++;
+                results_ready--;
                 if (results_ready == 0) {
-                    result_ready_signal.Reset ();
+                    ResultReadySignal.Reset ();
                 }
             }
         }
@@ -443,7 +439,7 @@ namespace Hyena.Data.Sqlite
 
                     lock (command_queue) {
                         results_ready++;
-                        result_ready_signal.Set ();
+                        ResultReadySignal.Set ();
                     }
                 }
 
