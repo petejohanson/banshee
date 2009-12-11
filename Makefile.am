@@ -52,6 +52,11 @@ run-logged: $(MO_FILES)
 run-perf: run-logged
 	extras/perf-analyze-log bin/last-run-log
 
+run-trace: $(MO_FILES)
+	(cd bin; $(MONO) \
+		--trace=$$(find . -name "*dll" | sed 's/\.\///' | sed 's/\.dll//' | sed 's/Mono.Data.Sqlite//' | sort | tr "\n" , | sed 's/,$$//') \
+		Nereid.exe --uninstalled $(BANSHEE_DEV_OPTIONS) > ../banshee.trace)
+
 gdb:
 	@pushd bin; \
 	gdb mono --eval-command="handle SIGXCPU SIG35 SIGPWR nostop noprint" --eval-command="b g_return_if_fail_warning" --eval-command="r --debug Nereid.exe --debug --uninstalled"; \
