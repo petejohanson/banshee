@@ -211,16 +211,9 @@ namespace Banshee.Podcasting
 
         public void Initialize ()
         {
-            ThreadAssist.SpawnFromMain (ThreadedInitialize);
-        }
-
-        private void ThreadedInitialize ()
-        {
             download_manager = new DownloadManager (2, tmp_download_path);
-            ThreadAssist.BlockingProxyToMain (delegate {
-                download_manager_iface = new DownloadManagerInterface (download_manager);
-                download_manager_iface.Initialize ();
-            });
+            download_manager_iface = new DownloadManagerInterface (download_manager);
+            download_manager_iface.Initialize ();
 
             feeds_manager = new FeedsManager (ServiceManager.DbConnection, download_manager, null);
 
@@ -234,43 +227,48 @@ namespace Banshee.Podcasting
                 Hyena.Log.Exception ("Couldn't migrate podcast download cache", e);
             }
 
-            ThreadAssist.BlockingProxyToMain (InitializeInterface);
+            source = new PodcastSource ();
+            ServiceManager.SourceManager.AddSource (source);
 
-            feeds_manager.PodcastStorageDirectory = source.BaseDirectory;
-            feeds_manager.FeedManager.ItemAdded += OnItemAdded;
-            feeds_manager.FeedManager.ItemChanged += OnItemChanged;
-            feeds_manager.FeedManager.ItemRemoved += OnItemRemoved;
-            feeds_manager.FeedManager.FeedsChanged += OnFeedsChanged;
+            InitializeInterface ();
 
-            if (DatabaseConfigurationClient.Client.Get<int> ("Podcast", "Version", 0) < 7) {
-                Banshee.Library.LibrarySource music_lib = ServiceManager.SourceManager.MusicLibrary;
-                if (music_lib != null) {
-                    string old_path = Path.Combine (music_lib.BaseDirectory, "Podcasts");
-                    string new_path = source.BaseDirectory;
-                    SafeUri old_uri = new SafeUri (old_path);
-                    SafeUri new_uri = new SafeUri (new_path);
-                    if (old_path != null && new_path != null && old_path != new_path &&
-                        Banshee.IO.Directory.Exists (old_path) && !Banshee.IO.Directory.Exists (new_path)) {
-                        Banshee.IO.Directory.Move (new SafeUri (old_path), new SafeUri (new_path));
-                        ServiceManager.DbConnection.Execute (String.Format (
-                            "UPDATE {0} SET LocalPath = REPLACE(LocalPath, ?, ?) WHERE LocalPath IS NOT NULL",
-                            FeedEnclosure.Provider.TableName), old_path, new_path);
-                        ServiceManager.DbConnection.Execute (
-                            "UPDATE CoreTracks SET Uri = REPLACE(Uri, ?, ?) WHERE Uri LIKE 'file://%' AND PrimarySourceId = ?",
-                            old_uri.AbsoluteUri, new_uri.AbsoluteUri, source.DbId);
-                        Hyena.Log.DebugFormat ("Moved Podcasts from {0} to {1}", old_path, new_path);
+            ThreadAssist.SpawnFromMain (delegate {
+                feeds_manager.PodcastStorageDirectory = source.BaseDirectory;
+                feeds_manager.FeedManager.ItemAdded += OnItemAdded;
+                feeds_manager.FeedManager.ItemChanged += OnItemChanged;
+                feeds_manager.FeedManager.ItemRemoved += OnItemRemoved;
+                feeds_manager.FeedManager.FeedsChanged += OnFeedsChanged;
+
+                if (DatabaseConfigurationClient.Client.Get<int> ("Podcast", "Version", 0) < 7) {
+                    Banshee.Library.LibrarySource music_lib = ServiceManager.SourceManager.MusicLibrary;
+                    if (music_lib != null) {
+                        string old_path = Path.Combine (music_lib.BaseDirectory, "Podcasts");
+                        string new_path = source.BaseDirectory;
+                        SafeUri old_uri = new SafeUri (old_path);
+                        SafeUri new_uri = new SafeUri (new_path);
+                        if (old_path != null && new_path != null && old_path != new_path &&
+                            Banshee.IO.Directory.Exists (old_path) && !Banshee.IO.Directory.Exists (new_path)) {
+                            Banshee.IO.Directory.Move (new SafeUri (old_path), new SafeUri (new_path));
+                            ServiceManager.DbConnection.Execute (String.Format (
+                                "UPDATE {0} SET LocalPath = REPLACE(LocalPath, ?, ?) WHERE LocalPath IS NOT NULL",
+                                FeedEnclosure.Provider.TableName), old_path, new_path);
+                            ServiceManager.DbConnection.Execute (
+                                "UPDATE CoreTracks SET Uri = REPLACE(Uri, ?, ?) WHERE Uri LIKE 'file://%' AND PrimarySourceId = ?",
+                                old_uri.AbsoluteUri, new_uri.AbsoluteUri, source.DbId);
+                            Hyena.Log.DebugFormat ("Moved Podcasts from {0} to {1}", old_path, new_path);
+                        }
                     }
+                    DatabaseConfigurationClient.Client.Set<int> ("Podcast", "Version", 7);
                 }
-                DatabaseConfigurationClient.Client.Set<int> ("Podcast", "Version", 7);
-            }
 
-            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.StateChange);
-            ServiceManager.Get<DBusCommandService> ().ArgumentPushed += OnCommandLineArgument;
+                ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.StateChange);
+                ServiceManager.Get<DBusCommandService> ().ArgumentPushed += OnCommandLineArgument;
 
-            RefreshFeeds ();
+                RefreshFeeds ();
 
-            // Every 10 minutes try to refresh again
-            refresh_timeout_id = Application.RunTimeout (1000 * 60 * 10, RefreshFeeds);
+                // Every 10 minutes try to refresh again
+                refresh_timeout_id = Application.RunTimeout (1000 * 60 * 10, RefreshFeeds);
+            });
         }
 
         bool disposing;
