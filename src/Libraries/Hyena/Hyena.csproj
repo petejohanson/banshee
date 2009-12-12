@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin</OutputPath>
+    <DefineConstants>ENABLE_TESTS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -168,6 +169,14 @@
     <Compile Include="System.Web\Helpers.cs" />
     <Compile Include="System.Web\HttpUtility.cs" />
     <Compile Include="Hyena\PlatformDetection.cs" />
+    <Compile Include="Hyena.Metrics\Sample.cs" />
+    <Compile Include="Hyena.Metrics\MetricsCollection.cs" />
+    <Compile Include="Hyena.Metrics\HttpPoster.cs" />
+    <Compile Include="Hyena.Metrics\Metric.cs" />
+    <Compile Include="Hyena.Metrics\DbSampleStore.cs" />
+    <Compile Include="Hyena.Metrics\ISampleStore.cs" />
+    <Compile Include="Hyena.Metrics\Tests\MetricsTests.cs" />
+    <Compile Include="Hyena.Metrics\MemorySampleStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Posix">
@@ -182,6 +191,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mono.Data.Sqlite\Mono.Data.Sqlite.csproj">

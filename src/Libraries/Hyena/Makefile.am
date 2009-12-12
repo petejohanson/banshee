@@ -66,6 +66,14 @@ SOURCES =  \
 	Hyena.Json/Token.cs \
 	Hyena.Json/Tokenizer.cs \
 	Hyena.Json/TokenType.cs \
+	Hyena.Metrics/DbSampleStore.cs \
+	Hyena.Metrics/HttpPoster.cs \
+	Hyena.Metrics/ISampleStore.cs \
+	Hyena.Metrics/MemorySampleStore.cs \
+	Hyena.Metrics/Metric.cs \
+	Hyena.Metrics/MetricsCollection.cs \
+	Hyena.Metrics/Sample.cs \
+	Hyena.Metrics/Tests/MetricsTests.cs \
 	Hyena.Query/AliasedObjectSet.cs \
 	Hyena.Query/DateQueryValue.cs \
 	Hyena.Query/EnumQueryValue.cs \

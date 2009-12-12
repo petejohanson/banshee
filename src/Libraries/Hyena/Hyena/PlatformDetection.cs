@@ -40,6 +40,7 @@ namespace Hyena
         public static readonly bool IsMoblin;
 
         public static readonly string PosixSystemName;
+        public static readonly string SystemName;
 
         [DllImport ("libc")]
         private static extern int uname (IntPtr utsname);
@@ -52,6 +53,7 @@ namespace Hyena
             IsWindows = p < 4;
 
             if (IsWindows) {
+                SystemName = "Windows";
                 return;
             }
 
@@ -75,6 +77,9 @@ namespace Hyena
             }
 
             if (PosixSystemName == null) {
+                if (IsUnix) {
+                    SystemName = "Unix";
+                }
                 return;
             }
 
@@ -82,6 +87,8 @@ namespace Hyena
                 case "Darwin": IsMac = true; break;
                 case "Linux": IsLinux = true; break;
             }
+
+            SystemName = PosixSystemName;
 
             // FIXME: probe the root X11 window for Moblin properties
         }
