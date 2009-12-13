@@ -41,7 +41,9 @@ using Banshee.Dap;
 using Banshee.Sources.Gui;
 using Banshee.ServiceStack;
 using Banshee.Preferences;
+using Banshee.Sources;
 using Banshee.Preferences.Gui;
+using Banshee.Widgets;
 
 namespace Banshee.Dap.Gui
 {
@@ -81,31 +83,43 @@ namespace Banshee.Dap.Gui
                 RowSpacing = 6,
                 ColumnSpacing = 6
             };
+
             uint i = 0;
-            foreach (var library in dap.Sync.Libraries) {
+            foreach (var iter_sync in dap.Sync.LibrarySyncs) {
+                var library_sync = iter_sync;
+                var library = library_sync.Library;
                 // Translators: {0} is the name of a library, eg 'Music' or 'Podcasts'
                 var label = new Label (String.Format (Catalog.GetString ("{0}:"), library.Name)) { Xalign = 1f };
                 table.Attach (label, 0, 1, i, i + 1);
 
-                var combo = ComboBox.NewText ();
+                var combo = new DictionaryComboBox<DatabaseSource> ();
                 combo.RowSeparatorFunc = (model, iter) => { return (string)model.GetValue (iter, 0) == "---"; };
-                combo.AppendText (Catalog.GetString ("Manage manually"));
-                combo.AppendText (Catalog.GetString ("Sync entire library"));
+                combo.Add (Catalog.GetString ("Manage manually"), null);
+                combo.Add (Catalog.GetString ("Sync entire library"), null);
 
-                var playlists = library.Children.Where (c => c is Banshee.Playlist.AbstractPlaylistSource).ToList ();
+                var playlists = library.Children.Where (c => c is DatabaseSource).Cast<DatabaseSource> ().ToList ();
                 if (playlists.Count > 0) {
-                    combo.AppendText ("---");
+                    combo.Add ("---", null);
 
                     foreach (var playlist in playlists) {
                         // Translators: {0} is the name of a playlist
-                        combo.AppendText (String.Format (Catalog.GetString ("Sync from '{0}'"), playlist.Name));
+                        combo.Add (String.Format (Catalog.GetString ("Sync from “{0}”"), playlist.Name), playlist);
                     }
                 }
 
                 combo.Active = 0;
+                combo.Changed += (o, a) => {
+                    library_sync.Enabled = combo.Active != 0;
+                    library_sync.SyncEntireLibrary = combo.Active == 1;
+
+                    if (combo.Active > 1) {
+                        library_sync.SyncSource = combo.ActiveValue;
+                    }
+                };
                 table.Attach (combo, 1, 2, i, i + 1);
                 i++;
             }
+
             hbox.PackStart (table, false, false, 0);
             hbox.ShowAll ();
             dap.Preferences["sync"]["library-options"].DisplayWidget = hbox;

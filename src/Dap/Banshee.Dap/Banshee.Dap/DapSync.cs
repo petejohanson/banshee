@@ -60,7 +60,8 @@ namespace Banshee.Dap
         private DapSource dap;
         private string conf_ns;
         private List<DapLibrarySync> library_syncs = new List<DapLibrarySync> ();
-        private SchemaEntry<bool> manually_manage, auto_sync;
+        //private SchemaEntry<bool> manually_manage, auto_sync;
+        private SchemaEntry<bool> auto_sync;
         private Section sync_prefs;
         //private PreferenceBase manually_manage_pref;//, auto_sync_pref;
         private SchemaPreference<bool> auto_sync_pref;
@@ -84,7 +85,7 @@ namespace Banshee.Dap
         }
 
         public bool Enabled {
-            get { return !manually_manage.Get (); }
+            get { return true; } //!manually_manage.Get (); }
         }
 
         public bool AutoSync {
@@ -121,10 +122,10 @@ namespace Banshee.Dap
         private void BuildPreferences ()
         {
             conf_ns = "sync";
-            manually_manage = dap.CreateSchema<bool> (conf_ns, "enabled", true,
+            /*manually_manage = dap.CreateSchema<bool> (conf_ns, "enabled", true,
                 Catalog.GetString ("Manually manage this device"),
                 Catalog.GetString ("Manually managing your device means you can drag and drop items onto the device, and manually remove them.")
-            );
+            );*/
 
             auto_sync = dap.CreateSchema<bool> (conf_ns, "auto_sync", false,
                 Catalog.GetString ("Sync when first plugged in and when the libraries change"),
