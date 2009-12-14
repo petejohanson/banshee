@@ -96,6 +96,7 @@ SOURCES =  \
 	Hyena.Widgets/RoundedFrame.cs \
 	Hyena.Widgets/ScrolledWindow.cs \
 	Hyena.Widgets/SegmentedBar.cs \
+	Hyena.Widgets/SimpleTable.cs \
 	Hyena.Widgets/SmoothScrolledWindow.cs \
 	Hyena.Widgets/TextViewEditable.cs \
 	Hyena.Widgets/WrapLabel.cs
