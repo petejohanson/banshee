@@ -37,6 +37,7 @@ namespace Banshee.Collection.Gui
     {
         private static Color cover_border_light_color = new Color (1.0, 1.0, 1.0, 0.5);
         private static Color cover_border_dark_color = new Color (0.0, 0.0, 0.0, 0.65);
+        private static Random random = new Random ();
 
         public static void RenderThumbnail (Cairo.Context cr, ImageSurface image, bool dispose,
             double x, double y, double width, double height, bool drawBorder, double radius)
@@ -58,13 +59,16 @@ namespace Banshee.Collection.Gui
             bool fill, Color fillColor, CairoCorners corners)
         {
             if (image == null || image.Handle == IntPtr.Zero) {
-                return;
+                image = null;
             }
 
             double p_x = x;
             double p_y = y;
-            p_x += image.Width < width ? (width - image.Width) / 2 : 0;
-            p_y += image.Height < height ? (height - image.Height) / 2 : 0;
+
+            if (image != null) {
+                p_x += image.Width < width ? (width - image.Width) / 2 : 0;
+                p_y += image.Height < height ? (height - image.Height) / 2 : 0;
+            }
 
             cr.Antialias = Cairo.Antialias.Default;
 
@@ -74,12 +78,22 @@ namespace Banshee.Collection.Gui
                 cr.Fill();
             }
 
-            CairoExtensions.RoundedRectangle (cr, p_x, p_y, image.Width, image.Height, radius, corners);
-            cr.SetSource (image, p_x, p_y);
-            cr.Fill ();
+            if (image != null) {
+                CairoExtensions.RoundedRectangle (cr, p_x, p_y, image.Width, image.Height, radius, corners);
+                cr.SetSource (image, p_x, p_y);
+                cr.Fill ();
+            } else {
+                CairoExtensions.RoundedRectangle (cr, x, y, width, height, radius, corners);
+                cr.Color = CairoExtensions.ColorFromHsb (random.Next (), 54 / 255.0, 102 / 255.0);
+                cr.Fill ();
+                var size = Math.Min (width, height) - 20;
+                Banshee.CairoGlyphs.BansheeLineLogo.Render (cr, x + 18, y + 12, size,
+                    CairoExtensions.RgbaToColor (0xffffff55),
+                    CairoExtensions.RgbaToColor (0xffffff88));
+            }
 
             if (!drawBorder) {
-                if (dispose) {
+                if (dispose && image != null) {
                     ((IDisposable)image).Dispose ();
                 }
 
@@ -99,7 +113,7 @@ namespace Banshee.Collection.Gui
             cr.Color = cover_border_dark_color;
             cr.Stroke ();
 
-            if (dispose) {
+            if (dispose && image != null) {
                 ((IDisposable)image).Dispose ();
             }
         }

@@ -45,8 +45,8 @@ namespace Banshee.Collection.Gui
         private static int image_spacing = 4;
         private static int image_size = 48;
 
-        private static ImageSurface default_cover_image
-            = PixbufImageSurface.Create (IconThemeUtils.LoadIcon (image_size, "media-optical", "browser-album-cover"));
+        // private static ImageSurface default_cover_image
+        //    = PixbufImageSurface.Create (IconThemeUtils.LoadIcon (image_size, "media-optical", "browser-album-cover"));
 
         private ArtworkManager artwork_manager;
 
@@ -84,7 +84,7 @@ namespace Banshee.Collection.Gui
 
             AlbumInfo album = (AlbumInfo)BoundObject;
 
-            bool is_default = false;
+            // bool is_default = false;
             int actual_image_size = LayoutStyle == DataViewLayoutStyle.Grid
                 ? (int)Math.Max (Math.Min (cellWidth, cellHeight) - 10, 0)
                 : image_size;
@@ -92,8 +92,8 @@ namespace Banshee.Collection.Gui
                 : artwork_manager.LookupScaleSurface (album.ArtworkId, actual_image_size, true);
 
             if (image == null) {
-                image = default_cover_image;
-                is_default = true;
+                // image = default_cover_image;
+                // is_default = true;
             }
 
             // int image_render_size = is_default ? image.Height : (int)cellHeight - 8;
@@ -104,7 +104,7 @@ namespace Banshee.Collection.Gui
             int y = ((int)cellHeight - image_render_size) / 2;
 
             ArtworkRenderer.RenderThumbnail (context.Context, image, false, x, y,
-                image_render_size, image_render_size, !is_default, context.Theme.Context.Radius);
+                image_render_size, image_render_size, /*!is_default*/ true, context.Theme.Context.Radius);
 
             if (LayoutStyle == DataViewLayoutStyle.Grid) {
                 return;

@@ -7,6 +7,7 @@ SOURCES =  \
 	Banshee.Addins.Gui/AddinDetailsDialog.cs \
 	Banshee.Addins.Gui/AddinTile.cs \
 	Banshee.Addins.Gui/AddinView.cs \
+	Banshee.CairoGlyphs/BansheeLineLogo.cs \
 	Banshee.Collection.Gui/AlbumListView.cs \
 	Banshee.Collection.Gui/ArtistListView.cs \
 	Banshee.Collection.Gui/ArtworkManager.cs \
