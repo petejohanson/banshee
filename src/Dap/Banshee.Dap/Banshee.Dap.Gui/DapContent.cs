@@ -107,7 +107,13 @@ namespace Banshee.Dap.Gui
                     }
                 }
 
-                combo.Active = 0;
+                if (!library_sync.Enabled)
+                    combo.Active = 0;
+                else if (library_sync.SyncEntireLibrary)
+                    combo.Active = 1;
+                else if (library_sync.SyncSource != null)
+                    combo.ActiveValue = library_sync.SyncSource;
+
                 combo.Changed += (o, a) => {
                     library_sync.Enabled = combo.Active != 0;
                     library_sync.SyncEntireLibrary = combo.Active == 1;
