@@ -160,7 +160,7 @@ namespace Banshee.Dap.Gui
 
         private void OnPropertyChanged (object o, PropertyChangeEventArgs args)
         {
-            if (args.PropertyName == "UnmapSourceActionLabel")
+            if (args.PropertyName == "Name")
                 SetTitleText (args.NewValue.ToString ());
         }
 
