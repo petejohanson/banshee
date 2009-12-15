@@ -610,7 +610,9 @@ namespace Banshee.Dap.Ipod
                             "SELECT CoreTracks.TrackID FROM {0} WHERE {1}",
                             from.DatabaseTrackModel.ConditionFromFragment, from.DatabaseTrackModel.Condition)))
                         {
-                            playlist.AddTrack (tracks_map[track_id].IpodTrack);
+                            if (tracks_map.ContainsKey (track_id)) {
+                                playlist.AddTrack (tracks_map[track_id].IpodTrack);
+                            }
                         }
                     }
                 }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Addin 
-    id="Banshee.InternetArchive"
+<Addin
+    id="Banshee.Audiobook"
     version="1.0"
     compatVersion="1.0"
-    copyright="© 2009 Novell Inc. Licensed under the MIT X11 license."
-    _name="Internet Archive"
+    copyright="© 2009 Novell, Inc.  Licensed under the MIT X11 license."
+    name="Audiobooks Library"
     category="User Interface"
-    _description="Browse and search the Internet Archive's vast media collection."
+    description="Useful for organizing audiobooks, lectures, etc."
     author="Gabriel Burt"
     url="http://banshee-project.org/"
     defaultEnabled="false">
@@ -17,6 +17,6 @@
   </Dependencies>
 
   <Extension path="/Banshee/SourceManager/Source">
-    <Source class="Banshee.InternetArchive.HomeSource"/>
+    <Source class="Banshee.Audiobook.AudiobookLibrarySource"/>
   </Extension>
 </Addin>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Addin 
-    id="Banshee.FileSystemQueue"
+    id="Banshee.InternetRadio"
     version="1.0"
     compatVersion="1.0"
     copyright="© 2008 Novell Inc. Licensed under the MIT X11 license."
-    _name="File System Queue"
+    name="Internet Radio"
     category="User Interface"
-    _description="Provides a source that allows files to be previewed without actually importing to the library."
+    description="Provides an interface for managing Internet Radio stations"
     author="Aaron Bockover"
     url="http://banshee-project.org/"
     defaultEnabled="true">
@@ -17,7 +17,7 @@
   </Dependencies>
 
   <Extension path="/Banshee/SourceManager/Source">
-    <Source class="Banshee.FileSystemQueue.FileSystemQueueSource"/>
+    <Source class="Banshee.InternetRadio.InternetRadioSource"/>
   </Extension>
   
 </Addin>

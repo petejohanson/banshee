@@ -1,4 +1,5 @@
 SUBDIRS = \
+	Banshee.Audiobook \
 	Banshee.AudioCd \
 	Banshee.Bookmarks \
 	Banshee.BooScript \

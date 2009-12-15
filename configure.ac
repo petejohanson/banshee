@@ -272,6 +272,7 @@ src/Dap/Banshee.Dap.Mtp/Makefile
 src/Dap/Banshee.Dap.Karma/Makefile
 
 src/Extensions/Makefile
+src/Extensions/Banshee.Audiobook/Makefile
 src/Extensions/Banshee.AudioCd/Makefile
 src/Extensions/Banshee.Bookmarks/Makefile
 src/Extensions/Banshee.BooScript/Makefile

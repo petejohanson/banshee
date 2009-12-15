@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Addin 
-    id="Banshee.PlayQueue"
+    id="Banshee.FileSystemQueue"
     version="1.0"
     compatVersion="1.0"
     copyright="© 2008 Novell Inc. Licensed under the MIT X11 license."
-    _name="Play Queue"
+    name="File System Queue"
     category="User Interface"
-    _description="Provides a source that acts as a queue of playing tracks. When the queue is populated, all playback happens from the queue in a forced order."
-    author="Aaron Bockover, Alexander Kojevnikov"
+    description="Provides a source that allows files to be previewed without actually importing to the library."
+    author="Aaron Bockover"
     url="http://banshee-project.org/"
     defaultEnabled="true">
 
@@ -17,7 +17,7 @@
   </Dependencies>
 
   <Extension path="/Banshee/SourceManager/Source">
-    <Source class="Banshee.PlayQueue.PlayQueueSource"/>
+    <Source class="Banshee.FileSystemQueue.FileSystemQueueSource"/>
   </Extension>
   
 </Addin>
