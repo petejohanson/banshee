@@ -25,11 +25,13 @@ AC_DEFUN([BANSHEE_CHECK_LIBBANSHEE],
 		PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8)
 	fi
 
-	PKG_CHECK_MODULES(CLUTTER,
-		clutter-1.0 >= 1.0.1,
-		enable_clutter=yes, enable_clutter=no)
+	AC_ARG_ENABLE(clutter, AS_HELP_STRING([--enable-clutter],
+		[Enable support for clutter video sink]), , enable_clutter="no")
 
 	if test "x$enable_clutter" = "xyes"; then
+		PKG_CHECK_MODULES(CLUTTER,
+			clutter-1.0 >= 1.0.1,
+			enable_clutter=yes)
 		SHAMROCK_CONCAT_MODULE(LIBBANSHEE, CLUTTER)
 		AC_DEFINE(HAVE_CLUTTER, 1,
 			[Define if the video sink should be Clutter])

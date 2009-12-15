@@ -34,6 +34,8 @@ using Hyena.Query;
 using Hyena.Data;
 using Hyena.Data.Sqlite;
 
+using Mono.Unix;
+
 using Banshee.ServiceStack;
 
 namespace Banshee.Collection.Database
@@ -41,6 +43,11 @@ namespace Banshee.Collection.Database
     public class DatabaseQueryFilterModel<T> : DatabaseFilterListModel<QueryFilterInfo<T>, QueryFilterInfo<T>>
     {
         private QueryField field;
+        private readonly QueryField query_filter_field = new QueryField (
+            "itemid", "ItemID",
+            Catalog.GetString ("Value"), "CoreCache.ItemID", false
+        );
+
         private string select_all_fmt;
 
         public DatabaseQueryFilterModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel,
@@ -54,6 +61,8 @@ namespace Banshee.Collection.Database
                 FROM CoreTracks, CoreCache{0}
                     WHERE CoreCache.ModelID = {1} AND CoreCache.ItemID = {2} {3}
                     ORDER BY Value";
+
+            QueryFields = new QueryFieldSet (query_filter_field);
         }
 
         public override bool CachesValues { get { return true; } }

@@ -21,6 +21,7 @@ SOURCES =  \
 	Banshee.Collection.Database/FilterModelProvider.cs \
 	Banshee.Collection.Database/IDatabaseTrackModelCache.cs \
 	Banshee.Collection.Database/IDatabaseTrackModelProvider.cs \
+	Banshee.Collection.Database/ISearchable.cs \
 	Banshee.Collection.Database/QueryFilterInfo.cs \
 	Banshee.Collection.Database/RandomBy.cs \
 	Banshee.Collection.Database/RandomByAlbum.cs \

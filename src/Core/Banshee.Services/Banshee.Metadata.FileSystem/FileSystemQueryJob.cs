@@ -111,14 +111,8 @@ namespace Banshee.Metadata.FileSystem
 
             if (best_file != null) {
                 try {
-                    string extension = "cover";
-                    if (best_file.EndsWith ("jpg", true, System.Globalization.CultureInfo.InvariantCulture) ||
-                        best_file.EndsWith ("jpeg", true, System.Globalization.CultureInfo.InvariantCulture)) {
-                        extension = "jpg";
-                    }
-
                     // Copy the file to the cover art directory
-                    SaveAtomically (Path.ChangeExtension (CoverArtSpec.GetPath (Track.ArtworkId), extension), Banshee.IO.File.OpenRead (new SafeUri (best_file)));
+                    SaveAtomically (CoverArtSpec.GetPathForNewFile (Track.ArtworkId, best_file), Banshee.IO.File.OpenRead (new SafeUri (best_file)));
 
                     // Send the new StreamTag
                     StreamTag tag = new StreamTag ();

@@ -69,6 +69,8 @@ namespace Banshee.NotificationArea
         private TrackInfo current_track;
         private Notification current_nf;
 
+        private const int icon_size = 42;
+
         public NotificationAreaService ()
         {
         }
@@ -145,6 +147,9 @@ namespace Banshee.NotificationArea
 
             // Forcefully load this
             show_notifications = ShowNotifications;
+
+            artwork_manager_service = ServiceManager.Get<ArtworkManager> ();
+            artwork_manager_service.AddCachedSize (icon_size);
         }
 
         public void Dispose ()
@@ -328,7 +333,7 @@ namespace Banshee.NotificationArea
                 if (NotifyOnCloseSchema.Get ()) {
                     Gdk.Pixbuf image = IconThemeUtils.LoadIcon (48, Banshee.ServiceStack.Application.IconName);
                     if (image != null) {
-                        image = image.ScaleSimple (42, 42, Gdk.InterpType.Bilinear);
+                        image = image.ScaleSimple (icon_size, icon_size, Gdk.InterpType.Bilinear);
                     }
 
                     Notification nf = new Notification (
@@ -434,22 +439,18 @@ namespace Banshee.NotificationArea
                 current_track.ArtistName, current_track.DisplayArtistName,
                 current_track.AlbumTitle, current_track.DisplayAlbumTitle);
 
-            if (artwork_manager_service == null) {
-                artwork_manager_service = ServiceManager.Get<ArtworkManager> ();
-            }
-
             Gdk.Pixbuf image = null;
 
             if (artwork_manager_service != null) {
                 image = is_notification_daemon
-                    ? artwork_manager_service.LookupScalePixbuf (current_track.ArtworkId, 42)
+                    ? artwork_manager_service.LookupScalePixbuf (current_track.ArtworkId, icon_size)
                     : artwork_manager_service.LookupPixbuf (current_track.ArtworkId);
             }
 
             if (image == null) {
                 image = IconThemeUtils.LoadIcon (48, "audio-x-generic");
                 if (image != null) {
-                    image.ScaleSimple (42, 42, Gdk.InterpType.Bilinear);
+                    image.ScaleSimple (icon_size, icon_size, Gdk.InterpType.Bilinear);
                 }
             }
 

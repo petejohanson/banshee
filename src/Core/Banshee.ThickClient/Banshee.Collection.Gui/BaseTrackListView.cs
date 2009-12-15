@@ -44,7 +44,7 @@ using Banshee.Gui;
 
 namespace Banshee.Collection.Gui
 {
-    public class BaseTrackListView : ListView<TrackInfo>
+    public class BaseTrackListView : SearchableListView<TrackInfo>
     {
         public BaseTrackListView () : base ()
         {
@@ -65,6 +65,10 @@ namespace Banshee.Collection.Gui
                     ServiceManager.PlayerEngine.OpenPlay (args.RowValue);
                 }
             };
+        }
+
+        public override bool SelectOnRowFound {
+            get { return true; }
         }
 
         private static TargetEntry [] source_targets = new TargetEntry [] {

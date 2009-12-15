@@ -102,6 +102,7 @@ namespace Banshee.Moblin
         {
             RowSpacing = ColumnSpacing = 12;
             Build ();
+            ServiceManager.Get<ArtworkManager> ().AddCachedSize (icon_size);
 
             recent = new RecentAlbumsList (cols * rows);
             recent.Changed += (o, a) => Reload ();

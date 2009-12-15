@@ -134,6 +134,13 @@ namespace Banshee.Metadata
             }
         }
 
+        internal void OnHaveResult (MetadataServiceJob job)
+        {
+            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                OnHaveResult (job.Track, job.ResultTags);
+            });
+        }
+
         private void OnSchedulerJobFinished (IJob job)
         {
             if (!(job is IMetadataLookupJob)) {
@@ -141,11 +148,7 @@ namespace Banshee.Metadata
             }
 
             IMetadataLookupJob lookup_job = (IMetadataLookupJob)job;
-            if (RemoveJob (lookup_job)) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
-                    OnHaveResult (lookup_job.Track, lookup_job.ResultTags);
-                });
-            }
+            RemoveJob (lookup_job);
         }
 
         private void OnSchedulerJobUnscheduled (IJob job)

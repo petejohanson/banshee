@@ -30,6 +30,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
+
+using Hyena.Query;
 
 namespace Hyena.Data.Sqlite
 {
@@ -45,9 +48,11 @@ namespace Hyena.Data.Sqlite
         private HyenaSqliteCommand delete_selection_command;
         private HyenaSqliteCommand save_selection_command;
         private HyenaSqliteCommand get_selection_command;
+        private HyenaSqliteCommand indexof_command;
 
         private string select_str;
         private string reload_sql;
+        private string last_indexof_where_fragment;
         private long uid;
         private long selection_uid;
         private long rows;
@@ -102,7 +107,7 @@ namespace Hyena.Data.Sqlite
 
             if (model.CachesJoinTableEntries) {
                 select_str = String.Format (
-                    @"SELECT {0}, {5}.ItemID  FROM {1}
+                    @"SELECT {0}, OrderID, {5}.ItemID  FROM {1}
                         INNER JOIN {2}
                             ON {3} = {2}.{4}
                         INNER JOIN {5}
@@ -134,7 +139,7 @@ namespace Hyena.Data.Sqlite
                 );
             } else {
                 select_str = String.Format (
-                    @"SELECT {0}, {2}.ItemID FROM {1}
+                    @"SELECT {0}, OrderID, {2}.ItemID FROM {1}
                         INNER JOIN {2}
                             ON {3} = {2}.ItemID
                         WHERE
@@ -226,6 +231,38 @@ namespace Hyena.Data.Sqlite
                     return first_order_id;
                 }
              }
+        }
+
+        public long IndexOf (string where_fragment, long offset)
+        {
+            if (String.IsNullOrEmpty (where_fragment)) {
+                return -1;
+            }
+
+            if (!where_fragment.Equals (last_indexof_where_fragment)) {
+                last_indexof_where_fragment = where_fragment;
+
+                if (!where_fragment.Trim ().ToLower ().StartsWith ("and ")) {
+                    where_fragment = " AND " + where_fragment;
+                }
+
+                string sql = String.Format ("{0} {1} LIMIT ?, 1", select_str, where_fragment);
+                indexof_command = new HyenaSqliteCommand (sql);
+            }
+
+            lock (this) {
+                using (IDataReader reader = connection.Query (indexof_command, offset)) {
+                    if (reader.Read ()) {
+                        long target_id = (long) reader[reader.FieldCount - 2];
+                        if (target_id == 0) {
+                            return -1;
+                        }
+                        return target_id - FirstOrderId;
+                    }
+                }
+
+                return -1;
+            }
         }
 
         public long IndexOf (ICacheableItem item)

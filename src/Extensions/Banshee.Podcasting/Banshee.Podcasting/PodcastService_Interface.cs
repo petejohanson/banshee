@@ -59,9 +59,6 @@ namespace Banshee.Podcasting
 
         private void InitializeInterface ()
         {
-            source = new PodcastSource ();
-
-            ServiceManager.SourceManager.AddSource (source);
             actions = new PodcastActions (source);
         }
 

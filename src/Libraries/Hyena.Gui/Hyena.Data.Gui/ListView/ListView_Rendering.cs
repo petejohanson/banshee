@@ -503,7 +503,7 @@ namespace Hyena.Data.Gui
 
 #endregion
 
-        private void InvalidateList ()
+        protected void InvalidateList ()
         {
             if (IsRealized) {
                 QueueDrawArea (list_rendering_alloc.X, list_rendering_alloc.Y, list_rendering_alloc.Width, list_rendering_alloc.Height);

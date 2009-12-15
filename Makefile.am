@@ -44,10 +44,18 @@ $(MO_FILES): $(LC_BUILD)/%/LC_MESSAGES/$(PACKAGE).mo: po/%.gmo
 	cp -af '$<' '$@'
 
 run: $(MO_FILES)
+	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS))
+
+run-logged: $(MO_FILES)
 	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS) | tee last-run-log)
 
-run-perf: run
+run-perf: run-logged
 	extras/perf-analyze-log bin/last-run-log
+
+run-trace: $(MO_FILES)
+	(cd bin; $(MONO) \
+		--trace=$$(find . -name "*dll" | sed 's/\.\///' | sed 's/\.dll//' | sed 's/Mono.Data.Sqlite//' | sort | tr "\n" , | sed 's/,$$//') \
+		Nereid.exe --uninstalled $(BANSHEE_DEV_OPTIONS) > ../banshee.trace)
 
 gdb:
 	@pushd bin; \

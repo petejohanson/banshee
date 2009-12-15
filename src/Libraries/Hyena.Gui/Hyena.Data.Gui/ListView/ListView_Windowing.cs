@@ -47,6 +47,10 @@ namespace Hyena.Data.Gui
             get { return list_rendering_alloc; }
         }
 
+        protected Gdk.Window EventWindow {
+            get { return event_window; }
+        }
+
         protected override void OnRealized ()
         {
             WidgetFlags |= WidgetFlags.Realized | WidgetFlags.NoWindow;

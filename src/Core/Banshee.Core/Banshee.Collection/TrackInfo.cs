@@ -143,6 +143,10 @@ namespace Banshee.Collection
 
         public virtual bool TrackEqual (TrackInfo track)
         {
+            if (track == this) {
+                return true;
+            }
+
             if (track == null || track.Uri == null || Uri == null) {
                 return false;
             }

@@ -66,6 +66,7 @@ namespace Nereid
         private ViewContainer view_container;
         private VBox source_box;
         private CoverArtDisplay cover_art_display;
+        private Widget cover_art_container;
 
         // Major Interaction Components
         private SourceView source_view;
@@ -170,7 +171,9 @@ namespace Nereid
 
             TrackInfoDisplay track_info_display = new ClassicTrackInfoDisplay ();
             track_info_display.Show ();
-            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/TrackInfoDisplay", track_info_display, true);
+            var editable = TrackInfoDisplay.GetEditable (track_info_display);
+            editable.Show ();
+            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/TrackInfoDisplay", editable, true);
 
             ConnectedVolumeButton volume_button = new ConnectedVolumeButton ();
             volume_button.Show ();
@@ -219,12 +222,12 @@ namespace Nereid
                     cover_art_display = new CoverArtDisplay () { Visible = true };
                     source_box.SizeAllocated += OnSourceBoxSizeAllocated;
                     cover_art_display.HeightRequest = SourceViewWidth.Get ();
-                    source_box.PackStart (cover_art_display, false, false, 0);
+                    source_box.PackStart (cover_art_container = TrackInfoDisplay.GetEditable (cover_art_display), false, false, 0);
                     source_box.ShowAll ();
                 }
             } else if (cover_art_display != null) {
                 cover_art_display.Hide ();
-                source_box.Remove (cover_art_display);
+                source_box.Remove (cover_art_container);
                 source_box.SizeAllocated -= OnSourceBoxSizeAllocated;
                 cover_art_display.Dispose ();
                 cover_art_display = null;
