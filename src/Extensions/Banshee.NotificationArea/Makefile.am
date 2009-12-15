@@ -23,8 +23,8 @@ SOURCES =  \
 SOURCES += $(NOTIFY_SHARP_SOURCES)
 
 RESOURCES =  \
-	Resources/NotificationAreaMenu.xml \
-	Banshee.NotificationArea.addin.xml
+	Banshee.NotificationArea.addin.xml \
+	Resources/NotificationAreaMenu.xml
 
 if ENABLE_OSX
 EXTRA_DIST = $(SOURCES) $(RESOURCES)

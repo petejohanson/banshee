@@ -39,9 +39,9 @@ SOURCES =  \
 	Banshee.Podcasting/PodcastService_Interface.cs
 
 RESOURCES =  \
+	Banshee.Podcasting.addin.xml \
 	Resources/ActiveSourceUI.xml \
-	Resources/GlobalUI.xml \
-	Banshee.Podcasting.addin.xml
+	Resources/GlobalUI.xml
 
 if ENABLE_PODCAST
 include $(top_srcdir)/build/build.mk

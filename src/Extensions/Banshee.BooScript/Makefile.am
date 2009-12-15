@@ -6,10 +6,10 @@ INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 SOURCES = Banshee.BooScript/BooScriptService.cs
 
 RESOURCES =  \
+	Banshee.BooScript.addin.xml \
 	Resources/duration-status-formats.boo \
 	Resources/filename-transform.boo \
-	Resources/vorbis-oga-extension.boo \
-	Banshee.BooScript.addin.xml
+	Resources/vorbis-oga-extension.boo
 
 if HAVE_BOO
 include $(top_srcdir)/build/build.mk
