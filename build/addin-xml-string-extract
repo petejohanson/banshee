@@ -25,11 +25,12 @@ foreach (@ARGV) {
 			foreach ($nodes->get_nodelist) {
 				my $val = $_->string_value;
 				chomp $val;
+				$val =~ s/\"/\"\"/g;
 				next if (
 					($query eq '/Addin/@category' && $val =~ /^required/) ||
 					$val eq "" ||
 					$val =~ /^@/);
-				print "        Catalog.GetString (\"" . $_->string_value . "\");\n";
+				print "        Catalog.GetString (@\"$val\");\n";
 			}
 		}
 	}
