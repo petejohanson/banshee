@@ -34,20 +34,45 @@ namespace Banshee.Widgets
     public class DictionaryComboBox<T> : ComboBox
     {
         private ListStore store;
+        private int row;
 
-        public DictionaryComboBox()
+        public DictionaryComboBox ()
         {
-            store = new ListStore(typeof(string), typeof(T));
+            store = new ListStore (typeof (string), typeof (T), typeof (int));
+            store.SetSortColumnId (2, SortType.Ascending);
             Model = store;
 
-            CellRendererText text_renderer = new CellRendererText();
-            PackStart(text_renderer, true);
-            AddAttribute(text_renderer, "text", 0);
+            CellRendererText text_renderer = new CellRendererText ();
+            PackStart (text_renderer, true);
+            AddAttribute (text_renderer, "text", 0);
         }
 
-        public TreeIter Add(string key, T value)
+        public TreeIter Add (string str, T value)
         {
-            return store.AppendValues(key, value);
+            return store.AppendValues (str, value, row++);
+        }
+
+        public TreeIter Add (T value, string str, int order)
+        {
+            return store.AppendValues (str, value, order);
+        }
+
+        public bool Remove (T value)
+        {
+            var iter = IterFor (value);
+            return store.Remove (ref iter);
+        }
+
+        public bool Remove (ref TreeIter iter)
+        {
+            return store.Remove (ref iter);
+        }
+
+        public void Update (T value, string str, int order)
+        {
+            var iter = IterFor (value);
+            store.SetValue (iter, 0, str);
+            store.SetValue (iter, 2, order);
         }
 
         public new void Clear ()
@@ -55,33 +80,35 @@ namespace Banshee.Widgets
             store.Clear ();
         }
 
-        public T ActiveValue {
-            get {
-                TreeIter iter;
-                if(GetActiveIter(out iter)) {
-                    return (T)store.GetValue(iter, 1);
-                }
-
-                return default(T);
+        private TreeIter IterFor (T val)
+        {
+            if (val == null) {
+                return TreeIter.Zero;
             }
 
-            set {
-                if(value == null) {
-                    SetActiveIter(TreeIter.Zero);
-                    return;
-                }
-
-                for(int i = 0, n = store.IterNChildren(); i < n; i++) {
-                    TreeIter iter;
-                    if(store.IterNthChild(out iter, i)) {
-                        T compare = (T)store.GetValue(iter, 1);
-                        if(value.Equals(compare)) {
-                            SetActiveIter(iter);
-                            return;
-                        }
+            for (int i = 0, n = store.IterNChildren (); i < n; i++) {
+                TreeIter iter;
+                if (store.IterNthChild (out iter, i)) {
+                    T compare = (T)store.GetValue (iter, 1);
+                    if (val.Equals (compare)) {
+                        return iter;
                     }
                 }
             }
+
+            return TreeIter.Zero;
+        }
+
+        public T ActiveValue {
+            get {
+                TreeIter iter;
+                if (GetActiveIter (out iter)) {
+                    return (T)store.GetValue (iter, 1);
+                }
+
+                return default (T);
+            }
+            set { SetActiveIter (IterFor (value)); }
         }
     }
 }
