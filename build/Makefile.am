@@ -3,8 +3,9 @@ SUBDIRS = pkg-config m4
 GCONF_SCHEMA_EXTRACTOR_ASSEMBLY = gconf-schema-extractor.exe
 TRANSLATOR_EXTRACTOR_ASSEMBLY = translator-extractor.exe
 DLL_MAP_VERIFIER_ASSEMBLY = dll-map-verifier.exe
+ADDIN_XML_STRING_EXTRACTOR_ASSEMBLY = addin-xml-string-extractor.exe
 
-ALL_TARGETS = $(TRANSLATOR_EXTRACTOR_ASSEMBLY) $(DLL_MAP_VERIFIER_ASSEMBLY)
+ALL_TARGETS = $(TRANSLATOR_EXTRACTOR_ASSEMBLY) $(DLL_MAP_VERIFIER_ASSEMBLY) $(ADDIN_XML_STRING_EXTRACTOR_ASSEMBLY)
 
 if GCONF_SCHEMAS_INSTALL
 bansheedir = $(pkglibdir)
@@ -25,15 +26,18 @@ $(TRANSLATOR_EXTRACTOR_ASSEMBLY): TranslatorExtractor.cs
 $(DLL_MAP_VERIFIER_ASSEMBLY): DllMapVerifier.cs
 	$(MCS) -out:$@ $<
 
+$(ADDIN_XML_STRING_EXTRACTOR_ASSEMBLY): AddinXmlStringExtractor.cs
+	$(MCS) -r:System.Xml -out:$@ $<
+
 EXTRA_DIST = \
 	icon-theme-installer \
 	private-icon-theme-installer \
 	GConfSchemaExtractor.cs \
 	TranslatorExtractor.cs \
 	DllMapVerifier.cs \
+	AddinXmlStringExtractor.cs \
 	dll-map-makefile-verifier \
-	gconf-schema-rules \
-	addin-xml-string-extract
+	gconf-schema-rules
 
 CLEANFILES = *.exe *.mdb
 MAINTAINERCLEANFILES = Makefile.in
