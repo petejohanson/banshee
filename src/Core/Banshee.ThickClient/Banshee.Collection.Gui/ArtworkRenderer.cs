@@ -84,10 +84,16 @@ namespace Banshee.Collection.Gui
                 cr.Fill ();
             } else {
                 CairoExtensions.RoundedRectangle (cr, x, y, width, height, radius, corners);
-                cr.Color = CairoExtensions.ColorFromHsb (random.Next (), 54 / 255.0, 102 / 255.0);
+
+                var grad = new LinearGradient (x, y, x, y + height);
+                grad.AddColorStop (0, CairoExtensions.ColorFromHsb (random.Next (), random.Next (50, 150) / 255.0, 0.75));
+                grad.AddColorStop (1, CairoExtensions.ColorFromHsb (random.Next (), random.Next (50, 150) / 255.0, 0.15));
+                cr.Pattern = grad;
                 cr.Fill ();
-                var size = Math.Min (width, height) - 20;
-                Banshee.CairoGlyphs.BansheeLineLogo.Render (cr, x + 18, y + 12, size,
+                grad.Destroy ();
+
+                Banshee.CairoGlyphs.BansheeLineLogo.Render (cr,
+                    new Rectangle (x + 15, y + 15, width - 30, height - 30),
                     CairoExtensions.RgbaToColor (0xffffff55),
                     CairoExtensions.RgbaToColor (0xffffff88));
             }
