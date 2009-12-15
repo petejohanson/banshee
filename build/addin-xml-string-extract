@@ -23,7 +23,12 @@ foreach (@ARGV) {
 		my $nodes = $xpath->find ($query);
 		if ($nodes->size) {
 			foreach ($nodes->get_nodelist) {
-				next if ($query eq '/Addin/@category' && $_->string_value =~ /^required/);
+				my $val = $_->string_value;
+				chomp $val;
+				next if (
+					($query eq '/Addin/@category' && $val =~ /^required/) ||
+					$val eq "" ||
+					$val =~ /^@/);
 				print "        Catalog.GetString (\"" . $_->string_value . "\");\n";
 			}
 		}

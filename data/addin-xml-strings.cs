@@ -42,7 +42,6 @@ internal static class AddinXmlStringCatalog
         // ../src/Extensions/Banshee.Torrent/Banshee.Torrent.addin.xml
         Catalog.GetString ("Torrent Downloader");
         Catalog.GetString ("Adds support for downloading BitTorrent files from podcasts.");
-        Catalog.GetString ("");
 
         // ../src/Extensions/Banshee.BooScript/Banshee.BooScript.addin.xml
         Catalog.GetString ("Boo Scripting");
@@ -55,9 +54,6 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString ("Hardware");
 
         // ../src/Extensions/Template/Template.addin.xml
-        Catalog.GetString ("@EXTENSION_NAME@");
-        Catalog.GetString ("");
-        Catalog.GetString ("");
 
         // ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook.addin.xml
         Catalog.GetString ("Audiobooks Library");
@@ -72,7 +68,6 @@ internal static class AddinXmlStringCatalog
         // ../src/Extensions/Banshee.Daap/Banshee.Daap.addin.xml
         Catalog.GetString ("DAAP");
         Catalog.GetString ("Browse and listen to music shared over your local network.");
-        Catalog.GetString ("");
 
         // ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying.addin.xml
         Catalog.GetString ("Now Playing");
@@ -115,7 +110,6 @@ internal static class AddinXmlStringCatalog
         // ../src/Extensions/Banshee.RemoteAudio/Banshee.RemoteAudio.addin.xml
         Catalog.GetString ("Remote Audio");
         Catalog.GetString ("Provides support for remote speakers like the Airport Express");
-        Catalog.GetString ("");
 
         // ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt.addin.xml
         Catalog.GetString ("Cover Art Fetching");
