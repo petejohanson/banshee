@@ -65,7 +65,7 @@ namespace Banshee.Addins.Gui
             hbox.PackEnd   (search_entry, false, false, 0);
             hbox.PackEnd   (search_label, false, false, 0);
 
-            var model = new TreeStore (typeof (string));
+            var model = new TreeStore (typeof(bool), typeof(bool), typeof (string), typeof (Addin));
 
             var addins = AddinManager.Registry.GetAddins ().Where (a => { return
                 a.Name != a.Id && a.Description != null &&
@@ -84,26 +84,43 @@ namespace Banshee.Addins.Gui
             tree_view = new TreeView () {
                 FixedHeightMode = false,
                 HeadersVisible = false,
-                SearchColumn = 0,
-                //EnableGridLines = TreeViewGridLines.Horizontal,
-                //EnableTreeLines = true,
-                //RulesHint = true,
-                //ShowExpanders = false,
-                //SearchEntry = search_entry.InnerEntry,
+                SearchColumn = 1,
+                RulesHint = true,
                 Model = model
             };
-            tree_view.AppendColumn ("title", new CellRendererText (), "markup", 0);
+
+            var txt_cell = new CellRendererText () { WrapMode = Pango.WrapMode.Word };
+            tree_view.AppendColumn ("Name", txt_cell , "markup", 2);
+
+            var check_cell = new CellRendererToggle () { Activatable = true };
+            tree_view.AppendColumn ("Enable", check_cell, "visible", 0, "active", 1);
+            check_cell.Toggled += (o, a) => {
+                TreeIter iter;
+                if (model.GetIter (out iter, new TreePath (a.Path))) {
+                    var addin = model.GetValue (iter, 3) as Addin;
+                    bool enabled = (bool) model.GetValue (iter, 1);
+                    addin.Enabled = !enabled;
+                    model.SetValue (iter, 1, addin.Enabled);
+                }
+            };
 
             var update_model = new System.Action (() => {
                 string search = search_entry.Query;
                 bool? enabled = filter_combo.Active > 0 ? (bool?) (filter_combo.Active == 1 ? true : false) : null;
                 model.Clear ();
                 foreach (var cat in categorized_addins) {
-                    var cat_iter = model.AppendValues (String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (cat.NameLocalized)));
+                    var cat_iter = model.AppendValues (false, false, String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (cat.NameLocalized)), null);
                     bool any = false;
                     foreach (var a in cat.Addins.Matching (search)) {
                         if (enabled == null || (a.Enabled == enabled.Value)) {
-                            model.AppendValues (cat_iter, GLib.Markup.EscapeText (Catalog.GetString (a.Name)));
+                            model.AppendValues (cat_iter, true,
+                                a.Enabled,
+                                String.Format (
+                                    "<b>{0}</b>\n<small>{1}</small>",
+                                    GLib.Markup.EscapeText (Catalog.GetString (a.Name)),
+                                    GLib.Markup.EscapeText (Catalog.GetString (a.Description.Description))),
+                                a
+                            );
                             any = true;
                         }
                     }
@@ -128,6 +145,8 @@ namespace Banshee.Addins.Gui
             PackStart (hbox, false, false, 0);
             PackStart (tree_scroll, true, true, 0);
             ShowAll ();
+
+            txt_cell.WrapWidth = 300;
         }
 
     }
