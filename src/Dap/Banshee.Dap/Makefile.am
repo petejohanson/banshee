@@ -9,6 +9,7 @@ SOURCES =  \
 	Banshee.Dap.Gui/DapInfoBar.cs \
 	Banshee.Dap.Gui/DapPropertiesDialog.cs \
 	Banshee.Dap.Gui/DapPropertiesDisplay.cs \
+	Banshee.Dap.Gui/LibrarySyncOptions.cs \
 	Banshee.Dap.Gui/PurchasedMusicActions.cs \
 	Banshee.Dap/DapLibrarySync.cs \
 	Banshee.Dap/DapService.cs \

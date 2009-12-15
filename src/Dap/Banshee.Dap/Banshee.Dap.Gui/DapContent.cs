@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Gtk;
@@ -50,6 +51,8 @@ namespace Banshee.Dap.Gui
     public class DapContent : DapPropertiesDisplay
     {
         private Label title;
+        private SimpleTable<DapLibrarySync> table;
+        private Dictionary<DapLibrarySync, LibrarySyncOptions> library_opts = new Dictionary<DapLibrarySync, LibrarySyncOptions> ();
         private DapSource dap;
 
         // Ugh, this is to avoid the GLib.MissingIntPtrCtorException seen by some; BGO #552169
@@ -66,6 +69,16 @@ namespace Banshee.Dap.Gui
             dap.Properties.PropertyChanged += OnPropertyChanged;
         }
 
+        public override void Dispose ()
+        {
+            foreach (var opt in library_opts.Values) {
+                opt.Dispose ();
+            }
+            library_opts.Clear ();
+
+            base.Dispose ();
+        }
+
         private void BuildWidgets ()
         {
             HBox split_box = new HBox ();
@@ -79,71 +92,49 @@ namespace Banshee.Dap.Gui
 
             // Define custom preference widgetry
             var hbox = new HBox ();
-            var table = new Table ((uint)dap.Sync.Libraries.Count (), 2, false) {
-                RowSpacing = 6,
-                ColumnSpacing = 6
-            };
+            table = new SimpleTable<DapLibrarySync> ();
 
-            uint i = 0;
-            foreach (var iter_sync in dap.Sync.LibrarySyncs) {
-                var library_sync = iter_sync;
-                var library = library_sync.Library;
-                // Translators: {0} is the name of a library, eg 'Music' or 'Podcasts'
-                var label = new Label (String.Format (Catalog.GetString ("{0}:"), library.Name)) { Xalign = 1f };
-                table.Attach (label, 0, 1, i, i + 1);
+            dap.Sync.LibraryAdded += l => AddLibrary (l);
+            dap.Sync.LibraryRemoved += l => RemoveLibrary (l);
 
-                var combo = new DictionaryComboBox<DatabaseSource> ();
-                combo.RowSeparatorFunc = (model, iter) => { return (string)model.GetValue (iter, 0) == "---"; };
-                combo.Add (Catalog.GetString ("Manage manually"), null);
-                combo.Add (Catalog.GetString ("Sync entire library"), null);
-
-                var playlists = library.Children.Where (c => c is DatabaseSource).Cast<DatabaseSource> ().ToList ();
-                if (playlists.Count > 0) {
-                    combo.Add ("---", null);
-
-                    foreach (var playlist in playlists) {
-                        // Translators: {0} is the name of a playlist
-                        combo.Add (String.Format (Catalog.GetString ("Sync from “{0}”"), playlist.Name), playlist);
-                    }
-                }
-
-                if (!library_sync.Enabled)
-                    combo.Active = 0;
-                else if (library_sync.SyncEntireLibrary)
-                    combo.Active = 1;
-                else if (library_sync.SyncSource != null)
-                    combo.ActiveValue = library_sync.SyncSource;
-
-                combo.Changed += (o, a) => {
-                    library_sync.Enabled = combo.Active != 0;
-                    library_sync.SyncEntireLibrary = combo.Active == 1;
-
-                    if (combo.Active > 1) {
-                        library_sync.SyncSource = combo.ActiveValue;
-                    }
-                };
-                table.Attach (combo, 1, 2, i, i + 1);
-                i++;
+            foreach (var sync in dap.Sync.Libraries) {
+                AddLibrary (sync);
             }
 
             hbox.PackStart (table, false, false, 0);
             hbox.ShowAll ();
             dap.Preferences["sync"]["library-options"].DisplayWidget = hbox;
 
-            Banshee.Preferences.Gui.NotebookPage properties = new Banshee.Preferences.Gui.NotebookPage (dap.Preferences);
-            properties.BorderWidth = 0;
+            var properties = new Banshee.Preferences.Gui.NotebookPage (dap.Preferences) {
+                BorderWidth = 0
+            };
 
             content_box.PackStart (title, false, false, 0);
             content_box.PackStart (properties, false, false, 0);
 
-            Image image = new Image (LargeIcon);
-            image.Yalign = 0.0f;
+            var image = new Image (LargeIcon) { Yalign = 0.0f };
 
             split_box.PackStart (image, false, true, 0);
             split_box.PackEnd (content_box, true, true, 0);
 
             Add (split_box);
             ShowAll ();
+        }
+
+        private void AddLibrary (DapLibrarySync library_sync)
+        {
+            var opts = new LibrarySyncOptions (library_sync);
+            table.AddRow (library_sync, opts.RowCells);
+            table.ShowAll ();
+            library_opts.Add (library_sync, opts);
+        }
+
+        private void RemoveLibrary (DapLibrarySync library_sync)
+        {
+            table.RemoveRow (library_sync);
+            var opts = library_opts[library_sync];
+            library_opts.Remove (library_sync);
+            opts.Dispose ();
         }
 
         private void BuildActions ()

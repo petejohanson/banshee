@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Mono.Unix;
@@ -70,6 +71,9 @@ namespace Banshee.Dap
 
         public event Action<DapSync> Updated;
 
+        public event Action<DapLibrarySync> LibraryAdded;
+        public event Action<DapLibrarySync> LibraryRemoved;
+
         internal string ConfigurationNamespace {
             get { return conf_ns; }
         }
@@ -80,7 +84,7 @@ namespace Banshee.Dap
             get { return dap; }
         }
 
-        public IEnumerable<DapLibrarySync> LibrarySyncs {
+        public IList<DapLibrarySync> Libraries {
             get { return library_syncs; }
         }
 
@@ -109,12 +113,9 @@ namespace Banshee.Dap
 
         public void Dispose ()
         {
-            foreach (LibrarySource source in Libraries) {
-                source.TracksAdded -= OnLibraryChanged;
-                source.TracksDeleted -= OnLibraryChanged;
-            }
-
             foreach (DapLibrarySync sync in library_syncs) {
+                sync.Library.TracksAdded -= OnLibraryChanged;
+                sync.Library.TracksDeleted -= OnLibraryChanged;
                 sync.Dispose ();
             }
         }
@@ -161,18 +162,61 @@ namespace Banshee.Dap
 
         private void BuildSyncLists ()
         {
-            foreach (LibrarySource source in Libraries) {
-                DapLibrarySync library_sync = new DapLibrarySync (this, source);
-                library_syncs.Add (library_sync);
-                //pref_sections.Add (library_sync.PrefsSection);
-                //library_sync.PrefsSection.Order = ++i;
+            var src_mgr = ServiceManager.SourceManager;
+            src_mgr.SourceAdded   += (a) => AddLibrary (a.Source, true);
+            src_mgr.SourceRemoved += (a) => RemoveLibrary (a.Source);
 
-                source.TracksAdded += OnLibraryChanged;
-                source.TracksDeleted += OnLibraryChanged;
+            foreach (var src in src_mgr.Sources) {
+                AddLibrary (src, false);
             }
+
+            SortLibraries ();
 
             dap.TracksAdded += OnDapChanged;
             dap.TracksDeleted += OnDapChanged;
+        }
+
+        private void AddLibrary (Source source, bool initialized)
+        {
+            var library = GetSyncableLibrary (source);
+            if (library != null) {
+                var sync = new DapLibrarySync (this, library);
+                library_syncs.Add (sync);
+                library.TracksAdded += OnLibraryChanged;
+                library.TracksDeleted += OnLibraryChanged;
+
+                if (initialized) {
+                    SortLibraries ();
+
+                    var h = LibraryAdded;
+                    if (h != null) {
+                        h (sync);
+                    }
+                }
+            }
+        }
+
+        private void RemoveLibrary (Source source)
+        {
+            var library = GetSyncableLibrary (source);
+            if (library != null) {
+                var sync = library_syncs.First (s => s.Library == library);
+                library_syncs.Remove (sync);
+                sync.Library.TracksAdded -= OnLibraryChanged;
+                sync.Library.TracksDeleted -= OnLibraryChanged;
+
+                var h = LibraryRemoved;
+                if (h != null) {
+                    h (sync);
+                }
+
+                sync.Dispose ();
+            }
+        }
+
+        private void SortLibraries ()
+        {
+            library_syncs.Sort ((a, b) => a.Library.Order.CompareTo (b.Library.Order));
         }
 
         /*private void OnManuallyManageChanged (Root preference)
@@ -226,27 +270,26 @@ namespace Banshee.Dap
             }
          }
 
-        internal IEnumerable<LibrarySource> Libraries {
-            get {
-                List<Source> sources = new List<Source> (ServiceManager.SourceManager.Sources);
-                sources.Sort (delegate (Source a, Source b) {
-                    return a.Order.CompareTo (b.Order);
-                });
+        private LibrarySource GetSyncableLibrary (Source source)
+        {
+            var library = source as LibrarySource;
+            if (library == null)
+                return null;
 
-                if (!dap.SupportsVideo) {
-                    sources.Remove (ServiceManager.SourceManager.VideoLibrary);
-                }
+                //List<Source> sources = new List<Source> (ServiceManager.SourceManager.Sources);
+                //sources.Sort (delegate (Source a, Source b) {
+                    //return a.Order.CompareTo (b.Order);
+                //});
 
-                if (!dap.SupportsPodcasts) {
-                    sources.RemoveAll (s => s.UniqueId == "PodcastSource-PodcastLibrary");
-                }
-
-                foreach (Source source in sources) {
-                    if (source is LibrarySource) {
-                        yield return source as LibrarySource;
-                    }
-                }
+            if (!dap.SupportsVideo && library == ServiceManager.SourceManager.VideoLibrary) {
+                return null;
             }
+
+            if (!dap.SupportsPodcasts && library.UniqueId == "PodcastSource-PodcastLibrary") {
+                return null;
+            }
+
+            return library;
         }
 
         public int ItemCount {
