@@ -64,16 +64,7 @@ namespace Banshee.Preferences.Gui
             PreferenceBase pattern_display = music["file-system"].FindOrAdd (new VoidPreference ("file_folder_pattern"));
             pattern_display.DisplayWidget = new PatternDisplay (folder_pattern.DisplayWidget, file_pattern.DisplayWidget);
 
-            // Set up the extensions tab UI
-            Banshee.Addins.Gui.AddinView view = new Banshee.Addins.Gui.AddinView ();
-            view.Show ();
-
-            Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow ();
-            scroll.HscrollbarPolicy = PolicyType.Never;
-            scroll.AddWithViewport (view);
-            scroll.Show ();
-
-            service["extensions"].DisplayWidget = scroll;
+            service["extensions"].DisplayWidget = new Banshee.Addins.Gui.AddinView ();
         }
 
         private class LibraryLocationButton : HBox
