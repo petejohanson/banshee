@@ -89,7 +89,7 @@ namespace Hyena.Widgets
                 for (uint x = 0; x < NColumns; x++) {
                     var widget = item_widgets[items[y]][x];
                     Remove (widget);
-                    Attach (widget, x, ++x, (uint) y - 1, (uint) y);
+                    Attach (widget, x, x + 1, (uint) y - 1, (uint) y);
                 }
             }
 
