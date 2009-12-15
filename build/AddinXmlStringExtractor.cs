@@ -1,6 +1,6 @@
 using System;
-using System.Xml;
 using System.Xml.XPath;
+using System.Collections.Generic;
 
 public static class AddinXmlStringExtract
 {
@@ -19,7 +19,10 @@ internal static class AddinXmlStringCatalog
     private static void Strings ()
     {");
 
-        foreach (var path in args) {
+        var paths = new List<string> (args);
+        paths.Sort ();
+
+        foreach (var path in paths) {
             Console.WriteLine ("        // {0}", path);
             var xpath = new XPathDocument (path);
             var nav = xpath.CreateNavigator ();
