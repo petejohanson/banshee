@@ -91,6 +91,8 @@ namespace Banshee.Dap.Gui
                 if (combo.Active > 1) {
                     library_sync.SyncSource = combo.ActiveValue;
                 }
+
+                library_sync.MaybeTriggerAutoSync ();
             };
 
             RowCells = new Widget [] { label, combo };

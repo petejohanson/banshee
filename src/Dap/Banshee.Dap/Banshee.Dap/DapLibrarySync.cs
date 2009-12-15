@@ -58,18 +58,13 @@ namespace Banshee.Dap
         #region Public Properties
 
         public bool Enabled {
-            get { return sync.Enabled && enabled.Get (); }
+            get { return enabled.Get (); }
             set { enabled.Set (value); }
         }
 
         public bool SyncEntireLibrary {
             get { return sync_entire_library.Get (); }
             set { sync_entire_library.Set (value); }
-        }
-
-        public Section PrefsSection {
-            //get { return library_prefs_section; }
-            get { return null; }
         }
 
         public LibrarySource Library {
@@ -84,6 +79,11 @@ namespace Banshee.Dap
                 return library.Children.Where (c => c is Banshee.Playlist.AbstractPlaylistSource).FirstOrDefault (c => c.UniqueId == id) as DatabaseSource;
             }
             set { sync_source.Set (value.UniqueId); }
+        }
+
+        public void MaybeTriggerAutoSync ()
+        {
+            sync.MaybeTriggerAutoSync ();
         }
 
         private IList<AbstractPlaylistSource> GetSyncPlaylists ()
@@ -126,7 +126,7 @@ namespace Banshee.Dap
         {
             conf_ns = String.Format ("{0}.{1}", sync.ConfigurationNamespace, library.ParentConfigurationId);
 
-            enabled = sync.Dap.CreateSchema<bool> (conf_ns, "enabled", true,
+            enabled = sync.Dap.CreateSchema<bool> (conf_ns, "enabled", sync.LegacyManuallyManage.Get (),
                 String.Format (Catalog.GetString ("Sync {0}"), library.Name), "");
 
             sync_entire_library = sync.Dap.CreateSchema<bool> (conf_ns, "sync_entire_library", true,

@@ -49,19 +49,10 @@ namespace Banshee.Dap
 {
     public sealed class DapSync : IDisposable
     {
-        // Get these strings in now, so we can use them after a string freeze
-        // Translators: {0} is the name of a library, eg 'Music' or 'Podcasts'
-        internal string reserved1 = Catalog.GetString ("{0}:");
-        internal string reserved2 = Catalog.GetString ("Manage manually");
-        internal string reserved3 = Catalog.GetString ("Sync entire library");
-        // Translators: {0} is the name of a playlist
-        internal string reserved4 = Catalog.GetString ("Sync from '{0}'");
-        internal string reserved5 = Catalog.GetString ("Sync when first plugged in and when the libraries change");
-
         private DapSource dap;
         private string conf_ns;
         private List<DapLibrarySync> library_syncs = new List<DapLibrarySync> ();
-        //private SchemaEntry<bool> manually_manage, auto_sync;
+        internal SchemaEntry<bool> LegacyManuallyManage;
         private SchemaEntry<bool> auto_sync;
         private Section sync_prefs;
         //private PreferenceBase manually_manage_pref;//, auto_sync_pref;
@@ -70,7 +61,6 @@ namespace Banshee.Dap
         private RateLimiter sync_limiter;
 
         public event Action<DapSync> Updated;
-
         public event Action<DapLibrarySync> LibraryAdded;
         public event Action<DapLibrarySync> LibraryRemoved;
 
@@ -89,11 +79,11 @@ namespace Banshee.Dap
         }
 
         public bool Enabled {
-            get { return true; } //!manually_manage.Get (); }
+            get { return library_syncs.Any (l => l.Enabled); }
         }
 
         public bool AutoSync {
-            get { return Enabled && auto_sync.Get (); }
+            get { return auto_sync.Get (); }
         }
 
         public IEnumerable<Section> PreferenceSections {
@@ -118,40 +108,39 @@ namespace Banshee.Dap
                 sync.Library.TracksDeleted -= OnLibraryChanged;
                 sync.Dispose ();
             }
+
+            var src_mgr = ServiceManager.SourceManager;
+            src_mgr.SourceAdded   -= OnSourceAdded;
+            src_mgr.SourceRemoved -= OnSourceRemoved;
+        }
+
+        private void OnSourceAdded (SourceEventArgs a)
+        {
+            AddLibrary (a.Source, true);
+        }
+
+        private void OnSourceRemoved (SourceEventArgs a)
+        {
+            RemoveLibrary (a.Source);
         }
 
         private void BuildPreferences ()
         {
             conf_ns = "sync";
-            /*manually_manage = dap.CreateSchema<bool> (conf_ns, "enabled", true,
-                Catalog.GetString ("Manually manage this device"),
-                Catalog.GetString ("Manually managing your device means you can drag and drop items onto the device, and manually remove them.")
-            );*/
+            LegacyManuallyManage = dap.CreateSchema<bool> (conf_ns, "enabled", false, "", "");
 
             auto_sync = dap.CreateSchema<bool> (conf_ns, "auto_sync", false,
                 Catalog.GetString ("Sync when first plugged in and when the libraries change"),
                 Catalog.GetString ("Begin synchronizing the device as soon as the device is plugged in or the libraries change.")
             );
 
-            sync_prefs = new Section ("sync", Catalog.GetString ("Sync Preferences"), 0);// { ShowLabel = false };
+            sync_prefs = new Section ("sync", Catalog.GetString ("Sync Preferences"), 0);
             pref_sections.Add (sync_prefs);
-
-            /*manually_manage_pref = sync_prefs.Add (manually_manage);
-            manually_manage_pref.Visible = false;
-            manually_manage_pref.ShowDescription = true;
-            manually_manage_pref.ShowLabel = false;
-            manually_manage_pref.ValueChanged += OnManuallyManageChanged;*/
 
             sync_prefs.Add (new VoidPreference ("library-options"));
 
             auto_sync_pref = sync_prefs.Add (auto_sync);
             auto_sync_pref.ValueChanged += OnAutoSyncChanged;
-
-            //var library_prefs = new Section ("library-sync", Catalog.GetString ("Library Sync"), 1);
-            //pref_sections.Add (library_prefs);
-
-            //auto_sync_pref.Changed += delegate { OnUpdated (); };
-            //OnEnabledChanged (null);
         }
 
         private bool dap_loaded = false;
@@ -163,8 +152,8 @@ namespace Banshee.Dap
         private void BuildSyncLists ()
         {
             var src_mgr = ServiceManager.SourceManager;
-            src_mgr.SourceAdded   += (a) => AddLibrary (a.Source, true);
-            src_mgr.SourceRemoved += (a) => RemoveLibrary (a.Source);
+            src_mgr.SourceAdded   += OnSourceAdded;
+            src_mgr.SourceRemoved += OnSourceRemoved;
 
             foreach (var src in src_mgr.Sources) {
                 AddLibrary (src, false);
@@ -219,27 +208,18 @@ namespace Banshee.Dap
             library_syncs.Sort ((a, b) => a.Library.Order.CompareTo (b.Library.Order));
         }
 
-        /*private void OnManuallyManageChanged (Root preference)
-        {
-            UpdateSensitivities ();
-            OnUpdated ();
-        }*/
-
         private void UpdateSensitivities ()
         {
-            bool sync_enabled = Enabled;
-            auto_sync_pref.Sensitive = sync_enabled;
-            /*foreach (DapLibrarySync lib_sync in library_syncs) {
-                lib_sync.PrefsSection.Sensitive = sync_enabled;
-            }*/
+            bool enabled = Enabled;
+            if (!enabled && auto_sync_pref.Value) {
+                auto_sync_pref.Value = false;
+            }
+            auto_sync_pref.Sensitive = enabled;
         }
 
         private void OnAutoSyncChanged (Root preference)
         {
-            OnUpdated ();
-            if (AutoSync) {
-                Sync ();
-            }
+            MaybeTriggerAutoSync ();
         }
 
         private void OnDapChanged (Source sender, TrackEventArgs args)
@@ -259,7 +239,7 @@ namespace Banshee.Dap
 
             foreach (DapLibrarySync lib_sync in library_syncs) {
                 if (lib_sync.Library == sender) {
-                    if (AutoSync) {
+                    if (AutoSync && lib_sync.Enabled) {
                         Sync ();
                     } else {
                         lib_sync.CalculateSync ();
@@ -311,6 +291,15 @@ namespace Banshee.Dap
             }
 
             OnUpdated ();
+        }
+
+        internal void MaybeTriggerAutoSync ()
+        {
+            UpdateSensitivities ();
+            OnUpdated ();
+            if (Enabled && AutoSync) {
+                Sync ();
+            }
         }
 
         internal void OnUpdated ()
