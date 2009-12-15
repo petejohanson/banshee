@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Addin 
-    id="Banshee.InternetArchive"
+    id="Banshee.Wikipedia"
     version="1.0"
     compatVersion="1.0"
     copyright="© 2009 Novell Inc. Licensed under the MIT X11 license."
-    _name="Internet Archive"
-    _category="Online Sources"
-    _description="Browse and search the Internet Archive's vast media collection."
+    name="Wikipedia"
+    category="Context Pane"
+    description="View artist information from Wikipedia in the context pane."
     author="Gabriel Burt"
     url="http://banshee-project.org/"
-    defaultEnabled="false">
+    defaultEnabled="true">
 
   <Dependencies>
     <Addin id="Banshee.Services" version="1.0"/>
     <Addin id="Banshee.ThickClient" version="1.0"/>
   </Dependencies>
 
-  <Extension path="/Banshee/SourceManager/Source">
-    <Source class="Banshee.InternetArchive.HomeSource"/>
+  <Extension path="/Banshee/ThickClient/ContextPane">
+    <ContextPage class="Banshee.Wikipedia.ContextPage"/>
   </Extension>
+
 </Addin>

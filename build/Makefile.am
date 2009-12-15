@@ -32,7 +32,8 @@ EXTRA_DIST = \
 	TranslatorExtractor.cs \
 	DllMapVerifier.cs \
 	dll-map-makefile-verifier \
-	gconf-schema-rules
+	gconf-schema-rules \
+	addin-xml-string-extract
 
 CLEANFILES = *.exe *.mdb
 MAINTAINERCLEANFILES = Makefile.in

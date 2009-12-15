@@ -1,0 +1,45 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use XML::XPath;
+
+my @queries = ('/Addin/@name', '/Addin/@description', '/Addin/@category');
+
+print <<EOF
+// Generated - Do Not Edit!
+
+internal static class AddinXmlStringCatalog
+{
+    private static void Strings ()
+    {
+EOF
+;
+
+foreach (@ARGV) {
+	print "        // $_\n";
+	my $xpath = XML::XPath->new (filename => $_);
+	foreach my $query (@queries) {
+		my $nodes = $xpath->find ($query);
+		if ($nodes->size) {
+			foreach ($nodes->get_nodelist) {
+				my $val = $_->string_value;
+				chomp $val;
+				$val =~ s/\"/\"\"/g;
+				next if (
+					($query eq '/Addin/@category' && $val =~ /^required/) ||
+					$val eq "" ||
+					$val =~ /^@/);
+				print "        Catalog.GetString (@\"$val\");\n";
+			}
+		}
+	}
+	print "\n";
+}
+
+print <<EOF
+    }
+}
+EOF
+;
+

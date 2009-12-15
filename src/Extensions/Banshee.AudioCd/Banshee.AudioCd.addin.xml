@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Addin 
-    id="Banshee.Bookmarks"
+    id="Banshee.AudioCd"
     version="1.0"
     compatVersion="1.0"
     copyright="© 2008 Novell Inc. Licensed under the MIT X11 license."
-    _name="Bookmarks"
-    _category="Utilities"
-    _description="Save your position in tracks so you can resume playback later."
-    author="Gabriel Burt"
+    name="Audio CD Support"
+    category="Core"
+    description="Listen to and rip Audio CDs."
+    author="Aaron Bockover"
     url="http://banshee-project.org/"
     defaultEnabled="true">
 
@@ -16,7 +16,7 @@
   </Dependencies>
 
   <Extension path="/Banshee/ServiceManager/Service">
-    <Service class="Banshee.Bookmarks.BookmarksService"/>
+    <Service class="Banshee.AudioCd.AudioCdService"/>
   </Extension>
 
 </Addin>
