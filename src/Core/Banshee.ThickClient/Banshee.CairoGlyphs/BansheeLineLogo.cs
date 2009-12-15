@@ -44,8 +44,9 @@ namespace Banshee.CairoGlyphs
         {
             double original_size = 12; // largest dimension as computed in rendering
             double scale = size / original_size;
-            double tx = x - scale / 2.0;
-            double ty = y - scale / 2.0;
+            double pixel_align = Math.Round (scale / 2.0) + (Math.Floor (scale) % 2 == 0 ? 0 : 0.5);
+            double tx = x - pixel_align;
+            double ty = y - pixel_align;
 
             cr.Save ();
             cr.Translate (tx, ty);
@@ -59,13 +60,12 @@ namespace Banshee.CairoGlyphs
             cr.Color = innerColor;
             cr.MoveTo (1, 2);
             cr.LineTo (3, 0);
-            cr.LineTo (3, 8);
-            cr.Arc (3 + 2, 8, 2, Math.PI, Math.PI * 3);
+            cr.Arc (5, 8, 2, Math.PI, Math.PI * 3);
             cr.Stroke ();
 
             // Outer circle
             cr.Color = outerColor;
-            cr.ArcNegative (5, 4 + 4, 4, Math.PI * -0.87, Math.PI * 1.48);
+            cr.Arc (5, 8, 4, Math.PI * 1.5, Math.PI * 1.12);
             cr.Stroke ();
 
             cr.Restore ();
