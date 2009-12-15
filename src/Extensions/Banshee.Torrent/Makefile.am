@@ -24,6 +24,6 @@ uninstall-hook:
 		rm -f $(DESTDIR)$(moduledir)/`basename $$ASM`; \
 	done;
 else
-EXTRA_DIST = $(SOURCES) Banshee.Torrent.addin.xml.in
+EXTRA_DIST = $(SOURCES) $(RESOURCES)
 endif
 

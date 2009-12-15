@@ -36,6 +36,6 @@ RESOURCES =  \
 if DAAP_ENABLED
 include $(top_srcdir)/build/build.mk
 else
-EXTRA_DIST = $(SOURCES) Daap/content-codes Banshee.Daap.addin.xml.in
+EXTRA_DIST = $(SOURCES) $(RESOURCES)
 endif
 
