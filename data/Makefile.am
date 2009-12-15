@@ -12,7 +12,7 @@ dbusservice_DATA = $(dbusservice_in_files:.service.in=.service)
 # Generate a fake source file containing strings for
 # translation that are found in our .addin.xml files
 ADDIN_XML_FILES = $(shell find $(top_srcdir) -name \*.addin.xml)
-addin-xml-strings.cs: $(ADDIN_XML_FILES)
+addin-xml-strings.cs: $(ADDIN_XML_FILES) $(top_srcdir)/build/addin-xml-string-extract
 	@echo "  GEN   $@"
 	$(top_srcdir)/build/addin-xml-string-extract $(ADDIN_XML_FILES) > $@
 

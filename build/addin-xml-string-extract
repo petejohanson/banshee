@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use XML::XPath;
 
-my @queries = ('/Addin/@name', '/Addin/@description');
+my @queries = ('/Addin/@name', '/Addin/@description', '/Addin/@category');
 
 print <<EOF
 // Generated - Do Not Edit!
@@ -19,10 +19,11 @@ EOF
 foreach (@ARGV) {
 	print "        // $_\n";
 	my $xpath = XML::XPath->new (filename => $_);
-	foreach (@queries) {
-		my $nodes = $xpath->find ($_);
+	foreach my $query (@queries) {
+		my $nodes = $xpath->find ($query);
 		if ($nodes->size) {
 			foreach ($nodes->get_nodelist) {
+				next if ($query eq '/Addin/@category' && $_->string_value =~ /^required/);
 				print "        Catalog.GetString (\"" . $_->string_value . "\");\n";
 			}
 		}
