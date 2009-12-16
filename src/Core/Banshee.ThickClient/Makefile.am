@@ -3,6 +3,10 @@ TARGET = library
 ASSEMBLY_BUILD_FLAGS = -unsafe
 LINK = $(REF_BANSHEE_THICKCLIENT)
 
+if HAVE_GLIBSHARP_2_12_7
+BUILD_DEFINES = "-define:HAVE_GLIBSHARP_2_12_7"
+endif
+
 SOURCES =  \
 	Banshee.Addins.Gui/AddinDetailsDialog.cs \
 	Banshee.Addins.Gui/AddinTile.cs \
