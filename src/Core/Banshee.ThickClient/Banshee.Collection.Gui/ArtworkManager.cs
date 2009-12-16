@@ -70,6 +70,7 @@ namespace Banshee.Collection.Gui
             AddCachedSize (42);
             AddCachedSize (48);
             AddCachedSize (64);
+            AddCachedSize (90);
             AddCachedSize (300);
 
             try {

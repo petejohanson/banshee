@@ -34,59 +34,22 @@ namespace Hyena.Data.Gui
 {
     public class CellContext
     {
-        private Cairo.Context context;
-        private Pango.Layout layout;
-        private Gtk.Widget widget;
-        private Gdk.Drawable drawable;
-        private Theme theme;
-        private Gdk.Rectangle area;
-        private Gdk.Rectangle clip;
-        private bool text_as_foreground = false;
-        private bool opaque = true;
-
-        public Cairo.Context Context {
-            get { return context; }
-            set { context = value; }
+        public CellContext ()
+        {
+            Opaque = true;
         }
 
-        public Pango.Layout Layout {
-            get { return layout; }
-            set { layout = value; }
-        }
-
-        public Gtk.Widget Widget {
-            get { return widget; }
-            set { widget = value; }
-        }
-
-        public Gdk.Drawable Drawable {
-            get { return drawable; }
-            set { drawable = value; }
-        }
-
-        public Theme Theme {
-            get { return theme; }
-            set { theme = value; }
-        }
-
-        public Gdk.Rectangle Area {
-            get { return area; }
-            set { area = value; }
-        }
-
-        public Gdk.Rectangle Clip {
-            get { return clip; }
-            set { clip = value; }
-        }
-
-        public bool TextAsForeground {
-            get { return text_as_foreground; }
-            set { text_as_foreground = value; }
-        }
-
-        public bool Opaque {
-            get { return opaque; }
-            set { opaque = value; }
-        }
+        public Cairo.Context Context { get; set; }
+        public Pango.Layout Layout { get; set; }
+        public Gtk.Widget Widget { get; set; }
+        public Gdk.Drawable Drawable { get; set; }
+        public Theme Theme { get; set; }
+        public Gdk.Rectangle Area { get; set; }
+        public Gdk.Rectangle Clip { get; set; }
+        public bool TextAsForeground { get; set; }
+        public bool Opaque { get; set; }
+        public int ViewRowIndex { get; set; }
+        public int ViewColumnIndex { get; set; }
+        public int ModelRowIndex { get; set; }
     }
 }

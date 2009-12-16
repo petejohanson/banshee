@@ -353,7 +353,11 @@ namespace Hyena.Data.Gui
             cell_area.Height = RowHeight;
             cell_area.Y = area.Y;
 
+            cell_context.ViewRowIndex = cell_context.ModelRowIndex = row_index;
+
             for (int ci = 0; ci < column_cache.Length; ci++) {
+                cell_context.ViewColumnIndex = ci;
+
                 if (pressed_column_is_dragging && pressed_column_index == ci) {
                     continue;
                 }
@@ -482,6 +486,10 @@ namespace Hyena.Data.Gui
                         grid_cell_alloc.Width, grid_cell_alloc.Height,
                         true, true, selection_color, CairoCorners.All);
                 }
+
+                cell_context.ModelRowIndex = model_row_index;
+                cell_context.ViewRowIndex = view_row_index;
+                cell_context.ViewColumnIndex = view_column_index;
 
                 var item = model[model_row_index];
                 PaintCell (item, 0, model_row_index, grid_cell_alloc,

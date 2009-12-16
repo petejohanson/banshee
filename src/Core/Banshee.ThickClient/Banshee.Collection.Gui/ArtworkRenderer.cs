@@ -37,7 +37,6 @@ namespace Banshee.Collection.Gui
     {
         private static Color cover_border_light_color = new Color (1.0, 1.0, 1.0, 0.5);
         private static Color cover_border_dark_color = new Color (0.0, 0.0, 0.0, 0.65);
-        private static Random random = new Random ();
 
         public static void RenderThumbnail (Cairo.Context cr, ImageSurface image, bool dispose,
             double x, double y, double width, double height, bool drawBorder, double radius)
@@ -72,30 +71,32 @@ namespace Banshee.Collection.Gui
 
             cr.Antialias = Cairo.Antialias.Default;
 
-            if (fill) {
-                cr.Rectangle (x, y, width, height);
-                cr.Color = fillColor;
-                cr.Fill();
-            }
-
             if (image != null) {
+                if (fill) {
+                    CairoExtensions.RoundedRectangle (cr, x, y, width, height, radius, corners);
+                    cr.Color = fillColor;
+                    cr.Fill ();
+                }
+
                 CairoExtensions.RoundedRectangle (cr, p_x, p_y, image.Width, image.Height, radius, corners);
                 cr.SetSource (image, p_x, p_y);
                 cr.Fill ();
             } else {
                 CairoExtensions.RoundedRectangle (cr, x, y, width, height, radius, corners);
 
-                var grad = new LinearGradient (x, y, x, y + height);
-                grad.AddColorStop (0, CairoExtensions.ColorFromHsb (random.Next (), random.Next (50, 150) / 255.0, 0.75));
-                grad.AddColorStop (1, CairoExtensions.ColorFromHsb (random.Next (), random.Next (50, 150) / 255.0, 0.15));
-                cr.Pattern = grad;
-                cr.Fill ();
-                grad.Destroy ();
+                if (fill) {
+                    var grad = new LinearGradient (x, y, x, y + height);
+                    grad.AddColorStop (0, fillColor);
+                    grad.AddColorStop (1, CairoExtensions.ColorShade (fillColor, 1.3));
+                    cr.Pattern = grad;
+                    cr.Fill ();
+                    grad.Destroy ();
+                }
 
                 Banshee.CairoGlyphs.BansheeLineLogo.Render (cr,
                     new Rectangle (x + 15, y + 15, width - 30, height - 30),
-                    CairoExtensions.RgbaToColor (0xffffff55),
-                    CairoExtensions.RgbaToColor (0xffffff88));
+                    CairoExtensions.RgbaToColor (0x00000044),
+                    CairoExtensions.RgbaToColor (0x00000055));
             }
 
             if (!drawBorder) {
