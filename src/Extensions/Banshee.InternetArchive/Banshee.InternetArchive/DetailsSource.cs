@@ -168,7 +168,14 @@ namespace Banshee.InternetArchive
         }
 
         public long FileSize {
-            get { return track_model.Sum (t => t.FileSize); }
+            get {
+                // Mono on openSUSE 11.0 doesn't like this
+                // return track_model.Sum (t => t.FileSize);
+                long result = 0;
+                foreach (var t in track_model)
+                    result += t.FileSize;
+                return result;
+            }
         }
 
 #region ITrackModelSource
