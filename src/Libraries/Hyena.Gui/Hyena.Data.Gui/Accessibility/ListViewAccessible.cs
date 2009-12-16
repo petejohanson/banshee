@@ -36,6 +36,7 @@ using Hyena.Data.Gui;
 
 namespace Hyena.Data.Gui.Accessibility
 {
+#if ENABLE_ATK
     public partial class ListViewAccessible<T> : Hyena.Gui.BaseWidgetAccessible, ICellAccessibleParent
     {
         private ListView<T> list_view;
@@ -240,4 +241,5 @@ namespace Hyena.Data.Gui.Accessibility
 
         #endregion
     }
+#endif
 }

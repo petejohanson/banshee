@@ -48,6 +48,7 @@ namespace Hyena.Data.Gui.Accessibility
             Role = Atk.Role.TableColumnHeader;
         }
 
+#if ENABLE_ATK
         protected override Atk.StateSet OnRefStateSet ()
         {
             Atk.StateSet states = base.OnRefStateSet ();
@@ -55,6 +56,7 @@ namespace Hyena.Data.Gui.Accessibility
             states.RemoveState (Atk.StateType.Transient);
             return states;
         }
+#endif
 
         public string GetLocalizedName (int action)
         {

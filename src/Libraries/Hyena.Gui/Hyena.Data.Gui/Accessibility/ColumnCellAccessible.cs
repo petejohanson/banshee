@@ -45,6 +45,7 @@ namespace Hyena.Data.Gui.Accessibility
             Parent = (Atk.Object) parent;
         }
 
+#if ENABLE_ATK
         protected override Atk.StateSet OnRefStateSet ()
         {
             Atk.StateSet states = base.OnRefStateSet ();
@@ -73,6 +74,7 @@ namespace Hyena.Data.Gui.Accessibility
         {
             return cell_parent.GetCellIndex (this);
         }
+#endif
 
         public double Alpha {
             get { return 1.0; }
