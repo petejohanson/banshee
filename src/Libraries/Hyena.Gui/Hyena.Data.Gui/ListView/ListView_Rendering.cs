@@ -66,7 +66,7 @@ namespace Hyena.Data.Gui
             changing_style = false;
 
             base.OnStyleSet (old_style);
-            RecomputeRowHeight = true;
+            OnInvalidateMeasure ();
             theme = Hyena.Gui.Theming.ThemeEngine.CreateTheme (this);
 
             // Save the drawable so we can reuse it
@@ -97,6 +97,8 @@ namespace Hyena.Data.Gui
 
             cell_context.Context = cairo_context;
             cell_context.Layout = pango_layout;
+
+            OnMeasure ();
 
             Theme.DrawFrameBackground (cairo_context, Allocation, true);
             if (header_visible && LayoutStyle != DataViewLayoutStyle.Grid && column_controller != null) {
@@ -214,6 +216,10 @@ namespace Hyena.Data.Gui
 
         private void PaintList (Rectangle clip)
         {
+            if (ChildSize.Height <= 0) {
+                return;
+            }
+
             // TODO factor this out?
             // Render the sort effect to the GdkWindow.
             if (sort_column_index != -1 && (!pressed_column_is_dragging || pressed_column_index != sort_column_index)) {
@@ -232,9 +238,9 @@ namespace Hyena.Data.Gui
             cell_context.TextAsForeground = false;
 
             int vadjustment_value = VadjustmentValue;
-            int first_row = vadjustment_value / RowHeight;
+            int first_row = vadjustment_value / ChildSize.Height;
             int last_row = Math.Min (model.Count, first_row + RowsInView);
-            int offset = list_rendering_alloc.Y - vadjustment_value % RowHeight;
+            int offset = list_rendering_alloc.Y - vadjustment_value % ChildSize.Height;
 
             Rectangle selected_focus_alloc = Rectangle.Zero;
             Rectangle single_list_alloc = new Rectangle ();
@@ -242,7 +248,7 @@ namespace Hyena.Data.Gui
             single_list_alloc.X = list_rendering_alloc.X - HadjustmentValue;
             single_list_alloc.Y = offset;
             single_list_alloc.Width = list_rendering_alloc.Width + HadjustmentValue;
-            single_list_alloc.Height = RowHeight;
+            single_list_alloc.Height = ChildSize.Height;
 
             int selection_height = 0;
             int selection_y = 0;
@@ -350,7 +356,7 @@ namespace Hyena.Data.Gui
             bool bold = IsRowBold (item);
 
             Rectangle cell_area = new Rectangle ();
-            cell_area.Height = RowHeight;
+            cell_area.Height = ChildSize.Height;
             cell_area.Y = area.Y;
 
             cell_context.ViewRowIndex = cell_context.ModelRowIndex = row_index;
@@ -443,6 +449,10 @@ namespace Hyena.Data.Gui
 
         private void PaintGrid (Rectangle clip)
         {
+            if (ChildSize.Width <= 0 || ChildSize.Height <= 0) {
+                return;
+            }
+            
             clip.Intersect (list_rendering_alloc);
             cairo_context.Rectangle (clip.X, clip.Y, clip.Width, clip.Height);
             cairo_context.Clip ();
@@ -452,20 +462,20 @@ namespace Hyena.Data.Gui
 
             int rows_in_view = RowsInView;
             int columns_in_view = GridColumnsInView;
-            int cell_height = RowHeight;
-            int cell_width = GridCellWidth + ((list_rendering_alloc.Width -
-                columns_in_view * GridCellWidth) / columns_in_view);
+            int cell_height = ChildSize.Height;
+            int cell_width = ChildSize.Width + ((list_rendering_alloc.Width -
+                columns_in_view * ChildSize.Width) / columns_in_view);
             int vadjustment_value = VadjustmentValue;
 
-            int offset = list_rendering_alloc.Y - vadjustment_value % RowHeight;
-            int first_model_row = (int)Math.Floor (vadjustment_value / (double)RowHeight) * columns_in_view;
+            int offset = list_rendering_alloc.Y - vadjustment_value % ChildSize.Height;
+            int first_model_row = (int)Math.Floor (vadjustment_value / (double)ChildSize.Height) * columns_in_view;
             int last_model_row = Math.Min (model.Count, first_model_row + rows_in_view * columns_in_view);
 
             var grid_cell_alloc = new Rectangle () {
                 X = list_rendering_alloc.X,
                 Y = offset,
-                Width = GridCellWidth,
-                Height = GridCellHeight
+                Width = ChildSize.Width,
+                Height = ChildSize.Height
             };
 
             selected_rows.Clear ();
@@ -538,66 +548,53 @@ namespace Hyena.Data.Gui
             }
         }
 
-        private ListViewRowHeightHandler row_height_handler;
-        public virtual ListViewRowHeightHandler RowHeightProvider {
-            get { return row_height_handler; }
-            set {
-                if (value != row_height_handler) {
-                    row_height_handler = value;
-                    RecomputeRowHeight = true;
-                }
-            }
-        }
-
-        private bool recompute_row_height = true;
-        protected bool RecomputeRowHeight {
-            get { return recompute_row_height; }
-            set {
-                recompute_row_height = value;
-                if (value && IsMapped && IsRealized) {
-                    QueueDraw ();
-                }
-            }
-        }
-
-        private int row_height = 32;
-        public int RowHeight {
-            get {
-                if (LayoutStyle == DataViewLayoutStyle.Grid) {
-                    return GridCellHeight;
-                }
-
-                if (RecomputeRowHeight) {
-                    row_height = RowHeightProvider != null
-                        ? RowHeightProvider (this)
-                        : ColumnCellText.ComputeRowHeight (this);
-
-                    header_height = 0;
-                    MoveResize (Allocation);
-
-                    RecomputeRowHeight = false;
-                }
-
-                return row_height;
-            }
-        }
-
         private DataViewLayoutStyle layout_style = DataViewLayoutStyle.List;
         public DataViewLayoutStyle LayoutStyle {
             get { return layout_style; }
             set {
                 layout_style = value;
-                MoveResize (Allocation);
-                InvalidateList ();
+                OnInvalidateMeasure ();
             }
         }
 
-        public int GridCellWidth {
-            get { return 100; }
+#region Measuring
+
+        private Size child_size = Size.Empty;
+        public Size ChildSize {
+            get { return child_size; }
         }
 
-        public int GridCellHeight {
-            get { return 100; }
+        private bool measure_pending;
+
+        protected virtual void OnInvalidateMeasure ()
+        {
+            measure_pending = true;
+            if (IsMapped && IsRealized) {
+                QueueDraw ();
+            }
         }
+
+        protected virtual Size OnMeasureChild ()
+        {
+            return LayoutStyle == DataViewLayoutStyle.Grid
+                ? new Size (48, 48)
+                : new Size (0, ColumnCellText.ComputeRowHeight (this));
+        }
+
+        private void OnMeasure ()
+        {
+            if (!measure_pending) {
+                return;
+            }
+
+            measure_pending = false;
+
+            header_height = 0;
+            child_size = OnMeasureChild ();
+            UpdateAdjustments ();
+        }
+
+#endregion
+
     }
 }

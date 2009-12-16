@@ -44,7 +44,7 @@ using Banshee.Collection.Gui;
 
 namespace Banshee.Podcasting.Gui
 {
-    public class ColumnCellPodcast : ColumnCell
+    public class ColumnCellPodcast : ColumnCellAlbum
     {
         private static int image_spacing = 4;
         private static int image_size = 48;
@@ -55,7 +55,7 @@ namespace Banshee.Podcasting.Gui
 
         private ArtworkManager artwork_manager;
 
-        public ColumnCellPodcast () : base (null, true)
+        public ColumnCellPodcast () : base ()
         {
             artwork_manager = ServiceManager.Get<ArtworkManager> ();
         }
@@ -142,31 +142,6 @@ namespace Banshee.Podcasting.Gui
             text_color.A = 1;
             context.Context.Color = text_color;
             PangoCairoHelper.ShowLayout (context.Context, layout);
-        }
-
-        public int ComputeRowHeight (Widget widget)
-        {
-            int height;
-            int text_w, text_h;
-
-            Pango.Layout layout = new Pango.Layout (widget.PangoContext);
-            layout.FontDescription = widget.PangoContext.FontDescription.Copy ();
-
-            layout.FontDescription.Weight = Pango.Weight.Bold;
-            layout.SetText ("W");
-            layout.GetPixelSize (out text_w, out text_h);
-            height = text_h;
-
-            layout.FontDescription.Weight = Pango.Weight.Normal;
-            layout.FontDescription.Size = (int)(layout.FontDescription.Size * Pango.Scale.Small);
-            layout.FontDescription.Style = Pango.Style.Italic;
-            layout.SetText ("W");
-            layout.GetPixelSize (out text_w, out text_h);
-            height += text_h;
-
-            layout.Dispose ();
-
-            return (height < image_size ? image_size : height) + 6;
         }
     }
 }

@@ -61,8 +61,8 @@ namespace Hyena.Data.Gui
                         rect.Y = args.Y - list_interaction_alloc.Y;
 
                         // get the top of the cell pointed to by list_y
-                        rect.Y -= VadjustmentValue % RowHeight;
-                        rect.Y -= rect.Y % RowHeight;
+                        rect.Y -= VadjustmentValue % ChildSize.Height;
+                        rect.Y -= rect.Y % ChildSize.Height;
 
                         // convert back to widget coords
                         rect.Y += list_interaction_alloc.Y;
@@ -71,7 +71,7 @@ namespace Hyena.Data.Gui
                         rect.Width = cached_column.Width;
 
                         // TODO not right - could be smaller if at the top/bottom and only partially showing
-                        rect.Height = RowHeight;
+                        rect.Height = ChildSize.Height;
 
                         args.Tooltip.Markup = markup;
                         args.Tooltip.TipArea = rect;

@@ -124,6 +124,11 @@ namespace Hyena.Data.Gui
 
         public abstract void Render (CellContext context, StateType state, double cellWidth, double cellHeight);
 
+        public virtual Gdk.Size Measure (Gtk.Widget widget)
+        {
+            return Gdk.Size.Empty;
+        }
+
         public bool Expand {
             get { return expand; }
             set { expand = value; }

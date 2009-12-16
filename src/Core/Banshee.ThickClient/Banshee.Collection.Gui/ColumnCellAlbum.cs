@@ -150,29 +150,25 @@ namespace Banshee.Collection.Gui
             PangoCairoHelper.ShowLayout (context.Context, layout);
         }
 
-        public int ComputeRowHeight (Widget widget)
+        public override Gdk.Size Measure (Widget widget)
         {
-            int height;
-            int text_w, text_h;
+            int text_height = 0;
 
-            Pango.Layout layout = new Pango.Layout (widget.PangoContext);
-            layout.FontDescription = widget.PangoContext.FontDescription.Copy ();
+            using (var layout = new Pango.Layout (widget.PangoContext) {
+                FontDescription = widget.PangoContext.FontDescription.Copy () }) {
 
-            layout.FontDescription.Weight = Pango.Weight.Bold;
-            layout.SetText ("W");
-            layout.GetPixelSize (out text_w, out text_h);
-            height = text_h;
+                layout.FontDescription.Weight = Pango.Weight.Bold;
+                text_height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
 
-            layout.FontDescription.Weight = Pango.Weight.Normal;
-            layout.FontDescription.Size = (int)(layout.FontDescription.Size * Pango.Scale.Small);
-            layout.FontDescription.Style = Pango.Style.Italic;
-            layout.SetText ("W");
-            layout.GetPixelSize (out text_w, out text_h);
-            height += text_h;
+                layout.FontDescription.Weight = Pango.Weight.Normal;
+                layout.FontDescription.Size = (int)(layout.FontDescription.Size * Pango.Scale.Small);
+                layout.FontDescription.Style = Pango.Style.Italic;
+                text_height += layout.FontDescription.MeasureTextHeight (widget.PangoContext);
+            }
 
-            layout.Dispose ();
-
-            return (height < image_size ? image_size : height) + 6;
+            return LayoutStyle == DataViewLayoutStyle.Grid
+                ? new Gdk.Size (100, 100 + text_height + 6)
+                : new Gdk.Size (0, (text_height < image_size ? image_size : text_height) + 6);
         }
     }
 }

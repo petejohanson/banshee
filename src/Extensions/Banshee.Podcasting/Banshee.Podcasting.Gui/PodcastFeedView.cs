@@ -49,20 +49,26 @@ namespace Banshee.Podcasting.Gui
 {
     public class PodcastFeedView : TrackFilterListView<Feed>
     {
+        private ColumnCellPodcast renderer;
+
         public PodcastFeedView () : base ()
         {
-            ColumnCellPodcast renderer = new ColumnCellPodcast ();
+            renderer = new ColumnCellPodcast ();
             column_controller.Add (new Column ("Podcast", renderer, 1.0));
             //column_controller.Add (new Column (null, "Activity", new FeedActivityColumnCell ("Activity"), 0.00, true, 26, 26));
 
             ColumnController = column_controller;
-            RowHeightProvider = renderer.ComputeRowHeight;
         }
 
         protected override bool OnPopupMenu ()
         {
             ServiceManager.Get<InterfaceActionService> ().FindAction ("Podcast.PodcastFeedPopupAction").Activate ();
             return true;
+        }
+
+        protected override Gdk.Size OnMeasureChild ()
+        {
+            return renderer.Measure (this);
         }
     }
 

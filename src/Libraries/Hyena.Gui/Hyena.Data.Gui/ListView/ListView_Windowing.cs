@@ -180,11 +180,24 @@ namespace Hyena.Data.Gui
         }
 
         protected int RowsInView {
-            get { return (int)Math.Ceiling ((list_rendering_alloc.Height + RowHeight) / (double)RowHeight); }
+            get {
+                if (ChildSize.Height <= 0) {
+                    return 0;
+                }
+
+                return (int)Math.Ceiling ((list_rendering_alloc.Height +
+                    ChildSize.Height) / (double)ChildSize.Height);
+            }
         }
 
         protected int GridColumnsInView {
-            get { return Math.Max (list_rendering_alloc.Width / GridCellWidth, 1); }
+            get {
+                if (ChildSize.Width <= 0) {
+                    return 0;
+                }
+
+                return Math.Max (list_rendering_alloc.Width / ChildSize.Width, 1);
+            }
         }
     }
 }

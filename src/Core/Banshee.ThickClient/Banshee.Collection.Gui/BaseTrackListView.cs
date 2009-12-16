@@ -168,7 +168,7 @@ namespace Banshee.Collection.Gui
                 if (playlist != null) {
                     //Gtk.Drag.
                     int row = GetModelRowAt (0, y);
-                    if (row != GetModelRowAt (0, y + RowHeight / 2)) {
+                    if (row != GetModelRowAt (0, y + ChildSize.Height / 2)) {
                         row += 1;
                     }
 

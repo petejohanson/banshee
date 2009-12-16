@@ -203,7 +203,7 @@ namespace Hyena.Data.Gui
                 return -1;
             }
 
-            if (row != GetModelRowAt (0, y + RowHeight / 2)) {
+            if (row != GetModelRowAt (0, y + ChildSize.Height / 2)) {
                 row++;
             }
 

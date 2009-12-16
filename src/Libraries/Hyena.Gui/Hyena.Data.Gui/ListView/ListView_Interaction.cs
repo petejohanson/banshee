@@ -145,11 +145,11 @@ namespace Hyena.Data.Gui
             if (align_y) {
                 if (y_at_row < VadjustmentValue) {
                     ScrollTo (y_at_row);
-                } else if (vadjustment != null && (y_at_row + RowHeight) > (vadjustment.Value + vadjustment.PageSize)) {
-                    ScrollTo (y_at_row + RowHeight - (vadjustment.PageSize));
+                } else if (vadjustment != null && (y_at_row + ChildSize.Height) > (vadjustment.Value + vadjustment.PageSize)) {
+                    ScrollTo (y_at_row + ChildSize.Height - (vadjustment.PageSize));
                 }
             } else if (vadjustment != null) {
-                ScrollTo (vadjustment.Value + ((row_index - Selection.FocusedIndex) * RowHeight));
+                ScrollTo (vadjustment.Value + ((row_index - Selection.FocusedIndex) * ChildSize.Height));
             }
 
             Selection.FocusedIndex = row_index;
@@ -215,14 +215,14 @@ namespace Hyena.Data.Gui
                 case Gdk.Key.KP_Page_Up:
                     if (!HeaderFocused)
                         handled = vadjustment != null && KeyboardScroll (press.State,
-                            (int)(-vadjustment.PageIncrement / (double)RowHeight), false);
+                            (int)(-vadjustment.PageIncrement / (double)ChildSize.Height), false);
                     break;
 
                 case Gdk.Key.Page_Down:
                 case Gdk.Key.KP_Page_Down:
                     if (!HeaderFocused)
                         handled = vadjustment != null && KeyboardScroll (press.State,
-                            (int)(vadjustment.PageIncrement / (double)RowHeight), false);
+                            (int)(vadjustment.PageIncrement / (double)ChildSize.Height), false);
                     break;
 
                 case Gdk.Key.Home:
@@ -356,19 +356,19 @@ namespace Hyena.Data.Gui
             // Turn the view-absolute coordinates into cell-relative coordinates
             CachedColumn cached_column = GetCachedColumnForColumn (column);
             x -= cached_column.X1 - HadjustmentValue;
-            int page_offset = VadjustmentValue % RowHeight;
-            y = (y + page_offset) % RowHeight;
+            int page_offset = VadjustmentValue % ChildSize.Height;
+            y = (y + page_offset) % ChildSize.Height;
 
             var view_point = GetViewPointForModelRow (row_index);
             icell_area.Y = (int)view_point.Y + list_interaction_alloc.Y + Allocation.Y;
             if (LayoutStyle == DataViewLayoutStyle.Grid) {
                 icell_area.X = (int)view_point.X + Allocation.X;
-                icell_area.Width = GridCellWidth;
-                icell_area.Height = GridCellHeight;
+                icell_area.Width = ChildSize.Width;
+                icell_area.Height = ChildSize.Height;
             } else {
                 icell_area.X = cached_column.X1 + Allocation.X;
                 icell_area.Width = cached_column.Width;
-                icell_area.Height = RowHeight;
+                icell_area.Height = ChildSize.Height;
             }
 
             // Send the cell a synthesized input event
@@ -763,38 +763,36 @@ namespace Hyena.Data.Gui
 
         protected int GetModelRowAt (int x, int y)
         {
-            if (y < 0) {
+            if (y < 0 || ChildSize.Height <= 0) {
                 return -1;
             }
 
             if (LayoutStyle == DataViewLayoutStyle.Grid) {
-                int v_page_offset = VadjustmentValue % GridCellHeight;
-                int h_page_offset = HadjustmentValue % GridCellWidth;
-                int first_row = VadjustmentValue / GridCellHeight;
-                int first_col = HadjustmentValue / GridCellWidth;
-                int row_offset = (y + v_page_offset) / GridCellHeight;
-                int col_offset = Math.Min ((x + h_page_offset) / GridCellWidth, GridColumnsInView);
+                if (ChildSize.Width <= 0) {
+                    return -1;
+                }
+
+                int v_page_offset = VadjustmentValue % ChildSize.Height;
+                int h_page_offset = HadjustmentValue % ChildSize.Width;
+                int first_row = VadjustmentValue / ChildSize.Height;
+                int first_col = HadjustmentValue / ChildSize.Width;
+                int row_offset = (y + v_page_offset) / ChildSize.Height;
+                int col_offset = Math.Min ((x + h_page_offset) / ChildSize.Width, GridColumnsInView);
                 int model_row = ((first_row + row_offset) * GridColumnsInView) + first_col + col_offset;
                 return model_row;
             } else {
-                int v_page_offset = VadjustmentValue % RowHeight;
-                int first_row = VadjustmentValue / RowHeight;
-                int row_offset = (y + v_page_offset) / RowHeight;
+                int v_page_offset = VadjustmentValue % ChildSize.Height;
+                int first_row = VadjustmentValue / ChildSize.Height;
+                int row_offset = (y + v_page_offset) / ChildSize.Height;
                 return first_row + row_offset;
             }
-        }
-
-        [Obsolete ("Use GetModelRowAt (x, y) instead.")]
-        protected int GetRowAtY (int y)
-        {
-            return GetModelRowAt (0, y);
         }
 
         protected Cairo.PointD GetViewPointForModelRow (int row)
         {
             return LayoutStyle == DataViewLayoutStyle.Grid
-                ? new Cairo.PointD (0, (double)RowHeight * row)
-                : new Cairo.PointD (0, (double)RowHeight * row);
+                ? new Cairo.PointD (0, (double)ChildSize.Height * row)
+                : new Cairo.PointD (0, (double)ChildSize.Height * row);
         }
 
         private void FocusModelRow (int index)
@@ -831,9 +829,9 @@ namespace Hyena.Data.Gui
 
             if (vadjustment != null && model != null) {
                 vadjustment.Upper = LayoutStyle == DataViewLayoutStyle.List
-                    ? RowHeight * model.Count
-                    : (int)Math.Ceiling (model.Count / (double)GridColumnsInView) * RowHeight;
-                vadjustment.StepIncrement = RowHeight;
+                    ? ChildSize.Height * model.Count
+                    : (int)Math.Ceiling (model.Count / (double)GridColumnsInView) * ChildSize.Height;
+                vadjustment.StepIncrement = ChildSize.Height;
                 if (vadjustment.Value + vadjustment.PageSize > vadjustment.Upper) {
                     vadjustment.Value = vadjustment.Upper - vadjustment.PageSize;
                 }

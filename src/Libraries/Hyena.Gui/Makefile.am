@@ -62,6 +62,7 @@ SOURCES =  \
 	Hyena.Gui/GtkUtilities.cs \
 	Hyena.Gui/GtkWorkarounds.cs \
 	Hyena.Gui/PangoCairoHelper.cs \
+	Hyena.Gui/PangoExtensions.cs \
 	Hyena.Gui/PixbufImageSurface.cs \
 	Hyena.Gui/RatingRenderer.cs \
 	Hyena.Gui/ShadingTestWindow.cs \

@@ -59,7 +59,7 @@ namespace Hyena.Data.Gui
         public Gdk.Rectangle GetColumnCellExtents (int row, int column, bool clip, Atk.CoordType coord_type)
         {
             int width = GetColumnWidth (column);
-            int height = RowHeight;
+            int height = ChildSize.Height;
 
             int y = (int)GetViewPointForModelRow (row).Y - VadjustmentValue + ListAllocation.Y;
 
