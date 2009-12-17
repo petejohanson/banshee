@@ -42,116 +42,114 @@ namespace Banshee.Collection.Gui
 {
     public class ColumnCellAlbum : ColumnCell
     {
-        private static int image_spacing = 4;
-        private static int image_size = 48;
-
         private ArtworkManager artwork_manager;
+
+        public double PaddingX { get; set; }
+        public double PaddingY { get; set; }
+        public double ImageSize { get; set; }
+        public double ImageSpacing { get; set; }
+        public double TextSpacing { get; set; }
 
         public ColumnCellAlbum () : base (null, true)
         {
             artwork_manager = ServiceManager.Get<ArtworkManager> ();
-        }
 
-        private class ColumnCellAlbumAccessible : ColumnCellAccessible
-        {
-            public ColumnCellAlbumAccessible (object bound_object, ColumnCellAlbum cell, ICellAccessibleParent parent)
-                : base (bound_object, cell as ColumnCell, parent)
-            {
-                AlbumInfo bound_album_info = (AlbumInfo)bound_object;
-                Name = String.Format ("{0} - {1}",
-                                     bound_album_info.DisplayTitle,
-                                     bound_album_info.DisplayArtistName);
-            }
-        }
+            PaddingX = PaddingY = 6;
+            ImageSize = 48;
+            ImageSpacing = 4;
+            TextSpacing = 0;
 
-        public override Atk.Object GetAccessible (ICellAccessibleParent parent)
-        {
-            return new ColumnCellAlbumAccessible (BoundObject, this, parent);
+            PaddingX = PaddingY = 5;
+            ImageSize = 90;
+            ImageSpacing = 2;
+            TextSpacing = -2;
         }
 
         public override void Render (CellContext context, StateType state, double cellWidth, double cellHeight)
         {
-            if (BoundObject == null) {
+            double x = 0;
+            double y = 0;
+            double width = ImageSize;
+            double height = ImageSize;
+
+            ImageSurface image_surface;
+            string [] lines;
+
+            if (!HandleBoundObject (out image_surface, out lines)) {
                 return;
             }
 
-            if (!(BoundObject is AlbumInfo)) {
-                throw new InvalidCastException ("ColumnCellAlbum can only bind to AlbumInfo objects");
+            if (PaddingX > 0 || PaddingY > 0) {
+                context.Context.Translate (PaddingX, PaddingY);
             }
 
-            AlbumInfo album = (AlbumInfo)BoundObject;
+            // Render the image
+            if (image_surface != null) {
+                width = image_surface.Width;
+                height = image_surface.Height;
+            }
 
-            int actual_image_size = LayoutStyle == DataViewLayoutStyle.Grid
-                ? (int)Math.Max (Math.Min (cellWidth, cellHeight) - 10, 0)
-                : image_size;
-            ImageSurface image = artwork_manager == null ? null
-                : artwork_manager.LookupScaleSurface (album.ArtworkId, actual_image_size, true);
-
-            // int image_render_size = is_default ? image.Height : (int)cellHeight - 8;
-            int image_render_size = actual_image_size;
-            int x = 0;
-            int y = 0;
-
-            if (LayoutStyle != DataViewLayoutStyle.Grid) {
-                x = image_spacing;
-                y = ((int)cellHeight - image_render_size) / 2;
+            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+                x = Math.Round ((cellWidth - 2 * PaddingX - width) / 2.0);
             } else {
-                x = image_spacing;
-                y = image_spacing;
-                // x = ((int)cellWidth - image_render_size) / 2
+                y = Math.Round ((cellHeight - 2 * PaddingY - height) / 2.0);
             }
 
-            ArtworkRenderer.RenderThumbnail (context.Context, image, false, x, y,
-                image_render_size, image_render_size, true, context.Theme.Context.Radius,
-                image == null, new Color (0.8, 0.8, 0.8));
+            RenderImageSurface (context, new Rectangle (x, y, width, height), image_surface);
 
+            if (lines == null || lines.Length < 2) {
+                return;
+            }
+
+            // Render the text
             int fl_width = 0, fl_height = 0, sl_width = 0, sl_height = 0;
             Cairo.Color text_color = context.Theme.Colors.GetWidgetColor (GtkColorClass.Text, state);
             text_color.A = 0.75;
 
-            Pango.Layout layout = context.Layout;
-            layout.Width = (int)((cellWidth - cellHeight - x - 10) * Pango.Scale.PangoScale);
+            var layout = context.Layout;
             layout.Ellipsize = Pango.EllipsizeMode.End;
             layout.FontDescription.Weight = Pango.Weight.Bold;
+
+            layout.Width = (int)((LayoutStyle == DataViewLayoutStyle.Grid
+                ? cellWidth - 2 * PaddingX
+                : cellWidth - ImageSize - ImageSpacing - 2 * PaddingX) * Pango.Scale.PangoScale);
 
             // Compute the layout sizes for both lines for centering on the cell
             int old_size = layout.FontDescription.Size;
 
-            layout.SetText (album.DisplayTitle);
+            layout.SetText (lines[1]);
             layout.GetPixelSize (out fl_width, out fl_height);
 
-            if (!String.IsNullOrEmpty (album.ArtistName)) {
+            if (!String.IsNullOrEmpty (lines[1])) {
                 layout.FontDescription.Weight = Pango.Weight.Normal;
                 layout.FontDescription.Size = (int)(old_size * Pango.Scale.Small);
                 layout.FontDescription.Style = Pango.Style.Italic;
-                layout.SetText (album.ArtistName);
+                layout.SetText (lines[1]);
                 layout.GetPixelSize (out sl_width, out sl_height);
             }
 
-            // Calculate the layout positioning
-
             if (LayoutStyle == DataViewLayoutStyle.Grid) {
-                x = image_spacing;
-                y = 100 + image_spacing;
+                x = 0;
+                y = ImageSize + ImageSpacing;
             } else {
-                x = ((int)cellHeight - x) + 10;
-                y = (int)((cellHeight - (fl_height + sl_height)) / 2);
+                x = ImageSize + ImageSpacing;
+                y = Math.Round ((cellHeight - fl_height + sl_height) / 2);
             }
 
             // Render the second line first since we have that state already
-            if (!String.IsNullOrEmpty (album.ArtistName)) {
-                context.Context.MoveTo (x, y + fl_height);
+            if (!String.IsNullOrEmpty (lines[0])) {
+                context.Context.MoveTo (x, y + fl_height + TextSpacing);
                 context.Context.Color = text_color;
                 PangoCairoHelper.ShowLayout (context.Context, layout);
             }
 
             // Render the first line, resetting the state
-            layout.SetText (album.DisplayTitle);
+            layout.SetText (lines[0]);
             layout.FontDescription.Weight = Pango.Weight.Bold;
             layout.FontDescription.Size = old_size;
             layout.FontDescription.Style = Pango.Style.Normal;
 
-            layout.SetText (album.DisplayTitle);
+            layout.SetText (lines[0]);
 
             context.Context.MoveTo (x, y);
             text_color.A = 1;
@@ -175,9 +173,69 @@ namespace Banshee.Collection.Gui
                 text_height += layout.FontDescription.MeasureTextHeight (widget.PangoContext);
             }
 
-            return LayoutStyle == DataViewLayoutStyle.Grid
-                ? new Gdk.Size (100, 100 + text_height + 6)
-                : new Gdk.Size (0, (text_height < image_size ? image_size : text_height) + 6);
+            double width, height;
+
+            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+                width = ImageSize + 2 * PaddingX;
+                height = ImageSize + ImageSpacing + TextSpacing + text_height + 2 * PaddingY;
+            } else {
+                double list_text_height = text_height + TextSpacing;
+                width = ImageSize + ImageSpacing + 2 * PaddingY;
+                height = (list_text_height < ImageSize ? ImageSize : list_text_height) + 2 * PaddingX;
+            }
+
+            return new Gdk.Size ((int)Math.Round (width), (int)Math.Round (height));
         }
+
+        protected virtual void RenderImageSurface (CellContext context, Rectangle allocation, ImageSurface imageSurface)
+        {
+            ArtworkRenderer.RenderThumbnail (context.Context,
+                imageSurface, false,
+                allocation.X, allocation.Y, allocation.Width, allocation.Height,
+                true, context.Theme.Context.Radius,
+                imageSurface == null, new Color (0.8, 0.8, 0.8));
+        }
+
+        protected virtual bool HandleBoundObject (out ImageSurface image, out string [] lines)
+        {
+            image = null;
+            lines = null;
+
+            var album = BoundObject as AlbumInfo;
+            if (album == null) {
+                if (BoundObject == null) {
+                    return false;
+                };
+
+                throw new InvalidCastException ("ColumnCellAlbum can only bind to AlbumInfo objects");
+            }
+
+            lines = new [] { album.DisplayTitle, album.DisplayArtistName };
+            image = artwork_manager != null
+                ? artwork_manager.LookupScaleSurface (album.ArtworkId, (int)ImageSize, true)
+                : null;
+
+            return true;
+        }
+
+#region Accessibility
+
+        private class ColumnCellAlbumAccessible : ColumnCellAccessible
+        {
+            public ColumnCellAlbumAccessible (object bound_object, ColumnCellAlbum cell, ICellAccessibleParent parent)
+                : base (bound_object, cell as ColumnCell, parent)
+            {
+                var bound_album_info = (AlbumInfo)bound_object;
+                Name = String.Format ("{0} - {1}", bound_album_info.DisplayTitle, bound_album_info.DisplayArtistName);
+            }
+        }
+
+        public override Atk.Object GetAccessible (ICellAccessibleParent parent)
+        {
+            return new ColumnCellAlbumAccessible (BoundObject, this, parent);
+        }
+
+#endregion
+
     }
 }
