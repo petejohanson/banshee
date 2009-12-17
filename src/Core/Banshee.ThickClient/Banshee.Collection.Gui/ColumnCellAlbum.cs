@@ -89,18 +89,21 @@ namespace Banshee.Collection.Gui
 
             // int image_render_size = is_default ? image.Height : (int)cellHeight - 8;
             int image_render_size = actual_image_size;
-            int x = LayoutStyle == DataViewLayoutStyle.Grid
-                ? ((int)cellWidth - image_render_size) / 2
-                : image_spacing;
-            int y = ((int)cellHeight - image_render_size) / 2;
+            int x = 0;
+            int y = 0;
+
+            if (LayoutStyle != DataViewLayoutStyle.Grid) {
+                x = image_spacing;
+                y = ((int)cellHeight - image_render_size) / 2;
+            } else {
+                x = image_spacing;
+                y = image_spacing;
+                // x = ((int)cellWidth - image_render_size) / 2
+            }
 
             ArtworkRenderer.RenderThumbnail (context.Context, image, false, x, y,
                 image_render_size, image_render_size, true, context.Theme.Context.Radius,
                 image == null, new Color (0.8, 0.8, 0.8));
-
-            if (LayoutStyle == DataViewLayoutStyle.Grid) {
-                return;
-            }
 
             int fl_width = 0, fl_height = 0, sl_width = 0, sl_height = 0;
             Cairo.Color text_color = context.Theme.Colors.GetWidgetColor (GtkColorClass.Text, state);
@@ -126,8 +129,14 @@ namespace Banshee.Collection.Gui
             }
 
             // Calculate the layout positioning
-            x = ((int)cellHeight - x) + 10;
-            y = (int)((cellHeight - (fl_height + sl_height)) / 2);
+
+            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+                x = image_spacing;
+                y = 100 + image_spacing;
+            } else {
+                x = ((int)cellHeight - x) + 10;
+                y = (int)((cellHeight - (fl_height + sl_height)) / 2);
+            }
 
             // Render the second line first since we have that state already
             if (!String.IsNullOrEmpty (album.ArtistName)) {
