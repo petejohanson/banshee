@@ -44,6 +44,8 @@ namespace Banshee.NowPlaying
     {
         private TrackInfo transitioned_track;
         private NowPlayingInterface now_playing_interface;
+        
+        private Widget substitute_audio_display;
 
         public NowPlayingSource () : base ("now-playing", Catalog.GetString ("Now Playing"), 10, "now-playing")
         {
@@ -98,12 +100,26 @@ namespace Banshee.NowPlaying
                 OnUserNotifyUpdated ();
             }
         }
+        
+        public void SetSubstituteAudioDisplay (Widget widget)
+        {
+            if (now_playing_interface != null) {
+                now_playing_interface.Contents.SetSubstituteAudioDisplay (widget);
+            } else {
+                substitute_audio_display = widget;
+            }
+        }
 
         public override void Activate ()
         {
             if (now_playing_interface == null) {
                 now_playing_interface = new NowPlayingInterface ();
                 Properties.Set<ISourceContents> ("Nereid.SourceContents", now_playing_interface);
+                
+                if (substitute_audio_display != null) {
+                    now_playing_interface.Contents.SetSubstituteAudioDisplay (substitute_audio_display);
+                    substitute_audio_display = null;
+                }
             }
 
             if (now_playing_interface != null) {
