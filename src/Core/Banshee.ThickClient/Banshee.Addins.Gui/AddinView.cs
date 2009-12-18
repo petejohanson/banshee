@@ -90,10 +90,10 @@ namespace Banshee.Addins.Gui
             };
 
             var txt_cell = new CellRendererText () { WrapMode = Pango.WrapMode.Word };
-            tree_view.AppendColumn ("Name", txt_cell , "markup", 2);
+            tree_view.AppendColumn ("Name", txt_cell , "markup", Columns.Name);
 
             var check_cell = new CellRendererToggle () { Activatable = true };
-            tree_view.AppendColumn ("Enable", check_cell, "visible", 0, "active", 1);
+            tree_view.AppendColumn ("Enable", check_cell, "visible", Columns.IsAddin, "active", Columns.IsEnabled);
             check_cell.Toggled += (o, a) => {
                 TreeIter iter;
                 if (model.GetIter (out iter, new TreePath (a.Path))) {
@@ -149,6 +149,12 @@ namespace Banshee.Addins.Gui
             txt_cell.WrapWidth = 300;
         }
 
+        private enum Columns : int {
+            IsAddin,
+            IsEnabled,
+            Name,
+            Addin
+        };
     }
 
     internal static class AddinExtensions
@@ -156,6 +162,9 @@ namespace Banshee.Addins.Gui
         public static IEnumerable<Addin> Matching (this IEnumerable<Addin> addins, string search)
         {
             search = StringUtil.SearchKey (search);
+            if (String.IsNullOrEmpty (search)) {
+                return addins;
+            }
 
             return addins.Where (a => { return
                 StringUtil.SearchKey (a.Name).Contains (search) ||
