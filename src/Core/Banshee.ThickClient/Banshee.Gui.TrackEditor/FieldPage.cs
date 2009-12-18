@@ -61,6 +61,9 @@ namespace Banshee.Gui.TrackEditor
             public FieldLabelClosure LabelClosure;
             public FieldValueClosure ReadClosure;
             public FieldValueClosure WriteClosure;
+            public FieldValueClosure SyncClosure;
+
+            public System.Action Sync;
         }
 
         private object tooltip_host;
@@ -125,6 +128,12 @@ namespace Banshee.Gui.TrackEditor
         public FieldSlot AddField (Box parent, Widget label, Widget field, string syncTooltip, FieldLabelClosure labelClosure,
             FieldValueClosure readClosure, FieldValueClosure writeClosure, FieldOptions options)
         {
+            return AddField (parent, label, field, syncTooltip, labelClosure, readClosure, writeClosure, null, options);
+        }
+
+        public FieldSlot AddField (Box parent, Widget label, Widget field, string syncTooltip, FieldLabelClosure labelClosure,
+            FieldValueClosure readClosure, FieldValueClosure writeClosure, FieldValueClosure syncClosure, FieldOptions options)
+        {
             FieldSlot slot = new FieldSlot ();
 
             slot.Parent = parent;
@@ -133,16 +142,23 @@ namespace Banshee.Gui.TrackEditor
             slot.LabelClosure = labelClosure;
             slot.ReadClosure = readClosure;
             slot.WriteClosure = writeClosure;
+            slot.SyncClosure = syncClosure;
+
             if (MultipleTracks && (options & FieldOptions.NoSync) == 0) {
+                slot.Sync = delegate {
+                    dialog.ForeachNonCurrentTrack (delegate (EditorTrackInfo track) {
+                        (slot.SyncClosure ?? slot.WriteClosure) (track, slot.Field);
+                    });
+                };
+            }
+
+            if (MultipleTracks && (options & FieldOptions.NoSync) == 0 && (options & FieldOptions.NoShowSync) == 0) {
                 slot.SyncButton = new SyncButton ();
                 if (syncTooltip != null) {
                     TooltipSetter.Set (tooltip_host, slot.SyncButton, syncTooltip);
                 }
-                slot.SyncButton.Clicked += delegate {
-                    dialog.ForeachNonCurrentTrack (delegate (EditorTrackInfo track) {
-                        slot.WriteClosure (track, slot.Field);
-                    });
-                };
+
+                slot.SyncButton.Clicked += delegate { slot.Sync (); };
             }
 
             Table table = new Table (1, 1, false);

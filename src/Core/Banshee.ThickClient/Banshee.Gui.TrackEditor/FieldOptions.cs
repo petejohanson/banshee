@@ -35,6 +35,7 @@ namespace Banshee.Gui.TrackEditor
     {
         None = (0 << 0),
         Shrink = (1 << 0),
-        NoSync = (1 << 1)
+        NoSync = (1 << 1),
+        NoShowSync = (1 << 2)
     }
 }
