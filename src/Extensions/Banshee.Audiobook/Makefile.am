@@ -5,7 +5,10 @@ INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
 	Banshee.Audiobook/AudiobookFileNamePattern.cs \
-	Banshee.Audiobook/AudiobookLibrarySource.cs
+	Banshee.Audiobook/AudiobookLibrarySource.cs \
+	Banshee.Audiobook/AudiobookContent.cs \
+	Banshee.Audiobook/AudiobookGrid.cs \
+	Banshee.Audiobook/AudiobookModel.cs
 
 RESOURCES = Banshee.Audiobook.addin.xml
 

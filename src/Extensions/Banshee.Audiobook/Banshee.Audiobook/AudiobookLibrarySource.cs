@@ -36,11 +36,19 @@ using Hyena;
 using Banshee.Library;
 using Banshee.Collection;
 using Banshee.SmartPlaylist;
+using Banshee.Collection.Database;
+using Banshee.Sources;
+using Banshee.Database;
+using Banshee.ServiceStack;
+
+using Banshee.Sources.Gui;
 
 namespace Banshee.Audiobook
 {
     public class AudiobookLibrarySource : LibrarySource
     {
+        private AudiobookModel books_model;
+
         public AudiobookLibrarySource () : base (Catalog.GetString ("Audiobooks, etc"), "AudiobookLibrary", 49)
         {
             MediaTypes = TrackMediaAttributes.AudioBook;
@@ -69,8 +77,23 @@ namespace Banshee.Audiobook
             var pattern = new AudiobookFileNamePattern ();
             pattern.FolderSchema = CreateSchema<string> ("folder_pattern", pattern.DefaultFolder, "", "");
             pattern.FileSchema   = CreateSchema<string> ("file_pattern",   pattern.DefaultFile, "", "");
-
             SetFileNamePattern (pattern);
+
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<AudiobookContent> ());
+        }
+
+        protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
+        {
+            var books_model = new AudiobookModel (this, this.DatabaseTrackModel, ServiceManager.DbConnection, this.UniqueId);
+            if (src == this) {
+                this.books_model = books_model;
+            }
+
+            yield return books_model;
+        }
+
+        public DatabaseAlbumListModel BooksModel {
+            get { return books_model; }
         }
 
         public override string DefaultBaseDirectory {
@@ -82,6 +105,10 @@ namespace Banshee.Audiobook
         }
 
         protected override bool HasArtistAlbum {
+            get { return false; }
+        }
+
+        public override bool CanShuffle {
             get { return false; }
         }
 
