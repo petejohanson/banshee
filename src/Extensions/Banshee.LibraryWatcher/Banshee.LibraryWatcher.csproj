@@ -10,6 +10,9 @@
     <AssemblyName>Banshee.LibraryWatcher</AssemblyName>
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>1.3</ReleaseVersion>
+    <RootNamespace>Banshee.LibraryWatcher</RootNamespace>
+    <AssemblyOriginatorKeyFile>.</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,7 +28,6 @@
         <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
       </CustomCommands>
     </CustomCommands>
-    <AssemblyKeyFile>.</AssemblyKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
@@ -51,17 +53,13 @@
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Banshee.LibraryWatcher.addin.xml" />
+    <EmbeddedResource Include="Banshee.LibraryWatcher.addin.xml">
+      <LogicalName>Banshee.LibraryWatcher.addin.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.LibraryWatcher\LibraryWatcherService.cs" />
     <Compile Include="Banshee.LibraryWatcher\SourceWatcher.cs" />
-    <Compile Include="Banshee.LibraryWatcher\IO\FileSystemWatcher.cs" />
-    <Compile Include="Banshee.LibraryWatcher\IO\InotifyWatcher.cs" />
-    <Compile Include="Banshee.LibraryWatcher\IO\IFileWatcher.cs" />
-    <Compile Include="Banshee.LibraryWatcher\IO\FileAction.cs" />
-    <Compile Include="Banshee.LibraryWatcher\IO\SearchPattern.cs" />
-    <Compile Include="Banshee.LibraryWatcher\FileSystemWatcherProxy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -79,7 +77,4 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup>
-    <Folder Include="Banshee.LibraryWatcher\IO\" />
-  </ItemGroup>
 </Project>

@@ -52,7 +52,7 @@ namespace Banshee.LibraryWatcher
     {
         private readonly LibraryImportManager import_manager;
         private readonly LibrarySource library;
-        private readonly FileSystemWatcherProxy watcher;
+        private readonly FileSystemWatcher watcher;
         private readonly ManualResetEvent handle;
         private readonly Thread watch_thread;
 
@@ -83,7 +83,7 @@ namespace Banshee.LibraryWatcher
 
             import_manager = ServiceManager.Get<LibraryImportManager> ();
 
-            watcher = new FileSystemWatcherProxy (path);
+            watcher = new FileSystemWatcher (path);
             watcher.IncludeSubdirectories = true;
             watcher.Changed += OnChanged;
             watcher.Created += OnChanged;
