@@ -61,12 +61,14 @@ namespace Banshee.HalBackend
             return null;
         }
 
+        private DkDisk dk_disk;
         private BlockDevice parent;
         private string [] method_names;
 
         protected Volume (BlockDevice parent, Hal.Manager manager, Hal.Device device) : base (manager, device)
         {
             this.parent = parent ?? BlockDevice.Resolve<IBlockDevice> (manager, device.Parent);
+            dk_disk = DkDisk.FindByDevice (DeviceNode);
 
             method_names = HalDevice.PropertyExists (method_names_property)
                 ? device.GetPropertyStringList (method_names_property)
@@ -78,7 +80,13 @@ namespace Banshee.HalBackend
         }
 
         public string MountPoint {
-            get { return HalDevice["volume.mount_point"]; }
+            get {
+                if (dk_disk != null && dk_disk.MountPoint != null) {
+                    return dk_disk.MountPoint;
+                } else {
+                    return HalDevice["volume.mount_point"];
+                }
+            }
         }
 
         public string FileSystem {
@@ -99,7 +107,7 @@ namespace Banshee.HalBackend
         }*/
 
         public bool IsMounted {
-            get { return HalDevice.GetPropertyBoolean ("volume.is_mounted"); }
+            get { return (dk_disk != null && dk_disk.IsMounted) || HalDevice.GetPropertyBoolean ("volume.is_mounted"); }
         }
 
         public bool ShouldIgnore {
@@ -107,7 +115,7 @@ namespace Banshee.HalBackend
         }
 
         public bool IsReadOnly {
-            get { return HalDevice.GetPropertyBoolean ("volume.is_mounted_read_only"); }
+            get { return (dk_disk != null && dk_disk.IsReadOnly) || HalDevice.GetPropertyBoolean ("volume.is_mounted_read_only"); }
         }
 
         public ulong Capacity {
@@ -156,7 +164,11 @@ namespace Banshee.HalBackend
         public void Unmount ()
         {
             if (CanUnmount && HalDevice.IsVolume) {
-                HalDevice.Volume.Unmount ();
+                if (dk_disk != null) {
+                    dk_disk.Unmount ();
+                } else {
+                    HalDevice.Volume.Unmount ();
+                }
             }
         }
 

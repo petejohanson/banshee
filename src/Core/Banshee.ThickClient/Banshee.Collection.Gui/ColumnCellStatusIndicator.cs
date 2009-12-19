@@ -55,8 +55,10 @@ namespace Banshee.Collection.Gui
         {
             string new_image_description = cell.GetTextAlternative (bound_object);
 
+#if ENABLE_ATK
             if (image_description != new_image_description)
                 GLib.Signal.Emit (this, "visible-data-changed");
+#endif
 
             image_description = new_image_description;
         }

@@ -68,6 +68,19 @@ namespace Banshee.Base
                 : Path.Combine (RootPath, Path.Combine (size.ToString (), String.Format ("{0}.jpg", aaid)));
         }
 
+        // When importing new cover art, if not JPEGs, then we use the .cover extension
+        // as a signal to the ArtworkManager that it needs to convert it to JPEG first.
+        public static string GetPathForNewFile (string aaid, string imagePath)
+        {
+            string extension = "cover";
+            if (imagePath.EndsWith ("jpg", true, System.Globalization.CultureInfo.InvariantCulture) ||
+                imagePath.EndsWith ("jpeg", true, System.Globalization.CultureInfo.InvariantCulture)) {
+                extension = "jpg";
+            }
+
+            return System.IO.Path.ChangeExtension (GetPath (aaid), extension);
+        }
+
         public static string CreateArtistAlbumId (string artist, string album)
         {
             return CreateArtistAlbumId (artist, album, false);

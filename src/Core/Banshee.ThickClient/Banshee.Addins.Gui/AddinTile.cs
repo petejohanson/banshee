@@ -77,7 +77,7 @@ namespace Banshee.Addins.Gui
             SetLabelStyle (title);
             title.Show ();
             title.Xalign = 0.0f;
-            title.Markup = String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (addin.Name));
+            title.Markup = String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (Catalog.GetString (addin.Name)));
 
             Attach (title, 1, 3, 0, 1,
                 AttachOptions.Expand | AttachOptions.Fill,
@@ -86,7 +86,7 @@ namespace Banshee.Addins.Gui
             description = new WrapLabel ();
             SetLabelStyle (description);
             description.Show ();
-            description.Text = addin.Description.Description;
+            description.Text = Catalog.GetString (addin.Description.Description);
             description.Wrap = false;
 
             Attach (description, 1, 3, 1, 2,

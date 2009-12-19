@@ -36,6 +36,7 @@ using Hyena.Data.Gui;
 
 namespace Hyena.Data.Gui.Accessibility
 {
+#if ENABLE_ATK
     public partial class ListViewAccessible<T> : Atk.SelectionImplementor
     {
         public void ListViewAccessible_Selection ()
@@ -87,4 +88,5 @@ namespace Hyena.Data.Gui.Accessibility
             GLib.Signal.Emit (this, "selection_changed");
         }
     }
+#endif
 }

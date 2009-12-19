@@ -188,7 +188,11 @@ namespace Banshee.Web
             try {
                 server.Bind (this.EndPoint);
             } catch (System.Net.Sockets.SocketException e) {
-                Log.Exception (e);
+                if (e.SocketErrorCode == SocketError.AddressAlreadyInUse && this.EndPoint is IPEndPoint) {
+                    Log.InformationFormat ("Unable to bind {0} to port {1}", name, (EndPoint as IPEndPoint).Port);
+                } else {
+                    Log.Exception (e);
+                }
                 return false;
             }
 

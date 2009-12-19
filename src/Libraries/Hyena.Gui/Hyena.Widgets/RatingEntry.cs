@@ -388,6 +388,7 @@ namespace Hyena.Widgets
 
 #region Test Module
 
+#if ENABLE_ATK
     public class RatingAccessible : Atk.Object, Atk.Value, Atk.ValueImplementor
     {
         private RatingEntry rating;
@@ -436,6 +437,7 @@ namespace Hyena.Widgets
             return true;
         }
     }
+#endif
 
 #if ENABLE_ATK
     internal class RatingAccessibleFactory : Atk.ObjectFactory

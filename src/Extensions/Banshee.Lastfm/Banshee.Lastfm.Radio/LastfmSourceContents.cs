@@ -187,6 +187,7 @@ namespace Banshee.Lastfm.Radio
             public NumberedList (LastfmSource lastfm, string name) : base (name)
             {
                 this.lastfm = lastfm;
+                artwork_manager.AddCachedSize(40);
                 tile_view = new NumberedTileView (1);
                 PackStart (tile_view, true, true, 0);
                 tile_view.Show ();

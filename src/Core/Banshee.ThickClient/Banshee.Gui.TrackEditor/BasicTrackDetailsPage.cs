@@ -118,24 +118,28 @@ namespace Banshee.Gui.TrackEditor
 
             // Right
 
-            /* Translators: "of" is the word beteen a track/disc number and the total count. */
-            AddField (right, new RangeEntry (Catalog.GetString ("of"), !MultipleTracks
-                ? null as RangeEntry.RangeOrderClosure
-                : delegate (RangeEntry entry) {
-                    for (int i = 0, n = Dialog.TrackCount; i < n; i++) {
-                        EditorTrackInfo track = Dialog.LoadTrack (i);
+            AddField (right,
+                EditorUtilities.CreateLabel (""),
+                /* Translators: "of" is the word beteen a track/disc number and the total count. */
+                new RangeEntry (Catalog.GetString ("of"), !MultipleTracks
+                    ? null as RangeEntry.RangeOrderClosure
+                    : delegate (RangeEntry entry) {
+                        for (int i = 0, n = Dialog.TrackCount; i < n; i++) {
+                            EditorTrackInfo track = Dialog.LoadTrack (i);
 
-                        if (Dialog.CurrentTrackIndex == i) {
-                            // In this case the writeClosure is invoked,
-                            // which will take care of updating the TrackInfo
-                            entry.From.Value = i + 1;
-                            entry.To.Value = n;
-                        } else {
-                            track.TrackNumber = i + 1;
-                            track.TrackCount = n;
+                            if (Dialog.CurrentTrackIndex == i) {
+                                // In this case the writeClosure is invoked,
+                                // which will take care of updating the TrackInfo
+                                entry.From.Value = i + 1;
+                                entry.To.Value = n;
+                            } else {
+                                track.TrackNumber = i + 1;
+                                track.TrackCount = n;
+                            }
                         }
-                    }
-                }, Catalog.GetString ("Automatically set track number and count")),
+                    },
+                    Catalog.GetString ("Automatically set track number and count")
+                ),
                 null,
                 delegate { return Catalog.GetString ("Track _Number:"); },
                 delegate (EditorTrackInfo track, Widget widget) {
@@ -143,12 +147,18 @@ namespace Banshee.Gui.TrackEditor
                     entry.From.Value = track.TrackNumber;
                     entry.To.Value = track.TrackCount;
                 },
+                // Write closure
                 delegate (EditorTrackInfo track, Widget widget) {
                     RangeEntry entry = (RangeEntry)widget;
                     track.TrackNumber = (int)entry.From.Value;
                     track.TrackCount = (int)entry.To.Value;
                 },
-                FieldOptions.NoSync
+                // Sync closure (doesn't modify TrackNumber)
+                delegate (EditorTrackInfo track, Widget widget) {
+                    RangeEntry entry = (RangeEntry)widget;
+                    track.TrackCount = (int)entry.To.Value;
+                },
+                FieldOptions.NoShowSync
             );
 
             AddField (right, new RangeEntry (Catalog.GetString ("of")),

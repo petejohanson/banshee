@@ -62,7 +62,7 @@ namespace Banshee.Metadata
 
         protected virtual void OnHaveResult(IBasicTrackInfo track, IList<StreamTag> tags)
         {
-            if(tags == null) {
+            if(tags == null || tags.Count == 0) {
                 return;
             }
 

@@ -449,8 +449,19 @@ namespace Banshee.InternetArchive
 
             // Make these columns snugly fix their data
             if (tracks.Count > 0) {
-                SetWidth (columns.TrackColumn,    all_tracks_have_num_in_title ? 0 : tracks.Max (f => f.TrackNumber), 0);
-                SetWidth (columns.FileSizeColumn, tracks.Max (f => f.FileSize), 0);
+                // Mono in openSUSE 11.0 doesn't like this
+                //SetWidth (columns.TrackColumn,    all_tracks_have_num_in_title ? 0 : tracks.Max (f => f.TrackNumber), 0);
+                long max_track = 0;
+                long max_size = 0;
+                foreach (var t in tracks) {
+                    max_track = Math.Max (max_track, t.TrackNumber);
+                    max_size = Math.Max (max_size, t.FileSize);
+                }
+                SetWidth (columns.TrackColumn,    all_tracks_have_num_in_title ? 0 : max_track, 0);
+
+                // Mono in openSUSE 11.0 doesn't like this
+                //SetWidth (columns.FileSizeColumn, tracks.Max (f => f.FileSize), 0);
+                SetWidth (columns.FileSizeColumn, max_size, 0);
                 SetWidth (columns.DurationColumn, tracks.Max (f => f.Duration), TimeSpan.Zero);
             }
 

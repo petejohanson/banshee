@@ -38,7 +38,7 @@ using Banshee.Gui;
 
 namespace Banshee.Collection.Gui
 {
-    public class TrackFilterListView<T> : ListView<T>
+    public class TrackFilterListView<T> : SearchableListView<T>
     {
         protected ColumnController column_controller;
 

@@ -95,6 +95,16 @@ namespace Hyena.Collections
             }
         }
 
+        public void Remove (TKey key)
+        {
+            lock (cache) {
+                if (Contains (key)) {
+                    ExpireItem (cache[key].Value);
+                    cache.Remove (key);
+                }
+            }
+        }
+
         public bool TryGetValue (TKey key, out TValue value)
         {
             lock (cache) {

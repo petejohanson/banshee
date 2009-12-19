@@ -48,6 +48,8 @@ namespace Banshee.Gui.Widgets
 {
     public abstract class TrackInfoDisplay : Widget
     {
+        private string current_artwork_id;
+
         private ArtworkManager artwork_manager;
         protected ArtworkManager ArtworkManager {
             get { return artwork_manager; }
@@ -121,6 +123,25 @@ namespace Banshee.Gui.Widgets
                 PlayerEvent.StateChange);
 
             WidgetFlags |= WidgetFlags.NoWindow;
+
+            Events |= Gdk.EventMask.ButtonPressMask;
+
+            ButtonPressEvent += (o, a) => { ShowPopupMenu (); };
+            PopupMenu += (o, a) => { ShowPopupMenu (); };
+        }
+
+        public static Widget GetEditable (TrackInfoDisplay display)
+        {
+            return CoverArtEditor.For (display,
+                (x, y) => display.IsWithinCoverart (x, y),
+                () => display.CurrentTrack,
+                () => {}
+            );
+        }
+
+        private void ShowPopupMenu ()
+        {
+            Console.WriteLine ("Context menu for track info display!");
         }
 
         public override void Dispose ()
@@ -157,10 +178,20 @@ namespace Banshee.Gui.Widgets
         {
             base.OnSizeAllocated (allocation);
 
+            if (missing_audio_image != null) {
+                ((IDisposable)missing_audio_image).Dispose ();
+                missing_audio_image = null;
+            }
+
+            if (missing_video_image != null) {
+                ((IDisposable)missing_video_image).Dispose ();
+                missing_video_image = null;
+            }
+
             if (current_track == null) {
                 LoadCurrentTrack ();
             } else {
-                LoadImage (current_track);
+                LoadImage (current_track, true);
             }
         }
 
@@ -290,6 +321,12 @@ namespace Banshee.Gui.Widgets
                 IsMissingImage (image), BackgroundColor);
         }
 
+        protected virtual bool IsWithinCoverart (int x, int y)
+        {
+            return x >= Allocation.X && y >= Allocation.Y &&
+                x <= (Allocation.X + ArtworkSizeRequest) && y <= (Allocation.Y + ArtworkSizeRequest);
+        }
+
         protected bool IsMissingImage (ImageSurface pb)
         {
             return pb == missing_audio_image || pb == missing_video_image;
@@ -306,7 +343,7 @@ namespace Banshee.Gui.Widgets
         }
 
         protected virtual int MissingIconSizeRequest {
-            get { return 32; }
+            get { return ArtworkSizeRequest; }
         }
 
         private void OnPlayerEvent (PlayerEventArgs args)
@@ -329,7 +366,8 @@ namespace Banshee.Gui.Widgets
 
         private bool IdleTimeout ()
         {
-            if (ServiceManager.PlayerEngine.CurrentTrack == null ||
+            if (ServiceManager.PlayerEngine == null ||
+                ServiceManager.PlayerEngine.CurrentTrack == null ||
                 ServiceManager.PlayerEngine.CurrentState == PlayerState.Idle) {
                 incoming_track = null;
                 incoming_image = null;
@@ -362,21 +400,23 @@ namespace Banshee.Gui.Widgets
 
             incoming_track = track;
 
-            LoadImage (track);
+            LoadImage (track, force_reload);
 
             if (stage.Actor == null) {
                 stage.Reset ();
             }
         }
 
-        private void LoadImage (TrackInfo track)
+        private void LoadImage (TrackInfo track, bool force)
         {
-            ImageSurface image = artwork_manager.LookupScaleSurface (track.ArtworkId, ArtworkSizeRequest);
+            string artwork_id = track.ArtworkId;
+            if (current_artwork_id != artwork_id || force) {
+                current_artwork_id = artwork_id;
+                incoming_image = artwork_manager.LookupScaleSurface (artwork_id, ArtworkSizeRequest);
+            }
 
-            if (image == null) {
-                LoadMissingImage ((track.MediaAttributes & TrackMediaAttributes.VideoStream) != 0);
-            } else {
-                incoming_image = image;
+            if (incoming_image == null) {
+                incoming_image = MissingImage (track.HasAttribute (TrackMediaAttributes.VideoStream));
             }
 
             if (track == current_track) {
@@ -384,9 +424,9 @@ namespace Banshee.Gui.Widgets
             }
         }
 
-        private void LoadMissingImage (bool is_video)
+        private ImageSurface MissingImage (bool is_video)
         {
-            incoming_image = is_video ? MissingVideoImage : MissingAudioImage;
+            return is_video ? MissingVideoImage : MissingAudioImage;
         }
 
         private double last_fps = 0.0;

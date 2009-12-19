@@ -86,6 +86,7 @@ SOURCES =  \
 	Hyena.Widgets/AnimatedVBox.cs \
 	Hyena.Widgets/AnimatedWidget.cs \
 	Hyena.Widgets/ComplexMenuItem.cs \
+	Hyena.Widgets/EntryPopup.cs \
 	Hyena.Widgets/ImageButton.cs \
 	Hyena.Widgets/MenuButton.cs \
 	Hyena.Widgets/MessageBar.cs \
@@ -95,6 +96,7 @@ SOURCES =  \
 	Hyena.Widgets/RoundedFrame.cs \
 	Hyena.Widgets/ScrolledWindow.cs \
 	Hyena.Widgets/SegmentedBar.cs \
+	Hyena.Widgets/SimpleTable.cs \
 	Hyena.Widgets/SmoothScrolledWindow.cs \
 	Hyena.Widgets/TextViewEditable.cs \
 	Hyena.Widgets/WrapLabel.cs

@@ -422,7 +422,7 @@ namespace Hyena.Data.Gui
             cairo_context.Stroke ();
         }
 
-        private void InvalidateList ()
+        protected void InvalidateList ()
         {
             if (IsRealized) {
                 QueueDrawArea (list_rendering_alloc.X, list_rendering_alloc.Y, list_rendering_alloc.Width, list_rendering_alloc.Height);

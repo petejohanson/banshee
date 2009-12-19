@@ -36,6 +36,7 @@ using Gtk;
 using Hyena.Gui;
 using Hyena.Widgets;
 
+using Banshee.Base;
 using Banshee.Kernel;
 using Banshee.Sources;
 using Banshee.ServiceStack;
@@ -153,7 +154,14 @@ namespace Banshee.Gui.TrackEditor
             header_image = new Image ();
             header_image.IconName = "media-optical";
             header_image.PixelSize = 64;
-            header_image_frame.Add (header_image);
+
+            header_image_frame.Add (
+                CoverArtEditor.For (header_image,
+                    (x, y) => true,
+                    () => CurrentTrack,
+                    () => LoadCoverArt (CurrentTrack)
+                )
+            );
 
             header.Attach (header_image_frame, 0, 1, 0, 3,
                 AttachOptions.Fill, AttachOptions.Expand, 0, 0);
@@ -164,6 +172,10 @@ namespace Banshee.Gui.TrackEditor
 
             header.ShowAll ();
             main_vbox.PackStart (header, false, false, 0);
+        }
+
+        private TrackInfo CurrentTrack {
+            get { return TrackCount == 0 ? null : GetTrack (CurrentTrackIndex); }
         }
 
         private void AddHeaderRow (Table header, uint row, string title, out Label label)
@@ -307,11 +319,16 @@ namespace Banshee.Gui.TrackEditor
 
         private void InvokeFieldSync ()
         {
-            ForeachWidget<SyncButton> (delegate (SyncButton button) {
-                if (button.Sensitive) {
-                    button.Click ();
+            for (int i = 0; i < notebook.NPages; i++) {
+                var field_page = notebook.GetNthPage (i) as FieldPage;
+                if (field_page != null) {
+                    foreach (var slot in field_page.FieldSlots) {
+                        if (slot.Sync != null && (slot.SyncButton == null || slot.SyncButton.Sensitive)) {
+                            slot.Sync ();
+                        }
+                    }
                 }
-            });
+            }
         }
 
         private int action_area_children_allocated = 0;
@@ -367,16 +384,7 @@ namespace Banshee.Gui.TrackEditor
                     CurrentTrackIndex + 1, TrackCount);
             }
 
-            ArtworkManager artwork = ServiceManager.Get<ArtworkManager> ();
-            Gdk.Pixbuf cover_art = artwork.LookupScalePixbuf (current_track.ArtworkId, 64);
-            header_image.Pixbuf = cover_art;
-            if (cover_art == null) {
-                header_image.IconName = "media-optical";
-                header_image.PixelSize = 64;
-                header_image_frame.ShadowType = ShadowType.None;
-            } else {
-                header_image_frame.ShadowType = ShadowType.In;
-            }
+            LoadCoverArt (current_track);
 
             // Disconnect all the undo adapters
             ForeachWidget<ICanUndo> (delegate (ICanUndo undoable) {
@@ -410,6 +418,28 @@ namespace Banshee.Gui.TrackEditor
                     child = null;
                 }
             }
+        }
+
+        private void LoadCoverArt (TrackInfo current_track)
+        {
+            if (current_track == null)
+                return;
+
+            var artwork = ServiceManager.Get<ArtworkManager> ();
+            var cover_art = artwork.LookupScalePixbuf (current_track.ArtworkId, 64);
+
+            header_image.Clear ();
+            header_image.Pixbuf = cover_art;
+
+            if (cover_art == null) {
+                header_image.IconName = "media-optical";
+                header_image.PixelSize = 64;
+                header_image_frame.ShadowType = ShadowType.None;
+            } else {
+                header_image_frame.ShadowType = ShadowType.In;
+            }
+
+            header_image.QueueDraw ();
         }
 
         public void ForeachNonCurrentTrack (EditorTrackOperationClosure closure)

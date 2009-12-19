@@ -72,6 +72,11 @@ namespace Banshee.Dap
                 ServiceManager.HardwareManager.DeviceCommand += OnDeviceCommand;
                 ServiceManager.SourceManager.SourceRemoved += OnSourceRemoved;
                 initialized = true;
+
+                // Now that we've loaded all the enabled DAP providers, load the devices
+                foreach (IDevice device in ServiceManager.HardwareManager.GetAllDevices ()) {
+                    MapDevice (device);
+                }
             }
         }
 
@@ -84,9 +89,11 @@ namespace Banshee.Dap
                     Log.DebugFormat ("Dap support extension loaded: {0}", node.Addin.Id);
                     supported_dap_types.Add (node);
 
-                    // See if any existing devices are handled by this new DAP support
-                    foreach (IDevice device in ServiceManager.HardwareManager.GetAllDevices ()) {
-                        MapDevice (device);
+                    if (initialized) {
+                        // See if any existing devices are handled by this new DAP support
+                        foreach (IDevice device in ServiceManager.HardwareManager.GetAllDevices ()) {
+                            MapDevice (device);
+                        }
                     }
                 } else if (args.Change == ExtensionChange.Remove) {
                     supported_dap_types.Remove (node);

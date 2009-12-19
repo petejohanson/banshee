@@ -3,6 +3,10 @@ TARGET = library
 ASSEMBLY_BUILD_FLAGS = -unsafe
 LINK = $(REF_BANSHEE_THICKCLIENT)
 
+if HAVE_GLIBSHARP_2_12_7
+BUILD_DEFINES = "-define:HAVE_GLIBSHARP_2_12_7"
+endif
+
 SOURCES =  \
 	Banshee.Addins.Gui/AddinDetailsDialog.cs \
 	Banshee.Addins.Gui/AddinTile.cs \
@@ -25,9 +29,11 @@ SOURCES =  \
 	Banshee.Collection.Gui/ColumnCellTrack.cs \
 	Banshee.Collection.Gui/ColumnCellTrackAndCount.cs \
 	Banshee.Collection.Gui/ColumnCellTrackNumber.cs \
+	Banshee.Collection.Gui/CoverArtEditor.cs \
 	Banshee.Collection.Gui/DefaultColumnController.cs \
 	Banshee.Collection.Gui/PersistentColumnController.cs \
 	Banshee.Collection.Gui/QueryFilterView.cs \
+	Banshee.Collection.Gui/SearchableListView.cs \
 	Banshee.Collection.Gui/TerseTrackListView.cs \
 	Banshee.Collection.Gui/TrackFilterListView.cs \
 	Banshee.Collection.Gui/TrackListView.cs \

@@ -35,6 +35,7 @@ using Mono.Unix;
 
 using Hyena;
 using Hyena.Data.Sqlite;
+using Hyena.Query;
 
 using Banshee.Database;
 
@@ -46,6 +47,7 @@ namespace Banshee.Collection.Database
             : base (Banshee.Query.BansheeQuery.AlbumField.Name, Banshee.Query.BansheeQuery.AlbumField.Label,
                     source, trackModel, connection, DatabaseAlbumInfo.Provider, new AlbumInfo (null), uuid)
         {
+            QueryFields = new QueryFieldSet (Banshee.Query.BansheeQuery.AlbumField);
             ReloadFragmentFormat = @"
                 FROM CoreAlbums WHERE CoreAlbums.AlbumID IN
                         (SELECT CoreTracks.AlbumID FROM CoreTracks, CoreCache{0}

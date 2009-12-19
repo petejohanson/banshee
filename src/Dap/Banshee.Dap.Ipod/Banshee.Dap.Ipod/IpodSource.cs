@@ -461,6 +461,10 @@ namespace Banshee.Dap.Ipod
                     return;
                 }
 
+                if (track.Duration.Equals (TimeSpan.Zero)) {
+                    throw new Exception (Catalog.GetString ("Track duration is zero"));
+                }
+
                 IpodTrackInfo ipod_track = new IpodTrackInfo (track);
                 ipod_track.Uri = fromUri;
                 ipod_track.PrimarySource = this;
@@ -606,7 +610,9 @@ namespace Banshee.Dap.Ipod
                             "SELECT CoreTracks.TrackID FROM {0} WHERE {1}",
                             from.DatabaseTrackModel.ConditionFromFragment, from.DatabaseTrackModel.Condition)))
                         {
-                            playlist.AddTrack (tracks_map[track_id].IpodTrack);
+                            if (tracks_map.ContainsKey (track_id)) {
+                                playlist.AddTrack (tracks_map[track_id].IpodTrack);
+                            }
                         }
                     }
                 }
