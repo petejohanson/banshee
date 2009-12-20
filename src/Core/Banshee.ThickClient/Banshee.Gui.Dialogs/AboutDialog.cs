@@ -51,11 +51,11 @@ namespace Banshee.Gui.Dialogs
         {
             // build authors page
             List<string> authors = new List<string> ();
-            authors.Add (Catalog.GetString ("Primary Development"));
+            authors.Add (Catalog.GetString ("Maintainers"));
             authors.Add (String.Empty);
 
             foreach (ProductAuthor author in ProductInformation.Authors) {
-                authors.Add (String.Format("    {0} ({1})", author.Name, author.Role));
+                authors.Add (String.Format("    {0}", author.Name));
             }
 
             authors.Add (String.Empty);
