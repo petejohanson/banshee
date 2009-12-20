@@ -1,7 +1,7 @@
 //
-// AudiobookContent.cs
+// Actions.cs
 //
-// Author:
+// Authors:
 //   Gabriel Burt <gburt@novell.com>
 //
 // Copyright (C) 2009 Novell, Inc.
@@ -28,67 +28,35 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Mono.Unix;
 using Gtk;
 
-using Hyena;
-using Hyena.Data;
-using Hyena.Data.Gui;
-
-using Banshee.Widgets;
-using Banshee.Sources;
-using Banshee.ServiceStack;
-using Banshee.Collection;
-using Banshee.Collection.Database;
-using Banshee.Collection.Gui;
-using Banshee.Gui;
-using Banshee.Gui.Widgets;
-using Banshee.Sources.Gui;
-using Banshee.Web;
-
 namespace Banshee.Audiobook
 {
-    public class AudiobookContent : ISourceContents
+    public class Actions : Banshee.Gui.BansheeActionGroup
     {
-        private AudiobookLibrarySource library;
-        private AudiobookGrid grid;
-
-        public AudiobookContent ()
+        public Actions () : base ("Audiobook")
         {
-            grid = new AudiobookGrid ();
-        }
+            Add (
+                new ActionEntry ("AudiobookBookPopup", null, null, null, null, (o, a) => {
+                    ShowContextMenu ("/AudiobookBookPopup");
+                }),
+                new ActionEntry ("AudiobookOpen", null, Catalog.GetString ("Open Book"), null, null, (o, a) => {
+                    Console.WriteLine ("open book!");
+                })
+            );
 
-        public bool SetSource (ISource src)
-        {
-            if (src != null && src == library)
-                return true;
+            /*AddImportant (
+                new ActionEntry ("VisitInternetArchive", Stock.JumpTo, Catalog.GetString ("Visit Archive.org"), null, null, (o, a) => {
+                    Banshee.Web.Browser.Open ("http://archive.org");
+                })
+            );*/
 
-            library = src as AudiobookLibrarySource;
-            if (library == null) {
-                return false;
-            }
+            AddUiFromFile ("GlobalUI.xml");
 
-            grid.SetLibrary (library);
-
-            // Not sure why this is needed
-            library.BooksModel.Reloaded += delegate {
-                grid.QueueDraw ();
-            };
-            return true;
-        }
-
-        public ISource Source {
-            get { return library; }
-        }
-
-        public void ResetSource ()
-        {
-            library = null;
-        }
-
-        public Widget Widget {
-            get { return grid; }
+            Register ();
         }
     }
 }

@@ -4,12 +4,16 @@ LINK = $(REF_EXTENSION_AUDIOBOOK)
 INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
+	Banshee.Audiobook/Actions.cs \
 	Banshee.Audiobook/AudiobookFileNamePattern.cs \
 	Banshee.Audiobook/AudiobookLibrarySource.cs \
 	Banshee.Audiobook/AudiobookContent.cs \
 	Banshee.Audiobook/AudiobookGrid.cs \
 	Banshee.Audiobook/AudiobookModel.cs
 
-RESOURCES = Banshee.Audiobook.addin.xml
+RESOURCES =  \
+	Banshee.Audiobook.addin.xml \
+	Resources/GlobalUI.xml \
+	Resources/ActiveSourceUI.xml
 
 include $(top_srcdir)/build/build.mk

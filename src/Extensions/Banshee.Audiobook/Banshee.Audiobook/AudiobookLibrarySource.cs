@@ -49,6 +49,9 @@ namespace Banshee.Audiobook
     {
         private AudiobookModel books_model;
 
+        private Actions actions;
+        public Actions Actions { get { return actions; } }
+
         public AudiobookLibrarySource () : base (Catalog.GetString ("Audiobooks, etc"), "AudiobookLibrary", 49)
         {
             MediaTypes = TrackMediaAttributes.AudioBook;
@@ -80,6 +83,21 @@ namespace Banshee.Audiobook
             SetFileNamePattern (pattern);
 
             Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<AudiobookContent> ());
+            //Properties.SetString ("GtkActionPath", "/LastfmStationSourcePopup");
+            Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
+            Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
+
+            actions = new Actions ();
+        }
+
+        public override void Dispose ()
+        {
+            if (actions != null) {
+                actions.Dispose ();
+                actions = null;
+            }
+
+            base.Dispose ();
         }
 
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)

@@ -52,6 +52,7 @@ namespace Banshee.Audiobook
     public class AudiobookGrid : SearchableListView<AlbumInfo>
     {
         private ColumnCellAlbum renderer;
+        private AudiobookLibrarySource library;
 
         public AudiobookGrid ()
         {
@@ -67,6 +68,12 @@ namespace Banshee.Audiobook
             //RowActivated += OnRowActivated;
         }
 
+        public void SetLibrary (AudiobookLibrarySource library)
+        {
+            SetModel (library.BooksModel);
+            this.library = library;
+        }
+
         public override bool SelectOnRowFound {
             get { return true; }
         }
@@ -78,7 +85,7 @@ namespace Banshee.Audiobook
 
         protected override bool OnPopupMenu ()
         {
-            //ServiceManager.Get<InterfaceActionService> ().TrackActions["TrackContextMenuAction"].Activate ();
+            library.Actions["AudiobookBookPopup"].Activate ();
             return true;
         }
     }
