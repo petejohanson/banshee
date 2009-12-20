@@ -8,8 +8,6 @@ BUILD_DEFINES = "-define:HAVE_GLIBSHARP_2_12_7"
 endif
 
 SOURCES =  \
-	Banshee.Addins.Gui/AddinDetailsDialog.cs \
-	Banshee.Addins.Gui/AddinTile.cs \
 	Banshee.Addins.Gui/AddinView.cs \
 	Banshee.Collection.Gui/AlbumListView.cs \
 	Banshee.Collection.Gui/ArtistListView.cs \
