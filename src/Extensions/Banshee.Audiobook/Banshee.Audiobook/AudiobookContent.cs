@@ -70,6 +70,11 @@ namespace Banshee.Audiobook
             }
 
             grid.SetModel (library.BooksModel);
+
+            // Not sure why this is needed
+            library.BooksModel.Reloaded += delegate {
+                grid.QueueDraw ();
+            };
             return true;
         }
 
