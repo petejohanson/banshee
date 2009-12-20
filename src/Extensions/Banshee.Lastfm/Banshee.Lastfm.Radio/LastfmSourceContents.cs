@@ -31,11 +31,6 @@ namespace Banshee.Lastfm.Radio
 
         private Viewport viewport;
 
-        static LastfmSourceContents () {
-            DataCore.UserAgent = Banshee.Web.Browser.UserAgent;
-            DataCore.CachePath = System.IO.Path.Combine (Banshee.Base.Paths.ExtensionCacheRoot, "lastfm");
-        }
-
         // "Coming Soon: Profile, Friends, Events etc")
         public LastfmSourceContents () : base ()
         {
