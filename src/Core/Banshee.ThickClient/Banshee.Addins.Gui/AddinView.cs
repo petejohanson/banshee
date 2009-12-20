@@ -167,14 +167,17 @@ namespace Banshee.Addins.Gui
                 return addins;
             }
 
-            return addins.Where (a => { return
-                StringUtil.SearchKey (a.Name).Contains (search) ||
-                StringUtil.SearchKey (a.Description.Description).Contains (search) ||
-                StringUtil.SearchKey (Catalog.GetString (a.Name)).Contains (search) ||
-                StringUtil.SearchKey (Catalog.GetString (a.Description.Description)).Contains (search) ||
-                StringUtil.SearchKey (a.Description.Category).Contains (search) ||
-                StringUtil.SearchKey (Catalog.GetString (a.Description.Category)).Contains (search);
-            });
+            return addins.Where (a => a.MatchStrings ().Any (s => {
+                return StringUtil.SearchKey (s).Contains (search) ||
+                       StringUtil.SearchKey (Catalog.GetString (s)).Contains (search);
+            }));
+        }
+
+        public static IEnumerable<string> MatchStrings (this Addin a)
+        {
+            yield return a.Name;
+            yield return a.Description.Description;
+            yield return a.Description.Category;
         }
     }
 }
