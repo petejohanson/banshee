@@ -101,7 +101,7 @@ namespace Banshee.Audiobook
         }
 
         public override int Count {
-            get { return books_model.UnfilteredCount; }
+            get { return 0; }
         }
 
         public override int FilteredCount {
