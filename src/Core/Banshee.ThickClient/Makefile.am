@@ -4,7 +4,6 @@ ASSEMBLY_BUILD_FLAGS = -unsafe
 LINK = $(REF_BANSHEE_THICKCLIENT)
 
 SOURCES =  \
-	Banshee.Addins.Gui/AddinDetailsDialog.cs \
 	Banshee.Addins.Gui/AddinView.cs \
 	Banshee.Collection.Gui/AlbumListView.cs \
 	Banshee.Collection.Gui/ArtistListView.cs \
