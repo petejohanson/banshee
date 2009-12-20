@@ -47,6 +47,8 @@ namespace Banshee.Audiobook
     {
         public AudiobookModel (DatabaseSource source, DatabaseTrackListModel trackModel, BansheeDbConnection connection, string uuid) : base (source, trackModel, connection, uuid)
         {
+            CalculateUnfilteredCount = true;
+            HasSelectAllItem = false;
         }
 
         public override void UpdateSelectAllItem (long count)

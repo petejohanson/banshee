@@ -100,6 +100,14 @@ namespace Banshee.Audiobook
             get { return XdgBaseDirectorySpec.GetXdgDirectoryUnderHome ("XDG_AUDIOBOOKS_DIR", "Audiobooks"); }
         }
 
+        public override int Count {
+            get { return books_model.UnfilteredCount; }
+        }
+
+        public override int FilteredCount {
+            get { return books_model.Count; }
+        }
+
         public override bool ShowBrowser {
             get { return false; }
         }
