@@ -67,9 +67,19 @@ namespace Banshee.Audiobook
             //RowActivated += OnRowActivated;
         }
 
+        public override bool SelectOnRowFound {
+            get { return true; }
+        }
+
         protected override Gdk.Size OnMeasureChild ()
         {
             return renderer.Measure (this);
+        }
+
+        protected override bool OnPopupMenu ()
+        {
+            //ServiceManager.Get<InterfaceActionService> ().TrackActions["TrackContextMenuAction"].Activate ();
+            return true;
         }
     }
 }
