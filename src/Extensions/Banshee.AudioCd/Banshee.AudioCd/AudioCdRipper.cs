@@ -36,6 +36,7 @@ using Hyena.Jobs;
 
 using Banshee.Base;
 using Banshee.ServiceStack;
+using Banshee.Streaming;
 using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.MediaEngine;
@@ -207,6 +208,8 @@ namespace Banshee.AudioCd
             track.FileSize = Banshee.IO.File.GetSize (track.Uri);
             track.FileModifiedStamp = Banshee.IO.File.GetModifiedTime (track.Uri);
             track.LastSyncedStamp = DateTime.Now;
+
+            StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (track.Uri), true);
 
             track.Save ();
 
