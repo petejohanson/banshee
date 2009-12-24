@@ -484,10 +484,10 @@ namespace Mtp
 	internal struct DeviceEntry
 	{
 		[MarshalAs(UnmanagedType.LPStr)] public string vendor;
-		public short vendor_id;
+		public ushort vendor_id;
 		[MarshalAs(UnmanagedType.LPStr)] public string product;
-		public short product_id;
-		public int device_flags;
+		public ushort product_id;
+		public uint device_flags;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]

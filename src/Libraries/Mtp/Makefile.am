@@ -12,6 +12,10 @@ if LIBMTP_TRACK_STRUCT_HAS_MODDATE
 BUILD_DEFINES += "-define:LIBMTP_TRACK_HAS_MODDATE"
 endif
 
+if LIBMTP_SIZEOF_TIME_T_64
+BUILD_DEFINES += "-define:LIBMTP_SIZEOF_TIME_T_64"
+endif
+
 SOURCES =  \
 	Mtp/AbstractTrackList.cs \
 	Mtp/Album.cs \

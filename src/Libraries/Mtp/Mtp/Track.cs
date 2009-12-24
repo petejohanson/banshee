@@ -299,7 +299,11 @@ namespace Mtp
 		public uint usecount;
 		public ulong filesize;
 #if LIBMTP_TRACK_HAS_MODDATE
+#if LIBMTP_SIZEOF_TIME_T_64
+		public ulong modificationdate;
+#else
 		public uint modificationdate;
+#endif
 #endif
 		public FileType filetype;
 		public IntPtr next; // Track Null if last
