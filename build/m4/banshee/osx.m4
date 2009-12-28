@@ -1,6 +1,6 @@
 AC_DEFUN([BANSHEE_CHECK_OSX],
 [
-	IGE_MAC_INTEGRATION_REQUIRED=0.8.6
+	IGEMACINTEGRATIONSHARP_REQUIRED=0.8.2
 
 	AC_ARG_ENABLE(osx, AC_HELP_STRING([--enable-osx], [Enable OSX support]), enable_osx=$enableval, enable_osx="no")
 
@@ -8,14 +8,14 @@ AC_DEFUN([BANSHEE_CHECK_OSX],
 		dnl FIXME: detect osx
 		have_osx="yes"
 
-		PKG_CHECK_MODULES(IGE_MAC_INTEGRATION, 
-			ige-mac-integration >= $IGE_MAC_INTEGRATION_REQUIRED,
-			have_ige_mac_integration=yes, have_ige_mac_integration=no)
+		PKG_CHECK_MODULES(IGEMACINTEGRATIONSHARP, 
+			ige-mac-integration-sharp >= $IGEMACINTEGRATIONSHARP_REQUIRED,
+			have_igemacintegrationsharp=yes, have_igemacintegrationsharp=no)
 	
-		if test "x$have_ige_mac_integration" = "xno"; then
-			AC_MSG_ERROR([ige-mac-integration was not found or is not up to date. Please install ige-mac-integration of at least version $IGE_MAC_INTEGRATION_REQUIRED])
+		if test "x$have_igemacintegrationsharp" = "xno"; then
+			AC_MSG_ERROR([ige-mac-integration-sharp was not found or is not up to date. Please install ige-mac-integration-sharp of at least version $IGEMACINTEGRATIONSHARP_REQUIRED])
 		fi
-		AC_SUBST(IGE_MAC_INTEGRATION_LIBS)
+		AC_SUBST(IGEMACINTEGRATIONSHARP_LIBS)
 	fi
 
 	AM_CONDITIONAL(ENABLE_OSX, test "x$have_osx" = "xyes")
