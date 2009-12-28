@@ -318,9 +318,8 @@ ${PACKAGE}-${VERSION}
 
   Operating System/Desktop Environment:
     GNOME Support:     ${enable_gnome}
-    Builtin Equalizer: ${enable_builtin_equalizer}
-    GIO Support:       ${enable_gio} (requires gtk-sharp-beans and gio-sharp)
     OSX Support:       ${enable_osx}
+    Moblin Support:    ${enable_moblin}
 
   Digital Audio Player (DAP) Support:
     Mass Storage:      yes
@@ -332,7 +331,8 @@ ${PACKAGE}-${VERSION}
     DAAP Support:      ${enable_daap}
     Podcast Support:   ${enable_podcast}
     Boo Scripting:     ${enable_boo}
-    Moblin Support:    ${enable_moblin}
+    Builtin Equalizer: ${enable_builtin_equalizer}
+    GIO Support:       ${enable_gio} (requires gtk-sharp-beans and gio-sharp)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
