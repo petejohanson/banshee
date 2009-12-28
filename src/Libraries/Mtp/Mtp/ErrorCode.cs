@@ -33,25 +33,25 @@ using System.Runtime.InteropServices;
 
 namespace Mtp
 {
-	public enum ErrorCode
-	{
-		/*LIBMTP_ERROR_NONE,
-		LIBMTP_ERROR_GENERAL,
-		LIBMTP_ERROR_PTP_LAYER,
-		LIBMTP_ERROR_USB_LAYER,
-		LIBMTP_ERROR_MEMORY_ALLOCATION,
-		LIBMTP_ERROR_NO_DEVICE_ATTACHED,
-		LIBMTP_ERROR_STORAGE_FULL,
-		LIBMTP_ERROR_CONNECTING,
-		LIBMTP_ERROR_CANCELLED*/
-		None,
-		General,
-		PtpLayer,
-		UsbLayer,
-		MemoryAllocation,
-		NoDeviceAttached,
-		StorageFull,
-		Connecting,
-		Cancelled
-	}
+    public enum ErrorCode
+    {
+        /*LIBMTP_ERROR_NONE,
+        LIBMTP_ERROR_GENERAL,
+        LIBMTP_ERROR_PTP_LAYER,
+        LIBMTP_ERROR_USB_LAYER,
+        LIBMTP_ERROR_MEMORY_ALLOCATION,
+        LIBMTP_ERROR_NO_DEVICE_ATTACHED,
+        LIBMTP_ERROR_STORAGE_FULL,
+        LIBMTP_ERROR_CONNECTING,
+        LIBMTP_ERROR_CANCELLED*/
+        None,
+        General,
+        PtpLayer,
+        UsbLayer,
+        MemoryAllocation,
+        NoDeviceAttached,
+        StorageFull,
+        Connecting,
+        Cancelled
+    }
 }

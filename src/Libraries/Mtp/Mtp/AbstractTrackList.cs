@@ -8,7 +8,7 @@ namespace Mtp
     {
         private bool saved;
         private List<int> track_ids;
-		private MtpDevice device;
+        private MtpDevice device;
 
         public abstract uint Count { get; protected set; }
         public abstract string Name { get; set; }

@@ -32,153 +32,153 @@ using System.Runtime.InteropServices;
 
 namespace Mtp
 {
-	public class Track
-	{
-		internal TrackStruct trackStruct;
-		private MtpDevice device;
+    public class Track
+    {
+        internal TrackStruct trackStruct;
+        private MtpDevice device;
 
-		public uint FileId {
-			get { return trackStruct.item_id; }
-		}
-		
-		public string Album {
-			get { return trackStruct.album; }
-			set { trackStruct.album = value;}
-		}
+        public uint FileId {
+            get { return trackStruct.item_id; }
+        }
+        
+        public string Album {
+            get { return trackStruct.album; }
+            set { trackStruct.album = value;}
+        }
 
-		public string Artist {
-			get { return trackStruct.artist; }
-			set { trackStruct.artist = value; }
-		}
+        public string Artist {
+            get { return trackStruct.artist; }
+            set { trackStruct.artist = value; }
+        }
 
-		public uint Bitrate {
-			get { return trackStruct.bitrate; }
-		}
+        public uint Bitrate {
+            get { return trackStruct.bitrate; }
+        }
 
-		public ushort BitrateType {
-			get { return trackStruct.bitratetype; }
-		}
+        public ushort BitrateType {
+            get { return trackStruct.bitratetype; }
+        }
 
-		public string ReleaseDate {
-			get { return trackStruct.date; }
-			set { trackStruct.date = value; }
-		}
+        public string ReleaseDate {
+            get { return trackStruct.date; }
+            set { trackStruct.date = value; }
+        }
 
-		public int Year {
-			get { return ReleaseDate == null || ReleaseDate.Length < 4 ? 0 : Int32.Parse (ReleaseDate.Substring(0, 4)); }
-			set { ReleaseDate = String.Format ("{0:0000}0101T0000.00", value); }
-		}
+        public int Year {
+            get { return ReleaseDate == null || ReleaseDate.Length < 4 ? 0 : Int32.Parse (ReleaseDate.Substring(0, 4)); }
+            set { ReleaseDate = String.Format ("{0:0000}0101T0000.00", value); }
+        }
 
-		public uint Duration {
-			get { return trackStruct.duration; }
-			set { trackStruct.duration = value; }
-		}
+        public uint Duration {
+            get { return trackStruct.duration; }
+            set { trackStruct.duration = value; }
+        }
 
-		public string FileName {
-			get { return trackStruct.filename; }
-			set { trackStruct.filename = value; }
-		}
+        public string FileName {
+            get { return trackStruct.filename; }
+            set { trackStruct.filename = value; }
+        }
 
-		public ulong FileSize {
-			get { return trackStruct.filesize; }
-			set { trackStruct.filesize = value; }
-		}
+        public ulong FileSize {
+            get { return trackStruct.filesize; }
+            set { trackStruct.filesize = value; }
+        }
 
-		public FileType FileType {
-			get { return trackStruct.filetype; }
-			set { trackStruct.filetype = value; }
-		}
+        public FileType FileType {
+            get { return trackStruct.filetype; }
+            set { trackStruct.filetype = value; }
+        }
 
-		public string Genre {
-			get { return trackStruct.genre; }
-			set { trackStruct.genre = value; }
-		}
+        public string Genre {
+            get { return trackStruct.genre; }
+            set { trackStruct.genre = value; }
+        }
 
-		public ushort NoChannels {
-			get { return trackStruct.nochannels; }
-			set { trackStruct.nochannels = value; }
-		}
+        public ushort NoChannels {
+            get { return trackStruct.nochannels; }
+            set { trackStruct.nochannels = value; }
+        }
 
         // 0 to 100
-		public ushort Rating {
-			get { return trackStruct.rating; }
-			set {
-				if (value < 0 || value > 100)
-					throw new ArgumentOutOfRangeException ("Rating", "Rating must be between zero and 100");
-				trackStruct.rating = value;
-			}
-		}
+        public ushort Rating {
+            get { return trackStruct.rating; }
+            set {
+                if (value < 0 || value > 100)
+                    throw new ArgumentOutOfRangeException ("Rating", "Rating must be between zero and 100");
+                trackStruct.rating = value;
+            }
+        }
 
-		public uint SampleRate {
-			get { return trackStruct.samplerate; }
-			set { trackStruct.samplerate = value; }
-		}
+        public uint SampleRate {
+            get { return trackStruct.samplerate; }
+            set { trackStruct.samplerate = value; }
+        }
 
-		public string Title {
-			get { return trackStruct.title; }
-			set { trackStruct.title = value; }
-		}
+        public string Title {
+            get { return trackStruct.title; }
+            set { trackStruct.title = value; }
+        }
 
-		public ushort TrackNumber
-		{
-			get { return trackStruct.tracknumber; }
-			set { trackStruct.tracknumber = value; }
-		}
+        public ushort TrackNumber
+        {
+            get { return trackStruct.tracknumber; }
+            set { trackStruct.tracknumber = value; }
+        }
 
-		public uint WaveCodec {
-			get { return trackStruct.wavecodec; }
-		}
+        public uint WaveCodec {
+            get { return trackStruct.wavecodec; }
+        }
 
-		public uint UseCount {
-			get { return trackStruct.usecount; }
-			set { trackStruct.usecount = value; }
-		}
+        public uint UseCount {
+            get { return trackStruct.usecount; }
+            set { trackStruct.usecount = value; }
+        }
 
 #if LIBMTP8
-		public string Composer {
-			get { return trackStruct.composer; }
-			set { trackStruct.composer = value; }
-		}
+        public string Composer {
+            get { return trackStruct.composer; }
+            set { trackStruct.composer = value; }
+        }
 #endif
 
-		public Track (string filename, ulong filesize) : this (new TrackStruct (), null)
-		{
-			this.trackStruct.filename = filename;
-			this.trackStruct.filesize = filesize;
-			this.trackStruct.filetype = DetectFileType (this);
-		}
-		
-		internal Track (TrackStruct track, MtpDevice device)
-		{
-			this.device = device;
-			this.trackStruct = track;
-		}
+        public Track (string filename, ulong filesize) : this (new TrackStruct (), null)
+        {
+            this.trackStruct.filename = filename;
+            this.trackStruct.filesize = filesize;
+            this.trackStruct.filetype = DetectFileType (this);
+        }
+        
+        internal Track (TrackStruct track, MtpDevice device)
+        {
+            this.device = device;
+            this.trackStruct = track;
+        }
 
         public bool InFolder (Folder folder)
         {
             return folder != null && trackStruct.parent_id == folder.FolderId;
         }
-		
-		public void Download (string path)
-		{
-			Download (path, null);
-		}
-		
-		public void Download  (string path, ProgressFunction callback)
-		{
-			if (String.IsNullOrEmpty (path))
-				throw new ArgumentException ("Cannot be null or empty", "path");
-			
-			GetTrack (device.Handle, trackStruct.item_id, path, callback, IntPtr.Zero);
-		}
-		
-		public void UpdateMetadata ()
-		{
-			UpdateTrackMetadata (device.Handle, ref trackStruct);
-		}
-		
-		private static FileType DetectFileType (Track track)
-		{
+        
+        public void Download (string path)
+        {
+            Download (path, null);
+        }
+        
+        public void Download  (string path, ProgressFunction callback)
+        {
+            if (String.IsNullOrEmpty (path))
+                throw new ArgumentException ("Cannot be null or empty", "path");
+            
+            GetTrack (device.Handle, trackStruct.item_id, path, callback, IntPtr.Zero);
+        }
+        
+        public void UpdateMetadata ()
+        {
+            UpdateTrackMetadata (device.Handle, ref trackStruct);
+        }
+        
+        private static FileType DetectFileType (Track track)
+        {
             string ext = System.IO.Path.GetExtension (track.FileName);
 
             // Strip leading .
@@ -193,129 +193,129 @@ namespace Mtp
             //if (type == null)
             //    return FileType.UNKNOWN;
             return type;
-		}
+        }
 
-		internal static void DestroyTrack (IntPtr track)
-		{
-			LIBMTP_destroy_track_t (track);
-		}
+        internal static void DestroyTrack (IntPtr track)
+        {
+            LIBMTP_destroy_track_t (track);
+        }
 
-		internal static void GetTrack (MtpDeviceHandle handle, uint trackId, string destPath, ProgressFunction callback, IntPtr data)
-		{
-			if (LIBMTP_Get_Track_To_File (handle, trackId, destPath, callback, data) != 0)
-			{
-				LibMtpException.CheckErrorStack (handle);
-				throw new LibMtpException (ErrorCode.General, "Could not download track from the device");
-			}
-		}
+        internal static void GetTrack (MtpDeviceHandle handle, uint trackId, string destPath, ProgressFunction callback, IntPtr data)
+        {
+            if (LIBMTP_Get_Track_To_File (handle, trackId, destPath, callback, data) != 0)
+            {
+                LibMtpException.CheckErrorStack (handle);
+                throw new LibMtpException (ErrorCode.General, "Could not download track from the device");
+            }
+        }
 
-		internal static IntPtr GetTrackListing (MtpDeviceHandle handle, ProgressFunction function, IntPtr data)
-		{
-			return LIBMTP_Get_Tracklisting_With_Callback (handle, function, data);
-		}
+        internal static IntPtr GetTrackListing (MtpDeviceHandle handle, ProgressFunction function, IntPtr data)
+        {
+            return LIBMTP_Get_Tracklisting_With_Callback (handle, function, data);
+        }
 
-		internal static void SendTrack (MtpDeviceHandle handle, string path, ref TrackStruct metadata, ProgressFunction callback, IntPtr data)
-		{
+        internal static void SendTrack (MtpDeviceHandle handle, string path, ref TrackStruct metadata, ProgressFunction callback, IntPtr data)
+        {
 #if LIBMTP8
-			if (LIBMTP_Send_Track_From_File (handle, path, ref metadata, callback, data) != 0)
+            if (LIBMTP_Send_Track_From_File (handle, path, ref metadata, callback, data) != 0)
 #else
-			if (LIBMTP_Send_Track_From_File (handle, path, ref metadata, callback, data, metadata.parent_id) != 0)
+            if (LIBMTP_Send_Track_From_File (handle, path, ref metadata, callback, data, metadata.parent_id) != 0)
 #endif
-			{
-				LibMtpException.CheckErrorStack (handle);
-				throw new LibMtpException (ErrorCode.General, "Could not upload the track");
-			}
-		}
+            {
+                LibMtpException.CheckErrorStack (handle);
+                throw new LibMtpException (ErrorCode.General, "Could not upload the track");
+            }
+        }
 
-		internal static void UpdateTrackMetadata (MtpDeviceHandle handle, ref TrackStruct metadata)
-		{
-			if (LIBMTP_Update_Track_Metadata (handle, ref metadata) != 0)
-				throw new LibMtpException (ErrorCode.General);
-		}
-		
-		//[DllImport("libmtp.dll")]
-		//private static extern IntPtr LIBMTP_new_track_t (); // LIBMTP_track_t *
+        internal static void UpdateTrackMetadata (MtpDeviceHandle handle, ref TrackStruct metadata)
+        {
+            if (LIBMTP_Update_Track_Metadata (handle, ref metadata) != 0)
+                throw new LibMtpException (ErrorCode.General);
+        }
+        
+        //[DllImport("libmtp.dll")]
+        //private static extern IntPtr LIBMTP_new_track_t (); // LIBMTP_track_t *
 
-		[DllImport("libmtp.dll")]
-		private static extern void LIBMTP_destroy_track_t (IntPtr track); // LIBMTP_track_t *
+        [DllImport("libmtp.dll")]
+        private static extern void LIBMTP_destroy_track_t (IntPtr track); // LIBMTP_track_t *
 
-		//[DllImport("libmtp.dll")]
-		//private static extern IntPtr LIBMTP_Get_Tracklisting (MtpDeviceHandle handle); //LIBMTP_track_t *
+        //[DllImport("libmtp.dll")]
+        //private static extern IntPtr LIBMTP_Get_Tracklisting (MtpDeviceHandle handle); //LIBMTP_track_t *
 
-		[DllImport("libmtp.dll")]
-		private static extern IntPtr LIBMTP_Get_Tracklisting_With_Callback (MtpDeviceHandle handle, ProgressFunction callback, IntPtr data); // LIBMTP_track_t *
+        [DllImport("libmtp.dll")]
+        private static extern IntPtr LIBMTP_Get_Tracklisting_With_Callback (MtpDeviceHandle handle, ProgressFunction callback, IntPtr data); // LIBMTP_track_t *
 
-		//[DllImport("libmtp.dll")]
-		//private static extern IntPtr LIBMTP_Get_Trackmetadata (MtpDeviceHandle handle, uint trackId); // LIBMTP_track_t *
+        //[DllImport("libmtp.dll")]
+        //private static extern IntPtr LIBMTP_Get_Trackmetadata (MtpDeviceHandle handle, uint trackId); // LIBMTP_track_t *
 
-		[DllImport("libmtp.dll")]
-		private static extern int LIBMTP_Get_Track_To_File (MtpDeviceHandle handle, uint trackId, string path, ProgressFunction callback, IntPtr data);
+        [DllImport("libmtp.dll")]
+        private static extern int LIBMTP_Get_Track_To_File (MtpDeviceHandle handle, uint trackId, string path, ProgressFunction callback, IntPtr data);
 
 #if LIBMTP8
-		[DllImport("libmtp.dll")]
-		private static extern int LIBMTP_Send_Track_From_File (MtpDeviceHandle handle, string path, ref TrackStruct track, ProgressFunction callback, IntPtr data);
+        [DllImport("libmtp.dll")]
+        private static extern int LIBMTP_Send_Track_From_File (MtpDeviceHandle handle, string path, ref TrackStruct track, ProgressFunction callback, IntPtr data);
 #else
-		[DllImport("libmtp.dll")]
-		private static extern int LIBMTP_Send_Track_From_File (MtpDeviceHandle handle, string path, ref TrackStruct track, ProgressFunction callback, IntPtr data, uint parentHandle);
+        [DllImport("libmtp.dll")]
+        private static extern int LIBMTP_Send_Track_From_File (MtpDeviceHandle handle, string path, ref TrackStruct track, ProgressFunction callback, IntPtr data, uint parentHandle);
 #endif
 
-		[DllImport("libmtp.dll")]
-	    private static extern int LIBMTP_Update_Track_Metadata (MtpDeviceHandle handle, ref TrackStruct metadata);
+        [DllImport("libmtp.dll")]
+        private static extern int LIBMTP_Update_Track_Metadata (MtpDeviceHandle handle, ref TrackStruct metadata);
 
-		//[DllImport("libmtp.dll")]
-	    //private static extern int LIBMTP_Track_Exists (MtpDeviceHandle handle, uint trackId);
+        //[DllImport("libmtp.dll")]
+        //private static extern int LIBMTP_Track_Exists (MtpDeviceHandle handle, uint trackId);
 
-		//int 	LIBMTP_Get_Track_To_File_Descriptor (MtpDeviceHandle handle, uint trackId, int const, LIBMTP_progressfunc_t const, void const *const)
-		//int 	LIBMTP_Send_Track_From_File_Descriptor (MtpDeviceHandle handle, int const, LIBMTP_track_t *const, LIBMTP_progressfunc_t const, void const *const, uint32_t const)
-	}
+        //int     LIBMTP_Get_Track_To_File_Descriptor (MtpDeviceHandle handle, uint trackId, int const, LIBMTP_progressfunc_t const, void const *const)
+        //int     LIBMTP_Send_Track_From_File_Descriptor (MtpDeviceHandle handle, int const, LIBMTP_track_t *const, LIBMTP_progressfunc_t const, void const *const, uint32_t const)
+    }
 
-	[StructLayout(LayoutKind.Sequential)]
-	internal struct TrackStruct
-	{
-		public uint item_id;
-		public uint parent_id;
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct TrackStruct
+    {
+        public uint item_id;
+        public uint parent_id;
 #if LIBMTP8
-		public uint storage_id;
+        public uint storage_id;
 #endif
 
-		[MarshalAs(UnmanagedType.LPStr)] public string title;
-		[MarshalAs(UnmanagedType.LPStr)] public string artist;
+        [MarshalAs(UnmanagedType.LPStr)] public string title;
+        [MarshalAs(UnmanagedType.LPStr)] public string artist;
 #if LIBMTP8
-		[MarshalAs(UnmanagedType.LPStr)] public string composer;
+        [MarshalAs(UnmanagedType.LPStr)] public string composer;
 #endif
-		[MarshalAs(UnmanagedType.LPStr)] public string genre;
-		[MarshalAs(UnmanagedType.LPStr)] public string album;
-		[MarshalAs(UnmanagedType.LPStr)] public string date;
-		[MarshalAs(UnmanagedType.LPStr)] public string filename;
+        [MarshalAs(UnmanagedType.LPStr)] public string genre;
+        [MarshalAs(UnmanagedType.LPStr)] public string album;
+        [MarshalAs(UnmanagedType.LPStr)] public string date;
+        [MarshalAs(UnmanagedType.LPStr)] public string filename;
 
-		public ushort tracknumber;
-		public uint duration;
-		public uint samplerate;
-		public ushort nochannels;
-		public uint wavecodec;
-		public uint bitrate;
-		public ushort bitratetype;
-		public ushort rating;    // 0 -> 100
-		public uint usecount;
-		public ulong filesize;
+        public ushort tracknumber;
+        public uint duration;
+        public uint samplerate;
+        public ushort nochannels;
+        public uint wavecodec;
+        public uint bitrate;
+        public ushort bitratetype;
+        public ushort rating;    // 0 -> 100
+        public uint usecount;
+        public ulong filesize;
 #if LIBMTP_TRACK_HAS_MODDATE
 #if LIBMTP_SIZEOF_TIME_T_64
-		public ulong modificationdate;
+        public ulong modificationdate;
 #else
-		public uint modificationdate;
+        public uint modificationdate;
 #endif
 #endif
-		public FileType filetype;
-		public IntPtr next; // Track Null if last
-		/*
-		public Track? Next
-		{
-			get
-			{
-				if (next == IntPtr.Zero)
-					return null;
-				return (Track)Marshal.PtrToStructure(next, typeof(Track));
-			}
-		}*/
-	}
+        public FileType filetype;
+        public IntPtr next; // Track Null if last
+        /*
+        public Track? Next
+        {
+            get
+            {
+                if (next == IntPtr.Zero)
+                    return null;
+                return (Track)Marshal.PtrToStructure(next, typeof(Track));
+            }
+        }*/
+    }
 }

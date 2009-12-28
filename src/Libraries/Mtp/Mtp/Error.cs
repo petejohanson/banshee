@@ -32,52 +32,52 @@ using System.Runtime.InteropServices;
 
 namespace Mtp
 {
-	public class LibMtpException : Exception
-	{
-		public LibMtpException (ErrorCode error) : this (error, error.ToString (), null)
-		{
-		}
-		
-		public LibMtpException (ErrorCode error, string message) : this (error, message, null)
-		{
-		
-		}
-		
-		public LibMtpException (ErrorCode error, string message, Exception innerException)
-			: base (message, innerException)
-		{
-		}
-		
-		internal static void CheckErrorStack (MtpDeviceHandle handle)
-		{
-			IntPtr ptr = MtpDevice.GetErrorStack (handle);
-			if (ptr == IntPtr.Zero)
-				return;
-			
-			LibMtpException ex = null;
-			while (ptr != IntPtr.Zero) {
-				Error e = (Error)Marshal.PtrToStructure (ptr, typeof(Error));
-				ex = new LibMtpException (e.errornumber, e.error_text, ex);
-				ptr = e.next;
-			}
-			
-			// Once we throw the exception, clear the error stack
-			MtpDevice.ClearErrorStack (handle);
-			throw ex;
-		}
-	}
-	
-	public struct Error
-	{
-		public ErrorCode errornumber;
-		[MarshalAs(UnmanagedType.LPStr)] public string error_text;
-		public IntPtr next; // LIBMTP_error_t*
-		
-		public static void CheckError (ErrorCode errorCode)
-		{
-			if (errorCode != ErrorCode.None) {
-				throw new LibMtpException (errorCode, errorCode.ToString ());
+    public class LibMtpException : Exception
+    {
+        public LibMtpException (ErrorCode error) : this (error, error.ToString (), null)
+        {
+        }
+        
+        public LibMtpException (ErrorCode error, string message) : this (error, message, null)
+        {
+        
+        }
+        
+        public LibMtpException (ErrorCode error, string message, Exception innerException)
+            : base (message, innerException)
+        {
+        }
+        
+        internal static void CheckErrorStack (MtpDeviceHandle handle)
+        {
+            IntPtr ptr = MtpDevice.GetErrorStack (handle);
+            if (ptr == IntPtr.Zero)
+                return;
+            
+            LibMtpException ex = null;
+            while (ptr != IntPtr.Zero) {
+                Error e = (Error)Marshal.PtrToStructure (ptr, typeof(Error));
+                ex = new LibMtpException (e.errornumber, e.error_text, ex);
+                ptr = e.next;
             }
-		}
-	}
+            
+            // Once we throw the exception, clear the error stack
+            MtpDevice.ClearErrorStack (handle);
+            throw ex;
+        }
+    }
+    
+    public struct Error
+    {
+        public ErrorCode errornumber;
+        [MarshalAs(UnmanagedType.LPStr)] public string error_text;
+        public IntPtr next; // LIBMTP_error_t*
+        
+        public static void CheckError (ErrorCode errorCode)
+        {
+            if (errorCode != ErrorCode.None) {
+                throw new LibMtpException (errorCode, errorCode.ToString ());
+            }
+        }
+    }
 }

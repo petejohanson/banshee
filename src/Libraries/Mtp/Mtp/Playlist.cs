@@ -104,31 +104,31 @@ namespace Mtp
         private static extern int LIBMTP_Update_Playlist (MtpDeviceHandle handle, ref PlaylistStruct playlist);
     }
 
-	[StructLayout(LayoutKind.Sequential)]
-	internal struct PlaylistStruct
-	{
-		public uint playlist_id;
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct PlaylistStruct
+    {
+        public uint playlist_id;
 #if LIBMTP8
-		public uint parent_id;
-		public uint storage_id;
+        public uint parent_id;
+        public uint storage_id;
 #endif
 
-		[MarshalAs(UnmanagedType.LPStr)]
+        [MarshalAs(UnmanagedType.LPStr)]
         public string Name;
 
-		public IntPtr tracks; // int*
-		public uint no_tracks;
-		public IntPtr next;   // LIBMTP_playlist_t*
-		
-		
-		/*public Playlist? Next
-		{
-			get
-			{
-				if (next == IntPtr.Zero)
-					return null;
-				return (Playlist)Marshal.PtrToStructure(next, typeof(Playlist));
-			}
-		}*/
-	}
+        public IntPtr tracks; // int*
+        public uint no_tracks;
+        public IntPtr next;   // LIBMTP_playlist_t*
+        
+        
+        /*public Playlist? Next
+        {
+            get
+            {
+                if (next == IntPtr.Zero)
+                    return null;
+                return (Playlist)Marshal.PtrToStructure(next, typeof(Playlist));
+            }
+        }*/
+    }
 }
