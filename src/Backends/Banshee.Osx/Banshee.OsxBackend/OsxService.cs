@@ -34,7 +34,7 @@ using Mono.Unix;
 using Banshee.ServiceStack;
 using Banshee.Gui;
 
-// using IgeMacIntegration;
+using IgeMacIntegration;
 
 namespace Banshee.OsxBackend
 {
@@ -78,6 +78,7 @@ namespace Banshee.OsxBackend
             return true;
         }
 
+
         void Initialize ()
         {
             // add close action
@@ -93,7 +94,6 @@ namespace Banshee.OsxBackend
 
             elements_service.PrimaryWindow.WindowStateEvent += WindowStateHandler;
 
-            /*
             // bind gtk menu to global osx menu
             BindMenuBar ();
 
@@ -104,7 +104,6 @@ namespace Banshee.OsxBackend
             IgeMacDock doc = IgeMacDock.Default;
             doc.Clicked += OnDockClicked;
             doc.QuitActivate += OnDockQuitActivated;
-            */
         }
 
         public void Dispose ()
@@ -125,7 +124,7 @@ namespace Banshee.OsxBackend
             get { return "OsxService"; }
         }
 
-        /*private void OnDockClicked (object o, System.EventArgs args)
+        private void OnDockClicked (object o, System.EventArgs args)
         {
             SetWindowVisibility (true);
         }
@@ -165,7 +164,6 @@ namespace Banshee.OsxBackend
             about_group.AddMenuItem (about_item, null);
             prefs_group.AddMenuItem (prefs_item, null);
         }
-*/
 
         private void RegisterCloseHandler ()
         {
@@ -180,38 +178,34 @@ namespace Banshee.OsxBackend
             return true;
         }
 
-
         private void CloseWindow (object o, EventArgs args)
         {
-            SetWindowVisibility (false);
+            SetWindowVisibility(false);
         }
 
-        private void SetCloseMenuItemSensitivity (bool sensitivity)
-        {
-            var ui = interface_action_service.UIManager;
-            var close_item = (MenuItem)ui.GetWidget ("/MainMenu/MediaMenu/ClosePlaceholder/Close");
+        private void SetCloseMenuItemSensitivity (bool sensitivity) {
+            UIManager ui = interface_action_service.UIManager;
+            MenuItem close_item = ui.GetWidget ("/MainMenu/MediaMenu/ClosePlaceholder/Close") as MenuItem;
             close_item.Sensitive = sensitivity;
         }
 
         private void SetWindowVisibility (bool visible)
         {
-            SetCloseMenuItemSensitivity (visible);
+            SetCloseMenuItemSensitivity(visible);
             if (elements_service.PrimaryWindow.Visible != visible) {
                 elements_service.PrimaryWindow.ToggleVisibility ();
             }
         }
 
-        private void WindowStateHandler (object obj, WindowStateEventArgs args)
-        {
+        private void WindowStateHandler (object obj, WindowStateEventArgs args) {
             switch (args.Event.NewWindowState) {
-                case Gdk.WindowState.Iconified:
-                    SetCloseMenuItemSensitivity (false);
-                    break;
-                case (Gdk.WindowState)0:
-                    SetCloseMenuItemSensitivity (true);
-                    break;
+            case Gdk.WindowState.Iconified:
+                SetCloseMenuItemSensitivity(false);
+                break;
+            case (Gdk.WindowState) 0:
+                SetCloseMenuItemSensitivity(true);
+                break;
             }
         }
-
     }
 }
