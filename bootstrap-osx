@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -e
+
+pushd build/bundle
+./build.py -v profile.osx.py
+./build.py -e profile.osx.py > osx.env
+source osx.env
+popd
+
+./autogen.sh --prefix="$BUILD_PREFIX" \
+	--disable-mtp \
+	--disable-daap \
+	--disable-ipod \
+	--disable-boo \
+	--disable-gnome \
+	--disable-docs \
+	--enable-osx
+
+cat <<EOF
+
+The world has built! You can now build Banshee.
+Be sure to source in the profile environment:
+
+  $ source build/bundle/osx.env
+
+Once sourced, just run autogen/configure/make, etc
+as normal. The install prefix is available as the
+BUILD_PREFIX environment variable - e.g.:
+
+  $ ./autogen.sh --prefix="\$BUILD_PREFIX"
+
+Have fun!
+
+EOF
