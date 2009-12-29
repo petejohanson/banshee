@@ -34,7 +34,7 @@ using NUnit.Framework;
 using Banshee.Base;
 using Banshee.Collection;
 
-namespace Banshee.Base.Tests
+namespace Banshee.Library.Tests
 {
     [TestFixture]
     public class FileNamePatternTest
@@ -44,6 +44,8 @@ namespace Banshee.Base.Tests
             string str = Convert.ToString(num);
             return num < 10 ? "0" + str : str;
         }
+
+        public static FileNamePattern FileNamePattern { get { return MusicLibrarySource.MusicFileNamePattern; } }
 
         [Test]
         public void MakePathsRelative ()

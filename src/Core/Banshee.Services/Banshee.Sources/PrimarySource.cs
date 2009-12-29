@@ -38,6 +38,7 @@ using Hyena.Data.Sqlite;
 using Hyena.Collections;
 
 using Banshee.Base;
+using Banshee.Preferences;
 using Banshee.ServiceStack;
 using Banshee.Configuration;
 using Banshee.Sources;
@@ -236,6 +237,17 @@ namespace Banshee.Sources
         public override bool Expanded {
             get { return ExpandedSchema.Get (); }
             set { ExpandedSchema.Set (value); }
+        }
+
+        public FileNamePattern FileNamePattern { get; private set; }
+
+        protected void SetFileNamePattern (FileNamePattern pattern)
+        {
+            FileNamePattern = pattern;
+
+            var file_system = PreferencesPage.Add (new Section ("file-system", Catalog.GetString ("File Organization"), 5));
+            file_system.Add (new SchemaPreference<string> (pattern.FolderSchema, Catalog.GetString ("Folder hie_rarchy")));
+            file_system.Add (new SchemaPreference<string> (pattern.FileSchema, Catalog.GetString ("File _name")));
         }
 
         public virtual void Dispose ()

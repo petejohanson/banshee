@@ -40,7 +40,7 @@ using Banshee.Configuration.Schema;
 
 using Hyena.Tests;
 
-namespace Banshee.Base.Tests
+namespace Banshee.Metadata
 {
     // FIXME: These tests don't really belong here
 

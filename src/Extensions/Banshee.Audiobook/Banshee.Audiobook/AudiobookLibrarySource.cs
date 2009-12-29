@@ -63,6 +63,12 @@ namespace Banshee.Audiobook
                   </column>
                 </column-controller>
             ", Catalog.GetString ("Author")));
+
+            var pattern = new AudiobookFileNamePattern ();
+            pattern.FolderSchema = CreateSchema<string> ("folder_pattern", pattern.DefaultFolder, "", "");
+            pattern.FileSchema   = CreateSchema<string> ("file_pattern",   pattern.DefaultFile, "", "");
+
+            SetFileNamePattern (pattern);
         }
 
         public override string DefaultBaseDirectory {

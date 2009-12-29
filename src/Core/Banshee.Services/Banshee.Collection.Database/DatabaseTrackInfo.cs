@@ -43,6 +43,7 @@ using Banshee.Metadata;
 using Banshee.Preferences;
 using Banshee.Query;
 using Banshee.Sources;
+using Banshee.Library;
 using Banshee.ServiceStack;
 using Banshee.Streaming;
 
@@ -626,6 +627,14 @@ namespace Banshee.Collection.Database
                 }
 
                 playback_error = value;
+            }
+        }
+
+        public FileNamePattern FileNamePattern {
+            get {
+                var src = PrimarySource;
+                var pattern = src == null ? null : src.FileNamePattern;
+                return pattern ?? MusicLibrarySource.MusicFileNamePattern;
             }
         }
 

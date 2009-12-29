@@ -28,6 +28,7 @@
 
 using System;
 using Banshee.Configuration;
+using Banshee.Library;
 
 namespace Banshee.Configuration.Schema
 {
@@ -38,7 +39,7 @@ namespace Banshee.Configuration.Schema
 
         public static readonly SchemaEntry<string> FolderPattern = new SchemaEntry<string>(
             "library", "folder_pattern",
-            Banshee.Base.FileNamePattern.DefaultFolder,
+            "%album_artist%%path_sep%%album%",
             "Library Folder Pattern",
             "Format for creating a track folder inside the library. Do not create an absolute path. " +
                 "Location here is relative to the Banshee music directory. See LibraryLocation. Legal tokens: " +
@@ -49,7 +50,7 @@ namespace Banshee.Configuration.Schema
 
         public static readonly SchemaEntry<string> FilePattern = new SchemaEntry<string>(
             "library", "file_pattern",
-            Banshee.Base.FileNamePattern.DefaultFile,
+            "%track_number%. %title%",
             "Library File Pattern",
             "Format for creating a track filename inside the library. Do not use path tokens/characters here. " +
                 "See LibraryFolderPattern. Legal tokens: %album_artist%, %track_artist%, %album%, %genre%, %title%, %track_number%, " +
