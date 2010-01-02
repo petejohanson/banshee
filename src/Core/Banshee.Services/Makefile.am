@@ -178,7 +178,6 @@ SOURCES =  \
 	Banshee.ServiceStack/IDelayedInitializeService.cs \
 	Banshee.ServiceStack/IExtensionService.cs \
 	Banshee.ServiceStack/IInitializeService.cs \
-	Banshee.ServiceStack/InterfaceAction.cs \
 	Banshee.ServiceStack/IRegisterOnDemandService.cs \
 	Banshee.ServiceStack/IRequiredService.cs \
 	Banshee.ServiceStack/IService.cs \
