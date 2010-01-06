@@ -188,6 +188,8 @@ AC_SUBST(BUILD_HOST_OS)
 AC_SUBST(BUILD_HOST_CPU)
 AC_SUBST(BUILD_TIME)
 
+AM_CONDITIONAL(PLATFORM_DARWIN, test "x${host_os:0:6}" = "xdarwin")
+
 SHAVE_INIT([build/m4/shave], [enable])
 
 dnl generated files
@@ -230,7 +232,8 @@ src/AssemblyInfo.cs
 src/Clients/Makefile
 src/Clients/Beroe/Makefile
 src/Clients/Booter/Makefile
-src/Clients/Booter/banshee-1
+src/Clients/Booter/banshee-1.linux
+src/Clients/Booter/banshee-1.darwin
 src/Clients/Halie/Makefile
 src/Clients/Muinshee/Makefile
 src/Clients/Nereid/Makefile
