@@ -41,7 +41,7 @@ MO_FILES = $(patsubst po/%.gmo, $(LC_BUILD)/%/LC_MESSAGES/$(PACKAGE).mo, $(PO_FI
 
 $(MO_FILES): $(LC_BUILD)/%/LC_MESSAGES/$(PACKAGE).mo: po/%.gmo
 	$(mkdir_p) $(dir $@)
-	cp -af '$<' '$@'
+	cp -rf '$<' '$@'
 
 run: $(MO_FILES)
 	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS))
