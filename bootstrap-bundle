@@ -7,7 +7,7 @@ profile_name="$1"
 if test -z "$profile_name"; then
 	case "$(uname)" in
 		Linux) profile_name=linux ;;
-		Darwin) profile_name=osx ;;
+		Darwin) profile_name=darwin ;;
 		*)
 			echo "Unsupported system type: $(uname)"
 			exit 1
@@ -23,8 +23,8 @@ if ! test -f "build/bundle/$profile"; then
 fi
 
 pushd build/bundle &>/dev/null
-./build.py -v $profile
-./build.py -e $profile > $profile_name.env
+./$profile -bv
+./$profile -e > $profile_name.env
 source $profile_name.env
 popd &>/dev/null
 
