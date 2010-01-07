@@ -22,11 +22,14 @@ if ! test -f "build/bundle/$profile"; then
 	exit 1
 fi
 
+envfile="$(pwd)/$(dirname "$0")/$profile_name.env"
+
 pushd build/bundle &>/dev/null
 ./$profile -bv
-./$profile -e > $profile_name.env
-source $profile_name.env
+./$profile -e > "$envfile"
 popd &>/dev/null
+
+source "$envfile"
 
 CONFIGURE_ARGS="
 	--disable-mtp
@@ -44,7 +47,7 @@ cat <<EOF
 The world has built! You can now build Banshee.
 Be sure to source in the profile environment:
 
-  $ source build/bundle/$profile_name.env
+  $ source $profile_name.env
 
 Once sourced, just run autogen/configure/make, etc
 as normal. The install prefix is available as the
