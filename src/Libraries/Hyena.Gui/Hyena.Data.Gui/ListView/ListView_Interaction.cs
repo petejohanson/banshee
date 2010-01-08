@@ -149,7 +149,7 @@ namespace Hyena.Data.Gui
                     ScrollTo (y_at_row + ChildSize.Height - (vadjustment.PageSize));
                 }
             } else if (vadjustment != null) {
-                ScrollTo (vadjustment.Value + ((row_index - Selection.FocusedIndex) * ChildSize.Height));
+                ScrollTo (vadjustment.Value + y_at_row - GetViewPointForModelRow (Selection.FocusedIndex).Y);
             }
 
             Selection.FocusedIndex = row_index;
@@ -160,6 +160,8 @@ namespace Hyena.Data.Gui
         protected override bool OnKeyPressEvent (Gdk.EventKey press)
         {
             bool handled = false;
+            bool grid = LayoutStyle == DataViewLayoutStyle.Grid;
+            int items_per_row = grid ? GridColumnsInView : 1;
 
             switch (press.Key) {
                 case Gdk.Key.a:
@@ -180,8 +182,9 @@ namespace Hyena.Data.Gui
                 case Gdk.Key.K:
                 case Gdk.Key.Up:
                 case Gdk.Key.KP_Up:
-                    if (!HeaderFocused)
-                        handled = KeyboardScroll (press.State, -1, true);
+                    if (!HeaderFocused) {
+                        handled = KeyboardScroll (press.State, -items_per_row, true);
+                    }
                     break;
 
                 case Gdk.Key.j:
@@ -189,40 +192,44 @@ namespace Hyena.Data.Gui
                 case Gdk.Key.Down:
                 case Gdk.Key.KP_Down:
                     if (!HeaderFocused) {
-                        handled = KeyboardScroll (press.State, 1, true);
-                    } else if (HeaderFocused) {
+                        handled = KeyboardScroll (press.State, items_per_row, true);
+                    } else {
                         handled = true;
                         HeaderFocused = false;
                     }
                     break;
                 case Gdk.Key.Right:
                 case Gdk.Key.KP_Right:
-                    if (ActiveColumn + 1 < column_cache.Length) {
+                    handled = true;
+                    if (grid && !HeaderFocused) {
+                        handled = KeyboardScroll (press.State, 1, true);
+                    } else if (ActiveColumn + 1 < column_cache.Length) {
                         ActiveColumn++;
                         InvalidateHeader ();
                     }
-                    handled = true;
                     break;
                 case Gdk.Key.Left:
                 case Gdk.Key.KP_Left:
-                    if (ActiveColumn - 1 >= 0) {
+                    handled = true;
+                    if (grid && !HeaderFocused) {
+                        handled = KeyboardScroll (press.State, -1, true);
+                    } else if (ActiveColumn - 1 >= 0) {
                         ActiveColumn--;
                         InvalidateHeader ();
                     }
-                    handled = true;
                     break;
                 case Gdk.Key.Page_Up:
                 case Gdk.Key.KP_Page_Up:
                     if (!HeaderFocused)
                         handled = vadjustment != null && KeyboardScroll (press.State,
-                            (int)(-vadjustment.PageIncrement / (double)ChildSize.Height), false);
+                            (int)(-vadjustment.PageIncrement / (double)ChildSize.Height) * items_per_row, false);
                     break;
 
                 case Gdk.Key.Page_Down:
                 case Gdk.Key.KP_Page_Down:
                     if (!HeaderFocused)
                         handled = vadjustment != null && KeyboardScroll (press.State,
-                            (int)(vadjustment.PageIncrement / (double)ChildSize.Height), false);
+                            (int)(vadjustment.PageIncrement / (double)ChildSize.Height) * items_per_row, false);
                     break;
 
                 case Gdk.Key.Home:
@@ -790,9 +797,15 @@ namespace Hyena.Data.Gui
 
         protected Cairo.PointD GetViewPointForModelRow (int row)
         {
-            return LayoutStyle == DataViewLayoutStyle.Grid
-                ? new Cairo.PointD (0, (double)ChildSize.Height * row)
-                : new Cairo.PointD (0, (double)ChildSize.Height * row);
+            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+                int cols = GridColumnsInView;
+                return new Cairo.PointD (
+                    row  == 0 ? 0 : ChildSize.Width * (cols % row),
+                    cols == 0 ? 0 : ChildSize.Height * (row / cols)
+                );
+            } else {
+                return new Cairo.PointD (0, (double)ChildSize.Height * row);
+            }
         }
 
         private void FocusModelRow (int index)
