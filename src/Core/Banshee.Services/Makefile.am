@@ -80,10 +80,13 @@ SOURCES =  \
 	Banshee.Library/IImportSource.cs \
 	Banshee.Library/ImportSourceManager.cs \
 	Banshee.Library/LibraryImportManager.cs \
+	Banshee.Library/LibrarySchema.cs \
 	Banshee.Library/LibrarySource.cs \
+	Banshee.Library/MusicFileNamePattern.cs \
 	Banshee.Library/MusicLibrarySource.cs \
 	Banshee.Library/ThreadPoolImportSource.cs \
 	Banshee.Library/VideoLibrarySource.cs \
+	Banshee.Library/Tests/FileNamePatternTests.cs \
 	Banshee.MediaEngine/IAudioCdRipper.cs \
 	Banshee.MediaEngine/IBpmDetector.cs \
 	Banshee.MediaEngine/IEqualizer.cs \
@@ -119,6 +122,7 @@ SOURCES =  \
 	Banshee.Metadata/MetadataServiceJob.cs \
 	Banshee.Metadata/SaveTrackMetadataJob.cs \
 	Banshee.Metadata/SaveTrackMetadataService.cs \
+	Banshee.Metadata/Tests/TaglibReadWriteTests.cs \
 	Banshee.Networking/INetworkAvailabilityService.cs \
 	Banshee.Networking/Network.cs \
 	Banshee.Networking/NetworkManager.cs \
@@ -178,7 +182,6 @@ SOURCES =  \
 	Banshee.ServiceStack/IDelayedInitializeService.cs \
 	Banshee.ServiceStack/IExtensionService.cs \
 	Banshee.ServiceStack/IInitializeService.cs \
-	Banshee.ServiceStack/InterfaceAction.cs \
 	Banshee.ServiceStack/IRegisterOnDemandService.cs \
 	Banshee.ServiceStack/IRequiredService.cs \
 	Banshee.ServiceStack/IService.cs \

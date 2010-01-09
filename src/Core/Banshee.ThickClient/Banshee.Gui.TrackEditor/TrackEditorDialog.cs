@@ -319,11 +319,16 @@ namespace Banshee.Gui.TrackEditor
 
         private void InvokeFieldSync ()
         {
-            ForeachWidget<SyncButton> (delegate (SyncButton button) {
-                if (button.Sensitive) {
-                    button.Click ();
+            for (int i = 0; i < notebook.NPages; i++) {
+                var field_page = notebook.GetNthPage (i) as FieldPage;
+                if (field_page != null) {
+                    foreach (var slot in field_page.FieldSlots) {
+                        if (slot.Sync != null && (slot.SyncButton == null || slot.SyncButton.Sensitive)) {
+                            slot.Sync ();
+                        }
+                    }
                 }
-            });
+            }
         }
 
         private int action_area_children_allocated = 0;

@@ -51,11 +51,11 @@ namespace Banshee.Gui.Dialogs
         {
             // build authors page
             List<string> authors = new List<string> ();
-            authors.Add (Catalog.GetString ("Primary Development"));
+            authors.Add (Catalog.GetString ("Maintainers"));
             authors.Add (String.Empty);
 
             foreach (ProductAuthor author in ProductInformation.Authors) {
-                authors.Add (String.Format("    {0} ({1})", author.Name, author.Role));
+                authors.Add (String.Format("    {0}", author.Name));
             }
 
             authors.Add (String.Empty);
@@ -98,7 +98,7 @@ namespace Banshee.Gui.Dialogs
                 "Copyright \u00a9 2005\u2013{0} Novell, Inc.\n" +
                 "Copyright \u00a9 2005\u2013{0} Others\n" +
                 "Copyright \u00a9 2005 Aaron Bockover"
-            ), "2009");
+            ), "2010");
 
             Website = "http://banshee-project.org/";
             WebsiteLabel = Catalog.GetString ("Banshee Website");

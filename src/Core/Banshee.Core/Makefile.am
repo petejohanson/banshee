@@ -13,8 +13,6 @@ SOURCES =  \
 	Banshee.Base/Resource.cs \
 	Banshee.Base/SafeUri.cs \
 	Banshee.Base/Tests/CoverArtSpecTests.cs \
-	Banshee.Base/Tests/FileNamePatternTests.cs \
-	Banshee.Base/Tests/TaglibReadWriteTests.cs \
 	Banshee.Base/UriList.cs \
 	Banshee.Base/XdgBaseDirectorySpec.cs \
 	Banshee.Collection/AlbumInfo.cs \
@@ -31,7 +29,6 @@ SOURCES =  \
 	Banshee.Collection/TrackMediaAttributes.cs \
 	Banshee.Collection/UnknownTrackInfo.cs \
 	Banshee.Configuration.Schema/ImportSchema.cs \
-	Banshee.Configuration.Schema/LibrarySchema.cs \
 	Banshee.Configuration/ConfigurationClient.cs \
 	Banshee.Configuration/IConfigurationClient.cs \
 	Banshee.Configuration/MemoryConfigurationClient.cs \

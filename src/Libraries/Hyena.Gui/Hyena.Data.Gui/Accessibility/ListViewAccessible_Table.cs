@@ -36,6 +36,7 @@ using Hyena.Data.Gui;
 
 namespace Hyena.Data.Gui.Accessibility
 {
+#if ENABLE_ATK
     public partial class ListViewAccessible<T> : Atk.TableImplementor
     {
         public void ListViewAccessible_Table ()
@@ -187,4 +188,5 @@ namespace Hyena.Data.Gui.Accessibility
         {
         }
     }
+#endif
 }

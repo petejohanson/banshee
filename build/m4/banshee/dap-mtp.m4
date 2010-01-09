@@ -26,5 +26,7 @@ AC_DEFUN([BANSHEE_CHECK_DAP_MTP],
 	AM_CONDITIONAL(ENABLE_MTP, test "x$enable_libmtp" = "xyes")
 	AM_CONDITIONAL(LIBMTP_EIGHT, test "x$LIBMTP_SO_MAP" = "xlibmtp.so.8")
 	AM_CONDITIONAL(LIBMTP_TRACK_STRUCT_HAS_MODDATE, [test "$LIBMTP_HAS_MODDATE" = "yes"])
+	AC_CHECK_SIZEOF(time_t)
+	AM_CONDITIONAL(LIBMTP_SIZEOF_TIME_T_64, [test "x$ac_cv_sizeof_time_t" = "x8"])
 ])
 

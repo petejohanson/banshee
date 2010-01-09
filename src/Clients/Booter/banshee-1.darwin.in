@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+APP_ROOT="$(dirname $0)"
+[[ "${APP_ROOT:0:1}" = / ]] || BUNDLE_ROOT="$(pwd)/$APP_ROOT"
+
+cd "$APP_ROOT"
+
+export DYLD_LIBRARY_PATH="$APP_ROOT/lib:$APP_ROOT/lib/banshee-1"
+export GST_PLUGIN_SYSTEM_PATH="$APP_ROOT/lib/gstreamer-0.10"
+export BANSHEE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/banshee-1"
+
+MONO_BIN="bin/mono"
+MONO_EXE="lib/banshee-1/Nereid.exe"
+MONO_OPTIONS=""
+BANSHEE_OPTIONS=""
+BANSHEE_EXEC_NAME=Banshee
+
+for arg in $*; do
+	if [ "$arg" = --debug ]; then
+		MONO_OPTIONS="$MONO_OPTIONS --debug"
+		BANSHEE_OPTIONS="$BANSHEE_OPTIONS --debug"
+	fi
+done
+
+exec -a $BANSHEE_EXEC_NAME $MONO_BIN $MONO_OPTIONS $MONO_EXEC $BANSHEE_OPTIONS

@@ -30,11 +30,11 @@ using System;
 using Mono.Unix;
 using Gtk;
 
-
 using Hyena;
 using Hyena.Widgets;
 
 using Banshee.Base;
+using Banshee.Sources;
 using Banshee.Library;
 using Banshee.Preferences;
 using Banshee.Collection;
@@ -49,31 +49,25 @@ namespace Banshee.Preferences.Gui
     {
         public static void Load (PreferenceService service)
         {
-            Page music = ServiceManager.SourceManager.MusicLibrary.PreferencesPage;
+            foreach (var library in ServiceManager.SourceManager.FindSources<LibrarySource> ()) {
+                new LibraryLocationButton (library);
 
-            foreach (LibrarySource source in ServiceManager.SourceManager.FindSources<LibrarySource> ()) {
-                new LibraryLocationButton (source);
+                if (library.FileNamePattern != null) {
+                    var library_page = library.PreferencesPage;
+                    var pattern = library.FileNamePattern;
+
+                    var folder_pattern = library_page["file-system"][pattern.FolderSchema.Key];
+                    folder_pattern.DisplayWidget = new PatternComboBox (library, folder_pattern, pattern.SuggestedFolders);
+
+                    var file_pattern = library_page["file-system"][pattern.FileSchema.Key];
+                    file_pattern.DisplayWidget = new PatternComboBox (library, file_pattern, pattern.SuggestedFiles);
+
+                    var pattern_display = library_page["file-system"].FindOrAdd (new VoidPreference ("file_folder_pattern"));
+                    pattern_display.DisplayWidget = new PatternDisplay (library, folder_pattern.DisplayWidget, file_pattern.DisplayWidget);
+                }
             }
 
-            PreferenceBase folder_pattern = music["file-system"]["folder_pattern"];
-            folder_pattern.DisplayWidget = new PatternComboBox (folder_pattern, FileNamePattern.SuggestedFolders);
-
-            PreferenceBase file_pattern = music["file-system"]["file_pattern"];
-            file_pattern.DisplayWidget = new PatternComboBox (file_pattern, FileNamePattern.SuggestedFiles);
-
-            PreferenceBase pattern_display = music["file-system"].FindOrAdd (new VoidPreference ("file_folder_pattern"));
-            pattern_display.DisplayWidget = new PatternDisplay (folder_pattern.DisplayWidget, file_pattern.DisplayWidget);
-
-            // Set up the extensions tab UI
-            Banshee.Addins.Gui.AddinView view = new Banshee.Addins.Gui.AddinView ();
-            view.Show ();
-
-            Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow ();
-            scroll.HscrollbarPolicy = PolicyType.Never;
-            scroll.AddWithViewport (view);
-            scroll.Show ();
-
-            service["extensions"].DisplayWidget = scroll;
+            service["extensions"].DisplayWidget = new Banshee.Addins.Gui.AddinView ();
         }
 
         private class LibraryLocationButton : HBox
@@ -174,7 +168,7 @@ namespace Banshee.Preferences.Gui
         {
             private Preference<string> preference;
 
-            public PatternComboBox (PreferenceBase pref, string [] patterns)
+            public PatternComboBox (PrimarySource source, PreferenceBase pref, string [] patterns)
             {
                 preference = (Preference<string>)pref;
 
@@ -186,11 +180,11 @@ namespace Banshee.Preferences.Gui
                         already_added = true;
                     }
 
-                    Add (FileNamePattern.CreatePatternDescription (pattern), pattern);
+                    Add (source.FileNamePattern.CreatePatternDescription (pattern), pattern);
                 }
 
                 if (!already_added) {
-                    Add (FileNamePattern.CreatePatternDescription (conf_pattern), conf_pattern);
+                    Add (source.FileNamePattern.CreatePatternDescription (conf_pattern), conf_pattern);
                 }
 
                 ActiveValue = conf_pattern;
@@ -207,11 +201,11 @@ namespace Banshee.Preferences.Gui
         {
             private PatternComboBox folder;
             private PatternComboBox file;
+            private PrimarySource source;
 
-            private SampleTrackInfo track = new SampleTrackInfo ();
-
-            public PatternDisplay (object a, object b)
+            public PatternDisplay (PrimarySource source, object a, object b)
             {
+                this.source = source;
                 folder= (PatternComboBox)a;
                 file = (PatternComboBox)b;
 
@@ -223,11 +217,17 @@ namespace Banshee.Preferences.Gui
 
             private void OnChanged (object o, EventArgs args)
             {
-                string display = FileNamePattern.CreateFromTrackInfo (FileNamePattern.CreateFolderFilePattern (
-                    folder.ActiveValue, file.ActiveValue), track);
+                var pattern = source.FileNamePattern.CreateFolderFilePattern (folder.ActiveValue, file.ActiveValue);
 
-                Markup = String.IsNullOrEmpty (display) ? String.Empty : String.Format ("<small>{0}.ogg</small>",
-                    GLib.Markup.EscapeText (display));
+                var sb = new System.Text.StringBuilder ();
+                foreach (var track in source.FileNamePattern.SampleTracks) {
+                    string display = source.FileNamePattern.CreateFromTrackInfo (pattern, track);
+                    if (!String.IsNullOrEmpty (display)) {
+                        sb.AppendFormat ("<small>{0}.ogg</small>", GLib.Markup.EscapeText (display));
+                    }
+                }
+
+                Markup = sb.ToString ();
             }
         }
     }

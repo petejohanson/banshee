@@ -35,7 +35,9 @@ using Mono.Addins;
 using Hyena.Jobs;
 
 using Banshee.Base;
+using Banshee.Library;
 using Banshee.ServiceStack;
+using Banshee.Streaming;
 using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.MediaEngine;
@@ -185,7 +187,8 @@ namespace Banshee.AudioCd
             status = String.Format("{0} - {1}", track.ArtistName, track.TrackTitle);
             user_job.Status = status;
 
-            SafeUri uri = new SafeUri (FileNamePattern.BuildFull (ServiceManager.SourceManager.MusicLibrary.BaseDirectory, track, null));
+            SafeUri uri = new SafeUri (MusicLibrarySource.MusicFileNamePattern.BuildFull (
+                ServiceManager.SourceManager.MusicLibrary.BaseDirectory, track, null));
             bool tagging_supported;
             ripper.RipTrack (track.IndexOnDisc, track, uri, out tagging_supported);
         }
@@ -207,6 +210,8 @@ namespace Banshee.AudioCd
             track.FileSize = Banshee.IO.File.GetSize (track.Uri);
             track.FileModifiedStamp = Banshee.IO.File.GetModifiedTime (track.Uri);
             track.LastSyncedStamp = DateTime.Now;
+
+            StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (track.Uri), true);
 
             track.Save ();
 

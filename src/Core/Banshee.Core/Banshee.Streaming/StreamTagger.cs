@@ -66,14 +66,19 @@ namespace Banshee.Streaming
 
         private static string Choose (string priority, string fallback, bool flip)
         {
-            return flip
+            return TrimZero (flip
                 ? IsNullOrEmpty (fallback) ? priority : fallback
-                : IsNullOrEmpty (priority) ? fallback : priority;
+                : IsNullOrEmpty (priority) ? fallback : priority);
         }
 
         private static bool IsNullOrEmpty (string s)
         {
-            return String.IsNullOrEmpty (s) || s.IndexOf ('\0') >= 0 && s.Trim ('\0').Length == 0;
+            return String.IsNullOrEmpty (s) || TrimZero (s).Length == 0;
+        }
+
+        private static string TrimZero (string s)
+        {
+            return s == null || s.IndexOf ('\0') == -1 ? s : s.Split ('\0')[0];
         }
 
         #pragma warning disable 0169
