@@ -57,16 +57,16 @@ namespace Banshee.Emusic
 
         public void Import ()
         {
-            
             var chooser = Banshee.Gui.Dialogs.FileChooserDialog.CreateForImport (Catalog.GetString ("Import eMusic Downloads to Library"), true);
-            Gtk.FileFilter ff = new Gtk.FileFilter();
+            Gtk.FileFilter ff = new Gtk.FileFilter ();
             ff.Name = Catalog.GetString ("eMusic Files");
-            ff.AddPattern("*.emx");
+            ff.AddPattern ("*.emx");
             chooser.AddFilter (ff);
 
-            if (chooser.Run () == (int)Gtk.ResponseType.Ok)
+            if (chooser.Run () == (int)Gtk.ResponseType.Ok) {
                 ServiceManager.Get<EmusicService> ().ImportEmx (chooser.Uris);
-            
+            }
+
             chooser.Destroy ();
         }
 

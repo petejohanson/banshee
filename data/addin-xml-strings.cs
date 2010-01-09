@@ -93,6 +93,11 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Browse and listen to music shared over your local network.");
         Catalog.GetString (@"Utilities");
 
+        // ../src/Extensions/Banshee.Emusic/Banshee.Emusic.addin.xml
+        Catalog.GetString (@"eMusic Import");
+        Catalog.GetString (@"Download and import music purchased from eMusic");
+        Catalog.GetString (@"Online Sources");
+
         // ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue.addin.xml
         Catalog.GetString (@"File System Preview Queue");
         Catalog.GetString (@"Preview files without importing to your library.");
