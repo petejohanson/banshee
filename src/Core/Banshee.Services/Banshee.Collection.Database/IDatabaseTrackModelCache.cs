@@ -30,6 +30,7 @@ using System;
 using System.Data;
 using Banshee.Collection;
 using Hyena.Data.Sqlite;
+using Hyena.Query;
 
 namespace Banshee.Collection.Database
 {
@@ -41,6 +42,7 @@ namespace Banshee.Collection.Database
         void RestoreSelection ();
         long Count { get; }
         void Reload ();
+        long IndexOf (string where_fragment, long offset);
         long IndexOf (Hyena.Data.ICacheableItem item);
         long IndexOf (object item_entry_id);
         TrackInfo GetSingle (string random_fragment, params object [] args);

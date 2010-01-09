@@ -47,14 +47,14 @@ namespace Hyena
             main_thread = Thread.CurrentThread;
             main_thread.Name = "Main Thread";
         }
-        
+
         public static bool InMainThread {
             get {
                 if (main_thread == null) {
                     throw new ApplicationException ("ThreadAssist.InitializeMainThread must be called first");
                 }
- 
-                return main_thread.Equals (Thread.CurrentThread); 
+
+                return main_thread.Equals (Thread.CurrentThread);
             }
         }
 
@@ -64,14 +64,33 @@ namespace Hyena
                 Hyena.Log.Warning ("In GUI thread, will probably block it", System.Environment.StackTrace);
             }
         }
-        
+
         public static void AssertInMainThread ()
         {
             if (ApplicationContext.Debugging && !InMainThread) {
                 Hyena.Log.Warning ("Not in main thread!", System.Environment.StackTrace);
             }
         }
-        
+
+        public static void BlockingProxyToMain (InvokeHandler handler)
+        {
+            if (!InMainThread) {
+                var reset_event = new System.Threading.ManualResetEvent (false);
+
+                Banshee.ServiceStack.Application.Invoke (delegate {
+                    try {
+                        handler ();
+                    } finally {
+                        reset_event.Set ();
+                    }
+                });
+
+                reset_event.WaitOne ();
+            } else {
+                handler ();
+            }
+        }
+
         public static void ProxyToMain (InvokeHandler handler)
         {
             if (!InMainThread) {
@@ -90,7 +109,7 @@ namespace Hyena
                 threadedMethod ();
             }
         }
-        
+
         public static Thread Spawn (ThreadStart threadedMethod, bool autoStart)
         {
             Thread thread = new Thread (threadedMethod);
@@ -101,7 +120,7 @@ namespace Hyena
             }
             return thread;
         }
-        
+
         public static Thread Spawn (ThreadStart threadedMethod)
         {
             return Spawn (threadedMethod, true);

@@ -37,9 +37,20 @@ namespace Banshee.Gui.TrackEditor
             add { ValueChanged += value; }
             remove { ValueChanged -= value; }
         }
-        
+
         public SpinButtonEntry (double min, double max, double step) : base (min, max, step)
         {
+        }
+
+        // Make sure the value is updated every time the text is changed, not just when the focus leaves
+        // this SpinButton, since that may be too late
+        protected override void OnChanged ()
+        {
+            // Don't update when empty, since it will be treated as a 0 which will get inserted.
+            // Particularly messes up selecting all text and typing over it.
+            if (Text.Trim () != "") {
+                Update ();
+            }
         }
     }
 }

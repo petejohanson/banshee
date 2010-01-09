@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 using Gtk;
 
 namespace Hyena.Gui
-{   
+{
     public class DragDropList<T> : List<T>
     {
         public DragDropList() : base()
@@ -45,7 +45,7 @@ namespace Hyena.Gui
         {
             Add(o);
         }
-        
+
         public DragDropList(T o, Gtk.SelectionData selectionData, Gdk.Atom target) : base()
         {
             Add(o);
@@ -57,13 +57,13 @@ namespace Hyena.Gui
             byte [] data = this;
             selectionData.Set(target, 8, data, data.Length);
         }
-        
+
         public static implicit operator byte [](DragDropList<T> transferrable)
         {
             IntPtr handle = (IntPtr)GCHandle.Alloc(transferrable);
             return System.Text.Encoding.ASCII.GetBytes(Convert.ToString(handle));
         }
-        
+
         public static implicit operator DragDropList<T>(byte [] transferrable)
         {
             try {
@@ -77,7 +77,7 @@ namespace Hyena.Gui
                 return null;
             }
         }
-        
+
         public static implicit operator DragDropList<T>(Gtk.SelectionData transferrable)
         {
             return transferrable.Data;

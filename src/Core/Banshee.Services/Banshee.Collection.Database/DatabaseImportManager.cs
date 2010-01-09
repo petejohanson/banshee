@@ -1,4 +1,4 @@
-// 
+//
 // DatabaseImportManager.cs
 //
 // Authors:
@@ -40,6 +40,7 @@ using Banshee.Base;
 using Banshee.Sources;
 using Banshee.Collection;
 using Banshee.Collection.Database;
+using Banshee.Configuration.Schema;
 using Banshee.ServiceStack;
 using Banshee.Streaming;
 
@@ -51,21 +52,22 @@ namespace Banshee.Collection.Database
         // in this list do not mean they are actually supported - this list is just
         // used to see if we should allow the file to be processed by TagLib. The
         // point is to rule out, at the path level, files that we won't support.
-        
+
         public static readonly Banshee.IO.ExtensionSet WhiteListFileExtensions = new Banshee.IO.ExtensionSet (
-            "3g2",  "3gp",  "3gp2", "3gpp", "aac",  "ac3",  "aif",  "aifc", 
-            "aiff", "al",   "alaw", "ape",  "asf",  "asx",  "au",   "avi", 
-            "cda",  "cdr",  "divx", "dv",   "flac", "flv",  "gvi",  "gvp", 
-            "m1v",  "m21",  "m2p",  "m2v",  "m4a",  "m4b",  "m4e",  "m4p",  
+            "3g2",  "3gp",  "3gp2", "3gpp", "aac",  "ac3",  "aif",  "aifc",
+            "aiff", "al",   "alaw", "ape",  "asf",  "asx",  "au",   "avi",
+            "cda",  "cdr",  "divx", "dv",   "flac", "flv",  "gvi",  "gvp",
+            "m1v",  "m21",  "m2p",  "m2v",  "m4a",  "m4b",  "m4e",  "m4p",
             "m4u",  "m4v",  "mp+",  "mid",  "midi", "mjp",  "mkv",  "moov",
             "mov",  "movie","mp1",  "mp2",  "mp21", "mp3",  "mp4",  "mpa",
-            "mpc",  "mpe",  "mpeg", "mpg",  "mpga", "mpp",  "mpu",  "mpv",  
+            "mpc",  "mpe",  "mpeg", "mpg",  "mpga", "mpp",  "mpu",  "mpv",
             "mpv2", "oga",  "ogg",  "ogv",  "ogm",  "omf",  "qt",   "ra",
-            "ram",  "raw",  "rm",   "rmvb", "rts",  "smil", "swf",  "tivo", 
-            "u",    "vfw",  "vob",  "wav",  "wave", "wax",  "wm",   "wma",  
-            "wmd",  "wmv",  "wmx",  "wv",   "wvc",  "wvx",  "yuv",  "f4v",  
+            "ram",  "raw",  "rm",   "rmvb", "rts",  "smil", "swf",  "tivo",
+            "u",    "vfw",  "vob",  "wav",  "wave", "wax",  "wm",   "wma",
+            "wmd",  "wmv",  "wmx",  "wv",   "wvc",  "wvx",  "yuv",  "f4v",
             "f4a",  "f4b",  "669",  "it",   "med",  "mod",  "mol",  "mtm",
-            "nst",  "s3m",  "stm",  "ult",  "wow",  "xm",   "xnm",  "spx"
+            "nst",  "s3m",  "stm",  "ult",  "wow",  "xm",   "xnm",  "spx",
+            "ts"
         );
 
         public static bool IsWhiteListedFile (string path)
@@ -81,15 +83,15 @@ namespace Banshee.Collection.Database
         private int [] primary_source_ids;
         private string base_directory;
         private bool force_copy;
-        
+
         public event DatabaseImportResultHandler ImportResult;
-    
+
         public DatabaseImportManager (PrimarySource psource) :
             this (psource.ErrorSource, delegate { return psource; }, new int [] {psource.DbId}, psource.BaseDirectory)
         {
         }
 
-        public DatabaseImportManager (ErrorSource error_source, TrackPrimarySourceChooser chooser, 
+        public DatabaseImportManager (ErrorSource error_source, TrackPrimarySourceChooser chooser,
             int [] primarySourceIds, string baseDirectory) : this (chooser)
         {
             this.error_source = error_source;
@@ -116,7 +118,7 @@ namespace Banshee.Collection.Database
             get { return base_directory; }
             set { base_directory = value; }
         }
-        
+
         protected virtual bool ForceCopy {
             get { return force_copy; }
             set { force_copy = value; }
@@ -127,12 +129,12 @@ namespace Banshee.Collection.Database
             try {
                 DatabaseTrackInfo track = ImportTrack (path);
                 if (track != null && track.TrackId > 0) {
-                    UpdateProgress (String.Format ("{0} - {1}", 
+                    UpdateProgress (String.Format ("{0} - {1}",
                         track.DisplayArtistName, track.DisplayTrackTitle));
                 } else {
                     UpdateProgress (null);
                 }
-                
+
                 OnImportResult (track, path, null);
             } catch (Exception e) {
                 LogError (path, e);
@@ -140,7 +142,7 @@ namespace Banshee.Collection.Database
                 OnImportResult (null, path, e);
             }
         }
-        
+
         protected virtual void OnImportResult (DatabaseTrackInfo track, string path, Exception error)
         {
             DatabaseImportResultHandler handler = ImportResult;
@@ -148,7 +150,7 @@ namespace Banshee.Collection.Database
                 handler (this, new DatabaseImportResultArgs (track, path, error));
             }
         }
-        
+
         public DatabaseTrackInfo ImportTrack (string path)
         {
             return ImportTrack (new SafeUri (path));
@@ -174,15 +176,18 @@ namespace Banshee.Collection.Database
             try {
                 track = new DatabaseTrackInfo ();
                 track.Uri = uri;
-                StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (uri));
-                
+                StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (uri), false, true);
+
                 track.PrimarySource = trackPrimarySourceChooser (track);
 
+                bool save_track = true;
                 if (track.PrimarySource is Banshee.Library.LibrarySource) {
-                    track.CopyToLibraryIfAppropriate (force_copy);
+                    save_track = track.CopyToLibraryIfAppropriate (force_copy);
                 }
 
-                track.Save (false);
+                if (save_track) {
+                    track.Save (false);
+                }
 
                 ServiceManager.DbConnection.CommitTransaction ();
             } catch (Exception) {
@@ -191,7 +196,7 @@ namespace Banshee.Collection.Database
             }
 
             counts[track.PrimarySourceId] = counts.ContainsKey (track.PrimarySourceId) ? counts[track.PrimarySourceId] + 1 : 1;
-            
+
             // Reload every 20% or every 250 tracks, whatever is more (eg at most reload 5 times during an import)
             if (counts[track.PrimarySourceId] >= Math.Max (TotalCount/5, 250)) {
                 counts[track.PrimarySourceId] = 0;
@@ -215,7 +220,7 @@ namespace Banshee.Collection.Database
             ErrorSource.AddMessage (path, msg);
             Log.Error (path, msg, false);
         }
-        
+
         public void NotifyAllSources ()
         {
             foreach (int primary_source_id in counts.Keys) {

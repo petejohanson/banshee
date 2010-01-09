@@ -45,22 +45,21 @@ namespace Banshee.NowPlaying
         private TrackInfo transitioned_track;
         private NowPlayingInterface now_playing_interface;
         
+        private Widget substitute_audio_display;
+
         public NowPlayingSource () : base ("now-playing", Catalog.GetString ("Now Playing"), 10, "now-playing")
         {
-            now_playing_interface = new NowPlayingInterface ();
-        
             Properties.SetString ("Icon.Name", "applications-multimedia");
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", now_playing_interface);
             Properties.Set<bool> ("Nereid.SourceContents.HeaderVisible", false);
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
-            
+
             ServiceManager.SourceManager.AddSource (this);
-            
+
             ServiceManager.PlaybackController.Transition += OnPlaybackControllerTransition;
             ServiceManager.PlaybackController.TrackStarted += OnPlaybackControllerTrackStarted;
             ServiceManager.PlayerEngine.ConnectEvent (OnTrackInfoUpdated, PlayerEvent.TrackInfoUpdated);
         }
-        
+
         public void Dispose ()
         {
             ServiceManager.PlaybackController.Transition -= OnPlaybackControllerTransition;
@@ -73,26 +72,26 @@ namespace Banshee.NowPlaying
                 now_playing_interface = null;
             }
         }
-        
+
         private void OnTrackInfoUpdated (PlayerEventArgs args)
         {
             CheckForSwitch ();
         }
-        
+
         private void OnPlaybackControllerTrackStarted (object o, EventArgs args)
         {
             CheckForSwitch ();
         }
-        
+
         private void OnPlaybackControllerTransition (object o, EventArgs args)
         {
             transitioned_track = ServiceManager.PlaybackController.CurrentTrack;
         }
-        
+
         private void CheckForSwitch ()
         {
             TrackInfo current_track = ServiceManager.PlaybackController.CurrentTrack;
-            if (current_track != null && transitioned_track != current_track && 
+            if (current_track != null && transitioned_track != current_track &&
                 (current_track.MediaAttributes & TrackMediaAttributes.VideoStream) != 0) {
                 ServiceManager.SourceManager.SetActiveSource (this);
             }
@@ -102,8 +101,27 @@ namespace Banshee.NowPlaying
             }
         }
         
+        public void SetSubstituteAudioDisplay (Widget widget)
+        {
+            if (now_playing_interface != null) {
+                now_playing_interface.Contents.SetSubstituteAudioDisplay (widget);
+            } else {
+                substitute_audio_display = widget;
+            }
+        }
+
         public override void Activate ()
         {
+            if (now_playing_interface == null) {
+                now_playing_interface = new NowPlayingInterface ();
+                Properties.Set<ISourceContents> ("Nereid.SourceContents", now_playing_interface);
+                
+                if (substitute_audio_display != null) {
+                    now_playing_interface.Contents.SetSubstituteAudioDisplay (substitute_audio_display);
+                    substitute_audio_display = null;
+                }
+            }
+
             if (now_playing_interface != null) {
                 now_playing_interface.OverrideFullscreen ();
             }

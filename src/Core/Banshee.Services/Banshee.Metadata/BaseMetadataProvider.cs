@@ -39,36 +39,36 @@ namespace Banshee.Metadata
     public abstract class BaseMetadataProvider : IMetadataProvider
     {
         public event MetadataLookupResultHandler HaveResult;
-        
+
         protected BaseMetadataProvider()
         {
         }
-        
+
         public abstract IMetadataLookupJob CreateJob(IBasicTrackInfo track);
-        
+
         public virtual void Lookup(IBasicTrackInfo track)
         {
             IMetadataLookupJob job = CreateJob(track);
             job.Run();
         }
-        
+
         public virtual void Cancel(IBasicTrackInfo track)
         {
         }
-        
+
         public virtual void Cancel()
         {
         }
-        
+
         protected virtual void OnHaveResult(IBasicTrackInfo track, IList<StreamTag> tags)
         {
-            if(tags == null) {
+            if(tags == null || tags.Count == 0) {
                 return;
             }
-            
+
             MetadataLookupResultHandler handler = HaveResult;
             if(handler != null) {
-                handler(this, new MetadataLookupResultArgs(track, 
+                handler(this, new MetadataLookupResultArgs(track,
                     new ReadOnlyCollection<StreamTag>(tags)));
             }
         }

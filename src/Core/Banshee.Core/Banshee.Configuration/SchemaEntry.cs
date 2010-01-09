@@ -33,13 +33,21 @@ namespace Banshee.Configuration
     public struct SchemaEntry<T> : IEquatable<SchemaEntry<T>>
     {
         public static SchemaEntry<T> Zero;
-    
-        public SchemaEntry (string @namespace, string key, T defaultValue, 
+
+        public SchemaEntry (string @namespace, string key, T defaultValue,
+            string shortDescription, string longDescription) :
+            this (@namespace, key, defaultValue, default(T), default(T), shortDescription, longDescription)
+        {
+        }
+
+        public SchemaEntry (string @namespace, string key, T defaultValue, T minValue, T maxValue,
             string shortDescription, string longDescription)
         {
             Namespace = @namespace;
             Key = key;
             DefaultValue = defaultValue;
+            MinValue = minValue;
+            MaxValue = maxValue;
             ShortDescription = shortDescription;
             LongDescription = longDescription;
         }
@@ -54,27 +62,37 @@ namespace Banshee.Configuration
             return ConfigurationClient.Get<T> (this, fallback);
         }
 
-        public void Set (T value)
+        public bool Set (T value)
         {
+            if (!Object.Equals (MinValue, default (T)) || !Object.Equals(MaxValue, default (T))) {
+                if (((IComparable<T>)MinValue).CompareTo (value) > 0 ||
+                    ((IComparable<T>)MaxValue).CompareTo (value) < 0) {
+                    return false;
+                }
+            }
+
             ConfigurationClient.Set<T> (this, value);
+            return true;
         }
 
         public readonly string Namespace;
         public readonly string Key;
         public readonly T DefaultValue;
+        public readonly T MinValue;
+        public readonly T MaxValue;
         public readonly string ShortDescription;
         public readonly string LongDescription;
-        
+
         public bool Equals (SchemaEntry<T> entry)
         {
             return Namespace == entry.Namespace && Key == entry.Key;
         }
-        
+
         public override bool Equals (object o)
         {
             return (o is SchemaEntry<T>) && Equals ((SchemaEntry<T>)o);
         }
-        
+
         public override int GetHashCode ()
         {
             return Namespace.GetHashCode () ^ Key.GetHashCode ();

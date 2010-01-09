@@ -59,8 +59,8 @@ namespace Banshee.Library
             IsLocal = true;
             base_dir_schema = CreateSchema<string> ("library-location", null, "The base directory under which files for this library are stored", null);
             AfterInitialized ();
-            
-            Section library_section = PreferencesPage.Add (new Section ("library-location", 
+
+            Section library_section = PreferencesPage.Add (new Section ("library-location",
                 // Translators: {0} is the library name, eg 'Music Library' or 'Podcasts'
                 String.Format (Catalog.GetString ("{0} Folder"), Name), 2));
 
@@ -106,9 +106,9 @@ namespace Banshee.Library
                 base.BaseDirectory = value;
             }
         }
-        
+
         public abstract string DefaultBaseDirectory { get; }
-        
+
         public override bool Indexable {
             get { return true; }
         }
@@ -125,7 +125,7 @@ namespace Banshee.Library
             } catch (System.IO.FileNotFoundException) {
             } catch (System.IO.DirectoryNotFoundException) {
             }
-            
+
             return true;
         }
 
@@ -137,7 +137,7 @@ namespace Banshee.Library
 
             PrimarySource source = track.PrimarySource;
 
-            // If it's from a local primary source, change it's PrimarySource
+            // If it's from a local primary source, change its PrimarySource
             if (source.IsLocal || source is LibrarySource) {
                 track.PrimarySource = this;
 
@@ -146,14 +146,18 @@ namespace Banshee.Library
                 }
 
                 track.Save (false);
+
+                // TODO optimize, remove this?  I think it makes moving items
+                // between local libraries very slow.
                 source.NotifyTracksChanged ();
             } else {
                 // Figure out where we should put it if were to copy it
-                string path = FileNamePattern.BuildFull (BaseDirectory, track);
+                var pattern = this.FileNamePattern ?? MusicLibrarySource.MusicFileNamePattern;
+                string path = pattern.BuildFull (BaseDirectory, track);
                 SafeUri uri = new SafeUri (path);
 
                 // Make sure it's not already in the library
-                // TODO optimize - no need to recrate this int [] every time
+                // TODO optimize - no need to recreate this int [] every time
                 if (DatabaseTrackInfo.ContainsUri (uri, new int [] {DbId})) {
                     return;
                 }

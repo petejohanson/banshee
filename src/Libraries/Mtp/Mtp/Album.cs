@@ -6,24 +6,24 @@
  *  Gabriel Burt (gburt@novell.com)
  ****************************************************************************/
 
-/*  THIS FILE IS LICENSED UNDER THE MIT LICENSE AS OUTLINED IMMEDIATELY BELOW: 
+/*  THIS FILE IS LICENSED UNDER THE MIT LICENSE AS OUTLINED IMMEDIATELY BELOW:
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a
- *  copy of this software and associated documentation files (the "Software"),  
- *  to deal in the Software without restriction, including without limitation  
- *  the rights to use, copy, modify, merge, publish, distribute, sublicense,  
- *  and/or sell copies of the Software, and to permit persons to whom the  
+ *  copy of this software and associated documentation files (the "Software"),
+ *  to deal in the Software without restriction, including without limitation
+ *  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ *  and/or sell copies of the Software, and to permit persons to whom the
  *  Software is furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in 
+ *  The above copyright notice and this permission notice shall be included in
  *  all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  *  DEALINGS IN THE SOFTWARE.
  */
 
@@ -33,9 +33,9 @@ using System.Runtime.InteropServices;
 
 namespace Mtp
 {
-	public class Album : AbstractTrackList
-	{
-		private AlbumStruct album;
+    public class Album : AbstractTrackList
+    {
+        private AlbumStruct album;
 
         public uint AlbumId {
             get { return Saved ? album.album_id : 0; }
@@ -108,7 +108,7 @@ namespace Mtp
                 if (cover_art == null) {
                     return;
                 }
-                
+
                 FileSampleData cover = new FileSampleData ();
                 cover.data = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (byte)) * cover_art.Length);
                 Marshal.Copy (cover_art, 0, cover.data, cover_art.Length);
@@ -137,10 +137,10 @@ namespace Mtp
         {
             return LIBMTP_Update_Album (Device.Handle, ref album);
         }
-        
+
         public void Remove ()
         {
-			MtpDevice.LIBMTP_Delete_Object(Device.Handle, AlbumId);
+            MtpDevice.LIBMTP_Delete_Object(Device.Handle, AlbumId);
         }
 
         public override string ToString ()
@@ -158,29 +158,29 @@ namespace Mtp
             }
         }
 
-		[DllImport("libmtp.dll")]
-		internal static extern IntPtr LIBMTP_new_album_t (); // LIBMTP_album_t*
+        [DllImport("libmtp.dll")]
+        internal static extern IntPtr LIBMTP_new_album_t (); // LIBMTP_album_t*
 
-		[DllImport("libmtp.dll")]
-		internal static extern void LIBMTP_destroy_album_t (ref AlbumStruct album);
+        [DllImport("libmtp.dll")]
+        internal static extern void LIBMTP_destroy_album_t (ref AlbumStruct album);
 
-		[DllImport("libmtp.dll")]
-		internal static extern IntPtr LIBMTP_Get_Album_List (MtpDeviceHandle handle); // LIBMTP_album_t*
+        [DllImport("libmtp.dll")]
+        internal static extern IntPtr LIBMTP_Get_Album_List (MtpDeviceHandle handle); // LIBMTP_album_t*
 
-		[DllImport("libmtp.dll")]
-		internal static extern IntPtr LIBMTP_Get_Album (MtpDeviceHandle handle, uint albumId); // LIBMTP_album_t*
+        [DllImport("libmtp.dll")]
+        internal static extern IntPtr LIBMTP_Get_Album (MtpDeviceHandle handle, uint albumId); // LIBMTP_album_t*
 
 #if LIBMTP8
-		[DllImport("libmtp.dll")]
-		internal static extern int LIBMTP_Create_New_Album (MtpDeviceHandle handle, ref AlbumStruct album);
+        [DllImport("libmtp.dll")]
+        internal static extern int LIBMTP_Create_New_Album (MtpDeviceHandle handle, ref AlbumStruct album);
 #else
-		[DllImport("libmtp.dll")]
-		internal static extern int LIBMTP_Create_New_Album (MtpDeviceHandle handle, ref AlbumStruct album, uint parentId);
+        [DllImport("libmtp.dll")]
+        internal static extern int LIBMTP_Create_New_Album (MtpDeviceHandle handle, ref AlbumStruct album, uint parentId);
 #endif
 
-		[DllImport("libmtp.dll")]
-		internal static extern int LIBMTP_Update_Album (MtpDeviceHandle handle, ref AlbumStruct album);
-	}
+        [DllImport("libmtp.dll")]
+        internal static extern int LIBMTP_Update_Album (MtpDeviceHandle handle, ref AlbumStruct album);
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     internal struct AlbumStruct

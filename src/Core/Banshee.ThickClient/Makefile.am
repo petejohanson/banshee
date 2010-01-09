@@ -3,9 +3,11 @@ TARGET = library
 ASSEMBLY_BUILD_FLAGS = -unsafe
 LINK = $(REF_BANSHEE_THICKCLIENT)
 
+if HAVE_GLIBSHARP_2_12_7
+BUILD_DEFINES = "-define:HAVE_GLIBSHARP_2_12_7"
+endif
+
 SOURCES =  \
-	Banshee.Addins.Gui/AddinDetailsDialog.cs \
-	Banshee.Addins.Gui/AddinTile.cs \
 	Banshee.Addins.Gui/AddinView.cs \
 	Banshee.Collection.Gui/AlbumListView.cs \
 	Banshee.Collection.Gui/ArtistListView.cs \
@@ -25,9 +27,11 @@ SOURCES =  \
 	Banshee.Collection.Gui/ColumnCellTrack.cs \
 	Banshee.Collection.Gui/ColumnCellTrackAndCount.cs \
 	Banshee.Collection.Gui/ColumnCellTrackNumber.cs \
+	Banshee.Collection.Gui/CoverArtEditor.cs \
 	Banshee.Collection.Gui/DefaultColumnController.cs \
 	Banshee.Collection.Gui/PersistentColumnController.cs \
 	Banshee.Collection.Gui/QueryFilterView.cs \
+	Banshee.Collection.Gui/SearchableListView.cs \
 	Banshee.Collection.Gui/TerseTrackListView.cs \
 	Banshee.Collection.Gui/TrackFilterListView.cs \
 	Banshee.Collection.Gui/TrackListView.cs \
@@ -87,6 +91,7 @@ SOURCES =  \
 	Banshee.Gui.Widgets/ConnectedMessageBar.cs \
 	Banshee.Gui.Widgets/ConnectedSeekSlider.cs \
 	Banshee.Gui.Widgets/ConnectedVolumeButton.cs \
+	Banshee.Gui.Widgets/CoverArtDisplay.cs \
 	Banshee.Gui.Widgets/LargeTrackInfoDisplay.cs \
 	Banshee.Gui.Widgets/MainMenu.cs \
 	Banshee.Gui.Widgets/NextButton.cs \
@@ -134,6 +139,7 @@ SOURCES =  \
 	Banshee.Preferences.Gui/SectionBox.cs \
 	Banshee.Preferences.Gui/WidgetFactory.cs \
 	Banshee.Query.Gui/BansheeQueryBox.cs \
+	Banshee.Query.Gui/PlaybackErrorQueryValueEntry.cs \
 	Banshee.Query.Gui/PlaylistQueryValueEntry.cs \
 	Banshee.Query.Gui/RatingQueryValueEntry.cs \
 	Banshee.Query.Gui/SmartPlaylistQueryValueEntry.cs \
@@ -143,6 +149,7 @@ SOURCES =  \
 	Banshee.Sources.Gui/FilteredListSourceContents.cs \
 	Banshee.Sources.Gui/ISourceContents.cs \
 	Banshee.Sources.Gui/ITrackModelSourceContents.cs \
+	Banshee.Sources.Gui/LazyLoadSourceContents.cs \
 	Banshee.Sources.Gui/ObjectListSourceContents.cs \
 	Banshee.Sources.Gui/SourceComboBox.cs \
 	Banshee.Sources.Gui/SourceIconResolver.cs \
@@ -162,7 +169,4 @@ RESOURCES =  \
 	Resources/jcastro.png
 
 include $(top_srcdir)/build/build.mk
-
-module_SCRIPTS += Banshee.ThickClient.dll.config
-EXTRA_DIST += Banshee.ThickClient.dll.config
 

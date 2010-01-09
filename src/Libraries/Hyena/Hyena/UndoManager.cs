@@ -53,7 +53,7 @@ namespace Hyena
                 UndoRedo(redo_stack, undo_stack, false);
             }
         }
-        
+
         public void Clear()
         {
             lock(this) {
@@ -124,7 +124,7 @@ namespace Hyena
             get { return undo_stack.Count > 0; }
         }
 
-        public bool CanRedo { 
+        public bool CanRedo {
             get { return redo_stack.Count > 0; }
         }
 

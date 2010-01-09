@@ -38,6 +38,7 @@ using Hyena.Data.Sqlite;
 using Hyena.Collections;
 
 using Banshee.Base;
+using Banshee.Preferences;
 using Banshee.ServiceStack;
 using Banshee.Configuration;
 using Banshee.Sources;
@@ -79,7 +80,7 @@ namespace Banshee.Sources
     public abstract class PrimarySource : DatabaseSource, IDisposable
     {
         #region Functions that let us override some behavior of our DatabaseTrackInfos
-        
+
         private TrackEqualHandler track_equal_handler;
         public TrackEqualHandler TrackEqualHandler {
             get { return track_equal_handler; }
@@ -99,7 +100,7 @@ namespace Banshee.Sources
         }
 
         #endregion
-    
+
         protected ErrorSource error_source;
         protected bool error_source_visible = false;
 
@@ -116,7 +117,7 @@ namespace Banshee.Sources
             DELETE FROM CoreArtists WHERE ArtistID NOT IN (SELECT ArtistID FROM CoreTracks);
             DELETE FROM CoreAlbums WHERE AlbumID NOT IN (SELECT AlbumID FROM CoreTracks)
         ");
-        
+
         protected HyenaSqliteCommand purge_tracks_command = new HyenaSqliteCommand (@"
             DELETE FROM CoreTracks WHERE PrimarySourceId = ?
         ");
@@ -132,18 +133,18 @@ namespace Banshee.Sources
                 if (dbid > 0) {
                     return dbid;
                 }
-                
+
                 dbid = ServiceManager.DbConnection.Query<int> ("SELECT PrimarySourceID FROM CorePrimarySources WHERE StringID = ?", UniqueId);
                 if (dbid == 0) {
                     dbid = ServiceManager.DbConnection.Execute ("INSERT INTO CorePrimarySources (StringID) VALUES (?)", UniqueId);
                 } else {
                     SavedCount = ServiceManager.DbConnection.Query<int> ("SELECT CachedCount FROM CorePrimarySources WHERE PrimarySourceID = ?", dbid);
                 }
-                
+
                 if (dbid == 0) {
                     throw new ApplicationException ("dbid could not be resolved, this should never happen");
                 }
-                
+
                 return dbid;
             }
         }
@@ -175,17 +176,17 @@ namespace Banshee.Sources
             get { return is_local; }
             protected set { is_local = value; }
         }
-        
+
         private static SourceSortType[] sort_types = new SourceSortType[] {
             SortNameAscending,
             SortSizeAscending,
             SortSizeDescending
         };
-        
+
         public override SourceSortType[] ChildSortTypes {
             get { return sort_types; }
         }
-        
+
         public override SourceSortType DefaultChildSort {
             get { return SortNameAscending; }
         }
@@ -206,7 +207,7 @@ namespace Banshee.Sources
             get { return null; }
             protected set { base_dir_with_sep = null; }
         }
-        
+
         private string base_dir_with_sep;
         public string BaseDirectoryWithSeparator {
             get { return base_dir_with_sep ?? (base_dir_with_sep = BaseDirectory + System.IO.Path.DirectorySeparatorChar); }
@@ -238,6 +239,17 @@ namespace Banshee.Sources
             set { ExpandedSchema.Set (value); }
         }
 
+        public FileNamePattern FileNamePattern { get; private set; }
+
+        protected void SetFileNamePattern (FileNamePattern pattern)
+        {
+            FileNamePattern = pattern;
+
+            var file_system = PreferencesPage.Add (new Section ("file-system", Catalog.GetString ("File Organization"), 5));
+            file_system.Add (new SchemaPreference<string> (pattern.FolderSchema, Catalog.GetString ("Folder hie_rarchy")));
+            file_system.Add (new SchemaPreference<string> (pattern.FileSchema, Catalog.GetString ("File _name")));
+        }
+
         public virtual void Dispose ()
         {
             if (Application.ShuttingDown)
@@ -264,7 +276,7 @@ namespace Banshee.Sources
             DatabaseTrackModel.AddCondition (String.Format ("CoreTracks.PrimarySourceID = {0}", DbId));
 
             primary_sources[DbId] = this;
-            
+
             // Load our playlists and smart playlists
             foreach (PlaylistSource pl in PlaylistSource.LoadAll (this)) {
                 AddChildSource (pl);
@@ -375,15 +387,6 @@ namespace Banshee.Sources
             get { return true; }
         }
 
-        public override void SetParentSource (Source source)
-        {
-            if (source is PrimarySource) {
-                throw new ArgumentException ("PrimarySource cannot have another PrimarySource as its parent");
-            }
-
-            base.SetParentSource (source);
-        }
-
         protected override void OnTracksAdded ()
         {
             ThreadAssist.SpawnFromMain (delegate {
@@ -431,7 +434,7 @@ namespace Banshee.Sources
         {
             OnTracksDeleted ();
         }
-        
+
         protected virtual void PurgeTracks ()
         {
             ServiceManager.DbConnection.Execute (purge_tracks_command, DbId);
@@ -464,7 +467,7 @@ namespace Banshee.Sources
 
             if (source.Count < 1)
                 return;
-            
+
             ThreadAssist.SpawnFromMain (delegate {
                 CachedList<DatabaseTrackInfo> list = CachedList<DatabaseTrackInfo>.CreateFromModel (source.DatabaseTrackModel);
                 DeleteTrackList (list);
@@ -476,7 +479,7 @@ namespace Banshee.Sources
             if (model == null || model.Count < 1) {
                 return;
             }
-            
+
             ThreadAssist.SpawnFromMain (delegate {
                 CachedList<DatabaseTrackInfo> list = CachedList<DatabaseTrackInfo>.CreateFromModelSelection (model);
                 DeleteTrackList (list);
@@ -521,7 +524,7 @@ namespace Banshee.Sources
                 delete_track_job.Finish ();
                 delete_track_job = null;
             }
-            
+
             if (skip_deletion != null) {
                 list.Remove (skip_deletion);
                 skip_deletion.Clear ();
@@ -532,7 +535,7 @@ namespace Banshee.Sources
             if (list.Count > 0) {
                 ServiceManager.DbConnection.Execute (remove_list_command, DateTime.Now, list.CacheId, list.CacheId);
             }
-            
+
             ThreadAssist.ProxyToMain (delegate {
                 OnTracksDeleted ();
                 OnUserNotifyUpdated ();
@@ -568,13 +571,13 @@ namespace Banshee.Sources
             }
             return true;
         }
-        
+
         public override bool AddAllTracks (Source source)
         {
             if (!AcceptsInputFromSource (source) || source.Count == 0) {
                 return false;
             }
-            
+
             DatabaseTrackListModel model = (source as ITrackModelSource).TrackModel as DatabaseTrackListModel;
             CachedList<DatabaseTrackInfo> cached_list = CachedList<DatabaseTrackInfo>.CreateFromModel (model);
             if (ThreadAssist.InMainThread) {
@@ -620,7 +623,7 @@ namespace Banshee.Sources
                     IncrementAddedTracks ();
                     break;
                 }
-                
+
                 if (track == null) {
                     IncrementAddedTracks ();
                     continue;
@@ -684,7 +687,7 @@ namespace Banshee.Sources
                 lock (this) {
                     if (add_track_job == null) {
                         add_track_job = new BatchUserJob (String.Format (Catalog.GetString (
-                            "Adding {0} of {1} to {2}"), "{0}", "{1}", Name), 
+                            "Adding {0} of {1} to {2}"), "{0}", "{1}", Name),
                             Properties.GetStringList ("Icon.Name"));
                         add_track_job.SetResources (Resource.Cpu, Resource.Database, Resource.Disk);
                         add_track_job.PriorityHints = PriorityHints.SpeedSensitive | PriorityHints.DataLossIfStopped;

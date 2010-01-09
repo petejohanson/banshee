@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=@libdir@
+bansheedir=${libdir}/banshee-1
+
+Name: Banshee NowPlaying
+Description: Now Playing extension source for Banshee
+Version: @VERSION@
+Libs: -r:${bansheedir}/Extensions/Banshee.NowPlaying.dll
+

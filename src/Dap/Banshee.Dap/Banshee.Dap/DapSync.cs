@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Mono.Unix;
@@ -51,43 +52,46 @@ namespace Banshee.Dap
         private DapSource dap;
         private string conf_ns;
         private List<DapLibrarySync> library_syncs = new List<DapLibrarySync> ();
-        private SchemaEntry<bool> manually_manage, auto_sync;
-        private Section dap_prefs_section;
-        private PreferenceBase manually_manage_pref;//, auto_sync_pref;
+        internal SchemaEntry<bool> LegacyManuallyManage;
+        private SchemaEntry<bool> auto_sync;
+        private Section sync_prefs;
+        //private PreferenceBase manually_manage_pref;//, auto_sync_pref;
         private SchemaPreference<bool> auto_sync_pref;
         private List<Section> pref_sections = new List<Section> ();
         private RateLimiter sync_limiter;
 
         public event Action<DapSync> Updated;
+        public event Action<DapLibrarySync> LibraryAdded;
+        public event Action<DapLibrarySync> LibraryRemoved;
 
         internal string ConfigurationNamespace {
             get { return conf_ns; }
         }
-        
+
         #region Public Properites
-        
+
         public DapSource Dap {
             get { return dap; }
         }
 
-        public IEnumerable<DapLibrarySync> LibrarySyncs {
+        public IList<DapLibrarySync> Libraries {
             get { return library_syncs; }
         }
-        
+
         public bool Enabled {
-            get { return !manually_manage.Get (); }
+            get { return library_syncs.Any (l => l.Enabled); }
         }
-        
+
         public bool AutoSync {
-            get { return Enabled && auto_sync.Get (); }
+            get { return auto_sync.Get (); }
         }
 
         public IEnumerable<Section> PreferenceSections {
             get { return pref_sections; }
         }
-        
+
         #endregion
-        
+
         public DapSync (DapSource dapSource)
         {
             dap = dapSource;
@@ -99,43 +103,44 @@ namespace Banshee.Dap
 
         public void Dispose ()
         {
-            foreach (LibrarySource source in Libraries) {
-                source.TracksAdded -= OnLibraryChanged;
-                source.TracksDeleted -= OnLibraryChanged;
-            }
-
             foreach (DapLibrarySync sync in library_syncs) {
+                sync.Library.TracksAdded -= OnLibraryChanged;
+                sync.Library.TracksDeleted -= OnLibraryChanged;
                 sync.Dispose ();
             }
+
+            var src_mgr = ServiceManager.SourceManager;
+            src_mgr.SourceAdded   -= OnSourceAdded;
+            src_mgr.SourceRemoved -= OnSourceRemoved;
+        }
+
+        private void OnSourceAdded (SourceEventArgs a)
+        {
+            AddLibrary (a.Source, true);
+        }
+
+        private void OnSourceRemoved (SourceEventArgs a)
+        {
+            RemoveLibrary (a.Source);
         }
 
         private void BuildPreferences ()
         {
             conf_ns = "sync";
-            manually_manage = dap.CreateSchema<bool> (conf_ns, "enabled", true,
-                Catalog.GetString ("Manually manage this device"),
-                Catalog.GetString ("Manually managing your device means you can drag and drop items onto the device, and manually remove them.")
-            );
-            
+            LegacyManuallyManage = dap.CreateSchema<bool> (conf_ns, "enabled", false, "", "");
+
             auto_sync = dap.CreateSchema<bool> (conf_ns, "auto_sync", false,
-                Catalog.GetString ("Automatically sync the device when plugged in or when the libraries change"),
+                Catalog.GetString ("Sync when first plugged in and when the libraries change"),
                 Catalog.GetString ("Begin synchronizing the device as soon as the device is plugged in or the libraries change.")
             );
 
-            dap_prefs_section = new Section ("dap", Catalog.GetString ("Sync Preferences"), 0);
-            pref_sections.Add (dap_prefs_section);
+            sync_prefs = new Section ("sync", Catalog.GetString ("Sync Preferences"), 0);
+            pref_sections.Add (sync_prefs);
 
-            manually_manage_pref = dap_prefs_section.Add (manually_manage);
-            manually_manage_pref.ShowDescription = true;
-            manually_manage_pref.ShowLabel = false;
-            manually_manage_pref.ValueChanged += OnManuallyManageChanged;
-            
-            auto_sync_pref = dap_prefs_section.Add (auto_sync);
+            sync_prefs.Add (new VoidPreference ("library-options"));
+
+            auto_sync_pref = sync_prefs.Add (auto_sync);
             auto_sync_pref.ValueChanged += OnAutoSyncChanged;
-            
-            //manually_manage_pref.Changed += OnEnabledChanged;
-            //auto_sync_pref.Changed += delegate { OnUpdated (); };
-            //OnEnabledChanged (null);
         }
 
         private bool dap_loaded = false;
@@ -146,42 +151,75 @@ namespace Banshee.Dap
 
         private void BuildSyncLists ()
         {
-            int i = 0;
-            foreach (LibrarySource source in Libraries) {
-                DapLibrarySync library_sync = new DapLibrarySync (this, source);
-                library_syncs.Add (library_sync);
-                pref_sections.Add (library_sync.PrefsSection);
-                library_sync.PrefsSection.Order = ++i;
-                
-                source.TracksAdded += OnLibraryChanged;
-                source.TracksDeleted += OnLibraryChanged;
+            var src_mgr = ServiceManager.SourceManager;
+            src_mgr.SourceAdded   += OnSourceAdded;
+            src_mgr.SourceRemoved += OnSourceRemoved;
+
+            foreach (var src in src_mgr.Sources) {
+                AddLibrary (src, false);
             }
+
+            SortLibraries ();
 
             dap.TracksAdded += OnDapChanged;
             dap.TracksDeleted += OnDapChanged;
         }
 
-        private void OnManuallyManageChanged (Root preference)
+        private void AddLibrary (Source source, bool initialized)
         {
-            UpdateSensitivities ();
-            OnUpdated ();
+            var library = GetSyncableLibrary (source);
+            if (library != null) {
+                var sync = new DapLibrarySync (this, library);
+                library_syncs.Add (sync);
+                library.TracksAdded += OnLibraryChanged;
+                library.TracksDeleted += OnLibraryChanged;
+
+                if (initialized) {
+                    SortLibraries ();
+
+                    var h = LibraryAdded;
+                    if (h != null) {
+                        h (sync);
+                    }
+                }
+            }
+        }
+
+        private void RemoveLibrary (Source source)
+        {
+            var library = GetSyncableLibrary (source);
+            if (library != null) {
+                var sync = library_syncs.First (s => s.Library == library);
+                library_syncs.Remove (sync);
+                sync.Library.TracksAdded -= OnLibraryChanged;
+                sync.Library.TracksDeleted -= OnLibraryChanged;
+
+                var h = LibraryRemoved;
+                if (h != null) {
+                    h (sync);
+                }
+
+                sync.Dispose ();
+            }
+        }
+
+        private void SortLibraries ()
+        {
+            library_syncs.Sort ((a, b) => a.Library.Order.CompareTo (b.Library.Order));
         }
 
         private void UpdateSensitivities ()
         {
-            bool sync_enabled = Enabled;
-            auto_sync_pref.Sensitive = sync_enabled;
-            foreach (DapLibrarySync lib_sync in library_syncs) {
-                lib_sync.PrefsSection.Sensitive = sync_enabled;
+            bool enabled = Enabled;
+            if (!enabled && auto_sync_pref.Value) {
+                auto_sync_pref.Value = false;
             }
+            auto_sync_pref.Sensitive = enabled;
         }
-        
+
         private void OnAutoSyncChanged (Root preference)
         {
-            OnUpdated ();
-            if (AutoSync) {
-                Sync ();
-            }
+            MaybeTriggerAutoSync ();
         }
 
         private void OnDapChanged (Source sender, TrackEventArgs args)
@@ -198,10 +236,10 @@ namespace Banshee.Dap
             if (!Enabled) {
                 return;
             }
-            
+
             foreach (DapLibrarySync lib_sync in library_syncs) {
                 if (lib_sync.Library == sender) {
-                    if (AutoSync) {
+                    if (AutoSync && lib_sync.Enabled) {
                         Sync ();
                     } else {
                         lib_sync.CalculateSync ();
@@ -212,37 +250,40 @@ namespace Banshee.Dap
             }
          }
 
-        private IEnumerable<LibrarySource> Libraries {
-            get {
-                List<Source> sources = new List<Source> (ServiceManager.SourceManager.Sources);
-                sources.Sort (delegate (Source a, Source b) {
-                    return a.Order.CompareTo (b.Order);
-                });
-    
-                if (!dap.SupportsVideo) {
-                    sources.Remove (ServiceManager.SourceManager.VideoLibrary);
-                }
-                
-                foreach (Source source in sources) {
-                    if (source is LibrarySource) {
-                        yield return source as LibrarySource;
-                    }
-                }
+        private LibrarySource GetSyncableLibrary (Source source)
+        {
+            var library = source as LibrarySource;
+            if (library == null)
+                return null;
+
+                //List<Source> sources = new List<Source> (ServiceManager.SourceManager.Sources);
+                //sources.Sort (delegate (Source a, Source b) {
+                    //return a.Order.CompareTo (b.Order);
+                //});
+
+            if (!dap.SupportsVideo && library == ServiceManager.SourceManager.VideoLibrary) {
+                return null;
             }
+
+            if (!dap.SupportsPodcasts && library.UniqueId == "PodcastSource-PodcastLibrary") {
+                return null;
+            }
+
+            return library;
         }
-        
+
         public int ItemCount {
             get { return 0; }
         }
-        
+
         public long FileSize {
             get { return 0; }
         }
-        
+
         public TimeSpan Duration {
             get { return TimeSpan.Zero; }
         }
-        
+
         public void CalculateSync ()
         {
             foreach (DapLibrarySync library_sync in library_syncs) {
@@ -250,6 +291,15 @@ namespace Banshee.Dap
             }
 
             OnUpdated ();
+        }
+
+        internal void MaybeTriggerAutoSync ()
+        {
+            UpdateSensitivities ();
+            OnUpdated ();
+            if (Enabled && AutoSync) {
+                Sync ();
+            }
         }
 
         internal void OnUpdated ()
@@ -294,7 +344,7 @@ namespace Banshee.Dap
                     }
                 }
             }
-            
+
             if (sync_playlists) {
                 dap.RemovePlaylists ();
             }

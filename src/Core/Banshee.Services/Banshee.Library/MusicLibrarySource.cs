@@ -32,6 +32,7 @@ using System.Collections.Generic;
 
 using Mono.Unix;
 
+using Banshee.Base;
 using Banshee.Collection;
 using Banshee.SmartPlaylist;
 using Banshee.Preferences;
@@ -42,13 +43,24 @@ namespace Banshee.Library
 {
     public class MusicLibrarySource : LibrarySource
     {
+        private static FileNamePattern music_filename_pattern = new MusicFileNamePattern ();
+        public static FileNamePattern MusicFileNamePattern {
+            get { return music_filename_pattern; }
+        }
+
+        static MusicLibrarySource ()
+        {
+            music_filename_pattern.FolderSchema = LibrarySchema.FolderPattern;
+            music_filename_pattern.FileSchema   = LibrarySchema.FilePattern;
+        }
+
         // Catalog.GetString ("Music Library")
         public MusicLibrarySource () : base (Catalog.GetString ("Music"), "Library", 40)
         {
             MediaTypes = TrackMediaAttributes.Music | TrackMediaAttributes.AudioStream;
             NotMediaTypes = TrackMediaAttributes.Podcast | TrackMediaAttributes.VideoStream | TrackMediaAttributes.AudioBook;
             Properties.SetStringList ("Icon.Name", "audio-x-generic", "source-library");
-            
+
             // Migrate the old library-location schema, if necessary
             if (DatabaseConfigurationClient.Client.Get<int> ("MusicLibraryLocationMigrated", 0) != 1) {
                 string old_location = OldLocationSchema.Get ();
@@ -58,20 +70,18 @@ namespace Banshee.Library
                 DatabaseConfigurationClient.Client.Set<int> ("MusicLibraryLocationMigrated", 1);
             }
 
-            Section file_system = PreferencesPage.Add (new Section ("file-system", 
-                Catalog.GetString ("File System Organization"), 5));
-
-            file_system.Add (new SchemaPreference<string> (LibrarySchema.FolderPattern, 
-                Catalog.GetString ("Folder hie_rarchy")));
-            
-            file_system.Add (new SchemaPreference<string> (LibrarySchema.FilePattern,     
-                Catalog.GetString ("File _name")));
+            SetFileNamePattern (MusicFileNamePattern);
 
             PreferencesPage.Add (new Section ("misc", Catalog.GetString ("Miscellaneous"), 10));
         }
-        
+
+        public static string GetDefaultBaseDirectory ()
+        {
+            return Banshee.Base.Paths.GetXdgDirectoryUnderHome ("XDG_MUSIC_DIR", "Music");
+        }
+
         public override string DefaultBaseDirectory {
-            get { return Hyena.XdgBaseDirectorySpec.GetUserDirectory ("XDG_MUSIC_DIR", "Music"); }
+            get { return GetDefaultBaseDirectory (); }
         }
 
         public override IEnumerable<SmartPlaylistDefinition> DefaultSmartPlaylists {

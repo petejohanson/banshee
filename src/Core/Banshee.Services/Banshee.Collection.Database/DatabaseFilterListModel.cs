@@ -35,18 +35,19 @@ using System.Collections.Generic;
 using Hyena;
 using Hyena.Data;
 using Hyena.Data.Sqlite;
+using Hyena.Query;
 
 using Banshee.Collection;
 using Banshee.Database;
 
 namespace Banshee.Collection.Database
-{   
-    public abstract class DatabaseFilterListModel<T, U> : FilterListModel<U>, ICacheableDatabaseModel
+{
+    public abstract class DatabaseFilterListModel<T, U> : FilterListModel<U>, ICacheableDatabaseModel, ISearchable
         where T : U, new () where U : ICacheableItem, new()
     {
         private readonly BansheeModelCache<T> cache;
         private readonly Banshee.Sources.DatabaseSource source;
-        
+
         private long count;
         private string reload_fragment;
 
@@ -55,28 +56,28 @@ namespace Banshee.Collection.Database
             get { return reload_fragment_format; }
             set { reload_fragment_format = value; }
         }
-        
+
         protected readonly U select_all_item;
         private HyenaSqliteConnection connection;
 
-        public DatabaseFilterListModel (string name, string label, Banshee.Sources.DatabaseSource source, 
-                                        DatabaseTrackListModel trackModel, HyenaSqliteConnection connection, SqliteModelProvider<T> provider, U selectAllItem, string uuid) 
+        public DatabaseFilterListModel (string name, string label, Banshee.Sources.DatabaseSource source,
+                                        DatabaseTrackListModel trackModel, HyenaSqliteConnection connection, SqliteModelProvider<T> provider, U selectAllItem, string uuid)
             : base (trackModel)
         {
             this.source = source;
             FilterName = name;
             FilterLabel = label;
             select_all_item = selectAllItem;
-            
+
             this.connection = connection;
             cache = new BansheeModelCache <T> (connection, uuid, this, provider);
             cache.HasSelectAllItem = true;
         }
-        
+
         public override void Clear ()
         {
         }
-        
+
         protected virtual void GenerateReloadFragment ()
         {
             ReloadFragment = String.Format (
@@ -116,16 +117,16 @@ namespace Banshee.Collection.Database
                 }
             }
         }
-        
+
         public virtual bool CachesValues { get { return false; } }
-        
+
         protected abstract string ItemToFilterValue (object o);
 
         // Ick, duplicated from DatabaseTrackListModel
         public override string GetSqlFilter ()
         {
             string filter = null;
-            
+
             // If the only item is the "All" item, then we shouldn't allow any matches, so insert an always-false condition
             if (Count == 1) {
                 return "0=1";
@@ -140,10 +141,10 @@ namespace Banshee.Collection.Database
                     delegate (string new_filter) { filter = new_filter; }
                 );
             }
-            
+
             return filter;
         }
-        
+
         public abstract void UpdateSelectAllItem (long count);
 
         public override void Reload (bool notify)
@@ -160,13 +161,13 @@ namespace Banshee.Collection.Database
 
                 count = cache.Count + 1;
             }
-            
+
             UpdateSelectAllItem (count - 1);
 
             if (notify)
                 OnReloaded ();
         }
-        
+
         public override U this[int index] {
             get {
                 if (index == 0)
@@ -178,7 +179,7 @@ namespace Banshee.Collection.Database
             }
         }
 
-        public override int Count { 
+        public override int Count {
             get { return (int) count; }
         }
 
@@ -201,7 +202,7 @@ namespace Banshee.Collection.Database
                 }
             }
         }
-        
+
         public IEnumerable<object> GetSelectedObjects ()
         {
             foreach (object o in SelectedItems) {
@@ -218,7 +219,25 @@ namespace Banshee.Collection.Database
                 OnReloaded ();
             }
         }
-        
+
+        private QueryFieldSet query_fields;
+        public QueryFieldSet QueryFields {
+            get { return query_fields; }
+            protected set { query_fields = value; }
+        }
+
+        public int IndexOf (QueryNode query, long offset)
+        {
+            lock (cache) {
+                if (query == null) {
+                    return -1;
+                }
+
+                int index = (int) cache.IndexOf (query.ToSql (QueryFields), offset);
+                return index >= 0 ? index + 1 : index;
+            }
+        }
+
         public abstract string FilterColumn { get; }
 
         public virtual string JoinTable { get { return null; } }

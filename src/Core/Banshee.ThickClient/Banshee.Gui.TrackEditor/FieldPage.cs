@@ -45,12 +45,12 @@ namespace Banshee.Gui.TrackEditor
         protected TrackEditorDialog Dialog {
             get { return dialog; }
         }
-        
+
         private EditorTrackInfo current_track;
         protected EditorTrackInfo CurrentTrack {
             get { return current_track; }
         }
-        
+
         public struct FieldSlot
         {
             public Widget Parent;
@@ -61,97 +61,113 @@ namespace Banshee.Gui.TrackEditor
             public FieldLabelClosure LabelClosure;
             public FieldValueClosure ReadClosure;
             public FieldValueClosure WriteClosure;
+            public FieldValueClosure SyncClosure;
+
+            public System.Action Sync;
         }
-        
+
         private object tooltip_host;
 
         private List<FieldSlot> field_slots = new List<FieldSlot> ();
         public IEnumerable<FieldSlot> FieldSlots {
             get { return field_slots; }
         }
-        
+
         public FieldPage ()
         {
             Spacing = EditorUtilities.RowSpacing;
             tooltip_host = TooltipSetter.CreateHost ();
         }
-        
+
         public void Initialize (TrackEditorDialog dialog)
         {
             this.dialog = dialog;
             AddFields ();
         }
-        
+
         protected virtual void AddFields ()
         {
         }
-        
+
         public virtual bool MultipleTracks {
             get { return dialog.TrackCount > 1; }
         }
-        
+
         public virtual Widget Widget {
             get { return this; }
         }
-        
+
         public Gtk.Widget TabWidget {
             get { return null; }
         }
-        
-        public virtual PageType PageType { 
+
+        public virtual PageType PageType {
             get { return PageType.Edit; }
         }
-    
-        public FieldSlot AddField (Box parent, Widget field, string syncTooltip, FieldLabelClosure labelClosure, 
+
+        public FieldSlot AddField (Box parent, Widget field, string syncTooltip, FieldLabelClosure labelClosure,
             FieldValueClosure readClosure, FieldValueClosure writeClosure)
         {
             return AddField (parent, EditorUtilities.CreateLabel (String.Empty), field, syncTooltip,
                 labelClosure, readClosure, writeClosure, FieldOptions.None);
         }
-        
-        public FieldSlot AddField (Box parent, Widget field, string syncTooltip, FieldLabelClosure labelClosure, 
+
+        public FieldSlot AddField (Box parent, Widget field, string syncTooltip, FieldLabelClosure labelClosure,
             FieldValueClosure readClosure, FieldValueClosure writeClosure, FieldOptions options)
         {
             return AddField (parent, EditorUtilities.CreateLabel (String.Empty), field, syncTooltip,
                 labelClosure, readClosure, writeClosure, options);
         }
-        
-        public FieldSlot AddField (Box parent, Widget label, Widget field, string syncTooltip, 
+
+        public FieldSlot AddField (Box parent, Widget label, Widget field, string syncTooltip,
             FieldLabelClosure labelClosure, FieldValueClosure readClosure, FieldValueClosure writeClosure)
         {
             return AddField (parent, label, field, syncTooltip, labelClosure, readClosure, writeClosure, FieldOptions.None);
         }
-        
-        public FieldSlot AddField (Box parent, Widget label, Widget field, string syncTooltip, FieldLabelClosure labelClosure, 
+
+        public FieldSlot AddField (Box parent, Widget label, Widget field, string syncTooltip, FieldLabelClosure labelClosure,
             FieldValueClosure readClosure, FieldValueClosure writeClosure, FieldOptions options)
         {
+            return AddField (parent, label, field, syncTooltip, labelClosure, readClosure, writeClosure, null, options);
+        }
+
+        public FieldSlot AddField (Box parent, Widget label, Widget field, string syncTooltip, FieldLabelClosure labelClosure,
+            FieldValueClosure readClosure, FieldValueClosure writeClosure, FieldValueClosure syncClosure, FieldOptions options)
+        {
             FieldSlot slot = new FieldSlot ();
-            
+
             slot.Parent = parent;
             slot.Label = label;
             slot.Field = field;
             slot.LabelClosure = labelClosure;
             slot.ReadClosure = readClosure;
             slot.WriteClosure = writeClosure;
+            slot.SyncClosure = syncClosure;
+
             if (MultipleTracks && (options & FieldOptions.NoSync) == 0) {
+                slot.Sync = delegate {
+                    dialog.ForeachNonCurrentTrack (delegate (EditorTrackInfo track) {
+                        (slot.SyncClosure ?? slot.WriteClosure) (track, slot.Field);
+                    });
+                };
+            }
+
+            if (MultipleTracks && (options & FieldOptions.NoSync) == 0 && (options & FieldOptions.NoShowSync) == 0) {
                 slot.SyncButton = new SyncButton ();
                 if (syncTooltip != null) {
                     TooltipSetter.Set (tooltip_host, slot.SyncButton, syncTooltip);
                 }
-                slot.SyncButton.Clicked += delegate {
-                    dialog.ForeachNonCurrentTrack (delegate (EditorTrackInfo track) {
-                        slot.WriteClosure (track, slot.Field);
-                    });
-                };
+
+                slot.SyncButton.Clicked += delegate { slot.Sync (); };
             }
-            
+
             Table table = new Table (1, 1, false);
             table.ColumnSpacing = 1;
-            
-            table.Attach (field, 0, 1, 1, 2, 
-                AttachOptions.Expand | AttachOptions.Fill, 
+
+            table.Attach (field, 0, 1, 1, 2,
+                AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Fill, 0, 0);
-                
+
             IEditorField editor_field = field as IEditorField;
             if (editor_field != null) {
                 editor_field.Changed += delegate {
@@ -160,10 +176,10 @@ namespace Banshee.Gui.TrackEditor
                     }
                 };
             }
-            
+
             if (slot.SyncButton != null) {
-                table.Attach (slot.SyncButton, 1, 2, 1, 2, 
-                    AttachOptions.Fill, 
+                table.Attach (slot.SyncButton, 1, 2, 1, 2,
+                    AttachOptions.Fill,
                     AttachOptions.Fill, 0, 0);
             }
 
@@ -172,12 +188,12 @@ namespace Banshee.Gui.TrackEditor
                     ((Label)label).MnemonicWidget = field;
                 }
                 table.Attach (label, 0, table.NColumns, 0, 1,
-                    AttachOptions.Fill | AttachOptions.Expand, 
+                    AttachOptions.Fill | AttachOptions.Expand,
                     AttachOptions.Fill, 0, 0);
             }
-                
+
             table.ShowAll ();
-            
+
             if ((options & FieldOptions.Shrink) == 0) {
                 slot.Container = table;
                 parent.PackStart (table, false, false, 0);
@@ -188,7 +204,7 @@ namespace Banshee.Gui.TrackEditor
                 shrink.PackStart (table, false, false, 0);
                 parent.PackStart (shrink, false, false, 0);
             }
-            
+
             field_slots.Add (slot);
             return slot;
         }
@@ -197,19 +213,19 @@ namespace Banshee.Gui.TrackEditor
         {
             field_slots.Remove (slot);
         }
-        
+
         public virtual void LoadTrack (EditorTrackInfo track)
         {
             current_track = null;
-            
+
             foreach (FieldSlot slot in field_slots) {
                 UpdateLabel (track, slot);
                 slot.ReadClosure (track, slot.Field);
             }
-            
+
             current_track = track;
         }
-        
+
         private void UpdateLabel (EditorTrackInfo track, FieldSlot slot)
         {
             Label label = slot.Label as Label;

@@ -63,11 +63,12 @@ namespace Banshee.Metadata
             );
         }
 
-        public bool WriteEnabled { get; set; }
+        public bool WriteMetadataEnabled { get; set; }
+        public bool WriteRatingsAndPlayCountsEnabled { get; set; }
         public bool RenameEnabled { get; set; }
 
         private HyenaSqliteCommand update_synced_at;
-    
+
         protected override void IterateCore (HyenaDataReader reader)
         {
             DatabaseTrackInfo track = DatabaseTrackInfo.Provider.Load (reader.Reader);
@@ -75,9 +76,9 @@ namespace Banshee.Metadata
             bool wrote = false;
             bool renamed = false;
             try {
-                if (WriteEnabled) {
+                if (WriteMetadataEnabled || WriteRatingsAndPlayCountsEnabled) {
                     Hyena.Log.DebugFormat ("Saving metadata for {0}", track);
-                    wrote = StreamTagger.SaveToFile (track);
+                    wrote = StreamTagger.SaveToFile (track, WriteMetadataEnabled, WriteRatingsAndPlayCountsEnabled);
                 }
 
                 if (RenameEnabled) {
@@ -114,7 +115,7 @@ namespace Banshee.Metadata
                 return false;
             }
 
-            string new_filename = FileNamePattern.BuildFull (source.BaseDirectory, track, System.IO.Path.GetExtension (old_uri.ToString ()));
+            string new_filename = track.FileNamePattern.BuildFull (source.BaseDirectory, track, System.IO.Path.GetExtension (old_uri.ToString ()));
             SafeUri new_uri = new SafeUri (new_filename);
 
             if (!new_uri.Equals (old_uri) && !Banshee.IO.File.Exists (new_uri)) {

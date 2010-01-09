@@ -27,22 +27,34 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Gtk;
 
 using Hyena;
+using Hyena.Data;
 using Hyena.Widgets;
+
+using Mono.Unix;
 
 using Banshee.Dap;
 using Banshee.Sources.Gui;
+using Banshee.ServiceStack;
+using Banshee.Preferences;
+using Banshee.Sources;
 using Banshee.Preferences.Gui;
+using Banshee.Widgets;
 
 namespace Banshee.Dap.Gui
 {
     public class DapContent : DapPropertiesDisplay
     {
+        private Label title;
+        private SimpleTable<DapLibrarySync> table;
+        private Dictionary<DapLibrarySync, LibrarySyncOptions> library_opts = new Dictionary<DapLibrarySync, LibrarySyncOptions> ();
         private DapSource dap;
-        
+
         // Ugh, this is to avoid the GLib.MissingIntPtrCtorException seen by some; BGO #552169
         protected DapContent (IntPtr ptr) : base (ptr)
         {
@@ -51,35 +63,78 @@ namespace Banshee.Dap.Gui
         public DapContent (DapSource source) : base (source)
         {
             dap = source;
+
             BuildWidgets ();
             BuildActions ();
+            dap.Properties.PropertyChanged += OnPropertyChanged;
+        }
+
+        public override void Dispose ()
+        {
+            foreach (var opt in library_opts.Values) {
+                opt.Dispose ();
+            }
+            library_opts.Clear ();
+
+            base.Dispose ();
         }
 
         private void BuildWidgets ()
         {
             HBox split_box = new HBox ();
             VBox content_box = new VBox ();
-            
+
             content_box.BorderWidth = 5;
-            
-            Label title = new Label ();
-            title.Markup = String.Format ("<span size=\"x-large\" weight=\"bold\">{0}</span>", dap.Name);
+
+            title = new Label ();
+            SetTitleText (dap.Name);
             title.Xalign = 0.0f;
-            
-            Banshee.Preferences.Gui.NotebookPage properties = new Banshee.Preferences.Gui.NotebookPage (dap.Preferences);
-            properties.BorderWidth = 0;
-            
+
+            // Define custom preference widgetry
+            var hbox = new HBox ();
+            table = new SimpleTable<DapLibrarySync> ();
+
+            dap.Sync.LibraryAdded += l => AddLibrary (l);
+            dap.Sync.LibraryRemoved += l => RemoveLibrary (l);
+
+            foreach (var sync in dap.Sync.Libraries) {
+                AddLibrary (sync);
+            }
+
+            hbox.PackStart (table, false, false, 0);
+            hbox.ShowAll ();
+            dap.Preferences["sync"]["library-options"].DisplayWidget = hbox;
+
+            var properties = new Banshee.Preferences.Gui.NotebookPage (dap.Preferences) {
+                BorderWidth = 0
+            };
+
             content_box.PackStart (title, false, false, 0);
             content_box.PackStart (properties, false, false, 0);
-            
-            Image image = new Image (LargeIcon);
-            image.Yalign = 0.0f;
-            
+
+            var image = new Image (LargeIcon) { Yalign = 0.0f };
+
             split_box.PackStart (image, false, true, 0);
             split_box.PackEnd (content_box, true, true, 0);
-            
+
             Add (split_box);
             ShowAll ();
+        }
+
+        private void AddLibrary (DapLibrarySync library_sync)
+        {
+            var opts = new LibrarySyncOptions (library_sync);
+            table.AddRow (library_sync, opts.RowCells);
+            table.ShowAll ();
+            library_opts.Add (library_sync, opts);
+        }
+
+        private void RemoveLibrary (DapLibrarySync library_sync)
+        {
+            table.RemoveRow (library_sync);
+            var opts = library_opts[library_sync];
+            library_opts.Remove (library_sync);
+            opts.Dispose ();
         }
 
         private void BuildActions ()
@@ -87,6 +142,17 @@ namespace Banshee.Dap.Gui
             if (actions == null) {
                 actions = new DapActions ();
             }
+        }
+
+        private void SetTitleText (string name)
+        {
+            title.Markup = String.Format ("<span size=\"x-large\" weight=\"bold\">{0}</span>", name);
+        }
+
+        private void OnPropertyChanged (object o, PropertyChangeEventArgs args)
+        {
+            if (args.PropertyName == "Name")
+                SetTitleText (args.NewValue.ToString ());
         }
 
         private static Banshee.Gui.BansheeActionGroup actions;

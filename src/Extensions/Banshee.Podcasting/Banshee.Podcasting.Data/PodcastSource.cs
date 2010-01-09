@@ -5,24 +5,24 @@
  *  Written by Mike Urbanski <michael.c.urbanski@gmail.com>
  ****************************************************************************/
 
-/*  THIS FILE IS LICENSED UNDER THE MIT LICENSE AS OUTLINED IMMEDIATELY BELOW: 
+/*  THIS FILE IS LICENSED UNDER THE MIT LICENSE AS OUTLINED IMMEDIATELY BELOW:
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a
- *  copy of this software and associated documentation files (the "Software"),  
- *  to deal in the Software without restriction, including without limitation  
- *  the rights to use, copy, modify, merge, publish, distribute, sublicense,  
- *  and/or sell copies of the Software, and to permit persons to whom the  
+ *  copy of this software and associated documentation files (the "Software"),
+ *  to deal in the Software without restriction, including without limitation
+ *  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ *  and/or sell copies of the Software, and to permit persons to whom the
  *  Software is furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in 
+ *  The above copyright notice and this permission notice shall be included in
  *  all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  *  DEALINGS IN THE SOFTWARE.
  */
 
@@ -54,11 +54,11 @@ using Banshee.Podcasting.Data;
 using Migo.Syndication;
 
 namespace Banshee.Podcasting.Gui
-{ 
+{
     public class PodcastSource : Banshee.Library.LibrarySource
     {
         private PodcastFeedModel feed_model;
-        
+
         public override string DefaultBaseDirectory {
             get {
                 // HACK there isn't an XDG_PODCASTS_DIR; propose it?
@@ -81,7 +81,11 @@ namespace Banshee.Podcasting.Gui
         public override bool CanDeleteTracks {
             get { return false; }
         }
-        
+
+        public override bool CanShuffle {
+            get { return false; }
+        }
+
         public PodcastFeedModel FeedModel {
             get { return feed_model; }
         }
@@ -99,18 +103,19 @@ namespace Banshee.Podcasting.Gui
             MediaTypes = TrackMediaAttributes.Podcast;
             NotMediaTypes = TrackMediaAttributes.AudioBook;
             SyncCondition = "(substr(CoreTracks.Uri, 0, 4) != 'http' AND CoreTracks.PlayCount = 0)";
+            TrackModel.Reloaded += OnReloaded;
 
             Properties.SetString ("Icon.Name", "podcast");
-            
+
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
             Properties.Set<System.Reflection.Assembly> ("ActiveSourceUIResource.Assembly", typeof(PodcastSource).Assembly);
-            
+
             Properties.SetString ("GtkActionPath", "/PodcastSourcePopup");
 
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", new PodcastSourceContents ());
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<PodcastSourceContents> ());
             Properties.Set<bool> ("Nereid.SourceContentsPropagate", true);
-            
+
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
                     <column-controller>
                       <add-all-defaults />
@@ -124,6 +129,8 @@ namespace Banshee.Podcasting.Gui
                       <column modify-default=""AlbumColumn"">
                         <title>{0}</title>
                         <long-title>{0}</long-title>
+                        <sort-key>PodcastTitle</sort-key>
+                        <renderer property=""ExternalObject.PodcastTitle""/>
                       </column>
                       <column>
                           <visible>true</visible>
@@ -159,7 +166,7 @@ namespace Banshee.Podcasting.Gui
                 Catalog.GetString ("Downloaded"), Catalog.GetString ("Description")
             ));
         }
-        
+
 #endregion
 
         private object GetPodcastInfoObject (DatabaseTrackInfo track)
@@ -171,7 +178,7 @@ namespace Banshee.Podcasting.Gui
         {
             return PodcastService.ArtworkIdFor (PodcastTrackInfo.From (track).Feed);
         }
-        
+
         protected override bool HasArtistAlbum {
             get { return false; }
         }
@@ -189,16 +196,23 @@ namespace Banshee.Podcasting.Gui
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
         {
             PodcastFeedModel feed_model;
-            yield return feed_model = new PodcastFeedModel (src, src.DatabaseTrackModel, ServiceManager.DbConnection, String.Format ("PodcastFeeds-{0}", src.UniqueId));
             yield return new PodcastUnheardFilterModel (src.DatabaseTrackModel);
             yield return new DownloadStatusFilterModel (src.DatabaseTrackModel);
+            yield return feed_model = new PodcastFeedModel (src, src.DatabaseTrackModel, ServiceManager.DbConnection, String.Format ("PodcastFeeds-{0}", src.UniqueId));
 
             if (src == this) {
                 this.feed_model = feed_model;
                 AfterInitialized ();
             }
         }
-        
+
+        void OnReloaded(object sender, EventArgs e)
+        {
+            for (int i=0; i < TrackModel.Count; i++) {
+                PodcastTrackInfo.From (TrackModel[i]);
+            }
+        }
+
         // Probably don't want this -- do we want to allow actually removing the item?  It will be
         // repopulated the next time we update the podcast feed...
         /*protected override void DeleteTrack (DatabaseTrackInfo track)
@@ -207,12 +221,12 @@ namespace Banshee.Podcasting.Gui
             if (episode != null) {
                 if (episode.Uri.IsFile)
                     base.DeleteTrack (track);
-                
+
                 episode.Delete ();
                 episode.Item.Delete (false);
             }
         }*/
-        
+
         /*protected override void AddTrack (DatabaseTrackInfo track)
         {
             // TODO
@@ -220,11 +234,11 @@ namespace Banshee.Podcasting.Gui
             // considered a Podcast item
             base.AddTrack (track);
         }*/
-        
+
         public override bool ShowBrowser {
             get { return true; }
         }
-        
+
         /*public override IEnumerable<SmartPlaylistDefinition> DefaultSmartPlaylists {
             get { return default_smart_playlists; }
         }

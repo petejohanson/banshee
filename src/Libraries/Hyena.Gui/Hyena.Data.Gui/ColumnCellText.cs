@@ -32,6 +32,7 @@ using Cairo;
 
 using Hyena.Gui;
 using Hyena.Gui.Theming;
+using Hyena.Data.Gui.Accessibility;
 
 namespace Hyena.Data.Gui
 {
@@ -40,48 +41,57 @@ namespace Hyena.Data.Gui
         internal const int Spacing = 4;
 
         public delegate string DataHandler ();
-    
+
         private Pango.Weight font_weight = Pango.Weight.Normal;
         private Pango.EllipsizeMode ellipsize_mode = Pango.EllipsizeMode.End;
         private Pango.Alignment alignment = Pango.Alignment.Left;
-        private double opacity = 1.0;
         private int text_width;
         private int text_height;
         private string text_format = null;
         protected string MinString, MaxString;
         private string last_text = null;
         private bool use_markup;
-        
+
         public ColumnCellText (string property, bool expand) : base (property, expand)
         {
         }
 
-        protected void SetMinMaxStrings (object min_max)
+        public override Atk.Object GetAccessible (ICellAccessibleParent parent)
+        {
+            return new ColumnCellTextAccessible (BoundObject, this, parent);
+        }
+
+        public override string GetTextAlternative (object obj)
+        {
+            return GetText (obj);
+        }
+
+        public void SetMinMaxStrings (object min_max)
         {
             SetMinMaxStrings (min_max, min_max);
         }
-        
-        protected void SetMinMaxStrings (object min, object max)
+
+        public void SetMinMaxStrings (object min, object max)
         {
             // Set the min/max strings from the min/max objects
             MinString = GetText (min);
             MaxString = GetText (max);
             RestrictSize = true;
         }
-    
+
         public override void Render (CellContext context, StateType state, double cellWidth, double cellHeight)
         {
             UpdateText (context, cellWidth);
             if (String.IsNullOrEmpty (last_text)) {
                 return;
             }
-            
+
             context.Context.Rectangle (0, 0, cellWidth, cellHeight);
             context.Context.Clip ();
             context.Context.MoveTo (Spacing, ((int)cellHeight - text_height) / 2);
             Cairo.Color color = context.Theme.Colors.GetWidgetColor (
                 context.TextAsForeground ? GtkColorClass.Foreground : GtkColorClass.Text, state);
-            color.A = (!context.Sensitive) ? 0.3 : opacity;
+            color.A = context.Opaque ? 1.0 : 0.5;
             context.Context.Color = color;
 
             PangoCairoHelper.ShowLayout (context.Context, context.Layout);
@@ -106,9 +116,13 @@ namespace Hyena.Data.Gui
             is_ellipsized = context.Layout.IsEllipsized;
         }
 
+        private static char[] lfcr = new char[] {'\n', '\r'};
         private void UpdateLayout (Pango.Layout layout, string text)
         {
             string final_text = GetFormattedText (text);
+            if (final_text.IndexOfAny (lfcr) >= 0) {
+                final_text = final_text.Replace ("\r\n", "\x20").Replace ('\n', '\x20').Replace ('\r', '\x20');
+            }
             if (use_markup) {
                 layout.SetMarkup (final_text);
             } else {
@@ -121,7 +135,7 @@ namespace Hyena.Data.Gui
             UpdateText (cellContext, columnWidth);
             return IsEllipsized ? GLib.Markup.EscapeText (Text) : null;
         }
-        
+
         protected virtual string GetText (object obj)
         {
             return obj == null ? String.Empty : obj.ToString ();
@@ -143,11 +157,11 @@ namespace Hyena.Data.Gui
         public string Text {
             get { return last_text; }
         }
-        
+
         protected int TextWidth {
             get { return text_width; }
         }
-        
+
         protected int TextHeight {
             get { return text_height; }
         }
@@ -156,27 +170,22 @@ namespace Hyena.Data.Gui
             get { return text_format; }
             set { text_format = value; }
         }
-        
+
         public Pango.Alignment Alignment {
             get { return alignment; }
             set { alignment = value; }
         }
-        
+
         public virtual Pango.Weight FontWeight {
             get { return font_weight; }
             set { font_weight = value; }
         }
-        
+
         public virtual Pango.EllipsizeMode EllipsizeMode {
             get { return ellipsize_mode; }
             set { ellipsize_mode = value; }
         }
-        
-        public virtual double Opacity {
-            get { return opacity; }
-            set { opacity = value; }
-        }
-        
+
         internal static int ComputeRowHeight (Widget widget)
         {
             int w_width, row_height;
@@ -187,13 +196,13 @@ namespace Hyena.Data.Gui
             return row_height + 8;
         }
 
-        #region ISizeRequestCell implementation 
-        
+        #region ISizeRequestCell implementation
+
         public void GetWidthRange (Pango.Layout layout, out int min, out int max)
         {
             int height;
             min = max = -1;
-            
+
             if (!String.IsNullOrEmpty (MinString)) {
                 UpdateLayout (layout, MinString);
                 layout.GetPixelSize (out min, out height);
@@ -208,7 +217,7 @@ namespace Hyena.Data.Gui
                 //Console.WriteLine ("for {0} got max {1} for {2}", this, max, MaxString);
             }
         }
-        
+
         private bool restrict_size = false;
         public bool RestrictSize {
             get { return restrict_size; }
@@ -219,7 +228,7 @@ namespace Hyena.Data.Gui
             get { return use_markup; }
             set { use_markup = value; }
         }
-        
+
         #endregion
     }
 }

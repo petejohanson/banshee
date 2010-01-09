@@ -41,10 +41,10 @@ namespace Banshee.Sources
     {
         private List<Message> messages = new List<Message> ();
         private Selection selection = new Selection ();
-        
+
         public event EventHandler Cleared;
         public event EventHandler Reloaded;
-        
+
         public ErrorSource (string name) : base (name, name, 0)
         {
             Properties.SetStringList ("Icon.Name", "dialog-error", "gtk-dialog-error");
@@ -58,7 +58,7 @@ namespace Banshee.Sources
             Parent.RemoveChildSource (this);
             return true;
         }
-        
+
         private void OnReloaded ()
         {
             ThreadAssist.ProxyToMain (delegate {
@@ -68,7 +68,7 @@ namespace Banshee.Sources
                 }
             });
         }
-        
+
         private void OnCleared ()
         {
             ThreadAssist.ProxyToMain (delegate {
@@ -78,46 +78,46 @@ namespace Banshee.Sources
                 }
             });
         }
-        
+
         private ColumnDescription [] columns = new ColumnDescription [] {
             new ColumnDescription ("Title", Catalog.GetString ("Error"), .35),
             new ColumnDescription ("Details", Catalog.GetString ("Details"), .65)
         };
-        
+
         public ColumnDescription [] ColumnDescriptions {
             get { return columns; }
         }
-        
+
         public override void Activate ()
         {
             Reload ();
         }
-        
+
         public void AddMessage (string title, string details)
         {
            AddMessage (new Message (title, details));
         }
-        
+
         public void AddMessage (Message message)
         {
             lock (this) {
                 messages.Add (message);
             }
-            
+
             OnUpdated ();
             OnReloaded ();
         }
-        
+
         public void Clear ()
         {
             lock (this) {
                 messages.Clear ();
             }
-            
+
             OnUpdated ();
             OnCleared ();
         }
-        
+
         public void Reload ()
         {
             OnReloaded ();
@@ -128,7 +128,7 @@ namespace Banshee.Sources
         }
 
         public bool CanReorder { get { return false; } }
-        
+
         public virtual bool CanUnmap {
             get { return true; }
         }
@@ -136,13 +136,13 @@ namespace Banshee.Sources
         public bool ConfirmBeforeUnmap {
             get { return false; }
         }
-        
+
         public object this[int index] {
             get {
                 if (index >= 0 && index < messages.Count) {
                     return messages[index];
-                } 
-                
+                }
+
                 return null;
             }
         }
@@ -150,22 +150,22 @@ namespace Banshee.Sources
         public Selection Selection {
             get { return selection; }
         }
-        
+
         public class Message
         {
             private string title;
             private string details;
-            
+
             public Message (string title, string details)
             {
                 this.title = title;
                 this.details = details;
             }
-            
+
             public string Title {
                 get { return title; }
             }
-            
+
             public string Details {
                 get { return details; }
             }

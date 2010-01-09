@@ -37,41 +37,43 @@ namespace Banshee.Library.Gui
         public FolderImportSource ()
         {
         }
-    
+
         public void Import()
         {
-            Banshee.Gui.Dialogs.FileChooserDialog chooser = new Banshee.Gui.Dialogs.FileChooserDialog (
-                Catalog.GetString ("Import Folder to Library"),
-                FileChooserAction.SelectFolder
-            );
-            
-            chooser.AddButton (Stock.Cancel, ResponseType.Cancel);
-            chooser.AddButton (Stock.Open, ResponseType.Ok);
-            chooser.SelectMultiple = true;
-            chooser.DefaultResponse = ResponseType.Ok;
-            FileImportSource.SetChooserShortcuts (chooser);
-            
+            var chooser = Banshee.Gui.Dialogs.FileChooserDialog.CreateForImport (Catalog.GetString ("Import Folders to Library"), false);
+
             if (chooser.Run () == (int)ResponseType.Ok) {
                 Banshee.ServiceStack.ServiceManager.Get<LibraryImportManager> ().Enqueue (chooser.Uris);
             }
-            
+
             chooser.Destroy ();
         }
-        
+
         public string Name {
-            get { return Catalog.GetString ("Local Folder"); }
+            get { return Catalog.GetString ("Local Folders"); }
         }
-        
+
+        public string ImportLabel {
+            get { return Catalog.GetString ("C_hoose Folders"); }
+        }
+
         public string [] IconNames {
             get { return new string [] { "gtk-open" }; }
         }
-        
+
         public bool CanImport {
             get { return true; }
         }
-        
+
         public int SortOrder {
             get { return 0; }
+        }
+
+        // Reserve strings in preparation for the forthcoming string freeze.
+        public void ReservedStrings ()
+        {
+            Catalog.GetString ("_Folders to import:");
+            Catalog.GetString ("Select Folders");
         }
     }
 }

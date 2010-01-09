@@ -34,42 +34,32 @@ using NDesk.DBus;
 
 namespace Banshee.Networking
 {
-    public enum State : uint {
-        Unknown = 0,
-        Asleep,
-        Connecting,
-        Connected,
-        Disconnected
-    }
-    
-    [Interface("org.freedesktop.NetworkManager")]
-    public interface INetworkManager
+    public class NetworkManager : INetworkAvailabilityService
     {
-        event StateChangeHandler StateChange;
-        State state();
-    }
-    
-    public delegate void StateChangeHandler(State state);
-    
-    public class NetworkManager
-    {
+        [Interface ("org.freedesktop.NetworkManager")]
+        private interface INetworkManager
+        {
+            event StateChangeHandler StateChange;
+            State state ();
+        }
+
         private const string BusName = "org.freedesktop.NetworkManager";
         private const string ObjectPath = "/org/freedesktop/NetworkManager";
 
         private INetworkManager manager;
-        
+
         public event StateChangeHandler StateChange;
 
         public NetworkManager()
         {
-            if(!Bus.System.NameHasOwner(BusName)) {
+            if (!ManagerPresent) {
                 throw new ApplicationException(String.Format("Name {0} has no owner", BusName));
             }
 
             manager = Bus.System.GetObject<INetworkManager>(BusName, new ObjectPath(ObjectPath));
             manager.StateChange += OnStateChange;
         }
-        
+
         private void OnStateChange(State state)
         {
             StateChangeHandler handler = StateChange;
@@ -80,6 +70,10 @@ namespace Banshee.Networking
 
         public State State {
             get { return manager.state(); }
+        }
+
+        public static bool ManagerPresent {
+            get { return Bus.System.NameHasOwner (BusName); }
         }
     }
 }

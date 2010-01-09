@@ -29,9 +29,11 @@
 using System;
 using Gtk;
 using Cairo;
+using Mono.Unix;
 
 using Hyena.Gui;
 using Hyena.Data.Gui;
+using Hyena.Data.Gui.Accessibility;
 using Banshee.Gui;
 
 using Banshee.Streaming;
@@ -40,83 +42,135 @@ using Banshee.ServiceStack;
 
 namespace Banshee.Collection.Gui
 {
-    public class ColumnCellStatusIndicator : ColumnCell
+    class ColumnCellStatusIndicatorAccessible : ColumnCellAccessible, Atk.ImageImplementor
     {
+        private string image_description;
+
+        public ColumnCellStatusIndicatorAccessible (object bound_object, ColumnCellStatusIndicator cell, ICellAccessibleParent parent) : base (bound_object, cell as ColumnCell, parent)
+        {
+            image_description = cell.GetTextAlternative (bound_object);
+        }
+
+        public override void Redrawn ()
+        {
+            string new_image_description = cell.GetTextAlternative (bound_object);
+
+#if ENABLE_ATK
+            if (image_description != new_image_description)
+                GLib.Signal.Emit (this, "visible-data-changed");
+#endif
+
+            image_description = new_image_description;
+        }
+
+        public string ImageLocale { get { return null; } }
+
+        public bool SetImageDescription (string description)
+        {
+            return false;
+        }
+
+        public void GetImageSize (out int width, out int height)
+        {
+            if (!String.IsNullOrEmpty (cell.GetTextAlternative (bound_object)))
+                width = height = 16;
+            else
+                width = height = Int32.MinValue;
+        }
+
+        public string ImageDescription {
+            get {
+                return image_description;
+            }
+        }
+
+        public void GetImagePosition (out int x, out int y, Atk.CoordType coordType)
+        {
+            if (!String.IsNullOrEmpty (cell.GetTextAlternative (bound_object))) {
+                GetPosition (out x, out y, coordType);
+                x += 4;
+                y += 4;
+            } else {
+                x = y = Int32.MinValue;
+            }
+        }
+    }
+
+    public class ColumnCellStatusIndicator : ColumnCell, ISizeRequestCell
+    {
+        const int padding = 2;
+
         protected enum Icon : int {
             Playing,
             Paused,
             Error,
             Protected
         }
-        
+
+        private string [] status_names;
+        protected string [] StatusNames {
+            get { return status_names; }
+        }
+
         private int pixbuf_size = 16;
         protected virtual int PixbufSize {
             get { return pixbuf_size; }
             set { pixbuf_size = value; }
         }
-        
+
         private int pixbuf_spacing = 4;
         protected virtual int PixbufSpacing {
             get { return pixbuf_spacing; }
             set { pixbuf_spacing = value; }
         }
-        
+
         private Gdk.Pixbuf [] pixbufs;
         protected Gdk.Pixbuf [] Pixbufs {
             get { return pixbufs; }
         }
-        
+
         public ColumnCellStatusIndicator (string property) : this (property, true)
         {
         }
-        
+
         public ColumnCellStatusIndicator (string property, bool expand) : base (property, expand)
         {
             LoadPixbufs ();
+            RestrictSize = true;
         }
-        
+
+        public bool RestrictSize { get; set; }
+
+        public void GetWidthRange (Pango.Layout layout, out int min_width, out int max_width)
+        {
+            min_width = max_width = pixbuf_size + 2 * padding;
+        }
+
+        public override Atk.Object GetAccessible (ICellAccessibleParent parent)
+        {
+            return new ColumnCellStatusIndicatorAccessible (BoundObject, this, parent);
+        }
+
+        public override string GetTextAlternative (object obj)
+        {
+            var track = obj as TrackInfo;
+            if (track == null)
+                return "";
+
+            int icon_index = GetIconIndex (track);
+
+            if ((icon_index < 0) || (icon_index >= status_names.Length))
+                return "";
+            else
+                return status_names[icon_index];
+        }
+
         protected virtual int PixbufCount {
             get { return 4; }
         }
-        
+
         protected virtual int GetIconIndex (TrackInfo track)
         {
-            return -1;
-        }
-        
-        protected virtual void LoadPixbufs ()
-        {
-            if (pixbufs != null && pixbufs.Length > 0) {
-                for (int i = 0; i < pixbufs.Length; i++) {
-                    if (pixbufs[i] != null) {
-                        pixbufs[i].Dispose ();
-                        pixbufs[i] = null;
-                    }
-                }
-            }
-            
-            if (pixbufs == null) {
-                pixbufs = new Gdk.Pixbuf[PixbufCount];
-            }
-            
-            pixbufs[(int)Icon.Playing] = IconThemeUtils.LoadIcon (PixbufSize, "media-playback-start");
-            pixbufs[(int)Icon.Paused] = IconThemeUtils.LoadIcon (PixbufSize, "media-playback-pause");
-            pixbufs[(int)Icon.Error] = IconThemeUtils.LoadIcon (PixbufSize, "emblem-unreadable", "dialog-error");
-            pixbufs[(int)Icon.Protected] = IconThemeUtils.LoadIcon (PixbufSize, "emblem-readonly", "dialog-error");
-        }
-        
-        public override void NotifyThemeChange ()
-        {
-            LoadPixbufs ();
-        }
-
-        public override void Render (CellContext context, StateType state, double cellWidth, double cellHeight)
-        {
-            TrackInfo track = BoundTrack;
-            if (track == null) {
-                return;
-            }
-            
             int icon_index = -1;
 
             if (track.PlaybackError != StreamPlaybackError.None) {
@@ -128,28 +182,77 @@ namespace Banshee.Collection.Gui
                     ? Icon.Paused
                     : Icon.Playing);
             } else {
-                icon_index = GetIconIndex (track);
+                icon_index = -1;
             }
-            
+
+            return icon_index;
+        }
+
+        protected virtual void LoadPixbufs ()
+        {
+            if (pixbufs != null && pixbufs.Length > 0) {
+                for (int i = 0; i < pixbufs.Length; i++) {
+                    if (pixbufs[i] != null) {
+                        pixbufs[i].Dispose ();
+                        pixbufs[i] = null;
+                    }
+                }
+            }
+
+            if (pixbufs == null) {
+                pixbufs = new Gdk.Pixbuf[PixbufCount];
+            }
+
+            pixbufs[(int)Icon.Playing]   = IconThemeUtils.LoadIcon (PixbufSize, "media-playback-start");
+            pixbufs[(int)Icon.Paused]    = IconThemeUtils.LoadIcon (PixbufSize, "media-playback-pause");
+            pixbufs[(int)Icon.Error]     = IconThemeUtils.LoadIcon (PixbufSize, "emblem-unreadable", "dialog-error");
+            pixbufs[(int)Icon.Protected] = IconThemeUtils.LoadIcon (PixbufSize, "emblem-readonly", "dialog-error");
+
+            if (status_names == null) {
+                status_names = new string[PixbufCount];
+                for (int i=0; i<PixbufCount; i++)
+                    status_names[i] = "";
+            }
+
+            status_names[(int)Icon.Playing]   = Catalog.GetString ("Playing");
+            status_names[(int)Icon.Paused]    = Catalog.GetString ("Paused");
+            status_names[(int)Icon.Error]     = Catalog.GetString ("Error");
+            status_names[(int)Icon.Protected] = Catalog.GetString ("Protected");
+        }
+
+        public override void NotifyThemeChange ()
+        {
+            LoadPixbufs ();
+        }
+
+        public override void Render (CellContext context, StateType state, double cellWidth, double cellHeight)
+        {
+            TrackInfo track = BoundTrack;
+            if (track == null) {
+                return;
+            }
+
+            int icon_index = GetIconIndex (track);
+
             if (icon_index < 0 || pixbufs == null || pixbufs[icon_index] == null) {
                 return;
             }
-            
+
             context.Context.Translate (0, 0.5);
-            
+
             Gdk.Pixbuf render_pixbuf = pixbufs[icon_index];
-            
-            Cairo.Rectangle pixbuf_area = new Cairo.Rectangle ((cellWidth - render_pixbuf.Width) / 2, 
+
+            Cairo.Rectangle pixbuf_area = new Cairo.Rectangle ((cellWidth - render_pixbuf.Width) / 2,
                 (cellHeight - render_pixbuf.Height) / 2, render_pixbuf.Width, render_pixbuf.Height);
-            
-            if (!context.Sensitive) {
+
+            if (!context.Opaque) {
                 context.Context.Save ();
             }
-            
+
             Gdk.CairoHelper.SetSourcePixbuf (context.Context, render_pixbuf, pixbuf_area.X, pixbuf_area.Y);
             context.Context.Rectangle (pixbuf_area);
-            
-            if (!context.Sensitive) {
+
+            if (!context.Opaque) {
                 context.Context.Clip ();
                 context.Context.PaintWithAlpha (0.5);
                 context.Context.Restore ();
@@ -157,7 +260,7 @@ namespace Banshee.Collection.Gui
                 context.Context.Fill ();
             }
         }
-        
+
         protected TrackInfo BoundTrack {
             get { return BoundObject as TrackInfo; }
         }

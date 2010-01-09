@@ -1,4 +1,4 @@
-// 
+//
 // FileChooserDialog.cs
 //
 // Author:
@@ -30,30 +30,56 @@ using System;
 using Gtk;
 
 using Banshee.Configuration;
+using Banshee.ServiceStack;
 
 namespace Banshee.Gui.Dialogs
 {
     public class FileChooserDialog : Gtk.FileChooserDialog
     {
-        public FileChooserDialog (string title, FileChooserAction action) : this (title, null, action)
-        {            
+        public static FileChooserDialog CreateForImport (string title, bool files)
+        {
+            var chooser = new Banshee.Gui.Dialogs.FileChooserDialog (
+                title,
+                ServiceManager.Get<Banshee.Gui.GtkElementsService> ().PrimaryWindow,
+                files ? FileChooserAction.Open : FileChooserAction.SelectFolder
+            );
+
+            chooser.DefaultResponse = ResponseType.Ok;
+            chooser.SelectMultiple = true;
+
+            chooser.AddButton (Stock.Cancel, ResponseType.Cancel);
+            // Translators: verb
+            chooser.AddButton (Mono.Unix.Catalog.GetString("I_mport"), ResponseType.Ok);
+
+            Hyena.Gui.GtkUtilities.SetChooserShortcuts (chooser,
+                ServiceManager.SourceManager.MusicLibrary.BaseDirectory,
+                ServiceManager.SourceManager.VideoLibrary.BaseDirectory
+            );
+
+            return chooser;
         }
-        
-        public FileChooserDialog (string title, Window parent, FileChooserAction action) : 
+
+        public FileChooserDialog (string title, FileChooserAction action) : this (title, null, action)
+        {
+        }
+
+        public FileChooserDialog (string title, Window parent, FileChooserAction action) :
             base (title, parent, action)
         {
+            LocalOnly = Banshee.IO.Provider.LocalOnly;
             SetCurrentFolderUri (LastFileChooserUri.Get (Environment.GetFolderPath (Environment.SpecialFolder.Personal)));
+            WindowPosition = WindowPosition.Center;
         }
-        
+
         protected override void OnResponse (ResponseType response)
         {
             base.OnResponse (response);
-            
+
             if (CurrentFolderUri != null) {
                 LastFileChooserUri.Set (CurrentFolderUri);
             }
         }
-        
+
         public static readonly SchemaEntry<string> LastFileChooserUri = new SchemaEntry<string> (
             "player_window", "last_file_chooser_uri",
             String.Empty,

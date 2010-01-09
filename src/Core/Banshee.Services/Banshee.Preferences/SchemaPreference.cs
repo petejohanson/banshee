@@ -38,32 +38,42 @@ namespace Banshee.Preferences
     {
         private SchemaEntry<T> schema;
         private SchemaPreferenceUpdatedHandler handler;
-        
+
         public SchemaPreference (SchemaEntry<T> schema, string name) : this (schema, name, null)
         {
         }
-        
-        public SchemaPreference (SchemaEntry<T> schema, string name, string description) 
+
+        public SchemaPreference (SchemaEntry<T> schema, string name, string description)
             : this (schema, name, description, null)
         {
         }
-        
-        public SchemaPreference (SchemaEntry<T> schema, string name, string description, SchemaPreferenceUpdatedHandler handler) 
+
+        public SchemaPreference (SchemaEntry<T> schema, string name, string description, SchemaPreferenceUpdatedHandler handler)
             : base (schema.Key, name, description)
         {
             this.schema = schema;
             this.handler = handler;
         }
-        
+
         public override T Value {
             get { return schema.Get (); }
-            set { 
-                schema.Set (value); 
+            set {
+                if (!schema.Set (value)) {
+                    return;
+                }
                 if (handler != null) {
                     handler ();
                 }
                 OnValueChanged ();
             }
+        }
+
+        public T MinValue {
+            get { return schema.MinValue; }
+        }
+
+        public T MaxValue {
+            get { return schema.MaxValue; }
         }
     }
 }

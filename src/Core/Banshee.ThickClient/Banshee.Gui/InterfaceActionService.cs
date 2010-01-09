@@ -52,11 +52,11 @@ namespace Banshee.Gui
         private PlaybackActions playback_actions;
         private TrackActions    track_actions;
         private SourceActions   source_actions;
-        
+
         private BansheeActionGroup active_source_actions;
         private uint active_source_uiid = 0;
-        
-        public InterfaceActionService () : base ()
+
+        public InterfaceActionService ()
         {
             ServiceManager.SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
         }
@@ -86,12 +86,12 @@ namespace Banshee.Gui
                 UIManager.RemoveUi (active_source_uiid);
                 active_source_uiid = 0;
             }
-                
+
             if (active_source_actions != null) {
                 RemoveActionGroup (active_source_actions.Name);
                 active_source_actions = null;
             }
-            
+
             Source active_source = ServiceManager.SourceManager.ActiveSource;
             if (active_source == null) {
                 return;
@@ -103,31 +103,31 @@ namespace Banshee.Gui
             if (active_source_actions != null) {
                 AddActionGroup (active_source_actions);
             }
-                
-            Assembly assembly = 
+
+            Assembly assembly =
                 active_source.GetProperty<Assembly> ("ActiveSourceUIResource.Assembly", propagate) ??
                 Assembly.GetAssembly (active_source.GetType ());
 
             active_source_uiid = AddUiFromFile (active_source.GetProperty<string> ("ActiveSourceUIResource", propagate), assembly);
         }
 
-        private void OnExtensionChanged (object o, ExtensionNodeEventArgs args) 
+        private void OnExtensionChanged (object o, ExtensionNodeEventArgs args)
         {
             try {
                 TypeExtensionNode node = (TypeExtensionNode)args.ExtensionNode;
-                
+
                 if (args.Change == ExtensionChange.Add) {
                     if (!extension_actions.ContainsKey (node.Id)) {
                         ActionGroup group = (ActionGroup)node.CreateInstance (typeof (ActionGroup));
                         extension_actions[node.Id] = group;
                         AddActionGroup (group);
-                        Log.DebugFormat ("Extension actions loaded: {0}", node.Type);
+                        Log.DebugFormat ("Extension actions loaded: {0}", node.Id);
                     }
                 } else if (args.Change == ExtensionChange.Remove) {
                     if (extension_actions.ContainsKey (node.Id)) {
                         extension_actions[node.Id].Dispose ();
                         extension_actions.Remove (node.Id);
-                        Log.DebugFormat ("Extension actions unloaded: {0}", node.Type);
+                        Log.DebugFormat ("Extension actions unloaded: {0}", node.Id);
                     }
                 }
             } catch (Exception e) {
@@ -135,10 +135,36 @@ namespace Banshee.Gui
             }
         }
 
+<<<<<<< HEAD:src/Core/Banshee.ThickClient/Banshee.Gui/InterfaceActionService.cs
+=======
+        public uint AddUiFromFileInCurrentAssembly (string ui_file)
+        {
+            return AddUiFromFile (ui_file, Assembly.GetCallingAssembly ());
+        }
+
+        public uint AddUiFromFile (string ui_file, Assembly assembly)
+        {
+            if (ui_file != null) {
+                using (StreamReader reader = new StreamReader (assembly.GetManifestResourceStream (ui_file))) {
+                    return ui_manager.AddUiFromString (reader.ReadToEnd ());
+                }
+            }
+            return 0;
+        }
+
+        public Action this[string actionId] {
+            get { return FindAction (actionId); }
+        }
+
+        public UIManager UIManager {
+            get { return ui_manager; }
+        }
+
+>>>>>>> master:src/Core/Banshee.ThickClient/Banshee.Gui/InterfaceActionService.cs
         public GlobalActions GlobalActions {
             get { return global_actions; }
         }
-        
+
         public PlaybackActions PlaybackActions {
             get { return playback_actions; }
         }
@@ -150,11 +176,11 @@ namespace Banshee.Gui
         public SourceActions SourceActions {
             get { return source_actions; }
         }
-        
+
         public ViewActions ViewActions {
             get { return view_actions; }
         }
-        
+
         string IService.ServiceName {
             get { return "InterfaceActionService"; }
         }

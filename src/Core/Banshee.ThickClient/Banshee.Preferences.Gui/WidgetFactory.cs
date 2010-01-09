@@ -46,10 +46,10 @@ namespace Banshee.Preferences.Gui
 
             Widget widget = preference.DisplayWidget as Widget;
             //OnPreferenceChanged (preference);
-            
+
             return widget ?? GetWidget (preference, preference.GetType ().GetProperty ("Value").PropertyType);
         }
-        
+
         private static Widget GetWidget (PreferenceBase preference, Type type)
         {
             Widget pref_widget = null;
@@ -58,6 +58,13 @@ namespace Banshee.Preferences.Gui
                 pref_widget = new PreferenceCheckButton (preference);
             } else if (type == typeof (string)) {
                 pref_widget = new PreferenceEntry (preference);
+            } else if (type == typeof (int)) {
+                var schema_preference = preference as SchemaPreference<int>;
+                if (schema_preference == null) {
+                    pref_widget = new PreferenceSpinButton (preference);
+                } else {
+                    pref_widget = new PreferenceSpinButton (preference, schema_preference.MinValue, schema_preference.MaxValue);
+                }
             }
 
             if (pref_widget != null) {
@@ -89,7 +96,7 @@ namespace Banshee.Preferences.Gui
                     });
                 };
             }
-            
+
             return widget ?? pref_widget;
         }
 
@@ -98,15 +105,15 @@ namespace Banshee.Preferences.Gui
             if (preference == null) {
                 return null;
             }
-            
+
             return preference.MnemonicWidget as Widget;
         }
-        
+
         private class PreferenceCheckButton : CheckButton
         {
             private bool sync;
             private PreferenceBase preference;
-            
+
             public PreferenceCheckButton (PreferenceBase preference)
             {
                 this.preference = preference;
@@ -115,22 +122,22 @@ namespace Banshee.Preferences.Gui
                 Active = (bool)preference.BoxedValue;
                 sync = true;
             }
-            
+
             protected override void OnToggled ()
             {
                 base.OnToggled ();
-                
+
                 if (sync) {
                     preference.BoxedValue = Active;
                 }
             }
         }
-        
+
         private class PreferenceEntry : Entry
         {
             private bool sync;
             private PreferenceBase preference;
-            
+
             public PreferenceEntry (PreferenceBase preference)
             {
                 this.preference = preference;
@@ -138,14 +145,39 @@ namespace Banshee.Preferences.Gui
                 Text = value ?? String.Empty;
                 sync = true;
             }
-            
+
             protected override void OnChanged ()
             {
                 base.OnChanged ();
-                
+
                 if (sync) {
                     preference.BoxedValue = Text;
                 }
+            }
+        }
+
+        private class PreferenceSpinButton : HBox
+        {
+            private bool sync;
+            private PreferenceBase preference;
+
+            public PreferenceSpinButton (PreferenceBase preference) : this (preference, 0, 100)
+            {
+            }
+
+            public PreferenceSpinButton (PreferenceBase preference, int min_value, int max_value)
+            {
+                var spin_button = new SpinButton (min_value, max_value, 1);
+                spin_button.ValueChanged += delegate {
+                    if (sync) {
+                        this.preference.BoxedValue = (int)spin_button.Value;
+                    }
+                };
+                spin_button.Show ();
+                PackEnd (spin_button, false, false, 0);
+                this.preference = preference;
+                spin_button.Value = (int)preference.BoxedValue;
+                sync = true;
             }
         }
     }

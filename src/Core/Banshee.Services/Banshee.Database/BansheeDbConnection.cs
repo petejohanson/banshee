@@ -65,7 +65,7 @@ namespace Banshee.Database
 
             migrator = new BansheeDbFormatMigrator (this);
             configuration = new DatabaseConfigurationClient (this);
-            
+
             if (ApplicationContext.CommandLine.Contains ("debug-sql")) {
                 Hyena.Data.Sqlite.HyenaSqliteCommand.LogAll = true;
                 WarnIfCalledFromThread = ThreadAssist.MainThread;
@@ -83,9 +83,15 @@ namespace Banshee.Database
                 } catch (Exception e) {
                     Log.Exception ("Error determining if ANALYZE is necessary", e);
                 }
-                
+
                 // Update cached sorting keys
-                SortKeyUpdater.Update ();
+                BeginTransaction ();
+                try {
+                    SortKeyUpdater.Update ();
+                    CommitTransaction ();
+                } catch {
+                    RollbackTransaction ();
+                }
             }
         }
 
@@ -96,7 +102,7 @@ namespace Banshee.Database
             string [] tables_with_indexes = {"CoreTracks", "CoreArtists", "CoreAlbums",
                 "CorePlaylistEntries", "PodcastItems", "PodcastEnclosures",
                 "PodcastSyndications", "CoverArtDownloads"};
-            
+
             if (TableExists ("sqlite_stat1")) {
                 foreach (string table_name in tables_with_indexes) {
                     if (TableExists (table_name)) {
@@ -115,13 +121,13 @@ namespace Banshee.Database
             } else {
                 needs_analyze = true;
             }
-            
+
             if (needs_analyze) {
                 Log.DebugFormat ("Running ANALYZE against database to improve performance");
                 Execute ("ANALYZE");
             }
         }
- 
+
         public BansheeDbFormatMigrator Migrator {
             get { lock (this) { return migrator; } }
         }
@@ -131,16 +137,16 @@ namespace Banshee.Database
                 if (ApplicationContext.CommandLine.Contains ("db")) {
                     return ApplicationContext.CommandLine["db"];
                 }
-                
+
                 string proper_dbfile = Path.Combine (Paths.ApplicationData, "banshee.db");
                 if (File.Exists (proper_dbfile)) {
                     return proper_dbfile;
                 }
 
                 string dbfile = Path.Combine (Path.Combine (Environment.GetFolderPath (
-                    Environment.SpecialFolder.ApplicationData), 
-                    "banshee"), 
-                    "banshee.db"); 
+                    Environment.SpecialFolder.ApplicationData),
+                    "banshee"),
+                    "banshee.db");
 
                 if (!File.Exists (dbfile)) {
                     string tdbfile = Path.Combine (Path.Combine (Path.Combine (Environment.GetFolderPath (
@@ -151,12 +157,12 @@ namespace Banshee.Database
 
                     dbfile = tdbfile;
                 }
-                
+
                 if (File.Exists (dbfile)) {
                     Log.InformationFormat ("Copying your old Banshee Database to {0}", proper_dbfile);
                     File.Copy (dbfile, proper_dbfile);
                 }
-                
+
                 return proper_dbfile;
             }
         }

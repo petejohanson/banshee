@@ -67,13 +67,13 @@ namespace Banshee.Library
         public override bool ShowBrowser {
             get { return false; }
         }
-        
+
         protected override bool HasArtistAlbum {
             get { return false; }
         }
-        
+
         public override string DefaultBaseDirectory {
-            get { return Hyena.XdgBaseDirectorySpec.GetUserDirectory ("XDG_VIDEOS_DIR", "Videos"); }
+            get { return Hyena.XdgBaseDirectorySpec.GetXdgDirectoryUnderHome ("XDG_VIDEOS_DIR", "Videos"); }
         }
 
         public override IEnumerable<SmartPlaylistDefinition> DefaultSmartPlaylists {

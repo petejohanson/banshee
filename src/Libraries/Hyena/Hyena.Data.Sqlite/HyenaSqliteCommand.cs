@@ -45,13 +45,13 @@ namespace Hyena.Data.Sqlite
             StackTrace = stackTrace;
             Ms = ms;
         }
-        
+
         public string Sql;
         public string SqlWithValues;
         public string StackTrace;
         public long Ms;
     }
-    
+
     public class HyenaSqliteCommand
     {
         private object result = null;
@@ -73,7 +73,7 @@ namespace Hyena.Data.Sqlite
             get { return log_all; }
             set { log_all = value; }
         }
-        
+
         public delegate void CommandExecutedHandler (object o, CommandExecutedArgs args);
         public static event CommandExecutedHandler CommandExecuted;
 
@@ -81,11 +81,7 @@ namespace Hyena.Data.Sqlite
             get { return command; }
         }
 
-        private HyenaCommandType command_type;
-        internal HyenaCommandType CommandType {
-            get { return command_type; }
-            set { command_type = value; }
-        }
+        internal HyenaCommandType CommandType;
 
 #endregion
 
@@ -118,7 +114,7 @@ namespace Hyena.Data.Sqlite
                     if (log_all)
                         ticks = System.Environment.TickCount;
 
-                    switch (command_type) {
+                    switch (CommandType) {
                         case HyenaCommandType.Reader:
                             using (SqliteDataReader reader = sql_command.ExecuteReader ()) {
                                 result = new HyenaSqliteArrayDataReader (reader);
@@ -159,18 +155,20 @@ namespace Hyena.Data.Sqlite
                 conn.ResultReadySignal.WaitOne ();
             }
 
+            // Reference the results since they could be overwritten
             object ret = result;
-            
+            var exception = execution_exception;
+
             // Reset to false in case run again
             finished = false;
 
             conn.ClaimResult ();
             finished_event.Set ();
 
-            if (execution_exception != null) {
-                throw execution_exception;
+            if (exception != null) {
+                throw exception;
             }
-            
+
             return ret;
         }
 

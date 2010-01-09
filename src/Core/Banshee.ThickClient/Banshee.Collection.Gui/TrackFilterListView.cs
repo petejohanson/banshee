@@ -38,17 +38,17 @@ using Banshee.Gui;
 
 namespace Banshee.Collection.Gui
 {
-    public class TrackFilterListView<T> : ListView<T>
+    public class TrackFilterListView<T> : SearchableListView<T>
     {
         protected ColumnController column_controller;
-        
+
         public TrackFilterListView () : base ()
         {
             column_controller = new ColumnController ();
 
             ForceDragSourceSet = true;
             HeaderVisible = false;
-            
+
             RowActivated += OnRowActivated;
         }
 
@@ -78,7 +78,7 @@ namespace Banshee.Collection.Gui
             ServiceManager.Get<InterfaceActionService> ().TrackActions.SuppressSelectActions ();
             return base.OnFocusInEvent(evnt);
         }
-        
+
         protected override bool OnFocusOutEvent(Gdk.EventFocus evnt)
         {
             ServiceManager.Get<InterfaceActionService> ().TrackActions.UnsuppressSelectActions ();

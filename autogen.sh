@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PROJECT=banshee
 
@@ -15,7 +15,7 @@ function check_autotool_version () {
 	version=$($1 --version | head -n 1 | cut -f4 -d' ')
 	major=$(echo $version | cut -f1 -d.)
 	minor=$(echo $version | cut -f2 -d.)
-	rev=$(echo $version | cut -f3 -d.)
+	rev=$(echo $version | cut -f3 -d. | sed 's/[^0-9].*$//')
 	major_check=$(echo $2 | cut -f1 -d.)
 	minor_check=$(echo $2 | cut -f2 -d.)
 	rev_check=$(echo $2 | cut -f3 -d.)

@@ -37,13 +37,15 @@ namespace Banshee.Dap.MassStorage
     {
         public static MassStorageDevice Map (MassStorageSource source)
         {
+            var u = source.UsbDevice;
+
             foreach (VendorProductDeviceNode node in AddinManager.GetExtensionNodes (
                 "/Banshee/Dap/MassStorage/Device")) {
-                short vendor_id = (short)source.UsbDevice.VendorId;
-                short product_id = (short)source.UsbDevice.ProductId;
-                
+                short vendor_id = (short)u.VendorId;
+                short product_id = (short)u.ProductId;
+
                 if (node.Matches (vendor_id, product_id)) {
-                    CustomMassStorageDevice device = (CustomMassStorageDevice)node.CreateInstance (); 
+                    CustomMassStorageDevice device = (CustomMassStorageDevice)node.CreateInstance ();
                     device.VendorProductInfo = new VendorProductInfo (
                         node.VendorName, node.ProductName,
                         vendor_id, product_id);
@@ -51,7 +53,18 @@ namespace Banshee.Dap.MassStorage
                     return device;
                 }
             }
-            
+
+            // Look for 'Android' in the product/name/uuid/serial of the device to identify
+            // other Android devices
+            foreach (var str in new string [] { u.Product, u.Name, u.Uuid, u.Serial }) {
+                if (str != null && str.ToLower ().Contains ("android")) {
+                    return new AndroidDevice () {
+                        VendorProductInfo = new VendorProductInfo (u.Vendor, u.Name ?? u.Product, (short)u.VendorId, (short)u.ProductId),
+                        Source = source
+                    };
+                }
+            }
+
             return new MassStorageDevice (source);
         }
     }

@@ -32,7 +32,7 @@ namespace Banshee.IO.Unix
 {
     public class Provider : Banshee.IO.IProvider
     {
-    	public Type FileProvider { 
+    	public Type FileProvider {
     	    get { return typeof (File); }
     	}
 
@@ -43,5 +43,7 @@ namespace Banshee.IO.Unix
     	public Type DemuxVfsProvider {
     	    get { return typeof (DemuxVfs); }
     	}
+
+        public bool LocalOnly { get { return true; } }
     }
 }

@@ -35,6 +35,7 @@ using Mono.Unix;
 
 using Hyena;
 using Hyena.Data.Sqlite;
+using Hyena.Query;
 
 using Banshee.Database;
 
@@ -42,10 +43,11 @@ namespace Banshee.Collection.Database
 {
     public class DatabaseAlbumListModel : DatabaseFilterListModel<DatabaseAlbumInfo, AlbumInfo>
     {
-        public DatabaseAlbumListModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel, BansheeDbConnection connection, string uuid) 
+        public DatabaseAlbumListModel (Banshee.Sources.DatabaseSource source, DatabaseTrackListModel trackModel, BansheeDbConnection connection, string uuid)
             : base (Banshee.Query.BansheeQuery.AlbumField.Name, Banshee.Query.BansheeQuery.AlbumField.Label,
                     source, trackModel, connection, DatabaseAlbumInfo.Provider, new AlbumInfo (null), uuid)
         {
+            QueryFields = new QueryFieldSet (Banshee.Query.BansheeQuery.AlbumField);
             ReloadFragmentFormat = @"
                 FROM CoreAlbums WHERE CoreAlbums.AlbumID IN
                         (SELECT CoreTracks.AlbumID FROM CoreTracks, CoreCache{0}
@@ -53,16 +55,16 @@ namespace Banshee.Collection.Database
                                   CoreCache.ItemId = {2} {3})
                     ORDER BY CoreAlbums.TitleSortKey, CoreAlbums.ArtistNameSortKey";
         }
-        
+
         public override string FilterColumn {
             get { return "CoreTracks.AlbumID"; }
         }
-        
+
         protected override string ItemToFilterValue (object item)
         {
             return (item is DatabaseAlbumInfo) ? (item as DatabaseAlbumInfo).DbId.ToString () : null;
         }
-        
+
         public override void UpdateSelectAllItem (long count)
         {
             select_all_item.Title = String.Format (Catalog.GetString ("All Albums ({0})"), count);

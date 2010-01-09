@@ -73,7 +73,7 @@ namespace Banshee.Podcasting.Gui
                 ? GetSort ("PublishedDate", false)
                 : GetSort (SortColumn.SortKey, SortColumn.SortType == Hyena.Data.SortType.Ascending);
         }
-        
+
         public override void UpdateUnfilteredAggregates ()
         {
             HyenaSqliteCommand count_command = new HyenaSqliteCommand (String.Format (
@@ -90,6 +90,11 @@ namespace Banshee.Podcasting.Gui
                 case "PublishedDate":
                     sort_query = String.Format (@"
                         PodcastItems.PubDate {0}", ascDesc);
+                    break;
+
+                case "PodcastTitle":
+                    sort_query = String.Format (@"
+                        HYENA_COLLATION_KEY(PodcastSyndications.Title) {0}, PodcastItems.PubDate DESC", ascDesc);
                     break;
 
                 case "IsNew":

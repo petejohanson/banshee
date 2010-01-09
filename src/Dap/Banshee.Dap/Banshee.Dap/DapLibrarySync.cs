@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Mono.Unix;
@@ -44,42 +45,47 @@ using Banshee.SmartPlaylist;
 using Banshee.Query;
 
 namespace Banshee.Dap
-{ 
+{
     public sealed class DapLibrarySync
     {
         private DapSync sync;
         private LibrarySource library;
         private string conf_ns;
         private SchemaEntry<bool> enabled, sync_entire_library;
-        private SchemaEntry<string[]> playlist_ids;
-        private SchemaPreference<bool> enabled_pref;
+        private SchemaEntry<string> sync_source;
         private SmartPlaylistSource sync_src, to_add, to_remove;
-        private Section library_prefs_section;
-        
+
         #region Public Properties
 
         public bool Enabled {
-            get { return sync.Enabled && enabled.Get (); }
-        }
-        
-        public bool SyncEntireLibrary {
-            get { return sync_entire_library.Get (); }
+            get { return enabled.Get (); }
+            set { enabled.Set (value); }
         }
 
-        public Section PrefsSection {
-            get { return library_prefs_section; }
+        public bool SyncEntireLibrary {
+            get { return sync_entire_library.Get (); }
+            set { sync_entire_library.Set (value); }
         }
 
         public LibrarySource Library {
             get { return library; }
         }
-        
+
         #endregion
-        
-        public string [] SyncPlaylistIds {
-            get { return playlist_ids.Get (); }
+
+        public DatabaseSource SyncSource {
+            get {
+                var id = sync_source.Get ();
+                return library.Children.Where (c => c is Banshee.Playlist.AbstractPlaylistSource).FirstOrDefault (c => c.UniqueId == id) as DatabaseSource;
+            }
+            set { sync_source.Set (value.UniqueId); }
         }
-        
+
+        public void MaybeTriggerAutoSync ()
+        {
+            sync.MaybeTriggerAutoSync ();
+        }
+
         private IList<AbstractPlaylistSource> GetSyncPlaylists ()
         {
             List<AbstractPlaylistSource> playlists = new List<AbstractPlaylistSource> ();
@@ -94,7 +100,7 @@ namespace Banshee.Dap
         internal string SmartPlaylistId {
             get { return sync_src.DbId.ToString (); }
         }
-        
+
         internal DapLibrarySync (DapSync sync, LibrarySource library)
         {
             this.sync = sync;
@@ -119,20 +125,15 @@ namespace Banshee.Dap
         private void BuildPreferences ()
         {
             conf_ns = String.Format ("{0}.{1}", sync.ConfigurationNamespace, library.ParentConfigurationId);
-            
-            enabled = sync.Dap.CreateSchema<bool> (conf_ns, "enabled", true,
+
+            enabled = sync.Dap.CreateSchema<bool> (conf_ns, "enabled", sync.LegacyManuallyManage.Get (),
                 String.Format (Catalog.GetString ("Sync {0}"), library.Name), "");
-            
+
             sync_entire_library = sync.Dap.CreateSchema<bool> (conf_ns, "sync_entire_library", true,
                 "Whether to sync the entire library and all playlists.", "");
-            
-            playlist_ids = sync.Dap.CreateSchema<string[]> (conf_ns, "playlist_ids", new string [0],
-                "If sync_entire_library is false, this contains a list of playlist ids specifically to sync", "");
 
-            library_prefs_section = new Section (String.Format ("{0} sync", library.Name), library.Name, 0);
-            enabled_pref = library_prefs_section.Add<bool> (enabled);
-            enabled_pref.ShowDescription = true;
-            enabled_pref.ShowLabel = false;
+            sync_source = sync.Dap.CreateSchema<string> (conf_ns, "sync_source", null,
+                "If sync_entire_library is false, this contains the source to sync from", "");
         }
 
         private void BuildSyncLists ()
@@ -160,34 +161,31 @@ namespace Banshee.Dap
             to_remove.Save ();
             to_remove.AddCondition (library.AttributesCondition);
             to_remove.AddCondition (String.Format (
-                @"MetadataHash NOT IN (SELECT MetadataHash FROM CoreTracks, CoreSmartPlaylistEntries 
+                @"MetadataHash NOT IN (SELECT MetadataHash FROM CoreTracks, CoreSmartPlaylistEntries
                     WHERE CoreSmartPlaylistEntries.SmartPlaylistID = {0} AND
                         CoreTracks.TrackID = CoreSmartPlaylistEntries.TrackID)",
                 sync_src.DbId
             ));
         }
-        
+
         internal void CalculateSync ()
         {
             if (SyncEntireLibrary) {
                 sync_src.ConditionTree = null;
-            }/* else if (SyncPlaylistIds.Length > 0) {
+            } else if (SyncSource != null) {
+                var src = SyncSource;
                 QueryListNode playlists_node = new QueryListNode (Keyword.Or);
-                foreach (AbstractPlaylistSource src in SyncPlaylists) {
-                    if (src is PlaylistSource) {
-                        playlists_node.AddChild (UserQueryParser.Parse (String.Format ("playlistid:{0}", src.DbId), BansheeQuery.FieldSet));
-                    } else if (src is SmartPlaylistSource) {
-                        playlists_node.AddChild (UserQueryParser.Parse (String.Format ("smartplaylistid:{0}", src.DbId), BansheeQuery.FieldSet));
-                    }
+                if (src is PlaylistSource) {
+                    playlists_node.AddChild (UserQueryParser.Parse (String.Format ("playlistid:{0}", (src as PlaylistSource).DbId), BansheeQuery.FieldSet));
+                } else if (src is SmartPlaylistSource) {
+                    playlists_node.AddChild (UserQueryParser.Parse (String.Format ("smartplaylistid:{0}", (src as SmartPlaylistSource).DbId), BansheeQuery.FieldSet));
                 }
                 sync_src.ConditionTree = playlists_node;
-            }*/
+            }
+
             sync_src.RefreshAndReload ();
             to_add.RefreshAndReload ();
             to_remove.RefreshAndReload ();
-            enabled_pref.Name = String.Format ("{0} ({1})",
-                enabled.ShortDescription,
-                String.Format (Catalog.GetString ("{0} to add, {1} to remove"), to_add.Count, to_remove.Count));
         }
 
         public override string ToString ()
@@ -195,7 +193,7 @@ namespace Banshee.Dap
             return String.Format ("Sync calculated for {1}: to add: {0} items, remove {2} items; sync_src.cacheid = {5}, to_add.cacheid = {3}, to_remove.cacheid = {4}", to_add.Count, library.Name, to_remove.Count,
                                   to_add.DatabaseTrackModel.CacheId, to_remove.DatabaseTrackModel.CacheId, sync_src.DatabaseTrackModel.CacheId);
         }
-        
+
         internal void Sync ()
         {
             if (Enabled) {
@@ -220,7 +218,7 @@ namespace Banshee.Dap
                         ServiceManager.DbConnection.Execute (
                             String.Format (
                                 @"INSERT INTO CorePlaylistEntries (PlaylistID, TrackID)
-                                    SELECT ?, TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND MetadataHash IN 
+                                    SELECT ?, TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND MetadataHash IN
                                         (SELECT MetadataHash FROM {0} WHERE {1})",
                                 from.DatabaseTrackModel.ConditionFromFragment, from.DatabaseTrackModel.Condition),
                             to.DbId, sync.Dap.DbId
@@ -239,6 +237,13 @@ namespace Banshee.Dap
                 CalculateSync ();
                 sync.OnUpdated ();
             }
+        }
+
+        // Reserve strings in preparation for the forthcoming string freeze.
+        public void ReservedStrings ()
+        {
+            // Note to translators: {0}, {1} and {2} will be replaced with numbers.
+            Catalog.GetString ("{0} to add, {1} to remove, {2} to update");
         }
     }
 }

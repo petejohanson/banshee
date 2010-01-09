@@ -15,11 +15,18 @@ AC_DEFUN([BANSHEE_CHECK_DAP_MTP],
 	fi
 
 	if test "x$enable_libmtp" = "xyes"; then
-		LIBMTP_SO_MAP=$(basename $(find $($PKG_CONFIG --variable=libdir libmtp) -maxdepth 1 -regex '.*libmtp\.so\.\w+$' | sort | tail -n 1))
+		LIBMTP_SO_MAP=$(basename $(find $($PKG_CONFIG --variable=libdir libmtp) -maxdepth 1 -regex '.*libmtp\.so\.[[0-9]][[0-9]]*$' | sort | tail -n 1))
 		AC_SUBST(LIBMTP_SO_MAP)
+		AC_CHECK_MEMBER([struct LIBMTP_track_struct.modificationdate],
+				LIBMTP_HAS_MODDATE=yes,
+				LIBMTP_HAS_MODDATE=no,
+				[[#include <libmtp.h>]])
 	fi
 
 	AM_CONDITIONAL(ENABLE_MTP, test "x$enable_libmtp" = "xyes")
 	AM_CONDITIONAL(LIBMTP_EIGHT, test "x$LIBMTP_SO_MAP" = "xlibmtp.so.8")
+	AM_CONDITIONAL(LIBMTP_TRACK_STRUCT_HAS_MODDATE, [test "$LIBMTP_HAS_MODDATE" = "yes"])
+	AC_CHECK_SIZEOF(time_t)
+	AM_CONDITIONAL(LIBMTP_SIZEOF_TIME_T_64, [test "x$ac_cv_sizeof_time_t" = "x8"])
 ])
 

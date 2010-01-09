@@ -26,7 +26,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
- 
+
 using System;
 using System.Data;
 using System.Threading;
@@ -43,12 +43,12 @@ namespace Hyena.Data.Sqlite
         public IDataReader Reader {
             get { return reader; }
         }
-        
+
         public HyenaDataReader (IDataReader reader)
         {
             this.reader = reader;
         }
-        
+
         public T Get<T> (int i)
         {
             if (!read) {
@@ -56,20 +56,20 @@ namespace Hyena.Data.Sqlite
             }
             return (T) SqliteUtils.FromDbFormat (typeof(T), reader[i]);
         }
-        
+
         public bool Read ()
         {
             read = true;
             return reader.Read ();
         }
-        
+
         public void Dispose ()
         {
             reader.Dispose ();
             reader = null;
         }
     }
-    
+
     public class ExecutingEventArgs : EventArgs
     {
         public readonly SqliteCommand Command;
@@ -78,7 +78,7 @@ namespace Hyena.Data.Sqlite
             Command = command;
         }
     }
-    
+
     public enum HyenaCommandType {
         Reader,
         Scalar,
@@ -100,7 +100,7 @@ namespace Hyena.Data.Sqlite
         private volatile bool dispose_requested = false;
         private volatile int results_ready = 0;
         private AutoResetEvent queue_signal = new AutoResetEvent (false);
-        private ManualResetEvent result_ready_signal = new ManualResetEvent (false);
+        internal ManualResetEvent ResultReadySignal = new ManualResetEvent (false);
 
         private volatile Thread transaction_thread = null;
         private ManualResetEvent transaction_signal = new ManualResetEvent (true);
@@ -111,12 +111,8 @@ namespace Hyena.Data.Sqlite
             set { warn_if_called_from_thread = value; }
         }
 
-        internal ManualResetEvent ResultReadySignal {
-            get { return result_ready_signal; }
-        }
-        
         public event EventHandler<ExecutingEventArgs> Executing;
-        
+
         public HyenaSqliteConnection(string dbpath)
         {
             this.dbpath = dbpath;
@@ -129,7 +125,7 @@ namespace Hyena.Data.Sqlite
 #region Public Query Methods
 
         // TODO special case for single object param to avoid object []
-                
+
         // SELECT multiple column queries
         public IDataReader Query (HyenaSqliteCommand command)
         {
@@ -149,7 +145,7 @@ namespace Hyena.Data.Sqlite
         {
             return Query (new HyenaSqliteCommand (command_str, param_values));
         }
-        
+
         public IDataReader Query (object command)
         {
             return Query (new HyenaSqliteCommand (command.ToString ()));
@@ -180,7 +176,7 @@ namespace Hyena.Data.Sqlite
         {
             return QueryEnumerable<T> (new HyenaSqliteCommand (command_str, param_values));
         }
-        
+
         public IEnumerable<T> QueryEnumerable<T> (object command)
         {
             return QueryEnumerable<T> (new HyenaSqliteCommand (command.ToString ()));
@@ -218,14 +214,14 @@ namespace Hyena.Data.Sqlite
         {
             command.CommandType = HyenaCommandType.Execute;;
             QueueCommand(command);
-            return (int) command.WaitForResult (this);
+            return Convert.ToInt32 (command.WaitForResult (this));
         }
 
         public int Execute (HyenaSqliteCommand command, params object [] param_values)
         {
             command.CommandType = HyenaCommandType.Execute;;
             QueueCommand(command, param_values);
-            return (int) command.WaitForResult (this);
+            return Convert.ToInt32 (command.WaitForResult (this));
         }
 
         public int Execute (string command_str, params object [] param_values)
@@ -241,7 +237,7 @@ namespace Hyena.Data.Sqlite
 #endregion
 
 #region Public Utility Methods
-        
+
         public void BeginTransaction ()
         {
             if (transaction_thread == Thread.CurrentThread) {
@@ -276,7 +272,7 @@ namespace Hyena.Data.Sqlite
             lock (command_queue) {
                 transaction_thread = null;
                 // Let any other threads continue
-                transaction_signal.Set (); 
+                transaction_signal.Set ();
             }
         }
 
@@ -290,9 +286,9 @@ namespace Hyena.Data.Sqlite
 
             lock (command_queue) {
                 transaction_thread = null;
-            
+
                 // Let any other threads continue
-                transaction_signal.Set (); 
+                transaction_signal.Set ();
             }
         }
 
@@ -300,17 +296,17 @@ namespace Hyena.Data.Sqlite
         {
             return Exists ("table", tableName);
         }
-        
+
         public bool IndexExists (string indexName)
         {
             return Exists ("index", indexName);
         }
-        
+
         private bool Exists (string type, string name)
         {
             return Exists (type, name, "sqlite_master") || Exists (type, name, "sqlite_temp_master");
         }
-        
+
         private bool Exists (string type, string name, string master)
         {
             return Query<int> (String.Format (
@@ -320,7 +316,7 @@ namespace Hyena.Data.Sqlite
         }
 
         private delegate void SchemaHandler (string column);
-        
+
         private void SchemaClosure (string table_name, SchemaHandler code)
         {
             string sql = Query<string> (String.Format (
@@ -335,7 +331,7 @@ namespace Hyena.Data.Sqlite
                 code (column_def_t.Substring (0, ws_index));
             }
         }
-        
+
         public bool ColumnExists (string tableName, string columnName)
         {
             bool value = false;
@@ -347,7 +343,7 @@ namespace Hyena.Data.Sqlite
             });
             return value;
         }
-        
+
         private static readonly char [] ws_chars = new char [] { ' ', '\t', '\n', '\r' };
         public IDictionary<string, string> GetSchema (string table_name)
         {
@@ -402,20 +398,20 @@ namespace Hyena.Data.Sqlite
         internal void ClaimResult ()
         {
             lock (command_queue) {
-                results_ready++;
+                results_ready--;
                 if (results_ready == 0) {
-                    result_ready_signal.Reset ();
+                    ResultReadySignal.Reset ();
                 }
             }
         }
 
         private void ProcessQueue()
-        {         
+        {
             if (connection == null) {
                 connection = new SqliteConnection (String.Format ("Version=3,URI=file:{0}", dbpath));
                 connection.Open ();
             }
-            
+
             // Keep handling queries
             while (!dispose_requested) {
                 while (command_queue.Count > 0) {
@@ -443,7 +439,7 @@ namespace Hyena.Data.Sqlite
 
                     lock (command_queue) {
                         results_ready++;
-                        result_ready_signal.Set ();
+                        ResultReadySignal.Set ();
                     }
                 }
 
@@ -453,7 +449,7 @@ namespace Hyena.Data.Sqlite
             // Finish
             connection.Close ();
         }
-        
+
         internal void OnExecuting (SqliteCommand command)
         {
             EventHandler<ExecutingEventArgs> handler = Executing;

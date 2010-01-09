@@ -145,7 +145,6 @@
     <Compile Include="Banshee.Web\Browser.cs" />
     <Compile Include="Banshee.Streaming\RadioTrackInfo.cs" />
     <Compile Include="Banshee.Equalizer\EqualizerSetting.cs" />
-    <Compile Include="Banshee.Equalizer\EqualizerSettingEvent.cs" />
     <Compile Include="Banshee.Equalizer\EqualizerManager.cs" />
     <Compile Include="Banshee.MediaEngine\IEqualizer.cs" />
     <Compile Include="Banshee.Sources\ErrorSource.cs" />
@@ -171,7 +170,10 @@
     <Compile Include="Banshee.Metadata.Rhapsody\RhapsodyMetadataProvider.cs" />
     <Compile Include="Banshee.Metadata.Rhapsody\RhapsodyQueryJob.cs" />
     <Compile Include="Banshee.Networking\Network.cs" />
+    <Compile Include="Banshee.Networking\State.cs" />
     <Compile Include="Banshee.Networking\NetworkManager.cs" />
+    <Compile Include="Banshee.Networking\Wicd.cs" />
+    <Compile Include="Banshee.Networking\INetworkAvailabilityService.cs" />
     <Compile Include="Banshee.Database\BansheeModelProvider.cs" />
     <Compile Include="Banshee.Database\BansheeModelCache.cs" />
     <Compile Include="Banshee.PlaybackController\IPlaybackController.cs" />
@@ -219,7 +221,6 @@
     <Compile Include="Banshee.Collection\MemoryTrackListModel.cs" />
     <Compile Include="Banshee.MediaEngine\IAudioCdRipper.cs" />
     <Compile Include="Banshee.Collection.Database\DatabaseImportManager.cs" />
-    <Compile Include="Banshee.ServiceStack\InterfaceAction.cs" />
     <Compile Include="Banshee.MediaProfiles\MediaProfileManager.cs" />
     <Compile Include="Banshee.MediaProfiles\Pipeline.cs" />
     <Compile Include="Banshee.MediaProfiles\PipelineVariable.cs" />
@@ -296,6 +297,9 @@
     <Compile Include="Banshee.PlatformServices\IScreensaverManager.cs" />
     <Compile Include="Banshee.Collection.Database\RandomByScore.cs" />
     <Compile Include="Banshee.Collection.Database\RandomBySlot.cs" />
+    <Compile Include="Banshee.Query\PlaybackErrorQueryValue.cs" />
+    <Compile Include="Banshee.Collection.Database\Shuffler.cs" />
+    <Compile Include="Banshee.Web\BaseHttpServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Services.addin.xml" />

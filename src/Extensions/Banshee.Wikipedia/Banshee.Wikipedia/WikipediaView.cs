@@ -53,14 +53,6 @@ namespace Banshee.Wikipedia
         {
             view = new WebView ();
 
-            view.ConsoleMessage += delegate (object o, ConsoleMessageArgs args) {
-                Log.Debug (args.Message);
-            };
-
-            /*view.LoadProgressChanged += delegate (object o, LoadProgressChangedArgs args) {
-                Log.DebugFormat ("LoadProgress: {0}", args.Progress);
-            };*/
-
             Add (view);
         }
 

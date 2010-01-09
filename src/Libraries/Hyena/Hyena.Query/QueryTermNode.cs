@@ -48,11 +48,12 @@ namespace Hyena.Query
             string field_alias = field_set.FindAlias (token);
             if (field_alias != null) {
                 term.Field = field_set [field_alias];
+                string token_without_field = token.Substring (field_alias.Length);
 
                 foreach (QueryValue val in term.Field.CreateQueryValues ()) {
                     term.Value = val;
 
-                    string op_alias = term.Value.OperatorSet.FindAlias (token);
+                    string op_alias = term.Value.OperatorSet.FindAlias (token_without_field);
                     if (op_alias != null) {
                         term.Operator = term.Value.OperatorSet [op_alias];
                         int field_separator = token.IndexOf (op_alias);
@@ -90,7 +91,7 @@ namespace Hyena.Query
             }
             return this;
         }
-        
+
         public override void AppendUserQuery (StringBuilder sb)
         {
             sb.Append (Field == null ? Value.ToUserQuery () : Field.ToTermString (Operator.PrimaryAlias, Value.ToUserQuery ()));
@@ -118,13 +119,13 @@ namespace Hyena.Query
             if (Field == null) {
                 sb.Append ("(");
                 int emitted = 0;
-                
+
                 foreach (QueryField field in fieldSet.Fields) {
                     if (field.IsDefault)
                         if (EmitTermMatch (sb, field, emitted > 0))
                             emitted++;
                 }
-                
+
                 sb.Append (")");
             } else {
                 EmitTermMatch (sb, Field, false);
@@ -154,7 +155,7 @@ namespace Hyena.Query
             get { return op; }
             set { op = value; }
         }
-        
+
         public QueryValue Value {
             get { return qvalue; }
             set { qvalue = value; }

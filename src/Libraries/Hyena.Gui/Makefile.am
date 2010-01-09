@@ -3,6 +3,13 @@ ASSEMBLY_BUILD_FLAGS = -unsafe
 TARGET = library
 LINK = $(REF_HYENA_GUI)
 SOURCES =  \
+	Hyena.Data.Gui/Accessibility/ColumnCellAccessible.cs \
+	Hyena.Data.Gui/Accessibility/ColumnCellTextAccessible.cs \
+	Hyena.Data.Gui/Accessibility/ColumnHeaderCellTextAccessible.cs \
+	Hyena.Data.Gui/Accessibility/ICellAccessibleParent.cs \
+	Hyena.Data.Gui/Accessibility/ListViewAccessible.cs \
+	Hyena.Data.Gui/Accessibility/ListViewAccessible_Selection.cs \
+	Hyena.Data.Gui/Accessibility/ListViewAccessible_Table.cs \
 	Hyena.Data.Gui/CellContext.cs \
 	Hyena.Data.Gui/Column.cs \
 	Hyena.Data.Gui/ColumnCell.cs \
@@ -18,6 +25,7 @@ SOURCES =  \
 	Hyena.Data.Gui/ITextCell.cs \
 	Hyena.Data.Gui/ITooltipCell.cs \
 	Hyena.Data.Gui/ListView/ListView.cs \
+	Hyena.Data.Gui/ListView/ListView_Accessible.cs \
 	Hyena.Data.Gui/ListView/ListView_DragAndDrop.cs \
 	Hyena.Data.Gui/ListView/ListView_Header.cs \
 	Hyena.Data.Gui/ListView/ListView_Interaction.cs \
@@ -42,6 +50,7 @@ SOURCES =  \
 	Hyena.Gui.Theming/Theme.cs \
 	Hyena.Gui.Theming/ThemeContext.cs \
 	Hyena.Gui.Theming/ThemeEngine.cs \
+	Hyena.Gui/BaseWidgetAccessible.cs \
 	Hyena.Gui/CairoExtensions.cs \
 	Hyena.Gui/CleanRoomStartup.cs \
 	Hyena.Gui/CompositeUtils.cs \
@@ -82,6 +91,7 @@ SOURCES =  \
 	Hyena.Widgets/ComplexMenuItem.cs \
 	Hyena.Widgets/GenericToolItem.cs \
 	Hyena.Widgets/HigMessageDialog.cs \
+	Hyena.Widgets/EntryPopup.cs \
 	Hyena.Widgets/ImageButton.cs \
 	Hyena.Widgets/MenuButton.cs \
 	Hyena.Widgets/MessageBar.cs \
@@ -91,6 +101,7 @@ SOURCES =  \
 	Hyena.Widgets/RoundedFrame.cs \
 	Hyena.Widgets/ScrolledWindow.cs \
 	Hyena.Widgets/SegmentedBar.cs \
+	Hyena.Widgets/SimpleTable.cs \
 	Hyena.Widgets/SmoothScrolledWindow.cs \
 	Hyena.Widgets/TextViewEditable.cs \
 	Hyena.Widgets/WrapLabel.cs

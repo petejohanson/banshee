@@ -3,8 +3,11 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Alexander Kojevnikov <alexander@kojevnikov.com>
+//   Gabriel Burt <gburt@novell.com>
 //
-// Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2005-2009 Novell, Inc.
+// Copyright (C) 2009 Alexander Kojevnikov
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -32,252 +35,191 @@ using System.Collections.Generic;
 using System.IO;
 using Mono.Unix;
 
-using Banshee.Collection;
+using Banshee.Configuration;
 using Banshee.Configuration.Schema;
+using Banshee.Collection;
 
 namespace Banshee.Base
 {
-    public static class FileNamePattern
+    public class FileNamePattern
     {
-        public delegate string ExpandTokenHandler (ITrackInfo track, object replace);
+        public delegate string ExpandTokenHandler (TrackInfo track, object replace);
         public delegate string FilterHandler (string path);
-        
-        public static FilterHandler Filter;
-        
-        public struct Conversion
-        {
-            private string token;
-            private string name;
-            private ExpandTokenHandler handler;
-            
-            public Conversion (string token, string name, ExpandTokenHandler handler)
-            {
-                this.token = token;
-                this.name = name;
-                this.handler = handler;
-            }
-            
-            public string Token {
-                get { return token; }
-            }
-            
-            public string Name {
-                get { return name; }
-            }
-            
-            public ExpandTokenHandler Handler {
-                get { return handler; }
-            }
-        }
-    
-        private static SortedList<string, Conversion> conversion_table;
 
-        public static void AddConversion (string token, string name, ExpandTokenHandler handler)
+        public FilterHandler Filter;
+
+        private SortedList<string, Conversion> conversion_table = new SortedList<string, Conversion> ();
+
+        public FileNamePattern ()
+        {
+        }
+
+        public void AddConversion (string token, string name, ExpandTokenHandler handler)
         {
             conversion_table.Add (token, new Conversion (token, name, handler));
         }
-        
-        static FileNamePattern ()
-        {
-            conversion_table = new SortedList<string, Conversion> ();
-            
-            AddConversion ("track_artist", Catalog.GetString ("Track Artist"),
-                delegate (ITrackInfo t, object r) {
-                    return Escape (t == null ? (string)r : t.DisplayArtistName);
-            });
 
-            AddConversion ("album_artist", Catalog.GetString ("Album Artist"),
-                delegate (ITrackInfo t, object r) {
-                    return Escape (t == null ? (string)r : t.DisplayAlbumArtistName);
-            });
-
-            // Alias for %album_artist%
-            AddConversion ("artist", Catalog.GetString ("Album Artist"),
-                delegate (ITrackInfo t, object r) {
-                    return Escape (t == null ? (string)r : t.DisplayAlbumArtistName);
-            });
-
-            AddConversion ("album_artist_initial", Catalog.GetString("Album Artist Initial"),
-                delegate (ITrackInfo t, object r) {
-                    return Escape (t == null ? (string)r : t.DisplayAlbumArtistName.Substring(0, 1));
-            });
-
-            AddConversion ("genre", Catalog.GetString ("Genre"),  
-                delegate (ITrackInfo t, object r) {
-                    return Escape (t == null ? (string)r : t.DisplayGenre);
-            });
-
-            AddConversion ("album", Catalog.GetString ("Album"),  
-                delegate (ITrackInfo t, object r) {
-                    return Escape (t == null ? (string)r : t.DisplayAlbumTitle);
-            });
-            
-            AddConversion ("title", Catalog.GetString ("Title"),  
-                delegate (ITrackInfo t, object r) {
-                    return Escape (t == null ? (string)r : t.DisplayTrackTitle);
-            });
-             
-            AddConversion ("year", Catalog.GetString ("Year"),  
-                delegate (ITrackInfo t, object r) {
-                    return String.Format ("{0}", t == null ? (int)r : t.Year);
-            });
-             
-            AddConversion ("track_count", Catalog.GetString ("Count"),  
-                delegate (ITrackInfo t, object r) {
-                    return String.Format ("{0:00}", t == null ? (int)r : t.TrackCount);
-            });
-             
-            AddConversion ("track_number", Catalog.GetString ("Number"),  
-                delegate (ITrackInfo t, object r) {
-                    return String.Format ("{0:00}", t == null ? (int)r : t.TrackNumber);
-            });
-             
-            AddConversion ("track_count_nz", Catalog.GetString ("Count (unsorted)"),  
-                delegate (ITrackInfo t, object r) {
-                    return String.Format ("{0}", t == null ? (int)r : t.TrackCount);
-            });
-             
-            AddConversion ("track_number_nz", Catalog.GetString ("Number (unsorted)"),  
-                delegate (ITrackInfo t, object r) {
-                    return String.Format ("{0}", t == null ? (int)r : t.TrackNumber);
-            });
-            
-            AddConversion ("path_sep", Path.DirectorySeparatorChar.ToString (),
-                delegate (ITrackInfo t, object r) {
-                    return Path.DirectorySeparatorChar.ToString ();
-            });
-        }
-        
-        public static IEnumerable<Conversion> PatternConversions {
+        public IEnumerable<Conversion> PatternConversions {
             get { return conversion_table.Values; }
         }
-        
-        public static string DefaultFolder {
-            get { return "%album_artist%%path_sep%%album%"; }
+
+        public virtual IEnumerable<TrackInfo> SampleTracks {
+            get { yield return new SampleTrackInfo (); }
         }
-        
-        public static string DefaultFile {
-            get { return "%track_number%. %title%"; }
-        }
-        
-        public static string DefaultPattern {
+
+        public string DefaultFolder { get; set; }
+        public string DefaultFile   { get; set; }
+
+        public string DefaultPattern {
             get { return CreateFolderFilePattern (DefaultFolder, DefaultFile); }
         }
-        
-        private static string [] suggested_folders = new string [] {
-            DefaultFolder,
-            "%album_artist%%path_sep%%album_artist% - %album%",
-            "%album_artist%%path_sep%%album% (%year%)",
-            "%album_artist% - %album%",
-            "%album%",
-            "%album_artist%"
-        };
-        
-        public static string [] SuggestedFolders {
-            get { return suggested_folders; }
-        }
-    
-        private static string [] suggested_files = new string [] {
-            DefaultFile,
-            "%track_number%. %track_artist% - %title%",
-            "%track_artist% - %title%",
-            "%track_artist% - %track_number% - %title%",
-            "%track_artist% (%album%) - %track_number% - %title%",
-            "%title%"
-        };
-        
-        public static string [] SuggestedFiles {
-            get { return suggested_files; }
-        }
-        
-        private static string OnFilter (string input)
+
+        public SchemaEntry<string> FileSchema { get; set; }
+        public SchemaEntry<string> FolderSchema { get; set; }
+
+        public string [] SuggestedFolders { get; set; }
+        public string [] SuggestedFiles   { get; set; }
+
+        private string OnFilter (string input)
         {
             string repl_pattern = input;
-            
+
             FilterHandler filter_handler = Filter;
             if (filter_handler != null) {
                 repl_pattern = filter_handler (repl_pattern);
             }
-            
+
             return repl_pattern;
         }
 
-        public static string CreateFolderFilePattern (string folder, string file)
+        public string CreateFolderFilePattern (string folder, string file)
         {
             return String.Format ("{0}%path_sep%{1}", folder, file);
         }
 
-        public static string CreatePatternDescription (string pattern)
+        public string CreatePatternDescription (string pattern)
         {
-            string repl_pattern = pattern;
-            foreach (Conversion conversion in PatternConversions) {
-                repl_pattern = repl_pattern.Replace ("%" + conversion.Token + "%", conversion.Name);
-            }
-            return OnFilter (repl_pattern);
+            pattern = Convert (pattern, conversion => conversion.Name);
+            return OnFilter (pattern);
         }
 
-        public static string CreateFromTrackInfo (ITrackInfo track)
+        public string CreateFromTrackInfo (TrackInfo track)
         {
             string pattern = null;
 
             try {
-                pattern = CreateFolderFilePattern (
-                    LibrarySchema.FolderPattern.Get (),
-                    LibrarySchema.FilePattern.Get ()
-                );
-            } catch {
-            }
+                pattern = CreateFolderFilePattern (FolderSchema.Get (), FileSchema.Get ());
+            } catch {}
 
             return CreateFromTrackInfo (pattern, track);
         }
 
-        public static string CreateFromTrackInfo (string pattern, ITrackInfo track)
+        public string CreateFromTrackInfo (string pattern, TrackInfo track)
         {
-            string repl_pattern;
-
             if (pattern == null || pattern.Trim () == String.Empty) {
-                repl_pattern = DefaultPattern;
-            } else {
-                repl_pattern = pattern;
+                pattern = DefaultPattern;
             }
 
-            foreach (Conversion conversion in PatternConversions) {
-                repl_pattern = repl_pattern.Replace ("%" + conversion.Token + "%", 
-                    conversion.Handler (track, null));
-            }
-            
-            return OnFilter (repl_pattern);
+            pattern = Convert (pattern, conversion => conversion.Handler (track, null));
+
+            return OnFilter (pattern);
         }
 
-        public static string BuildFull (string base_dir, TrackInfo track)
+        private static Regex optional_tokens_regex = new Regex ("{([^}]*)}", RegexOptions.Compiled);
+
+        public string Convert (string pattern, Func<Conversion, string> handler)
+        {
+            if (String.IsNullOrEmpty (pattern)) {
+                return null;
+            }
+
+            pattern = optional_tokens_regex.Replace (pattern, delegate (Match match) {
+                var sub_pattern = match.Groups[1].Value;
+                foreach (var conversion in PatternConversions) {
+                    var token_string = conversion.TokenString;
+                    if (!sub_pattern.Contains (token_string)) {
+                        continue;
+                    }
+                    var replacement = handler (conversion);
+                    if (String.IsNullOrEmpty (replacement)) {
+                        sub_pattern = String.Empty;
+                        break;
+                    }
+                    sub_pattern = sub_pattern.Replace (token_string, replacement);
+                }
+                return sub_pattern;
+            });
+
+            foreach (Conversion conversion in PatternConversions) {
+                pattern = pattern.Replace (conversion.TokenString, handler (conversion));
+            }
+
+            return pattern;
+        }
+
+        public string BuildFull (string base_dir, TrackInfo track)
         {
             return BuildFull (base_dir, track, Path.GetExtension (track.Uri.ToString ()));
         }
 
-        public static string BuildFull (string base_dir, ITrackInfo track, string ext)
+        public string BuildFull (string base_dir, TrackInfo track, string ext)
         {
             if (ext == null || ext.Length < 1) {
                 ext = String.Empty;
             } else if (ext[0] != '.') {
                 ext = String.Format (".{0}", ext);
             }
-            
+
             string songpath = CreateFromTrackInfo (track) + ext;
             songpath = Hyena.StringUtil.EscapePath (songpath);
-            string dir = Path.GetFullPath (Path.Combine (base_dir, 
+            string dir = Path.GetFullPath (Path.Combine (base_dir,
                 Path.GetDirectoryName (songpath)));
             string filename = Path.Combine (dir, Path.GetFileName (songpath));
-                
+
             if (!Banshee.IO.Directory.Exists (dir)) {
                 Banshee.IO.Directory.Create (dir);
             }
-            
+
             return filename;
         }
 
         public static string Escape (string input)
         {
             return Hyena.StringUtil.EscapeFilename (input);
+        }
+
+        public struct Conversion
+        {
+            private readonly string token;
+            private readonly string name;
+            private readonly ExpandTokenHandler handler;
+
+            private readonly string token_string;
+
+            public Conversion (string token, string name, ExpandTokenHandler handler)
+            {
+                this.token = token;
+                this.name = name;
+                this.handler = handler;
+
+                this.token_string = "%" + this.token + "%";
+            }
+
+            public string Token {
+                get { return token; }
+            }
+
+            public string Name {
+                get { return name; }
+            }
+
+            public ExpandTokenHandler Handler {
+                get { return handler; }
+            }
+
+            public string TokenString {
+                get { return token_string; }
+            }
         }
     }
 }

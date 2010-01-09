@@ -8,7 +8,7 @@ namespace Mtp
     {
         private bool saved;
         private List<int> track_ids;
-		private MtpDevice device;
+        private MtpDevice device;
 
         public abstract uint Count { get; protected set; }
         public abstract string Name { get; set; }
@@ -59,7 +59,7 @@ namespace Mtp
         {
             RemoveTrack ((int)track.FileId);
         }
-        
+
         public void RemoveTrack (int track_id)
         {
             track_ids.Remove (track_id);

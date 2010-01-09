@@ -73,7 +73,7 @@ namespace Banshee.ContextPane
         public bool Large {
             get { return large; }
         }
-        
+
         public ContextPane ()
         {
             HeightRequest = 200;
@@ -117,11 +117,11 @@ namespace Banshee.ContextPane
             var max = new Button (new Image (IconThemeUtils.LoadIcon ("context-pane-maximize", 7)));
             max.Clicked += (o, a) => { large = !large; expand_handler (large); };
             TooltipSetter.Set (tooltip_host, max, Catalog.GetString ("Make the context pane larger or smaller"));
-            
+
             var close = new Button (new Image (IconThemeUtils.LoadIcon ("context-pane-close", 7)));
             close.Clicked += (o, a) => ShowAction.Activate ();
             TooltipSetter.Set (tooltip_host, close, Catalog.GetString ("Hide context pane"));
-            
+
             max.Relief = close.Relief = ReliefStyle.None;
             hbox.PackStart (max, false, false, 0);
             hbox.PackStart (close, false, false, 0);
@@ -140,18 +140,20 @@ namespace Banshee.ContextPane
 
             // 'No active track' and 'Loading' widgets
             no_active = new RoundedFrame ();
-            no_active.Add (new Label () { Markup = "<b>Context pane waiting for playback to begin...</b>" });
+            no_active.Add (new Label () {
+                Markup = String.Format ("<b>{0}</b>", Catalog.GetString ("Waiting for playback to begin..."))
+            });
             no_active.ShowAll ();
             notebook.Add (no_active);
 
             loading = new RoundedFrame ();
-            loading.Add (new Label () { Markup = "<b>Loading...</b>" });
+            loading.Add (new Label () { Markup = String.Format ("<b>{0}</b>", Catalog.GetString ("Loading...")) });
             loading.ShowAll ();
             notebook.Add (loading);
 
             PackStart (notebook, true, true, 0);
             notebook.Show ();
-            
+
         }
 
         private void OnPlayerEvent (PlayerEventArgs args)
@@ -213,7 +215,7 @@ namespace Banshee.ContextPane
                 large = false;
                 Hide ();
             }
-            
+
             vbox.Visible = true;//enabled && npages > 1;
         }
 
@@ -250,7 +252,7 @@ namespace Banshee.ContextPane
                 frame.DragDataReceived += delegate(object o, DragDataReceivedArgs args) {
                 };
             }*/
-            
+
             page.Widget.Show ();
             notebook.AppendPage (frame, null);
             pane_pages[page] = frame;

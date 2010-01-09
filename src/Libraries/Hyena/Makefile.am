@@ -45,6 +45,7 @@ SOURCES =  \
 	Hyena.Data/ISelectable.cs \
 	Hyena.Data/ISortable.cs \
 	Hyena.Data/ISortableColumn.cs \
+	Hyena.Data/MemoryListModel.cs \
 	Hyena.Data/ModelCache.cs \
 	Hyena.Data/ModelSelection.cs \
 	Hyena.Data/PropertyStore.cs \
@@ -67,6 +68,7 @@ SOURCES =  \
 	Hyena.Json/TokenType.cs \
 	Hyena.Query/AliasedObjectSet.cs \
 	Hyena.Query/DateQueryValue.cs \
+	Hyena.Query/EnumQueryValue.cs \
 	Hyena.Query/ExactStringQueryValue.cs \
 	Hyena.Query/FileSizeQueryValue.cs \
 	Hyena.Query/IntegerKeyedObjectQueryValue.cs \
@@ -110,6 +112,7 @@ SOURCES =  \
 	Hyena/CryptoUtil.cs \
 	Hyena/DateTimeUtil.cs \
 	Hyena/Delegates.cs \
+	Hyena/EventArgs.cs \
 	Hyena/IUndoAction.cs \
 	Hyena/Log.cs \
 	Hyena/PlatformUtil.cs \

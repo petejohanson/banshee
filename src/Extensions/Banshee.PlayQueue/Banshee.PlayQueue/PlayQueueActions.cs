@@ -51,21 +51,35 @@ namespace Banshee.PlayQueue
                     Catalog.GetString ("Append selected songs to the play queue"),
                     OnAddToPlayQueue)
             });
-            
+
+            AddImportant (
+                new ActionEntry ("RefreshPlayQueueAction", Stock.Refresh,
+                    Catalog.GetString ("Refresh"), null,
+                    Catalog.GetString ("Refresh random tracks in the play queue"),
+                    OnRefreshPlayQueue)
+            );
+
+            AddImportant (
+                new ActionEntry ("AddPlayQueueTracksAction", Stock.Add,
+                    Catalog.GetString ("Add More"), null,
+                    Catalog.GetString ("Add more random tracks to the play queue"),
+                    OnAddPlayQueueTracks)
+            );
+
             AddImportant (
                 new ActionEntry ("ClearPlayQueueAction", Stock.Clear,
                     Catalog.GetString ("Clear"), null,
                     Catalog.GetString ("Remove all tracks from the play queue"),
                     OnClearPlayQueue)
             );
-            
+
             Add (new ToggleActionEntry [] {
                 new ToggleActionEntry ("ClearPlayQueueOnQuitAction", null,
-                    Catalog.GetString ("Clear on Quit"), null, 
-                    Catalog.GetString ("Clear the play queue when quitting"), 
+                    Catalog.GetString ("Clear on Quit"), null,
+                    Catalog.GetString ("Clear the play queue when quitting"),
                     OnClearPlayQueueOnQuit, PlayQueueSource.ClearOnQuitSchema.Get ())
             });
-            
+
             AddUiFromFile ("GlobalUI.xml");
 
             playqueue.Updated += OnUpdated;
@@ -95,6 +109,16 @@ namespace Banshee.PlayQueue
             playqueue.Clear ();
         }
 
+        private void OnRefreshPlayQueue (object o, EventArgs args)
+        {
+            playqueue.Refresh ();
+        }
+
+        private void OnAddPlayQueueTracks (object o, EventArgs args)
+        {
+            playqueue.AddMoreRandomTracks ();
+        }
+
         private void OnClearPlayQueueOnQuit (object o, EventArgs args)
         {
             ToggleAction action = this["ClearPlayQueueOnQuitAction"] as Gtk.ToggleAction;
@@ -118,7 +142,10 @@ namespace Banshee.PlayQueue
             Source source = ServiceManager.SourceManager.ActiveSource;
             if (source != null) {
                 DatabaseSource db_source = source as DatabaseSource ?? source.Parent as DatabaseSource;
-                UpdateAction ("ClearPlayQueueAction", true, playqueue.Count > 0);
+                UpdateAction ("RefreshPlayQueueAction", playqueue.Populate);
+                UpdateAction ("AddPlayQueueTracksAction", playqueue.Populate);
+                UpdateAction ("ClearPlayQueueAction", !playqueue.Populate, playqueue.Count > 0);
+                UpdateAction ("ClearPlayQueueOnQuitAction", !playqueue.Populate);
                 UpdateAction ("AddToPlayQueueAction", db_source != null && db_source != playqueue, true);
             }
         }

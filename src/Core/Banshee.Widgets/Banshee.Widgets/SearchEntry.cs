@@ -26,7 +26,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
- 
+
 using System;
 using Gtk;
 
@@ -43,7 +43,7 @@ namespace Banshee.Widgets
         private int active_filter_id = -1;
 
         private uint changed_timeout_id = 0;
-        
+
         private string empty_message;
         private bool ready = false;
 
@@ -64,7 +64,7 @@ namespace Banshee.Widgets
             add { filter_changed += value; }
             remove { filter_changed -= value; }
         }
-        
+
         public Menu Menu {
             get { return menu; }
         }
@@ -75,10 +75,10 @@ namespace Banshee.Widgets
 
             BuildWidget();
             BuildMenu();
-            
+
             NoShowAll = true;
         }
-            
+
         private void BuildWidget()
         {
             box = new HBox();
@@ -135,7 +135,7 @@ namespace Banshee.Widgets
         private void OnPositionMenu(Menu menu, out int x, out int y, out bool push_in)
         {
             int origin_x, origin_y, tmp;
-            
+
             filter_button.GdkWindow.GetOrigin(out origin_x, out tmp);
             GdkWindow.GetOrigin(out tmp, out origin_y);
 
@@ -156,10 +156,10 @@ namespace Banshee.Widgets
             if(toggling || !(o is FilterMenuItem)) {
                 return;
             }
-            
+
             toggling = true;
             FilterMenuItem item = (FilterMenuItem)o;
-            
+
             foreach(MenuItem child_item in menu) {
                 if(!(child_item is FilterMenuItem)) {
                     continue;
@@ -199,20 +199,20 @@ namespace Banshee.Widgets
             Gdk.Color color = entry.Style.Base (entry.State);
             filter_button.ModifyBg (entry.State, color);
             clear_button.ModifyBg (entry.State, color);
-            
+
             box.BorderWidth = (uint)entry.Style.XThickness;
         }
-        
+
         private void OnInnerEntryStyleSet (object o, StyleSetArgs args)
         {
             UpdateStyle ();
         }
-        
+
         private void OnInnerEntryStateChanged (object o, EventArgs args)
         {
             UpdateStyle ();
         }
-        
+
         private void OnInnerEntryFocusEvent(object o, EventArgs args)
         {
             QueueDraw();
@@ -233,12 +233,14 @@ namespace Banshee.Widgets
 
         private void OnClearButtonClicked(object o, EventArgs args)
         {
+            active_filter_id = 0;
             entry.Text = String.Empty;
         }
 
         protected override bool OnKeyPressEvent (Gdk.EventKey evnt)
         {
             if (evnt.Key == Gdk.Key.Escape) {
+                active_filter_id = 0;
                 entry.Text = String.Empty;
                 return true;
             }
@@ -248,9 +250,9 @@ namespace Banshee.Widgets
         protected override bool OnExposeEvent(Gdk.EventExpose evnt)
         {
             PropagateExpose(Child, evnt);
-            Style.PaintShadow(entry.Style, GdkWindow, StateType.Normal, 
+            Style.PaintShadow(entry.Style, GdkWindow, StateType.Normal,
                 ShadowType.In, evnt.Area, entry, "entry",
-                0, 0, Allocation.Width, Allocation.Height); 
+                0, 0, Allocation.Width, Allocation.Height);
             return true;
         }
 
@@ -278,7 +280,7 @@ namespace Banshee.Widgets
             if(handler != null) {
                 handler(this, EventArgs.Empty);
             }
-            
+
             if(IsQueryAvailable) {
                 OnInnerEntryChanged(this, EventArgs.Empty);
             }
@@ -351,7 +353,7 @@ namespace Banshee.Widgets
 
         public int ActiveFilterID {
             get { return active_filter_id; }
-            private set { 
+            private set {
                 if(value == active_filter_id) {
                     return;
                 }
@@ -362,7 +364,9 @@ namespace Banshee.Widgets
         }
 
         public string EmptyMessage {
-            get { return empty_message; }
+            get {
+                return entry.Sensitive ? empty_message : String.Empty;
+            }
             set {
                 empty_message = value;
                 entry.QueueDraw();
@@ -382,15 +386,24 @@ namespace Banshee.Widgets
             get { return ready; }
             set { ready = value; }
         }
-        
+
         public new bool HasFocus {
             get { return entry.HasFocus; }
             set { entry.HasFocus = true; }
         }
 
-        
+
         public Entry InnerEntry {
             get { return entry; }
+        }
+
+        protected override void OnStateChanged (Gtk.StateType previous_state)
+        {
+            base.OnStateChanged (previous_state);
+
+            entry.Sensitive = State != StateType.Insensitive;
+            filter_button.Sensitive = State != StateType.Insensitive;
+            clear_button.Sensitive = State != StateType.Insensitive;
         }
 
         private class FilterMenuItem : MenuItem /*CheckMenuItem*/
@@ -412,14 +425,14 @@ namespace Banshee.Widgets
             public string Label {
                 get { return label; }
             }
-            
+
             // FIXME: Remove when restored to CheckMenuItem
             private bool active;
             public bool Active {
                 get { return active; }
                 set { active = value; }
             }
-            
+
             public new event EventHandler Toggled;
             protected override void OnActivated ()
             {
@@ -442,9 +455,6 @@ namespace Banshee.Widgets
             {
                 this.parent = parent;
                 HasFrame = false;
-                
-                layout = new Pango.Layout(PangoContext);
-                layout.FontDescription = PangoContext.FontDescription.Copy();
 
                 parent.StyleSet += OnParentStyleSet;
                 WidthChars = 1;
@@ -489,6 +499,11 @@ namespace Banshee.Widgets
 
                 if(Text.Length > 0 || HasFocus || parent.EmptyMessage == null) {
                     return ret;
+                }
+
+                if (layout == null) {
+                    layout = new Pango.Layout(PangoContext);
+                    layout.FontDescription = PangoContext.FontDescription.Copy();
                 }
 
                 int width, height;

@@ -30,11 +30,11 @@ using System;
 using Mono.Unix;
 using Gtk;
 
-
 using Hyena;
 using Hyena.Widgets;
 
 using Banshee.Base;
+using Banshee.Sources;
 using Banshee.Library;
 using Banshee.Preferences;
 using Banshee.Collection;
@@ -49,31 +49,25 @@ namespace Banshee.Preferences.Gui
     {
         public static void Load (PreferenceService service)
         {
-            Page music = ServiceManager.SourceManager.MusicLibrary.PreferencesPage;
-        
-            foreach (LibrarySource source in ServiceManager.SourceManager.FindSources<LibrarySource> ()) {
-                new LibraryLocationButton (source);
+            foreach (var library in ServiceManager.SourceManager.FindSources<LibrarySource> ()) {
+                new LibraryLocationButton (library);
+
+                if (library.FileNamePattern != null) {
+                    var library_page = library.PreferencesPage;
+                    var pattern = library.FileNamePattern;
+
+                    var folder_pattern = library_page["file-system"][pattern.FolderSchema.Key];
+                    folder_pattern.DisplayWidget = new PatternComboBox (library, folder_pattern, pattern.SuggestedFolders);
+
+                    var file_pattern = library_page["file-system"][pattern.FileSchema.Key];
+                    file_pattern.DisplayWidget = new PatternComboBox (library, file_pattern, pattern.SuggestedFiles);
+
+                    var pattern_display = library_page["file-system"].FindOrAdd (new VoidPreference ("file_folder_pattern"));
+                    pattern_display.DisplayWidget = new PatternDisplay (library, folder_pattern.DisplayWidget, file_pattern.DisplayWidget);
+                }
             }
-            
-            PreferenceBase folder_pattern = music["file-system"]["folder_pattern"];
-            folder_pattern.DisplayWidget = new PatternComboBox (folder_pattern, FileNamePattern.SuggestedFolders);
-            
-            PreferenceBase file_pattern = music["file-system"]["file_pattern"];
-            file_pattern.DisplayWidget = new PatternComboBox (file_pattern, FileNamePattern.SuggestedFiles);
-            
-            PreferenceBase pattern_display = music["file-system"].FindOrAdd (new VoidPreference ("file_folder_pattern"));
-            pattern_display.DisplayWidget = new PatternDisplay (folder_pattern.DisplayWidget, file_pattern.DisplayWidget);
-            
-            // Set up the extensions tab UI
-            Banshee.Addins.Gui.AddinView view = new Banshee.Addins.Gui.AddinView ();
-            view.Show ();
-            
-            Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow ();
-            scroll.HscrollbarPolicy = PolicyType.Never;
-            scroll.AddWithViewport (view);
-            scroll.Show ();
-            
-            service["extensions"].DisplayWidget = scroll;
+
+            service["extensions"].DisplayWidget = new Banshee.Addins.Gui.AddinView ();
         }
 
         private class LibraryLocationButton : HBox
@@ -92,9 +86,9 @@ namespace Banshee.Preferences.Gui
                 preference.DisplayWidget = this;
 
                 string dir = preference.Value ?? source.DefaultBaseDirectory;
-                
+
                 Spacing = 5;
-                
+
                 // FileChooserButton wigs out if the directory does not exist,
                 // so create it if it doesn't and store the fact that we did
                 // in case it ends up not being used, we can remove it
@@ -103,35 +97,38 @@ namespace Banshee.Preferences.Gui
                         Banshee.IO.Directory.Create (dir);
                         created_directory = dir;
                         Log.DebugFormat ("Created library directory: {0}", created_directory);
-                    } 
+                    }
                 } catch {
                 }
 
-                chooser = new FileChooserButton (Catalog.GetString ("Select library location"), 
+                chooser = new FileChooserButton (Catalog.GetString ("Select library location"),
                     FileChooserAction.SelectFolder);
                 chooser.SetCurrentFolder (dir);
                 chooser.SelectionChanged += OnChooserChanged;
-                    
+
                 HBox box = new HBox ();
                 box.Spacing = 2;
                 box.PackStart (new Image (Stock.Undo, IconSize.Button), false, false, 0);
                 box.PackStart (new Label (Catalog.GetString ("Reset")), false, false, 0);
-                reset = new Button ();
+                reset = new Button () {
+                    Sensitive = dir != source.DefaultBaseDirectory,
+                    TooltipText = String.Format (Catalog.GetString ("Reset location to default ({0})"), source.DefaultBaseDirectory)
+                };
                 reset.Clicked += OnReset;
                 reset.Add (box);
 
                 //Button open = new Button ();
                 //open.PackStart (new Image (Stock.Open, IconSize.Button), false, false, 0);
                 //open.Clicked += OnOpen;
-                
+
                 PackStart (chooser, true, true, 0);
                 PackStart (reset, false, false, 0);
                 //PackStart (open, false, false, 0);
-                
+
                 chooser.Show ();
                 reset.ShowAll ();
             }
-            
+
             private void OnReset (object o, EventArgs args)
             {
                 chooser.SetFilename (source.DefaultBaseDirectory);
@@ -141,10 +138,11 @@ namespace Banshee.Preferences.Gui
             //{
                 //open chooser.Filename
             //}
-            
+
             private void OnChooserChanged (object o, EventArgs args)
             {
                 preference.Value = chooser.Filename;
+                reset.Sensitive = chooser.Filename != source.DefaultBaseDirectory;
             }
 
             protected override void OnUnrealized ()
@@ -161,69 +159,75 @@ namespace Banshee.Preferences.Gui
                     } catch {
                     }
                 }
-                
+
                 base.OnUnrealized ();
             }
         }
-        
+
         private class PatternComboBox : DictionaryComboBox<string>
         {
             private Preference<string> preference;
-            
-            public PatternComboBox (PreferenceBase pref, string [] patterns)
+
+            public PatternComboBox (PrimarySource source, PreferenceBase pref, string [] patterns)
             {
                 preference = (Preference<string>)pref;
-                
+
                 bool already_added = false;
                 string conf_pattern = preference.Value;
-                
+
                 foreach (string pattern in patterns) {
                     if (!already_added && pattern.Equals (conf_pattern)) {
                         already_added = true;
                     }
-                    
-                    Add (FileNamePattern.CreatePatternDescription (pattern), pattern);
+
+                    Add (source.FileNamePattern.CreatePatternDescription (pattern), pattern);
                 }
-                
+
                 if (!already_added) {
-                    Add (FileNamePattern.CreatePatternDescription (conf_pattern), conf_pattern);
+                    Add (source.FileNamePattern.CreatePatternDescription (conf_pattern), conf_pattern);
                 }
-                
+
                 ActiveValue = conf_pattern;
             }
-            
+
             protected override void OnChanged ()
             {
                 preference.Value = ActiveValue;
                 base.OnChanged ();
             }
         }
-        
+
         private class PatternDisplay : WrapLabel
         {
             private PatternComboBox folder;
             private PatternComboBox file;
-            
-            private SampleTrackInfo track = new SampleTrackInfo ();
-            
-            public PatternDisplay (object a, object b)
+            private PrimarySource source;
+
+            public PatternDisplay (PrimarySource source, object a, object b)
             {
+                this.source = source;
                 folder= (PatternComboBox)a;
                 file = (PatternComboBox)b;
-                
+
                 folder.Changed += OnChanged;
                 file.Changed += OnChanged;
-                
+
                 OnChanged (null, null);
             }
 
             private void OnChanged (object o, EventArgs args)
             {
-                string display = FileNamePattern.CreateFromTrackInfo (FileNamePattern.CreateFolderFilePattern (
-                    folder.ActiveValue, file.ActiveValue), track);
-            
-                Markup = String.IsNullOrEmpty (display) ? String.Empty : String.Format ("<small>{0}.ogg</small>", 
-                    GLib.Markup.EscapeText (display));
+                var pattern = source.FileNamePattern.CreateFolderFilePattern (folder.ActiveValue, file.ActiveValue);
+
+                var sb = new System.Text.StringBuilder ();
+                foreach (var track in source.FileNamePattern.SampleTracks) {
+                    string display = source.FileNamePattern.CreateFromTrackInfo (pattern, track);
+                    if (!String.IsNullOrEmpty (display)) {
+                        sb.AppendFormat ("<small>{0}.ogg</small>", GLib.Markup.EscapeText (display));
+                    }
+                }
+
+                Markup = sb.ToString ();
             }
         }
     }

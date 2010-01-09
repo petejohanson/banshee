@@ -39,51 +39,48 @@ namespace Banshee.Library.Gui
         public FileImportSource ()
         {
         }
-    
+
         public void Import()
         {
-            Banshee.Gui.Dialogs.FileChooserDialog chooser = new Banshee.Gui.Dialogs.FileChooserDialog (
-                Catalog.GetString ("Import Files to Library"),
-                FileChooserAction.Open
-            );
-            
-            chooser.AddButton (Stock.Cancel, ResponseType.Cancel);
-            chooser.AddButton (Stock.Open, ResponseType.Ok);
-            chooser.AddFilter (Hyena.Gui.GtkUtilities.GetFileFilter (Catalog.GetString ("Media Files"), Banshee.Collection.Database.DatabaseImportManager.WhiteListFileExtensions.List));
-            chooser.SelectMultiple = true;
-            chooser.DefaultResponse = ResponseType.Ok;
-            
-            SetChooserShortcuts (chooser);
-            
+            var chooser = Banshee.Gui.Dialogs.FileChooserDialog.CreateForImport (Catalog.GetString ("Import Files to Library"), true);
+
+            chooser.AddFilter (Hyena.Gui.GtkUtilities.GetFileFilter (
+                Catalog.GetString ("Media Files"),
+                Banshee.Collection.Database.DatabaseImportManager.WhiteListFileExtensions.List));
+
             if (chooser.Run () == (int)ResponseType.Ok) {
                 Banshee.ServiceStack.ServiceManager.Get<LibraryImportManager> ().Enqueue (chooser.Uris);
             }
-            
+
             chooser.Destroy ();
         }
-        
+
         public string Name {
             get { return Catalog.GetString ("Local Files"); }
         }
-        
+
+        public string ImportLabel {
+            get { return Catalog.GetString ("C_hoose Files"); }
+        }
+
         public string [] IconNames {
             get { return new string [] { "gtk-open" }; }
         }
-        
+
         public bool CanImport {
             get { return true; }
         }
-        
+
         public int SortOrder {
             get { return 5; }
         }
-        
-        public static void SetChooserShortcuts (Gtk.FileChooserDialog chooser)
+
+        // Reserve strings in preparation for the forthcoming string freeze.
+        public void ReservedStrings ()
         {
-            Hyena.Gui.GtkUtilities.SetChooserShortcuts (chooser,
-                ServiceManager.SourceManager.MusicLibrary.BaseDirectory,
-                ServiceManager.SourceManager.VideoLibrary.BaseDirectory
-            );
+            Catalog.GetString ("_Files to import:");
+            Catalog.GetString ("Select Files");
+            Catalog.GetString ("(none selected)");
         }
     }
 }

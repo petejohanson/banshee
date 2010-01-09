@@ -55,57 +55,22 @@ namespace Banshee.Collection
                 set { export_name = value; }
             }
         }
-    
+
         public delegate bool IsPlayingHandler (TrackInfo track);
         public static IsPlayingHandler IsPlayingMethod;
 
         public delegate void PlaybackFinishedHandler (TrackInfo track, double percentCompleted);
         public static event PlaybackFinishedHandler PlaybackFinished;
 
-        private SafeUri uri;
-        private SafeUri more_info_uri;
-        private string mimetype;
-        private long filesize;
-        private long file_mtime;
-
-        private string artist_name;
         private string artist_name_sort;
-        private string album_title;
         private string album_title_sort;
         private string album_artist;
         private string album_artist_sort;
-        private bool is_compilation;
-        private string track_title;
         private string track_title_sort;
-        private string genre;
-        private string composer;
-        private string conductor;
-        private string grouping;
-        private string copyright;
-        private string license_uri;
-        private string musicbrainz_id;
 
-        private string comment;
-        private int track_number;
         private int track_count;
-        private int disc_number;
         private int disc_count;
-        private int year;
-        private int rating;
-        private int score;
-        private int bpm;
-        private int bit_rate;
 
-        private TimeSpan duration;
-        private DateTime release_date;
-        private DateTime date_added;
-        private DateTime last_synced;
-
-        private int play_count;
-        private int skip_count;
-        private DateTime last_played;
-        private DateTime last_skipped;
-        
         private StreamPlaybackError playback_error = StreamPlaybackError.None;
 
         public TrackInfo ()
@@ -116,9 +81,9 @@ namespace Banshee.Collection
         {
             double total_plays = PlayCount + SkipCount;
             if (total_plays <= 0) {
-                Score = (int) Math.Floor ((Score + (percentCompleted * 100)) / 2);
+                Score = (int) Math.Round (percentCompleted * 100);
             } else {
-                Score = (int) Math.Floor ((((double)Score * total_plays) + (percentCompleted * 100)) / (total_plays + 1));
+                Score = (int) Math.Round ((((double)Score * total_plays) + (percentCompleted * 100)) / (total_plays + 1));
             }
 
             if (percentCompleted <= 0.5) {
@@ -137,80 +102,63 @@ namespace Banshee.Collection
 
         public override string ToString ()
         {
-            return String.Format ("{0} - {1} (on {2}) <{3}> [{4}]", ArtistName, TrackTitle, 
+            return String.Format ("{0} - {1} (on {2}) <{3}> [{4}]", ArtistName, TrackTitle,
                 AlbumTitle, Duration, Uri == null ? "<unknown>" : Uri.AbsoluteUri);
         }
 
         public virtual bool TrackEqual (TrackInfo track)
         {
+            if (track == this) {
+                return true;
+            }
+
             if (track == null || track.Uri == null || Uri == null) {
                 return false;
             }
-            
+
             return track.Uri.AbsoluteUri == Uri.AbsoluteUri;
         }
-        
+
         public bool ArtistAlbumEqual (TrackInfo track)
         {
             if (track == null) {
                 return false;
             }
-            
+
             return ArtworkId == track.ArtworkId;
         }
 
         public virtual void Save ()
         {
         }
-        
+
         public bool IsPlaying {
             get { return (IsPlayingMethod != null) ? IsPlayingMethod (this) : false; }
         }
 
         [Exportable (ExportName = "URI")]
-        public virtual SafeUri Uri {
-            get { return uri; }
-            set { uri = value; }
-        }
-        
+        public virtual SafeUri Uri { get; set; }
+
         [Exportable]
         public string LocalPath {
             get { return Uri == null || !Uri.IsLocalPath ? null : Uri.LocalPath; }
         }
 
         [Exportable]
-        public SafeUri MoreInfoUri {
-            get { return more_info_uri; }
-            set { more_info_uri = value; }
-        }
+        public SafeUri MoreInfoUri { get; set; }
 
         [Exportable]
-        public virtual string MimeType {
-            get { return mimetype; }
-            set { mimetype = value; }
-        }
+        public virtual string MimeType { get; set; }
 
         [Exportable]
-        public virtual long FileSize {
-            get { return filesize; }
-            set { filesize = value; }
-        }
+        public virtual long FileSize { get; set; }
 
-        public virtual long FileModifiedStamp {
-            get { return file_mtime; }
-            set { file_mtime = value; }
-        }
+        public virtual long FileModifiedStamp { get; set; }
 
-        public virtual DateTime LastSyncedStamp {
-            get { return last_synced; }
-            set { last_synced = value; }
-        }
+        public virtual DateTime LastSyncedStamp { get; set; }
 
         [Exportable (ExportName = "artist")]
-        public virtual string ArtistName {
-            get { return artist_name; }
-            set { artist_name = value; }
-        }
+        public virtual string ArtistName { get; set; }
 
         [Exportable (ExportName = "artistsort")]
         public virtual string ArtistNameSort {
@@ -219,10 +167,7 @@ namespace Banshee.Collection
         }
 
         [Exportable (ExportName = "album")]
-        public virtual string AlbumTitle {
-            get { return album_title; }
-            set { album_title = value; }
-        }
+        public virtual string AlbumTitle { get; set; }
 
         [Exportable (ExportName = "albumsort")]
         public virtual string AlbumTitleSort {
@@ -235,98 +180,79 @@ namespace Banshee.Collection
             get { return IsCompilation ? album_artist ?? Catalog.GetString ("Various Artists") : ArtistName; }
             set { album_artist = value; }
         }
-        
+
         [Exportable]
         public virtual string AlbumArtistSort {
             get { return album_artist_sort; }
             set { album_artist_sort = String.IsNullOrEmpty (value) ? null : value; }
         }
-        
+
         [Exportable]
-        public virtual bool IsCompilation {
-            get { return is_compilation; }
-            set { is_compilation = value; }
-        }
+        public virtual bool IsCompilation { get; set; }
 
         [Exportable (ExportName = "name")]
-        public virtual string TrackTitle {
-            get { return track_title; }
-            set { track_title = value; }
-        }
-        
+        public virtual string TrackTitle { get; set; }
+
         [Exportable (ExportName = "namesort")]
         public virtual string TrackTitleSort {
             get { return track_title_sort; }
             set { track_title_sort = String.IsNullOrEmpty (value) ? null : value; }
         }
-        
+
         [Exportable]
-        public virtual string MusicBrainzId {
-            get { return musicbrainz_id; }
-            set { musicbrainz_id = value; }
-        }
-        
+        public virtual string MusicBrainzId { get; set; }
+
         [Exportable]
         public virtual string ArtistMusicBrainzId {
             get { return null; }
         }
-        
+
         [Exportable]
         public virtual string AlbumMusicBrainzId {
             get { return null; }
         }
-        
-        [Exportable]
-        public virtual DateTime ReleaseDate {
-            get { return release_date; }
-            set { release_date = value; }
-        }        
+
+        public virtual DateTime ReleaseDate { get; set; }
 
         public virtual object ExternalObject {
             get { return null; }
         }
-        
-        public string DisplayArtistName { 
-            get { return StringUtil.MaybeFallback (ArtistName, ArtistInfo.UnknownArtistName); } 
+
+        public string DisplayArtistName {
+            get { return StringUtil.MaybeFallback (ArtistName, ArtistInfo.UnknownArtistName); }
         }
 
         public string DisplayAlbumArtistName {
             get { return StringUtil.MaybeFallback (AlbumArtist, DisplayArtistName); }
         }
 
-        public string DisplayAlbumTitle { 
-            get { return StringUtil.MaybeFallback (AlbumTitle, AlbumInfo.UnknownAlbumTitle); } 
+        public string DisplayAlbumTitle {
+            get { return StringUtil.MaybeFallback (AlbumTitle, AlbumInfo.UnknownAlbumTitle); }
         }
 
-        public string DisplayTrackTitle { 
-            get { return StringUtil.MaybeFallback (TrackTitle, UnknownTitle); } 
+        public string DisplayTrackTitle {
+            get { return StringUtil.MaybeFallback (TrackTitle, UnknownTitle); }
         }
 
-        public string DisplayGenre { 
-            get { 
+        public string DisplayGenre {
+            get {
                 string genre = Genre == null ? null : Genre.Trim ();
                 return String.IsNullOrEmpty (genre)
                     ? String.Empty
                     : genre;
             }
         }
-        
+
         [Exportable (ExportName = "artwork-id")]
-        public virtual string ArtworkId { 
+        public virtual string ArtworkId {
             get { return CoverArtSpec.CreateArtistAlbumId (AlbumArtist, AlbumTitle); }
         }
 
         [Exportable]
-        public virtual string Genre {
-            get { return genre; }
-            set { genre = value; }
-        }
+        public virtual string Genre { get; set; }
 
         [Exportable]
-        public virtual int TrackNumber {
-            get { return track_number; }
-            set { track_number = value; }
-        }
+        public virtual int TrackNumber { get; set; }
 
         [Exportable]
         public virtual int TrackCount {
@@ -335,11 +261,8 @@ namespace Banshee.Collection
         }
 
         [Exportable]
-        public virtual int DiscNumber {
-            get { return disc_number; }
-            set { disc_number = value; }
-        }
-        
+        public virtual int DiscNumber { get; set; }
+
         [Exportable]
         public virtual int DiscCount {
             get { return (disc_count != 0 && disc_count < DiscNumber) ? DiscNumber : disc_count; }
@@ -347,107 +270,56 @@ namespace Banshee.Collection
         }
 
         [Exportable]
-        public virtual int Year {
-            get { return year; }
-            set { year = value; }
-        }
+        public virtual int Year { get; set; }
 
         [Exportable]
-        public virtual string Composer {
-            get { return composer; }
-            set { composer = value; }
-        }
+        public virtual string Composer { get; set; }
 
         [Exportable]
-        public virtual string Conductor {
-            get { return conductor; }
-            set { conductor = value; }
-        }
-        
-        [Exportable]
-        public virtual string Grouping {
-            get { return grouping; }
-            set { grouping = value; }
-        }
-        
-        [Exportable]
-        public virtual string Copyright {
-            get { return copyright; }
-            set { copyright = value; }
-        }
-
-        [Exportable]        
-        public virtual string LicenseUri {
-            get { return license_uri; }
-            set { license_uri = value; }
-        }
+        public virtual string Conductor { get; set; }
 
         [Exportable]
-        public virtual string Comment {
-            get { return comment; }
-            set { comment = value; }
-        }
+        public virtual string Grouping { get; set; }
 
         [Exportable]
-        public virtual int Rating {
-            get { return rating; }
-            set { rating = value; }
-        }
-        
-        [Exportable]
-        public virtual int Score {
-            get { return score; }
-            set {score = value; }
-        }
+        public virtual string Copyright { get; set; }
 
         [Exportable]
-        public virtual int Bpm {
-            get { return bpm; }
-            set { bpm = value; }
-        }
+        public virtual string LicenseUri { get; set; }
 
         [Exportable]
-        public virtual int BitRate {
-            get { return bit_rate; }
-            set { bit_rate = value; }
-        }
+        public virtual string Comment { get; set; }
 
         [Exportable]
-        public virtual int PlayCount {
-            get { return play_count; }
-            set { play_count = value; }
-        }
+        public virtual int Rating { get; set; }
 
         [Exportable]
-        public virtual int SkipCount {
-            get { return skip_count; }
-            set { skip_count = value; }
-        }
+        public virtual int Score { get; set; }
+
+        [Exportable]
+        public virtual int Bpm { get; set; }
+
+        [Exportable]
+        public virtual int BitRate { get; set; }
+
+        [Exportable]
+        public virtual int PlayCount { get; set; }
+
+        [Exportable]
+        public virtual int SkipCount { get; set; }
 
         [Exportable (ExportName = "length")]
-        public virtual TimeSpan Duration {
-            get { return duration; }
-            set { duration = value; }
-        }
-        
-        [Exportable]
-        public virtual DateTime DateAdded {
-            get { return date_added; }
-            set { date_added = value; }
-        }
+        public virtual TimeSpan Duration { get; set; }
 
         [Exportable]
-        public virtual DateTime LastPlayed {
-            get { return last_played; }
-            set { last_played = value; }
-        }
+        public virtual DateTime DateAdded { get; set; }
 
         [Exportable]
-        public virtual DateTime LastSkipped {
-            get { return last_skipped; }
-            set { last_skipped = value; }
-        }
-        
+        public virtual DateTime LastPlayed { get; set; }
+
+        [Exportable]
+        public virtual DateTime LastSkipped { get; set; }
+
         public virtual StreamPlaybackError PlaybackError {
             get { return playback_error; }
             set { playback_error = value; }
@@ -466,19 +338,21 @@ namespace Banshee.Collection
             get { return can_save_to_database; }
             set { can_save_to_database = value; }
         }
-        
-        private bool is_live = false;
-        public bool IsLive {
-            get { return is_live; }
-            set { is_live = value; }
-        }
+
+        public bool IsLive { get; set; }
 
         private bool can_play = true;
         public bool CanPlay {
             get { return can_play; }
             set { can_play = value; }
         }
-        
+
+        private bool enabled = true;
+        public bool Enabled {
+            get { return enabled && can_play; }
+            set { enabled = value; }
+        }
+
         public virtual string MetadataHash {
             get {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder ();
@@ -494,13 +368,13 @@ namespace Banshee.Collection
         }
 
         private TrackMediaAttributes media_attributes = TrackMediaAttributes.Default;
-        
+
         [Exportable]
         public virtual TrackMediaAttributes MediaAttributes {
             get { return media_attributes; }
             set { media_attributes = value; }
         }
-        
+
         public bool HasAttribute (TrackMediaAttributes attr)
         {
             return (MediaAttributes & attr) != 0;
@@ -549,7 +423,7 @@ namespace Banshee.Collection
         }
 
 #region Exportable Properties
-        
+
         public static void ExportableMerge (TrackInfo source, TrackInfo dest)
         {
             // Use the high level TrackInfo type if the source and dest types differ
@@ -557,7 +431,7 @@ namespace Banshee.Collection
             if (source.GetType () != type) {
                 type = typeof (TrackInfo);
             }
-            
+
             foreach (KeyValuePair<string, PropertyInfo> iter in GetExportableProperties (type)) {
                 try {
                     PropertyInfo property = iter.Value;
@@ -569,11 +443,11 @@ namespace Banshee.Collection
                 }
             }
         }
-        
+
         public static IEnumerable<KeyValuePair<string, PropertyInfo>> GetExportableProperties (Type type)
         {
             FindExportableProperties (type);
-            
+
             Dictionary<string, PropertyInfo> properties = null;
             if (exportable_properties.TryGetValue (type, out properties)) {
                 foreach (KeyValuePair<string, PropertyInfo> property in properties) {
@@ -581,12 +455,12 @@ namespace Banshee.Collection
                 }
             }
         }
-        
+
         public IDictionary<string, object> GenerateExportable ()
         {
             return GenerateExportable (null);
         }
-        
+
         public IDictionary<string, object> GenerateExportable (string [] fields)
         {
             Dictionary<string, object> dict = new Dictionary<string, object> ();
@@ -600,17 +474,17 @@ namespace Banshee.Collection
                             break;
                         }
                     }
-                    
+
                     if (!found) {
                         continue;
                     }
                 }
-                
+
                 object value = property.Value.GetValue (this, null);
                 if (value == null) {
                     continue;
                 }
-                
+
                 if (value is TimeSpan) {
                     value = ((TimeSpan)value).TotalSeconds;
                 } else if (value is DateTime) {
@@ -621,11 +495,11 @@ namespace Banshee.Collection
                 } else if (value is TrackMediaAttributes) {
                     value = value.ToString ();
                 } else if (!(value.GetType ().IsPrimitive || value is string)) {
-                    Log.WarningFormat ("Invalid property in {0} marked as [Exportable]: ({1} is a {2})", 
+                    Log.WarningFormat ("Invalid property in {0} marked as [Exportable]: ({1} is a {2})",
                         property.Value.DeclaringType, property.Value.Name, value.GetType ());
                     continue;
                 }
-                
+
                 // A bit lame
                 if (!(value is string)) {
                     string str_value = value.ToString ();
@@ -633,16 +507,16 @@ namespace Banshee.Collection
                         continue;
                     }
                 }
-                
+
                 dict.Add (property.Key, value);
             }
-            
+
             return dict;
         }
-        
+
         private static Dictionary<Type, Dictionary<string, PropertyInfo>> exportable_properties;
         private static object exportable_properties_mutex = new object ();
-        
+
         private static void FindExportableProperties (Type type)
         {
             lock (exportable_properties_mutex) {
@@ -651,7 +525,7 @@ namespace Banshee.Collection
                 } else if (exportable_properties.ContainsKey (type)) {
                     return;
                 }
-                
+
                 // Build a stack of types to reflect
                 Stack<Type> probe_types = new Stack<Type> ();
                 Type probe_type = type;
@@ -664,57 +538,57 @@ namespace Banshee.Collection
                     }
                     probe_type = probe_type.BaseType;
                 }
-                
+
                 if (!is_track_info) {
                     throw new ArgumentException ("Type must derive from Banshee.Collection.TrackInfo", "type");
                 }
-            
+
                 // Iterate through all types
                 while (probe_types.Count > 0) {
                     probe_type = probe_types.Pop ();
                     if (exportable_properties.ContainsKey (probe_type)) {
                         continue;
                     }
-                    
+
                     Dictionary<string, PropertyInfo> properties = null;
-                    
+
                     // Reflect the type for exportable properties
                     foreach (PropertyInfo property in probe_type.GetProperties (BindingFlags.Public | BindingFlags.Instance)) {
                         if (property.DeclaringType != probe_type) {
                             continue;
                         }
-                        
+
                         object [] exportable_attrs = property.GetCustomAttributes (typeof (ExportableAttribute), true);
                         if (exportable_attrs == null || exportable_attrs.Length == 0) {
                             continue;
                         }
-                        
+
                         string export_name = ((ExportableAttribute)exportable_attrs[0]).ExportName
                             ?? StringUtil.CamelCaseToUnderCase (property.Name, '-');
-                        
+
                         if (String.IsNullOrEmpty (export_name) || (properties != null && properties.ContainsKey (export_name))) {
                             continue;
                         }
-                        
+
                         if (properties == null) {
                             properties = new Dictionary<string, PropertyInfo> ();
                             exportable_properties.Add (probe_type, properties);
                         }
-                        
+
                         properties.Add (export_name, property);
                     }
-                    
+
                     // Merge properties in the type hierarchy through linking or aggregation
                     Type parent_type = probe_type.BaseType;
                     bool link = !exportable_properties.ContainsKey (probe_type);
-                    
+
                     while (parent_type != null) {
                         Dictionary<string, PropertyInfo> parent_properties = null;
                         if (!exportable_properties.TryGetValue (parent_type, out parent_properties)) {
                             parent_type = parent_type.BaseType;
                             continue;
                         }
-                        
+
                         if (link) {
                             // Link entire property set between types
                             exportable_properties.Add (probe_type, parent_properties);
@@ -725,13 +599,13 @@ namespace Banshee.Collection
                                 properties.Add (parent_property.Key, parent_property.Value);
                             }
                         }
-                        
+
                         parent_type = parent_type.BaseType;
                     }
                 }
             }
         }
-        
+
 #endregion
 
     }

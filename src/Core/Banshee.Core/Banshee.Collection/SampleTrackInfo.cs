@@ -32,16 +32,18 @@ namespace Banshee.Collection
 {
     public class SampleTrackInfo : TrackInfo
     {
-        public SampleTrackInfo () 
+        public SampleTrackInfo ()
         {
             ArtistName = "The Beatles";
             TrackTitle = "Ticket to Ride";
             AlbumTitle = "Help!";
             TrackNumber = 7;
             TrackCount = 14;
+            DiscNumber = 1;
+            DiscCount = 2;
             Duration = TimeSpan.FromSeconds (182);
             Year = 1965;
-            
+
             CanPlay = true;
             CanSaveToDatabase = true;
         }

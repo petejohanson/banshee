@@ -46,25 +46,25 @@ using Banshee.Database;
 using Banshee.PlaybackController;
 
 namespace Banshee.Collection.Database
-{       
-    public class DatabaseTrackListModel : TrackListModel, IExportableModel, 
-        ICacheableDatabaseModel, IFilterable, ISortable, ICareAboutView
+{
+    public class DatabaseTrackListModel : TrackListModel, IExportableModel,
+        ICacheableDatabaseModel, IFilterable, ISortable, ICareAboutView, ISearchable
     {
         private readonly BansheeDbConnection connection;
         private IDatabaseTrackModelProvider provider;
         protected IDatabaseTrackModelCache cache;
         private Banshee.Sources.DatabaseSource source;
-        
+
         private long count;
 
         private long filtered_count;
         private TimeSpan filtered_duration;
         private long filtered_filesize, filesize;
-        
+
         private ISortableColumn sort_column;
         private string sort_query;
         private bool forced_sort_query;
-        
+
         private string reload_fragment;
         private string join_table, join_fragment, join_primary_key, join_column, condition, condition_from;
 
@@ -72,14 +72,14 @@ namespace Banshee.Collection.Database
         private string user_query;
 
         private int rows_in_view;
-        
+
         public DatabaseTrackListModel (BansheeDbConnection connection, IDatabaseTrackModelProvider provider, Banshee.Sources.DatabaseSource source)
         {
             this.connection = connection;
             this.provider = provider;
             this.source = source;
         }
-        
+
         protected HyenaSqliteConnection Connection {
             get { return connection; }
         }
@@ -95,7 +95,7 @@ namespace Banshee.Collection.Database
             cache.AggregatesUpdated += HandleCacheAggregatesUpdated;
             GenerateSortQueryPart ();
         }
-        
+
         private bool have_new_user_query = true;
         private void GenerateUserQueryFragment ()
         {
@@ -132,7 +132,7 @@ namespace Banshee.Collection.Database
         {
             SortQuery = (SortColumn == null || SortColumn.SortType == SortType.None)
                 ? (SortColumn != null && source is Banshee.Playlist.PlaylistSource)
-                    ? "CorePlaylistEntries.ViewOrder ASC, CorePlaylistEntries.EntryID ASC" 
+                    ? "CorePlaylistEntries.ViewOrder ASC, CorePlaylistEntries.EntryID ASC"
                     : BansheeQuery.GetSort ("Artist", true)
                 : BansheeQuery.GetSort (SortColumn.SortKey, SortColumn.SortType == SortType.Ascending);
         }
@@ -164,7 +164,7 @@ namespace Banshee.Collection.Database
             filtered_duration = TimeSpan.FromMilliseconds (reader.IsDBNull (1) ? 0 : Convert.ToInt64 (reader[1]));
             filtered_filesize = reader.IsDBNull (2) ? 0 : Convert.ToInt64 (reader[2]);
         }
-        
+
         public override void Clear ()
         {
             cache.Clear ();
@@ -187,7 +187,7 @@ namespace Banshee.Collection.Database
         }
 
         private string unfiltered_query;
-        public string UnfilteredQuery {
+        public virtual string UnfilteredQuery {
             get {
                 return unfiltered_query ?? (unfiltered_query = String.Format (
                     "FROM {0} WHERE {1} {2}",
@@ -200,7 +200,18 @@ namespace Banshee.Collection.Database
 
         private string from;
         protected string From {
-            get { return from ?? provider.From; }
+            get {
+                if (from == null) {
+                    from = provider.From;
+                    int i = from.IndexOf (',');
+                    if (i > 0) {
+                        // Force the join order to fix bgo#581103 and bgo#603661
+                        // See section 5.2 in http://www.sqlite.org/optoverview.html
+                        from = from.Substring (0, i) + " CROSS JOIN " + from.Substring (i + 1);
+                    }
+                }
+                return from;
+            }
             set { from = value; }
         }
 
@@ -214,7 +225,7 @@ namespace Banshee.Collection.Database
             HyenaSqliteCommand count_command = new HyenaSqliteCommand (String.Format (
                 "SELECT COUNT(*), SUM(CoreTracks.FileSize) {0}", UnfilteredQuery
             ));
-            
+
             using (HyenaDataReader reader = new HyenaDataReader (connection.Query (count_command))) {
                 count = reader.Get<long> (0);
                 filesize = reader.Get<long> (1);
@@ -258,12 +269,12 @@ namespace Banshee.Collection.Database
                     foreach (IFilterListModel model in reload_models) {
                         model.Reload (false);
                     }
-                    
+
                     bool have_filters = false;
                     foreach (IFilterListModel filter in source.CurrentFilters) {
                         have_filters |= !filter.Selection.AllSelected;
                     }
-                    
+
                     // Unless both artist/album selections are "all" (eg unfiltered), reload
                     // the track model again with the artist/album filters now in place.
                     if (have_filters) {
@@ -294,7 +305,7 @@ namespace Banshee.Collection.Database
         {
             StringBuilder qb = new StringBuilder ();
             qb.Append (UnfilteredQuery);
-            
+
             if (with_filters) {
                 foreach (IFilterListModel filter in source.CurrentFilters) {
                     string filter_sql = filter.GetSqlFilter ();
@@ -304,19 +315,36 @@ namespace Banshee.Collection.Database
                     }
                 }
             }
-            
+
             if (query_fragment != null) {
                 qb.Append (" AND ");
                 qb.Append (query_fragment);
             }
-            
+
             if (sort_query != null) {
                 qb.Append (" ORDER BY ");
                 qb.Append (sort_query);
             }
-            
+
             reload_fragment = qb.ToString ();
             cache.Reload ();
+        }
+
+        private QueryFieldSet query_fields = BansheeQuery.FieldSet;
+        public QueryFieldSet QueryFields {
+            get { return query_fields; }
+            protected set { query_fields = value; }
+        }
+
+        public int IndexOf (QueryNode query, long offset)
+        {
+            lock (this) {
+                if (query == null) {
+                    return -1;
+                }
+
+                return (int) cache.IndexOf (query.ToSql (QueryFields), offset);
+            }
         }
 
         public override int IndexOf (TrackInfo track)
@@ -338,64 +366,18 @@ namespace Banshee.Collection.Database
             }
         }
 
-#region Get random methods
+        public override TrackInfo GetRandom (DateTime notPlayedSince)
+        {
+            return GetRandom (notPlayedSince, PlaybackShuffleMode.Song, true, false, Shuffler.Playback);
+        }
 
-        private static RandomBy [] randoms = new RandomBy [] {
-            new RandomByTrack (), new RandomByArtist (), new RandomByAlbum (), new RandomByRating (), new RandomByScore()
-        };
-
-        private DateTime random_began_at = DateTime.MinValue;
-        private DateTime last_random = DateTime.MinValue;
-
-        public override TrackInfo GetRandom (DateTime notPlayedSince, PlaybackShuffleMode mode, bool repeat, bool lastWasSkipped)
+        public TrackInfo GetRandom (DateTime notPlayedSince, PlaybackShuffleMode mode, bool repeat, bool resetSinceTime, Shuffler shuffler)
         {
             lock (this) {
-                if (Count == 0) {
-                    return null;
-                }
-
-                if (random_began_at < notPlayedSince) {
-                    random_began_at = last_random = notPlayedSince;
-                }
-
-                TrackInfo track = GetRandomTrack (mode, repeat, lastWasSkipped);
-                if (track == null && (repeat || mode != PlaybackShuffleMode.Linear)) {
-                    random_began_at = (random_began_at == last_random) ? DateTime.Now : last_random;
-                    track = GetRandomTrack (mode, repeat, true);
-                }
-
-                last_random = DateTime.Now;
-                return track;
+                shuffler.SetModelAndCache (this, cache);
+                return shuffler.GetRandom (notPlayedSince, mode, repeat, resetSinceTime);
             }
         }
-
-        private TrackInfo GetRandomTrack (PlaybackShuffleMode mode, bool repeat, bool lastWasSkipped)
-        {
-            foreach (var r in randoms) {
-                r.SetModelAndCache (this, cache);
-                if (lastWasSkipped || r.Mode != mode) {
-                    r.Reset ();
-                }
-            }
-            
-            var random = randoms.First (r => r.Mode == mode);
-            if (random != null) {
-                if (!random.IsReady) {
-                    if (!random.Next (random_began_at) && repeat) {
-                        random_began_at = last_random;
-                        random.Next (random_began_at);
-                    }
-                }
-
-                if (random.IsReady) {
-                    return random.GetTrack (random_began_at);
-                }
-            }
-
-            return null;
-        }
-
-#endregion
 
         public override TrackInfo this[int index] {
             get {
@@ -416,11 +398,11 @@ namespace Banshee.Collection.Database
         public long FileSize {
             get { return filtered_filesize; }
         }
-        
+
         public long UnfilteredFileSize {
             get { return filesize; }
         }
-        
+
         public int UnfilteredCount {
             get { return (int) count; }
             set { count = value; }
@@ -428,17 +410,17 @@ namespace Banshee.Collection.Database
 
         public string UserQuery {
             get { return user_query; }
-            set { 
+            set {
                 lock (this) {
-                    user_query = value; 
+                    user_query = value;
                     have_new_user_query = true;
                 }
             }
         }
-        
+
         public string ForcedSortQuery {
             get { return forced_sort_query ? sort_query : null; }
-            set { 
+            set {
                 forced_sort_query = value != null;
                 sort_query = value;
                 if (cache != null) {
@@ -473,7 +455,7 @@ namespace Banshee.Collection.Database
         {
             AddCondition (null, part);
         }
-        
+
         public void AddCondition (string tables, string part)
         {
             if (!String.IsNullOrEmpty (part)) {
@@ -484,7 +466,7 @@ namespace Banshee.Collection.Database
                 }
             }
         }
-        
+
         public string Condition {
             get { return condition; }
         }
@@ -524,20 +506,20 @@ namespace Banshee.Collection.Database
             get { return (int) cache.CacheId; }
         }
 
-        public ISortableColumn SortColumn { 
+        public ISortableColumn SortColumn {
             get { return sort_column; }
         }
-                
+
         public virtual int RowsInView {
             protected get { return rows_in_view; }
             set { rows_in_view = value; }
         }
 
-        int IExportableModel.GetLength () 
+        int IExportableModel.GetLength ()
         {
             return Count;
         }
-        
+
         IDictionary<string, object> IExportableModel.GetMetadata (int index)
         {
             return this[index].GenerateExportable ();
@@ -579,7 +561,7 @@ namespace Banshee.Collection.Database
         public string ReloadFragment {
             get { return reload_fragment; }
         }
-        
+
         public bool CachesValues { get { return false; } }
     }
 }

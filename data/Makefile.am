@@ -9,8 +9,18 @@ dbusservice_in_files = \
 dbusservicedir = $(datadir)/dbus-1/services
 dbusservice_DATA = $(dbusservice_in_files:.service.in=.service)
 
+# Generate a fake source file containing strings for
+# translation that are found in our .addin.xml files
+ADDIN_XML_FILES = $(shell find $(top_srcdir)/src -name \*.addin.xml)
+addin-xml-strings.cs: $(ADDIN_XML_FILES) $(top_srcdir)/build/addin-xml-string-extractor.exe
+	@echo "  GEN   $@"
+	$(MONO) $(top_srcdir)/build/addin-xml-string-extractor.exe $(ADDIN_XML_FILES) > $@
+
+all: addin-xml-strings.cs
+
 EXTRA_DIST = \
-	$(dbusservice_in_files)
+	$(dbusservice_in_files) \
+	addin-xml-strings.cs
 
 DISTCLEANFILES = \
 	$(dbusservice_DATA)

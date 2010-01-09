@@ -27,181 +27,159 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Gtk;
 
 using Hyena;
 
+using Mono.Unix;
 using Mono.Addins;
+
+using Hyena;
 
 namespace Banshee.Addins.Gui
 {
-    public class AddinView : EventBox
+    public class AddinView : VBox
     {
-        private List<AddinTile> tiles = new List<AddinTile> ();
-        private VBox box = new VBox ();
-        
-        private int selected_index = -1;
-    
+        private TreeView tree_view;
+
         public AddinView ()
         {
-            CanFocus = true;
-            VisibleWindow = false;
-            
-            box.Show ();
-            Add (box);
-            
-            LoadAddins ();
-        }
-        
-        private void LoadAddins ()
-        {
-            foreach (Addin addin in AddinManager.Registry.GetAddins ()) {
-                if (addin.Name != addin.Id && addin.Description != null && 
-                    addin.Description.Category != null && !addin.Description.Category.StartsWith ("required:") &&
-                    (!addin.Description.Category.Contains ("Debug") || ApplicationContext.Debugging)) {
-                    AppendAddin (addin);
+            var hbox = new HBox () { Spacing = 6 };
+
+            var filter_label = new Label (Catalog.GetString ("Show:"));
+            var filter_combo = ComboBox.NewText ();
+            filter_combo.AppendText (Catalog.GetString ("All"));
+            filter_combo.AppendText (Catalog.GetString ("Enabled"));
+            filter_combo.AppendText (Catalog.GetString ("Not Enabled"));
+            filter_combo.Active = 0;
+
+            var search_label = new Label (Catalog.GetString ("Search:"));
+            var search_entry = new Banshee.Widgets.SearchEntry () {
+                WidthRequest = 160,
+                Visible = true,
+                Ready = true
+            };
+
+            hbox.PackStart (filter_label, false, false, 0);
+            hbox.PackStart (filter_combo, false, false, 0);
+            hbox.PackEnd   (search_entry, false, false, 0);
+            hbox.PackEnd   (search_label, false, false, 0);
+
+            var model = new TreeStore (typeof(bool), typeof(bool), typeof (string), typeof (Addin));
+
+            var addins = AddinManager.Registry.GetAddins ().Where (a => { return
+                a.Name != a.Id && a.Description != null &&
+                !String.IsNullOrEmpty (a.Description.Category) && !a.Description.Category.StartsWith ("required:") &&
+                (!a.Description.Category.Contains ("Debug") || Banshee.Base.ApplicationContext.Debugging);
+            });
+
+            var categorized_addins = addins.GroupBy<Addin, string> (a => a.Description.Category)
+                                           .Select (c => new {
+                                                Addins = c.OrderBy (a => Catalog.GetString (a.Name)).ToList (),
+                                                Name = c.Key,
+                                                NameLocalized = Catalog.GetString (c.Key) })
+                                           .OrderBy (c => c.NameLocalized)
+                                           .ToList ();
+
+            tree_view = new TreeView () {
+                FixedHeightMode = false,
+                HeadersVisible = false,
+                SearchColumn = 1,
+                RulesHint = true,
+                Model = model
+            };
+
+            var txt_cell = new CellRendererText () { WrapMode = Pango.WrapMode.Word };
+            tree_view.AppendColumn ("Name", txt_cell , "markup", Columns.Name);
+
+            var check_cell = new CellRendererToggle () { Activatable = true };
+            tree_view.AppendColumn ("Enable", check_cell, "visible", Columns.IsAddin, "active", Columns.IsEnabled);
+            check_cell.Toggled += (o, a) => {
+                TreeIter iter;
+                if (model.GetIter (out iter, new TreePath (a.Path))) {
+                    var addin = model.GetValue (iter, 3) as Addin;
+                    bool enabled = (bool) model.GetValue (iter, 1);
+                    addin.Enabled = !enabled;
+                    model.SetValue (iter, 1, addin.Enabled);
                 }
-            }
-            
-            if (tiles.Count > 0) {
-                tiles[tiles.Count - 1].Last = true;
-            }
-        }
-        
-        private bool changing_styles = false;
-        
-        protected override void OnStyleSet (Style previous_style)
-        {
-            if (changing_styles) {
-                return;
-            }
-            
-            changing_styles = true;
-            base.OnStyleSet (previous_style);
-            Parent.ModifyBg (StateType.Normal, Style.Base (StateType.Normal));
-            changing_styles = false;
-        }
-        
-        private void AppendAddin (Addin addin)
-        {
-            AddinTile tile = new AddinTile (addin);
-            tile.ActiveChanged += OnAddinActiveChanged;
-            tile.SizeAllocated += OnAddinSizeAllocated;
-            tile.Show ();
-            tiles.Add (tile);
-            
-            box.PackStart (tile, false, false, 0);
-        }
-        
-        private void OnAddinActiveChanged (object o, EventArgs args)
-        {
-            foreach (AddinTile tile in tiles) {
-                tile.UpdateState ();
-            }
-        }
-        
-        private void OnAddinSizeAllocated (object o, SizeAllocatedArgs args)
-        {
-            ScrolledWindow scroll;
-            
-            if (Parent == null || (scroll = Parent.Parent as ScrolledWindow) == null) {
-                return;
-            }
-            
-            AddinTile tile = (AddinTile)o;
-            
-            if (tiles.IndexOf (tile) != selected_index) {
-                return;
-            }
-            
-            Gdk.Rectangle ta = ((AddinTile)o).Allocation;
-            Gdk.Rectangle va = new Gdk.Rectangle (0, (int)scroll.Vadjustment.Value, 
-                Allocation.Width, Parent.Allocation.Height);
-            
-            if (!va.Contains (ta)) {
-                double delta = 0.0;
-                if (ta.Bottom > va.Bottom) {
-                    delta = ta.Bottom - va.Bottom;
-                } else if (ta.Top < va.Top) {
-                    delta = ta.Top - va.Top;
+            };
+
+            var update_model = new System.Action (() => {
+                string search = search_entry.Query;
+                bool? enabled = filter_combo.Active > 0 ? (bool?) (filter_combo.Active == 1 ? true : false) : null;
+                model.Clear ();
+                foreach (var cat in categorized_addins) {
+                    var cat_iter = model.AppendValues (false, false, String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (cat.NameLocalized)), null);
+                    bool any = false;
+                    foreach (var a in cat.Addins.Matching (search)) {
+                        if (enabled == null || (a.Enabled == enabled.Value)) {
+                            model.AppendValues (cat_iter, true,
+                                a.Enabled,
+                                String.Format (
+                                    "<b>{0}</b>\n<small>{1}</small>",
+                                    GLib.Markup.EscapeText (Catalog.GetString (a.Name)),
+                                    GLib.Markup.EscapeText (Catalog.GetString (a.Description.Description))),
+                                a
+                            );
+                            any = true;
+                        }
+                    }
+
+                    if (!any) {
+                        model.Remove (ref cat_iter);
+                    }
                 }
-                scroll.Vadjustment.Value += delta;
-                QueueDraw();
-            }
+                tree_view.ExpandAll ();
+            });
+
+            update_model ();
+            search_entry.Changed += (o, a) => update_model ();
+            filter_combo.Changed += (o, a) => update_model ();
+
+            var tree_scroll = new Gtk.ScrolledWindow () {
+                HscrollbarPolicy = PolicyType.Never
+            };
+            tree_scroll.AddWithViewport (tree_view);
+
+            Spacing = 6;
+            PackStart (hbox, false, false, 0);
+            PackStart (tree_scroll, true, true, 0);
+            ShowAll ();
+            search_entry.InnerEntry.GrabFocus ();
+
+            txt_cell.WrapWidth = 300;
         }
-        
-        protected override bool OnButtonPressEvent (Gdk.EventButton evnt)
+
+        private enum Columns : int {
+            IsAddin,
+            IsEnabled,
+            Name,
+            Addin
+        };
+    }
+
+    internal static class AddinExtensions
+    {
+        public static IEnumerable<Addin> Matching (this IEnumerable<Addin> addins, string search)
         {
-            HasFocus = true;
-            
-            ClearSelection ();
-            
-            for (int i = 0; i < tiles.Count; i++) {
-                if (tiles[i].Allocation.Contains ((int)evnt.X, (int)evnt.Y)) {
-                    Select (i);
-                    break;
-                }
+            search = StringUtil.SearchKey (search);
+            if (String.IsNullOrEmpty (search)) {
+                return addins;
             }
-            
-            QueueDraw ();
-            
-            return base.OnButtonPressEvent (evnt);
+
+            return addins.Where (a => a.MatchStrings ().Any (s => {
+                return StringUtil.SearchKey (s).Contains (search) ||
+                       StringUtil.SearchKey (Catalog.GetString (s)).Contains (search);
+            }));
         }
-        
-        protected override bool OnKeyPressEvent (Gdk.EventKey evnt)
+
+        public static IEnumerable<string> MatchStrings (this Addin a)
         {
-            int index = selected_index;
-        
-            switch (evnt.Key) {
-                 case Gdk.Key.Up:
-                 case Gdk.Key.uparrow:
-                     index--;
-                     if (index < 0) {
-                         index = 0;
-                     }
-                     break;
-                 case Gdk.Key.Down:
-                 case Gdk.Key.downarrow:
-                     index++;
-                     if (index > tiles.Count - 1) {
-                         index = tiles.Count - 1;
-                     }
-                     break;
-            }
-            
-            if (index != selected_index) {
-                ClearSelection ();
-                Select (index);
-                return true;
-            }
-        
-            return base.OnKeyPressEvent (evnt);
-        }
-        
-        private void Select (int index)
-        {
-            if (index >= 0 && index < tiles.Count) {
-                selected_index = index;
-                tiles[index].Select (true);
-            } else {
-                ClearSelection ();
-            }
-            
-            if (Parent != null && Parent.IsRealized) {
-                Parent.GdkWindow.InvalidateRect (Parent.Allocation, true);
-            }
-            
-            QueueResize ();
-        }
-        
-        private void ClearSelection ()
-        {
-            if (selected_index >= 0 && selected_index < tiles.Count) {
-                tiles[selected_index].Select (false);
-            }
-            
-            selected_index = -1;
+            yield return a.Name;
+            yield return a.Description.Description;
+            yield return a.Description.Category;
         }
     }
 }

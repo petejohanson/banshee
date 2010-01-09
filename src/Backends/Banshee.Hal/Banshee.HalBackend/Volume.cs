@@ -39,15 +39,15 @@ namespace Banshee.HalBackend
         private static Dictionary<Hal.Device, Volume> unmounted_volumes = new Dictionary<Hal.Device, Volume> ();
 
         internal static HardwareManager HardwareManager;
-        
+
         private const string method_names_property = "org.freedesktop.Hal.Device.Volume.method_names";
-        
+
         public static Volume Resolve (BlockDevice parent, Hal.Manager manager, Hal.Device device)
         {
             if (!device.IsVolume) {
                 return null;
             }
-            
+
             try {
                 Volume volume = (parent is ICdromDevice || (parent == null && device.QueryCapability ("volume.disc")))
                     ? DiscVolume.Resolve (parent, manager, device)
@@ -60,15 +60,17 @@ namespace Banshee.HalBackend
 
             return null;
         }
-        
+
+        private DkDisk dk_disk;
         private BlockDevice parent;
         private string [] method_names;
-        
+
         protected Volume (BlockDevice parent, Hal.Manager manager, Hal.Device device) : base (manager, device)
         {
             this.parent = parent ?? BlockDevice.Resolve<IBlockDevice> (manager, device.Parent);
-            
-            method_names = HalDevice.PropertyExists (method_names_property) 
+            dk_disk = DkDisk.FindByDevice (DeviceNode);
+
+            method_names = HalDevice.PropertyExists (method_names_property)
                 ? device.GetPropertyStringList (method_names_property)
                 : new string[0];
         }
@@ -78,7 +80,13 @@ namespace Banshee.HalBackend
         }
 
         public string MountPoint {
-            get { return HalDevice["volume.mount_point"]; }
+            get {
+                if (dk_disk != null && dk_disk.MountPoint != null) {
+                    return dk_disk.MountPoint;
+                } else {
+                    return HalDevice["volume.mount_point"];
+                }
+            }
         }
 
         public string FileSystem {
@@ -87,19 +95,19 @@ namespace Banshee.HalBackend
 
         /*private string serial;
         public override string Serial {
-            get { 
+            get {
                 if (serial == null) {
-                    serial = String.IsNullOrEmpty (HalDevice["volume.uuid"]) 
-                        ? base.Serial 
+                    serial = String.IsNullOrEmpty (HalDevice["volume.uuid"])
+                        ? base.Serial
                         : HalDevice["volume.uuid"];
                 }
-                
+
                 return serial;
             }
         }*/
 
         public bool IsMounted {
-            get { return HalDevice.GetPropertyBoolean ("volume.is_mounted"); }
+            get { return (dk_disk != null && dk_disk.IsMounted) || HalDevice.GetPropertyBoolean ("volume.is_mounted"); }
         }
 
         public bool ShouldIgnore {
@@ -107,7 +115,7 @@ namespace Banshee.HalBackend
         }
 
         public bool IsReadOnly {
-            get { return HalDevice.GetPropertyBoolean ("volume.is_mounted_read_only"); }
+            get { return (dk_disk != null && dk_disk.IsReadOnly) || HalDevice.GetPropertyBoolean ("volume.is_mounted_read_only"); }
         }
 
         public ulong Capacity {
@@ -119,9 +127,9 @@ namespace Banshee.HalBackend
                 if (!IsMounted) {
                     return -1;
                 }
-                
+
                 // FIXME: maybe we should use UnixDriveInfo? Advantages?
-                
+
                 try {
                     Mono.Unix.Native.Statvfs statvfs_info;
                     if (Mono.Unix.Native.Syscall.statvfs (MountPoint, out statvfs_info) != -1) {
@@ -129,44 +137,48 @@ namespace Banshee.HalBackend
                     }
                 } catch {
                 }
-                
+
                 return -1;
             }
         }
-        
+
         public IBlockDevice Parent {
             get { return parent; }
         }
-        
+
         public bool CanEject {
             get { return Array.IndexOf<string> (method_names, "Eject") >= 0; }
         }
-        
+
         public void Eject ()
         {
             if (CanEject && HalDevice.IsVolume) {
                 HalDevice.Volume.Eject ();
             }
         }
-        
+
         public bool CanUnmount {
             get { return Array.IndexOf<string> (method_names, "Unmount") >= 0; }
         }
-        
+
         public void Unmount ()
         {
             if (CanUnmount && HalDevice.IsVolume) {
-                HalDevice.Volume.Unmount ();
+                if (dk_disk != null) {
+                    dk_disk.Unmount ();
+                } else {
+                    HalDevice.Volume.Unmount ();
+                }
             }
         }
-        
+
         public override string ToString ()
         {
             if (IsMounted) {
-                return String.Format ("`{0}': mounted {1} volume at {2} with {3} bytes free (of {4})", 
+                return String.Format ("`{0}': mounted {1} volume at {2} with {3} bytes free (of {4})",
                     Name, IsReadOnly ? "read only" : "read/write", MountPoint, Available, Capacity);
             }
-            
+
             return String.Format ("`{0}': not mounted (capacity: {1} bytes)", Name, Capacity);
         }
 

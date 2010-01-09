@@ -50,9 +50,9 @@ namespace Banshee.Dap.MassStorage
 {
     public class MassStorageSource : DapSource
     {
-        private Banshee.Collection.Gui.ArtworkManager artwork_manager 
+        private Banshee.Collection.Gui.ArtworkManager artwork_manager
             = ServiceManager.Get<Banshee.Collection.Gui.ArtworkManager> ();
-        
+
         private MassStorageDevice ms_device;
         private IVolume volume;
         private IUsbDevice usb_device;
@@ -60,12 +60,12 @@ namespace Banshee.Dap.MassStorage
         public override void DeviceInitialize (IDevice device)
         {
             base.DeviceInitialize (device);
-            
+
             volume = device as IVolume;
             if (volume == null || (usb_device = volume.ResolveRootUsbDevice ()) == null) {
                 throw new InvalidDeviceException ();
             }
-            
+
             ms_device = DeviceMapper.Map (this);
             try {
                 if (!ms_device.LoadDeviceConfiguration ()) {
@@ -78,7 +78,7 @@ namespace Banshee.Dap.MassStorage
             if (!HasMediaCapabilities && ms_device == null) {
                 throw new InvalidDeviceException ();
             }
-            
+
             // Ignore iPods, except ones with .is_audio_player files
             if (MediaCapabilities != null && MediaCapabilities.IsType ("ipod")) {
                 if (ms_device != null && ms_device.HasIsAudioPlayerFile) {
@@ -96,11 +96,11 @@ namespace Banshee.Dap.MassStorage
             mount_point = volume.MountPoint;
 
             Initialize ();
-            
+
             if (ms_device != null) {
                 ms_device.SourceInitialize ();
             }
-            
+
             AddDapProperties ();
 
             // TODO differentiate between Audio Players and normal Disks, and include the size, eg "2GB Audio Player"?
@@ -113,6 +113,13 @@ namespace Banshee.Dap.MassStorage
                 AddDapProperty (String.Format (
                     Catalog.GetPluralString ("Audio Folder", "Audio Folders", AudioFolders.Length), AudioFolders.Length),
                     System.String.Join ("\n", AudioFolders)
+                );
+            }
+
+            if (VideoFolders.Length > 0 && !String.IsNullOrEmpty (VideoFolders[0])) {
+                AddDapProperty (String.Format (
+                    Catalog.GetPluralString ("Video Folder", "Video Folders", VideoFolders.Length), VideoFolders.Length),
+                    System.String.Join ("\n", VideoFolders)
                 );
             }
 
@@ -196,7 +203,7 @@ namespace Banshee.Dap.MassStorage
         public IVolume Volume {
             get { return volume; }
         }
-        
+
         public IUsbDevice UsbDevice {
             get { return usb_device; }
         }
@@ -264,7 +271,7 @@ namespace Banshee.Dap.MassStorage
                         }
                     }
                 }
-                
+
                 SupportsPlaylists &= CanSyncPlaylists;
                 return playlist_types;
             }
@@ -328,11 +335,11 @@ namespace Banshee.Dap.MassStorage
             string [] names = ms_device != null ? ms_device.GetIconNames () : null;
             return names == null ? base.GetIconNames () : names;
         }
-        
+
         public override long BytesUsed {
             get { return BytesCapacity - volume.Available; }
         }
-        
+
         public override long BytesCapacity {
             get { return (long) volume.Capacity; }
         }
@@ -359,6 +366,25 @@ namespace Banshee.Dap.MassStorage
             set { write_path = value; }
         }
 
+        private string write_path_video = null;
+        public string WritePathVideo {
+            get {
+                if (write_path_video == null) {
+                    write_path_video = BaseDirectory;
+                    // Some Devices May Have a Separate Video Directory
+                    if (VideoFolders.Length > 0) {
+                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, VideoFolders[0]);
+                    } else if (AudioFolders.Length > 0) {
+                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, AudioFolders[0]);
+                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, "Videos");
+                    }
+                }
+                return write_path_video;
+            }
+
+            set { write_path_video = value; }
+        }
+
         private string [] audio_folders;
         protected string [] AudioFolders {
             get {
@@ -368,6 +394,17 @@ namespace Banshee.Dap.MassStorage
                 return audio_folders;
             }
             set { audio_folders = value; }
+        }
+
+        private string [] video_folders;
+        protected string [] VideoFolders {
+            get {
+                if (video_folders == null) {
+                    video_folders = HasMediaCapabilities ? MediaCapabilities.VideoFolders : new string[0];
+                }
+                return video_folders;
+            }
+            set { video_folders = value; }
         }
 
         protected IEnumerable<string> BaseDirectories {
@@ -440,18 +477,30 @@ namespace Banshee.Dap.MassStorage
                 Directory.Create (System.IO.Path.GetDirectoryName (new_uri.LocalPath));
                 File.Copy (fromUri, new_uri, false);
 
-                // TODO If write-to-file is NOT on, then write the metadata in db to the file on the DAP
-                // to ensure that when we load it next time, it's data will match what's in the database
-                // and the MetadataHash will actually match.  This isn't necessary on iPods or MTP since
-                // on them we store our db's metadata in their dbs.
-
                 DatabaseTrackInfo copied_track = new DatabaseTrackInfo (track);
                 copied_track.PrimarySource = this;
                 copied_track.Uri = new_uri;
+
+                // Write the metadata in db to the file on the DAP if it has changed since file was modified
+                // to ensure that when we load it next time, it's data will match what's in the database
+                // and the MetadataHash will actually match.  We do this by comparing the time
+                // stamps on files for last update of the db metadata vs the sync to file.
+                // The equals on the inequality below is necessary for podcasts who often have a sync and
+                // update time that are the same to the second, even though the album metadata has changed in the
+                // DB to the feedname instead of what is in the file.  It should be noted that writing the metadata
+                // is a small fraction of the total copy time anyway.
+
+                if (track.LastSyncedStamp >= Hyena.DateTimeUtil.ToDateTime (track.FileModifiedStamp)) {
+                    Log.DebugFormat ("Copying Metadata to File Since Sync time >= Updated Time");
+                    bool write_metadata = Metadata.SaveTrackMetadataService.WriteMetadataEnabled.Value;
+                    bool write_ratings_and_playcounts = Metadata.SaveTrackMetadataService.WriteRatingsAndPlayCountsEnabled.Value;
+                    Banshee.Streaming.StreamTagger.SaveToFile (copied_track, write_metadata, write_ratings_and_playcounts);
+                }
+
                 copied_track.Save (false);
             }
 
-            if (CoverArtSize > -1 && !String.IsNullOrEmpty (CoverArtFileType) && 
+            if (CoverArtSize > -1 && !String.IsNullOrEmpty (CoverArtFileType) &&
                     !String.IsNullOrEmpty (CoverArtFileName) && (FolderDepth == -1 || FolderDepth > 0)) {
                 SafeUri cover_uri = new SafeUri (System.IO.Path.Combine (System.IO.Path.GetDirectoryName (new_uri.LocalPath),
                                                                          CoverArtFileName));
@@ -460,13 +509,13 @@ namespace Banshee.Dap.MassStorage
                     coverart_id = String.Format ("podcast-{0}", Banshee.Base.CoverArtSpec.EscapePart (track.AlbumTitle));
                 } else {
                     coverart_id = track.ArtworkId;
-                }                
-                
-                if (!File.Exists (cover_uri) && CoverArtSpec.CoverExists (coverart_id)) {       
+                }
+
+                if (!File.Exists (cover_uri) && CoverArtSpec.CoverExists (coverart_id)) {
                     Gdk.Pixbuf pic = null;
-                    
+
                     if (CoverArtSize == 0) {
-                        if (CoverArtFileType == "jpg" || CoverArtFileType == "jpeg") {                        
+                        if (CoverArtFileType == "jpg" || CoverArtFileType == "jpeg") {
                             SafeUri local_cover_uri = new SafeUri (Banshee.Base.CoverArtSpec.GetPath (coverart_id));
                             Banshee.IO.File.Copy (local_cover_uri, cover_uri, false);
                         } else {
@@ -477,7 +526,7 @@ namespace Banshee.Dap.MassStorage
                     }
 
                     if (pic != null) {
-                        try {                        
+                        try {
                             byte [] bytes = pic.SaveToBuffer (CoverArtFileType);
                             System.IO.Stream cover_art_file = File.OpenWrite (cover_uri, true);
                             cover_art_file.Write (bytes, 0, bytes.Length);
@@ -498,11 +547,11 @@ namespace Banshee.Dap.MassStorage
                 if (ms_device != null && !ms_device.DeleteTrackHook (track)) {
                     return false;
                 }
-            
+
                 string track_file = System.IO.Path.GetFileName (track.Uri.LocalPath);
                 string track_dir = System.IO.Path.GetDirectoryName (track.Uri.LocalPath);
                 int files = 0;
-                
+
                 // Count how many files remain in the track's directory,
                 // excluding self or cover art
                 foreach (string file in System.IO.Directory.GetFiles (track_dir)) {
@@ -511,18 +560,18 @@ namespace Banshee.Dap.MassStorage
                         files++;
                     }
                 }
-                
+
                 // If we are the last track, go ahead and delete the artwork
                 // to ensure that the directory tree can get trimmed away too
                 if (files == 0 && CoverArtFileName != null) {
                     System.IO.File.Delete (Paths.Combine (track_dir, CoverArtFileName));
                 }
-                
+
                 Banshee.IO.Utilities.DeleteFileTrimmingParentDirectories (track.Uri);
             } catch (System.IO.FileNotFoundException) {
             } catch (System.IO.DirectoryNotFoundException) {
             }
-            
+
             return true;
         }
 
@@ -537,7 +586,7 @@ namespace Banshee.Dap.MassStorage
                 volume.Eject ();
             }
         }
-        
+
         protected override bool CanHandleDeviceCommand (DeviceCommand command)
         {
             try {
@@ -551,12 +600,16 @@ namespace Banshee.Dap.MassStorage
         private string GetTrackPath (TrackInfo track, string ext)
         {
             string file_path = null;
-            
+
             if (track.HasAttribute (TrackMediaAttributes.Podcast)) {
                 string album = FileNamePattern.Escape (track.DisplayAlbumTitle);
                 string title = FileNamePattern.Escape (track.DisplayTrackTitle);
                 file_path = System.IO.Path.Combine ("Podcasts", album);
                 file_path = System.IO.Path.Combine (file_path, title);
+            } else if (track.HasAttribute (TrackMediaAttributes.VideoStream)) {
+                string album = FileNamePattern.Escape (track.DisplayAlbumTitle);
+                string title = FileNamePattern.Escape (track.DisplayTrackTitle);
+                file_path = System.IO.Path.Combine (album, title);
             } else if (ms_device == null || !ms_device.GetTrackPath (track, out file_path)) {
                 // If the folder_depth property exists, we have to put the files in a hiearchy of
                 // the exact given depth (not including the mount point/audio_folder).
@@ -566,7 +619,7 @@ namespace Banshee.Dap.MassStorage
                     string track_album  = FileNamePattern.Escape (track.DisplayAlbumTitle);
                     string track_number = FileNamePattern.Escape (Convert.ToString (track.TrackNumber));
                     string track_title  = FileNamePattern.Escape (track.DisplayTrackTitle);
-    
+
                     if (depth == 0) {
                         // Artist - Album - 01 - Title
                         string track_artist = FileNamePattern.Escape (track.DisplayArtistName);
@@ -587,10 +640,10 @@ namespace Banshee.Dap.MassStorage
                                 file_path = album_artist.Substring (0, Math.Min (i+1, album_artist.Length)).Trim ();
                             } else {
                                 file_path = System.IO.Path.Combine (file_path, album_artist.Substring (0, Math.Min (i+1, album_artist.Length)).Trim ());
-                            }                                        
-                            
+                            }
+
                         }
-    
+
                         // Finally add on the Artist/Album/01 - Track
                         file_path = System.IO.Path.Combine (file_path, album_artist);
                         file_path = System.IO.Path.Combine (file_path, track_album);
@@ -600,10 +653,14 @@ namespace Banshee.Dap.MassStorage
                     file_path = FileNamePattern.CreateFromTrackInfo (track);
                 }
             }
-            
-            file_path = System.IO.Path.Combine (WritePath, file_path);
+
+            if (track.HasAttribute (TrackMediaAttributes.VideoStream)) {
+              file_path = System.IO.Path.Combine (WritePathVideo, file_path);
+            } else {
+              file_path = System.IO.Path.Combine (WritePath, file_path);
+            }
             file_path += ext;
-            
+
             return file_path;
         }
     }

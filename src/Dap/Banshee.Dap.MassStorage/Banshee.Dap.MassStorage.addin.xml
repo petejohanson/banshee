@@ -5,8 +5,8 @@
     compatVersion="1.0"
     copyright="Copyright 2008 Novell Inc., Copyright 2009 Jeff Wheeler. Licensed under the MIT X11 license."
     name="Mass Storage Media Player Support"
-    category="Hardware"
-    description="Provides support for media players that use USB Mass Storage without keeping an internal database."
+    category="Device Support"
+    description="Support for USB-drive based devices, including many iAudio devices and Android, Pre, and Galaxy phones."
     author="Gabriel Burt, Aaron Bockover, Jeff Wheeler"
     url="http://banshee-project.org/"
     defaultEnabled="true">
@@ -26,11 +26,23 @@
   <!-- Any devices we wish to special case and support out of the box -->
   <Extension path="/Banshee/Dap/MassStorage/Device">
     <MassStorageDevice class="Banshee.Dap.MassStorage.AndroidDevice" 
-        vendor-name="HTC" product-name="Android G1 Phone"
+        vendor-name="HTC" product-name="HTC Android Phone"
         vendor-id="0x0bb4" product-id="0x0c01,0x0c02"/>
+    <MassStorageDevice class="Banshee.Dap.MassStorage.AndroidDevice"
+        vendor-name="Google" product-name="Google Nexus One"
+        vendor-id="0x18d1" product-id="0x4e11,0x4e12"/>
+    <MassStorageDevice class="Banshee.Dap.MassStorage.AndroidDevice" 
+        vendor-name="Samsung" product-name="Samsung Galaxy"
+        vendor-id="0x04e8" product-id="0x6603,0x6601,0x6640"/>
+    <MassStorageDevice class="Banshee.Dap.MassStorage.AndroidDevice"
+        vendor-name="Motorola" product-name="Motorola Droid"
+        vendor-id="0x22b8" product-id="0x41d9,0x41db"/>
+    <MassStorageDevice class="Banshee.Dap.MassStorage.AndroidDevice"
+        vendor-name="Huawei" product-name="Pulse"
+        vendor-id="0x12d1" product-id="0x1501"/>
     <MassStorageDevice class="Banshee.Dap.MassStorage.WebOSDevice"
         vendor-name="Palm" product-name="Pre"
-        vendor-id="0x0830" product-id="0x8004"/>
+        vendor-id="0x0830" product-id="0x8004,0x8002"/>
   </Extension>
 
 </Addin>

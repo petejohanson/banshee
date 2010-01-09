@@ -197,6 +197,7 @@
     <Compile Include="Banshee.Sources.Gui\SourceIconResolver.cs" />
     <Compile Include="Banshee.Gui\BaseClientWindow.cs" />
     <Compile Include="Banshee.Sources.Gui\CompositeTrackSourceContents.cs" />
+    <Compile Include="Banshee.Sources.Gui\LazyLoadSourceContents.cs" />
     <Compile Include="Banshee.Sources.Gui\ISourceContents.cs" />
     <Compile Include="Banshee.Sources.Gui\ObjectListSourceContents.cs" />
     <Compile Include="Banshee.Playlist.Gui\PlaylistExportDialog.cs" />
@@ -218,8 +219,6 @@
     <Compile Include="Banshee.Preferences.Gui\SectionBox.cs" />
     <Compile Include="Banshee.Preferences.Gui\WidgetFactory.cs" />
     <Compile Include="Banshee.Preferences.Gui\DefaultPreferenceWidgets.cs" />
-    <Compile Include="Banshee.Addins.Gui\AddinDetailsDialog.cs" />
-    <Compile Include="Banshee.Addins.Gui\AddinTile.cs" />
     <Compile Include="Banshee.Addins.Gui\AddinView.cs" />
     <Compile Include="Banshee.Sources.Gui\SourceModel.cs" />
     <Compile Include="Banshee.Sources.Gui\SourceComboBox.cs" />
@@ -276,6 +275,7 @@
     <Compile Include="Banshee.ContextPane\BaseContextPage.cs" />
     <Compile Include="Banshee.ContextPane\ContextPageManager.cs" />
     <Compile Include="Banshee.ContextPane\ContextPane.cs" />
+    <Compile Include="Banshee.Query.Gui\PlaybackErrorQueryValueEntry.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -38,7 +38,7 @@ using Hyena;
 using Banshee.Base;
 
 namespace Banshee.Playlists.Formats
-{   
+{
     public class PlaylistParser
     {
         private static PlaylistFormatDescription [] playlist_formats = new PlaylistFormatDescription [] {
@@ -48,15 +48,15 @@ namespace Banshee.Playlists.Formats
             AsfReferencePlaylistFormat.FormatDescription,
             XspfPlaylistFormat.FormatDescription
         };
-        
+
         private List<Dictionary<string, object>> elements;
         private Uri base_uri = new Uri (Environment.CurrentDirectory);
         private string title = null;
-        
+
         public PlaylistParser ()
         {
         }
-        
+
         public bool Parse (SafeUri uri)
         {
             ThreadAssist.AssertNotInMainThread ();
@@ -67,7 +67,7 @@ namespace Banshee.Playlists.Formats
                 Stream web_stream = null;
                 bool partial_read = false;
                 long saved_position = 0;
-                
+
                 if (uri.Scheme == "file") {
                     stream = Banshee.IO.File.OpenRead (uri);
                 } else if (uri.Scheme == "http") {
@@ -91,10 +91,10 @@ namespace Banshee.Playlists.Formats
                         }
                         request.Credentials = new NetworkCredential (username, password);
                     }
-            
+
                     response = (HttpWebResponse)request.GetResponse ();
                     web_stream = response.GetResponseStream ();
-                    
+
                     try {
                         stream = new MemoryStream ();
 
@@ -110,7 +110,7 @@ namespace Banshee.Playlists.Formats
                             stream.Write (buffer, 0, read);
                             saved_position = stream.Position;
                         }
-                        
+
                         stream.Position = 0;
                     } finally {
                         if (!partial_read) {
@@ -122,12 +122,12 @@ namespace Banshee.Playlists.Formats
                     Hyena.Log.DebugFormat ("Not able to parse playlist at {0}", uri);
                     return false;
                 }
-                                  
+
                 PlaylistFormatDescription matching_format = null;
 
                 foreach (PlaylistFormatDescription format in playlist_formats) {
                     stream.Position = 0;
-                    
+
                     StreamReader reader = new StreamReader (stream);
                     if (format.MagicHandler (reader)) {
                         matching_format = format;
@@ -153,22 +153,22 @@ namespace Banshee.Playlists.Formats
                 playlist.BaseUri = BaseUri;
                 playlist.Load (stream, false);
                 stream.Dispose ();
-                
+
                 elements = playlist.Elements;
                 Title = playlist.Title ?? Path.GetFileNameWithoutExtension (uri.LocalPath);
                 return true;
             }
         }
-        
+
         public List<Dictionary<string, object>> Elements {
             get { return elements; }
         }
-        
+
         public Uri BaseUri {
             get { return base_uri; }
             set { base_uri = value; }
         }
-        
+
         public string Title {
             get { return title; }
             set { title = value; }

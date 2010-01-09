@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DESKTOP_SOURCE="$1"
 VERSION="$2"
@@ -13,7 +13,7 @@ echo "[Desktop Entry]"
 if [[ -f "$MIMETYPES_FILE" ]]; then
 	MIMETYPES=$(
 		grep -vE '^[[:space:]]*(#.*|)$' "$MIMETYPES_FILE" | \
-		sort | uniq | \
+		LC_ALL=C sort | uniq | \
 		awk '{printf $1 ";"}' | sed 's,;$,,'
 	)
 
@@ -21,7 +21,7 @@ if [[ -f "$MIMETYPES_FILE" ]]; then
 
 	if [[ "$UPDATE_MIME_FILE" == "yes" ]]; then
 		(grep -E '^[[:space:]]*#' "$MIMETYPES_FILE";
-			echo "$MIMETYPES" | sed 's,;,\n,g') > "$MIMETYPES_FILE".tmp
+			for t in $(echo "$MIMETYPES" | sed 's,;, ,g'); do echo $t; done) > "$MIMETYPES_FILE".tmp
 		mv "$MIMETYPES_FILE".tmp "$MIMETYPES_FILE"
 	fi
 fi

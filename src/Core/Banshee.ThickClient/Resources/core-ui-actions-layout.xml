@@ -26,6 +26,7 @@
       <menuitem name="Import" action="ImportAction"/>
       <menuitem name="ImportPlaylist" action="ImportPlaylistAction"/>
       <menuitem name="OpenLocation" action="OpenLocationAction"/>
+      <separator/>
       <placeholder name="BelowOpenLocation"/>
       <separator/>
       <placeholder name="ClosePlaceholder"/>
@@ -57,9 +58,9 @@
     </menu>
 
     <menu name="ViewMenu" action="ViewMenuAction">
-        <!--<menuitem name="ShowCoverArt" action="ShowCoverArtAction"/>-->
       <placeholder name="BrowserViews"/>
       <placeholder name="ViewMenuAdditions"/>
+      <menuitem name="ShowCoverArt" action="ShowCoverArtAction"/>
       <menuitem name="ShowContextPane" action="ShowContextPaneAction"/>
       <menuitem name="FullScreen" action="FullScreenAction"/>
       <separator/>

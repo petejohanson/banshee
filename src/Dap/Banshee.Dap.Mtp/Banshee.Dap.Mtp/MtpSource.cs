@@ -67,7 +67,7 @@ namespace Banshee.Dap.Mtp
         public override void DeviceInitialize (IDevice device)
         {
             base.DeviceInitialize (device);
-            
+
             if (MediaCapabilities == null || !MediaCapabilities.IsType ("mtp")) {
                 throw new InvalidDeviceException ();
             }
@@ -107,6 +107,10 @@ namespace Banshee.Dap.Mtp
                 string mtp_serial = devices[0].SerialNumber;
                 if (!String.IsNullOrEmpty (mtp_serial)) {
                     if (mtp_serial.Contains (device.Serial)) {
+                        mtp_device = devices[0];
+                        mtp_source = this;
+                    } else if (device.Serial.Contains (mtp_serial.TrimStart('0'))) {
+                        // Special case for sony walkman players; BGO #543938
                         mtp_device = devices[0];
                         mtp_source = this;
                     }
@@ -240,7 +244,7 @@ namespace Banshee.Dap.Mtp
                     playlist.Remove ();
                 }
                 device_playlists.Clear ();
-    
+
                 // Add playlists from Banshee to the device
                 foreach (Source child in Children) {
                     PlaylistSource from = child as PlaylistSource;
@@ -304,7 +308,7 @@ namespace Banshee.Dap.Mtp
                 return bytes_used;
             }
         }
-        
+
         private long bytes_capacity;
         public override long BytesCapacity {
             get {
@@ -408,7 +412,7 @@ namespace Banshee.Dap.Mtp
                         album_cache.Remove (key);
                     }
                 }
-                
+
                 return true;
             }
         }

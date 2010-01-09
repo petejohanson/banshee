@@ -52,21 +52,21 @@ using Banshee.Configuration;
 
 namespace Banshee.Podcasting
 {
-    public partial class PodcastService : IExtensionService, IDisposable, IDelayedInitializeService
-    {  
+    public partial class PodcastService : IExtensionService, IDisposable, IInitializeService
+    {
         private readonly string tmp_download_path = Paths.Combine (Paths.ExtensionCacheRoot, "podcasting", "partial-downloads");
         private uint refresh_timeout_id = 0;
-            
+
         private bool disposed;
-        
+
         private DownloadManager download_manager;
         private DownloadManagerInterface download_manager_iface;
-        
+
         private FeedsManager feeds_manager;
-        
+
         private PodcastSource source;
         //private PodcastImportManager import_manager;
-        
+
         private readonly object sync = new object ();
 
         public PodcastService ()
@@ -83,7 +83,7 @@ namespace Banshee.Podcasting
                     ServiceManager.DbConnection.Execute(@"
                         INSERT INTO PodcastSyndications (FeedID, Title, Url, Link,
                             Description, ImageUrl, LastBuildDate, AutoDownload, IsSubscribed)
-                            SELECT 
+                            SELECT
                                 PodcastFeedID,
                                 Title,
                                 FeedUrl,
@@ -99,7 +99,7 @@ namespace Banshee.Podcasting
                     ServiceManager.DbConnection.Execute(@"
                         INSERT INTO PodcastItems (ItemID, FeedID, Title, Link, PubDate,
                             Description, Author, Active, Guid)
-                            SELECT 
+                            SELECT
                                 PodcastID,
                                 PodcastFeedID,
                                 Title,
@@ -115,7 +115,7 @@ namespace Banshee.Podcasting
                     // Note: downloaded*3 is because the value was 0 or 1, but is now 0 or 3 (FeedDownloadStatus.None/Downloaded)
                     ServiceManager.DbConnection.Execute(@"
                         INSERT INTO PodcastEnclosures (ItemID, LocalPath, Url, MimeType, FileSize, DownloadStatus)
-                            SELECT 
+                            SELECT
                                 PodcastID,
                                 LocalPath,
                                 Url,
@@ -187,7 +187,7 @@ namespace Banshee.Podcasting
                 DatabaseConfigurationClient.Client.Set<int> ("Podcast", "Version", 6);
             }
         }
-        
+
         private void MigrateDownloadCache ()
         {
             string old_download_dir = Path.Combine (Paths.ApplicationData, "downloads");
@@ -200,7 +200,7 @@ namespace Banshee.Podcasting
                 Directory.Delete (old_download_dir);
             }
         }
-        
+
         private void ReplaceNewlines (string table, string column)
         {
             string cmd = String.Format ("UPDATE {0} SET {1}=replace({1}, ?, ?)", table, column);
@@ -208,17 +208,13 @@ namespace Banshee.Podcasting
             ServiceManager.DbConnection.Execute (cmd, "\n", String.Empty);
             ServiceManager.DbConnection.Execute (cmd, "\r", String.Empty);
         }
-        
+
         public void Initialize ()
-        {
-        }
-        
-        public void DelayedInitialize ()
         {
             download_manager = new DownloadManager (2, tmp_download_path);
             download_manager_iface = new DownloadManagerInterface (download_manager);
-            download_manager_iface.Initialize ();    
-            
+            download_manager_iface.Initialize ();
+
             feeds_manager = new FeedsManager (ServiceManager.DbConnection, download_manager, null);
 
             // Migrate data from 0.13.2 podcast tables, if they exist
@@ -231,80 +227,86 @@ namespace Banshee.Podcasting
                 Hyena.Log.Exception ("Couldn't migrate podcast download cache", e);
             }
 
+            source = new PodcastSource ();
+            ServiceManager.SourceManager.AddSource (source);
+
             InitializeInterface ();
-            feeds_manager.PodcastStorageDirectory = source.BaseDirectory;
-            feeds_manager.FeedManager.ItemAdded += OnItemAdded;
-            feeds_manager.FeedManager.ItemChanged += OnItemChanged;
-            feeds_manager.FeedManager.ItemRemoved += OnItemRemoved;
-            feeds_manager.FeedManager.FeedsChanged += OnFeedsChanged;
 
-            if (DatabaseConfigurationClient.Client.Get<int> ("Podcast", "Version", 0) < 7) {
-                Banshee.Library.LibrarySource music_lib = ServiceManager.SourceManager.MusicLibrary;
-                if (music_lib != null) {
-                    string old_path = Path.Combine (music_lib.BaseDirectory, "Podcasts");
-                    string new_path = source.BaseDirectory;
-                    SafeUri old_uri = new SafeUri (old_path);
-                    SafeUri new_uri = new SafeUri (new_path);
-                    if (old_path != null && new_path != null && old_path != new_path &&
-                        Banshee.IO.Directory.Exists (old_path) && !Banshee.IO.Directory.Exists (new_path)) {
-                        Banshee.IO.Directory.Move (new SafeUri (old_path), new SafeUri (new_path));
-                        ServiceManager.DbConnection.Execute (String.Format (
-                            "UPDATE {0} SET LocalPath = REPLACE(LocalPath, ?, ?) WHERE LocalPath IS NOT NULL",
-                            FeedEnclosure.Provider.TableName), old_path, new_path);
-                        ServiceManager.DbConnection.Execute (
-                            "UPDATE CoreTracks SET Uri = REPLACE(Uri, ?, ?) WHERE Uri LIKE 'file://%' AND PrimarySourceId = ?",
-                            old_uri.AbsoluteUri, new_uri.AbsoluteUri, source.DbId);
-                        Hyena.Log.DebugFormat ("Moved Podcasts from {0} to {1}", old_path, new_path);
+            ThreadAssist.SpawnFromMain (delegate {
+                feeds_manager.PodcastStorageDirectory = source.BaseDirectory;
+                feeds_manager.FeedManager.ItemAdded += OnItemAdded;
+                feeds_manager.FeedManager.ItemChanged += OnItemChanged;
+                feeds_manager.FeedManager.ItemRemoved += OnItemRemoved;
+                feeds_manager.FeedManager.FeedsChanged += OnFeedsChanged;
+
+                if (DatabaseConfigurationClient.Client.Get<int> ("Podcast", "Version", 0) < 7) {
+                    Banshee.Library.LibrarySource music_lib = ServiceManager.SourceManager.MusicLibrary;
+                    if (music_lib != null) {
+                        string old_path = Path.Combine (music_lib.BaseDirectory, "Podcasts");
+                        string new_path = source.BaseDirectory;
+                        SafeUri old_uri = new SafeUri (old_path);
+                        SafeUri new_uri = new SafeUri (new_path);
+                        if (old_path != null && new_path != null && old_path != new_path &&
+                            Banshee.IO.Directory.Exists (old_path) && !Banshee.IO.Directory.Exists (new_path)) {
+                            Banshee.IO.Directory.Move (new SafeUri (old_path), new SafeUri (new_path));
+                            ServiceManager.DbConnection.Execute (String.Format (
+                                "UPDATE {0} SET LocalPath = REPLACE(LocalPath, ?, ?) WHERE LocalPath IS NOT NULL",
+                                FeedEnclosure.Provider.TableName), old_path, new_path);
+                            ServiceManager.DbConnection.Execute (
+                                "UPDATE CoreTracks SET Uri = REPLACE(Uri, ?, ?) WHERE Uri LIKE 'file://%' AND PrimarySourceId = ?",
+                                old_uri.AbsoluteUri, new_uri.AbsoluteUri, source.DbId);
+                            Hyena.Log.DebugFormat ("Moved Podcasts from {0} to {1}", old_path, new_path);
+                        }
                     }
+                    DatabaseConfigurationClient.Client.Set<int> ("Podcast", "Version", 7);
                 }
-                DatabaseConfigurationClient.Client.Set<int> ("Podcast", "Version", 7);
-            }
 
-            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.StateChange);
-            ServiceManager.Get<DBusCommandService> ().ArgumentPushed += OnCommandLineArgument;
+                ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.StateChange);
+                ServiceManager.Get<DBusCommandService> ().ArgumentPushed += OnCommandLineArgument;
 
-            RefreshFeeds ();
+                RefreshFeeds ();
 
-            // Every 10 minutes try to refresh again
-            refresh_timeout_id = Application.RunTimeout (1000 * 60 * 10, RefreshFeeds);
+                // Every 10 minutes try to refresh again
+                refresh_timeout_id = Application.RunTimeout (1000 * 60 * 10, RefreshFeeds);
+            });
         }
-        
+
         bool disposing;
         public void Dispose ()
-        {                        
+        {
             lock (sync) {
                 if (disposing | disposed) {
                     return;
                 } else {
-                    disposing = true;               
+                    disposing = true;
                 }
             }
 
             Application.IdleTimeoutRemove (refresh_timeout_id);
             refresh_timeout_id = 0;
-            
+
             ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
             ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
 
             if (download_manager_iface != null) {
-                download_manager_iface.Dispose ();                
+                download_manager_iface.Dispose ();
                 download_manager_iface = null;
-            }                
-           
-            if (feeds_manager != null) {   
+            }
+
+            if (feeds_manager != null) {
                 feeds_manager.Dispose ();
                 feeds_manager = null;
             }
 
-            if (download_manager != null) {            
+            if (download_manager != null) {
                 download_manager.Dispose ();
                 download_manager = null;
             }
-            
-            DisposeInterface ();            
-            
+
+            DisposeInterface ();
+
             lock (sync) {
-                disposing = false;            
+                disposing = false;
                 disposed = true;
             }
         }
@@ -323,13 +325,13 @@ namespace Banshee.Podcasting
             }));
             return true;
         }
-        
+
         private void OnCommandLineArgument (string uri, object value, bool isFile)
         {
             if (!isFile || String.IsNullOrEmpty (uri)) {
                 return;
             }
-            
+
             // Handle OPML files
             if (uri.Contains ("opml") || uri.EndsWith (".miro") || uri.EndsWith (".democracy")) {
                 try {
@@ -366,7 +368,7 @@ namespace Banshee.Podcasting
                 });
             }
         }
-        
+
         private void RefreshArtworkFor (Feed feed)
         {
             if (feed.LastDownloadTime != DateTime.MinValue && !CoverArtSpec.CoverExists (PodcastService.ArtworkIdFor (feed))) {
@@ -378,7 +380,7 @@ namespace Banshee.Podcasting
         {
             return DatabaseTrackInfo.Provider.FetchFirstMatching ("PrimarySourceID = ? AND ExternalID = ?", source.DbId, item_id);
         }
-        
+
         private void OnItemAdded (FeedItem item)
         {
             if (item.Enclosure != null) {
@@ -386,14 +388,14 @@ namespace Banshee.Podcasting
                 track.ExternalId = item.DbId;
                 track.PrimarySource = source;
                 (track.ExternalObject as PodcastTrackInfo).SyncWithFeedItem ();
-                track.Save (true);
+                track.Save (false);
                 RefreshArtworkFor (item.Feed);
             } else {
                 // We're only interested in items that have enclosures
                 item.Delete (false);
             }
         }
-        
+
         private void OnItemRemoved (FeedItem item)
         {
             DatabaseTrackInfo track = GetTrackByItemId (item.DbId);
@@ -401,9 +403,9 @@ namespace Banshee.Podcasting
                 DatabaseTrackInfo.Provider.Delete (track);
             }
         }
-        
+
         internal static bool IgnoreItemChanges = false;
-        
+
         private void OnItemChanged (FeedItem item)
         {
             if (IgnoreItemChanges) {
@@ -419,10 +421,11 @@ namespace Banshee.Podcasting
                 }
             }
         }
-        
+
         private void OnFeedsChanged (object o, EventArgs args)
         {
             source.Reload ();
+            source.NotifyTracksChanged ();
         }
 
         /*private void OnFeedAddedHandler (object sender, FeedEventArgs args)
@@ -431,14 +434,14 @@ namespace Banshee.Podcasting
                 source.FeedModel.Add (args.Feed);
             }
         }
-        
+
         private void OnFeedRemovedHandler (object sender, FeedEventArgs args)
         {
             lock (sync) {
                 source.FeedModel.Remove (args.Feed);
                 args.Feed.Delete ();
             }
-        }        
+        }
 
         private void OnFeedRenamedHandler (object sender, FeedEventArgs args)
         {
@@ -448,7 +451,7 @@ namespace Banshee.Podcasting
         }
 
         private void OnFeedUpdatingHandler (object sender, FeedEventArgs args)
-        {   
+        {
             lock (sync) {
                 source.FeedModel.Reload ();
             }
@@ -457,11 +460,11 @@ namespace Banshee.Podcasting
         private void OnFeedDownloadCountChangedHandler (object sender, FeedDownloadCountChangedEventArgs args)
         {
             lock (sync) {
-                source.FeedModel.Reload ();                
+                source.FeedModel.Reload ();
             }
         }*/
 
-        /*private void OnFeedItemAddedHandler (object sender, FeedItemEventArgs args) 
+        /*private void OnFeedItemAddedHandler (object sender, FeedItemEventArgs args)
         {
             lock (sync) {
                 if (args.Item != null) {
@@ -473,7 +476,7 @@ namespace Banshee.Podcasting
                 }
             }
         }*/
-        
+
         public void AddFeedItem (FeedItem item)
         {
             if (item.Enclosure != null) {
@@ -482,11 +485,11 @@ namespace Banshee.Podcasting
                 pi.Track.Save (true);
                 source.NotifyUser ();
             } else {
-                item.Delete (false);                      
+                item.Delete (false);
             }
         }
 
-        /*private void OnFeedItemRemovedHandler (object sender, FeedItemEventArgs e) 
+        /*private void OnFeedItemRemovedHandler (object sender, FeedItemEventArgs e)
         {
             lock (sync) {
                 if (e.Item != null) {
@@ -496,35 +499,35 @@ namespace Banshee.Podcasting
                         PodcastItem.DeleteWithFeedId (fi.DbId);
                     }
                 }
-                
+
                 source.Reload ();
             }
-        } 
+        }
 
-        private void OnFeedItemCountChanged (object sender, 
+        private void OnFeedItemCountChanged (object sender,
                                              FeedItemCountChangedEventArgs e)
         {
             //UpdateCount ();
         }*/
 
-        /*private void OnFeedDownloadCompletedHandler (object sender, 
-                                                     FeedDownloadCompletedEventArgs e) 
+        /*private void OnFeedDownloadCompletedHandler (object sender,
+                                                     FeedDownloadCompletedEventArgs e)
         {
             lock (sync) {
-                Feed f = feedDict[e.Feed.DbId]; 
-                
+                Feed f = feedDict[e.Feed.DbId];
+
                 if (e.Error == FeedDownloadError.None) {
                     if (String.IsNullOrEmpty(e.Feed.LocalEnclosurePath)) {
                         e.Feed.LocalEnclosurePath = Path.Combine (
                             tmp_enclosure_path, SanitizeName (e.Feed.Name)
                         );
-                    }                    
-                
+                    }
+
                     if (f.AutoDownload != FeedAutoDownload.None) {
                         ReadOnlyCollection<FeedItem> items = e.Feed.Items;
-                        
+
                         if (items != null) {
-                            if (f.AutoDownload == FeedAutoDownload.One && 
+                            if (f.AutoDownload == FeedAutoDownload.One &&
                                 items.Count > 0) {
                                 items[0].Enclosure.AsyncDownload ();
                             } else {
@@ -535,73 +538,73 @@ namespace Banshee.Podcasting
                         }
                     }
                 }
-                
-                source.Reload ();                
+
+                source.Reload ();
             }
         }*/
-        
+
         /*private void OnTaskAssociated (object sender, EventArgs e)
         {
             lock (sync) {
                 source.Reload ();
             }
-        }        
-        
-        private void OnTaskStatusChanged (object sender, 
+        }
+
+        private void OnTaskStatusChanged (object sender,
         								  TaskStatusChangedEventArgs e)
         {
             lock (sync) {
                 source.Reload ();
             }
-        }        
-        
-        private void TaskStartedHandler (object sender, 
+        }
+
+        private void TaskStartedHandler (object sender,
                                          TaskEventArgs<HttpFileDownloadTask> e)
         {
             lock (sync) {
                 source.Reload ();
             }
-        }        
-        
-        private void OnTaskStoppedHandler (object sender, 
+        }
+
+        private void OnTaskStoppedHandler (object sender,
                                            TaskEventArgs<HttpFileDownloadTask> e)
         {
             // TODO merge
             lock (sync) {
                 if (e.Task != null && e.Task.Status == TaskStatus.Succeeded) {
                     FeedEnclosure enc = e.Task.UserState as FeedEnclosure;
-                
+
                     if (enc != null) {
                         FeedItem item = enc.Item;
                         DatabaseTrackInfo track = null;
-                        
-                        
-                        
+
+
+
                         if (itemDict.ContainsKey (item.DbId)) {
                             PodcastItem pi = itemDict[item.DbId];
-                            track = import_manager.ImportPodcast (enc.LocalPath);                            
+                            track = import_manager.ImportPodcast (enc.LocalPath);
 
                             if (track != null) {
                                 pi.Track = track;
                                 pi.New = true;
                                 pi.Save ();
                             }
-                            
-                            item.IsRead = true;                            
+
+                            item.IsRead = true;
                         }
-                    }                    
+                    }
                 }
-                
+
                 source.Reload ();
             }
-        }*/    
+        }*/
 
         private void OnPlayerEvent (PlayerEventArgs args)
         {
             lock (sync) {
                 //source.Reload ();
             }
-        }          
+        }
 
         public static string ArtworkIdFor (Feed feed)
         {
@@ -613,10 +616,10 @@ namespace Banshee.Podcasting
         {
             // remove /, : and \ from names
             return s.Replace ('/', '_').Replace ('\\', '_').Replace (':', '_').Replace (' ', '_');
-        }*/   
-        
+        }*/
+
         public string ServiceName {
-            get { return "PodcastService"; } 
+            get { return "PodcastService"; }
         }
     }
 }

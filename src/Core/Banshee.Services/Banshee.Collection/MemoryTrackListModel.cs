@@ -48,7 +48,7 @@ namespace Banshee.Collection
                 tracks.Clear ();
             }
         }
-        
+
         public override void Reload ()
         {
             lock (this) {
@@ -76,12 +76,12 @@ namespace Banshee.Collection
                 return IndexOf (track) != -1;
             }
         }
-    
+
         public override TrackInfo this[int index] {
             get { lock (this) { return (index >= 0 && index < tracks.Count) ? tracks[index] : null; } }
         }
 
-        public override TrackInfo GetRandom (DateTime since, Banshee.PlaybackController.PlaybackShuffleMode mode, bool repeat, bool lastWasSkipped)
+        public override TrackInfo GetRandom (DateTime since)
         {
             if (Count == 0)
                 return null;
@@ -89,10 +89,10 @@ namespace Banshee.Collection
             return this [random.Next (0, Count - 1)];
         }
 
-        public override int Count { 
+        public override int Count {
             get { lock (this) { return tracks.Count; } }
         }
-        
+
         public override int IndexOf (TrackInfo track)
         {
             lock (this) { return tracks.IndexOf (track); }

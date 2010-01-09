@@ -20,6 +20,7 @@ SOURCES =  \
 	Banshee.Collection.Database/FilterModelProvider.cs \
 	Banshee.Collection.Database/IDatabaseTrackModelCache.cs \
 	Banshee.Collection.Database/IDatabaseTrackModelProvider.cs \
+	Banshee.Collection.Database/ISearchable.cs \
 	Banshee.Collection.Database/QueryFilterInfo.cs \
 	Banshee.Collection.Database/RandomBy.cs \
 	Banshee.Collection.Database/RandomByAlbum.cs \
@@ -28,6 +29,7 @@ SOURCES =  \
 	Banshee.Collection.Database/RandomByScore.cs \
 	Banshee.Collection.Database/RandomBySlot.cs \
 	Banshee.Collection.Database/RandomByTrack.cs \
+	Banshee.Collection.Database/Shuffler.cs \
 	Banshee.Collection.Database/Tests/DatabaseAlbumInfoTests.cs \
 	Banshee.Collection.Database/Tests/DatabaseArtistInfoTests.cs \
 	Banshee.Collection.Database/Tests/DatabaseTrackInfoTests.cs \
@@ -58,7 +60,6 @@ SOURCES =  \
 	Banshee.Database/SortKeyUpdater.cs \
 	Banshee.Equalizer/EqualizerManager.cs \
 	Banshee.Equalizer/EqualizerSetting.cs \
-	Banshee.Equalizer/EqualizerSettingEvent.cs \
 	Banshee.Hardware/DeviceCommand.cs \
 	Banshee.Hardware/HardwareManager.cs \
 	Banshee.Hardware/IBlockDevice.cs \
@@ -78,10 +79,13 @@ SOURCES =  \
 	Banshee.Library/IImportSource.cs \
 	Banshee.Library/ImportSourceManager.cs \
 	Banshee.Library/LibraryImportManager.cs \
+	Banshee.Library/LibrarySchema.cs \
 	Banshee.Library/LibrarySource.cs \
+	Banshee.Library/MusicFileNamePattern.cs \
 	Banshee.Library/MusicLibrarySource.cs \
 	Banshee.Library/ThreadPoolImportSource.cs \
 	Banshee.Library/VideoLibrarySource.cs \
+	Banshee.Library/Tests/FileNamePatternTests.cs \
 	Banshee.MediaEngine/IAudioCdRipper.cs \
 	Banshee.MediaEngine/IBpmDetector.cs \
 	Banshee.MediaEngine/IEqualizer.cs \
@@ -117,8 +121,12 @@ SOURCES =  \
 	Banshee.Metadata/MetadataServiceJob.cs \
 	Banshee.Metadata/SaveTrackMetadataJob.cs \
 	Banshee.Metadata/SaveTrackMetadataService.cs \
+	Banshee.Metadata/Tests/TaglibReadWriteTests.cs \
+	Banshee.Networking/INetworkAvailabilityService.cs \
 	Banshee.Networking/Network.cs \
 	Banshee.Networking/NetworkManager.cs \
+	Banshee.Networking/State.cs \
+	Banshee.Networking/Wicd.cs \
 	Banshee.PlatformServices/IScreensaverManager.cs \
 	Banshee.PlatformServices/ScreensaverManager.cs \
 	Banshee.PlaybackController/IBasicPlaybackController.cs \
@@ -156,6 +164,7 @@ SOURCES =  \
 	Banshee.Query/AbstractPlaylistQueryValue.cs \
 	Banshee.Query/BansheeQuery.cs \
 	Banshee.Query/NaturalIntegerQueryValue.cs \
+	Banshee.Query/PlaybackErrorQueryValue.cs \
 	Banshee.Query/PlaylistQueryValue.cs \
 	Banshee.Query/RatingQueryValue.cs \
 	Banshee.Query/SmartPlaylistQueryValue.cs \
@@ -172,7 +181,6 @@ SOURCES =  \
 	Banshee.ServiceStack/IDelayedInitializeService.cs \
 	Banshee.ServiceStack/IExtensionService.cs \
 	Banshee.ServiceStack/IInitializeService.cs \
-	Banshee.ServiceStack/InterfaceAction.cs \
 	Banshee.ServiceStack/IRegisterOnDemandService.cs \
 	Banshee.ServiceStack/IRequiredService.cs \
 	Banshee.ServiceStack/IService.cs \
@@ -206,6 +214,7 @@ SOURCES =  \
 	Banshee.Sources/SourceMessage.cs \
 	Banshee.Sources/SourceSortType.cs \
 	Banshee.Streaming/RadioTrackInfo.cs \
+	Banshee.Web/BaseHttpServer.cs \
 	Banshee.Web/Browser.cs \
 	Banshee.Web/HttpRequest.cs
 

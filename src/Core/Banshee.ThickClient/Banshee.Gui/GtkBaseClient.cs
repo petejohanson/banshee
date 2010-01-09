@@ -1,4 +1,4 @@
-// 
+//
 // GtkBaseClient.cs
 //
 // Author:
@@ -29,6 +29,8 @@
 using System;
 using System.IO;
 
+using Mono.Addins;
+
 using Hyena;
 
 using Banshee.Base;
@@ -42,19 +44,19 @@ namespace Banshee.Gui
     {
         private static Type client_type;
 
-        private static string user_gtkrc = Path.Combine (Paths.ApplicationData, "gtkrc"); 
-        
+        private static string user_gtkrc = Path.Combine (Paths.ApplicationData, "gtkrc");
+
         public static void Startup<T> (string [] args) where T : GtkBaseClient
         {
             Hyena.Log.InformationFormat ("Running Banshee {0}: [{1}]", Application.Version,
                 Application.BuildDisplayInfo);
-            
+
             // This could go into GtkBaseClient, but it's probably something we
             // should really only support at each client level
             if (File.Exists (user_gtkrc) && !ApplicationContext.CommandLine.Contains ("no-gtkrc")) {
                 Gtk.Rc.AddDefaultFile (user_gtkrc);
-            } 
-            
+            }
+
             // Boot the client
             Banshee.Gui.GtkBaseClient.Startup<T> ();
         }
@@ -64,22 +66,22 @@ namespace Banshee.Gui
             if (client_type != null) {
                 throw new ApplicationException ("Only a single GtkBaseClient can be initialized through Entry<T>");
             }
-            
+
             client_type = typeof (T);
             Hyena.Gui.CleanRoomStartup.Startup (Startup);
         }
-        
+
         private static void Startup ()
         {
             ((GtkBaseClient)Activator.CreateInstance (client_type)).Run ();
         }
-        
+
         private string default_icon_name;
-        
+
         protected GtkBaseClient () : this (true, Application.IconName)
         {
         }
-        
+
         protected GtkBaseClient (bool initializeDefault, string defaultIconName)
         {
             this.default_icon_name = defaultIconName;
@@ -94,44 +96,56 @@ namespace Banshee.Gui
                 GLib.Thread.Init ();
             }
             Gtk.Application.Init ();
+
+            foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes
+                ("/Banshee/ThickClient/GtkBaseClient/PostInitializeGtk")) {
+                try {
+                    node.CreateInstance ();
+                } catch (Exception e) {
+                    Log.Exception ("PostInitializeGtk extension failed to run", e);
+                }
+            }
         }
-        
+
         protected void Initialize (bool registerCommonServices)
         {
             // Set the process name so system process listings and commands are pretty
-            ApplicationContext.TrySetProcessName (Application.InternalName);
-            
+            PlatformHacks.TrySetProcessName (Application.InternalName);
+
             Application.Initialize ();
-            
+
             InitializeGtk ();
-            
+
             Gtk.Window.DefaultIconName = default_icon_name;
 
             ThreadAssist.InitializeMainThread ();
             ThreadAssist.ProxyToMainHandler = Banshee.ServiceStack.Application.Invoke;
-            
+
             Gdk.Global.ProgramClass = Application.InternalName;
+#if HAVE_GLIBSHARP_2_12_7
+            GLib.Global.ApplicationName = "Banshee";
+#endif
 
             if (ApplicationContext.Debugging) {
                 GLib.Log.SetLogHandler ("Gtk", GLib.LogLevelFlags.Critical, GLib.Log.PrintTraceLogFunction);
             }
-            
+
             ServiceManager.ServiceStarted += OnServiceStarted;
-            
+
             // Register specific services this client will care about
             if (registerCommonServices) {
                 Banshee.Gui.CommonServices.Register ();
             }
-            
+
             OnRegisterServices ();
-            
+
             Application.ShutdownPromptHandler = OnShutdownPrompt;
             Application.TimeoutHandler = RunTimeout;
             Application.IdleHandler = RunIdle;
             Application.IdleTimeoutRemoveHandler = IdleTimeoutRemove;
-            
+
             // Start the core boot process
-            
+
             Application.PushClient (this);
             Application.Run ();
 
@@ -140,16 +154,16 @@ namespace Banshee.Gui
                     Banshee.Gui.Dialogs.DefaultApplicationHelperDialog.RunIfAppropriate ();
                 };
             }
-            
+
             Log.Notify += OnLogNotify;
         }
-        
+
         public virtual void Run ()
         {
             RunIdle (delegate { OnStarted (); return false; });
             Gtk.Application.Run ();
         }
-        
+
         protected virtual void OnRegisterServices ()
         {
         }
@@ -165,7 +179,7 @@ namespace Banshee.Gui
                 }
             }
         }
-        
+
         private void OnMigratorStarted (object o, EventArgs args)
         {
             BansheeDbFormatMigrator migrator = (BansheeDbFormatMigrator)o;
@@ -186,16 +200,16 @@ namespace Banshee.Gui
                 return false;
             });
         }
-                
+
         private void ShowLogCoreEntry (LogEntry entry)
         {
             Gtk.Window window = null;
             Gtk.MessageType mtype;
-            
+
             if (ServiceManager.Contains<GtkElementsService> ()) {
                 window = ServiceManager.Get<GtkElementsService> ().PrimaryWindow;
             }
-            
+
             switch (entry.Type) {
                 case LogEntryType.Warning:
                     mtype = Gtk.MessageType.Warning;
@@ -208,15 +222,15 @@ namespace Banshee.Gui
                     mtype = Gtk.MessageType.Error;
                     break;
             }
-              
+
             Hyena.Widgets.HigMessageDialog dialog = new Hyena.Widgets.HigMessageDialog (
                 window, Gtk.DialogFlags.Modal, mtype, Gtk.ButtonsType.Close, entry.Message, entry.Details);
-            
+
             dialog.Title = String.Empty;
             dialog.Run ();
             dialog.Destroy ();
         }
-        
+
         private bool OnShutdownPrompt ()
         {
             ConfirmShutdownDialog dialog = new ConfirmShutdownDialog ();
@@ -226,17 +240,17 @@ namespace Banshee.Gui
                 dialog.Destroy ();
             }
         }
-        
+
         protected uint RunTimeout (uint milliseconds, TimeoutHandler handler)
         {
             return GLib.Timeout.Add (milliseconds, delegate { return handler (); });
         }
-        
+
         protected uint RunIdle (IdleHandler handler)
         {
             return GLib.Idle.Add (delegate { return handler (); });
         }
-        
+
         protected bool IdleTimeoutRemove (uint id)
         {
             return GLib.Source.Remove (id);

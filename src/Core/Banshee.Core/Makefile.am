@@ -12,14 +12,13 @@ SOURCES =  \
 	Banshee.Base/Resource.cs \
 	Banshee.Base/SafeUri.cs \
 	Banshee.Base/Tests/CoverArtSpecTests.cs \
-	Banshee.Base/Tests/FileNamePatternTests.cs \
-	Banshee.Base/Tests/TaglibReadWriteTests.cs \
 	Banshee.Base/UriList.cs \
 	Banshee.Collection/AlbumInfo.cs \
 	Banshee.Collection/ArtistInfo.cs \
 	Banshee.Collection/CacheableItem.cs \
 	Banshee.Collection/FileTrackInfo.cs \
 	Banshee.Collection/IBasicTrackInfo.cs \
+	Banshee.Collection/IPodcastInfo.cs \
 	Banshee.Collection/ITrackInfo.cs \
 	Banshee.Collection/SampleTrackInfo.cs \
 	Banshee.Collection/TrackAttributes.cs \
@@ -28,7 +27,6 @@ SOURCES =  \
 	Banshee.Collection/TrackMediaAttributes.cs \
 	Banshee.Collection/UnknownTrackInfo.cs \
 	Banshee.Configuration.Schema/ImportSchema.cs \
-	Banshee.Configuration.Schema/LibrarySchema.cs \
 	Banshee.Configuration/ConfigurationClient.cs \
 	Banshee.Configuration/IConfigurationClient.cs \
 	Banshee.Configuration/MemoryConfigurationClient.cs \
@@ -60,6 +58,7 @@ SOURCES =  \
 	Banshee.Kernel/Scheduler.cs \
 	Banshee.Streaming/CommonTags.cs \
 	Banshee.Streaming/StreamPlaybackError.cs \
+	Banshee.Streaming/StreamRatingTagger.cs \
 	Banshee.Streaming/StreamTag.cs \
 	Banshee.Streaming/StreamTagger.cs
 

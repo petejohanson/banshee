@@ -49,7 +49,7 @@ namespace Banshee.Gui
             : this (ServiceManager.Get<InterfaceActionService> (), name)
         {
         }
-        
+
         public BansheeActionGroup (InterfaceActionService action_service, string name) : base (action_service, name)
         {
             this.action_service = action_service;
@@ -89,7 +89,7 @@ namespace Banshee.Gui
                 }
             }
         }
-        
+
         public InterfaceActionService Actions {
             get { return action_service; }
         }

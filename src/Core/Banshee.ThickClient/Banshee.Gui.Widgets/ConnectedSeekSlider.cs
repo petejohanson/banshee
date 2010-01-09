@@ -38,34 +38,34 @@ namespace Banshee.Gui.Widgets
     public enum SeekSliderLayout {
         Horizontal,
         Vertical
-    }   
+    }
 
     public class ConnectedSeekSlider : Alignment
     {
         private SeekSlider seek_slider;
         private StreamPositionLabel stream_position_label;
-    
+
         public ConnectedSeekSlider () : this (SeekSliderLayout.Vertical)
         {
         }
-    
+
         public ConnectedSeekSlider (SeekSliderLayout layout) : base (0.0f, 0.0f, 1.0f, 1.0f)
         {
             RightPadding = 10;
             LeftPadding = 10;
-            
+
             BuildSeekSlider (layout);
-            
-            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, 
-                PlayerEvent.Iterate | 
+
+            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
+                PlayerEvent.Iterate |
                 PlayerEvent.Buffering |
                 PlayerEvent.StartOfStream |
                 PlayerEvent.StateChange);
-                
+
             ServiceManager.PlayerEngine.TrackIntercept += OnTrackIntercept;
-            
+
             seek_slider.SeekRequested += OnSeekRequested;
-            
+
             // Initialize the display if we're paused since we won't get any
             // events or state change until something actually happens (BGO #536564)
             if (ServiceManager.PlayerEngine.CurrentState == PlayerState.Paused) {
@@ -84,18 +84,18 @@ namespace Banshee.Gui.Widgets
         public StreamPositionLabel StreamPositionLabel {
             get { return stream_position_label; }
         }
-        
+
         public SeekSlider SeekSlider {
             get { return seek_slider; }
         }
-        
+
         private void BuildSeekSlider (SeekSliderLayout layout)
-        {            
+        {
             seek_slider = new SeekSlider ();
             stream_position_label = new StreamPositionLabel (seek_slider);
-         
+
             Box box;
-            
+
             if (layout == SeekSliderLayout.Horizontal) {
                 box = new HBox ();
                 box.Spacing = 5;
@@ -103,24 +103,24 @@ namespace Banshee.Gui.Widgets
             } else {
                 box = new VBox ();
             }
-            
+
             seek_slider.SetSizeRequest (125, -1);
-                     
+
             box.PackStart (seek_slider, true, true, 0);
             box.PackStart (stream_position_label, false, false, 0);
-            
+
             box.ShowAll ();
-            
+
             Add (box);
         }
-        
+
         private bool transitioning = false;
         private bool OnTrackIntercept (Banshee.Collection.TrackInfo track)
         {
             transitioning = true;
             return false;
         }
-        
+
         private void OnPlayerEvent (PlayerEventArgs args)
         {
             switch (args.Event) {
@@ -137,10 +137,10 @@ namespace Banshee.Gui.Widgets
                         stream_position_label.StreamState = StreamLabelState.Playing;
                         break;
                     }
-                    
+
                     stream_position_label.StreamState = StreamLabelState.Buffering;
                     stream_position_label.BufferingProgress = buffering.Progress;
-                    seek_slider.SetIdle ();
+                    seek_slider.Sensitive = false;
                     break;
                 case PlayerEvent.StateChange:
                     switch (((PlayerEventStateChangeArgs)args).Current) {
@@ -178,16 +178,19 @@ namespace Banshee.Gui.Widgets
             if (ServiceManager.PlayerEngine == null) {
                 return;
             }
-            
-            stream_position_label.StreamState = StreamLabelState.Playing;
+
             Banshee.Collection.TrackInfo track = ServiceManager.PlayerEngine.CurrentTrack;
             stream_position_label.IsLive = track == null ? false : track.IsLive;
-            stream_position_label.StreamState = StreamLabelState.Playing;
             seek_slider.Duration = ServiceManager.PlayerEngine.Length;
-            seek_slider.SeekValue = ServiceManager.PlayerEngine.Position;
+
+            if (stream_position_label.StreamState != StreamLabelState.Buffering) {
+                stream_position_label.StreamState = StreamLabelState.Playing;
+                seek_slider.SeekValue = ServiceManager.PlayerEngine.Position;
+            }
+
             seek_slider.CanSeek = ServiceManager.PlayerEngine.CanSeek;
         }
-        
+
         private void OnSeekRequested (object o, EventArgs args)
         {
             ServiceManager.PlayerEngine.Position = (uint)seek_slider.Value;

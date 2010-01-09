@@ -36,26 +36,29 @@ using Banshee.Collection.Database;
 using Hyena;
 
 namespace Banshee.Dap.Ipod
-{   
+{
     public class IpodTrackInfo : DatabaseTrackInfo
     {
         private IPod.Track track;
         internal IPod.Track IpodTrack {
             get { return track; }
         }
-        
+
         private int ipod_id;
         internal int IpodId {
             get { return ipod_id; }
         }
-        
+
+        // Used for podcasts only
+        private string description;
+
         public IpodTrackInfo (IPod.Track track) : base ()
         {
             this.track = track;
             LoadFromIpodTrack ();
             CanSaveToDatabase = true;
         }
-        
+
         public IpodTrackInfo (TrackInfo track)
         {
             if (track is IpodTrackInfo) {
@@ -90,22 +93,28 @@ namespace Banshee.Dap.Ipod
                 TrackTitle = track.TrackTitle;
                 Year = track.Year;
                 MediaAttributes = track.MediaAttributes;
+
+                var podcast_info = track.ExternalObject as IPodcastInfo;
+                if (podcast_info != null) {
+                    description = podcast_info.Description;
+                    ReleaseDate = podcast_info.ReleaseDate;
+                }
             }
-            
+
             CanSaveToDatabase = true;
         }
-        
+
         private void LoadFromIpodTrack ()
         {
             try {
                 Uri = new SafeUri (track.Uri.LocalPath);
-            } catch { 
+            } catch {
                 Uri = null;
             }
 
             ExternalId = track.Id;
             ipod_id = (int)track.Id;
-            
+
             AlbumArtist = track.AlbumArtist;
             AlbumTitle = String.IsNullOrEmpty (track.Album) ? null : track.Album;
             ArtistName = String.IsNullOrEmpty (track.Artist) ? null : track.Artist;
@@ -126,25 +135,26 @@ namespace Banshee.Dap.Ipod
             TrackCount = track.TotalTracks;
             TrackNumber = track.TrackNumber;
             TrackTitle = String.IsNullOrEmpty (track.Title) ? null : track.Title;
-            //ReleaseDate = track.DateReleased;
             Year = track.Year;
-            
+            description = track.Description;
+            ReleaseDate = track.DateReleased;
+
             switch (track.Rating) {
                 case IPod.TrackRating.One:   rating = 1; break;
                 case IPod.TrackRating.Two:   rating = 2; break;
                 case IPod.TrackRating.Three: rating = 3; break;
                 case IPod.TrackRating.Four:  rating = 4; break;
                 case IPod.TrackRating.Five:  rating = 5; break;
-                case IPod.TrackRating.Zero: 
+                case IPod.TrackRating.Zero:
                 default:                     rating = 0; break;
             }
-            
+
             if (track.IsProtected) {
                 PlaybackError = StreamPlaybackError.Drm;
             }
-            
+
             MediaAttributes = TrackMediaAttributes.AudioStream;
-            
+
             switch (track.Type) {
                 case IPod.MediaType.Audio:
                     MediaAttributes |= TrackMediaAttributes.Music;
@@ -174,7 +184,7 @@ namespace Banshee.Dap.Ipod
                     break;
             }
         }
-        
+
         public void CommitToIpod (IPod.Device device)
         {
             track = track ?? device.TrackDatabase.CreateTrack ();
@@ -186,7 +196,7 @@ namespace Banshee.Dap.Ipod
                 Log.Exception ("Failed to create System.Uri for iPod track", e);
                 device.TrackDatabase.RemoveTrack (track);
             }
-            
+
             track.AlbumArtist = AlbumArtist;
             track.BitRate = BitRate;
             track.BPM = (short)Bpm;
@@ -204,13 +214,13 @@ namespace Banshee.Dap.Ipod
             track.TotalTracks = TrackCount;
             track.TrackNumber = TrackNumber;
             track.Year = Year;
-            //track.DateReleased = ReleaseDate;
-            
+            track.DateReleased = ReleaseDate;
+
             track.Album = AlbumTitle;
             track.Artist = ArtistName;
             track.Title = TrackTitle;
             track.Genre = Genre;
-            
+
             switch (Rating) {
                 case 1: track.Rating = IPod.TrackRating.Zero; break;
                 case 2: track.Rating = IPod.TrackRating.Two; break;
@@ -221,10 +231,10 @@ namespace Banshee.Dap.Ipod
             }
 
             if (HasAttribute (TrackMediaAttributes.Podcast)) {
-                //track.Description = ..
-                //track.Category = ..
-                //track.RememberPosition = true;
-                //track.NotPlayedMark = track.PlayCount == 0;
+                track.DateReleased = ReleaseDate;
+                track.Description = description;
+                track.RememberPosition = true;
+                track.NotPlayedMark = track.PlayCount == 0;
             }
 
             if (HasAttribute (TrackMediaAttributes.VideoStream)) {
@@ -250,13 +260,13 @@ namespace Banshee.Dap.Ipod
                     track.Type = IPod.MediaType.Audio;
                 }
             }
-            
+
             if (CoverArtSpec.CoverExists (ArtworkId)) {
                 SetIpodCoverArt (device, track, CoverArtSpec.GetPath (ArtworkId));
             }
         }
-        
-        // FIXME: No reason for this to use GdkPixbuf - the file is on disk already in 
+
+        // FIXME: No reason for this to use GdkPixbuf - the file is on disk already in
         // the artwork cache as a JPEG, so just shove the bytes from disk into the track
         public static void SetIpodCoverArt (IPod.Device device, IPod.Track track, string path)
         {
@@ -268,11 +278,11 @@ namespace Banshee.Dap.Ipod
                         if (pixbuf == null) {
                             pixbuf = new Gdk.Pixbuf (path);
                         }
-                        
+
                         track.SetCoverArt (format, IPod.ArtworkHelpers.ToBytes (format, pixbuf));
                     }
                 }
-                
+
                 if (pixbuf != null) {
                     pixbuf.Dispose ();
                 }

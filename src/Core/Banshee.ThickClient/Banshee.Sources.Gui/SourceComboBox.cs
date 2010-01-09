@@ -35,32 +35,32 @@ using Banshee.ServiceStack;
 using Banshee.Sources;
 
 namespace Banshee.Sources.Gui
-{ 
+{
     public class SourceComboBox : ComboBox
     {
         private SourceModel store;
-        
+
         public SourceComboBox ()
         {
             SourceRowRenderer renderer = new SourceRowRenderer ();
             renderer.ParentWidget = this;
             PackStart (renderer, true);
             SetCellDataFunc (renderer, new CellLayoutDataFunc (SourceRowRenderer.CellDataHandler));
-            
+
             store = new SourceModel ();
             Model = store;
-            
-            ServiceManager.SourceManager.ActiveSourceChanged += delegate { 
+
+            ServiceManager.SourceManager.ActiveSourceChanged += delegate {
                 ThreadAssist.ProxyToMain (UpdateActiveSource);
             };
-            
+
             ServiceManager.SourceManager.SourceUpdated += delegate {
-                ThreadAssist.ProxyToMain (QueueDraw);                    
+                ThreadAssist.ProxyToMain (QueueDraw);
             };
-            
+
             store.Refresh ();
         }
-        
+
         public void UpdateActiveSource ()
         {
             lock (this) {
@@ -75,7 +75,7 @@ namespace Banshee.Sources.Gui
         {
             lock (this) {
                 TreeIter iter;
-                
+
                 if (GetActiveIter (out iter)) {
                     Source new_source = store.GetValue(iter, 0) as Source;
                     if (new_source != null && ServiceManager.SourceManager.ActiveSource != new_source) {
@@ -87,5 +87,5 @@ namespace Banshee.Sources.Gui
                 }
             }
         }
-    } 
+    }
 }
