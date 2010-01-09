@@ -64,29 +64,29 @@ namespace Hyena.Gui
                 if (action_groups.ContainsKey (name)) {
                     throw new ApplicationException ("Group already exists");
                 }
-                
+
                 InnerAddActionGroup (new ActionGroup (name));
             }
         }
-        
+
         public void AddActionGroup (ActionGroup group)
         {
             lock (this) {
                 if (action_groups.ContainsKey (group.Name)) {
                     throw new ApplicationException ("Group already exists");
                 }
-                            
+
                 InnerAddActionGroup (group);
             }
         }
-        
+
         public void RemoveActionGroup (string name)
         {
             lock (this) {
                 if (action_groups.ContainsKey (name)) {
                     ActionGroup group = action_groups[name];
                     ui_manager.RemoveActionGroup (group);
-                    action_groups.Remove (name);                    
+                    action_groups.Remove (name);
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace Hyena.Gui
         {
             RemoveActionGroup (group.Name);
         }
-        
+
         public ActionGroup FindActionGroup (string actionGroupId)
         {
             foreach (ActionGroup group in action_groups.Values) {
@@ -103,36 +103,36 @@ namespace Hyena.Gui
                     return group;
                 }
             }
-            
+
             return null;
         }
-        
+
         public Gtk.Action FindAction (string actionId)
         {
             string [] parts = actionId.Split ('.');
-            
+
             if (parts == null || parts.Length < 2) {
                 return null;
             }
-            
+
             string group_name = parts[0];
             string action_name = parts[1];
-            
+
             ActionGroup group = FindActionGroup (group_name);
             return group == null ? null : group.GetAction (action_name);
         }
-        
+
         public void PopulateToolbarPlaceholder (Toolbar toolbar, string path, Widget item)
         {
             PopulateToolbarPlaceholder (toolbar, path, item, false);
         }
-        
+
         public void PopulateToolbarPlaceholder (Toolbar toolbar, string path, Widget item, bool expand)
         {
             ToolItem placeholder = (ToolItem)UIManager.GetWidget (path);
             int position = toolbar.GetItemIndex (placeholder);
             toolbar.Remove (placeholder);
-            
+
             if (item is ToolItem) {
                 ((ToolItem)item).Expand = expand;
                 toolbar.Insert ((ToolItem)item, position);
@@ -143,12 +143,12 @@ namespace Hyena.Gui
                 toolbar.Insert (container_item, position);
             }
         }
-        
+
         public uint AddUiFromFileInCurrentAssembly (string ui_file)
         {
             return AddUiFromFile (ui_file, Assembly.GetCallingAssembly ());
         }
-        
+
         public uint AddUiFromFile (string ui_file, Assembly assembly)
         {
             if (ui_file != null) {
@@ -158,11 +158,11 @@ namespace Hyena.Gui
             }
             return 0;
         }
-        
+
         public Gtk.Action this[string actionId] {
             get { return FindAction (actionId); }
         }
-        
+
         public UIManager UIManager {
             get { return ui_manager; }
         }

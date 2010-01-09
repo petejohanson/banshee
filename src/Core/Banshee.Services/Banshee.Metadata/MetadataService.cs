@@ -138,7 +138,7 @@ namespace Banshee.Metadata
 
         internal void OnHaveResult (MetadataServiceJob job)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 OnHaveResult (job.Track, job.ResultTags);
             });
         }

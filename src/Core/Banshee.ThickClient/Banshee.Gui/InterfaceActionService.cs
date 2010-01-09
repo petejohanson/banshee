@@ -135,32 +135,6 @@ namespace Banshee.Gui
             }
         }
 
-<<<<<<< HEAD:src/Core/Banshee.ThickClient/Banshee.Gui/InterfaceActionService.cs
-=======
-        public uint AddUiFromFileInCurrentAssembly (string ui_file)
-        {
-            return AddUiFromFile (ui_file, Assembly.GetCallingAssembly ());
-        }
-
-        public uint AddUiFromFile (string ui_file, Assembly assembly)
-        {
-            if (ui_file != null) {
-                using (StreamReader reader = new StreamReader (assembly.GetManifestResourceStream (ui_file))) {
-                    return ui_manager.AddUiFromString (reader.ReadToEnd ());
-                }
-            }
-            return 0;
-        }
-
-        public Action this[string actionId] {
-            get { return FindAction (actionId); }
-        }
-
-        public UIManager UIManager {
-            get { return ui_manager; }
-        }
-
->>>>>>> master:src/Core/Banshee.ThickClient/Banshee.Gui/InterfaceActionService.cs
         public GlobalActions GlobalActions {
             get { return global_actions; }
         }

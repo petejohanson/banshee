@@ -77,7 +77,7 @@ namespace Banshee.Library
 
         public static string GetDefaultBaseDirectory ()
         {
-            return Banshee.Base.Paths.GetXdgDirectoryUnderHome ("XDG_MUSIC_DIR", "Music");
+            return Hyena.XdgBaseDirectorySpec.GetXdgDirectoryUnderHome ("XDG_MUSIC_DIR", "Music");
         }
 
         public override string DefaultBaseDirectory {

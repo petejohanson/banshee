@@ -41,7 +41,7 @@ namespace Hyena
         }
 
         public static Action<InvokeHandler> ProxyToMainHandler { get; set; }
-        
+
         public static void InitializeMainThread ()
         {
             main_thread = Thread.CurrentThread;
@@ -77,7 +77,7 @@ namespace Hyena
             if (!InMainThread) {
                 var reset_event = new System.Threading.ManualResetEvent (false);
 
-                Banshee.ServiceStack.Application.Invoke (delegate {
+                ProxyToMainHandler (delegate {
                     try {
                         handler ();
                     } finally {
@@ -94,7 +94,6 @@ namespace Hyena
         public static void ProxyToMain (InvokeHandler handler)
         {
             if (!InMainThread) {
-                //Banshee.ServiceStack.Application.Invoke (handler);
                 ProxyToMainHandler (handler);
             } else {
                 handler ();

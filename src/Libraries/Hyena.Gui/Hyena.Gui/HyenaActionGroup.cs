@@ -48,7 +48,7 @@ namespace Hyena.Gui
         {
             this.action_manager = action_manager;
         }
-        
+
         public void AddUiFromFile (string ui_file)
         {
             Hyena.ThreadAssist.AssertInMainThread ();
@@ -93,11 +93,11 @@ namespace Hyena.Gui
                 base.Add (action_entries);
             }
         }
-        
+
         public void AddImportant (params ActionEntry [] action_entries)
         {
             base.Add (action_entries);
-            
+
             foreach (ActionEntry entry in action_entries) {
                 this[entry.name].IsImportant = true;
             }
@@ -106,12 +106,12 @@ namespace Hyena.Gui
         public void AddImportant (params ToggleActionEntry [] action_entries)
         {
             base.Add (action_entries);
-            
+
             foreach (ToggleActionEntry entry in action_entries) {
                 this[entry.name].IsImportant = true;
             }
         }
-        
+
         public void Remove (string actionName)
         {
             Gtk.Action action = this[actionName];
@@ -131,7 +131,7 @@ namespace Hyena.Gui
         {
             UpdateAction (this[action_name], visible_and_sensitive, visible_and_sensitive);
         }
-        
+
         public void UpdateAction (string action_name, bool visible, bool sensitive)
         {
             UpdateAction (this[action_name], visible, sensitive);
@@ -141,13 +141,13 @@ namespace Hyena.Gui
         {
             UpdateAction (action, visible_and_sensitive, visible_and_sensitive);
         }
-        
+
         public static void UpdateAction (Gtk.Action action, bool visible, bool sensitive)
         {
             action.Visible = visible;
             action.Sensitive = visible && sensitive;
         }
-        
+
         protected void ShowContextMenu (string menu_name)
         {
             Gtk.Menu menu = ActionManager.UIManager.GetWidget (menu_name) as Menu;
@@ -164,10 +164,10 @@ namespace Hyena.Gui
                 return;
             }
 
-            menu.Show (); 
+            menu.Show ();
             menu.Popup (null, null, null, 0, Gtk.Global.CurrentEventTime);
         }
-        
+
         public ActionManager ActionManager {
             get { return action_manager; }
         }

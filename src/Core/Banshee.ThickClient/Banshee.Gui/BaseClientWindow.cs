@@ -32,6 +32,7 @@ using Mono.Unix;
 
 using Hyena;
 
+using Banshee.Base;
 using Banshee.ServiceStack;
 using Banshee.MediaEngine;
 using Banshee.Collection;

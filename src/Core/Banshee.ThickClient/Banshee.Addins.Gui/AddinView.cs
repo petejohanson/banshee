@@ -36,8 +36,6 @@ using Hyena;
 using Mono.Unix;
 using Mono.Addins;
 
-using Hyena;
-
 namespace Banshee.Addins.Gui
 {
     public class AddinView : VBox
@@ -72,7 +70,7 @@ namespace Banshee.Addins.Gui
             var addins = AddinManager.Registry.GetAddins ().Where (a => { return
                 a.Name != a.Id && a.Description != null &&
                 !String.IsNullOrEmpty (a.Description.Category) && !a.Description.Category.StartsWith ("required:") &&
-                (!a.Description.Category.Contains ("Debug") || Banshee.Base.ApplicationContext.Debugging);
+                (!a.Description.Category.Contains ("Debug") || ApplicationContext.Debugging);
             });
 
             var categorized_addins = addins.GroupBy<Addin, string> (a => a.Description.Category)
