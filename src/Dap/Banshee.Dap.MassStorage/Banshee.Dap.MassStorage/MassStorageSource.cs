@@ -617,7 +617,7 @@ namespace Banshee.Dap.MassStorage
                     int depth = FolderDepth;
                     string album_artist = FileNamePattern.Escape (track.DisplayAlbumArtistName);
                     string track_album  = FileNamePattern.Escape (track.DisplayAlbumTitle);
-                    string track_number = FileNamePattern.Escape (Convert.ToString (track.TrackNumber));
+                    string track_number = FileNamePattern.Escape (String.Format ("{0:00}", track.TrackNumber));
                     string track_title  = FileNamePattern.Escape (track.DisplayTrackTitle);
 
                     if (depth == 0) {
