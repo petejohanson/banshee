@@ -141,7 +141,7 @@ namespace Banshee.Hardware
 
                     startup_device_command_checked = true;
 
-                    foreach (KeyValuePair<string, string> argument in Banshee.Base.ApplicationContext.CommandLine.Arguments) {
+                    foreach (KeyValuePair<string, string> argument in ApplicationContext.CommandLine.Arguments) {
                         startup_device_command = Banshee.Hardware.DeviceCommand.ParseCommandLine (argument.Key, argument.Value);
                         if (startup_device_command != null) {
                             break;

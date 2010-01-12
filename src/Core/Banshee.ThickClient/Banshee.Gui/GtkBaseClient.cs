@@ -110,7 +110,7 @@ namespace Banshee.Gui
         protected void Initialize (bool registerCommonServices)
         {
             // Set the process name so system process listings and commands are pretty
-            PlatformHacks.TrySetProcessName (Application.InternalName);
+            ApplicationContext.TrySetProcessName (Application.InternalName);
 
             Application.Initialize ();
 
@@ -119,6 +119,7 @@ namespace Banshee.Gui
             Gtk.Window.DefaultIconName = default_icon_name;
 
             ThreadAssist.InitializeMainThread ();
+            ThreadAssist.ProxyToMainHandler = Banshee.ServiceStack.Application.Invoke;
 
             Gdk.Global.ProgramClass = Application.InternalName;
 #if HAVE_GLIBSHARP_2_12_7
@@ -222,7 +223,7 @@ namespace Banshee.Gui
                     break;
             }
 
-            Banshee.Widgets.HigMessageDialog dialog = new Banshee.Widgets.HigMessageDialog (
+            Hyena.Widgets.HigMessageDialog dialog = new Hyena.Widgets.HigMessageDialog (
                 window, Gtk.DialogFlags.Modal, mtype, Gtk.ButtonsType.Close, entry.Message, entry.Details);
 
             dialog.Title = String.Empty;

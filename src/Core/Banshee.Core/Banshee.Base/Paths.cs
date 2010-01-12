@@ -30,6 +30,8 @@ using System;
 using System.IO;
 using Mono.Unix;
 
+using Hyena;
+
 using Banshee.Configuration.Schema;
 
 namespace Banshee.Base
@@ -212,18 +214,6 @@ namespace Banshee.Base
         public static string GetInstalledDataDirectory (string path)
         {
             return Path.Combine (InstalledApplicationData, path);
-        }
-
-        public static string GetXdgDirectoryUnderHome (string key, string fallback)
-        {
-            string xdg_dir = Banshee.Base.XdgBaseDirectorySpec.GetUserDirectory (key, fallback);
-            string home_dir = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-
-            if (xdg_dir == null || xdg_dir == home_dir || !xdg_dir.StartsWith (home_dir)) {
-                xdg_dir = Combine (home_dir, fallback);
-            }
-
-            return xdg_dir;
         }
     }
 }

@@ -107,6 +107,7 @@ SOURCES =  \
 	Hyena.SExpEngine/StringFunctionSet.cs \
 	Hyena.SExpEngine/TreeNode.cs \
 	Hyena.SExpEngine/UtilityFunctionSet.cs \
+	Hyena/ApplicationContext.cs \
 	Hyena/ConsoleCrayon.cs \
 	Hyena/CryptoUtil.cs \
 	Hyena/DateTimeUtil.cs \
@@ -116,11 +117,13 @@ SOURCES =  \
 	Hyena/Log.cs \
 	Hyena/PlatformUtil.cs \
 	Hyena/StringUtil.cs \
+	Hyena/ThreadAssist.cs \
 	Hyena/Tests/CryptoUtilTests.cs \
 	Hyena/Tests/StringUtilTests.cs \
 	Hyena/Tests/TestBase.cs \
 	Hyena/Timer.cs \
-	Hyena/UndoManager.cs
+	Hyena/UndoManager.cs \
+	Hyena/XdgBaseDirectorySpec.cs
 
 include $(top_srcdir)/build/build.mk
 

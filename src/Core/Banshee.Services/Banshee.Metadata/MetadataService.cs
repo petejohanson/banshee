@@ -31,6 +31,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+using Hyena;
+
 using Banshee.Kernel;
 using Banshee.Collection;
 
@@ -136,7 +138,7 @@ namespace Banshee.Metadata
 
         internal void OnHaveResult (MetadataServiceJob job)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 OnHaveResult (job.Track, job.ResultTags);
             });
         }

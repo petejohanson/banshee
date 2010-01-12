@@ -30,6 +30,8 @@ using System;
 using System.Reflection;
 using Gtk;
 
+using Hyena;
+
 using Banshee.Preferences;
 
 namespace Banshee.Preferences.Gui
@@ -80,7 +82,7 @@ namespace Banshee.Preferences.Gui
                 }
 
                 preference.Changed += delegate (Root pref) {
-                    Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                    ThreadAssist.ProxyToMain (delegate {
                         pref_widget.Sensitive = pref.Sensitive;
                         pref_widget.Visible = pref.Visible;
                         /*if (label != null) {

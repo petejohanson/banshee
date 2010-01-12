@@ -4,7 +4,6 @@ LINK = $(REF_BANSHEE_SERVICES)
 
 SOURCES =  \
 	Banshee.Base/RateLimiter.cs \
-	Banshee.Base/ThreadAssist.cs \
 	Banshee.Collection.Database/CachedList.cs \
 	Banshee.Collection.Database/DatabaseAlbumInfo.cs \
 	Banshee.Collection.Database/DatabaseAlbumListModel.cs \
