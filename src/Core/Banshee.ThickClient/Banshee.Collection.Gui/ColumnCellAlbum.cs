@@ -40,9 +40,10 @@ using Banshee.ServiceStack;
 
 namespace Banshee.Collection.Gui
 {
-    public class ColumnCellAlbum : ColumnCell
+    public class ColumnCellAlbum : ColumnCell, IInteractiveCell
     {
         private ArtworkManager artwork_manager;
+        private object hover_object;
 
         public double PaddingX { get; set; }
         public double PaddingY { get; set; }
@@ -96,6 +97,14 @@ namespace Banshee.Collection.Gui
             }
 
             RenderImageSurface (context, new Rectangle (x, y, width, height), image_surface);
+
+            // Render the overlay
+            if (LayoutStyle == DataViewLayoutStyle.Grid && hover_object != null) {
+                var cr = context.Context;
+                cr.Color = new Color (0, 0, 0, 0.5);
+                cr.Rectangle (x, y, width, height);
+                cr.Fill ();
+            }
 
             if (lines == null || lines.Length < 2) {
                 return;
@@ -217,6 +226,28 @@ namespace Banshee.Collection.Gui
 
             return true;
         }
+
+#region IInteractiveCell
+
+        public bool ButtonEvent (int x, int y, bool pressed, Gdk.EventButton evnt)
+        {
+            return false;
+        }
+
+        public bool MotionEvent (int x, int y, Gdk.EventMotion evnt)
+        {
+            var redraw = hover_object != BoundObject;
+            hover_object = BoundObject;
+            return redraw;
+        }
+
+        public bool PointerLeaveEvent ()
+        {
+            hover_object = null;
+            return true;
+        }
+
+#endregion
 
 #region Accessibility
 
