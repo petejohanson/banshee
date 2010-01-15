@@ -3,8 +3,9 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Gabriel Burt <gburt@novell.com>
 //
-// Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2005-2009 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -29,7 +30,7 @@
 using System;
 using System.Threading;
 
-namespace Banshee.Base
+namespace Hyena
 {
     public static class ThreadAssist
     {
@@ -38,6 +39,8 @@ namespace Banshee.Base
         public static Thread MainThread {
             get { return main_thread; }
         }
+
+        public static Action<InvokeHandler> ProxyToMainHandler { get; set; }
 
         public static void InitializeMainThread ()
         {
@@ -57,7 +60,7 @@ namespace Banshee.Base
 
         public static void AssertNotInMainThread ()
         {
-            if (ApplicationContext.Debugging && Banshee.Base.ThreadAssist.InMainThread) {
+            if (ApplicationContext.Debugging && InMainThread) {
                 Hyena.Log.Warning ("In GUI thread, will probably block it", System.Environment.StackTrace);
             }
         }
@@ -74,7 +77,7 @@ namespace Banshee.Base
             if (!InMainThread) {
                 var reset_event = new System.Threading.ManualResetEvent (false);
 
-                Banshee.ServiceStack.Application.Invoke (delegate {
+                ProxyToMainHandler (delegate {
                     try {
                         handler ();
                     } finally {
@@ -91,7 +94,7 @@ namespace Banshee.Base
         public static void ProxyToMain (InvokeHandler handler)
         {
             if (!InMainThread) {
-                Banshee.ServiceStack.Application.Invoke (handler);
+                ProxyToMainHandler (handler);
             } else {
                 handler ();
             }

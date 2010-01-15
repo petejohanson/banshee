@@ -34,6 +34,7 @@ using Gdk;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Data;
 using Hyena.Data.Gui;
 using Hyena.Data.Sqlite;

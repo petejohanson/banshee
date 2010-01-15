@@ -32,6 +32,8 @@ using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
+using Hyena.Widgets;
 using Migo.Syndication;
 
 using Banshee.Base;
@@ -201,7 +203,7 @@ namespace Banshee.Podcasting.Gui
 
         private void OnSelectionChanged (object o, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 UpdateFeedActions ();
                 UpdateItemActions ();
             });

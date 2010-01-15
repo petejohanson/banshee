@@ -32,7 +32,8 @@ using Gtk;
 using Glade;
 using Mono.Unix;
 
-using Banshee.Base;
+using Hyena;
+
 using Banshee.Sources;
 using Banshee.Database;
 

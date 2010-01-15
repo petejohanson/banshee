@@ -33,6 +33,8 @@ using System.Net;
 using System.Web;
 using System.Collections.Generic;
 
+using Hyena;
+
 using Banshee.Base;
 
 namespace Banshee.Playlists.Formats

@@ -9,6 +9,8 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Banshee.Emusic</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>1.3</ReleaseVersion>
+    <RootNamespace>Banshee.Emusic</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,10 +39,11 @@
     <Reference Include="System" />
     <Reference Include="Mono.Posix" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Banshee.Emusic.addin.xml" />
+    <EmbeddedResource Include="Banshee.Emusic.addin.xml">
+      <LogicalName>Banshee.Emusic.addin.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Banshee.Emusic\" />
@@ -60,10 +63,6 @@
     <ProjectReference Include="..\..\Core\Banshee.Services\Banshee.Services.csproj">
       <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
       <Name>Banshee.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Banshee.Wikipedia\Banshee.Wikipedia.csproj">
-      <Project>{BF5D1722-269B-452E-B577-AEBA0CB894BA}</Project>
-      <Name>Banshee.Wikipedia</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Hyena.Gui\Hyena.Gui.csproj">
       <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>

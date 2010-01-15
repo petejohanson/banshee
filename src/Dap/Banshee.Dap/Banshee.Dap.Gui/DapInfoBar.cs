@@ -30,6 +30,7 @@ using System;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
 using Hyena.Gui;
 using Hyena.Widgets;
 
@@ -102,7 +103,7 @@ namespace Banshee.Dap.Gui
             if (source.Sync.Syncing)
                 return;
 
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 try {
                     UpdateUsage ();
                 } catch (Exception e) {

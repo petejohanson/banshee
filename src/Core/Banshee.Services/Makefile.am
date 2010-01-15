@@ -4,7 +4,6 @@ LINK = $(REF_BANSHEE_SERVICES)
 
 SOURCES =  \
 	Banshee.Base/RateLimiter.cs \
-	Banshee.Base/ThreadAssist.cs \
 	Banshee.Collection.Database/CachedList.cs \
 	Banshee.Collection.Database/DatabaseAlbumInfo.cs \
 	Banshee.Collection.Database/DatabaseAlbumListModel.cs \
@@ -84,9 +83,9 @@ SOURCES =  \
 	Banshee.Library/LibrarySource.cs \
 	Banshee.Library/MusicFileNamePattern.cs \
 	Banshee.Library/MusicLibrarySource.cs \
+	Banshee.Library/Tests/FileNamePatternTests.cs \
 	Banshee.Library/ThreadPoolImportSource.cs \
 	Banshee.Library/VideoLibrarySource.cs \
-	Banshee.Library/Tests/FileNamePatternTests.cs \
 	Banshee.MediaEngine/IAudioCdRipper.cs \
 	Banshee.MediaEngine/IBpmDetector.cs \
 	Banshee.MediaEngine/IEqualizer.cs \

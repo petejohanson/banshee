@@ -61,7 +61,7 @@ namespace Banshee.Emusic
         {
             tasks = new Dictionary<string, HttpFileDownloadTask> ();
 
-            import_manager = ServiceManager.Get<LibraryImportManager> ();
+            import_manager = new LibraryImportManager (true);
             import_manager.ImportResult += HandleImportResult;
 
             if (download_manager == null)

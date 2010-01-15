@@ -32,6 +32,8 @@ using System.Collections.Generic;
 
 using Mono.Unix;
 
+using Hyena;
+
 using Banshee.Base;
 using Banshee.Collection;
 using Banshee.Sources;

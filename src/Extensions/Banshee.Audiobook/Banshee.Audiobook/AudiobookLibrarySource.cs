@@ -31,6 +31,8 @@ using System.Collections.Generic;
 
 using Mono.Unix;
 
+using Hyena;
+
 using Banshee.Library;
 using Banshee.Collection;
 using Banshee.SmartPlaylist;
@@ -72,7 +74,7 @@ namespace Banshee.Audiobook
         }
 
         public override string DefaultBaseDirectory {
-            get { return Banshee.Base.XdgBaseDirectorySpec.GetUserDirectory ("XDG_AUDIOBOOKS_DIR", "Audiobooks"); }
+            get { return XdgBaseDirectorySpec.GetXdgDirectoryUnderHome ("XDG_AUDIOBOOKS_DIR", "Audiobooks"); }
         }
 
         public override bool ShowBrowser {

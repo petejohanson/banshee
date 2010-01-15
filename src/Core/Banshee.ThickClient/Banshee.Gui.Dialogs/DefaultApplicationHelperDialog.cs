@@ -33,7 +33,7 @@ using Banshee.Configuration;
 
 namespace Banshee.Gui.Dialogs
 {
-    public class DefaultApplicationHelperDialog : Banshee.Widgets.HigMessageDialog
+    public class DefaultApplicationHelperDialog : Hyena.Widgets.HigMessageDialog
     {
         public static void RunIfAppropriate ()
         {

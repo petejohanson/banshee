@@ -30,6 +30,8 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
+using Hyena;
+
 using Banshee.Base;
 using Banshee.Sources;
 

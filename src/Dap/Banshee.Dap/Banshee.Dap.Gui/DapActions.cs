@@ -30,6 +30,8 @@ using System;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
+
 using Banshee.Dap;
 using Banshee.Gui;
 using Banshee.ServiceStack;
@@ -76,7 +78,7 @@ namespace Banshee.Dap.Gui
 
         private void OnSyncUpdated (DapSync sync)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (UpdateActions);
+            ThreadAssist.ProxyToMain (UpdateActions);
         }
 
         private void UpdateActions ()

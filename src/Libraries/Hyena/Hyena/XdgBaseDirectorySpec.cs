@@ -29,7 +29,7 @@
 using System;
 using System.IO;
 
-namespace Banshee.Base
+namespace Hyena
 {
     public static class XdgBaseDirectorySpec
     {
@@ -77,6 +77,18 @@ namespace Banshee.Base
             }
 
             return Path.Combine (home_dir, fallback);
+        }
+
+        public static string GetXdgDirectoryUnderHome (string key, string fallback)
+        {
+            string xdg_dir = XdgBaseDirectorySpec.GetUserDirectory (key, fallback);
+            string home_dir = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+
+            if (xdg_dir == null || xdg_dir == home_dir || !xdg_dir.StartsWith (home_dir)) {
+                xdg_dir = Path.Combine (home_dir, fallback);
+            }
+
+            return xdg_dir;
         }
     }
 }

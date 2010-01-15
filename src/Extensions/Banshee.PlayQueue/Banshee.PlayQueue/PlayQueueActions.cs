@@ -29,8 +29,9 @@
 using System;
 
 using Mono.Unix;
-
 using Gtk;
+
+using Hyena;
 
 using Banshee.ServiceStack;
 using Banshee.Sources;
@@ -133,7 +134,7 @@ namespace Banshee.PlayQueue
 
         private void OnUpdated (object o, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (UpdateActions);
+            ThreadAssist.ProxyToMain (UpdateActions);
         }
 
         private void UpdateActions ()
