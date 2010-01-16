@@ -336,7 +336,7 @@ ${PACKAGE}-${VERSION}
     Podcast Support:   ${enable_podcast}
     Boo Scripting:     ${enable_boo}
     Builtin Equalizer: ${enable_builtin_equalizer}
-    GIO Support:       ${enable_gio} (requires gtk-sharp-beans and gio-sharp)
+    GIO Support:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})

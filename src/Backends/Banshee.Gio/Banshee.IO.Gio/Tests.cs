@@ -155,19 +155,32 @@ namespace Banshee.IO.Gio
             var demux = new DemuxVfs (foo.AbsoluteUri);
             Assert.IsTrue (demux.IsWritable);
             Assert.IsTrue (demux.IsReadable);
+
             var stream = demux.WriteStream;
             Assert.IsTrue (stream.CanWrite);
+            Assert.IsTrue (stream.CanRead);
 
-            // Make sure can read from WriteStream - required by TagLib#
-            // FIXME - depends on glib 2.22 and new gio# - see gio DemuxVfs.cs
-            Assert.AreEqual ((byte)'b', stream.ReadByte (), "Known failure, bug in Gio backend, depends on glib 2.22 for fix");
+            // Make sure can actually read from WriteStream - required by TagLib#
+            // stream should contain 'bar', eg first byte == 'b'
+            Assert.AreEqual (3, stream.Length);
+            Assert.AreEqual ((byte)'b', stream.ReadByte (), "Error in GIO backend - shouldn't happen - fix (and the Banshee GIO backend) requires gio 2.22");
             stream.Position = 0;
 
+            // Replace the first two bytes, and truncate the third
             stream.WriteByte (0xAB);
+            stream.WriteByte (0xCD);
+            stream.SetLength (2);
 
+            // And verify those bytes are readable
+            stream.Position = 1;
+            Assert.AreEqual (0xCD, stream.ReadByte ());
+            stream.Position = 0;
+            Assert.AreEqual (0xAB, stream.ReadByte ());
+
+            // And make sure the file is now the right size; 2 bytes
             demux.CloseStream (stream);
             Assert.IsTrue (file.Exists (foo));
-            Assert.AreEqual (1, file.GetSize (foo));
+            Assert.AreEqual (2, file.GetSize (foo));
         }
 
         [Test]

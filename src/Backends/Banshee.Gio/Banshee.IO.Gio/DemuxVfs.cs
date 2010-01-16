@@ -61,11 +61,9 @@ namespace Banshee.IO.Gio
         }
 
         public System.IO.Stream WriteStream {
-            // FIXME we really need GFileIOStream here, but that depends on glib 2.22 (and a binding for it in gio#)
-            // as-is, this stream is write-only (not readable) which breaks taglib-sharp
             get { return new GioStream (file.Exists
-                    ? file.Replace (file_info.Etag, false, FileCreateFlags.None, null)
-                    : file.Create (FileCreateFlags.None, null)
+                    ? file.OpenReadwrite (null)
+                    : file.CreateReadwrite (FileCreateFlags.None, null)
                 );
             }
         }
