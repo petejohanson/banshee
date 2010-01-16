@@ -41,7 +41,7 @@ namespace Banshee.IO.Gio
     {
         public void Create (string directory)
         {
-            var file = FileFactory.NewForPath (directory);
+            var file = GetDir (directory);
             file.MakeDirectoryWithParents (null);
         }
 
@@ -52,15 +52,13 @@ namespace Banshee.IO.Gio
 
         public void Delete (string directory, bool recursive)
         {
-            Delete (directory, recursive, false);
+            Delete (directory, GetDir (directory), recursive);
         }
 
         internal static bool DisableNativeOptimizations = false;
 
-        private void Delete (string directory, bool recursive, bool directoryIsUri)
+        private void Delete (string directory, GLib.File dir, bool recursive)
         {
-            var dir = GetDir (directory, directoryIsUri);
-
             if (!dir.Exists) {
                 Console.WriteLine ("{0} doesn't exist", directory);
                 return;
@@ -83,21 +81,26 @@ namespace Banshee.IO.Gio
                 }
 
                 foreach (string child in GetDirectories (dir, false)) {
-                    Delete (child, true, true);
+                    Delete (child, GetDir (child, true), true);
                 }
             }
 
             dir.Delete ();
         }
 
-        private GLib.File GetDir (string directory, bool directoryIsUri)
+        private static GLib.File GetDir (string directory)
+        {
+            return GetDir (directory, directory.Contains ("://"));
+        }
+
+        private static GLib.File GetDir (string directory, bool directoryIsUri)
         {
             return directoryIsUri ? FileFactory.NewForUri (directory) : FileFactory.NewForPath (directory);
         }
 
         public bool Exists (string directory)
         {
-            var file = FileFactory.NewForPath (directory);
+            var file = GetDir (directory);
             if (!file.QueryExists (null))
                 return false;
 
@@ -107,12 +110,7 @@ namespace Banshee.IO.Gio
 
         public IEnumerable<string> GetFiles (string directory)
         {
-            return GetFiles (directory, true, false);
-        }
-
-        private IEnumerable<string> GetFiles (string directory, bool followSymlinks, bool directoryIsUri)
-        {
-            return GetFiles (GetDir (directory, directoryIsUri), followSymlinks);
+            return GetFiles (GetDir (directory), true);
         }
 
         private IEnumerable<string> GetFiles (GLib.File dir, bool followSymlinks)
@@ -126,12 +124,7 @@ namespace Banshee.IO.Gio
 
         public IEnumerable<string> GetDirectories (string directory)
         {
-            return GetDirectories (directory, true, false);
-        }
-
-        private IEnumerable<string> GetDirectories (string directory, bool followSymlinks, bool directoryIsUri)
-        {
-            return GetDirectories (GetDir (directory, directoryIsUri), followSymlinks);
+            return GetDirectories (GetDir (directory), true);
         }
 
         private IEnumerable<string> GetDirectories (GLib.File dir, bool followSymlinks)

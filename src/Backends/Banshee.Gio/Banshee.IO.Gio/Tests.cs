@@ -44,8 +44,8 @@ namespace Banshee.IO.Gio
         private File file = new File ();
         private Directory dir = new Directory ();
         private string tmp_dir = System.IO.Path.Combine (System.Environment.CurrentDirectory, "tmp-gio");
-        private SafeUri foo, baz;
-        private string woo;
+        private SafeUri foo, baz, zoo;
+        private string woo, yoo;
 
         static GioTests ()
         {
@@ -58,6 +58,8 @@ namespace Banshee.IO.Gio
             foo = Uri  ("foo");
             baz = Uri  ("baz");
             woo = Path ("woo");
+            zoo = new SafeUri ("file://" + Path ("foo"));
+            yoo = "file://" + tmp_dir;
 
             System.IO.Directory.CreateDirectory (tmp_dir);
             System.IO.File.WriteAllText (Path ("foo"), "bar");
@@ -78,8 +80,10 @@ namespace Banshee.IO.Gio
         public void Exists ()
         {
             Assert.IsTrue (file.Exists (foo));
+            Assert.IsTrue (file.Exists (zoo));
             Assert.IsTrue (file.Exists (baz));
             Assert.IsTrue ( dir.Exists (woo));
+            Assert.IsTrue ( dir.Exists (yoo));
         }
 
         [Test]
