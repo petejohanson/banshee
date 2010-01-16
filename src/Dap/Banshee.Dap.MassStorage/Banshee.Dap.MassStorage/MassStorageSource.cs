@@ -650,7 +650,7 @@ namespace Banshee.Dap.MassStorage
                         file_path = System.IO.Path.Combine (file_path, String.Format ("{0} - {1}", track_number, track_title));
                     }
                 } else {
-                    file_path = FileNamePattern.CreateFromTrackInfo (track);
+                    file_path = MusicLibrarySource.MusicFileNamePattern.CreateFromTrackInfo (track);
                 }
             }
 
