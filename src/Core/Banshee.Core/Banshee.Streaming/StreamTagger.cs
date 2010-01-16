@@ -189,7 +189,7 @@ namespace Banshee.Streaming
                 }
             } else {
                 track.MediaAttributes = TrackMediaAttributes.AudioStream;
-                if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.LocalPath)) {
+                if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.AbsoluteUri)) {
                     track.MediaAttributes = TrackMediaAttributes.VideoStream;
                 }
             }
@@ -200,7 +200,7 @@ namespace Banshee.Streaming
 
             if (String.IsNullOrEmpty (track.TrackTitle)) {
                 try {
-                    string filename = System.IO.Path.GetFileNameWithoutExtension (track.Uri.LocalPath);
+                    string filename = System.IO.Path.GetFileNameWithoutExtension (track.Uri.AbsoluteUri);
                     if (!String.IsNullOrEmpty (filename)) {
                         track.TrackTitle = filename;
                     }

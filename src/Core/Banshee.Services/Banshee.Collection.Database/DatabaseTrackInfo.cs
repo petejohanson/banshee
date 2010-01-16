@@ -648,7 +648,7 @@ namespace Banshee.Collection.Database
                 return copy_success;
             }
 
-            bool in_library = old_uri.AbsolutePath.StartsWith (PrimarySource.BaseDirectoryWithSeparator);
+            bool in_library = old_uri.IsLocalPath ? old_uri.AbsolutePath.StartsWith (PrimarySource.BaseDirectoryWithSeparator) : false;
 
             if (!in_library && (LibrarySchema.CopyOnImport.Get () || force_copy)) {
                 string new_filename = FileNamePattern.BuildFull (PrimarySource.BaseDirectory, this, Path.GetExtension (old_uri.ToString ()));
