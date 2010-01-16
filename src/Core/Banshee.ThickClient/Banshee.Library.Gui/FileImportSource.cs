@@ -64,7 +64,7 @@ namespace Banshee.Library.Gui
         }
 
         public string [] IconNames {
-            get { return new string [] { "gtk-open" }; }
+            get { return new string [] { "audio-x-generic", "gtk-open" }; }
         }
 
         public bool CanImport {
