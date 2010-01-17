@@ -18,3 +18,5 @@ endif
 
 install-exec-hook:
 	$(LN_S) -f banshee-1 $(DESTDIR)$(bindir)/muinshee
+
+CLEANFILES = banshee-1
