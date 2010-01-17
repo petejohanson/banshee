@@ -50,19 +50,19 @@ SOURCES =  \
 	Hyena.Gui.Theming/Theme.cs \
 	Hyena.Gui.Theming/ThemeContext.cs \
 	Hyena.Gui.Theming/ThemeEngine.cs \
+	Hyena.Gui/ActionManager.cs \
 	Hyena.Gui/BaseWidgetAccessible.cs \
 	Hyena.Gui/CairoExtensions.cs \
 	Hyena.Gui/CleanRoomStartup.cs \
 	Hyena.Gui/CompositeUtils.cs \
 	Hyena.Gui/Contrast.cs \
 	Hyena.Gui/DragDropList.cs \
-	Hyena.Gui/ActionManager.cs \
-	Hyena.Gui/HyenaActionGroup.cs \
 	Hyena.Gui/EditableEraseAction.cs \
 	Hyena.Gui/EditableInsertAction.cs \
 	Hyena.Gui/EditableUndoAdapter.cs \
 	Hyena.Gui/GtkUtilities.cs \
 	Hyena.Gui/GtkWorkarounds.cs \
+	Hyena.Gui/HyenaActionGroup.cs \
 	Hyena.Gui/PangoCairoHelper.cs \
 	Hyena.Gui/PixbufImageSurface.cs \
 	Hyena.Gui/RatingRenderer.cs \
@@ -89,9 +89,9 @@ SOURCES =  \
 	Hyena.Widgets/AnimatedVBox.cs \
 	Hyena.Widgets/AnimatedWidget.cs \
 	Hyena.Widgets/ComplexMenuItem.cs \
+	Hyena.Widgets/EntryPopup.cs \
 	Hyena.Widgets/GenericToolItem.cs \
 	Hyena.Widgets/HigMessageDialog.cs \
-	Hyena.Widgets/EntryPopup.cs \
 	Hyena.Widgets/ImageButton.cs \
 	Hyena.Widgets/MenuButton.cs \
 	Hyena.Widgets/MessageBar.cs \
