@@ -22,12 +22,16 @@ if ! test -f "build/bundle/$profile"; then
 	exit 1
 fi
 
-envfile="$(pwd)/$(dirname "$0")/$profile_name.env"
+selfdir="$(pwd)/$(dirname "$0")"
+envfile="$selfdir/$profile_name.env"
 
 pushd build/bundle &>/dev/null
 ./$profile -bv
 ./$profile -e > "$envfile"
 popd &>/dev/null
+
+[ $profile_name = darwin ] && \
+	echo "export GTK2_RC_FILES=\"$selfdir/build/bundle/skeleton.darwin/Contents/Resources/etc/gtk-2.0/gtkrc\"" >> "$envfile"
 
 source "$envfile"
 
@@ -39,7 +43,7 @@ CONFIGURE_ARGS="
 	--disable-gnome
 	--disable-docs
 "
-[ $profile_name = osx ] && CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-osx"
+[ $profile_name = darwin ] && CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-osx"
 ./autogen.sh --prefix="$BUILD_PREFIX" $CONFIGURE_ARGS
 
 cat <<EOF
