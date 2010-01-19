@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 APP_ROOT="$PWD/$(dirname "$0")"
 for ((i=0; i<2; i++)); do APP_ROOT="$(dirname "$APP_ROOT")"; done
@@ -40,6 +40,12 @@ for arg in $*; do
 		MONO_OPTIONS="$MONO_OPTIONS --debug"
 		BANSHEE_OPTIONS="$BANSHEE_OPTIONS --debug"
 	fi
+done
+
+for file in $(find $ETC_DIR -name \*.in); do
+	sed "s|\${APP_RESOURCES}|${RES_DIR}|g" \
+		< "${file}" \
+		> "${file%.in}"
 done
 
 exec -a $BANSHEE_EXEC_NAME $MONO_BIN $MONO_OPTIONS $MONO_EXE $BANSHEE_OPTIONS
