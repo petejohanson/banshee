@@ -311,14 +311,15 @@ namespace Banshee.Dap.MassStorage
             List<Source> children = new List<Source> (Children);
             foreach (Source child in children) {
                 PlaylistSource from = child as PlaylistSource;
-                if (from != null) {
+                string escaped_name = StringUtil.EscapeFilename (child.Name);
+                if (from != null && !String.IsNullOrEmpty (escaped_name)) {
                     from.Reload ();
                     if (playlist_format == null) {
                          playlist_format = Activator.CreateInstance (PlaylistTypes[0].Type) as PlaylistFormatBase;
                     }
 
                     SafeUri playlist_path = new SafeUri (System.IO.Path.Combine (
-                        PlaylistsPath, String.Format ("{0}.{1}", from.Name, PlaylistTypes[0].FileExtension)));
+                        PlaylistsPath, String.Format ("{0}.{1}", escaped_name, PlaylistTypes[0].FileExtension)));
 
                     System.IO.Stream stream = Banshee.IO.File.OpenWrite (playlist_path, true);
                     playlist_format.BaseUri = new Uri (BaseDirectory);
