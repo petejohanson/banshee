@@ -166,7 +166,8 @@ namespace Booter
                     new LayoutOption ("stop-when-finished", Catalog.GetString (
                         "Enable or disable playback stopping after the currently playing track (value should be either 'true' or 'false')")),
                     new LayoutOption ("set-volume=LEVEL", Catalog.GetString ("Set the playback volume (0-100)")),
-                    new LayoutOption ("set-position=POS", Catalog.GetString ("Seek to a specific point (seconds, float)"))
+                    new LayoutOption ("set-position=POS", Catalog.GetString ("Seek to a specific point (seconds, float)")),
+                    new LayoutOption ("set-rating=RATING", Catalog.GetString ("Set the currently played track's rating (0 to 5)"))
                 ),
 
                 new LayoutGroup ("query-player", Catalog.GetString ("Player Engine Query Options"),

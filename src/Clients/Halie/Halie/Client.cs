@@ -145,6 +145,9 @@ namespace Halie
                     case "set-volume":
                         player.Volume = UInt16.Parse (arg.Value);
                         break;
+                    case "set-rating":
+                        player.Rating = Byte.Parse (arg.Value);
+                        break;
                     default:
                         if (arg.Key.StartsWith ("query-")) {
                             if (track == null) {
