@@ -134,7 +134,7 @@ namespace Hyena.Data.Gui
             set { expand = value; }
         }
 
-        public DataViewLayoutStyle LayoutStyle { get; set; }
+        public DataViewLayout ViewLayout { get; set; }
 
         public string Property {
             get { return property; }

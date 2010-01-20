@@ -51,6 +51,12 @@ namespace Banshee.Collection.Gui
         public double ImageSpacing { get; set; }
         public double TextSpacing { get; set; }
 
+        private bool IsGridLayout {
+            // FIXME: Cache this after implementing virtual notification
+            // on ColumnCell that ViewLayout has changed ...
+            get { return ViewLayout is AlbumViewGridLayout; }
+        }
+
         public ColumnCellAlbum () : base (null, true)
         {
             artwork_manager = ServiceManager.Get<ArtworkManager> ();
@@ -90,7 +96,7 @@ namespace Banshee.Collection.Gui
                 height = image_surface.Height;
             }
 
-            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+            if (IsGridLayout) {
                 x = Math.Round ((cellWidth - 2 * PaddingX - width) / 2.0);
             } else {
                 y = Math.Round ((cellHeight - 2 * PaddingY - height) / 2.0);
@@ -99,7 +105,7 @@ namespace Banshee.Collection.Gui
             RenderImageSurface (context, new Rectangle (x, y, width, height), image_surface);
 
             // Render the overlay
-            if (LayoutStyle == DataViewLayoutStyle.Grid && hover_object != null) {
+            if (IsGridLayout && hover_object != null) {
                 var cr = context.Context;
                 cr.Color = new Color (0, 0, 0, 0.5);
                 cr.Rectangle (x, y, width, height);
@@ -119,7 +125,7 @@ namespace Banshee.Collection.Gui
             layout.Ellipsize = Pango.EllipsizeMode.End;
             layout.FontDescription.Weight = Pango.Weight.Bold;
 
-            layout.Width = (int)((LayoutStyle == DataViewLayoutStyle.Grid
+            layout.Width = (int)((IsGridLayout
                 ? cellWidth - 2 * PaddingX
                 : cellWidth - ImageSize - ImageSpacing - 2 * PaddingX) * Pango.Scale.PangoScale);
 
@@ -137,7 +143,7 @@ namespace Banshee.Collection.Gui
                 layout.GetPixelSize (out sl_width, out sl_height);
             }
 
-            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+            if (IsGridLayout) {
                 x = 0;
                 y = ImageSize + ImageSpacing;
             } else {
@@ -184,7 +190,7 @@ namespace Banshee.Collection.Gui
 
             double width, height;
 
-            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+            if (ViewLayout is AlbumViewGridLayout) {
                 width = ImageSize + 2 * PaddingX;
                 height = ImageSize + ImageSpacing + TextSpacing + text_height + 2 * PaddingY;
             } else {

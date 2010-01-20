@@ -84,11 +84,14 @@ namespace Hyena.Data.Gui
             }
         }
 
-
         private void RefreshViewForModel (double? vpos)
         {
             if (Model == null) {
                 return;
+            }
+
+            if (ViewLayout != null) {
+                ViewLayout.UpdateModelRowCount (Model.Count);
             }
 
             UpdateAdjustments ();

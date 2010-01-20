@@ -117,10 +117,10 @@ SOURCES =  \
 	Hyena/Log.cs \
 	Hyena/PlatformUtil.cs \
 	Hyena/StringUtil.cs \
-	Hyena/ThreadAssist.cs \
 	Hyena/Tests/CryptoUtilTests.cs \
 	Hyena/Tests/StringUtilTests.cs \
 	Hyena/Tests/TestBase.cs \
+	Hyena/ThreadAssist.cs \
 	Hyena/Timer.cs \
 	Hyena/UndoManager.cs \
 	Hyena/XdgBaseDirectorySpec.cs

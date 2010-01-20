@@ -160,8 +160,9 @@ namespace Hyena.Data.Gui
         protected override bool OnKeyPressEvent (Gdk.EventKey press)
         {
             bool handled = false;
-            bool grid = LayoutStyle == DataViewLayoutStyle.Grid;
-            int items_per_row = grid ? GridColumnsInView : 1;
+            // FIXME: hard-coded grid logic here...
+            bool grid = ViewLayout != null;
+            int items_per_row = grid ? 1 : 1;
 
             switch (press.Key) {
                 case Gdk.Key.a:
@@ -368,7 +369,9 @@ namespace Hyena.Data.Gui
 
             var view_point = GetViewPointForModelRow (row_index);
             icell_area.Y = (int)view_point.Y + list_interaction_alloc.Y + Allocation.Y;
-            if (LayoutStyle == DataViewLayoutStyle.Grid) {
+
+            // FIXME: hard-coded grid logic
+            if (ViewLayout != null) {
                 icell_area.X = (int)view_point.X + Allocation.X;
                 icell_area.Width = ChildSize.Width;
                 icell_area.Height = ChildSize.Height;
@@ -770,35 +773,41 @@ namespace Hyena.Data.Gui
 
         protected int GetModelRowAt (int x, int y)
         {
-            if (y < 0 || ChildSize.Height <= 0) {
+            var child_width = ChildSize.Width;
+            var child_height = ChildSize.Height;
+
+            if (y < 0 || child_height <= 0) {
                 return -1;
             }
 
-            if (LayoutStyle == DataViewLayoutStyle.Grid) {
-                if (ChildSize.Width <= 0) {
+            // FIXME: hard-coded grid logic
+            if (ViewLayout != null) {
+                if (child_width <= 0) {
                     return -1;
                 }
 
-                int v_page_offset = VadjustmentValue % ChildSize.Height;
-                int h_page_offset = HadjustmentValue % ChildSize.Width;
-                int first_row = VadjustmentValue / ChildSize.Height;
-                int first_col = HadjustmentValue / ChildSize.Width;
-                int row_offset = (y + v_page_offset) / ChildSize.Height;
-                int col_offset = Math.Min ((x + h_page_offset) / ChildSize.Width, GridColumnsInView);
-                int model_row = ((first_row + row_offset) * GridColumnsInView) + first_col + col_offset;
+                int v_page_offset = VadjustmentValue % child_height;
+                int h_page_offset = HadjustmentValue % child_width;
+                int first_row = VadjustmentValue / child_height;
+                int first_col = HadjustmentValue / child_width;
+                int row_offset = (y + v_page_offset) / child_height;
+                int col_offset = Math.Min ((x + h_page_offset) / child_width, 1/*GridColumnsInView*/);
+                int model_row = ((first_row + row_offset) * 1/*GridColumnsInView*/) + first_col + col_offset;
+
                 return model_row;
             } else {
-                int v_page_offset = VadjustmentValue % ChildSize.Height;
-                int first_row = VadjustmentValue / ChildSize.Height;
-                int row_offset = (y + v_page_offset) / ChildSize.Height;
+                int v_page_offset = VadjustmentValue % child_height;
+                int first_row = VadjustmentValue / child_height;
+                int row_offset = (y + v_page_offset) / child_height;
                 return first_row + row_offset;
             }
         }
 
         protected Cairo.PointD GetViewPointForModelRow (int row)
         {
-            if (LayoutStyle == DataViewLayoutStyle.Grid) {
-                int cols = GridColumnsInView;
+            // FIXME: hard-coded grid logic
+            if (ViewLayout != null) {
+                int cols = 1/*GridColumnsInView*/;
                 return new Cairo.PointD (
                     row  == 0 ? 0 : ChildSize.Width * (cols % row),
                     cols == 0 ? 0 : ChildSize.Height * (row / cols)
@@ -832,6 +841,8 @@ namespace Hyena.Data.Gui
                 vadjustment = vadj;
             }
 
+            // FIXME: with ViewLayout, hadj and vadj should be unified
+            // since the layout will take the header into account...
             if (hadjustment != null) {
                 hadjustment.Upper = header_width;
                 hadjustment.StepIncrement = 10.0;
@@ -841,10 +852,15 @@ namespace Hyena.Data.Gui
             }
 
             if (vadjustment != null && model != null) {
-                vadjustment.Upper = LayoutStyle == DataViewLayoutStyle.List
-                    ? ChildSize.Height * model.Count
-                    : (int)Math.Ceiling (model.Count / (double)GridColumnsInView) * ChildSize.Height;
-                vadjustment.StepIncrement = ChildSize.Height;
+                // FIXME: hard-coded grid logic
+                if (ViewLayout != null) {
+                    vadjustment.Upper = ViewLayout.VirtualSize.Height;
+                    vadjustment.StepIncrement = ViewLayout.ChildSize.Height;
+                } else {
+                    vadjustment.Upper = ChildSize.Height * model.Count;
+                    vadjustment.StepIncrement = ChildSize.Height;
+                }
+
                 if (vadjustment.Value + vadjustment.PageSize > vadjustment.Upper) {
                     vadjustment.Value = vadjustment.Upper - vadjustment.PageSize;
                 }
@@ -863,11 +879,19 @@ namespace Hyena.Data.Gui
         {
             InvalidateHeader ();
             InvalidateList ();
+
+            if (ViewLayout != null) {
+                ViewLayout.UpdatePosition (HadjustmentValue, VadjustmentValue);
+            }
         }
 
         private void OnVadjustmentChanged (object o, EventArgs args)
         {
             InvalidateList ();
+
+            if (ViewLayout != null) {
+                ViewLayout.UpdatePosition (HadjustmentValue, VadjustmentValue);
+            }
         }
 
         public void ScrollTo (double val)

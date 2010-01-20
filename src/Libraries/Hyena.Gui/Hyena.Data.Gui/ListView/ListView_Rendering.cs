@@ -66,7 +66,12 @@ namespace Hyena.Data.Gui
             changing_style = false;
 
             base.OnStyleSet (old_style);
-            OnInvalidateMeasure ();
+
+            // FIXME: legacy list foo
+            if (ViewLayout == null) {
+                OnInvalidateMeasure ();
+            }
+
             theme = Hyena.Gui.Theming.ThemeEngine.CreateTheme (this);
 
             // Save the drawable so we can reuse it
@@ -98,10 +103,16 @@ namespace Hyena.Data.Gui
             cell_context.Context = cairo_context;
             cell_context.Layout = pango_layout;
 
-            OnMeasure ();
+            // FIXME: legacy list foo
+            if (ViewLayout == null) {
+                OnMeasure ();
+            }
 
             Theme.DrawFrameBackground (cairo_context, Allocation, true);
-            if (header_visible && LayoutStyle != DataViewLayoutStyle.Grid && column_controller != null) {
+
+            // FIXME: ViewLayout will never be null in the future but we'll need
+            // to deterministically render a header somehow...
+            if (header_visible && ViewLayout == null && column_controller != null) {
                 PaintHeader (damage);
             }
 
@@ -112,10 +123,12 @@ namespace Hyena.Data.Gui
             }
 
             if (Model != null) {
-                if (LayoutStyle == DataViewLayoutStyle.List) {
+                // FIXME: ViewLayout will never be null in
+                // the future, PaintList will go away
+                if (ViewLayout == null) {
                     PaintList (damage);
                 } else {
-                    PaintGrid (damage);
+                    PaintView (damage);
                 }
             }
 
@@ -445,14 +458,10 @@ namespace Hyena.Data.Gui
 
 #endregion
 
-#region Grid Rendering
+#region View Layout Rendering
 
-        private void PaintGrid (Rectangle clip)
+        private void PaintView (Rectangle clip)
         {
-            if (ChildSize.Width <= 0 || ChildSize.Height <= 0) {
-                return;
-            }
-            
             clip.Intersect (list_rendering_alloc);
             cairo_context.Rectangle (clip.X, clip.Y, clip.Width, clip.Height);
             cairo_context.Clip ();
@@ -460,28 +469,16 @@ namespace Hyena.Data.Gui
             cell_context.Clip = clip;
             cell_context.TextAsForeground = false;
 
-            int rows_in_view = RowsInView;
-            int columns_in_view = GridColumnsInView;
-            int cell_height = ChildSize.Height;
-            int cell_width = ChildSize.Width + ((list_rendering_alloc.Width -
-                columns_in_view * ChildSize.Width) / columns_in_view);
-            int vadjustment_value = VadjustmentValue;
-
-            int offset = list_rendering_alloc.Y - vadjustment_value % ChildSize.Height;
-            int first_model_row = (int)Math.Floor (vadjustment_value / (double)ChildSize.Height) * columns_in_view;
-            int last_model_row = Math.Min (model.Count, first_model_row + rows_in_view * columns_in_view);
-
-            var grid_cell_alloc = new Rectangle () {
-                X = list_rendering_alloc.X,
-                Y = offset,
-                Width = ChildSize.Width,
-                Height = ChildSize.Height
-            };
-
             selected_rows.Clear ();
 
-            for (int model_row_index = first_model_row, view_row_index = 0, view_column_index = 0;
-                model_row_index < last_model_row; model_row_index++) {
+            for (int layout_index = 0; layout_index < ViewLayout.ChildCount; layout_index++) {
+                var layout_child = ViewLayout[layout_index];
+                var model_row_index = layout_child.ModelRowIndex;
+                var child_allocation = layout_child.Allocation;
+
+                if (model_row_index < 0 || model_row_index >= Model.Count) {
+                    break;
+                }
 
                 if (Selection != null && Selection.Contains (model_row_index)) {
                     selected_rows.Add (model_row_index);
@@ -492,28 +489,18 @@ namespace Hyena.Data.Gui
                     }
 
                     Theme.DrawRowSelection (cairo_context,
-                        grid_cell_alloc.X, grid_cell_alloc.Y,
-                        grid_cell_alloc.Width, grid_cell_alloc.Height,
+                        child_allocation.X, child_allocation.Y,
+                        child_allocation.Width, child_allocation.Height,
                         true, true, selection_color, CairoCorners.All);
                 }
 
                 cell_context.ModelRowIndex = model_row_index;
-                cell_context.ViewRowIndex = view_row_index;
-                cell_context.ViewColumnIndex = view_column_index;
+                // cell_context.ViewRowIndex = view_row_index;
+                // cell_context.ViewColumnIndex = view_column_index;
 
                 var item = model[model_row_index];
-                PaintCell (item, 0, model_row_index, grid_cell_alloc,
+                PaintCell (item, 0, model_row_index, child_allocation,
                     IsRowOpaque (item), IsRowBold (item), StateType.Normal, false);
-
-                if (++view_column_index % columns_in_view == 0) {
-                    view_row_index++;
-                    view_column_index = 0;
-
-                    grid_cell_alloc.Y += cell_height;
-                    grid_cell_alloc.X = list_rendering_alloc.X;
-                } else {
-                    grid_cell_alloc.X += cell_width;
-                }
             }
 
             cairo_context.ResetClip ();
@@ -548,15 +535,7 @@ namespace Hyena.Data.Gui
             }
         }
 
-        private DataViewLayoutStyle layout_style = DataViewLayoutStyle.List;
-        public DataViewLayoutStyle LayoutStyle {
-            get { return layout_style; }
-            set {
-                layout_style = value;
-                OnInvalidateMeasure ();
-            }
-        }
-
+// FIXME: Obsolete all this measure stuff on the view since it's in the layout
 #region Measuring
 
         private Size child_size = Size.Empty;
@@ -576,8 +555,8 @@ namespace Hyena.Data.Gui
 
         protected virtual Size OnMeasureChild ()
         {
-            return LayoutStyle == DataViewLayoutStyle.Grid
-                ? new Size (48, 48)
+            return ViewLayout != null
+                ? ViewLayout.ChildSize
                 : new Size (0, ColumnCellText.ComputeRowHeight (this));
         }
 

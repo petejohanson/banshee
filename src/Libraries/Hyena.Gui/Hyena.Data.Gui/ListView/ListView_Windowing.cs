@@ -176,9 +176,15 @@ namespace Hyena.Data.Gui
                 model.RowsInView = RowsInView;
             }
 
+            OnInvalidateMeasure ();
             InvalidateList ();
+
+            if (ViewLayout != null) {
+                ViewLayout.Allocate (list_rendering_alloc);
+            }
         }
 
+        // FIXME: obsolete
         protected int RowsInView {
             get {
                 if (ChildSize.Height <= 0) {
@@ -190,13 +196,12 @@ namespace Hyena.Data.Gui
             }
         }
 
-        protected int GridColumnsInView {
-            get {
-                if (ChildSize.Width <= 0) {
-                    return 0;
-                }
-
-                return Math.Max (list_rendering_alloc.Width / ChildSize.Width, 1);
+        private DataViewLayout view_layout;
+        protected DataViewLayout ViewLayout {
+            get { return view_layout; }
+            set {
+                view_layout = value;
+                QueueResize ();
             }
         }
     }

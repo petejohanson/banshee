@@ -38,16 +38,33 @@ using Banshee.Gui;
 
 namespace Banshee.Collection.Gui
 {
+    // FIXME: Renderers and the column controller will move into
+    // DataViewLayout, so this subclass will be unnecessary
+    public class AlbumViewGridLayout : DataViewLayoutGrid
+    {
+        public ColumnCellAlbum Renderer { get; private set; }
+
+        public AlbumViewGridLayout (AlbumListView view)
+        {
+            View = view;
+            Renderer = new ColumnCellAlbum () { ViewLayout = this };
+        }
+
+        protected override void InvalidateChildSize ()
+        {
+            ChildSize = Renderer.Measure (View);
+        }
+    }
+
     public class AlbumListView : TrackFilterListView<AlbumInfo>
     {
-        private ColumnCellAlbum renderer;
+        private AlbumViewGridLayout view_layout;
 
         public AlbumListView () : base ()
         {
-            LayoutStyle = DataViewLayoutStyle.Grid;
-            renderer = new ColumnCellAlbum () { LayoutStyle = LayoutStyle };
+            ViewLayout = view_layout = new AlbumViewGridLayout (this);
 
-            column_controller.Add (new Column ("Album", renderer, 1.0));
+            column_controller.Add (new Column ("Album", view_layout.Renderer, 1.0));
             ColumnController = column_controller;
 
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.TrackInfoUpdated);
@@ -58,11 +75,6 @@ namespace Banshee.Collection.Gui
             // TODO: a) Figure out if the track that changed is actually in view
             //       b) xfade the artwork if it is, that'd be slick
             QueueDraw ();
-        }
-
-        protected override Gdk.Size OnMeasureChild ()
-        {
-            return renderer.Measure (this);
         }
     }
 }
