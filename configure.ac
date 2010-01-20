@@ -77,6 +77,10 @@ SHAMROCK_CHECK_MONO_2_0_GAC_ASSEMBLIES([
 	ICSharpCode.SharpZipLib
 ])
 
+dnl Check for mono >= 2.4.3 for LibraryWatcher extension, with fix for bnc#322330
+PKG_CHECK_MODULES(MONO_2_4_3, mono >= 2.4.3, HAVE_MONO_2_4_3=yes, HAVE_MONO_2_4_3=no)
+AM_CONDITIONAL(ENABLE_LIBRARY_WATCHER, test "x$HAVE_MONO_2_4_3" = "xyes")
+
 dnl NDesk DBus libraries
 BANSHEE_CHECK_NDESK_DBUS
 
@@ -287,6 +291,7 @@ src/Extensions/Banshee.FileSystemQueue/Makefile
 src/Extensions/Banshee.InternetArchive/Makefile
 src/Extensions/Banshee.InternetRadio/Makefile
 src/Extensions/Banshee.Lastfm/Makefile
+src/Extensions/Banshee.LibraryWatcher/Makefile
 src/Extensions/Banshee.MiniMode/Makefile
 src/Extensions/Banshee.Moblin/Makefile
 src/Extensions/Banshee.MultimediaKeys/Makefile
@@ -336,6 +341,7 @@ ${PACKAGE}-${VERSION}
     Podcast Support:   ${enable_podcast}
     Boo Scripting:     ${enable_boo}
     Builtin Equalizer: ${enable_builtin_equalizer}
+    Library Watcher:   ${HAVE_MONO_2_4_3} (requires Mono >= 2.4.3)
     GIO Support:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
 
   Build/Development:
