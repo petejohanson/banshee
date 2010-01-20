@@ -31,6 +31,8 @@ using System.Collections.Generic;
 
 using Mono.Unix;
 
+using Hyena;
+
 using Banshee.Library;
 using Banshee.Collection;
 using Banshee.SmartPlaylist;
@@ -63,10 +65,16 @@ namespace Banshee.Audiobook
                   </column>
                 </column-controller>
             ", Catalog.GetString ("Author")));
+
+            var pattern = new AudiobookFileNamePattern ();
+            pattern.FolderSchema = CreateSchema<string> ("folder_pattern", pattern.DefaultFolder, "", "");
+            pattern.FileSchema   = CreateSchema<string> ("file_pattern",   pattern.DefaultFile, "", "");
+
+            SetFileNamePattern (pattern);
         }
 
         public override string DefaultBaseDirectory {
-            get { return Banshee.Base.XdgBaseDirectorySpec.GetUserDirectory ("XDG_AUDIOBOOKS_DIR", "Audiobooks"); }
+            get { return XdgBaseDirectorySpec.GetXdgDirectoryUnderHome ("XDG_AUDIOBOOKS_DIR", "Audiobooks"); }
         }
 
         public override bool ShowBrowser {

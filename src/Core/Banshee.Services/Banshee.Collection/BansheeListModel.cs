@@ -29,6 +29,7 @@
 
 using System;
 
+using Hyena;
 using Hyena.Data;
 using Hyena.Collections;
 using Banshee.ServiceStack;
@@ -59,16 +60,12 @@ namespace Banshee.Collection
 
         protected override void OnCleared ()
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
-                base.OnCleared ();
-            });
+            ThreadAssist.ProxyToMain (base.OnCleared);
         }
 
         protected override void OnReloaded ()
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
-                base.OnReloaded ();
-            });
+            ThreadAssist.ProxyToMain (base.OnReloaded);
         }
     }
 }

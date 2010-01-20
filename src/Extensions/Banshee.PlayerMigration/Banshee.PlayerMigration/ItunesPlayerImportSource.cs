@@ -35,8 +35,11 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
+
 using Mono.Unix;
 using Gtk;
+
+using Hyena;
 
 using Banshee.Base;
 using Banshee.Collection;

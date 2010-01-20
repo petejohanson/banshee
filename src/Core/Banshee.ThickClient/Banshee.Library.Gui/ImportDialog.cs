@@ -31,6 +31,8 @@ using System.Collections.Generic;
 using Gtk;
 using Glade;
 
+using Hyena;
+
 using Mono.Unix;
 
 using Banshee.Configuration.Schema;
@@ -82,6 +84,10 @@ namespace Banshee.Library.Gui
             Dialog.StyleSet += delegate {
                 UpdateIcons ();
             };
+
+            source_combo_box.RowSeparatorFunc = (model, iter) => {
+                return model.GetValue (iter, 2) == null;
+            };
         }
 
         private void UpdateImportLabel ()
@@ -128,8 +134,14 @@ namespace Banshee.Library.Gui
             sources.Sort (import_source_comparer);
 
             // And actually add them to the dialog
+            int? last_sort_order = null;
             foreach (IImportSource source in sources) {
+                if (last_sort_order != null && last_sort_order / 10 != source.SortOrder / 10) {
+                    source_model.AppendValues (null, null, null);
+                }
+
                 AddSource (source);
+                last_sort_order = source.SortOrder;
             }
 
             if (!active_iter.Equals(TreeIter.Zero) || (active_iter.Equals (TreeIter.Zero) &&
@@ -152,7 +164,9 @@ namespace Banshee.Library.Gui
                         ((Gdk.Pixbuf)o).Dispose ();
                     }
 
-                    source_model.SetValue (iter, 0, GetIcon (source));
+                    if (source != null) {
+                        source_model.SetValue (iter, 0, GetIcon (source));
+                    }
                 }
             }
         }
@@ -174,7 +188,7 @@ namespace Banshee.Library.Gui
         private void OnSourceAdded (SourceAddedArgs args)
         {
             if(args.Source is IImportSource) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     AddSource ((IImportSource)args.Source);
                 });
             }
@@ -183,7 +197,7 @@ namespace Banshee.Library.Gui
         private void OnSourceRemoved (SourceEventArgs args)
         {
             if (args.Source is IImportSource) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     TreeIter iter;
                     if (FindSourceIter (out iter, (IImportSource)args.Source)) {
                         source_model.Remove (ref iter);
@@ -195,7 +209,7 @@ namespace Banshee.Library.Gui
         private void OnSourceUpdated (SourceEventArgs args)
         {
             if (args.Source is IImportSource) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                ThreadAssist.ProxyToMain (delegate {
                     TreeIter iter;
                     if(FindSourceIter (out iter, (IImportSource)args.Source)) {
                         source_model.SetValue (iter, 1, args.Source.Name);

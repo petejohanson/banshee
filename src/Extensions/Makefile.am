@@ -6,6 +6,7 @@ SUBDIRS = \
 	Banshee.Bpm \
 	Banshee.CoverArt \
 	Banshee.Daap \
+	Banshee.Emusic \
 	Banshee.FileSystemQueue \
 	Banshee.InternetArchive \
 	Banshee.InternetRadio \

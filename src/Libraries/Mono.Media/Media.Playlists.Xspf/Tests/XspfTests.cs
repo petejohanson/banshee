@@ -42,27 +42,32 @@ namespace Media.Playlists.Xspf.Tests
     public class XspfTest
     {
         private const string complete_path = "../tests/Mono.Media/xspf/complete.xml";
-        private const string xsd_path = "../tests/Mono.Media/xspf/xspf-1.xsd";
+        private const string xsd_path = "../tests/Mono.Media/xspf/xspf-1_0.2.xsd";
 
         [Test]
-        public void Load()
+        public void Load ()
         {
-            Playlist playlist = new Playlist();
-            playlist.Load(complete_path);
-            Helper.TestPlaylist(playlist);
+            Playlist playlist = new Playlist ();
+            playlist.Load (complete_path);
+            Helper.TestPlaylist (playlist);
         }
 
         [Test]
-        public void Validate()
+        public void Validate ()
         {
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.ValidationType = ValidationType.Schema;
-            XmlSchemaSet schema_set = new XmlSchemaSet();
-            schema_set.Add("http://xspf.org/ns/0/", xsd_path);
-            settings.Schemas.Add(schema_set);
+            var schema_set = new XmlSchemaSet ();
+            schema_set.Add ("http://xspf.org/ns/0/", xsd_path);
+
+            var settings = new XmlReaderSettings () {
+                ValidationType = ValidationType.DTD
+            };
             settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
-            XmlReader reader = XmlReader.Create(complete_path, settings);
-            while(reader.Read());
+            settings.Schemas.Add (schema_set);
+
+            // Attribute declaration was not found for http://www.w3.org/XML/1998/namespace:base XML URI: file:///home/gabe/Projects/banshee/tests/Mono.Media/xspf/complete.xml
+
+            var reader = XmlReader.Create (complete_path, settings);
+            while (reader.Read ());
         }
     }
 

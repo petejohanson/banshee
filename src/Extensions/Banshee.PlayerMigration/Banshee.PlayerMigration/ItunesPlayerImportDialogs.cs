@@ -89,13 +89,13 @@ namespace Banshee.PlayerMigration
             VBox vbox = new VBox ();
             ratings = new CheckButton (Catalog.GetString ("Import song ratings"));
             ratings.Active = true;
-            vbox.PackStart (ratings);
+            vbox.PackStart (ratings, false, false, 0);
             stats = new CheckButton (Catalog.GetString ("Import play statistics (playcount, etc.)"));
             stats.Active = true;
-            vbox.PackStart (stats);
+            vbox.PackStart (stats, false, false, 0);
             playlists = new CheckButton (Catalog.GetString ("Import playlists"));
             playlists.Active = true;
-            vbox.PackStart (playlists);
+            vbox.PackStart (playlists, false, false, 0);
 
             PackCheckboxes (vbox);
 
@@ -114,21 +114,21 @@ namespace Banshee.PlayerMigration
                 HBox hbox = new HBox ();
                 hbox.Spacing = 8;
                 Image image = new Image (IconTheme.Default.LoadIcon ("gtk-open", 18, 0));
-                hbox.PackStart (image);
+                hbox.PackStart (image, false, false, 0);
                 Label label1 = new Label ();
                 label1.Markup = String.Format ("<b>{0}</b>", GLib.Markup.EscapeText(
                     String.Format( Catalog.GetString (@"Locate your ""{0}"" file..."),
                     ItunesPlayerImportSource.LibraryFilename)));
                 label1.SetAlignment (0.0f, 0.5f);
-                hbox.PackStart (label1);
+                hbox.PackStart (label1, false, false, 0);
                 Button browse_button = new Button (hbox);
                 browse_button.Clicked += OnBrowseButtonClicked;
-                VBox.PackStart (browse_button);
+                VBox.PackStart (browse_button, false, false, 0);
 
                 ratings.Sensitive = stats.Sensitive = playlists.Sensitive = import_button.Sensitive = false;
             }
 
-            VBox.PackStart (vbox);
+            VBox.PackStart (vbox, false, false, 0);
         }
 
         private void OnBrowseButtonClicked (object o, EventArgs args)
@@ -207,7 +207,7 @@ namespace Banshee.PlayerMigration
             chooser.ShowAll ();
             vbox.PackStart (chooser, true, true, 0);
 
-            VBox.PackStart (vbox);
+            VBox.PackStart (vbox, false, false, 0);
 
             DefaultResponse = ResponseType.Cancel;
 

@@ -148,7 +148,7 @@ namespace Banshee.MultimediaKeys
                     ServiceManager.PlaybackController.Next ();
                     break;
                 case "Previous":
-                    ServiceManager.PlaybackController.Previous ();
+                    ServiceManager.PlaybackController.RestartOrPrevious ();
                     break;
                 case "Stop":
                     ServiceManager.PlayerEngine.Close ();

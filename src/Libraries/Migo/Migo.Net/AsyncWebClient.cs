@@ -316,6 +316,7 @@ namespace Migo.Net
 
                 if (req != null) {
                     req.Abort();
+                    Completed ();
                 }
             } catch (Exception ae) {
                 Console.WriteLine ("Abort Download Error:  {0}", ae.Message);

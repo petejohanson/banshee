@@ -58,7 +58,7 @@ namespace Banshee.Metadata.FileSystem
         }
 
         private static string [] extensions = new string [] { ".jpg", ".jpeg", ".png", ".bmp" };
-        private static string [] filenames = new string [] { "cover", "folder", "front" };
+        private static string [] filenames = new string [] { "cover", "folder", "front", "album", "albumart" };
 
         protected void Fetch ()
         {

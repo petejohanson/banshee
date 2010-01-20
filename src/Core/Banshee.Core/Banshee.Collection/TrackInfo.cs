@@ -62,49 +62,14 @@ namespace Banshee.Collection
         public delegate void PlaybackFinishedHandler (TrackInfo track, double percentCompleted);
         public static event PlaybackFinishedHandler PlaybackFinished;
 
-        private SafeUri uri;
-        private SafeUri more_info_uri;
-        private string mimetype;
-        private long filesize;
-        private long file_mtime;
-
-        private string artist_name;
         private string artist_name_sort;
-        private string album_title;
         private string album_title_sort;
         private string album_artist;
         private string album_artist_sort;
-        private bool is_compilation;
-        private string track_title;
         private string track_title_sort;
-        private string genre;
-        private string composer;
-        private string conductor;
-        private string grouping;
-        private string copyright;
-        private string license_uri;
-        private string musicbrainz_id;
 
-        private string comment;
-        private int track_number;
         private int track_count;
-        private int disc_number;
         private int disc_count;
-        private int year;
-        private int rating;
-        private int score;
-        private int bpm;
-        private int bit_rate;
-
-        private TimeSpan duration;
-        private DateTime release_date;
-        private DateTime date_added;
-        private DateTime last_synced;
-
-        private int play_count;
-        private int skip_count;
-        private DateTime last_played;
-        private DateTime last_skipped;
 
         private StreamPlaybackError playback_error = StreamPlaybackError.None;
 
@@ -172,10 +137,7 @@ namespace Banshee.Collection
         }
 
         [Exportable (ExportName = "URI")]
-        public virtual SafeUri Uri {
-            get { return uri; }
-            set { uri = value; }
-        }
+        public virtual SafeUri Uri { get; set; }
 
         [Exportable]
         public string LocalPath {
@@ -183,38 +145,20 @@ namespace Banshee.Collection
         }
 
         [Exportable]
-        public SafeUri MoreInfoUri {
-            get { return more_info_uri; }
-            set { more_info_uri = value; }
-        }
+        public SafeUri MoreInfoUri { get; set; }
 
         [Exportable]
-        public virtual string MimeType {
-            get { return mimetype; }
-            set { mimetype = value; }
-        }
+        public virtual string MimeType { get; set; }
 
         [Exportable]
-        public virtual long FileSize {
-            get { return filesize; }
-            set { filesize = value; }
-        }
+        public virtual long FileSize { get; set; }
 
-        public virtual long FileModifiedStamp {
-            get { return file_mtime; }
-            set { file_mtime = value; }
-        }
+        public virtual long FileModifiedStamp { get; set; }
 
-        public virtual DateTime LastSyncedStamp {
-            get { return last_synced; }
-            set { last_synced = value; }
-        }
+        public virtual DateTime LastSyncedStamp { get; set; }
 
         [Exportable (ExportName = "artist")]
-        public virtual string ArtistName {
-            get { return artist_name; }
-            set { artist_name = value; }
-        }
+        public virtual string ArtistName { get; set; }
 
         [Exportable (ExportName = "artistsort")]
         public virtual string ArtistNameSort {
@@ -223,10 +167,7 @@ namespace Banshee.Collection
         }
 
         [Exportable (ExportName = "album")]
-        public virtual string AlbumTitle {
-            get { return album_title; }
-            set { album_title = value; }
-        }
+        public virtual string AlbumTitle { get; set; }
 
         [Exportable (ExportName = "albumsort")]
         public virtual string AlbumTitleSort {
@@ -247,16 +188,10 @@ namespace Banshee.Collection
         }
 
         [Exportable]
-        public virtual bool IsCompilation {
-            get { return is_compilation; }
-            set { is_compilation = value; }
-        }
+        public virtual bool IsCompilation { get; set; }
 
         [Exportable (ExportName = "name")]
-        public virtual string TrackTitle {
-            get { return track_title; }
-            set { track_title = value; }
-        }
+        public virtual string TrackTitle { get; set; }
 
         [Exportable (ExportName = "namesort")]
         public virtual string TrackTitleSort {
@@ -265,10 +200,7 @@ namespace Banshee.Collection
         }
 
         [Exportable]
-        public virtual string MusicBrainzId {
-            get { return musicbrainz_id; }
-            set { musicbrainz_id = value; }
-        }
+        public virtual string MusicBrainzId { get; set; }
 
         [Exportable]
         public virtual string ArtistMusicBrainzId {
@@ -280,10 +212,7 @@ namespace Banshee.Collection
             get { return null; }
         }
 
-        public virtual DateTime ReleaseDate {
-            get { return release_date; }
-            set { release_date = value; }
-        }
+        public virtual DateTime ReleaseDate { get; set; }
 
         public virtual object ExternalObject {
             get { return null; }
@@ -320,16 +249,10 @@ namespace Banshee.Collection
         }
 
         [Exportable]
-        public virtual string Genre {
-            get { return genre; }
-            set { genre = value; }
-        }
+        public virtual string Genre { get; set; }
 
         [Exportable]
-        public virtual int TrackNumber {
-            get { return track_number; }
-            set { track_number = value; }
-        }
+        public virtual int TrackNumber { get; set; }
 
         [Exportable]
         public virtual int TrackCount {
@@ -338,10 +261,7 @@ namespace Banshee.Collection
         }
 
         [Exportable]
-        public virtual int DiscNumber {
-            get { return disc_number; }
-            set { disc_number = value; }
-        }
+        public virtual int DiscNumber { get; set; }
 
         [Exportable]
         public virtual int DiscCount {
@@ -350,106 +270,55 @@ namespace Banshee.Collection
         }
 
         [Exportable]
-        public virtual int Year {
-            get { return year; }
-            set { year = value; }
-        }
+        public virtual int Year { get; set; }
 
         [Exportable]
-        public virtual string Composer {
-            get { return composer; }
-            set { composer = value; }
-        }
+        public virtual string Composer { get; set; }
 
         [Exportable]
-        public virtual string Conductor {
-            get { return conductor; }
-            set { conductor = value; }
-        }
+        public virtual string Conductor { get; set; }
 
         [Exportable]
-        public virtual string Grouping {
-            get { return grouping; }
-            set { grouping = value; }
-        }
+        public virtual string Grouping { get; set; }
 
         [Exportable]
-        public virtual string Copyright {
-            get { return copyright; }
-            set { copyright = value; }
-        }
+        public virtual string Copyright { get; set; }
 
         [Exportable]
-        public virtual string LicenseUri {
-            get { return license_uri; }
-            set { license_uri = value; }
-        }
+        public virtual string LicenseUri { get; set; }
 
         [Exportable]
-        public virtual string Comment {
-            get { return comment; }
-            set { comment = value; }
-        }
+        public virtual string Comment { get; set; }
 
         [Exportable]
-        public virtual int Rating {
-            get { return rating; }
-            set { rating = value; }
-        }
+        public virtual int Rating { get; set; }
 
         [Exportable]
-        public virtual int Score {
-            get { return score; }
-            set {score = value; }
-        }
+        public virtual int Score { get; set; }
 
         [Exportable]
-        public virtual int Bpm {
-            get { return bpm; }
-            set { bpm = value; }
-        }
+        public virtual int Bpm { get; set; }
 
         [Exportable]
-        public virtual int BitRate {
-            get { return bit_rate; }
-            set { bit_rate = value; }
-        }
+        public virtual int BitRate { get; set; }
 
         [Exportable]
-        public virtual int PlayCount {
-            get { return play_count; }
-            set { play_count = value; }
-        }
+        public virtual int PlayCount { get; set; }
 
         [Exportable]
-        public virtual int SkipCount {
-            get { return skip_count; }
-            set { skip_count = value; }
-        }
+        public virtual int SkipCount { get; set; }
 
         [Exportable (ExportName = "length")]
-        public virtual TimeSpan Duration {
-            get { return duration; }
-            set { duration = value; }
-        }
+        public virtual TimeSpan Duration { get; set; }
 
         [Exportable]
-        public virtual DateTime DateAdded {
-            get { return date_added; }
-            set { date_added = value; }
-        }
+        public virtual DateTime DateAdded { get; set; }
 
         [Exportable]
-        public virtual DateTime LastPlayed {
-            get { return last_played; }
-            set { last_played = value; }
-        }
+        public virtual DateTime LastPlayed { get; set; }
 
         [Exportable]
-        public virtual DateTime LastSkipped {
-            get { return last_skipped; }
-            set { last_skipped = value; }
-        }
+        public virtual DateTime LastSkipped { get; set; }
 
         public virtual StreamPlaybackError PlaybackError {
             get { return playback_error; }
@@ -470,11 +339,7 @@ namespace Banshee.Collection
             set { can_save_to_database = value; }
         }
 
-        private bool is_live = false;
-        public bool IsLive {
-            get { return is_live; }
-            set { is_live = value; }
-        }
+        public bool IsLive { get; set; }
 
         private bool can_play = true;
         public bool CanPlay {

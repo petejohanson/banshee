@@ -200,7 +200,18 @@ namespace Banshee.Collection.Database
 
         private string from;
         protected string From {
-            get { return from ?? provider.From; }
+            get {
+                if (from == null) {
+                    from = provider.From;
+                    int i = from.IndexOf (',');
+                    if (i > 0) {
+                        // Force the join order to fix bgo#581103 and bgo#603661
+                        // See section 5.2 in http://www.sqlite.org/optoverview.html
+                        from = from.Substring (0, i) + " CROSS JOIN " + from.Substring (i + 1);
+                    }
+                }
+                return from;
+            }
             set { from = value; }
         }
 

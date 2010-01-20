@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+set -e
+
+profile_name="$1"
+
+if test -z "$profile_name"; then
+	case "$(uname)" in
+		Linux) profile_name=linux ;;
+		Darwin) profile_name=darwin ;;
+		*)
+			echo "Unsupported system type: $(uname)"
+			exit 1
+			;;
+	esac
+fi
+
+profile="profile.$profile_name.py"
+
+if ! test -f "build/bundle/$profile"; then
+	echo "Profile does not exist: build/bundle/$profile"
+	exit 1
+fi
+
+selfdir="$(pwd)/$(dirname "$0")"
+envfile="$selfdir/$profile_name.env"
+
+pushd build/bundle &>/dev/null
+./$profile -bv
+./$profile -e > "$envfile"
+popd &>/dev/null
+
+[ $profile_name = darwin ] && \
+	echo "export GTK2_RC_FILES=\"$selfdir/build/bundle/skeleton.darwin/Contents/Resources/etc/gtk-2.0/gtkrc\"" >> "$envfile"
+
+source "$envfile"
+
+CONFIGURE_ARGS="
+	--disable-mtp
+	--disable-daap
+	--disable-ipod
+	--disable-boo
+	--disable-gnome
+	--disable-docs
+"
+[ $profile_name = darwin ] && CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-osx"
+./autogen.sh --prefix="$BUILD_PREFIX" $CONFIGURE_ARGS
+
+cat <<EOF
+
+The world has built! You can now build Banshee.
+Be sure to source in the profile environment:
+
+  $ source $profile_name.env
+
+Once sourced, just run autogen/configure/make, etc
+as normal. The install prefix is available as the
+BUILD_PREFIX environment variable - e.g.:
+
+  $ ./autogen.sh --prefix="\$BUILD_PREFIX"
+
+Have fun!
+
+EOF

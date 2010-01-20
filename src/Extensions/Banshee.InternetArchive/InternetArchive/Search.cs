@@ -70,7 +70,8 @@ namespace InternetArchive
             }
 
             sb.AppendFormat ("&rows={0}", NumResults);
-            sb.AppendFormat ("&page={0}", Page);
+            // IA's paging starts at 1, not 0
+            sb.AppendFormat ("&page={0}", Page + 1);
             sb.AppendFormat ("&fmt={0}", "json");
             sb.Append ("&xmlsearch=Search");
 

@@ -135,7 +135,7 @@ namespace Banshee.Gui
 
         private void HandleActiveSourceChanged (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 UpdateActions ();
 
                 if (last_source != null) {
@@ -155,7 +155,7 @@ namespace Banshee.Gui
 
         private void HandleActiveSourceUpdated (object o, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            ThreadAssist.ProxyToMain (delegate {
                 UpdateActions (true);
             });
         }
@@ -166,7 +166,7 @@ namespace Banshee.Gui
 
         private void OnNewPlaylist (object o, EventArgs args)
         {
-            PlaylistSource playlist = new PlaylistSource ("New Playlist", ActivePrimarySource);
+            PlaylistSource playlist = new PlaylistSource (Catalog.GetString ("New Playlist"), ActivePrimarySource);
             playlist.Save ();
             playlist.PrimarySource.AddChildSource (playlist);
             playlist.NotifyUser ();
@@ -410,7 +410,7 @@ namespace Banshee.Gui
                 return true;
             }
 
-            Banshee.Widgets.HigMessageDialog dialog = new Banshee.Widgets.HigMessageDialog (
+            Hyena.Widgets.HigMessageDialog dialog = new Hyena.Widgets.HigMessageDialog (
                 ServiceManager.Get<GtkElementsService> ("GtkElementsService").PrimaryWindow,
                 Gtk.DialogFlags.Modal,
                 Gtk.MessageType.Question,

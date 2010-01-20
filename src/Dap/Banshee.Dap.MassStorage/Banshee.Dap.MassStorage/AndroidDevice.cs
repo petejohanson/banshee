@@ -140,7 +140,7 @@ namespace Banshee.Dap.MassStorage
 
         public override bool GetTrackPath (TrackInfo track, out string path)
         {
-            path = FileNamePattern.CreateFromTrackInfo (
+            path = MusicLibrarySource.MusicFileNamePattern.CreateFromTrackInfo (
                 "%artist%%path_sep%%album%%path_sep%%track_number%. %title%",
                 track);
             return true;

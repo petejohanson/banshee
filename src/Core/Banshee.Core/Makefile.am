@@ -2,7 +2,6 @@ ASSEMBLY = Banshee.Core
 TARGET = library
 LINK = $(REF_BANSHEE_CORE)
 SOURCES =  \
-	Banshee.Base/ApplicationContext.cs \
 	Banshee.Base/CoverArtSpec.cs \
 	Banshee.Base/FileNamePattern.cs \
 	Banshee.Base/Localization.cs \
@@ -13,10 +12,7 @@ SOURCES =  \
 	Banshee.Base/Resource.cs \
 	Banshee.Base/SafeUri.cs \
 	Banshee.Base/Tests/CoverArtSpecTests.cs \
-	Banshee.Base/Tests/FileNamePatternTests.cs \
-	Banshee.Base/Tests/TaglibReadWriteTests.cs \
 	Banshee.Base/UriList.cs \
-	Banshee.Base/XdgBaseDirectorySpec.cs \
 	Banshee.Collection/AlbumInfo.cs \
 	Banshee.Collection/ArtistInfo.cs \
 	Banshee.Collection/CacheableItem.cs \
@@ -31,7 +27,6 @@ SOURCES =  \
 	Banshee.Collection/TrackMediaAttributes.cs \
 	Banshee.Collection/UnknownTrackInfo.cs \
 	Banshee.Configuration.Schema/ImportSchema.cs \
-	Banshee.Configuration.Schema/LibrarySchema.cs \
 	Banshee.Configuration/ConfigurationClient.cs \
 	Banshee.Configuration/IConfigurationClient.cs \
 	Banshee.Configuration/MemoryConfigurationClient.cs \

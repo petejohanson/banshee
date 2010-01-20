@@ -34,6 +34,7 @@ using Mono.Unix;
 
 using Lastfm;
 using Lastfm.Gui;
+using Lastfm.Data;
 using Hyena.Data;
 
 using Banshee.Base;
@@ -104,6 +105,10 @@ namespace Banshee.Lastfm.Radio
             Properties.SetString ("Icon.Name", "lastfm-audioscrobbler");
             Properties.SetString ("SortChildrenActionLabel", Catalog.GetString ("Sort Stations by"));
             Properties.Set<LastfmColumnController> ("TrackView.ColumnController", new LastfmColumnController ());
+
+            // Initialize DataCore's UserAgent and CachePath
+            DataCore.UserAgent = Banshee.Web.Browser.UserAgent;
+            DataCore.CachePath = System.IO.Path.Combine (Banshee.Base.Paths.ExtensionCacheRoot, "lastfm");
 
             // FIXME this is temporary until we split the GUI part from the non-GUI part
             Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<LastfmSourceContents> ());

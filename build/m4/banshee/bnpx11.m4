@@ -3,6 +3,7 @@ dnl Stolen with gratitude from Totem's configure.in
 AC_DEFUN([BANSHEE_CHECK_NOW_PLAYING_X11],
 [
 	have_x11=no
+	have_xvidmode=no
 	if test x$(pkg-config --variable=target gtk+-2.0) = xx11; then
 		PKG_CHECK_MODULES(BNPX_GTK, gtk+-2.0 >= 2.8 gdk-x11-2.0 >= 2.8)
 

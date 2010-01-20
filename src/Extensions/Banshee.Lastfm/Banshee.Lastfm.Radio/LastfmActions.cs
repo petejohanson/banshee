@@ -179,6 +179,9 @@ namespace Banshee.Lastfm.Radio
         {
             Actions.UIManager.RemoveUi (actions_id);
             Actions.RemoveActionGroup (this);
+            lastfm.Connection.StateChanged -= HandleConnectionStateChanged;
+            Actions.SourceActions ["SourcePropertiesAction"].Activated -= OnSourceProperties;
+            ServiceManager.PlaybackController.SourceChanged -= OnPlaybackSourceChanged;
             ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
             base.Dispose ();
         }

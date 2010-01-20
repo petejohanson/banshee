@@ -397,6 +397,7 @@ namespace Migo.Syndication
             }
 
             if (added_any) {
+               Manager.OnFeedsChanged ();
                CheckForItemsToDownload ();
             }
         }

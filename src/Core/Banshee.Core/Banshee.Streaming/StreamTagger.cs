@@ -66,14 +66,19 @@ namespace Banshee.Streaming
 
         private static string Choose (string priority, string fallback, bool flip)
         {
-            return flip
+            return TrimZero (flip
                 ? IsNullOrEmpty (fallback) ? priority : fallback
-                : IsNullOrEmpty (priority) ? fallback : priority;
+                : IsNullOrEmpty (priority) ? fallback : priority);
         }
 
         private static bool IsNullOrEmpty (string s)
         {
-            return String.IsNullOrEmpty (s) || s.IndexOf ('\0') >= 0 && s.Trim ('\0').Length == 0;
+            return String.IsNullOrEmpty (s) || TrimZero (s).Length == 0;
+        }
+
+        private static string TrimZero (string s)
+        {
+            return s == null || s.IndexOf ('\0') == -1 ? s : s.Split ('\0')[0];
         }
 
         #pragma warning disable 0169
@@ -184,7 +189,7 @@ namespace Banshee.Streaming
                 }
             } else {
                 track.MediaAttributes = TrackMediaAttributes.AudioStream;
-                if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.LocalPath)) {
+                if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.AbsoluteUri)) {
                     track.MediaAttributes = TrackMediaAttributes.VideoStream;
                 }
             }
@@ -195,7 +200,7 @@ namespace Banshee.Streaming
 
             if (String.IsNullOrEmpty (track.TrackTitle)) {
                 try {
-                    string filename = System.IO.Path.GetFileNameWithoutExtension (track.Uri.LocalPath);
+                    string filename = System.IO.Path.GetFileNameWithoutExtension (track.Uri.AbsoluteUri);
                     if (!String.IsNullOrEmpty (filename)) {
                         track.TrackTitle = filename;
                     }

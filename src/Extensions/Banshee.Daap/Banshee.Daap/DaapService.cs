@@ -31,7 +31,8 @@ using System.Collections.Generic;
 using Mono.Unix;
 using Daap;
 
-using Banshee.Base;
+using Hyena;
+
 using Banshee.Collection;
 using Banshee.Sources;
 using Banshee.ServiceStack;

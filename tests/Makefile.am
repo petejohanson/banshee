@@ -16,6 +16,10 @@ TEST_ASSEMBLIES = \
 	Banshee.Services.dll \
 	Banshee.Dap.Mtp.dll
 
+if ENABLE_GIO
+TEST_ASSEMBLIES += Banshee.Gio.dll
+endif
+
 ENV_OPTIONS = TZ=America/Chicago LC_ALL=it_IT LANG=it_IT
 RUNNER = for asm in $${TEST_ASSEMBLIES}; do echo -e "\033[1mRunning tests on $${asm}...\033[0m"; $(ENV_OPTIONS) nunit-console2 -nologo -noshadow $$asm; done
 

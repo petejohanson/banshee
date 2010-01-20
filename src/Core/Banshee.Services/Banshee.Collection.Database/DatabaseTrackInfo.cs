@@ -43,6 +43,7 @@ using Banshee.Metadata;
 using Banshee.Preferences;
 using Banshee.Query;
 using Banshee.Sources;
+using Banshee.Library;
 using Banshee.ServiceStack;
 using Banshee.Streaming;
 
@@ -629,6 +630,14 @@ namespace Banshee.Collection.Database
             }
         }
 
+        public FileNamePattern FileNamePattern {
+            get {
+                var src = PrimarySource;
+                var pattern = src == null ? null : src.FileNamePattern;
+                return pattern ?? MusicLibrarySource.MusicFileNamePattern;
+            }
+        }
+
         public bool CopyToLibraryIfAppropriate (bool force_copy)
         {
             bool copy_success = true;
@@ -639,7 +648,7 @@ namespace Banshee.Collection.Database
                 return copy_success;
             }
 
-            bool in_library = old_uri.AbsolutePath.StartsWith (PrimarySource.BaseDirectoryWithSeparator);
+            bool in_library = old_uri.IsLocalPath ? old_uri.AbsolutePath.StartsWith (PrimarySource.BaseDirectoryWithSeparator) : false;
 
             if (!in_library && (LibrarySchema.CopyOnImport.Get () || force_copy)) {
                 string new_filename = FileNamePattern.BuildFull (PrimarySource.BaseDirectory, this, Path.GetExtension (old_uri.ToString ()));

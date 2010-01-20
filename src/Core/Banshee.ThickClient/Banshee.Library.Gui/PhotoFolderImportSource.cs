@@ -89,7 +89,7 @@ namespace Banshee.Library.Gui
         }
 
         public int SortOrder {
-            get { return 0; }
+            get { return 13; }
         }
     }
 }

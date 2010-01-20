@@ -33,6 +33,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+using Hyena;
 using Hyena.SExpEngine;
 using Banshee.Base;
 

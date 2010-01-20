@@ -137,7 +137,7 @@ namespace Banshee.Library
 
             PrimarySource source = track.PrimarySource;
 
-            // If it's from a local primary source, change it's PrimarySource
+            // If it's from a local primary source, change its PrimarySource
             if (source.IsLocal || source is LibrarySource) {
                 track.PrimarySource = this;
 
@@ -146,14 +146,18 @@ namespace Banshee.Library
                 }
 
                 track.Save (false);
+
+                // TODO optimize, remove this?  I think it makes moving items
+                // between local libraries very slow.
                 source.NotifyTracksChanged ();
             } else {
                 // Figure out where we should put it if were to copy it
-                string path = FileNamePattern.BuildFull (BaseDirectory, track);
+                var pattern = this.FileNamePattern ?? MusicLibrarySource.MusicFileNamePattern;
+                string path = pattern.BuildFull (BaseDirectory, track);
                 SafeUri uri = new SafeUri (path);
 
                 // Make sure it's not already in the library
-                // TODO optimize - no need to recrate this int [] every time
+                // TODO optimize - no need to recreate this int [] every time
                 if (DatabaseTrackInfo.ContainsUri (uri, new int [] {DbId})) {
                     return;
                 }

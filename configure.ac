@@ -188,6 +188,8 @@ AC_SUBST(BUILD_HOST_OS)
 AC_SUBST(BUILD_HOST_CPU)
 AC_SUBST(BUILD_TIME)
 
+AM_CONDITIONAL(PLATFORM_DARWIN, test "x${host_os:0:6}" = "xdarwin")
+
 SHAVE_INIT([build/m4/shave], [enable])
 
 dnl generated files
@@ -230,7 +232,8 @@ src/AssemblyInfo.cs
 src/Clients/Makefile
 src/Clients/Beroe/Makefile
 src/Clients/Booter/Makefile
-src/Clients/Booter/banshee-1
+src/Clients/Booter/banshee-1.linux
+src/Clients/Booter/banshee-1.darwin
 src/Clients/Halie/Makefile
 src/Clients/Muinshee/Makefile
 src/Clients/Nereid/Makefile
@@ -279,6 +282,7 @@ src/Extensions/Banshee.BooScript/Makefile
 src/Extensions/Banshee.Bpm/Makefile
 src/Extensions/Banshee.CoverArt/Makefile
 src/Extensions/Banshee.Daap/Makefile
+src/Extensions/Banshee.Emusic/Makefile
 src/Extensions/Banshee.FileSystemQueue/Makefile
 src/Extensions/Banshee.InternetArchive/Makefile
 src/Extensions/Banshee.InternetRadio/Makefile
@@ -319,9 +323,8 @@ ${PACKAGE}-${VERSION}
 
   Operating System/Desktop Environment:
     GNOME Support:     ${enable_gnome}
-    Builtin Equalizer: ${enable_builtin_equalizer}
-    GIO Support:       ${enable_gio} (requires gtk-sharp-beans and gio-sharp)
     OSX Support:       ${enable_osx}
+    Moblin Support:    ${enable_moblin}
 
   Digital Audio Player (DAP) Support:
     Mass Storage:      yes
@@ -333,7 +336,8 @@ ${PACKAGE}-${VERSION}
     DAAP Support:      ${enable_daap}
     Podcast Support:   ${enable_podcast}
     Boo Scripting:     ${enable_boo}
-    Moblin Support:    ${enable_moblin}
+    Builtin Equalizer: ${enable_builtin_equalizer}
+    GIO Support:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})

@@ -47,19 +47,19 @@ namespace Banshee.Playlists.Formats.Tests
 
 #region Setup
 
-        private static Uri BaseUri = new Uri("/iamyourbase/");
-        private List<Dictionary<string, object>> elements = new List<Dictionary<string, object>>();
+        private static Uri BaseUri = new Uri ("/iamyourbase/");
+        private List<Dictionary<string, object>> elements = new List<Dictionary<string, object>> ();
         private string playlists_dir;
 
         [TestFixtureSetUp]
-        public void Init()
+        public void Init ()
         {
             Mono.Addins.AddinManager.Initialize (BinDir);
 
             playlists_dir = Path.Combine (TestsDir, "Banshee.Services/playlist-data");
-            IPlaylistFormat playlist = LoadPlaylist(new M3uPlaylistFormat(), "extended.m3u");
-            foreach(Dictionary<string, object> element in playlist.Elements) {
-                elements.Add(element);
+            IPlaylistFormat playlist = LoadPlaylist (new M3uPlaylistFormat (), "extended.m3u");
+            foreach (Dictionary<string, object> element in playlist.Elements) {
+                elements.Add (element);
             }
         }
 
@@ -68,98 +68,102 @@ namespace Banshee.Playlists.Formats.Tests
 #region Tests
 
         [Test]
-        public void ReadAsfReferenceLocal()
+        public void ReadAsfReferenceLocal ()
         {
-            IPlaylistFormat pl = LoadPlaylist(new AsfReferencePlaylistFormat(), "reference_local.asx");
-            Assert.AreEqual(elements[2]["uri"], pl.Elements[0]["uri"]);
+            IPlaylistFormat pl = LoadPlaylist (new AsfReferencePlaylistFormat (), "reference_local.asx");
+            Assert.AreEqual (elements[2]["uri"], pl.Elements[0]["uri"]);
         }
 
         [Test]
-        public void ReadAsfReferenceRemote()
+        public void ReadAsfReferenceRemote ()
         {
-            IPlaylistFormat pl = LoadPlaylist(new AsfReferencePlaylistFormat(), "reference_remote.asx");
-            Assert.AreEqual(elements[0]["uri"], pl.Elements[0]["uri"]);
+            IPlaylistFormat pl = LoadPlaylist (new AsfReferencePlaylistFormat (), "reference_remote.asx");
+            Assert.AreEqual ("mmsh://remote/remote.mp3", (pl.Elements[0]["uri"] as Uri).AbsoluteUri);
         }
 
         [Test]
-        public void ReadAsxSimple()
+        public void ReadAsxSimple ()
         {
-            LoadTest(new AsxPlaylistFormat(), "simple.asx");
+            LoadTest (new AsxPlaylistFormat (), "simple.asx", true);
         }
 
         [Test]
-        public void ReadAsxExtended()
+        public void ReadAsxExtended ()
         {
-            LoadTest(new AsxPlaylistFormat(), "extended.asx");
+            LoadTest (new AsxPlaylistFormat (), "extended.asx", true);
         }
 
         [Test]
-        public void ReadM3uSimple()
+        public void ReadM3uSimple ()
         {
-            LoadTest(new M3uPlaylistFormat(), "simple.m3u");
+            LoadTest (new M3uPlaylistFormat (), "simple.m3u", false);
         }
 
         [Test]
-        public void ReadM3uExtended()
+        public void ReadM3uExtended ()
         {
-            LoadTest(new M3uPlaylistFormat(), "extended.m3u");
+            LoadTest (new M3uPlaylistFormat (), "extended.m3u", false);
         }
 
         [Test]
-        public void ReadPlsSimple()
+        public void ReadPlsSimple ()
         {
-            LoadTest(new PlsPlaylistFormat(), "simple.pls");
+            LoadTest (new PlsPlaylistFormat (), "simple.pls", false);
         }
 
         [Test]
-        public void ReadPlsExtended()
+        public void ReadPlsExtended ()
         {
-            LoadTest(new PlsPlaylistFormat(), "extended.pls");
+            LoadTest (new PlsPlaylistFormat (), "extended.pls", false);
         }
 
         [Test]
-        public void ReadDetectMagic()
+        public void ReadDetectMagic ()
         {
-            PlaylistParser parser = new PlaylistParser();
+            PlaylistParser parser = new PlaylistParser ();
             parser.BaseUri = BaseUri;
 
-            foreach(string path in Directory.GetFiles(playlists_dir)) {
-                parser.Parse(new SafeUri(Path.Combine(Environment.CurrentDirectory, path)));
-                AssertTest(parser.Elements);
+            foreach (string path in Directory.GetFiles (playlists_dir)) {
+                parser.Parse (new SafeUri (Path.Combine (Environment.CurrentDirectory, path)));
             }
 
-            parser.Parse(new SafeUri("http://banshee-project.org/files/tests/extended.pls"));
-            AssertTest(parser.Elements);
+            parser.Parse (new SafeUri ("http://download.banshee-project.org/test/extended.pls"));
+            AssertTest (parser.Elements, false);
         }
 
 #endregion
 
 #region Utilities
 
-        private IPlaylistFormat LoadPlaylist(IPlaylistFormat playlist, string filename)
+        private IPlaylistFormat LoadPlaylist (IPlaylistFormat playlist, string filename)
         {
             playlist.BaseUri = BaseUri;
-            playlist.Load(File.OpenRead(Path.Combine(playlists_dir, filename)), true);
+            playlist.Load (File.OpenRead (Path.Combine (playlists_dir, filename)), true);
             return playlist;
         }
 
-        private void LoadTest(IPlaylistFormat playlist, string filename)
+        private void LoadTest (IPlaylistFormat playlist, string filename, bool mmsh)
         {
-            LoadPlaylist(playlist, filename);
-            AssertTest(playlist.Elements);
+            LoadPlaylist (playlist, filename);
+            AssertTest (playlist.Elements, mmsh);
         }
 
-        private void AssertTest(List<Dictionary<string, object>> plelements)
+        private void AssertTest (List<Dictionary<string, object>> plelements, bool mmsh)
         {
             int i = 0;
-            foreach(Dictionary<string, object> element in plelements) {
-                Assert.AreEqual((Uri)elements[i]["uri"], (Uri)element["uri"]);
-                if(element.ContainsKey("title")) {
-                    Assert.AreEqual((string)elements[i]["title"], (string)element["title"]);
+            foreach (Dictionary<string, object> element in plelements) {
+                if (mmsh) {
+                    Assert.AreEqual (((Uri)elements[i]["uri"]).AbsoluteUri.Replace ("http", "mmsh"), ((Uri)element["uri"]).AbsoluteUri);
+                } else {
+                    Assert.AreEqual ((Uri)elements[i]["uri"], (Uri)element["uri"]);
                 }
 
-                if(element.ContainsKey("duration")) {
-                    Assert.AreEqual((TimeSpan)elements[i]["duration"], (TimeSpan)element["duration"]);
+                if (element.ContainsKey ("title")) {
+                    Assert.AreEqual ((string)elements[i]["title"], (string)element["title"]);
+                }
+
+                if (element.ContainsKey ("duration")) {
+                    Assert.AreEqual ((TimeSpan)elements[i]["duration"], (TimeSpan)element["duration"]);
                 }
 
                 i++;

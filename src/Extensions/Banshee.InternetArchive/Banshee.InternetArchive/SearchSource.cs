@@ -32,6 +32,7 @@ using System.Linq;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Collections;
 using Hyena.Data;
 

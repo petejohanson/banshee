@@ -388,7 +388,7 @@ namespace Banshee.Podcasting
                 track.ExternalId = item.DbId;
                 track.PrimarySource = source;
                 (track.ExternalObject as PodcastTrackInfo).SyncWithFeedItem ();
-                track.Save (true);
+                track.Save (false);
                 RefreshArtworkFor (item.Feed);
             } else {
                 // We're only interested in items that have enclosures
@@ -425,6 +425,7 @@ namespace Banshee.Podcasting
         private void OnFeedsChanged (object o, EventArgs args)
         {
             source.Reload ();
+            source.NotifyTracksChanged ();
         }
 
         /*private void OnFeedAddedHandler (object sender, FeedEventArgs args)

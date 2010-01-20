@@ -34,24 +34,24 @@ namespace Mtp
 {
     internal static class FileSample
     {
-		[DllImport("libmtp.dll")]
-		public static extern void LIBMTP_destroy_filesampledata_t (ref FileSampleData data); // LIBMTP_filesampledata_t *
+        [DllImport("libmtp.dll")]
+        public static extern void LIBMTP_destroy_filesampledata_t (ref FileSampleData data); // LIBMTP_filesampledata_t *
 
-		[DllImport("libmtp.dll")]
-		public static extern int LIBMTP_Get_Representative_Sample_Format (MtpDeviceHandle handle, FileType type, IntPtr data_array);
+        [DllImport("libmtp.dll")]
+        public static extern int LIBMTP_Get_Representative_Sample_Format (MtpDeviceHandle handle, FileType type, IntPtr data_array);
 
-		[DllImport("libmtp.dll")]
-		public static extern int LIBMTP_Send_Representative_Sample (MtpDeviceHandle handle, uint id, ref FileSampleData sample);
+        [DllImport("libmtp.dll")]
+        public static extern int LIBMTP_Send_Representative_Sample (MtpDeviceHandle handle, uint id, ref FileSampleData sample);
     }
 
-	[StructLayout(LayoutKind.Sequential)]
-	internal struct FileSampleData
-	{
-		public uint width;
-		public uint height;
-		public uint duration;
-		public FileType filetype;
-		public ulong size;
-		public IntPtr data;
-	}
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct FileSampleData
+    {
+        public uint width;
+        public uint height;
+        public uint duration;
+        public FileType filetype;
+        public ulong size;
+        public IntPtr data;
+    }
 }

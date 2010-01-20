@@ -46,14 +46,15 @@ namespace Banshee.NowPlaying
         private Gtk.Window video_window;
         private FullscreenAdapter fullscreen_adapter;
         private ScreensaverManager screensaver;
-        private NowPlayingContents contents;
+        
+        internal NowPlayingContents Contents { get; private set; }
 
         public NowPlayingInterface ()
         {
             GtkElementsService service = ServiceManager.Get<GtkElementsService> ();
 
-            contents = new NowPlayingContents ();
-            contents.ButtonPressEvent += (o, a) => {
+            Contents = new NowPlayingContents ();
+            Contents.ButtonPressEvent += (o, a) => {
                 if (a.Event.Type == Gdk.EventType.TwoButtonPress) {
                     var iaservice = ServiceManager.Get<InterfaceActionService> ();
                     var action = iaservice.ViewActions["FullScreenAction"] as Gtk.ToggleAction;
@@ -71,7 +72,7 @@ namespace Banshee.NowPlaying
             video_window = new FullscreenWindow (service.PrimaryWindow);
             video_window.Hidden += OnFullscreenWindowHidden;
             video_window.Realize ();
-            video_window.Add (contents);
+            video_window.Add (Contents);
 
             frame = new Hyena.Widgets.RoundedFrame ();
             frame.SetFillColor (new Cairo.Color (0, 0, 0));
@@ -92,17 +93,17 @@ namespace Banshee.NowPlaying
 
         private void MoveVideoExternal (bool hidden)
         {
-            if (contents.Parent != video_window) {
-                contents.Visible = !hidden;
-                contents.Reparent (video_window);
+            if (Contents.Parent != video_window) {
+                Contents.Visible = !hidden;
+                Contents.Reparent (video_window);
             }
         }
 
         private void MoveVideoInternal ()
         {
-            if (contents.Parent != frame) {
-                contents.Reparent (frame);
-                contents.Show ();
+            if (Contents.Parent != frame) {
+                Contents.Reparent (frame);
+                Contents.Show ();
             }
         }
 
