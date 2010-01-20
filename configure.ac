@@ -65,7 +65,7 @@ BANSHEE_CHECK_GSTREAMER
 BANSHEE_CHECK_NOW_PLAYING_X11
 
 dnl Mono and gmcs
-SHAMROCK_CHECK_MONO_MODULE(2.4.3)
+SHAMROCK_CHECK_MONO_MODULE(1.9.1)
 SHAMROCK_FIND_MONO_2_0_COMPILER
 SHAMROCK_FIND_MONO_RUNTIME
 SHAMROCK_CHECK_MONO_2_0_GAC_ASSEMBLIES([	
@@ -76,6 +76,10 @@ SHAMROCK_CHECK_MONO_2_0_GAC_ASSEMBLIES([
 	Mono.Posix
 	ICSharpCode.SharpZipLib
 ])
+
+dnl Check for mono >= 2.4.3 for LibraryWatcher extension, with fix for bnc#322330
+PKG_CHECK_MODULES(MONO_2_4_3, mono >= 2.4.3, HAVE_MONO_2_4_3=yes, HAVE_MONO_2_4_3=no)
+AM_CONDITIONAL(ENABLE_LIBRARY_WATCHER, test "x$HAVE_MONO_2_4_3" = "xyes")
 
 dnl NDesk DBus libraries
 BANSHEE_CHECK_NDESK_DBUS
@@ -337,6 +341,7 @@ ${PACKAGE}-${VERSION}
     Podcast Support:   ${enable_podcast}
     Boo Scripting:     ${enable_boo}
     Builtin Equalizer: ${enable_builtin_equalizer}
+    Library Watcher:   ${HAVE_MONO_2_4_3} (requires Mono >= 2.4.3)
     GIO Support:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
 
   Build/Development:
