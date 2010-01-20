@@ -133,6 +133,9 @@ namespace Halie
                     case "first":    controller.First ();                                    break;
                     case "next":     controller.Next (ParseBool (arg.Value, "restart"));     break;
                     case "previous": controller.Previous (ParseBool (arg.Value, "restart")); break;
+                    case "restart-or-previous":
+                        controller.RestartOrPrevious (ParseBool (arg.Value, "restart"));
+                        break;
                     case "stop-when-finished":
                         controller.StopWhenFinished = !ParseBool (arg.Value);
                         break;
