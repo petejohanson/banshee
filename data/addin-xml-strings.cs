@@ -118,6 +118,11 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Last.fm streaming radio, scrobbling, and context pane recommendations.");
         Catalog.GetString (@"Online Sources");
 
+        // ../src/Extensions/Banshee.LibraryWatcher/Banshee.LibraryWatcher.addin.xml
+        Catalog.GetString (@"Library Watcher");
+        Catalog.GetString (@"Automatically update music and video libraries");
+        Catalog.GetString (@"Utilities");
+
         // ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
         Catalog.GetString (@"Mini Mode");
         Catalog.GetString (@"Control Banshee through a small window with only playback controls and track information.");

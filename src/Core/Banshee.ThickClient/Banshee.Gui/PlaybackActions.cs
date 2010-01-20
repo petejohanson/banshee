@@ -215,12 +215,7 @@ namespace Banshee.Gui
 
         private void OnPreviousAction (object o, EventArgs args)
         {
-            const int delay = 4000; // ms
-            if (ServiceManager.PlayerEngine.Position < delay) {
-                ServiceManager.PlaybackController.Previous ();
-            } else {
-                OnRestartSongAction (o, args);
-            }
+            ServiceManager.PlaybackController.RestartOrPrevious ();
         }
 
         private void OnSeekToAction (object o, EventArgs args)

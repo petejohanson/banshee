@@ -48,11 +48,27 @@ namespace Banshee.IO
                     return;
                 }
 
+                TypeExtensionNode best_node = null;
+                int best_index = Int32.MaxValue;
+
                 foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes ("/Banshee/Platform/IOProvider")) {
-                    try {
-                        if (node.HasId && node.Id == ProviderSchema.Get ()) {
-                            provider = (IProvider)node.CreateInstance (typeof (IProvider));
+                    if (node.HasId) {
+                        if (node.Id == ProviderSchema.Get ()) {
+                            best_node = node;
+                            best_index = -1;
+                        } else {
+                            int idx = Array.IndexOf (builtin_backend_preference, node.Id);
+                            if (idx != -1 && idx < best_index) {
+                                best_index = idx;
+                                best_node = node;
+                            }
                         }
+                    }
+                }
+
+                if (best_node != null) {
+                    try {
+                        provider = (IProvider)best_node.CreateInstance (typeof (IProvider));
                     } catch (Exception e) {
                         Log.Warning ("IO provider extension failed to load", e.Message);
                     }
@@ -91,14 +107,19 @@ namespace Banshee.IO
             return (IDemuxVfs)Activator.CreateInstance (provider.DemuxVfsProvider, new object [] { file });
         }
 
+        private static string [] builtin_backend_preference = new string [] {
+            "Banshee.IO.Gio.Provider",
+            "Banshee.IO.Unix.Provider",
+            "Banshee.IO.SystemIO.Provider"
+        };
+
         internal static readonly SchemaEntry<string> ProviderSchema = new SchemaEntry<string> (
             "core", "io_provider",
-            "Banshee.IO.Unix.Provider",
+            "Banshee.IO.Gio.Provider",
             "Set the IO provider backend in Banshee",
             "Can be either \"Banshee.IO.SystemIO.Provider\" (.NET System.IO), " +
                 "\"Banshee.IO.Gio.Provider\" (GIO), or " +
                 "\"Banshee.IO.Unix.Provider\" (Native Unix/POSIX), or " +
-                "\"Banshee.IO.GnomeVfs.Provider\" (GNOME VFS); " +
                 "takes effect on Banshee start (restart necessary)"
         );
     }

@@ -347,7 +347,7 @@ namespace Banshee.Sources
             OnTracksChanged ();
         }
 
-        internal void NotifyTracksDeleted ()
+        public void NotifyTracksDeleted ()
         {
             OnTracksDeleted ();
         }

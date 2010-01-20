@@ -253,6 +253,25 @@ namespace Banshee.PlaybackController
             OnTransition ();
         }
 
+        public void RestartOrPrevious ()
+        {
+            RestartOrPrevious (RepeatMode == PlaybackRepeatMode.RepeatAll);
+        }
+
+        public void RestartOrPrevious (bool restart)
+        {
+            const int delay = 4000; // ms
+            if (player_engine.Position < delay) {
+                Previous ();
+            } else {
+                var track = player_engine.CurrentTrack;
+                if (track != null) {
+                    player_engine.Close ();
+                    player_engine.OpenPlay (track);
+                }
+            }
+        }
+
         bool IBasicPlaybackController.First ()
         {
             if (Source.Count > 0) {

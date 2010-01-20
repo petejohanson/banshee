@@ -77,6 +77,7 @@ namespace Banshee.Emusic
 
         public void Dispose ()
         {
+            ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
             download_manager.Dispose ();
             download_manager_iface.Dispose ();
             download_manager = null;

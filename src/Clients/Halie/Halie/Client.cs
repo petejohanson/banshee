@@ -133,6 +133,9 @@ namespace Halie
                     case "first":    controller.First ();                                    break;
                     case "next":     controller.Next (ParseBool (arg.Value, "restart"));     break;
                     case "previous": controller.Previous (ParseBool (arg.Value, "restart")); break;
+                    case "restart-or-previous":
+                        controller.RestartOrPrevious (ParseBool (arg.Value, "restart"));
+                        break;
                     case "stop-when-finished":
                         controller.StopWhenFinished = !ParseBool (arg.Value);
                         break;
@@ -141,6 +144,9 @@ namespace Halie
                         break;
                     case "set-volume":
                         player.Volume = UInt16.Parse (arg.Value);
+                        break;
+                    case "set-rating":
+                        player.Rating = Byte.Parse (arg.Value);
                         break;
                     default:
                         if (arg.Key.StartsWith ("query-")) {

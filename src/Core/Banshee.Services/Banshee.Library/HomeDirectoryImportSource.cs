@@ -59,7 +59,7 @@ namespace Banshee.Library
         }
 
         public int SortOrder {
-            get { return 10; }
+            get { return 12; }
         }
     }
 }

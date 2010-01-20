@@ -50,7 +50,7 @@ namespace Banshee.Library.Gui
         }
 
         public string Name {
-            get { return Catalog.GetString ("Local Folders"); }
+            get { return Banshee.IO.Provider.LocalOnly ? Catalog.GetString ("Local Folders") : Catalog.GetString ("Folders"); }
         }
 
         public string ImportLabel {
@@ -66,7 +66,7 @@ namespace Banshee.Library.Gui
         }
 
         public int SortOrder {
-            get { return 0; }
+            get { return 10; }
         }
 
         // Reserve strings in preparation for the forthcoming string freeze.

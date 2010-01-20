@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.2 - Released November 20, 2009
+WELCOME TO BANSHEE 1.5.3 - NOT YET RELEASED
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,55 +10,28 @@ WELCOME TO BANSHEE 1.5.2 - Released November 20, 2009
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.5.2
+  * Learn More: http://banshee-project.org/download/archives/1.5.3
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.5.2 brings many big changes, new features, and fixes!
+    Banshee 1.5.3 brings many big changes, new features, and fixes!
 
     New Features:
 
-      * The Internet Archive extension
-      * The iTunes importer
-      * Metadata ratings and playcount import and export
-      * Add support for Pulse and Droid phones
-      * Use new Last.fm API
+      * 
 
     Enhancements:
 
-      * Many accessibility enhancements
-      * When sorting by score also sort by playcount (bgo#598431)
-      * Add WICD support (bgo#596918)
-      * Add the USB id for the Palm Pre in developer mode
-      * Improve the import media dialog (bgo#559013)
-      * Allow seeking in DAAP streams
-      * Tooltip for the AutoDJ source combobox (bgo#598504)
-      * Improve recognition of Android devices
-      * Recognize Samsung Galaxy device in debug mode
-      * PlaybackError query field (bgo#590946)
-      * Additional tokens for file system organization (bgo#489861)
-      * Remember direction when sorting the list view (bgo#590869)
-      * Cleaner track change notification popup (bgo#565453)
-      * Move Last.fm settings to the preferences dialog
-      * Double click toggles fullscreen in Now Playing (bgo#577971)
+      * 
 
     Notable bug fixes:
 
-      * Fix the playcount update (bgo#563021)
-      * Correct default button in message dialogs (bgo#599495)
-      * Hide shuffle menu when shuffling is disabled (bgo#599465)
-      * Fix bug with AutoDJ updating LastPlayed erroneously (bgo#594701)
-      * Fix next playback source (bgo#599834)
-      * Fix adding tracks to the play queue (bgo#600498)
-      * Fix up iPod podcast support (bgo#434237)
-      * Fix cover art pick up for multi-disc albums (bgo#591982)
-      * Fix the play queue when StopWhenFinished is on (bgo#563021)
-      * Fix race when saving track metadata (bgo#598321)
+      * 
 
-      * 49 bugs were fixed since 1.5.1
+      * N bugs were fixed since 1.5.2
 
 
 ===============================================================================
@@ -68,9 +41,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.5.2 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.tar.gz
+    * Banshee 1.5.3 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.tar.gz
 
 Packages
 --------
@@ -93,8 +66,8 @@ Packages
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.2/banshee-1-1.5.2.sha1sum
+    * http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.changes
+    * http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.sha1sum
 
 
 ===============================================================================
@@ -119,6 +92,9 @@ DEPENDENCIES
       * ipod-sharp >= 0.8.5
       * mono-zeroconf >= 0.8.0
       * boo >= 0.8.1
+      * GIO support reequires glib >= 2.22 and gio-sharp and gtk-sharp-beans
+      * Library Watcher extension requires Mono >= 2.4.3
+      * Accessibilty for ListView and Rating widgets requires Gtk# >= 2.12.10
 
     * Run-time requirements for default feature stack:
       * PodSleuth (0.6.6 recommended)

@@ -62,8 +62,16 @@ namespace Banshee.NotificationArea
             get { return event_box; }
         }
 
+        [System.Runtime.InteropServices.DllImport ("libgdk-x11-2.0.so.0")]
+        private static extern int gdk_x11_get_default_screen ();
+
         public X11NotificationAreaBox () : base (Catalog.GetString ("Banshee"))
         {
+            // NOTE: this is a dummy call to ensure we're actually on X11,
+            // otherwise X11 calls won't get made until we are realized,
+            // at which point it is too late to fall back to xplat GTK tray
+            gdk_x11_get_default_screen ();
+
             event_box = new EventBox ();
             Add (event_box);
             icon = new Image ();

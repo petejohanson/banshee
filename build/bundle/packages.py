@@ -33,12 +33,13 @@ class BansheePackages:
 			'packages/sqlite.py'
 		])
 
-		# Icons
+		# Theme
 		self.packages.extend ([
 			'packages/librsvg.py',
 			'packages/icon-naming-utils.py',
 			'packages/hicolor-icon-theme.py',
-			'packages/tango-icon-theme.py'
+			'packages/tango-icon-theme.py',
+			'packages/murrine.py'
 		])
 
 		# Codecs

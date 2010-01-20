@@ -56,7 +56,7 @@ namespace Banshee.Library.Gui
         }
 
         public string Name {
-            get { return Catalog.GetString ("Local Files"); }
+            get { return Banshee.IO.Provider.LocalOnly ? Catalog.GetString ("Local Files") : Catalog.GetString ("Files"); }
         }
 
         public string ImportLabel {
@@ -64,7 +64,7 @@ namespace Banshee.Library.Gui
         }
 
         public string [] IconNames {
-            get { return new string [] { "gtk-open" }; }
+            get { return new string [] { "audio-x-generic", "gtk-open" }; }
         }
 
         public bool CanImport {
@@ -72,7 +72,7 @@ namespace Banshee.Library.Gui
         }
 
         public int SortOrder {
-            get { return 5; }
+            get { return 11; }
         }
 
         // Reserve strings in preparation for the forthcoming string freeze.

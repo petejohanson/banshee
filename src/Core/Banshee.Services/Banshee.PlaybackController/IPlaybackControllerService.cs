@@ -48,6 +48,7 @@ namespace Banshee.PlaybackController
         void First ();
         void Next (bool restart);
         void Previous (bool restart);
+        void RestartOrPrevious (bool restart);
 
         PlaybackShuffleMode ShuffleMode { get; set; }
         PlaybackRepeatMode RepeatMode { get; set; }

@@ -55,6 +55,7 @@ namespace Banshee.MediaEngine
 
         ushort Volume { get; set; }
         uint Position { get; set; }
+        byte Rating { get; set; }
         bool CanSeek { get; }
         bool CanPause { get; }
         uint Length { get; }

@@ -157,6 +157,7 @@ namespace Booter
                 new LayoutGroup ("playback", Catalog.GetString ("Playback Control Options"),
                     new LayoutOption ("next", Catalog.GetString ("Play the next track, optionally restarting if the 'restart' value is set")),
                     new LayoutOption ("previous", Catalog.GetString ("Play the previous track, optionally restarting if the 'restart value is set")),
+                    new LayoutOption ("restart-or-previous", Catalog.GetString ("If the current song has been played longer than 4 seconds then restart it, otherwise the same as --previous")),
                     new LayoutOption ("play-enqueued", Catalog.GetString ("Automatically start playing any tracks enqueued on the command line")),
                     new LayoutOption ("play", Catalog.GetString ("Start playback")),
                     new LayoutOption ("pause", Catalog.GetString ("Pause playback")),
@@ -165,7 +166,8 @@ namespace Booter
                     new LayoutOption ("stop-when-finished", Catalog.GetString (
                         "Enable or disable playback stopping after the currently playing track (value should be either 'true' or 'false')")),
                     new LayoutOption ("set-volume=LEVEL", Catalog.GetString ("Set the playback volume (0-100)")),
-                    new LayoutOption ("set-position=POS", Catalog.GetString ("Seek to a specific point (seconds, float)"))
+                    new LayoutOption ("set-position=POS", Catalog.GetString ("Seek to a specific point (seconds, float)")),
+                    new LayoutOption ("set-rating=RATING", Catalog.GetString ("Set the currently played track's rating (0 to 5)"))
                 ),
 
                 new LayoutGroup ("query-player", Catalog.GetString ("Player Engine Query Options"),
