@@ -567,6 +567,16 @@ namespace Banshee.MediaEngine
             set { active_engine.Position = value; }
         }
 
+        public byte Rating {
+            get { return (byte)(CurrentTrack == null ? 0 : CurrentTrack.Rating); }
+            set {
+                if (CurrentTrack != null) {
+                    CurrentTrack.Rating = (int)Math.Min (5u, value);
+                    CurrentTrack.Save ();
+                }
+            }
+        }
+
         public bool CanSeek {
             get { return active_engine.CanSeek; }
         }
