@@ -121,7 +121,7 @@ internal static class AddinXmlStringCatalog
         // ../src/Extensions/Banshee.LibraryWatcher/Banshee.LibraryWatcher.addin.xml
         Catalog.GetString (@"Library Watcher");
         Catalog.GetString (@"Automatically update music and video libraries");
-        Catalog.GetString (@"Hardware");
+        Catalog.GetString (@"Utilities");
 
         // ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
         Catalog.GetString (@"Mini Mode");
