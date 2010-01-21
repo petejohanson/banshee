@@ -123,7 +123,9 @@ SOURCES =  \
 	Hyena/ThreadAssist.cs \
 	Hyena/Timer.cs \
 	Hyena/UndoManager.cs \
-	Hyena/XdgBaseDirectorySpec.cs
+	Hyena/XdgBaseDirectorySpec.cs \
+	System.Web/Helpers.cs \
+	System.Web/HttpUtility.cs
 
 include $(top_srcdir)/build/build.mk
 
