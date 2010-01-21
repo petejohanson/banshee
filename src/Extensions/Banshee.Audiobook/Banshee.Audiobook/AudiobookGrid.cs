@@ -56,14 +56,18 @@ namespace Banshee.Audiobook
 
         public AudiobookGrid ()
         {
+            ViewLayout = new DataViewLayoutGrid ();
+
             renderer = new ColumnCellAlbum () {
-                LayoutStyle = DataViewLayoutStyle.Grid,
-                ImageSize = 150
+                ImageSize = 150,
+                ViewLayout = ViewLayout
             };
+
+            ViewLayout.ChildSize = renderer.Measure (ViewLayout.View);
+
             var column_controller = new ColumnController ();
             column_controller.Add (new Column ("Album", renderer, 1.0));
 
-            LayoutStyle = DataViewLayoutStyle.Grid;
             ColumnController = column_controller;
             //RowActivated += OnRowActivated;
         }
