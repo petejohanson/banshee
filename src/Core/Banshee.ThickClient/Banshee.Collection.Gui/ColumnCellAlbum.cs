@@ -107,9 +107,32 @@ namespace Banshee.Collection.Gui
             // Render the overlay
             if (IsGridLayout && hover_object != null) {
                 var cr = context.Context;
-                cr.Color = new Color (0, 0, 0, 0.5);
+                var grad = new RadialGradient (5, 5, (width + height) / 2.0, 5, 5, 0);
+                grad.AddColorStop (0, new Color (0, 0, 0, 0.65));
+                grad.AddColorStop (1, new Color (0, 0, 0, 0.15));
+                cr.Pattern = grad;
                 cr.Rectangle (x, y, width, height);
                 cr.Fill ();
+                grad.Destroy ();
+
+                cr.Save ();
+                cr.LineWidth = 2;
+                cr.Antialias = Cairo.Antialias.Default;
+
+                // math prep for rendering multiple controls...
+                double max_controls = 3;
+                double spacing = 4;
+                double radius = (width - ((max_controls + 1) * spacing)) / max_controls / 2;
+
+                // render first control
+                cr.Arc (width / 2, height - radius - 2 * spacing, radius, 0, 2 * Math.PI);
+
+                cr.Color = new Color (0, 0, 0, 0.4);
+                cr.FillPreserve ();
+                cr.Color = new Color (1, 1, 1, 0.8);
+                cr.Stroke ();
+
+                cr.Restore ();
             }
 
             if (lines == null || lines.Length < 2) {
