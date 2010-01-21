@@ -43,10 +43,24 @@ $(MO_FILES): $(LC_BUILD)/%/LC_MESSAGES/$(PACKAGE).mo: po/%.gmo
 	$(mkdir_p) $(dir $@)
 	cp -rf '$<' '$@'
 
-run: $(MO_FILES)
+check-bootstrap-env:
+	@if test -z "$$BOCKBUILD_ENV"; then \
+		for env in $$(find $(top_srcdir) -maxdepth 1 -name \*.env); do \
+			echo "A bootstrap environment was found, but it does not"; \
+			echo "appear to be sourced into your current environment:"; \
+			echo; \
+			echo "    $$env"; \
+			echo; \
+			echo "Source the environment first."; \
+			echo; \
+			exit 1; \
+		done; \
+	fi
+
+run: check-bootstrap-env $(MO_FILES)
 	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS))
 
-run-logged: $(MO_FILES)
+run-logged: check-bootstrap-env $(MO_FILES)
 	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS) | tee last-run-log)
 
 run-perf: run-logged
