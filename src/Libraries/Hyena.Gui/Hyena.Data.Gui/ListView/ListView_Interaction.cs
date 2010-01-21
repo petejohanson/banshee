@@ -311,6 +311,25 @@ namespace Hyena.Data.Gui
             Gdk.Rectangle icell_area;
             bool redraw = ProxyEventToCell (evnt, press, out icell, out icell_area);
 
+            if (ViewLayout != null) {
+                if (last_icell_area != icell_area) {
+                    if (last_icell != null && last_icell.PointerLeaveEvent ()) {
+                        QueueDrawArea (last_icell_area.X, last_icell_area.Y,
+                            last_icell_area.Width, last_icell_area.Height);
+                    }
+
+                    last_icell = icell;
+                    last_icell_area = icell_area;
+                }
+
+                if (redraw) {
+                    QueueDrawArea (icell_area.X, icell_area.Y, icell_area.Width, icell_area.Height);
+                }
+
+                return;
+            }
+
+            // FIXME: obsolete
             int xoffset = HadjustmentValue;
             int yoffset = VadjustmentValue;
 
@@ -329,7 +348,8 @@ namespace Hyena.Data.Gui
             }
         }
 
-        private bool ProxyEventToCell (Gdk.Event evnt, bool press, out IInteractiveCell icell, out Gdk.Rectangle icell_area)
+        private bool ProxyEventToCell (Gdk.Event evnt, bool press,
+            out IInteractiveCell icell, out Gdk.Rectangle icell_area)
         {
             icell = null;
             icell_area = Gdk.Rectangle.Zero;
@@ -338,8 +358,8 @@ namespace Hyena.Data.Gui
             int x, y, row_index;
             x = y = row_index = 0;
 
-            Gdk.EventButton evnt_button = evnt as Gdk.EventButton;
-            Gdk.EventMotion evnt_motion = evnt as Gdk.EventMotion;
+            var evnt_button = evnt as Gdk.EventButton;
+            var evnt_motion = evnt as Gdk.EventMotion;
 
             if (evnt_motion != null) {
                 evnt_x = (int)evnt_motion.X;
@@ -361,6 +381,17 @@ namespace Hyena.Data.Gui
             x = evnt_x - list_interaction_alloc.X;
             y = evnt_y - list_interaction_alloc.Y;
 
+            if (ViewLayout != null) {
+                var child = ViewLayout.FindChildAtModelRowIndex (row_index);
+                icell_area = child.Allocation;
+                x -= child.VirtualAllocation.X;
+                y -= child.VirtualAllocation.Y;
+                return evnt_motion == null
+                    ? icell.ButtonEvent (x, y, press, evnt_button)
+                    : icell.MotionEvent (x, y, evnt_motion);
+            }
+
+            // FIXME: Obsolete
             // Turn the view-absolute coordinates into cell-relative coordinates
             CachedColumn cached_column = GetCachedColumnForColumn (column);
             x -= cached_column.X1 - HadjustmentValue;
@@ -369,17 +400,9 @@ namespace Hyena.Data.Gui
 
             var view_point = GetViewPointForModelRow (row_index);
             icell_area.Y = (int)view_point.Y + list_interaction_alloc.Y + Allocation.Y;
-
-            // FIXME: hard-coded grid logic
-            if (ViewLayout != null) {
-                icell_area.X = (int)view_point.X + Allocation.X;
-                icell_area.Width = ChildSize.Width;
-                icell_area.Height = ChildSize.Height;
-            } else {
-                icell_area.X = cached_column.X1 + Allocation.X;
-                icell_area.Width = cached_column.Width;
-                icell_area.Height = ChildSize.Height;
-            }
+            icell_area.X = cached_column.X1 + Allocation.X;
+            icell_area.Width = cached_column.Width;
+            icell_area.Height = ChildSize.Height;
 
             // Send the cell a synthesized input event
             if (evnt_motion != null) {
@@ -771,49 +794,34 @@ namespace Hyena.Data.Gui
             return false;
         }
 
+        // FIXME: replace all invocations with direct call to ViewLayout
         protected int GetModelRowAt (int x, int y)
         {
-            var child_width = ChildSize.Width;
-            var child_height = ChildSize.Height;
-
-            if (y < 0 || child_height <= 0) {
-                return -1;
-            }
-
-            // FIXME: hard-coded grid logic
             if (ViewLayout != null) {
-                if (child_width <= 0) {
+                var child = ViewLayout.FindChildAtPoint (x, y);
+                return child == null ? -1 : child.ModelRowIndex;
+            } else {
+                if (y < 0 || ChildSize.Height <= 0) {
                     return -1;
                 }
 
-                int v_page_offset = VadjustmentValue % child_height;
-                int h_page_offset = HadjustmentValue % child_width;
-                int first_row = VadjustmentValue / child_height;
-                int first_col = HadjustmentValue / child_width;
-                int row_offset = (y + v_page_offset) / child_height;
-                int col_offset = Math.Min ((x + h_page_offset) / child_width, 1/*GridColumnsInView*/);
-                int model_row = ((first_row + row_offset) * 1/*GridColumnsInView*/) + first_col + col_offset;
-
-                return model_row;
-            } else {
-                int v_page_offset = VadjustmentValue % child_height;
-                int first_row = VadjustmentValue / child_height;
-                int row_offset = (y + v_page_offset) / child_height;
+                int v_page_offset = VadjustmentValue % ChildSize.Height;
+                int first_row = VadjustmentValue / ChildSize.Height;
+                int row_offset = (y + v_page_offset) / ChildSize.Height;
                 return first_row + row_offset;
             }
         }
 
-        protected Cairo.PointD GetViewPointForModelRow (int row)
+        protected Gdk.Point GetViewPointForModelRow (int row)
         {
             // FIXME: hard-coded grid logic
             if (ViewLayout != null) {
-                int cols = 1/*GridColumnsInView*/;
-                return new Cairo.PointD (
-                    row  == 0 ? 0 : ChildSize.Width * (cols % row),
-                    cols == 0 ? 0 : ChildSize.Height * (row / cols)
-                );
+                var child = ViewLayout.FindChildAtModelRowIndex (row);
+                return child == null
+                    ? new Gdk.Point (0, 0)
+                    : new Gdk.Point (child.Allocation.X, child.Allocation.Y);
             } else {
-                return new Cairo.PointD (0, (double)ChildSize.Height * row);
+                return new Gdk.Point (0, ChildSize.Height * row);
             }
         }
 
