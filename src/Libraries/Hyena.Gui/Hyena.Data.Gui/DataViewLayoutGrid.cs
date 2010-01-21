@@ -95,6 +95,7 @@ namespace Hyena.Data.Gui
             for (; model_row_index < last_model_row; model_row_index++, layout_child_index++) {
                 var child = Children[layout_child_index];
                 child.Allocation = child_allocation;
+                child.VirtualAllocation = GetChildVirtualAllocation (child_allocation);
                 child.ModelRowIndex = model_row_index;
 
                 // Update the allocation for the next child
