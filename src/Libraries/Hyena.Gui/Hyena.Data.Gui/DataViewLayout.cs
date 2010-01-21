@@ -36,6 +36,7 @@ namespace Hyena.Data.Gui
         public class Child
         {
             public Gdk.Rectangle Allocation { get; set; }
+            public Gdk.Rectangle VirtualAllocation { get; set; }
             public int ModelRowIndex { get; set; }
         }
 
@@ -83,6 +84,17 @@ namespace Hyena.Data.Gui
             InvalidateChildLayout ();
         }
 
+        public virtual Child FindChildAtPoint (int x, int y)
+        {
+            return Children.Find (child => child.Allocation.Contains (
+                ActualAllocation.X + x, ActualAllocation.Y + y));
+        }
+
+        public virtual Child FindChildAtModelRowIndex (int modelRowIndex)
+        {
+            return Children.Find (child => child.ModelRowIndex == modelRowIndex);
+        }
+
         protected abstract void InvalidateChildSize ();
         protected abstract void InvalidateVirtualSize ();
         protected abstract void InvalidateChildCollection ();
@@ -98,6 +110,16 @@ namespace Hyena.Data.Gui
                     Children.Add (new Child ());
                 }
             }
+        }
+
+        protected Gdk.Rectangle GetChildVirtualAllocation (Gdk.Rectangle childAllocation)
+        {
+            return new Gdk.Rectangle () {
+                X = childAllocation.X - ActualAllocation.X,
+                Y = childAllocation.Y - ActualAllocation.Y,
+                Width = childAllocation.Width,
+                Height = childAllocation.Height
+            };
         }
     }
 }
