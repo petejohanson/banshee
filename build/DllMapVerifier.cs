@@ -57,9 +57,8 @@ public static class DllMapVerifier
             total_unmapped_count += file_unmapped_count;
         }
 
-        Console.Error.WriteLine ();
-
         if (total_unmapped_count > 0) {
+            Console.Error.WriteLine ();
             Console.Error.WriteLine ("  If any DllImport above is explicitly allowed to be unmapped,");
             Console.Error.WriteLine ("  add an 'willfully unmapped' comment to the inside of the attribute:");
             Console.Error.WriteLine ();
