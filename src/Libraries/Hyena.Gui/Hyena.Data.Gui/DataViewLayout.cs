@@ -33,19 +33,12 @@ namespace Hyena.Data.Gui
 {
     public abstract class DataViewLayout
     {
-        public class Child
-        {
-            public Gdk.Rectangle Allocation { get; set; }
-            public Gdk.Rectangle VirtualAllocation { get; set; }
-            public int ModelRowIndex { get; set; }
-        }
-
-        private List<Child> children = new List<Child> ();
-        protected List<Child> Children {
+        private List<DataViewChild> children = new List<DataViewChild> ();
+        protected List<DataViewChild> Children {
             get { return children; }
         }
 
-        protected ListViewBase View { get; set; }
+        public ListViewBase View { get; set; }
 
         public Gdk.Rectangle ActualAllocation { get; protected set; }
         public Gdk.Size VirtualSize { get; protected set; }
@@ -58,7 +51,7 @@ namespace Hyena.Data.Gui
             get { return Children.Count; }
         }
 
-        public Child this[int index] {
+        public DataViewChild this[int index] {
             get { return Children[index]; }
         }
 
@@ -84,13 +77,13 @@ namespace Hyena.Data.Gui
             InvalidateChildLayout ();
         }
 
-        public virtual Child FindChildAtPoint (int x, int y)
+        public virtual DataViewChild FindChildAtPoint (int x, int y)
         {
             return Children.Find (child => child.Allocation.Contains (
                 ActualAllocation.X + x, ActualAllocation.Y + y));
         }
 
-        public virtual Child FindChildAtModelRowIndex (int modelRowIndex)
+        public virtual DataViewChild FindChildAtModelRowIndex (int modelRowIndex)
         {
             return Children.Find (child => child.ModelRowIndex == modelRowIndex);
         }
@@ -99,18 +92,6 @@ namespace Hyena.Data.Gui
         protected abstract void InvalidateVirtualSize ();
         protected abstract void InvalidateChildCollection ();
         protected abstract void InvalidateChildLayout ();
-
-        protected void ResizeChildCollection (int newChildCount)
-        {
-            int difference = Children.Count - newChildCount;
-            while (Children.Count != newChildCount) {
-                if (difference > 0) {
-                    Children.RemoveAt (0);
-                } else {
-                    Children.Add (new Child ());
-                }
-            }
-        }
 
         protected Gdk.Rectangle GetChildVirtualAllocation (Gdk.Rectangle childAllocation)
         {

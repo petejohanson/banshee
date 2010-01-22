@@ -38,34 +38,14 @@ using Banshee.Gui;
 
 namespace Banshee.Collection.Gui
 {
-    // FIXME: Renderers and the column controller will move into
-    // DataViewLayout, so this subclass will be unnecessary
-    public class AlbumViewGridLayout : DataViewLayoutGrid
-    {
-        public ColumnCellAlbum Renderer { get; private set; }
-
-        public AlbumViewGridLayout (AlbumListView view)
-        {
-            View = view;
-            Renderer = new ColumnCellAlbum () { ViewLayout = this };
-        }
-
-        protected override void InvalidateChildSize ()
-        {
-            ChildSize = Renderer.Measure (View);
-        }
-    }
-
     public class AlbumListView : TrackFilterListView<AlbumInfo>
     {
-        private AlbumViewGridLayout view_layout;
-
         public AlbumListView () : base ()
         {
-            ViewLayout = view_layout = new AlbumViewGridLayout (this);
-
-            column_controller.Add (new Column ("Album", view_layout.Renderer, 1.0));
-            ColumnController = column_controller;
+            ViewLayout = new DataViewLayoutGrid () {
+                ChildAllocator = () => new DataViewChildAlbum (),
+                View = this
+            };
 
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.TrackInfoUpdated);
         }

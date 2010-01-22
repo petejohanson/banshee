@@ -36,9 +36,15 @@ namespace Hyena.Data.Gui
         public int Rows { get; private set; }
         public int Columns { get; private set; }
 
+        public Func<DataViewChild> ChildAllocator { get; set; }
+
         protected override void InvalidateChildSize ()
         {
-            ChildSize = new Gdk.Size (48, 48);
+            if (Children.Count <= 0) {
+                Children.Add (CreateChild ());
+            }
+
+            ChildSize = Children[0].Measure ();
         }
 
         protected override void InvalidateVirtualSize ()
@@ -110,6 +116,29 @@ namespace Hyena.Data.Gui
                 }
 
                 // FIXME: clear any layout children that go beyond the model
+            }
+        }
+
+        protected virtual DataViewChild CreateChild ()
+        {
+            if (ChildAllocator == null) {
+                throw new InvalidOperationException ("ChildAllocator is unset");
+            }
+
+            var child = ChildAllocator ();
+            child.ParentLayout = this;
+            return child;
+        }
+
+        private void ResizeChildCollection (int newChildCount)
+        {
+            int difference = Children.Count - newChildCount;
+            while (Children.Count != newChildCount) {
+                if (difference > 0) {
+                    Children.RemoveAt (0);
+                } else {
+                    Children.Add (CreateChild ());
+                }
             }
         }
     }

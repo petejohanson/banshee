@@ -495,15 +495,22 @@ namespace Hyena.Data.Gui
                         child_allocation.X, child_allocation.Y,
                         child_allocation.Width, child_allocation.Height,
                         true, true, selection_color, CairoCorners.All);
+
+                    cell_context.State = StateType.Selected;
+                } else {
+                    cell_context.State = StateType.Normal;
                 }
 
                 cell_context.ModelRowIndex = model_row_index;
                 // cell_context.ViewRowIndex = view_row_index;
                 // cell_context.ViewColumnIndex = view_column_index;
 
-                var item = model[model_row_index];
-                PaintCell (item, 0, model_row_index, child_allocation,
-                    IsRowOpaque (item), IsRowBold (item), StateType.Normal, false);
+                layout_child.BindDataItem (model[model_row_index]);
+
+                cairo_context.Save ();
+                cairo_context.Translate (layout_child.Allocation.X, layout_child.Allocation.Y);
+                layout_child.Render (cell_context);
+                cairo_context.Restore ();
             }
 
             cairo_context.ResetClip ();

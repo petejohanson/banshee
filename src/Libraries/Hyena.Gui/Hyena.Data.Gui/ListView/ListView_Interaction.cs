@@ -300,7 +300,69 @@ namespace Hyena.Data.Gui
             return false;
         }
 
-#region Cell Event Proxy
+#region DataViewLayout Interaction Events
+
+        private DataViewChild last_layout_child;
+
+        private bool LayoutChildHandlesEvent (Gdk.Event evnt, bool press)
+        {
+            if (ViewLayout == null) {
+                return false;
+            }
+
+            int x = 0;
+            int y = 0;
+            bool handled = false;
+
+            var evnt_button = evnt as Gdk.EventButton;
+            var evnt_motion = evnt as Gdk.EventMotion;
+
+            if (evnt_motion != null) {
+                x = (int)evnt_motion.X;
+                y = (int)evnt_motion.Y;
+            } else if (evnt_button != null) {
+                x = (int)evnt_button.X;
+                y = (int)evnt_button.Y;
+            } else if (evnt is Gdk.EventCrossing && last_layout_child != null) {
+                last_layout_child.CursorLeaveEvent ();
+                last_layout_child = null;
+                return false;
+            }
+
+            var child = GetLayoutChildAt (x, y);
+            if (child == null) {
+                return false;
+            }
+
+            x -= child.VirtualAllocation.X;
+            y -= child.VirtualAllocation.Y;
+
+            if (evnt_motion != null) {
+                if (last_layout_child != child) {
+                    if (last_layout_child != null) {
+                        last_layout_child.CursorLeaveEvent ();
+                    }
+                    last_layout_child = child;
+                    child.CursorEnterEvent ();
+                }
+                handled = child.CursorMotionEvent (x, y);
+            } else if (evnt_button != null) {
+                handled = child.ButtonEvent (x, y, press, evnt_button.Button);
+            }
+
+            return handled;
+        }
+
+        private DataViewChild GetLayoutChildAt (int x, int y)
+        {
+            x -= list_interaction_alloc.X;
+            y -= list_interaction_alloc.Y;
+            return ViewLayout.FindChildAtPoint (x, y);
+        }
+
+#endregion
+
+#region Cell Event Proxy (FIXME: THIS ENTIRE SECTION IS OBSOLETE YAY YAY YAY!)
 
         private IInteractiveCell last_icell;
         private Gdk.Rectangle last_icell_area = Gdk.Rectangle.Zero;
@@ -320,21 +382,6 @@ namespace Hyena.Data.Gui
             Gdk.Rectangle icell_area;
             bool redraw = ProxyEventToCell (evnt, press, out icell, out icell_area);
 
-            if (ViewLayout != null) {
-                if (last_icell_area != icell_area) {
-                    InvalidateLastIcell ();
-                    last_icell = icell;
-                    last_icell_area = icell_area;
-                }
-
-                if (redraw) {
-                    QueueDirtyRegion (icell_area);
-                }
-
-                return;
-            }
-
-            // FIXME: obsolete
             int xoffset = HadjustmentValue;
             int yoffset = VadjustmentValue;
 
@@ -394,17 +441,6 @@ namespace Hyena.Data.Gui
             x = evnt_x - list_interaction_alloc.X;
             y = evnt_y - list_interaction_alloc.Y;
 
-            if (ViewLayout != null) {
-                var child = ViewLayout.FindChildAtModelRowIndex (row_index);
-                icell_area = child.Allocation;
-                x -= child.VirtualAllocation.X;
-                y -= child.VirtualAllocation.Y;
-                return evnt_motion == null
-                    ? icell.ButtonEvent (x, y, press, evnt_button)
-                    : icell.MotionEvent (x, y, evnt_motion);
-            }
-
-            // FIXME: Obsolete
             // Turn the view-absolute coordinates into cell-relative coordinates
             CachedColumn cached_column = GetCachedColumnForColumn (column);
             x -= cached_column.X1 - HadjustmentValue;
@@ -532,6 +568,10 @@ namespace Hyena.Data.Gui
                 return true;
             }
 
+            if (LayoutChildHandlesEvent (evnt, true)) {
+                return true;
+            }
+
             ProxyEventToCell (evnt, true);
 
             object item = model[row_index];
@@ -612,6 +652,9 @@ namespace Hyena.Data.Gui
                 return OnHeaderButtonRelease (evnt);
             } else if (list_interaction_alloc.Contains ((int)evnt.X, (int)evnt.Y) && model != null &&
                 (evnt.State & (Gdk.ModifierType.ShiftMask | Gdk.ModifierType.ControlMask)) == 0) {
+                if (LayoutChildHandlesEvent (evnt, false)) {
+                    return true;
+                }
                 ProxyEventToCell (evnt, false);
                 return OnListButtonRelease (evnt);
             }
@@ -698,6 +741,10 @@ namespace Hyena.Data.Gui
                 ResizeColumn (x);
             }
 
+            if (LayoutChildHandlesEvent (evnt, false)) {
+                return true;
+            }
+
             ProxyEventToCell (evnt, false);
 
             return true;
@@ -756,6 +803,9 @@ namespace Hyena.Data.Gui
         {
             if (evnt.Mode == Gdk.CrossingMode.Normal) {
                 GdkWindow.Cursor = null;
+                if (LayoutChildHandlesEvent (evnt, false)) {
+                    return true;
+                }
                 ProxyEventToCell (evnt, false);
             }
             return base.OnLeaveNotifyEvent (evnt);
