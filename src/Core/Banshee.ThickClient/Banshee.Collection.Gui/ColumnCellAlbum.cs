@@ -260,13 +260,13 @@ namespace Banshee.Collection.Gui
         public override void CursorEnterEvent ()
         {
             is_prelit = true;
-            this.ParentLayout.View.QueueDraw ();
+            Invalidate ();
         }
 
         public override void CursorLeaveEvent ()
         {
             is_prelit = false;
-            this.ParentLayout.View.QueueDraw ();
+            Invalidate ();
         }
 
 #if false

@@ -532,6 +532,11 @@ namespace Hyena.Data.Gui
             }
         }
 
+        protected void QueueDirtyRegion ()
+        {
+            QueueDirtyRegion (list_rendering_alloc);
+        }
+
         protected virtual void ColumnCellDataProvider (ColumnCell cell, object boundItem)
         {
         }
@@ -581,31 +586,6 @@ namespace Hyena.Data.Gui
             header_height = 0;
             child_size = OnMeasureChild ();
             UpdateAdjustments ();
-        }
-
-#endregion
-
-#region Invalidation
-
-        protected void QueueDirtyRegion (Gdk.Rectangle region)
-        {
-            region.Intersect (Allocation);
-            QueueDrawArea (region.X, region.Y, region.Width, region.Height);
-        }
-
-        protected void QueueDirtyRegion (Cairo.Rectangle region)
-        {
-            QueueDirtyRegion (new Gdk.Rectangle () {
-                X = (int)Math.Floor (region.X),
-                Y = (int)Math.Floor (region.Y),
-                Width = (int)Math.Ceiling (region.Width),
-                Height = (int)Math.Ceiling (region.Height)
-            });
-        }
-
-        protected void QueueDirtyRegion ()
-        {
-            QueueDirtyRegion (list_rendering_alloc);
         }
 
 #endregion

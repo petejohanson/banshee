@@ -38,6 +38,12 @@ namespace Hyena.Data.Gui
         public DataViewLayout ParentLayout { get; set; }
         public int ModelRowIndex { get; set; }
 
+        public override void Invalidate (Gdk.Rectangle area)
+        {
+            Gdk.Window.DebugUpdates = true;
+            ParentLayout.View.QueueDirtyRegion (area);
+        }
+
 #region Data Binding
 
         private PropertyInfo property_info;
@@ -124,6 +130,15 @@ namespace Hyena.Data.Gui
 
         public abstract void Render (CellContext context);
         public abstract Gdk.Size Measure ();
+
+        public virtual void Invalidate (Gdk.Rectangle area)
+        {
+        }
+
+        public void Invalidate ()
+        {
+            Invalidate (Allocation);
+        }
 
         public virtual bool ButtonEvent (int x, int y, bool pressed, uint button)
         {

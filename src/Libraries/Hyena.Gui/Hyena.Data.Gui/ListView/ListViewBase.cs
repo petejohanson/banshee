@@ -33,5 +33,20 @@ namespace Hyena.Data.Gui
 {
     public class ListViewBase : Widget
     {
+        public void QueueDirtyRegion (Gdk.Rectangle region)
+        {
+            region.Intersect (Allocation);
+            QueueDrawArea (region.X, region.Y, region.Width, region.Height);
+        }
+
+        public void QueueDirtyRegion (Cairo.Rectangle region)
+        {
+            QueueDirtyRegion (new Gdk.Rectangle () {
+                X = (int)Math.Floor (region.X),
+                Y = (int)Math.Floor (region.Y),
+                Width = (int)Math.Ceiling (region.Width),
+                Height = (int)Math.Ceiling (region.Height)
+            });
+        }
     }
 }
