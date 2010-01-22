@@ -46,8 +46,8 @@ namespace Hyena.Data.Gui
             // FIXME: this is too simplistic and can result in
             // an extra row of allocation, check the model size
             VirtualSize = new Gdk.Size (
-                ChildSize.Width * Columns,
-                (ChildSize.Height * ModelRowCount) / Rows);
+                ChildSize.Width * Math.Max (Columns, 1),
+                (ChildSize.Height * ModelRowCount) / Math.Max (Rows, 1));
         }
 
         protected override void InvalidateChildCollection ()
