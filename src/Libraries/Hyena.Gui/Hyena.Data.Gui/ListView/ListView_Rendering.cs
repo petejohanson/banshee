@@ -478,6 +478,8 @@ namespace Hyena.Data.Gui
 
                 if (model_row_index < 0 || model_row_index >= Model.Count) {
                     break;
+                } else if (!layout_child.Allocation.IntersectsWith (clip)) {
+                    continue;
                 }
 
                 if (Selection != null && Selection.Contains (model_row_index)) {
