@@ -56,7 +56,17 @@ public static class DllMapVerifier
 
             total_unmapped_count += file_unmapped_count;
         }
-        
+
+        Console.Error.WriteLine ();
+
+        if (total_unmapped_count > 0) {
+            Console.Error.WriteLine ("  If any DllImport above is explicitly allowed to be unmapped,");
+            Console.Error.WriteLine ("  add an 'willfully unmapped' comment to the inside of the attribute:");
+            Console.Error.WriteLine ();
+            Console.Error.WriteLine ("      [DllImport (\"libX11.so.6\" /* willfully unmapped */)]");
+            Console.Error.WriteLine ();
+        }
+
         if (total_unmapped_count > 0 && config_dlls == null) {
             Console.Error.WriteLine ("No config file for DLL mapping was found ({0})", configFile);
         }
@@ -127,7 +137,10 @@ public static class DllMapVerifier
             bool in_attr = false;
             bool in_dll_attr = false;
             bool in_string = false;
+            bool in_comment = false;
             int dll_line = 1, dll_col = 1;
+            string dll_string = null;
+            string dll_comment = null;
             
             while ((c = (char)reader.Peek ()) != Char.MaxValue) {
                 switch (c) {
@@ -135,18 +148,33 @@ public static class DllMapVerifier
                     case '\t': Read (); break;
                     case '[': 
                         in_attr = true;
+                        dll_string = null;
+                        dll_comment = null;
                         dll_line = reader_line;
                         dll_col = reader_col;
                         Read ();
                         break;
                     case '(': Read (); in_paren = true; break;
+                    case ')': Read (); in_paren = false; break;
                     case '"':
                         Read ();
-                        if (in_dll_attr && in_paren && !in_string) {
+                        if (dll_string == null && in_dll_attr && in_paren && !in_string) {
                             in_string = true;
                         }
                         break;
+                    case '/':
+                        Read ();
+                        if ((char)reader.Peek () == '*') {
+                            Read ();
+                            if (in_dll_attr && in_paren && !in_comment) {
+                                in_comment = true;
+                            }
+                        }
+                        break;
                     case ']':
+                        if (in_dll_attr && dll_string != null && dll_comment != "willfully unmapped") {
+                            yield return new DllImportRef (dll_string, dll_line, dll_col);
+                        }
                         in_attr = false;
                         in_dll_attr = false;
                         Read ();
@@ -155,11 +183,11 @@ public static class DllMapVerifier
                         if (!in_dll_attr && in_attr && ReadDllAttribute ()) {
                             in_dll_attr = true;
                         } else if (in_dll_attr && in_string) {
-                            yield return new DllImportRef (ReadDllString (), dll_line, dll_col);
+                            dll_string = ReadDllString ();
                             in_string = false;
-                            in_dll_attr = false;
-                            in_attr = false;
-                            in_paren = false;
+                        } else if (in_dll_attr && in_comment) {
+                            dll_comment = ReadDllComment ();
+                            in_comment = false;
                         } else {
                             Read ();
                         }
@@ -195,6 +223,22 @@ public static class DllMapVerifier
             }
         }
         return builder.ToString ();
+    }
+
+    private static string ReadDllComment ()
+    {
+        StringBuilder builder = new StringBuilder ();
+        char lc = Char.MaxValue;
+        while (true) {
+            char c = Read ();
+            if (c == Char.MaxValue || (c == '/' && lc == '*')) {
+                break;
+            } else if (lc != Char.MaxValue) {
+                builder.Append (lc);
+            }
+            lc = c;
+        }
+        return builder.ToString ().Trim ();
     }
     
     private static char Read ()
