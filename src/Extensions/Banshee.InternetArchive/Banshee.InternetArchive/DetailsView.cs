@@ -451,7 +451,7 @@ namespace Banshee.InternetArchive
             if (tracks.Count > 0) {
                 // Mono in openSUSE 11.0 doesn't like this
                 //SetWidth (columns.TrackColumn,    all_tracks_have_num_in_title ? 0 : tracks.Max (f => f.TrackNumber), 0);
-                long max_track = 0;
+                int max_track = 0;
                 long max_size = 0;
                 foreach (var t in tracks) {
                     max_track = Math.Max (max_track, t.TrackNumber);
