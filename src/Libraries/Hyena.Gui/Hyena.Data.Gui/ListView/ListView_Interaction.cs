@@ -305,6 +305,16 @@ namespace Hyena.Data.Gui
         private IInteractiveCell last_icell;
         private Gdk.Rectangle last_icell_area = Gdk.Rectangle.Zero;
 
+        private void InvalidateLastIcell ()
+        {
+            if (last_icell != null && last_icell.PointerLeaveEvent ()) {
+                QueueDrawArea (last_icell_area.X, last_icell_area.Y,
+                    last_icell_area.Width, last_icell_area.Height);
+                last_icell = null;
+                last_icell_area = Gdk.Rectangle.Zero;
+            }
+        }
+
         private void ProxyEventToCell (Gdk.Event evnt, bool press)
         {
             IInteractiveCell icell;
@@ -313,11 +323,7 @@ namespace Hyena.Data.Gui
 
             if (ViewLayout != null) {
                 if (last_icell_area != icell_area) {
-                    if (last_icell != null && last_icell.PointerLeaveEvent ()) {
-                        QueueDrawArea (last_icell_area.X, last_icell_area.Y,
-                            last_icell_area.Width, last_icell_area.Height);
-                    }
-
+                    InvalidateLastIcell ();
                     last_icell = icell;
                     last_icell_area = icell_area;
                 }
@@ -885,6 +891,7 @@ namespace Hyena.Data.Gui
 
         private void OnHadjustmentChanged (object o, EventArgs args)
         {
+            InvalidateLastIcell ();
             InvalidateHeader ();
             InvalidateList ();
 
@@ -895,6 +902,7 @@ namespace Hyena.Data.Gui
 
         private void OnVadjustmentChanged (object o, EventArgs args)
         {
+            InvalidateLastIcell ();
             InvalidateList ();
 
             if (ViewLayout != null) {
