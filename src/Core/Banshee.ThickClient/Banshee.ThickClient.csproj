@@ -104,6 +104,10 @@
       <HintPath>..\..\..\winbin\taglib-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Posix" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="Mono.Posix">
+      <HintPath>..\..\..\winbin\Mono.Posix.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -290,6 +294,8 @@
     <Compile Include="Banshee.Query.Gui\PlaybackErrorQueryValueEntry.cs" />
     <Compile Include="Banshee.Gui.Widgets\CoverArtDisplay.cs" />
     <Compile Include="Banshee.CairoGlyphs\BansheeLineLogo.cs" />
+    <Compile Include="Banshee.Collection.Gui\CoverArtEditor.cs" />
+    <Compile Include="Banshee.Collection.Gui\SearchableListView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
