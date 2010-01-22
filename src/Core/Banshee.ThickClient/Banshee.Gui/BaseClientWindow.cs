@@ -169,8 +169,10 @@ namespace Banshee.Gui
 
         protected override bool OnWindowStateEvent (Gdk.EventWindowState evnt)
         {
-            ToggleAction fullscreen_action = (ToggleAction) ServiceManager.Get<InterfaceActionService> ().ViewActions["FullScreenAction"];
-            fullscreen_action.Active = (evnt.NewWindowState & Gdk.WindowState.Fullscreen) != 0;
+            var action_service = ServiceManager.Get<InterfaceActionService> ();
+            if (action_service != null) {
+                ((ToggleAction)action_service.ViewActions["FullScreenAction"]).Active = (evnt.NewWindowState & Gdk.WindowState.Fullscreen) != 0;
+            }
 
             if ((evnt.NewWindowState & Gdk.WindowState.Withdrawn) == 0) {
                 window_controller.Save ();

@@ -70,8 +70,6 @@ SHAMROCK_FIND_MONO_2_0_COMPILER
 SHAMROCK_FIND_MONO_RUNTIME
 SHAMROCK_CHECK_MONO_2_0_GAC_ASSEMBLIES([	
 	System.Data
-	System.Web
-	System.Web.Services
 	Mono.Cairo
 	Mono.Posix
 	ICSharpCode.SharpZipLib

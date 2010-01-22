@@ -131,10 +131,7 @@ namespace Banshee.OsxBackend
 
         private void OnDockQuitActivated (object o, System.EventArgs args)
         {
-            // FIXME: disabled due to issue with intermitant throwing of exception
-            // while quitting via the dock item.. need to figure out where exactly
-            // the issue is..
-            //Banshee.ServiceStack.Application.Shutdown ();
+            Banshee.ServiceStack.Application.Shutdown ();
         }
 
         private void BindMenuBar ()

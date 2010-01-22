@@ -21,15 +21,69 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
 
     New Features:
 
-      * 
+      * Sync device from playlist option
+
+           Either manually manage what files are added/removed to your device,
+           or choose a playlist to sync from.  You can make a size-limited smart
+           playlist to sync just the right amount to your device.
+
+      * Type-ahead find in track, artist, and album lists
+
+           An alternative to filtering, type-ahead find jumps you to the first
+           track to match your query.  Activate with shift+/, cancel with Esc,
+           and jump to next match with F3.  In track list it matches against
+           artist, album, or title.
+
+      * Optional cover art in lower-left corner
+
+          Turn on via View > Show Cover Art
+
+      * Cover art editable via DnD and right-click
+
+          Can edit via the cover art in the track editor, lower-left corner,
+          and beside the seek-slider.
+
+      * Audiobooks library extension
+
+          Rough first version, main benefits are separating your books from
+          your music and defining a different file system organization.  In
+          future versions we plan to add intuitive bookmarking and a better
+          browsing experience.  Enable in Extensions tab of Preferences.
+
+      * Library-folder watcher extension
+
+          Watches your libraries' folders for added, renamed, or deleted
+          files, and updates your libraries appropriately.  Requires
+          Mono >= 2.4.3.  Enable in Extensions tab of Preferences.
+
+      * eMusic importer/downloader extension
+
+          If you have purchased music from eMusic and have a .emx file, Banshee
+          will download and import the music files for you.  Select
+          'eMusic Files' from the normal Media > Import Media dialog. Enable
+          in Extensions tab of Preferences.
+
+      * GIO file backend, supports non-local files
+
+          This backend uses the GIO library to support importing local files
+          and network-share files alike.  Requires glib >= 2.22 and Gio#.
 
     Enhancements:
 
-      * 
+      * Improved Podcast filtering/browsing
+      * Extension preferences tab reworked
+      * Extension names/descriptions translated
+      * Improved sqlite performance
+      * Support for Nexus One devices
 
     Notable bug fixes:
 
-      * 
+      * DAPs (ipods, etc) should work on DeviceKit using distros
+      * Podcast renaming should work well now
+      * Podcast download cancelling is now fast
+      * Internet Archive results paging off-by-one fixed
+      * Should build with older Mono/Gtk# again (eg on openSUSE 11.0)
+      * Fix issue with MTP devices on 64-bit distros
 
       * N bugs were fixed since 1.5.2
 
@@ -132,7 +186,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.2
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.3
 
 
 ===============================================================================
