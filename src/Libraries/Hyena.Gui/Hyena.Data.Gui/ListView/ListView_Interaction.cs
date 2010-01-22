@@ -308,8 +308,7 @@ namespace Hyena.Data.Gui
         private void InvalidateLastIcell ()
         {
             if (last_icell != null && last_icell.PointerLeaveEvent ()) {
-                QueueDrawArea (last_icell_area.X, last_icell_area.Y,
-                    last_icell_area.Width, last_icell_area.Height);
+                QueueDirtyRegion (last_icell_area);
                 last_icell = null;
                 last_icell_area = Gdk.Rectangle.Zero;
             }
@@ -329,7 +328,7 @@ namespace Hyena.Data.Gui
                 }
 
                 if (redraw) {
-                    QueueDrawArea (icell_area.X, icell_area.Y, icell_area.Width, icell_area.Height);
+                    QueueDirtyRegion (icell_area);
                 }
 
                 return;
@@ -341,16 +340,24 @@ namespace Hyena.Data.Gui
 
             if (last_icell_area != icell_area) {
                 if (last_icell != null && last_icell.PointerLeaveEvent ()) {
-                    QueueDrawArea (last_icell_area.X - xoffset, last_icell_area.Y - yoffset,
-                        last_icell_area.Width, last_icell_area.Height);
+                    QueueDirtyRegion (new Gdk.Rectangle () {
+                        X = last_icell_area.X - xoffset,
+                        Y = last_icell_area.Y - yoffset,
+                        Width = last_icell_area.Width,
+                        Height = last_icell_area.Height
+                    });
                 }
                 last_icell = icell;
                 last_icell_area = icell_area;
             }
 
             if (redraw) {
-                QueueDrawArea (icell_area.X - xoffset, icell_area.Y - yoffset,
-                    icell_area.Width, icell_area.Height);
+                QueueDirtyRegion (new Gdk.Rectangle () {
+                    X = icell_area.X - xoffset,
+                    Y = icell_area.Y - yoffset,
+                    Width = icell_area.Width,
+                    Height = icell_area.Height
+                });
             }
         }
 
@@ -734,7 +741,7 @@ namespace Hyena.Data.Gui
 
             pressed_column_x_drag = x - pressed_column_x_offset - (pressed_column_x_start_hadjustment - HadjustmentValue);
 
-            QueueDraw ();
+            QueueDirtyRegion ();
             return true;
         }
 
@@ -794,7 +801,7 @@ namespace Hyena.Data.Gui
                 pressed_column_is_dragging = false;
                 pressed_column_index = -1;
                 GdkWindow.Cursor = null;
-                QueueDraw ();
+                QueueDirtyRegion ();
                 return true;
             }
             return false;

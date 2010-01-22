@@ -90,12 +90,13 @@ namespace Hyena.Data.Gui
 
         protected override bool OnExposeEvent (EventExpose evnt)
         {
-            Rectangle damage = new Rectangle ();
+            var damage = new Rectangle ();
             foreach (Rectangle rect in evnt.Region.GetRectangles ()) {
                 damage = damage.Union (rect);
             }
 
             cairo_context = CairoHelper.Create (evnt.Window);
+
             if (pango_layout == null) {
                 pango_layout = CairoExtensions.CreateLayout (this, cairo_context);
             }
@@ -513,14 +514,14 @@ namespace Hyena.Data.Gui
         protected void InvalidateList ()
         {
             if (IsRealized) {
-                QueueDrawArea (list_rendering_alloc.X, list_rendering_alloc.Y, list_rendering_alloc.Width, list_rendering_alloc.Height);
+                QueueDirtyRegion (list_rendering_alloc);
             }
         }
 
         private void InvalidateHeader ()
         {
             if (IsRealized) {
-                QueueDrawArea (header_rendering_alloc.X, header_rendering_alloc.Y, header_rendering_alloc.Width, header_rendering_alloc.Height);
+                QueueDirtyRegion (header_rendering_alloc);
             }
         }
 
@@ -551,7 +552,7 @@ namespace Hyena.Data.Gui
         {
             measure_pending = true;
             if (IsMapped && IsRealized) {
-                QueueDraw ();
+                QueueDirtyRegion ();
             }
         }
 
@@ -573,6 +574,31 @@ namespace Hyena.Data.Gui
             header_height = 0;
             child_size = OnMeasureChild ();
             UpdateAdjustments ();
+        }
+
+#endregion
+
+#region Invalidation
+
+        protected void QueueDirtyRegion (Gdk.Rectangle region)
+        {
+            region.Intersect (Allocation);
+            QueueDrawArea (region.X, region.Y, region.Width, region.Height);
+        }
+
+        protected void QueueDirtyRegion (Cairo.Rectangle region)
+        {
+            QueueDirtyRegion (new Gdk.Rectangle () {
+                X = (int)Math.Floor (region.X),
+                Y = (int)Math.Floor (region.Y),
+                Width = (int)Math.Ceiling (region.Width),
+                Height = (int)Math.Ceiling (region.Height)
+            });
+        }
+
+        protected void QueueDirtyRegion ()
+        {
+            QueueDirtyRegion (list_rendering_alloc);
         }
 
 #endregion
