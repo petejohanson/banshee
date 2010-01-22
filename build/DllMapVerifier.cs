@@ -63,7 +63,7 @@ public static class DllMapVerifier
             Console.Error.WriteLine ("  If any DllImport above is explicitly allowed to be unmapped,");
             Console.Error.WriteLine ("  add an 'willfully unmapped' comment to the inside of the attribute:");
             Console.Error.WriteLine ();
-            Console.Error.WriteLine ("      [DllImport (\"libX11.so.6\" /* willfully unmapped */)]");
+            Console.Error.WriteLine ("      [DllImport (\"libX11.so.6\") /* willfully unmapped */]");
             Console.Error.WriteLine ();
         }
 
@@ -166,7 +166,7 @@ public static class DllMapVerifier
                         Read ();
                         if ((char)reader.Peek () == '*') {
                             Read ();
-                            if (in_dll_attr && in_paren && !in_comment) {
+                            if (in_dll_attr && !in_comment) {
                                 in_comment = true;
                             }
                         }
