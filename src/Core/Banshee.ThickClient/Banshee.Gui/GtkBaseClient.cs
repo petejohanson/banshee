@@ -128,6 +128,7 @@ namespace Banshee.Gui
 
             if (ApplicationContext.Debugging) {
                 GLib.Log.SetLogHandler ("Gtk", GLib.LogLevelFlags.Critical, GLib.Log.PrintTraceLogFunction);
+                Gdk.Window.DebugUpdates = !String.IsNullOrEmpty (Environment.GetEnvironmentVariable ("GDK_DEBUG_UPDATES"));
             }
 
             ServiceManager.ServiceStarted += OnServiceStarted;

@@ -40,7 +40,6 @@ namespace Hyena.Data.Gui
 
         public override void Invalidate (Gdk.Rectangle area)
         {
-            Gdk.Window.DebugUpdates = true;
             ParentLayout.View.QueueDirtyRegion (area);
         }
 
