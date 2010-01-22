@@ -165,7 +165,10 @@ namespace Banshee.Library.Gui
                     }
 
                     if (source != null) {
-                        source_model.SetValue (iter, 0, GetIcon (source));
+                        var icon = GetIcon (source);
+                        if (icon != null) {
+                            source_model.SetValue (iter, 0, icon);
+                        }
                     }
                 }
             }
