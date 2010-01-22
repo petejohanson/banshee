@@ -105,7 +105,7 @@ namespace Banshee.Collection.Gui
             RenderImageSurface (context, new Rectangle (x, y, width, height), image_surface);
 
             // Render the overlay
-            if (IsGridLayout && hover_object != null) {
+            if (IsGridLayout && hover_object == BoundObject) {
                 var cr = context.Context;
                 var grad = new RadialGradient (5, 5, (width + height) / 2.0, 5, 5, 0);
                 grad.AddColorStop (0, new Color (0, 0, 0, 0.65));
