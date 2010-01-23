@@ -24,11 +24,6 @@ namespace Banshee.LastfmStreaming.Radio
             }
         }
         
-        public void Dispose ()
-        {
-            ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
-        }
-
         private void OnSourceAdded (SourceAddedArgs args)
         {
             if (ServiceStartup ()) {
@@ -38,6 +33,10 @@ namespace Banshee.LastfmStreaming.Radio
 
         private bool ServiceStartup ()
         {
+            if (lastfm_source != null) {
+                return true;
+            }
+
             foreach (var src in ServiceManager.SourceManager.FindSources<LastfmSource> ()) {
                 lastfm_source = src;
                 break;
@@ -46,7 +45,7 @@ namespace Banshee.LastfmStreaming.Radio
             if (lastfm_source == null) {
                 return false;
             }
-            
+
             lastfm_source.ClearChildSources ();
             //lastfm_source.PauseSorting ();
             foreach (StationSource child in StationSource.LoadAll (lastfm_source, lastfm_source.Account.UserName)) {
@@ -54,7 +53,15 @@ namespace Banshee.LastfmStreaming.Radio
             }
             //lastfm_source.ResumeSorting ();
             lastfm_source.SortChildSources ();
+            lastfm_source.Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
+            lastfm_source.Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
+            
             return true;
+        }
+
+        public void Dispose ()
+        {
+            ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
         }
 
         private void OnCommandLineArgument (string uri, object value, bool isFile)

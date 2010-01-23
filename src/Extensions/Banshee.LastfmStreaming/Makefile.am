@@ -11,7 +11,10 @@ SOURCES =  \
 	Banshee.LastfmStreaming.Radio/StationSource.cs \
 	Banshee.LastfmStreaming.Radio/StationType.cs
 
-RESOURCES = Banshee.LastfmStreaming.addin.xml
+RESOURCES =  \
+	Banshee.LastfmStreaming.addin.xml \
+	Resources/ActiveSourceUI.xml \
+	Resources/GlobalUI.xml
 
 include $(top_srcdir)/build/build.mk
 

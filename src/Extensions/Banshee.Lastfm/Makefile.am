@@ -18,7 +18,6 @@ SOURCES =  \
 
 RESOURCES =  \
 	Banshee.Lastfm.addin.xml \
-	Resources/ActiveSourceUI.xml \
 	Resources/AudioscrobblerMenu.xml \
 	Resources/GlobalUI.xml \
 	Resources/LastfmTrackActions.xml \
