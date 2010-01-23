@@ -44,12 +44,10 @@ namespace Banshee.NowPlaying
 
         public NowPlayingTrackInfoDisplay ()
         {
-            DrawImageBorder = false;
         }
 
         protected NowPlayingTrackInfoDisplay (IntPtr native) : base (native)
         {
-            DrawImageBorder = false;
         }
 
         protected override Cairo.Color BackgroundColor {

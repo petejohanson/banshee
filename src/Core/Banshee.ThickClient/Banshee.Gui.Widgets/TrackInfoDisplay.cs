@@ -77,8 +77,6 @@ namespace Banshee.Gui.Widgets
                 = PixbufImageSurface.Create (IconThemeUtils.LoadIcon (MissingIconSizeRequest, "video-x-generic"), true)); }
         }
 
-        protected bool DrawImageBorder { get; set; }
-
         private Cairo.Color background_color;
         protected virtual Cairo.Color BackgroundColor {
             get { return background_color; }
@@ -109,12 +107,10 @@ namespace Banshee.Gui.Widgets
 
         protected TrackInfoDisplay (IntPtr native) : base (native)
         {
-            DrawImageBorder = true;
         }
 
         public TrackInfoDisplay ()
         {
-            DrawImageBorder = true;
             stage.Iteration += OnStageIteration;
 
             if (ServiceManager.Contains<ArtworkManager> ()) {
@@ -127,11 +123,6 @@ namespace Banshee.Gui.Widgets
                 PlayerEvent.StateChange);
 
             WidgetFlags |= WidgetFlags.NoWindow;
-
-            Events |= Gdk.EventMask.ButtonPressMask;
-
-            ButtonPressEvent += (o, a) => { ShowPopupMenu (); };
-            PopupMenu += (o, a) => { ShowPopupMenu (); };
         }
 
         public static Widget GetEditable (TrackInfoDisplay display)
@@ -141,11 +132,6 @@ namespace Banshee.Gui.Widgets
                 () => display.CurrentTrack,
                 () => {}
             );
-        }
-
-        private void ShowPopupMenu ()
-        {
-            Console.WriteLine ("Context menu for track info display!");
         }
 
         public override void Dispose ()
@@ -195,7 +181,7 @@ namespace Banshee.Gui.Widgets
             if (current_track == null) {
                 LoadCurrentTrack ();
             } else {
-                LoadImage (current_track, true);
+                Invalidate ();
             }
         }
 
@@ -277,16 +263,18 @@ namespace Banshee.Gui.Widgets
                 return;
             }
 
-            // XFade only the cover art
-            RenderCoverArt (cr, incoming_image);
-
+            // Draw the old cover art more and more translucent
             CairoExtensions.PushGroup (cr);
             RenderCoverArt (cr, current_image);
             CairoExtensions.PopGroupToSource (cr);
-
             cr.PaintWithAlpha (1.0 - stage.Actor.Percent);
 
-            // Fade in/out the text
+            // Draw the new cover art more and more opaque
+            CairoExtensions.PushGroup (cr);
+            RenderCoverArt (cr, incoming_image);
+            CairoExtensions.PopGroupToSource (cr);
+            cr.PaintWithAlpha (stage.Actor.Percent);
+
             bool same_artist_album = incoming_track != null ? incoming_track.ArtistAlbumEqual (current_track) : false;
             bool same_track = incoming_track != null ? incoming_track.Equals (current_track) : false;
 
@@ -294,6 +282,8 @@ namespace Banshee.Gui.Widgets
                 RenderTrackInfo (cr, incoming_track, same_track, true);
             }
 
+            // Don't xfade the text since it'll look bad (overlapping words); instead, fade
+            // the old out, and then the new in
             if (stage.Actor.Percent <= 0.5) {
                 // Fade out old text
                 CairoExtensions.PushGroup (cr);
@@ -321,7 +311,7 @@ namespace Banshee.Gui.Widgets
         {
             ArtworkRenderer.RenderThumbnail (cr, image, false, Allocation.X, Allocation.Y,
                 ArtworkSizeRequest, ArtworkSizeRequest,
-                DrawImageBorder && !IsMissingImage (image), 0.0,
+                !IsMissingImage (image), 0.0,
                 IsMissingImage (image), BackgroundColor);
         }
 
