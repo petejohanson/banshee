@@ -77,6 +77,8 @@ namespace Banshee.Gui.Widgets
                 = PixbufImageSurface.Create (IconThemeUtils.LoadIcon (MissingIconSizeRequest, "video-x-generic"), true)); }
         }
 
+        protected bool DrawImageBorder { get; set; }
+
         private Cairo.Color background_color;
         protected virtual Cairo.Color BackgroundColor {
             get { return background_color; }
@@ -107,10 +109,12 @@ namespace Banshee.Gui.Widgets
 
         protected TrackInfoDisplay (IntPtr native) : base (native)
         {
+            DrawImageBorder = true;
         }
 
         public TrackInfoDisplay ()
         {
+            DrawImageBorder = true;
             stage.Iteration += OnStageIteration;
 
             if (ServiceManager.Contains<ArtworkManager> ()) {
@@ -317,7 +321,7 @@ namespace Banshee.Gui.Widgets
         {
             ArtworkRenderer.RenderThumbnail (cr, image, false, Allocation.X, Allocation.Y,
                 ArtworkSizeRequest, ArtworkSizeRequest,
-                !IsMissingImage (image), 0,
+                DrawImageBorder && !IsMissingImage (image), 0.0,
                 IsMissingImage (image), BackgroundColor);
         }
 
