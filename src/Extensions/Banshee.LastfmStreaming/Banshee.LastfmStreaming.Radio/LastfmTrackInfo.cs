@@ -37,11 +37,12 @@ using Hyena;
 
 using Banshee.Base;
 using Banshee.Collection;
+using Banshee.Lastfm.Radio;
 using Media.Playlists.Xspf;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.LastfmStreaming.Radio
 {
-    public class LastfmTrackInfo : TrackInfo
+    public class LastfmTrackInfo : TrackInfo, ILastfmInfo
     {
         private StationSource station;
         private Track track;

@@ -60,32 +60,13 @@ namespace Banshee.Lastfm.Radio
         {
             this.lastfm = lastfm;
 
-            AddImportant (
-                new ActionEntry (
-                    "LastfmAddAction", Stock.Add,
-                     Catalog.GetString ("_Add Station..."),
-                     null, Catalog.GetString ("Add a new Last.fm radio station"), OnAddStation
-                )
-            );
-
             Add (new ActionEntry [] {
-                new ActionEntry (
-                    "RefreshSourceAction", Stock.Refresh,
-                     Catalog.GetString ("Refresh"), null,
-                     String.Empty, OnRefreshSource
-                ),
-
                 new ActionEntry (
                     "LastfmConnectAction", null,
                      Catalog.GetString ("Connect"),
                      null, String.Empty, OnConnect
                 )
             });
-
-            // Translators: {0} is a type of Last.fm station, eg "Fans of" or "Similar to".
-            string listen_to = Catalog.GetString ("Listen to {0} Station");
-            // Translators: {0} is a type of Last.fm station, eg "Fans of" or "Similar to".
-            string listen_to_long = Catalog.GetString ("Listen to the Last.fm {0} station for this artist");
 
             // Artist actions
             Add (new ActionEntry [] {
@@ -104,16 +85,6 @@ namespace Banshee.Lastfm.Radio
                 new ActionEntry ("LastfmArtistViewVideosAction", "",
                     Catalog.GetString ("View Artist's Videos"), null,
                     Catalog.GetString ("Find videos by this artist"), OnArtistViewVideos),
-
-                new ActionEntry ("LastfmArtistPlayFanRadioAction", StationType.Fan.IconName,
-                    String.Format (listen_to, String.Format ("'{0}'", Catalog.GetString ("Fans of"))), null,
-                    String.Format (listen_to_long, String.Format ("'{0}'", Catalog.GetString ("Fans of"))),
-                    OnArtistPlayFanRadio),
-
-                new ActionEntry ("LastfmArtistPlaySimilarRadioAction", StationType.Similar.IconName,
-                    String.Format (listen_to, String.Format ("'{0}'", Catalog.GetString ("Similar to"))), null,
-                    String.Format (listen_to_long, String.Format ("'{0}'", Catalog.GetString ("Similar to"))),
-                    OnArtistPlaySimilarRadio),
 
                 new ActionEntry ("LastfmArtistRecommendAction", "",
                     Catalog.GetString ("Recommend to"), null,
@@ -138,16 +109,6 @@ namespace Banshee.Lastfm.Radio
 
             // Track actions
             Add (new ActionEntry [] {
-                new ActionEntry (
-                    "LastfmLoveAction", null,
-                    Catalog.GetString ("Love Track"), null,
-                    Catalog.GetString ("Mark current track as loved"), OnLoved),
-
-                new ActionEntry (
-                    "LastfmHateAction", null,
-                    Catalog.GetString ("Ban Track"), null,
-                    Catalog.GetString ("Mark current track as banned"), OnHated),
-
                 new ActionEntry ("LastfmTrackVisitLastfmAction", "audioscrobbler",
                     Catalog.GetString ("View on Last.fm"), null,
                     Catalog.GetString ("View this track's Last.fm page"), OnTrackVisitLastfm),
@@ -157,18 +118,10 @@ namespace Banshee.Lastfm.Radio
                     Catalog.GetString ("Recommend this track to someone"), OnTrackRecommend)
             });
 
-            this["LastfmLoveAction"].IconName = "face-smile";
-            this["LastfmHateAction"].IconName = "face-sad";
-
-            this["LastfmLoveAction"].IsImportant = true;
-            this["LastfmHateAction"].IsImportant = true;
-
             actions_id = Actions.UIManager.AddUiFromResource ("GlobalUI.xml");
             Actions.AddActionGroup (this);
 
             lastfm.Connection.StateChanged += HandleConnectionStateChanged;
-            Actions.SourceActions ["SourcePropertiesAction"].Activated += OnSourceProperties;
-            ServiceManager.PlaybackController.SourceChanged += OnPlaybackSourceChanged;
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
                 PlayerEvent.StartOfStream |
                 PlayerEvent.EndOfStream);
@@ -180,8 +133,6 @@ namespace Banshee.Lastfm.Radio
             Actions.UIManager.RemoveUi (actions_id);
             Actions.RemoveActionGroup (this);
             lastfm.Connection.StateChanged -= HandleConnectionStateChanged;
-            Actions.SourceActions ["SourcePropertiesAction"].Activated -= OnSourceProperties;
-            ServiceManager.PlaybackController.SourceChanged -= OnPlaybackSourceChanged;
             ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
             base.Dispose ();
         }
@@ -197,42 +148,6 @@ namespace Banshee.Lastfm.Radio
         private void OnConnect (object sender, EventArgs args)
         {
             lastfm.Connection.Connect ();
-        }
-
-        private void OnSourceProperties (object o, EventArgs args)
-        {
-            Source source = Actions.SourceActions.ActionSource;
-            if (source is StationSource) {
-                StationEditor editor = new StationEditor (lastfm, source as StationSource);
-                editor.RunDialog ();
-            }
-        }
-
-        private void OnRefreshSource (object o, EventArgs args)
-        {
-            StationSource source = Actions.SourceActions.ActionSource as StationSource;
-            if (source != null) {
-                source.Refresh();
-            }
-        }
-
-        private void OnLoved (object sender, EventArgs args)
-        {
-            LastfmTrackInfo track = ServiceManager.PlayerEngine.CurrentTrack as LastfmTrackInfo;
-            if (track == null)
-                return;
-
-            track.Love ();
-        }
-
-        private void OnHated (object sender, EventArgs args)
-        {
-            LastfmTrackInfo track = ServiceManager.PlayerEngine.CurrentTrack as LastfmTrackInfo;
-            if (track == null)
-                return;
-
-            track.Ban ();
-            ServiceManager.PlaybackController.Next ();
         }
 
         private void OnArtistVisitLastfm (object sender, EventArgs args)
@@ -291,48 +206,6 @@ namespace Banshee.Lastfm.Radio
         private void OnAlbumVisitAmazon (object sender, EventArgs args)
         {
         }*/
-
-        private void OnArtistPlayFanRadio (object sender, EventArgs args)
-        {
-            StationSource fan_radio = null;
-            foreach (StationSource station in lastfm.Children) {
-                if (station.Type == StationType.Fan && station.Arg == CurrentArtist) {
-                    fan_radio = station;
-                    break;
-                }
-            }
-
-            if (fan_radio == null) {
-                fan_radio = new StationSource (lastfm,
-                    String.Format (Catalog.GetString ("Fans of {0}"), CurrentArtist),
-                    "Fan", CurrentArtist
-                );
-                lastfm.AddChildSource (fan_radio);
-            }
-
-            ServiceManager.SourceManager.SetActiveSource (fan_radio);
-        }
-
-        private void OnArtistPlaySimilarRadio (object sender, EventArgs args)
-        {
-            StationSource similar_radio = null;
-            foreach (StationSource station in lastfm.Children) {
-                if (station.Type == StationType.Similar && station.Arg == CurrentArtist) {
-                    similar_radio = station;
-                    break;
-                }
-            }
-
-            if (similar_radio == null) {
-                similar_radio = new StationSource (lastfm,
-                    String.Format (Catalog.GetString ("Similar to {0}"), CurrentArtist),
-                    "Similar", CurrentArtist
-                );
-                lastfm.AddChildSource (similar_radio);
-            }
-
-            ServiceManager.SourceManager.SetActiveSource (similar_radio);
-        }
 
         private void OnArtistRecommend (object sender, EventArgs args)
         {
@@ -396,36 +269,9 @@ namespace Banshee.Lastfm.Radio
                 updating = true;
             }
 
-            bool have_user = (lastfm.Account != null && lastfm.Account.UserName != null);
-            this["LastfmAddAction"].Sensitive = have_user;
-            this["LastfmAddAction"].ShortLabel = Catalog.GetString ("_Add Station");
             this["LastfmConnectAction"].Visible = lastfm.Connection.State == ConnectionState.Disconnected;
 
-            TrackInfo current_track = ServiceManager.PlayerEngine.CurrentTrack;
-            this["LastfmLoveAction"].Visible = current_track is LastfmTrackInfo;
-            this["LastfmHateAction"].Visible = current_track is LastfmTrackInfo;
-
             updating = false;
-        }
-
-        private uint track_actions_id;
-        private bool was_lastfm = false;
-        private void OnPlaybackSourceChanged (object o, EventArgs args)
-        {
-            if (Actions == null || Actions.PlaybackActions == null || ServiceManager.PlaybackController == null)
-                return;
-
-            UpdateActions ();
-
-            bool is_lastfm = ServiceManager.PlaybackController.Source is StationSource;
-            Actions.PlaybackActions["PreviousAction"].Sensitive = !is_lastfm;
-
-            if (is_lastfm && !was_lastfm)
-                track_actions_id = Actions.UIManager.AddUiFromResource ("LastfmTrackActions.xml");
-            else if (!is_lastfm && was_lastfm)
-                Actions.UIManager.RemoveUi (track_actions_id);
-
-            was_lastfm = is_lastfm;
         }
     }
 }

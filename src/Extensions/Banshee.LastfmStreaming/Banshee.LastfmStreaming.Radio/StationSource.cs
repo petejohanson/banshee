@@ -49,8 +49,9 @@ using Banshee.MediaEngine;
 using Banshee.Collection;
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
+using Banshee.Lastfm.Radio;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.LastfmStreaming.Radio
 {
     public class StationSource : Source, ITrackModelSource, IUnmapableSource, IDisposable, IBasicPlaybackController
     {
@@ -254,13 +255,13 @@ namespace Banshee.Lastfm.Radio
         public override void SetStatus (string message, bool error)
         {
             base.SetStatus (message, error);
-            LastfmSource.SetStatus (status_message, lastfm, error, ConnectionState.Connected);
+            //LastfmSource.SetStatus (status_message, error, ConnectionState.Connected);
         }
 
         public void SetStatus (string message, bool error, ConnectionState state)
         {
             base.SetStatus (message, error);
-            LastfmSource.SetStatus (status_message, lastfm, error, state);
+            //LastfmSource.SetStatus (status_message, error, state);
         }
 
         /*public override void ShowPropertiesDialog ()

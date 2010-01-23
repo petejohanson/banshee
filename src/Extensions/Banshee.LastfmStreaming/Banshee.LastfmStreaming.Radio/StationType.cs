@@ -30,7 +30,7 @@ using System;
 using System.Collections.Generic;
 using Mono.Unix;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.LastfmStreaming.Radio
 {
     public class StationType
     {

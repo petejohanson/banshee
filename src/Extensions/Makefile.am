@@ -11,6 +11,7 @@ SUBDIRS = \
 	Banshee.InternetArchive \
 	Banshee.InternetRadio \
 	Banshee.Lastfm \
+	Banshee.LastfmStreaming \
 	Banshee.LibraryWatcher \
 	Banshee.MiniMode \
 	Banshee.MultimediaKeys \

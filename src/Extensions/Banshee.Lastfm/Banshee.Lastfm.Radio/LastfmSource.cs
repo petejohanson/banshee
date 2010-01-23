@@ -115,13 +115,10 @@ namespace Banshee.Lastfm.Radio
             InstallPreferences ();
 
             ServiceManager.SourceManager.AddSource (this);
-
-            ServiceManager.Get<DBusCommandService> ().ArgumentPushed += OnCommandLineArgument;
         }
 
         public void Dispose ()
         {
-            ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
             Connection.StateChanged -= HandleConnectionStateChanged;
             ServiceManager.Get<Network> ().StateChanged -= HandleNetworkStateChanged;
             Connection.Dispose ();
@@ -133,26 +130,15 @@ namespace Banshee.Lastfm.Radio
             account = null;
         }
 
-        private void OnCommandLineArgument (string uri, object value, bool isFile)
-        {
-            if (!isFile || String.IsNullOrEmpty (uri)) {
-                return;
-            }
-
-            // Handle lastfm:// URIs
-            if (uri.StartsWith ("lastfm://")) {
-                StationSource.CreateFromUrl (this, uri);
-            }
-        }
-
         // Order by the playCount of a station, then by inverted name
         public class PlayCountComparer : IComparer<Source>
         {
             public int Compare (Source sa, Source sb)
             {
-                StationSource a = sa as StationSource;
+                /*StationSource a = sa as StationSource;
                 StationSource b = sb as StationSource;
-                return a.PlayCount.CompareTo (b.PlayCount);
+                return a.PlayCount.CompareTo (b.PlayCount);*/
+                return 1;
             }
         }
 
@@ -180,13 +166,6 @@ namespace Banshee.Lastfm.Radio
                 last_username = username;
                 last_was_subscriber = Account.Subscriber;
                 LastfmSource.LastUserSchema.Set (last_username);
-                ClearChildSources ();
-                PauseSorting ();
-                foreach (StationSource child in StationSource.LoadAll (this, Account.UserName)) {
-                    AddChildSource (child);
-                }
-                ResumeSorting ();
-                SortChildSources ();
             }
         }
 
