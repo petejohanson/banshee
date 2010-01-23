@@ -223,7 +223,7 @@ namespace Nereid
                     cover_art_display = new CoverArtDisplay () { Visible = true };
                     source_box.SizeAllocated += OnSourceBoxSizeAllocated;
                     cover_art_display.HeightRequest = SourceViewWidth.Get ();
-                    source_box.PackStart (cover_art_container = TrackInfoDisplay.GetEditable (cover_art_display), false, false, 0);
+                    source_box.PackStart (cover_art_container = TrackInfoDisplay.GetEditable (cover_art_display), false, false, 4);
                     source_box.ShowAll ();
                 }
             } else if (cover_art_display != null) {
