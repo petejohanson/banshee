@@ -14,11 +14,11 @@
   <Dependencies>
     <Addin id="Banshee.Services" version="1.0"/>
     <Addin id="Banshee.ThickClient" version="1.0"/>
-    <Addin id="Banshee.Lastfm" version="1.0"/>
+    <Addin id="Banshee.LastFm" version="1.0"/>
   </Dependencies>
 
   <Extension path="/Banshee/ServiceManager/Service">
-    <Source class="Banshee.LastfmStreaming.Radio.LastfmStreamingService"/>
+    <Service class="Banshee.LastfmStreaming.Radio.LastfmStreamingService"/>
   </Extension>
   
 </Addin>
