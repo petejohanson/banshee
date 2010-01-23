@@ -38,7 +38,7 @@ namespace Hyena.Data.Gui
         public DataViewLayout ParentLayout { get; set; }
         public int ModelRowIndex { get; set; }
 
-        public override void Invalidate (Gdk.Rectangle area)
+        protected override void OnInvalidate (Gdk.Rectangle area)
         {
             ParentLayout.View.QueueDirtyRegion (area);
         }
@@ -130,8 +130,14 @@ namespace Hyena.Data.Gui
         public abstract void Render (CellContext context);
         public abstract Gdk.Size Measure ();
 
-        public virtual void Invalidate (Gdk.Rectangle area)
+        protected virtual void OnInvalidate (Gdk.Rectangle area)
         {
+        }
+
+        public void Invalidate (Gdk.Rectangle area)
+        {
+            area.Offset (Allocation.X, Allocation.Y);
+            OnInvalidate (area);
         }
 
         public void Invalidate ()

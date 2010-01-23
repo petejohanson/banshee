@@ -53,7 +53,12 @@ namespace Banshee.Collection.Gui
                     ? actor.StepDeltaPercent
                     : -actor.StepDeltaPercent;
                 actor.Target.prelight_opacity = alpha = Math.Max (0.0, Math.Min (1.0, alpha));
-                actor.Target.Invalidate ();
+                actor.Target.Invalidate (new Gdk.Rectangle () {
+                    X = (int)actor.Target.PaddingX,
+                    Y = (int)actor.Target.PaddingY,
+                    Width = (int)actor.Target.ImageSize,
+                    Height = (int)actor.Target.ImageSize
+                });
                 return alpha > 0 && alpha < 1;
             };
         }
