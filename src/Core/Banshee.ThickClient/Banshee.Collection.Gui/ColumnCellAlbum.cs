@@ -34,6 +34,7 @@ using Hyena.Gui;
 using Hyena.Gui.Theming;
 using Hyena.Data.Gui;
 using Hyena.Data.Gui.Accessibility;
+using Hyena.Gui.Theatrics;
 
 using Banshee.Gui;
 using Banshee.ServiceStack;
@@ -42,8 +43,25 @@ namespace Banshee.Collection.Gui
 {
     public class DataViewChildAlbum : DataViewChild
     {
+        private static Stage<DataViewChildAlbum> stage = new Stage<DataViewChildAlbum> (250);
+
+        static DataViewChildAlbum ()
+        {
+            stage.ActorStep += actor => {
+                var alpha = actor.Target.prelight_opacity;
+                alpha += actor.Target.prelight_in
+                    ? actor.StepDeltaPercent
+                    : -actor.StepDeltaPercent;
+                actor.Target.prelight_opacity = alpha = Math.Max (0.0, Math.Min (1.0, alpha));
+                actor.Target.Invalidate ();
+                return alpha > 0 && alpha < 1;
+            };
+        }
+
         private ArtworkManager artwork_manager;
-        private bool is_prelit;
+
+        private bool prelight_in;
+        private double prelight_opacity;
 
         public double PaddingX { get; set; }
         public double PaddingY { get; set; }
@@ -105,17 +123,18 @@ namespace Banshee.Collection.Gui
             RenderImageSurface (context, new Rectangle (x, y, width, height), image_surface);
 
             // Render the overlay
-            if (IsGridLayout && is_prelit) {
+            if (IsGridLayout && prelight_opacity > 0) {
+                var a = prelight_opacity;
                 var cr = context.Context;
                 var grad = new RadialGradient (5, 5, (width + height) / 2.0, 5, 5, 0);
-                grad.AddColorStop (0, new Color (0, 0, 0, 0.65));
-                grad.AddColorStop (1, new Color (0, 0, 0, 0.15));
+                grad.AddColorStop (0, new Color (0, 0, 0, 0.65 * a));
+                grad.AddColorStop (1, new Color (0, 0, 0, 0.15 * a));
                 cr.Pattern = grad;
                 cr.Rectangle (x, y, width, height);
                 cr.Fill ();
                 grad.Destroy ();
 
-                cr.Save ();
+                /*cr.Save ();
                 cr.LineWidth = 2;
                 cr.Antialias = Cairo.Antialias.Default;
 
@@ -132,7 +151,7 @@ namespace Banshee.Collection.Gui
                 cr.Color = new Color (1, 1, 1, 0.8);
                 cr.Stroke ();
 
-                cr.Restore ();
+                cr.Restore ();*/
             }
 
             if (lines == null || lines.Length < 2) {
@@ -259,14 +278,14 @@ namespace Banshee.Collection.Gui
 
         public override void CursorEnterEvent ()
         {
-            is_prelit = true;
-            Invalidate ();
+            prelight_in = true;
+            stage.AddOrReset (this);
         }
 
         public override void CursorLeaveEvent ()
         {
-            is_prelit = false;
-            Invalidate ();
+            prelight_in = false;
+            stage.AddOrReset (this);
         }
 
 #if false
