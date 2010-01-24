@@ -1,6 +1,8 @@
 <ui>
     <popup name="LastfmSourcePopup" action="LastfmSourcePopupAction">
-        <menuitem name="LastfmAdd" action="LastfmAddAction" />
+        <placeholder name="LastfmAddPlaceholder">
+            <menuitem name="LastfmAdd" action="LastfmAddAction" />
+        </placeholder>
     </popup>
 
     <popup name="LastfmStationSourcePopup" action="LastfmStationSourcePopupAction">
@@ -27,17 +29,23 @@
     </toolbar>
 
     <popup name="LastfmArtistPopup" action="LastfmArtistPopup">
-        <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
-        <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        <placeholder name="LastfmArtistPlayPlaceholder">
+            <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
+            <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        </placeholder>
     </popup>
 
     <popup name="LastfmAlbumPopup" action="LastfmAlbumPopup">
-        <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
-        <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        <placeholder name="LastfmAlbumPlayPlaceholder">
+            <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
+            <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        </placeholder>
     </popup>
 
     <popup name="LastfmTrackPopup" action="LastfmTrackPopup">
-        <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
-        <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        <placeholder name="LastfmTrackPlayPlaceholder">
+            <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
+            <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        </placeholder>
     </popup>
 </ui>

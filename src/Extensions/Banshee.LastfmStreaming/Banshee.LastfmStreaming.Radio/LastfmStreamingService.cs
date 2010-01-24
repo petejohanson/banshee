@@ -15,6 +15,7 @@ namespace Banshee.LastfmStreaming.Radio
     public class LastfmStreamingService : IExtensionService, IDisposable
     {
         private LastfmSource lastfm_source = null;
+        private LastfmStreamingActions actions;
 
         public LastfmStreamingService ()
         {
@@ -64,12 +65,17 @@ namespace Banshee.LastfmStreaming.Radio
             lastfm_source.Properties.Set<System.Reflection.Assembly> ("ActiveSourceUIResource.Assembly", typeof(StationSource).Assembly);
             lastfm_source.Properties.SetString ("SortChildrenActionLabel", Catalog.GetString ("Sort Stations by"));
 
+            actions = new LastfmStreamingActions (lastfm_source);
+            
             return true;
         }
 
         public void Dispose ()
         {
             ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
+            actions.Dispose ();
+
+            actions = null;
         }
 
         private void OnCommandLineArgument (string uri, object value, bool isFile)
