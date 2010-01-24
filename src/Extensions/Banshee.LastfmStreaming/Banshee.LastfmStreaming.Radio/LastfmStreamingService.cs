@@ -74,6 +74,7 @@ namespace Banshee.LastfmStreaming.Radio
         {
             ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
             actions.Dispose ();
+            lastfm_source.ClearChildSources ();
 
             actions = null;
         }
