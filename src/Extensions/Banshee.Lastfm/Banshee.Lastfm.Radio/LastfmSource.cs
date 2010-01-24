@@ -29,13 +29,11 @@
 using System;
 using System.IO;
 using System.Collections;
-using System.Collections.Generic;
 using Mono.Unix;
 
 using Lastfm;
 using Lastfm.Gui;
 using Lastfm.Data;
-using Hyena.Data;
 
 using Banshee.Base;
 using Banshee.Collection;
@@ -76,7 +74,7 @@ namespace Banshee.Lastfm.Radio
             account = LastfmCore.Account;
 
             // We don't automatically connect to Last.fm, but load the last Last.fm
-            // username we used so we can load the user's stations.
+            // account information
             if (account.UserName != null) {
                 account.UserName = LastUserSchema.Get ();
                 account.SessionKey = LastSessionKeySchema.Get ();
@@ -98,7 +96,6 @@ namespace Banshee.Lastfm.Radio
 
             Properties.SetString ("GtkActionPath", "/LastfmSourcePopup");
             Properties.SetString ("Icon.Name", "lastfm-audioscrobbler");
-            Properties.SetString ("SortChildrenActionLabel", Catalog.GetString ("Sort Stations by"));
             Properties.Set<LastfmColumnController> ("TrackView.ColumnController", new LastfmColumnController ());
 
             // Initialize DataCore's UserAgent and CachePath
@@ -128,26 +125,11 @@ namespace Banshee.Lastfm.Radio
             account = null;
         }
 
-        // Order by the playCount of a station, then by inverted name
-        public class PlayCountComparer : IComparer<Source>
-        {
-            public int Compare (Source sa, Source sb)
-            {
-                /*StationSource a = sa as StationSource;
-                StationSource b = sb as StationSource;
-                return a.PlayCount.CompareTo (b.PlayCount);*/
-                return 1;
-            }
+        private SourceSortType[] sort_types = new SourceSortType[] {};
+        public void SetChildSortTypes (SourceSortType[] child_sort_types) {
+            sort_types = child_sort_types;
         }
-
-        private static SourceSortType[] sort_types = new SourceSortType[] {
-            SortNameAscending,
-            new SourceSortType (
-                "LastfmTotalPlayCount",
-                Catalog.GetString ("Total Play Count"),
-                SortType.Descending, new PlayCountComparer ())
-        };
-
+        
         public override SourceSortType[] ChildSortTypes {
             get { return sort_types; }
         }
