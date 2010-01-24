@@ -180,7 +180,7 @@ namespace Hyena.Data.Gui
             InvalidateList ();
 
             if (ViewLayout != null) {
-                ViewLayout.Allocate (list_rendering_alloc);
+                ViewLayout.Allocate ((Hyena.Gui.Canvas.Rect)list_rendering_alloc);
             }
         }
 

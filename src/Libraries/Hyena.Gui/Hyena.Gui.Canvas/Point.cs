@@ -1,10 +1,10 @@
 //
-// ListViewBase.cs
+// Point.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,31 +27,60 @@
 //
 
 using System;
-using Gtk;
 
-namespace Hyena.Data.Gui
+namespace Hyena.Gui.Canvas
 {
-    public class ListViewBase : Widget
+    public struct Point
     {
-        public void QueueDirtyRegion (Gdk.Rectangle region)
+        public double X { get; set; }
+        public double Y { get; set; }
+
+        public Point (double x, double y)
         {
-            region.Intersect (Allocation);
-            QueueDrawArea (region.X, region.Y, region.Width, region.Height);
+            X = x;
+            Y = y;
         }
 
-        public void QueueDirtyRegion (Hyena.Gui.Canvas.Rect region)
+        public void Offset (double dx, double dy)
         {
-            QueueDirtyRegion ((Gdk.Rectangle)region);
+            X += dx;
+            Y += dy;
         }
 
-        public void QueueDirtyRegion (Cairo.Rectangle region)
+        public void Offset (Point delta)
         {
-            QueueDirtyRegion (new Gdk.Rectangle () {
-                X = (int)Math.Floor (region.X),
-                Y = (int)Math.Floor (region.Y),
-                Width = (int)Math.Ceiling (region.Width),
-                Height = (int)Math.Ceiling (region.Height)
-            });
+            X += delta.X;
+            Y += delta.Y;
+        }
+
+        public override bool Equals (object o)
+        {
+            return o is Point ? Equals ((Point)o) : false;
+        }
+
+        public bool Equals (Point value)
+        {
+            return value.X == X && value.Y == Y;
+        }
+
+        public static bool operator == (Point point1, Point point2)
+        {
+            return point1.X == point2.X && point1.Y == point2.Y;
+        }
+
+        public static bool operator != (Point point1, Point point2)
+        {
+            return !(point1 == point2);
+        }
+
+        public override int GetHashCode ()
+        {
+            return X.GetHashCode () ^ Y.GetHashCode ();
+        }
+
+        public override string ToString ()
+        {
+            return String.Format ("{0},{1}", X, Y);
         }
     }
 }

@@ -34,6 +34,7 @@ using Gdk;
 
 using Hyena.Gui;
 using Hyena.Gui.Theming;
+using Hyena.Gui.Canvas;
 using GtkColorClass=Hyena.Gui.Theming.GtkColorClass;
 
 namespace Hyena.Data.Gui
@@ -129,7 +130,7 @@ namespace Hyena.Data.Gui
                 if (ViewLayout == null) {
                     PaintList (damage);
                 } else {
-                    PaintView (damage);
+                    PaintView ((Rect)damage);
                 }
             }
 
@@ -461,30 +462,27 @@ namespace Hyena.Data.Gui
 
 #region View Layout Rendering
 
-        private void PaintView (Rectangle clip)
+        private void PaintView (Rect clip)
         {
-            clip.Intersect (list_rendering_alloc);
-            cairo_context.Rectangle (clip.X, clip.Y, clip.Width, clip.Height);
+            clip.Intersect ((Rect)list_rendering_alloc);
+            cairo_context.Rectangle ((Cairo.Rectangle)clip);
             cairo_context.Clip ();
 
-            cell_context.Clip = clip;
+            cell_context.Clip = (Gdk.Rectangle)clip;
             cell_context.TextAsForeground = false;
 
             selected_rows.Clear ();
 
             for (int layout_index = 0; layout_index < ViewLayout.ChildCount; layout_index++) {
                 var layout_child = ViewLayout[layout_index];
-                var model_row_index = layout_child.ModelRowIndex;
                 var child_allocation = layout_child.Allocation;
 
-                if (model_row_index < 0 || model_row_index >= Model.Count) {
-                    break;
-                } else if (!layout_child.Allocation.IntersectsWith (clip)) {
+                if (!child_allocation.IntersectsWith (clip)) {
                     continue;
                 }
 
-                if (Selection != null && Selection.Contains (model_row_index)) {
-                    selected_rows.Add (model_row_index);
+                if (Selection != null && Selection.Contains (layout_child.ModelRowIndex)) {
+                    selected_rows.Add (layout_child.ModelRowIndex);
 
                     var selection_color = Theme.Colors.GetWidgetColor (GtkColorClass.Background, StateType.Selected);
                     if (!HasFocus || HeaderFocused) {
@@ -492,8 +490,8 @@ namespace Hyena.Data.Gui
                     }
 
                     Theme.DrawRowSelection (cairo_context,
-                        child_allocation.X, child_allocation.Y,
-                        child_allocation.Width, child_allocation.Height,
+                        (int)child_allocation.X, (int)child_allocation.Y,
+                        (int)child_allocation.Width, (int)child_allocation.Height,
                         true, true, selection_color, CairoCorners.All);
 
                     cell_context.State = StateType.Selected;
@@ -501,14 +499,8 @@ namespace Hyena.Data.Gui
                     cell_context.State = StateType.Normal;
                 }
 
-                cell_context.ModelRowIndex = model_row_index;
-                // cell_context.ViewRowIndex = view_row_index;
-                // cell_context.ViewColumnIndex = view_column_index;
-
-                layout_child.BindDataItem (model[model_row_index]);
-
                 cairo_context.Save ();
-                cairo_context.Translate (layout_child.Allocation.X, layout_child.Allocation.Y);
+                cairo_context.Translate (child_allocation.X, child_allocation.Y);
                 layout_child.Render (cell_context);
                 cairo_context.Restore ();
             }
@@ -553,8 +545,8 @@ namespace Hyena.Data.Gui
 // FIXME: Obsolete all this measure stuff on the view since it's in the layout
 #region Measuring
 
-        private Size child_size = Size.Empty;
-        public Size ChildSize {
+        private Gdk.Size child_size = Gdk.Size.Empty;
+        public Gdk.Size ChildSize {
             get { return child_size; }
         }
 
@@ -568,11 +560,11 @@ namespace Hyena.Data.Gui
             }
         }
 
-        protected virtual Size OnMeasureChild ()
+        protected virtual Gdk.Size OnMeasureChild ()
         {
             return ViewLayout != null
-                ? ViewLayout.ChildSize
-                : new Size (0, ColumnCellText.ComputeRowHeight (this));
+                ? new Gdk.Size ((int)ViewLayout.ChildSize.Width, (int)ViewLayout.ChildSize.Height)
+                : new Gdk.Size (0, ColumnCellText.ComputeRowHeight (this));
         }
 
         private void OnMeasure ()

@@ -40,6 +40,10 @@ SOURCES =  \
 	Hyena.Data.Gui/ObjectListView.cs \
 	Hyena.Data.Gui/RowActivatedHandler.cs \
 	Hyena.Data.Gui/SortableColumn.cs \
+	Hyena.Gui.Canvas/Point.cs \
+	Hyena.Gui.Canvas/Rect.cs \
+	Hyena.Gui.Canvas/Size.cs \
+	Hyena.Gui.Canvas/Thickness.cs \
 	Hyena.Gui.Dialogs/ExceptionDialog.cs \
 	Hyena.Gui.Dialogs/VersionInformationDialog.cs \
 	Hyena.Gui.Theatrics/Actor.cs \

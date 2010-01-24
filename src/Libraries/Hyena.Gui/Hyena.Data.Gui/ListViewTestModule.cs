@@ -104,6 +104,11 @@ namespace Hyena.Data.Gui
             {
             }
 
+            public object GetItem (int index)
+            {
+                return this[index];
+            }
+
             public int Count {
                 get { return store.Count; }
             }

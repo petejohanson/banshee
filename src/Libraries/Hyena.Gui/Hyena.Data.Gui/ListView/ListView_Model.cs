@@ -76,6 +76,10 @@ namespace Hyena.Data.Gui
                 }
             }
 
+            if (ViewLayout != null) {
+                ViewLayout.Model = Model;
+            }
+
             RefreshViewForModel (vpos);
 
             var handler = ModelChanged;
@@ -91,7 +95,7 @@ namespace Hyena.Data.Gui
             }
 
             if (ViewLayout != null) {
-                ViewLayout.UpdateModelRowCount (Model.Count);
+                ViewLayout.ModelUpdated ();
             }
 
             UpdateAdjustments ();

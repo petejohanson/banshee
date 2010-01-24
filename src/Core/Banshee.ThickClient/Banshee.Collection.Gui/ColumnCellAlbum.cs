@@ -32,6 +32,7 @@ using Cairo;
 
 using Hyena.Gui;
 using Hyena.Gui.Theming;
+using Hyena.Gui.Canvas;
 using Hyena.Data.Gui;
 using Hyena.Data.Gui.Accessibility;
 using Hyena.Gui.Theatrics;
@@ -53,12 +54,7 @@ namespace Banshee.Collection.Gui
                     ? actor.StepDeltaPercent
                     : -actor.StepDeltaPercent;
                 actor.Target.prelight_opacity = alpha = Math.Max (0.0, Math.Min (1.0, alpha));
-                actor.Target.Invalidate (new Gdk.Rectangle () {
-                    X = (int)actor.Target.PaddingX,
-                    Y = (int)actor.Target.PaddingY,
-                    Width = (int)actor.Target.ImageSize,
-                    Height = (int)actor.Target.ImageSize
-                });
+                actor.Target.InvalidateImage ();
                 return alpha > 0 && alpha < 1;
             };
         }
@@ -68,8 +64,14 @@ namespace Banshee.Collection.Gui
         private bool prelight_in;
         private double prelight_opacity;
 
-        public double PaddingX { get; set; }
-        public double PaddingY { get; set; }
+        private ImageSurface image_surface;
+        private string [] lines;
+
+        private Rect inner_allocation;
+        private Rect image_allocation;
+        private Rect first_line_allocation;
+        private Rect second_line_allocation;
+
         public double ImageSize { get; set; }
         public double ImageSpacing { get; set; }
         public double TextSpacing { get; set; }
@@ -84,58 +86,79 @@ namespace Banshee.Collection.Gui
         {
             artwork_manager = ServiceManager.Get<ArtworkManager> ();
 
-            PaddingX = PaddingY = 6;
+            Padding = new Thickness (6);
             ImageSize = 48;
             ImageSpacing = 4;
-            TextSpacing = 0;
+            TextSpacing = 2;
 
-            PaddingX = PaddingY = 5;
+            Padding = new Thickness (5);
             ImageSize = 90;
             ImageSpacing = 2;
-            TextSpacing = -2;
         }
 
-        public override void Render (CellContext context)
+        public override void Arrange ()
         {
-            double x = 0;
-            double y = 0;
-            double width = ImageSize;
-            double height = ImageSize;
-
-            ImageSurface image_surface;
-            string [] lines;
-
             if (!HandleBoundObject (out image_surface, out lines)) {
                 return;
             }
 
-            if (PaddingX > 0 || PaddingY > 0) {
-                context.Context.Translate (PaddingX, PaddingY);
-            }
+            inner_allocation = new Rect () {
+                X = Padding.Left,
+                Y = Padding.Top,
+                Width = Allocation.Width - Padding.X,
+                Height = Allocation.Height - Padding.Y
+            };
 
-            // Render the image
+            double width = ImageSize;
+            double height = ImageSize;
+
             if (image_surface != null) {
                 width = image_surface.Width;
                 height = image_surface.Height;
             }
 
+            image_allocation = new Rect () {
+                Width = Math.Min (inner_allocation.Width, width),
+                Height = Math.Min (inner_allocation.Height, height)
+            };
+
             if (IsGridLayout) {
-                x = Math.Round ((Allocation.Width - 2 * PaddingX - width) / 2.0);
+                image_allocation.X = Math.Round ((inner_allocation.Width - width) / 2.0);
             } else {
-                y = Math.Round ((Allocation.Height - 2 * PaddingY - height) / 2.0);
+                image_allocation.Y = Math.Round ((inner_allocation.Height - height) / 2.0);
             }
 
-            RenderImageSurface (context, new Rectangle (x, y, width, height), image_surface);
+            if (IsGridLayout) {
+                first_line_allocation.Y = image_allocation.Height + ImageSpacing;
+                first_line_allocation.Width = second_line_allocation.Width = inner_allocation.Width;
+            } else {
+                first_line_allocation.X = second_line_allocation.X = image_allocation.Width + ImageSpacing;
+                first_line_allocation.Width = second_line_allocation.Width =
+                    inner_allocation.Width - image_allocation.Width - ImageSpacing;
+            }
+
+            second_line_allocation.Y = first_line_allocation.Bottom + TextSpacing;
+        }
+
+        public override void Render (CellContext context)
+        {
+            if (inner_allocation.IsEmpty) {
+                return;
+            }
+
+            context.Context.Translate (inner_allocation.X, inner_allocation.Y);
+
+            RenderImageSurface (context, image_allocation, image_surface);
 
             // Render the overlay
             if (IsGridLayout && prelight_opacity > 0) {
                 var a = prelight_opacity;
                 var cr = context.Context;
-                var grad = new RadialGradient (5, 5, (width + height) / 2.0, 5, 5, 0);
+                var grad = new RadialGradient (5, 5, (image_allocation.Width + image_allocation.Height) / 2.0, 5, 5, 0);
                 grad.AddColorStop (0, new Color (0, 0, 0, 0.65 * a));
                 grad.AddColorStop (1, new Color (0, 0, 0, 0.15 * a));
                 cr.Pattern = grad;
-                cr.Rectangle (x, y, width, height);
+                cr.Rectangle ((Cairo.Rectangle)image_allocation);
                 cr.Fill ();
                 grad.Destroy ();
 
@@ -163,94 +186,78 @@ namespace Banshee.Collection.Gui
                 return;
             }
 
-            // Render the text
-            int fl_width = 0, fl_height = 0, sl_width = 0, sl_height = 0;
-            Cairo.Color text_color = context.Theme.Colors.GetWidgetColor (GtkColorClass.Text, context.State);
-            text_color.A = 0.75;
+            var text_color = context.Theme.Colors.GetWidgetColor (GtkColorClass.Text, context.State);
 
             var layout = context.Layout;
             layout.Ellipsize = Pango.EllipsizeMode.End;
-            layout.FontDescription.Weight = Pango.Weight.Bold;
+            layout.Width = (int)(first_line_allocation.Width * Pango.Scale.PangoScale);
 
-            layout.Width = (int)((IsGridLayout
-                ? Allocation.Width - 2 * PaddingX
-                : Allocation.Height - ImageSize - ImageSpacing - 2 * PaddingX) * Pango.Scale.PangoScale);
+            int normal_size = layout.FontDescription.Size;
+            int small_size = (int)(normal_size * Pango.Scale.Small);
 
-            // Compute the layout sizes for both lines for centering on the cell
-            int old_size = layout.FontDescription.Size;
-
-            layout.SetText (lines[1]);
-            layout.GetPixelSize (out fl_width, out fl_height);
-
-            if (!String.IsNullOrEmpty (lines[1])) {
-                layout.FontDescription.Weight = Pango.Weight.Normal;
-                layout.FontDescription.Size = (int)(old_size * Pango.Scale.Small);
-                layout.FontDescription.Style = Pango.Style.Italic;
-                layout.SetText (lines[1]);
-                layout.GetPixelSize (out sl_width, out sl_height);
-            }
-
-            if (IsGridLayout) {
-                x = 0;
-                y = ImageSize + ImageSpacing;
-            } else {
-                x = ImageSize + ImageSpacing;
-                y = Math.Round (((double)Allocation.Height - fl_height + sl_height) / 2);
-            }
-
-            // Render the second line first since we have that state already
             if (!String.IsNullOrEmpty (lines[0])) {
-                context.Context.MoveTo (x, y + fl_height + TextSpacing);
+                layout.FontDescription.Weight = Pango.Weight.Bold;
+                layout.FontDescription.Size = normal_size;
+                layout.SetText (lines[0]);
+
                 context.Context.Color = text_color;
+                context.Context.MoveTo (first_line_allocation.X, first_line_allocation.Y);
                 PangoCairoHelper.ShowLayout (context.Context, layout);
             }
 
-            // Render the first line, resetting the state
-            layout.SetText (lines[0]);
-            layout.FontDescription.Weight = Pango.Weight.Bold;
-            layout.FontDescription.Size = old_size;
-            layout.FontDescription.Style = Pango.Style.Normal;
+            if (!String.IsNullOrEmpty (lines[1])) {
+                layout.FontDescription.Weight = Pango.Weight.Normal;
+                layout.FontDescription.Size = small_size;
+                layout.SetText (lines[1]);
 
-            layout.SetText (lines[0]);
+                text_color.A = 0.75;
+                context.Context.Color = text_color;
+                context.Context.MoveTo (second_line_allocation.X, second_line_allocation.Y);
+                PangoCairoHelper.ShowLayout (context.Context, layout);
+            }
 
-            context.Context.MoveTo (x, y);
-            text_color.A = 1;
-            context.Context.Color = text_color;
-            PangoCairoHelper.ShowLayout (context.Context, layout);
+            layout.FontDescription.Size = normal_size;
         }
 
-        public override Gdk.Size Measure ()
+        public override Size Measure (Size available)
         {
-            int text_height = 0;
             var widget = ParentLayout.View;
 
             using (var layout = new Pango.Layout (widget.PangoContext) {
-                FontDescription = widget.PangoContext.FontDescription.Copy () }) {
-
+                    FontDescription = widget.PangoContext.FontDescription.Copy ()
+                }) {
                 layout.FontDescription.Weight = Pango.Weight.Bold;
-                text_height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
+                first_line_allocation.Height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
 
                 layout.FontDescription.Weight = Pango.Weight.Normal;
                 layout.FontDescription.Size = (int)(layout.FontDescription.Size * Pango.Scale.Small);
                 layout.FontDescription.Style = Pango.Style.Italic;
-                text_height += layout.FontDescription.MeasureTextHeight (widget.PangoContext);
+                second_line_allocation.Height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
             }
 
             double width, height;
+            double text_height = first_line_allocation.Height + second_line_allocation.Height;
 
             if (IsGridLayout) {
-                width = ImageSize + 2 * PaddingX;
-                height = ImageSize + ImageSpacing + TextSpacing + text_height + 2 * PaddingY;
+                width = ImageSize + Padding.X;
+                height = ImageSize + ImageSpacing + TextSpacing + text_height + Padding.Y;
             } else {
                 double list_text_height = text_height + TextSpacing;
-                width = ImageSize + ImageSpacing + 2 * PaddingY;
-                height = (list_text_height < ImageSize ? ImageSize : list_text_height) + 2 * PaddingX;
+                width = ImageSize + ImageSpacing + Padding.Y;
+                height = (list_text_height < ImageSize ? ImageSize : list_text_height) + Padding.X;
             }
 
-            return new Gdk.Size ((int)Math.Round (width), (int)Math.Round (height));
+            return new Size (Math.Round (width), Math.Round (height));
         }
 
-        protected virtual void RenderImageSurface (CellContext context, Rectangle allocation, ImageSurface imageSurface)
+        protected void InvalidateImage ()
+        {
+            var damage = image_allocation;
+            damage.Offset (inner_allocation);
+            Invalidate (damage);
+        }
+
+        protected virtual void RenderImageSurface (CellContext context, Rect allocation, ImageSurface imageSurface)
         {
             ArtworkRenderer.RenderThumbnail (context.Context,
                 imageSurface, false,

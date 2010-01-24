@@ -29,6 +29,9 @@
 using System;
 using System.Collections.Generic;
 
+using Hyena.Data;
+using Hyena.Gui.Canvas;
+
 namespace Hyena.Data.Gui
 {
     public abstract class DataViewLayout
@@ -38,14 +41,14 @@ namespace Hyena.Data.Gui
             get { return children; }
         }
 
+        public IListModel Model { get; set; }
         public ListViewBase View { get; set; }
 
-        public Gdk.Rectangle ActualAllocation { get; protected set; }
-        public Gdk.Size VirtualSize { get; protected set; }
-        public Gdk.Size ChildSize { get; protected set; }
+        public Rect ActualAllocation { get; protected set; }
+        public Size VirtualSize { get; protected set; }
+        public Size ChildSize { get; protected set; }
         public int XPosition { get; protected set; }
         public int YPosition { get; protected set; }
-        public int ModelRowCount { get; protected set; }
 
         public int ChildCount {
             get { return Children.Count; }
@@ -62,13 +65,12 @@ namespace Hyena.Data.Gui
             InvalidateChildLayout ();
         }
 
-        public void UpdateModelRowCount (int modelRowCount)
+        public void ModelUpdated ()
         {
-            ModelRowCount = modelRowCount;
             InvalidateVirtualSize ();
         }
 
-        public virtual void Allocate (Gdk.Rectangle actualAllocation)
+        public virtual void Allocate (Rect actualAllocation)
         {
             ActualAllocation = actualAllocation;
 
@@ -77,10 +79,10 @@ namespace Hyena.Data.Gui
             InvalidateChildLayout ();
         }
 
-        public virtual DataViewChild FindChildAtPoint (int x, int y)
+        public virtual DataViewChild FindChildAtPoint (Point point)
         {
             return Children.Find (child => child.Allocation.Contains (
-                ActualAllocation.X + x, ActualAllocation.Y + y));
+                ActualAllocation.X + point.X, ActualAllocation.Y + point.Y));
         }
 
         public virtual DataViewChild FindChildAtModelRowIndex (int modelRowIndex)
@@ -93,9 +95,9 @@ namespace Hyena.Data.Gui
         protected abstract void InvalidateChildCollection ();
         protected abstract void InvalidateChildLayout ();
 
-        protected Gdk.Rectangle GetChildVirtualAllocation (Gdk.Rectangle childAllocation)
+        protected Rect GetChildVirtualAllocation (Rect childAllocation)
         {
-            return new Gdk.Rectangle () {
+            return new Rect () {
                 X = childAllocation.X - ActualAllocation.X,
                 Y = childAllocation.Y - ActualAllocation.Y,
                 Width = childAllocation.Width,

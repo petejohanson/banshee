@@ -29,6 +29,8 @@
 using System;
 using System.Collections.Generic;
 
+using Hyena.Gui.Canvas;
+
 namespace Hyena.Data.Gui
 {
     public class DataViewLayoutGrid : DataViewLayout
@@ -44,16 +46,18 @@ namespace Hyena.Data.Gui
                 Children.Add (CreateChild ());
             }
 
-            ChildSize = Children[0].Measure ();
+            ChildSize = Children[0].Measure (Size.Empty);
         }
 
         protected override void InvalidateVirtualSize ()
         {
+            int model_rows = Model == null ? 0 : Model.Count;
+
             // FIXME: this is too simplistic and can result in
             // an extra row of allocation, check the model size
-            VirtualSize = new Gdk.Size (
+            VirtualSize = new Size (
                 ChildSize.Width * Math.Max (Columns, 1),
-                (ChildSize.Height * ModelRowCount) / Math.Max (Rows, 1));
+                (ChildSize.Height * model_rows) / Math.Max (Rows, 1));
         }
 
         protected override void InvalidateChildCollection ()
@@ -77,8 +81,8 @@ namespace Hyena.Data.Gui
             }
 
             // Compute where we should start and end in the model
-            int offset = ActualAllocation.Y - YPosition % ChildSize.Height;
-            int first_model_row = (int)Math.Floor (YPosition / (double)ChildSize.Height) * Columns;
+            double offset = ActualAllocation.Y - YPosition % ChildSize.Height;
+            int first_model_row = (int)Math.Floor (YPosition / ChildSize.Height) * Columns;
             int last_model_row = first_model_row + Rows * Columns;
 
             // Setup for the layout iteration
@@ -89,7 +93,7 @@ namespace Hyena.Data.Gui
 
             // Allocation of the first child in the layout, this
             // will change as we iterate the layout children
-            var child_allocation = new Gdk.Rectangle () {
+            var child_allocation = new Rect () {
                 X = ActualAllocation.X,
                 Y = offset,
                 Width = ChildSize.Width,
@@ -103,6 +107,11 @@ namespace Hyena.Data.Gui
                 child.Allocation = child_allocation;
                 child.VirtualAllocation = GetChildVirtualAllocation (child_allocation);
                 child.ModelRowIndex = model_row_index;
+                if (Model != null) {
+                    child.BindDataItem (Model.GetItem (model_row_index));
+                }
+                child.Measure (ChildSize); // FIXME: Should not do this here...
+                child.Arrange ();
 
                 // Update the allocation for the next child
                 if (++view_column_index % Columns == 0) {

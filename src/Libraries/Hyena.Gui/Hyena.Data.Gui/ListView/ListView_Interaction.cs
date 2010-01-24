@@ -33,6 +33,7 @@ using System;
 using Gtk;
 
 using Hyena.Collections;
+using Hyena.Gui.Canvas;
 using Selection = Hyena.Collections.Selection;
 
 namespace Hyena.Data.Gui
@@ -310,32 +311,28 @@ namespace Hyena.Data.Gui
                 return false;
             }
 
-            int x = 0;
-            int y = 0;
+            var point = new Point (0, 0);
             bool handled = false;
 
             var evnt_button = evnt as Gdk.EventButton;
             var evnt_motion = evnt as Gdk.EventMotion;
 
             if (evnt_motion != null) {
-                x = (int)evnt_motion.X;
-                y = (int)evnt_motion.Y;
+                point = new Point (evnt_motion.X, evnt_motion.Y);
             } else if (evnt_button != null) {
-                x = (int)evnt_button.X;
-                y = (int)evnt_button.Y;
+                point = new Point (evnt_button.X, evnt_button.Y);
             } else if (evnt is Gdk.EventCrossing && last_layout_child != null) {
                 last_layout_child.CursorLeaveEvent ();
                 last_layout_child = null;
                 return false;
             }
 
-            var child = GetLayoutChildAt (x, y);
+            var child = GetLayoutChildAt (point);
             if (child == null) {
                 return false;
             }
 
-            x -= child.VirtualAllocation.X;
-            y -= child.VirtualAllocation.Y;
+            point.Offset (-child.VirtualAllocation.X, -child.VirtualAllocation.Y);
 
             if (evnt_motion != null) {
                 if (last_layout_child != child) {
@@ -345,19 +342,18 @@ namespace Hyena.Data.Gui
                     last_layout_child = child;
                     child.CursorEnterEvent ();
                 }
-                handled = child.CursorMotionEvent (x, y);
+                handled = child.CursorMotionEvent (point);
             } else if (evnt_button != null) {
-                handled = child.ButtonEvent (x, y, press, evnt_button.Button);
+                handled = child.ButtonEvent (point, press, evnt_button.Button);
             }
 
             return handled;
         }
 
-        private DataViewChild GetLayoutChildAt (int x, int y)
+        private DataViewChild GetLayoutChildAt (Point point)
         {
-            x -= list_interaction_alloc.X;
-            y -= list_interaction_alloc.Y;
-            return ViewLayout.FindChildAtPoint (x, y);
+            point.Offset (-list_interaction_alloc.X, -list_interaction_alloc.Y);
+            return ViewLayout.FindChildAtPoint (point);
         }
 
 #endregion
@@ -861,7 +857,7 @@ namespace Hyena.Data.Gui
         protected int GetModelRowAt (int x, int y)
         {
             if (ViewLayout != null) {
-                var child = ViewLayout.FindChildAtPoint (x, y);
+                var child = ViewLayout.FindChildAtPoint (new Point (x, y));
                 return child == null ? -1 : child.ModelRowIndex;
             } else {
                 if (y < 0 || ChildSize.Height <= 0) {
@@ -882,7 +878,7 @@ namespace Hyena.Data.Gui
                 var child = ViewLayout.FindChildAtModelRowIndex (row);
                 return child == null
                     ? new Gdk.Point (0, 0)
-                    : new Gdk.Point (child.Allocation.X, child.Allocation.Y);
+                    : new Gdk.Point ((int)child.Allocation.X, (int)child.Allocation.Y);
             } else {
                 return new Gdk.Point (0, ChildSize.Height * row);
             }

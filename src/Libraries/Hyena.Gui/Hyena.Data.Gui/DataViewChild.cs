@@ -29,7 +29,7 @@
 using System;
 using System.Reflection;
 
-using Cairo;
+using Hyena.Gui.Canvas;
 
 namespace Hyena.Data.Gui
 {
@@ -38,7 +38,7 @@ namespace Hyena.Data.Gui
         public DataViewLayout ParentLayout { get; set; }
         public int ModelRowIndex { get; set; }
 
-        protected override void OnInvalidate (Gdk.Rectangle area)
+        protected override void OnInvalidate (Rect area)
         {
             ParentLayout.View.QueueDirtyRegion (area);
         }
@@ -124,17 +124,21 @@ namespace Hyena.Data.Gui
     public abstract class CanvasItem
     {
         public CanvasItem Parent { get; set; }
-        public Gdk.Rectangle Allocation { get; set; }
-        public Gdk.Rectangle VirtualAllocation { get; set; }
+        public Rect Allocation { get; set; }
+        public Rect VirtualAllocation { get; set; }
+
+        public Thickness Margin { get; set; }
+        public Thickness Padding { get; set; }
 
         public abstract void Render (CellContext context);
-        public abstract Gdk.Size Measure ();
+        public abstract void Arrange ();
+        public abstract Size Measure (Size available);
 
-        protected virtual void OnInvalidate (Gdk.Rectangle area)
+        protected virtual void OnInvalidate (Rect area)
         {
         }
 
-        public void Invalidate (Gdk.Rectangle area)
+        public void Invalidate (Rect area)
         {
             area.Offset (Allocation.X, Allocation.Y);
             OnInvalidate (area);
@@ -145,12 +149,12 @@ namespace Hyena.Data.Gui
             Invalidate (Allocation);
         }
 
-        public virtual bool ButtonEvent (int x, int y, bool pressed, uint button)
+        public virtual bool ButtonEvent (Point cursor, bool pressed, uint button)
         {
             return false;
         }
 
-        public virtual bool CursorMotionEvent (int x, int y)
+        public virtual bool CursorMotionEvent (Point cursor)
         {
             return false;
         }
