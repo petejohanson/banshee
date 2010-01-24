@@ -60,7 +60,8 @@ namespace Banshee.LastfmStreaming.Radio
             //lastfm_source.ResumeSorting ();
             lastfm_source.SortChildSources ();
             lastfm_source.Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
-            lastfm_source.Properties.Set<bool> ("ActiveSourceUIResourcePropagate", false);
+            lastfm_source.Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
+            lastfm_source.Properties.Set<System.Reflection.Assembly> ("ActiveSourceUIResource.Assembly", typeof(StationSource).Assembly);
             lastfm_source.Properties.SetString ("SortChildrenActionLabel", Catalog.GetString ("Sort Stations by"));
 
             return true;
