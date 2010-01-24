@@ -20,7 +20,6 @@ RESOURCES =  \
 	Banshee.Lastfm.addin.xml \
 	Resources/AudioscrobblerMenu.xml \
 	Resources/GlobalUI.xml \
-	Resources/LastfmTrackActions.xml \
 	Resources/no-results.png \
 	Resources/RecommendationMenu.xml
 

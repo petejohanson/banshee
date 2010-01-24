@@ -14,7 +14,8 @@ SOURCES =  \
 RESOURCES =  \
 	Banshee.LastfmStreaming.addin.xml \
 	Resources/ActiveSourceUI.xml \
-	Resources/GlobalUI.xml
+	Resources/GlobalUI.xml \
+	Resources/LastfmTrackActions.xml
 
 include $(top_srcdir)/build/build.mk
 
