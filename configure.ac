@@ -79,6 +79,10 @@ dnl Check for mono >= 2.4.3 for LibraryWatcher extension, with fix for bnc#32233
 PKG_CHECK_MODULES(MONO_2_4_3, mono >= 2.4.3, HAVE_MONO_2_4_3=yes, HAVE_MONO_2_4_3=no)
 AM_CONDITIONAL(ENABLE_LIBRARY_WATCHER, test "x$HAVE_MONO_2_4_3" = "xyes")
 
+dnl Check for GNOME >= 2.28 to see if we should remove 'Media Player' from the app Name, bgo#596242
+PKG_CHECK_MODULES(GNOME_LT_2_28, gnome-desktop-2.0 < 2.28, BANSHEE_DESKTOP_NAME="_Name=Banshee Media Player", BANSHEE_DESKTOP_NAME="_Name=Banshee")
+AC_SUBST(BANSHEE_DESKTOP_NAME)
+
 dnl NDesk DBus libraries
 BANSHEE_CHECK_NDESK_DBUS
 
@@ -209,6 +213,7 @@ data/org.bansheeproject.Banshee.service
 data/org.bansheeproject.CollectionIndexer.service
 data/audio-profiles/Makefile
 data/desktop-files/Makefile
+data/desktop-files/common.desktop
 data/icon-theme-hicolor/Makefile
 
 docs/Makefile
