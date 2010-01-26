@@ -2,7 +2,7 @@ desktopdir = $(datadir)/applications
 desktop_in_files = $(wildcard *.desktop.in.in)
 desktop_DATA = $(desktop_in_files:.desktop.in.in=.desktop)
 
-DESKTOP_FRAMEWORK_DEPS = common.desktop update-desktop-file.sh
+DESKTOP_FRAMEWORK_DEPS = common.desktop.in update-desktop-file.sh
 DESKTOP_MIME_DEPS = $(wildcard *.desktop.mime)
 
 if ENABLE_RELEASE
@@ -22,7 +22,8 @@ EXTRA_DIST = \
 	$(DESKTOP_FRAMEWORK_DEPS)
 
 CLEANFILES = \
-	$(desktop_DATA)
+	$(desktop_DATA) \
+	common.desktop
 
 MAINTAINERCLEANFILES = \
 	Makefile.in

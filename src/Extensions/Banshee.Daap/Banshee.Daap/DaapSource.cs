@@ -324,6 +324,10 @@ namespace Banshee.Daap
             get { return false; }
         }
 
+        public override bool HasEditableTrackProperties {
+            get { return false; }
+        }
+
         public bool Unmap ()
         {
             // Disconnect and clear out our tracks and such.

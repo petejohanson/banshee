@@ -85,7 +85,7 @@ namespace Banshee.Dap.Gui
         {
             DapSource dap = Dap;
             if (dap != null) {
-                UpdateAction ("SyncDapAction", dap.Sync.Enabled && !dap.Sync.AutoSync);
+                UpdateAction ("SyncDapAction", dap.Sync.Enabled);
             }
         }
 

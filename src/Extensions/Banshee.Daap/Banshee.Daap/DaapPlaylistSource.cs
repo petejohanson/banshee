@@ -84,6 +84,10 @@ namespace Banshee.Daap
             });
         }
 
+        public override bool HasEditableTrackProperties {
+            get { return false; }
+        }
+
         public override bool CanDeleteTracks {
             get { return false; }
         }

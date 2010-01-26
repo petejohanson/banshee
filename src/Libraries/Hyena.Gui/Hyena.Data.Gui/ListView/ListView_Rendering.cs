@@ -103,14 +103,16 @@ namespace Hyena.Data.Gui
                 PaintHeader (damage);
             }
 
+            if (Model != null) {
+                PaintRows (damage);
+            }
+
+            // Focused frame border is bolder than BorderWidth,
+            // draw it after the rows to avoid visual artifacts.
             if (HasFocus)
                 Theme.DrawFrameBorderFocused (cairo_context, Allocation);
             else
                 Theme.DrawFrameBorder (cairo_context, Allocation);
-
-            if (Model != null) {
-                PaintRows (damage);
-            }
 
             PaintDraggingColumn (damage);
 
