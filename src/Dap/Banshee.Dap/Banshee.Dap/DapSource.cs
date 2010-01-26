@@ -502,19 +502,19 @@ namespace Banshee.Dap
         }
 
         public override bool CanRemoveTracks {
-            get { return base.CanRemoveTracks && !Sync.Enabled; }
+            get { return base.CanRemoveTracks; }
         }
 
         public override bool CanDeleteTracks {
-            get { return base.CanDeleteTracks && !Sync.Enabled; }
+            get { return base.CanDeleteTracks; }
         }
 
         public override bool CanAddTracks {
-            get { return base.CanAddTracks && !Sync.Enabled; }
+            get { return base.CanAddTracks; }
         }
 
         public override bool PlaylistsReadOnly {
-            get { return Sync.Enabled || IsReadOnly; }
+            get { return IsReadOnly; }
         }
 
         private Banshee.Configuration.SchemaEntry<long> space_for_data;
