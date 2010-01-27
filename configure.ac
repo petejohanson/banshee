@@ -38,6 +38,7 @@ AC_INIT([banshee-1], banshee_version,
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 tar-ustar dist-zip foreign])
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER([config.h])
+AC_CONFIG_MACRO_DIR([build/m4])
 AC_SUBST([ACLOCAL_AMFLAGS], ["-I build/m4/shamrock -I build/m4/banshee -I build/m4/shave \${ACLOCAL_FLAGS}"])
 
 IT_PROG_INTLTOOL([0.35.0])
@@ -63,6 +64,8 @@ BANSHEE_CHECK_LIBBANSHEE
 BANSHEE_CHECK_GSTREAMER
 
 BANSHEE_CHECK_NOW_PLAYING_X11
+
+SHAMROCK_CHECK_GNOME_DOC_UTILS(0.17.3)
 
 dnl Mono and gmcs
 SHAMROCK_CHECK_MONO_MODULE(1.9.1)
@@ -216,6 +219,8 @@ data/desktop-files/Makefile
 data/desktop-files/common.desktop
 data/icon-theme-hicolor/Makefile
 
+help/Makefile
+
 docs/Makefile
 docs/Hyena/Makefile
 docs/Banshee/Makefile
@@ -349,6 +354,7 @@ ${PACKAGE}-${VERSION}
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
+    User Help:         ${HAVE_GNOME_DOC_UTILS} (requires gnome-doc-utils >= 0.17.3)
     Custom a11y:       ${gtksharp_with_a11y} (requires gtk-sharp >= 2.12.10)
     Release Build:     ${enable_release}
     Vendor Build ID:   ${vendor_build_id}
