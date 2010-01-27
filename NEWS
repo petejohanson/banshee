@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.3 - NOT YET RELEASED
+WELCOME TO BANSHEE 1.5.3 - Released January 27, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -74,18 +74,20 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
       * Extension preferences tab reworked
       * Extension names/descriptions translated
       * Improved sqlite performance
+      * Added --set-rating=RATING command line option
       * Support for Nexus One devices
 
     Notable bug fixes:
 
       * DAPs (ipods, etc) should work on DeviceKit-using distros
+      * Fix issue with DAAP authenticating
       * Podcast renaming should work well now
       * Podcast download cancelling is now fast
       * Internet Archive results paging off-by-one fixed
       * Should build with older Mono/Gtk# again (eg on openSUSE 11.0)
       * Fix issue with MTP devices on 64-bit distros
 
-      * N bugs were fixed since 1.5.2
+      * 75 bugs were fixed since 1.5.2
 
 
 ===============================================================================
@@ -114,7 +116,7 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * 
+    * http://download.banshee-project.org/banshee/banshee-1-1.5.3.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
@@ -135,7 +137,7 @@ DEPENDENCIES
     * NDesk DBus (ndesk-dbus) 0.5
     * NDesk DBus GLib (ndesk-dbus-glib) 0.3
     * Mono.Addins (mono-addins) 0.3.1
-    * TagLib# (taglib-sharp) 2.0.3.2
+    * TagLib# (taglib-sharp) >= 2.0.3.2
 
     * Required to build default feature stack:
       * libmtp >= 0.2.0
@@ -150,8 +152,8 @@ DEPENDENCIES
       * Accessibilty for ListView and Rating widgets requires Gtk# >= 2.12.10
 
     * Run-time requirements for default feature stack:
-      * PodSleuth (0.6.6 recommended)
-      * Brasero   (0.8.1)
+      * PodSleuth >= 0.6.6
+      * Brasero >= 0.8.1
       * Avahi
       * gst-plugins-bad (providing the bpmdetect GStreamer plugin)
 
