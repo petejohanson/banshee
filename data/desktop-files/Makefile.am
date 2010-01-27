@@ -22,9 +22,9 @@ EXTRA_DIST = \
 	$(DESKTOP_FRAMEWORK_DEPS)
 
 CLEANFILES = \
-	$(desktop_DATA) \
-	common.desktop
+	$(desktop_DATA)
 
 MAINTAINERCLEANFILES = \
-	Makefile.in
+	Makefile.in \
+	common.desktop
 
