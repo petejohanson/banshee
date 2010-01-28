@@ -115,6 +115,11 @@ namespace Banshee.Moblin
                     (int)MoblinPanel.Instance.ToolbarPanelHeight);
             }
 
+            elements_service.PrimaryWindowClose = () => {
+                elements_service.PrimaryWindow.Hide ();
+                return true;
+            };
+
             // Since the Panel is running, we don't actually ever want to quit!
             Banshee.ServiceStack.Application.ShutdownRequested += () => {
                 elements_service.PrimaryWindow.Hide ();
