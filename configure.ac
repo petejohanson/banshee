@@ -194,7 +194,7 @@ AC_SUBST(BUILD_HOST_OS)
 AC_SUBST(BUILD_HOST_CPU)
 AC_SUBST(BUILD_TIME)
 
-AM_CONDITIONAL(PLATFORM_DARWIN, test "x${host_os:0:6}" = "xdarwin")
+AM_CONDITIONAL([PLATFORM_DARWIN], [test "x${host_os%${host_os#??????}}" = "xdarwin"])
 
 SHAVE_INIT([build/m4/shave], [enable])
 
