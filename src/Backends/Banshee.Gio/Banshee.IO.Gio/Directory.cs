@@ -42,7 +42,9 @@ namespace Banshee.IO.Gio
         public void Create (string directory)
         {
             var file = GetDir (directory);
-            file.MakeDirectoryWithParents (null);
+            if (!file.Exists) {
+                file.MakeDirectoryWithParents (null);
+            }
         }
 
         public void Delete (string directory)
