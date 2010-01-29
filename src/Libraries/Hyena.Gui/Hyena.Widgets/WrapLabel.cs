@@ -94,6 +94,7 @@ namespace Hyena.Widgets
             layout.Width = (int)(allocation.Width * Pango.Scale.PangoScale);
             layout.GetPixelSize (out lw, out lh);
 
+            TooltipText = layout.IsEllipsized ? text : null;
             HeightRequest = lh;
 
             base.OnSizeAllocated (allocation);
