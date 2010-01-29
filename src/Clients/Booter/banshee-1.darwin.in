@@ -12,6 +12,9 @@ LIB_DIR="$RES_DIR/lib"
 BIN_DIR="$RES_DIR/bin"
 DATA_DIR="$RES_DIR/share"
 
+# Shell environment
+export PATH="/bin:/usr/bin:$BIN_DIR"
+
 # XDG environment
 export XDG_CONFIG_DIRS="$ETC_DIR/xdg"
 export XDG_DATA_DIRS="$DATA_DIR"
