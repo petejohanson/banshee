@@ -49,6 +49,7 @@ using Banshee.Playlist;
 using Banshee.Preferences;
 using Banshee.ServiceStack;
 using Banshee.Sources;
+using Banshee.Sources.Gui;
 
 using IA=InternetArchive;
 
@@ -58,7 +59,7 @@ namespace Banshee.InternetArchive
     {
         private Item item;
         private MemoryTrackListModel track_model;
-        private DetailsView gui;
+        private LazyLoadSourceContents<DetailsView> gui;
 
         public Item Item {
             get { return item; }
@@ -78,14 +79,24 @@ namespace Banshee.InternetArchive
 
             SetIcon ();
 
-            gui = new DetailsView (this, item);
-            Properties.Set<Gtk.Widget> ("Nereid.SourceContents", gui);
+            gui = new LazyLoadSourceContents<DetailsView> (this, item);
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", gui);
+        }
+
+        private bool details_loaded;
+        internal void LoadDetails ()
+        {
+            if (details_loaded) {
+                return;
+            }
+
+            details_loaded = true;
 
             if (item.Details == null) {
                 SetStatus (Catalog.GetString ("Getting item details from the Internet Archive"), false, true, null);
                 Load ();
             } else {
-                gui.UpdateDetails ();
+                gui.Contents.UpdateDetails ();
             }
         }
 
@@ -124,7 +135,7 @@ namespace Banshee.InternetArchive
                 ThreadAssist.ProxyToMain (delegate {
                     ClearMessages ();
                     if (item.Details != null) {
-                        gui.UpdateDetails ();
+                        gui.Contents.UpdateDetails ();
                     }
                 });
             } catch (Exception e) {

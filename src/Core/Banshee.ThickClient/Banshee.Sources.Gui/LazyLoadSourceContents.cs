@@ -37,7 +37,7 @@ namespace Banshee.Sources.Gui
     public class LazyLoadSourceContents<T> : ISourceContents, IDisposable where T : ISourceContents
     {
         private object [] args;
-        private ISourceContents actual_contents;
+        private T actual_contents;
         private ISourceContents ActualContents {
             get {
                 if (actual_contents == null) {
@@ -73,6 +73,10 @@ namespace Banshee.Sources.Gui
         public void ResetSource ()
         {
             ActualContents.ResetSource ();
+        }
+
+        public T Contents {
+            get { return actual_contents; }
         }
 
         public ISource Source {
