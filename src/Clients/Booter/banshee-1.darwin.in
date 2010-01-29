@@ -58,7 +58,14 @@ EOF
 fi
 
 mkdir -p "$BANSHEE_CONFIG_DIR"
-PREVIOUS_APP_ROOT="$(cat "$BANSHEE_CONFIG_DIR/app-bundle-location" 2>/dev/null)"
+if [ -f "$RES_DIR/first-run" ]; then
+	echo "Appears to be first run of this application bundle."
+	rm -f -- "$RES_DIR/first-run"
+	PREVIOUS_APP_ROOT=""
+else
+	PREVIOUS_APP_ROOT="$(cat "$BANSHEE_CONFIG_DIR/app-bundle-location" 2>/dev/null)"
+fi
+
 if [ ! "$APP_ROOT" = "$PREVIOUS_APP_ROOT" ]; then
 	echo "Application bundle has moved. Adjusting bundle..."
 
