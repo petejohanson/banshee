@@ -39,11 +39,11 @@ namespace Banshee.IO
     {
         protected override string ProcessItem (string item)
         {
-            ScanForFiles (item);
+            ScanForFiles (item, false);
             return null;
         }
 
-        private void ScanForFiles (string source)
+        private void ScanForFiles (string source, bool skip_hidden)
         {
             CheckForCanceled ();
 
@@ -69,14 +69,16 @@ namespace Banshee.IO
                 }
             } else if (is_directory) {
                 try {
-                    if (!Path.GetFileName (Path.GetDirectoryName (source)).StartsWith (".")) {
+                    // Normalise the path (remove the trailing directory separator)
+                    source = Path.Combine (Path.GetDirectoryName (source), Path.GetFileName (source));
+                    if (!skip_hidden || !Path.GetFileName (source).StartsWith (".")) {
                         try {
                             foreach (string file in Banshee.IO.Directory.GetFiles (source)) {
-                                ScanForFiles (file);
+                                ScanForFiles (file, true);
                             }
 
                             foreach (string directory in Banshee.IO.Directory.GetDirectories (source)) {
-                                ScanForFiles (directory);
+                                ScanForFiles (directory, true);
                             }
                         } catch {
                         }
