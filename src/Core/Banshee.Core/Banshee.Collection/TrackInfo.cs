@@ -325,6 +325,24 @@ namespace Banshee.Collection
             set { playback_error = value; }
         }
 
+        public virtual string GetPlaybackErrorMessage ()
+        {
+            switch (PlaybackError) {
+                case StreamPlaybackError.None:
+                    return null;
+                case StreamPlaybackError.ResourceNotFound:
+                    return IsLive ? Catalog.GetString ("Stream location not found") : Catalog.GetString ("File not found");
+                case StreamPlaybackError.CodecNotFound:
+                    return Catalog.GetString ("Codec for playing this media type not available");
+                case StreamPlaybackError.Drm:
+                    return Catalog.GetString ("File protected by Digital Rights Management (DRM)");
+                case StreamPlaybackError.Unknown:
+                    return Catalog.GetString ("Unknown error");
+                default:
+                    return null;
+            }
+        }
+
         public void SavePlaybackError (StreamPlaybackError value)
         {
             if (PlaybackError != value) {

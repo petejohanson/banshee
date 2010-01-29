@@ -96,7 +96,7 @@ namespace Banshee.Collection.Gui
         }
     }
 
-    public class ColumnCellStatusIndicator : ColumnCell, ISizeRequestCell
+    public class ColumnCellStatusIndicator : ColumnCell, ISizeRequestCell, ITooltipCell
     {
         const int padding = 2;
 
@@ -159,10 +159,13 @@ namespace Banshee.Collection.Gui
 
             int icon_index = GetIconIndex (track);
 
-            if ((icon_index < 0) || (icon_index >= status_names.Length))
+            if ((icon_index < 0) || (icon_index >= status_names.Length)) {
                 return "";
-            else
+            } else if (icon_index == (int)Icon.Error) {
+                return track.GetPlaybackErrorMessage () ?? "";
+            } else {
                 return status_names[icon_index];
+            }
         }
 
         protected virtual int PixbufCount {
@@ -259,6 +262,11 @@ namespace Banshee.Collection.Gui
             } else {
                 context.Context.Fill ();
             }
+        }
+
+        public string GetTooltipMarkup (CellContext cellContext, double columnWidth)
+        {
+            return GetTextAlternative (BoundObject);
         }
 
         protected TrackInfo BoundTrack {
