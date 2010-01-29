@@ -98,7 +98,7 @@ BANSHEE_CHECK_BOO
 dnl Monodoc (optional through --disable-docs)
 SHAMROCK_CHECK_MONODOC
 
-dnl webkit (optional through --enable-webkit)
+dnl webkit (optional through --disable-webkit)
 BANSHEE_CHECK_WEBKIT
 
 dnl gtk#-beans and gio#
@@ -340,12 +340,13 @@ ${PACKAGE}-${VERSION}
     Karma:             ${enable_karmasharp}
 
   Extra Features:
-    DAAP Support:      ${enable_daap}
-    Podcast Support:   ${enable_podcast}
     Boo Scripting:     ${enable_boo}
     Builtin Equalizer: ${enable_builtin_equalizer}
+    DAAP:              ${enable_daap}
+    GIO Backend:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
     Library Watcher:   ${HAVE_MONO_2_4_3} (requires Mono >= 2.4.3)
-    GIO Support:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
+    Podcasts:          ${enable_podcast}
+    Wikipedia:         ${enable_webkit} (requires webkit-sharp)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
@@ -358,7 +359,6 @@ EOF
 # Unstable/in-development features; only show them if they were manually enabled
 if test "x$enable_moonlight" = "xyes";    then br=yes; echo "  Moonlight Effects:   ${enable_moonlight}";    fi
 if test "x$enable_remote_audio" = "xyes"; then br=yes; echo "  Remote Audio:        ${enable_remote_audio}"; fi
-if test "x$enable_webkit" = "xyes";       then br=yes; echo "  WebKit:              ${enable_webkit}";     fi
 if test "x$enable_torrent" = "xyes";      then br=yes; echo "  Torrent Podcasts:    ${enable_torrent}";      fi
 
 if test -d ${expanded_libdir}/${PACKAGE}; then
