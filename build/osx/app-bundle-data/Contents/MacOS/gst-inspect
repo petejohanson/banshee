@@ -1,6 +1,0 @@
-#!/bin/bash
-
-BUNDLE_ROOT=$(dirname $0)
-source $BUNDLE_ROOT/runtime.env
-$BUNDLE_ROOT/gst-inspect-0.10 $@
-
