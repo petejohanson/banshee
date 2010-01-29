@@ -229,6 +229,11 @@ namespace Banshee.InternetArchive
 
         public bool Unmap ()
         {
+            // If we were the active source, switch to the Search source
+            if (this == ServiceManager.SourceManager.ActiveSource) {
+                ServiceManager.SourceManager.SetActiveSource ((Parent as HomeSource).SearchSource);
+            }
+
             item.Delete ();
             Parent.RemoveChildSource (this);
             return true;
