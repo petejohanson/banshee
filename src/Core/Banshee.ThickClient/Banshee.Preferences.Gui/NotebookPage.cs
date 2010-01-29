@@ -70,8 +70,16 @@ namespace Banshee.Preferences.Gui
                     notebook.ShowTabs = false;
                     notebook.Show ();
 
-                    PageComboBox page_combo = new PageComboBox (page.ChildPages, notebook);
-                    PackStart (page_combo, false, false, 0);
+                    var hbox = new HBox () { Spacing = 6 };
+                    // FIXME this shouldn't be hard-coded to 'Source:', but this is the only
+                    // user of this code atm...
+                    var page_label = new Label (Mono.Unix.Catalog.GetString ("Source:"));
+                    var page_combo = new PageComboBox (page.ChildPages, notebook);
+                    hbox.PackStart (page_label, false, false, 0);
+                    hbox.PackStart (page_combo, true, true, 0);
+                    hbox.ShowAll ();
+
+                    PackStart (hbox, false, false, 0);
 
                     HSeparator sep = new HSeparator ();
                     sep.Show ();
