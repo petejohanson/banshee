@@ -59,15 +59,19 @@
       <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
       <Name>Hyena.Gui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Banshee.Widgets\Banshee.Widgets.csproj">
+      <Project>{A3701765-E571-413D-808C-9788A22791AF}</Project>
+      <Name>Banshee.Widgets</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Zeroconf, Version=3.0.0.80, Culture=neutral, PublicKeyToken=e60c4f4a95e1099e" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="Mono.Posix" />
     <Reference Include="ICSharpCode.SharpZipLib" />
+    <Reference Include="Mono.Zeroconf, Version=4.0.0.90, Culture=neutral, PublicKeyToken=e60c4f4a95e1099e" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.Daap\DaapService.cs" />
