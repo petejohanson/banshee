@@ -75,7 +75,8 @@ namespace Hyena.Json
 
         private void ReadChar ()
         {
-            peek = (char)reader.Read ();
+            int val = reader.Read ();
+            peek = val == -1 ? Char.MinValue : (char)val;
             current_column++;
         }
 
