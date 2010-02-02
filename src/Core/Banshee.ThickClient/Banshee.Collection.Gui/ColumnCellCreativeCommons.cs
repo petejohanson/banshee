@@ -84,7 +84,7 @@ namespace Banshee.Collection.Gui
                     }
                 }
 
-                draw_x += render_pixbuf.Width;
+                draw_x += ICON_SIZE;
             }
         }
 
