@@ -69,7 +69,10 @@ namespace Banshee.MediaProfiles.Gui
                 Combo.SetActiveProfile(config.Profile);
             }
 
-            description = new DescriptionLabel (delegate { return Combo.ActiveProfile.Description; });
+            description = new DescriptionLabel (delegate {
+                var profile = Combo.ActiveProfile;
+                return profile != null ? profile.Description : "";
+            });
 
             Combo.Changed += delegate {
                 if(Combo.ActiveProfile != null) {
