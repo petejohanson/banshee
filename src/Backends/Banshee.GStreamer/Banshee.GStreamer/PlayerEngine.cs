@@ -140,7 +140,9 @@ namespace Banshee.GStreamer
             tag_found_callback = new GstTaggerTagFoundCallback (OnTagFound);
 
             bp_set_eos_callback (handle, eos_callback);
+#if !WIN32
             bp_set_iterate_callback (handle, iterate_callback);
+#endif
             bp_set_error_callback (handle, error_callback);
             bp_set_state_changed_callback (handle, state_changed_callback);
             bp_set_buffering_callback (handle, buffering_callback);
