@@ -58,6 +58,10 @@
       <Project>{C5DD02DE-4F0E-4DC0-ABC7-035A8217CD50}</Project>
       <Name>MusicBrainz</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Banshee.ThickClient\Banshee.ThickClient.csproj">
+      <Project>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</Project>
+      <Name>Banshee.ThickClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.Dap.MassStorage\MassStorageSource.cs" />
@@ -92,5 +96,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
+    <Reference Include="Mono.Posix" />
   </ItemGroup>
 </Project>
