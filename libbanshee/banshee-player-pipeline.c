@@ -85,7 +85,7 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
             _bp_missing_elements_handle_state_changed (player, old, new);
             _bp_replaygain_handle_state_changed (player, old, new, pending);
             
-            if (player->state_changed_cb != NULL) {
+            if (player->state_changed_cb != NULL && GST_MESSAGE_SRC (message) == GST_OBJECT (player->playbin)) {
                 player->state_changed_cb (player, old, new, pending);
             }
             break;
