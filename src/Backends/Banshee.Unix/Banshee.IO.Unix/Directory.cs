@@ -88,9 +88,12 @@ namespace Banshee.IO.Unix
 
         public IEnumerable<string> GetFiles (string directory)
         {
-            UnixDirectoryInfo unix_dir = new UnixDirectoryInfo (directory);
-            foreach (UnixFileSystemInfo entry in unix_dir.GetFileSystemEntries ()) {
-                if (!entry.IsDirectory && entry.IsRegularFile && !entry.IsSocket && entry.Exists) {
+            var unix_dir = TraverseSymlink(new UnixDirectoryInfo (directory)) as UnixDirectoryInfo;
+            if (unix_dir == null) {
+                yield break;
+            }
+            foreach (var entry in unix_dir.GetFileSystemEntries ()) {
+                if (entry != null && !entry.IsDirectory && entry.IsRegularFile && !entry.IsSocket && entry.Exists) {
                     yield return entry.FullName;
                 }
             }
@@ -98,11 +101,33 @@ namespace Banshee.IO.Unix
 
         public IEnumerable<string> GetDirectories (string directory)
         {
-            UnixDirectoryInfo unix_dir = new UnixDirectoryInfo (directory);
-            foreach (UnixFileSystemInfo entry in unix_dir.GetFileSystemEntries ()) {
-                if (entry.IsDirectory && entry.Exists && !entry.IsSocket) {
-                    yield return entry.FullName;
+            var unix_dir = new UnixDirectoryInfo (directory);
+            foreach (var entry in unix_dir.GetFileSystemEntries ()) {
+                var info = TraverseSymlink (entry);
+                if (info != null && info.IsDirectory && info.Exists && !info.IsSocket) {
+                    yield return info.FullName;
                 }
+            }
+        }
+
+        private readonly HashSet<string> visited_symlinks = new HashSet<string> ();
+        private UnixFileSystemInfo TraverseSymlink (UnixFileSystemInfo info)
+        {
+            lock (visited_symlinks) {
+                visited_symlinks.Clear ();
+                while (info.IsSymbolicLink) {
+                    if (visited_symlinks.Contains (info.FullName)) {
+                        return null;
+                    }
+                    visited_symlinks.Add (info.FullName);
+                    var target = new UnixSymbolicLinkInfo (info.FullName).GetContents ();
+                    if (info.FullName.StartsWith (target.FullName)) {
+                        return null;
+                    }
+                    info = target;
+                }
+
+                return info;
             }
         }
 
