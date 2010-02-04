@@ -26,8 +26,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using Banshee.Collection;
+using System;
 using System.Collections;
+
+using Banshee.Collection;
 
 namespace Banshee.Streaming
 {
@@ -198,21 +200,26 @@ namespace Banshee.Streaming
         // Converts Ogg rating to Banshee rating
         private static int OggToBanshee (string ogg_rating_str)
         {
-            double ogg_rating = double.Parse (ogg_rating_str);
-            // Quod Libet Ogg ratings are stored as a value
-            // between 0.0 and 1.0 inclusive, where unrated = 0.5.
-            if (ogg_rating == 0.5)// unrated
-                return 0;
-            if (ogg_rating > 0.8)// (0.8,1.0]
-                return 5;
-            if (ogg_rating > 0.6)// (0.6,0.8]
-                return 4;
-            if (ogg_rating > 0.4)// (0.4,0.5),(0.5,0.6]
-                return 3;
-            if (ogg_rating > 0.2)// (0.2,0.4]
-                return 2;
-            else // [0.0,0.2]
-                return 1;
+            double ogg_rating;
+            if (Double.TryParse (ogg_rating_str, out ogg_rating)) {
+                // Quod Libet Ogg ratings are stored as a value
+                // between 0.0 and 1.0 inclusive, where unrated = 0.5.
+                if (ogg_rating == 0.5)// unrated
+                    return 0;
+                if (ogg_rating > 0.8)// (0.8,1.0]
+                    return 5;
+                if (ogg_rating > 0.6)// (0.6,0.8]
+                    return 4;
+                if (ogg_rating > 0.4)// (0.4,0.5),(0.5,0.6]
+                    return 3;
+                if (ogg_rating > 0.2)// (0.2,0.4]
+                    return 2;
+                else // [0.0,0.2]
+                    return 1;
+            }
+
+            Hyena.Log.WarningFormat ("Failed to parse ogg rating string: {0}", ogg_rating_str);
+            return 0;
         }
 
         // Converts Banshee rating to Ogg rating
