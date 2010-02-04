@@ -192,7 +192,10 @@ namespace Banshee.Collection.Gui
                     if (Banshee.IO.File.Exists (uri)) {
                         Banshee.IO.File.Delete (uri);
                     }
-                    ServiceManager.Get<ArtworkManager> ().ClearCacheFor (track.ArtworkId);
+                    var artwork_id = track.ArtworkId;
+                    if (artwork_id != null) {
+                        ServiceManager.Get<ArtworkManager> ().ClearCacheFor (track.ArtworkId);
+                    }
                 }
             }
 
