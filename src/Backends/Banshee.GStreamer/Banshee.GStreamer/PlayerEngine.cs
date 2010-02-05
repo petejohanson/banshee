@@ -234,7 +234,6 @@ namespace Banshee.GStreamer
             // If there isn't a next track for us, release the block on the about-to-finish callback.
             if (uri == null) {
                 next_track_set.Set ();
-                bp_set_next_track (handle, IntPtr.Zero);
                 return;
             }
             IntPtr uri_ptr = GLib.Marshaller.StringToPtrGStrdup (uri.AbsoluteUri);
