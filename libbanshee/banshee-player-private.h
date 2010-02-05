@@ -108,7 +108,6 @@ struct BansheePlayer {
     GstElement *audiobin;
     GstElement *equalizer;
     GstElement *preamp;
-    GstElement *videosink;
     gint equalizer_status;
     gdouble current_volume;
     

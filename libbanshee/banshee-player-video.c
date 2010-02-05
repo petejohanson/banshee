@@ -37,14 +37,15 @@
 static gboolean
 bp_video_find_xoverlay (BansheePlayer *player)
 {
+    GstElement *video_sink = NULL;
     GstElement *xoverlay;
     GstXOverlay *previous_xoverlay;
 
-    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
-    
     previous_xoverlay = player->xoverlay;
     
-    if (player->videosink == NULL) {
+    g_object_get (player->playbin, "video-sink", &video_sink, NULL);
+    
+    if (video_sink == NULL) {
         player->xoverlay = NULL;
         if (previous_xoverlay != NULL) {
             gst_object_unref (previous_xoverlay);
@@ -53,9 +54,9 @@ bp_video_find_xoverlay (BansheePlayer *player)
         return FALSE;
     }
     
-    xoverlay = GST_IS_BIN (player->videosink)
-        ? gst_bin_get_by_interface (GST_BIN (player->videosink), GST_TYPE_X_OVERLAY)
-        : player->videosink;
+    xoverlay = GST_IS_BIN (video_sink)
+        ? gst_bin_get_by_interface (GST_BIN (video_sink), GST_TYPE_X_OVERLAY)
+        : video_sink;
     
     player->xoverlay = GST_IS_X_OVERLAY (xoverlay) ? GST_X_OVERLAY (xoverlay) : NULL;
     
@@ -72,6 +73,8 @@ bp_video_find_xoverlay (BansheePlayer *player)
         G_OBJECT_GET_CLASS (player->xoverlay), "handle-events")) {
         g_object_set (G_OBJECT (player->xoverlay), "handle-events", FALSE, NULL);
     }
+
+    gst_object_unref (video_sink);
 
     return player->xoverlay != NULL;
 }
@@ -175,7 +178,6 @@ _bp_video_pipeline_setup (BansheePlayer *player, GstBus *bus)
     #endif
     
     #endif
-    player->videosink = videosink;
 }
 
 P_INVOKE void
