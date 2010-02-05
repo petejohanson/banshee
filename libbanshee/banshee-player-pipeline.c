@@ -63,6 +63,18 @@ bp_pipeline_process_tag (const GstTagList *tag_list, const gchar *tag_name, Bans
 }
 
 static gboolean
+bp_next_track_starting (gpointer player)
+{
+    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
+
+    bp_debug ("[gapless] Triggering track-change signal");
+    if (((BansheePlayer *)player)->next_track_starting_cb != NULL) {
+        ((BansheePlayer *)player)->next_track_starting_cb (player);
+    }
+    return FALSE;
+}
+
+static gboolean
 bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
 {
     BansheePlayer *player = (BansheePlayer *)userdata;
@@ -161,6 +173,11 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
         } 
         
         case GST_MESSAGE_ELEMENT: {
+            const GstStructure *messageStruct;
+            messageStruct = gst_message_get_structure (message);
+            if (GST_MESSAGE_SRC (message) == GST_OBJECT (player->playbin) && gst_structure_has_name (messageStruct, "playbin2-stream-changed")) {
+                bp_next_track_starting (player);
+            }
             _bp_missing_elements_process_message (player, message);
             break;
         }
@@ -171,28 +188,10 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
     return TRUE;
 }
 
-static gboolean 
-bp_next_track_starting (gpointer player)
-{
-    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
-    
-    bp_debug ("[gapless] Triggering track-change signal");
-    if (((BansheePlayer *)player)->next_track_starting_cb != NULL) {
-        ((BansheePlayer *)player)->next_track_starting_cb (player);
-    }
-    ((BansheePlayer *)player)->next_track_starting_timer_id = 0;
-    return FALSE;
-}
-
 static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *player)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
-    // Playbin2 doesn't (yet) have any way to notify us when the current track has actually finished playing on the
-    // hardware.  Fake this for now by adding a timer with length equal to the hardware buffer.
-    player->next_track_starting_timer_id = g_timeout_add (((guint64)BP_BUFFER_LEN_MICROSECONDS) / 1000, 
-                                                          &bp_next_track_starting, 
-                                                          player);
-    
+
     if (player->about_to_finish_cb != NULL) {
         player->about_to_finish_cb (player);
     }

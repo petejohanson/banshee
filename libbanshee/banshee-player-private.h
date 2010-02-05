@@ -65,8 +65,6 @@
 #define bp_debug(x...) banshee_log_debug ("player", x)
 #endif
 
-#define BP_BUFFER_LEN_MICROSECONDS 1000000
-
 typedef struct BansheePlayer BansheePlayer;
 
 typedef void (* BansheePlayerEosCallback)          (BansheePlayer *player);
@@ -157,12 +155,6 @@ struct BansheePlayer {
     gdouble album_peak;
     gdouble track_gain;
     gdouble track_peak;
-    
-    // Work around playbin2 not giving any notification about when a
-    // track changes.  We know how long playbin's buffer is, so we know
-    // how long after about-to-finish is raised the track will end.
-    // Use this timer to fire a signal when that happens.
-    guint next_track_starting_timer_id;
 };
 
 #endif /* _BANSHEE_PLAYER_PRIVATE_H */
