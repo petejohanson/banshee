@@ -86,13 +86,17 @@ namespace Banshee.GStreamer
         private VideoPipelineSetupHandler video_pipeline_setup_callback;
         private GstTaggerTagFoundCallback tag_found_callback;
         private BansheePlayerNextTrackStartingCallback next_track_starting_callback;
+#if ENABLE_GAPLESS
         private BansheePlayerAboutToFinishCallback about_to_finish_callback;
+#endif
 
         private bool buffering_finished;
         private int pending_volume = -1;
         private bool xid_is_set = false;
 
+#if ENABLE_GAPLESS
         private bool gapless_enabled;
+#endif
         private EventWaitHandle next_track_set;
 
         private event VisualizationDataHandler data_available = null;
@@ -147,8 +151,9 @@ namespace Banshee.GStreamer
             video_pipeline_setup_callback = new VideoPipelineSetupHandler (OnVideoPipelineSetup);
             tag_found_callback = new GstTaggerTagFoundCallback (OnTagFound);
             next_track_starting_callback = new BansheePlayerNextTrackStartingCallback (OnNextTrackStarting);
+#if ENABLE_GAPLESS
             about_to_finish_callback = new BansheePlayerAboutToFinishCallback (OnAboutToFinish);
-
+#endif
             bp_set_eos_callback (handle, eos_callback);
 #if !WIN32
             bp_set_iterate_callback (handle, iterate_callback);
@@ -278,6 +283,7 @@ namespace Banshee.GStreamer
             }
         }
 
+#if ENABLE_GAPLESS
         private void OnAboutToFinish (IntPtr player)
         {
             // This is needed to make Shuffle-by-* work.
@@ -297,6 +303,7 @@ namespace Banshee.GStreamer
                 Log.Debug ("[Gapless] Timed out while waiting for next_track_set to be raised");
             }
         }
+#endif
 
         private void OnIterate (IntPtr player)
         {
@@ -556,6 +563,7 @@ namespace Banshee.GStreamer
         }
 
         private bool GaplessEnabled {
+#if ENABLE_GAPLESS
             get { return gapless_enabled; }
             set
             {
@@ -566,6 +574,10 @@ namespace Banshee.GStreamer
                     bp_set_about_to_finish_callback (handle, null);
                 }
             }
+#else
+            get {return false;}
+            set {}
+#endif
         }
 
 
@@ -638,11 +650,13 @@ namespace Banshee.GStreamer
                 Catalog.GetString ("For tracks that have ReplayGain data, automatically scale (normalize) playback volume"),
                 delegate { ReplayGainEnabled = ReplayGainEnabledSchema.Get (); }
             ));
+#if ENABLE_GAPLESS
             gapless_preference = service["general"]["misc"].Add (new SchemaPreference<bool> (GaplessEnabledSchema,
                 Catalog.GetString ("Enable _gapless playback"),
                 Catalog.GetString ("Eliminate the small playback gap on track change.  Useful for concept albums and classical music."),
                 delegate { GaplessEnabled = GaplessEnabledSchema.Get (); }
             ));
+#endif
         }
 
         private void UninstallPreferences ()
@@ -717,9 +731,11 @@ namespace Banshee.GStreamer
         private static extern void bp_set_next_track_starting_callback (HandleRef player,
             BansheePlayerNextTrackStartingCallback cb);
 
+#if ENABLE_GAPLESS
         [DllImport ("libbanshee.dll")]
         private static extern void bp_set_about_to_finish_callback (HandleRef player,
             BansheePlayerAboutToFinishCallback cb);
+#endif
 
         [DllImport ("libbanshee.dll")]
         private static extern bool bp_open (HandleRef player, IntPtr uri);

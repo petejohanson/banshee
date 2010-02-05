@@ -153,6 +153,21 @@ BANSHEE_CHECK_TORRENT
 dnl Moblin integration (optional)
 BANSHEE_CHECK_MOBLIN
 
+dnl Gapless, if we have a new-enough playbin2
+ENABLE_GAPLESS="no"
+AC_ARG_ENABLE(gapless-playback,
+	AC_HELP_STRING([--enable-gapless-playback],
+		[Enable gapless playback engine (requires gst-plugins-base > 0.10.25.2)]),
+		enable_gapless=$enableval,
+		enable_gapless=auto)
+if test "x$enable_gapless" != "xno" ; then
+   	PKG_CHECK_MODULES([GST_PLUGINS_BASE], [gstreamer-plugins-base-0.10 > 0.10.25.2], ENABLE_GAPLESS=yes, ENABLE_GAPLESS=no)
+   	if test "x$enable_gapless" == "xyes" -a "x$ENABLE_GAPLESS" == "xno" ; then
+	   	AC_MSG_ERROR([Gapless playback requires gstreamer-plugins-base > 0.10.25.2])
+	fi
+fi
+AM_CONDITIONAL(ENABLE_GAPLESS, test "x$ENABLE_GAPLESS" = "xyes")   
+
 dnl i18n
 SHAMROCK_CONFIGURE_I18N($PACKAGE)
 
@@ -347,6 +362,7 @@ ${PACKAGE}-${VERSION}
     Library Watcher:   ${HAVE_MONO_2_4_3} (requires Mono >= 2.4.3)
     Podcasts:          ${enable_podcast}
     Wikipedia:         ${enable_webkit} (requires webkit-sharp)
+    Gapless playback:  ${ENABLE_GAPLESS} (requires gstreamer-plugins-base > 0.10.25.2)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})

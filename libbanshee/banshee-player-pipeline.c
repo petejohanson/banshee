@@ -188,6 +188,7 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
     return TRUE;
 }
 
+#ifdef ENABLE_GAPLESS
 static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *player)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
@@ -196,6 +197,7 @@ static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *pla
         player->about_to_finish_cb (player);
     }
 }
+#endif //ENABLE_GAPLESS
 
 // ---------------------------------------------------------------------------
 // Internal Functions
@@ -215,12 +217,17 @@ _bp_pipeline_construct (BansheePlayer *player)
     
     // Playbin is the core element that handles autoplugging (finding the right
     // source and decoder elements) based on source URI and stream content
+#ifdef ENABLE_GAPLESS
     player->playbin = gst_element_factory_make ("playbin2", "playbin");
-    g_return_val_if_fail (player->playbin != NULL, FALSE);
-    
+
     // Connect a proxy about-to-finish callback that will generate a next-track-starting callback.
     // This can be removed once playbin2 generates its own next-track signal.
     g_signal_connect (player->playbin, "about-to-finish", G_CALLBACK (bp_about_to_finish_callback), player);
+#else //ENABLE_GAPLESS
+    player->playbin = gst_element_factory_make ("playbin", "playbin");
+#endif //ENABLE_GAPLESS
+
+    g_return_val_if_fail (player->playbin != NULL, FALSE);
 
     // Try to find an audio sink, prefer gconf, which typically is set to auto these days,
     // fall back on auto, which should work on windows, and as a last ditch, try alsa
