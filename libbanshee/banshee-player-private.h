@@ -103,7 +103,6 @@ struct BansheePlayer {
 
     // Pipeline Elements
     GstElement *playbin;
-    GstElement *audiosink;
     GstElement *audiotee;
     GstElement *audiobin;
     GstElement *equalizer;

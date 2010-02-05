@@ -62,38 +62,6 @@ bp_pipeline_process_tag (const GstTagList *tag_list, const gchar *tag_name, Bans
     }
 }
 
-void bp_try_set_audiosink_buffer (GstElement *element, guint64 *buffer_len)
-{
-    if (g_object_class_find_property (G_OBJECT_GET_CLASS (element), "buffer-time")) {
-        g_object_set (G_OBJECT (element), "buffer-time", *buffer_len, NULL);
-    }
-    gst_object_unref (G_OBJECT (element));
-}
-
-static void
-bp_set_audiosink_buffer_length (BansheePlayer *player, guint64 buffer_len)
-{
-    GstIterator *sink_iterator;
-    GstIteratorResult iter_result;
-    GstElement *audiosink;
-    
-    g_return_if_fail (IS_BANSHEE_PLAYER (player));
-    audiosink = player->audiosink;
-    // If we've directly selected alsasink or directsoundsink then we'll have a
-    // buffer-time property on audiosink.  If so, just set this and return.
-    if (g_object_class_find_property (G_OBJECT_GET_CLASS (audiosink), "buffer-time")) {
-        g_object_set (G_OBJECT (audiosink), "buffer-time", buffer_len, NULL);
-        return;
-    }
-    // If we've selected an auto audio sink, then the real audio sink is a child of the bin.
-    sink_iterator = gst_bin_iterate_recurse (GST_BIN (audiosink));
-    iter_result = gst_iterator_foreach (sink_iterator, (GFunc)&bp_try_set_audiosink_buffer, &buffer_len);
-    if (iter_result == GST_ITERATOR_ERROR) {
-        bp_debug ("Failed to set audio buffer length: failed to find sink");
-    }
-    gst_iterator_free (sink_iterator);
-}
-
 static gboolean
 bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
 {
@@ -113,16 +81,7 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
         case GST_MESSAGE_STATE_CHANGED: {
             GstState old, new, pending;
             gst_message_parse_state_changed (message, &old, &new, &pending);
-
-            if (new == GST_STATE_READY) {            
-                // Explicitly set the buffer length.
-                // We need to know the buffer length so that we can emit a fake track-changed signal at something
-                // approximating the right time, at least until playbin2 can do this for us.  
-                // The easiest way to do this is to set the buffer to a known length.
-                // 
-                // gconfaudiosink only has a real audiosink in it once it's made a transition to READY.
-                bp_set_audiosink_buffer_length (player, BP_BUFFER_LEN_MICROSECONDS);
-            }
+            
             _bp_missing_elements_handle_state_changed (player, old, new);
             _bp_replaygain_handle_state_changed (player, old, new, pending);
             
@@ -248,6 +207,7 @@ _bp_pipeline_construct (BansheePlayer *player)
 {
     GstBus *bus;
     GstPad *teepad;
+    GstElement *audiosink;
     GstElement *audiosinkqueue;
     GstElement *eq_audioconvert = NULL;
     GstElement *eq_audioconvert2 = NULL;
@@ -265,26 +225,26 @@ _bp_pipeline_construct (BansheePlayer *player)
 
     // Try to find an audio sink, prefer gconf, which typically is set to auto these days,
     // fall back on auto, which should work on windows, and as a last ditch, try alsa
-    player->audiosink = gst_element_factory_make ("gconfaudiosink", "audiosink");
-    if (player->audiosink == NULL) {
-        player->audiosink = gst_element_factory_make ("directsoundsink", "audiosink");
-        if (player->audiosink != NULL) {
-            g_object_set (G_OBJECT (player->audiosink), "volume", 1.0, NULL);
+    audiosink = gst_element_factory_make ("gconfaudiosink", "audiosink");
+    if (audiosink == NULL) {
+        audiosink = gst_element_factory_make ("directsoundsink", "audiosink");
+        if (audiosink != NULL) {
+            g_object_set (G_OBJECT (audiosink), "volume", 1.0, NULL);
         } else {
-            player->audiosink = gst_element_factory_make ("autoaudiosink", "audiosink");
-            if (player->audiosink == NULL) {
-                player->audiosink = gst_element_factory_make ("alsasink", "audiosink");
+            audiosink = gst_element_factory_make ("autoaudiosink", "audiosink");
+            if (audiosink == NULL) {
+                audiosink = gst_element_factory_make ("alsasink", "audiosink");
             }
         }
     }
     
-    g_return_val_if_fail (player->audiosink != NULL, FALSE);
+    g_return_val_if_fail (audiosink != NULL, FALSE);
         
     // Set the profile to "music and movies" (gst-plugins-good 0.10.3)
-    if (g_object_class_find_property (G_OBJECT_GET_CLASS (player->audiosink), "profile")) {
-        g_object_set (G_OBJECT (player->audiosink), "profile", 1, NULL);
+    if (g_object_class_find_property (G_OBJECT_GET_CLASS (audiosink), "profile")) {
+        g_object_set (G_OBJECT (audiosink), "profile", 1, NULL);
     }
-        
+    
     // Create a custom audio sink bin that will hold the real primary sink
     player->audiobin = gst_bin_new ("audiobin");
     g_return_val_if_fail (player->audiobin != NULL, FALSE);
@@ -315,7 +275,7 @@ _bp_pipeline_construct (BansheePlayer *player)
     }
     
     gst_bin_add (GST_BIN (player->audiobin), audiosinkqueue);
-    gst_bin_add (GST_BIN (player->audiobin), player->audiosink);
+    gst_bin_add (GST_BIN (player->audiobin), audiosink);
    
     // Ghost pad the audio bin so audio is passed from the bin into the tee
     teepad = gst_element_get_pad (player->audiotee, "sink");
@@ -326,10 +286,10 @@ _bp_pipeline_construct (BansheePlayer *player)
     if (player->equalizer != NULL) {
         // link in equalizer, preamp and audioconvert.
         gst_element_link_many (audiosinkqueue, eq_audioconvert, player->preamp, 
-            player->equalizer, eq_audioconvert2, player->audiosink, NULL);
+            player->equalizer, eq_audioconvert2, audiosink, NULL);
     } else {
         // link the queue with the real audio sink
-        gst_element_link (audiosinkqueue, player->audiosink);
+        gst_element_link (audiosinkqueue, audiosink);
     }
     
     _bp_vis_pipeline_setup (player);
