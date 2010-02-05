@@ -163,7 +163,7 @@ namespace Banshee.Streaming
                 track.AlbumTitleSort = Choose (file.Tag.AlbumSort, track.AlbumTitleSort, preferTrackInfo);
                 track.AlbumArtist = Choose (file.Tag.FirstAlbumArtist, track.AlbumArtist, preferTrackInfo);
                 track.AlbumArtistSort = Choose (file.Tag.FirstAlbumArtistSort, track.AlbumArtistSort, preferTrackInfo);
-                track.IsCompilation = IsCompilation (file);
+                track.IsCompilation = preferTrackInfo ? track.IsCompilation : IsCompilation (file);
 
                 track.TrackTitle = Choose (file.Tag.Title, track.TrackTitle, preferTrackInfo);
                 track.TrackTitleSort = Choose (file.Tag.TitleSort, track.TrackTitleSort, preferTrackInfo);
