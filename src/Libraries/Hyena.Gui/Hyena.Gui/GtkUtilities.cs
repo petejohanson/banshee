@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2007 Novell, Inc.
+// Copyright 2007-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -164,5 +164,34 @@ namespace Hyena.Gui
                 }
             }
         }
+
+        public static bool ShowUri (string uri)
+        {
+            return ShowUri (null, uri);
+        }
+
+        public static bool ShowUri (Gdk.Screen screen, string uri)
+        {
+            return ShowUri (screen, uri, Gtk.Global.CurrentEventTime);
+        }
+
+        [System.Runtime.InteropServices.DllImport ("libgtk-win32-2.0-0.dll")]
+        private static extern unsafe bool gtk_show_uri (IntPtr screen, IntPtr uri, uint timestamp, out IntPtr error);
+
+        public static bool ShowUri (Gdk.Screen screen, string uri, uint timestamp)
+        {
+            var native_uri = GLib.Marshaller.StringToPtrGStrdup (uri);
+            var native_error = IntPtr.Zero;
+            
+            try {
+                return gtk_show_uri (screen == null ? IntPtr.Zero : screen.Handle,
+                    native_uri, timestamp, out native_error);
+            } finally {
+                GLib.Marshaller.Free (native_uri);
+                if (native_error != IntPtr.Zero) {
+                    throw new GLib.GException (native_error);
+                }
+            }
+		}
     }
 }
