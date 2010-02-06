@@ -192,6 +192,6 @@ namespace Hyena.Gui
                     throw new GLib.GException (native_error);
                 }
             }
-		}
+        }
     }
 }
