@@ -232,7 +232,13 @@ namespace Lastfm
             request.KeepAlive = false;
             request.AllowAutoRedirect = true;
 
-            HttpWebResponse response = (HttpWebResponse) request.GetResponse ();
+            HttpWebResponse response = null;
+            try {
+                response = (HttpWebResponse) request.GetResponse ();
+            } catch (WebException e) {
+                Log.DebugException (e);
+                response = (HttpWebResponse)e.Response;
+            }
             return response.GetResponseStream ();
         }
 
