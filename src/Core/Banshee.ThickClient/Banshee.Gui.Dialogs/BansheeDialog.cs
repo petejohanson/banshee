@@ -68,6 +68,11 @@ namespace Banshee.Gui.Dialogs
             AddAccelGroup (accel_group);
         }
 
+        public new ResponseType Run ()
+        {
+            return (ResponseType)base.Run ();
+        }
+
         public Button AddDefaultCloseButton ()
         {
             return AddStockButton (Stock.Close, ResponseType.Close);

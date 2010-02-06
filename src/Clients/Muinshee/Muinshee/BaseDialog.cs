@@ -94,10 +94,10 @@ namespace Muinshee
         public void TryRun ()
         {
             try {
-                int response = Run ();
-                if (response == (int)ResponseType.Apply) {
+                var response = Run ();
+                if (response == ResponseType.Apply) {
                     Queue ();
-                } else if (response == (int)ResponseType.Ok) {
+                } else if (response == ResponseType.Ok) {
                     Play ();
                 }
             } finally {
