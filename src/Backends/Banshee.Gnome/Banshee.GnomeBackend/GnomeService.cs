@@ -72,8 +72,8 @@ namespace Banshee.GnomeBackend
 
         private bool OpenUrl (string url)
         {
-            Hyena.Log.Debug ("Opening URL via gnome-open", url);
-            return Gnome.Url.Show (url);
+            Hyena.Log.Debug ("Opening URL via gtk_show_uri", url);
+            return Hyena.Gui.GtkUtilities.ShowUri (url);
         }
 
         string IService.ServiceName {
