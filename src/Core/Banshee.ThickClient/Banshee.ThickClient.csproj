@@ -29,6 +29,7 @@
     </CustomCommands>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>bin\Windows</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Hyena.Gui\Hyena.Gui.csproj">
@@ -102,6 +104,10 @@
       <HintPath>..\..\..\winbin\taglib-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Posix" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="Mono.Posix">
+      <HintPath>..\..\..\winbin\Mono.Posix.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -126,9 +132,6 @@
     <EmbeddedResource Include="Resources\core-ui-actions-layout.xml">
       <LogicalName>core-ui-actions-layout.xml</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\banshee-dialogs.glade">
-      <LogicalName>banshee-dialogs.glade</LogicalName>
-    </EmbeddedResource>
     <EmbeddedResource Include="Banshee.ThickClient.addin.xml">
       <LogicalName>Banshee.ThickClient.addin.xml</LogicalName>
     </EmbeddedResource>
@@ -151,8 +154,6 @@
     <Compile Include="Banshee.Gui\IconThemeUtils.cs" />
     <Compile Include="Banshee.Gui.Dialogs\ConfirmShutdownDialog.cs" />
     <Compile Include="Banshee.Gui.Dialogs\ErrorListDialog.cs" />
-    <Compile Include="Banshee.Gui.Dialogs\GladeDialog.cs" />
-    <Compile Include="Banshee.Gui.Dialogs\GladeWindow.cs" />
     <Compile Include="Banshee.Gui\GtkElementsService.cs" />
     <Compile Include="Banshee.Gui\BansheeIconFactory.cs" />
     <Compile Include="Banshee.Gui\InterfaceActionService.cs" />

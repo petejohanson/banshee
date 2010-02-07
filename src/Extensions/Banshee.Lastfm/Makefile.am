@@ -24,7 +24,6 @@ RESOURCES =  \
 	Resources/ActiveSourceUI.xml \
 	Resources/AudioscrobblerMenu.xml \
 	Resources/GlobalUI.xml \
-	Resources/lastfm.glade \
 	Resources/LastfmTrackActions.xml \
 	Resources/no-results.png \
 	Resources/RecommendationMenu.xml
