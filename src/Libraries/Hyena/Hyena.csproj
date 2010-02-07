@@ -34,6 +34,7 @@
     </CustomCommands>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +42,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>bin\Windows</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Hyena.Data\BaseListModel.cs" />
@@ -118,7 +120,6 @@
     <Compile Include="Hyena.Data.Sqlite\SqliteUtils.cs" />
     <Compile Include="Hyena\Log.cs" />
     <Compile Include="Hyena\CryptoUtil.cs" />
-    <Compile Include="Hyena\PlatformUtil.cs" />
     <Compile Include="Hyena.Query\IntegerKeyedObjectQueryValue.cs" />
     <Compile Include="Hyena\ConsoleCrayon.cs" />
     <Compile Include="Hyena\ApplicationContext.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Hyena\EventArgs.cs" />
     <Compile Include="System.Web\Helpers.cs" />
     <Compile Include="System.Web\HttpUtility.cs" />
+    <Compile Include="Hyena\PlatformDetection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Posix">
