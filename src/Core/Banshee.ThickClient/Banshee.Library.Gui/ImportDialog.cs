@@ -29,7 +29,6 @@
 using System;
 using System.Collections.Generic;
 using Gtk;
-using Glade;
 
 using Hyena;
 
@@ -43,51 +42,81 @@ using Banshee.Gui.Dialogs;
 
 namespace Banshee.Library.Gui
 {
-    public class ImportDialog : GladeDialog
+    public class ImportDialog : BansheeDialog
     {
         private ComboBox source_combo_box;
         private ListStore source_model;
-        private AccelGroup accel_group;
         private Button import_button;
-
-        [Widget] private Gtk.Label choose_label;
+        private CheckButton do_not_show_check_button;
 
         public ImportDialog () : this (false)
         {
         }
 
-        public ImportDialog (bool doNotShowAgainVisible) : base ("ImportDialog")
+        public ImportDialog (bool doNotShowAgainVisible) : base (String.Empty)
         {
-            accel_group = new AccelGroup ();
+            Resizable = false;
+            DefaultResponse = ResponseType.Ok;
 
-            if (ServiceManager.Contains ("GtkElementsService")) {
-                Dialog.TransientFor = ServiceManager.Get<GtkElementsService> ().PrimaryWindow;
+            AddStockButton (Stock.Cancel, ResponseType.Cancel);
+            import_button = AddButton (String.Empty, ResponseType.Ok, true);
+
+            uint row = 0;
+
+            var table = new Table (4, 2, false) {
+                RowSpacing = 12,
+                ColumnSpacing = 16
+            };
+
+            table.Attach (new Label () {
+                    Markup = Catalog.GetString ("<big><b>Import Media to Library</b></big>"),
+                    Xalign = 0.0f
+                }, 1, 2, row, ++row);
+
+            if (ServiceManager.SourceManager.DefaultSource.Count == 0) {
+                table.Attach (new Label () {
+                        Text = Catalog.GetString ("Your media library is empty. You may import new music and videos into your library now, or choose to do so later."),
+                        Xalign = 0.0f,
+                        Wrap = true
+                    }, 1, 2, row, ++row);
             }
 
-            Dialog.WindowPosition = WindowPosition.CenterOnParent;
-            Dialog.AddAccelGroup (accel_group);
-            Dialog.DefaultResponse = ResponseType.Ok;
-            import_button = (Glade["ImportButton"] as Button);
+            PopulateSourceList ();
+
+            var vbox = new VBox () { Spacing = 2 };
+            vbox.PackStart (new Label () {
+                    Text = Catalog.GetString ("Import _from:"),
+                    Xalign = 0.0f,
+                    UseUnderline = true,
+                    MnemonicWidget = source_combo_box
+                }, false, false, 0);
+            vbox.PackStart (source_combo_box, false, false, 0);
+            table.Attach (vbox, 1, 2, row, ++row);
+
+            table.Attach (do_not_show_check_button = new CheckButton (
+                Catalog.GetString ("Do not show this dialog again")),
+                1, 2, row, ++row);
+
+            table.Attach (new Image () {
+                    IconName = "drive-harddisk",
+                    IconSize = (int)IconSize.Dialog,
+                    Yalign = 0.0f
+                }, 0, 1, 0, row, AttachOptions.Shrink, AttachOptions.Expand | AttachOptions.Fill, 0, 0);
+
+            VBox.PackStart (table, true, true, 0);
+            VBox.ShowAll ();
 
             DoNotShowAgainVisible = doNotShowAgainVisible;
-
-            PopulateSourceList ();
 
             ServiceManager.SourceManager.SourceAdded += OnSourceAdded;
             ServiceManager.SourceManager.SourceRemoved += OnSourceRemoved;
             ServiceManager.SourceManager.SourceUpdated += OnSourceUpdated;
+        }
 
-            Glade["MessageLabel"].Visible = ServiceManager.SourceManager.DefaultSource.Count == 0;
-
-            import_button.AddAccelerator ("activate", accel_group, (uint)Gdk.Key.Return, 0, AccelFlags.Visible);
-
-            Dialog.StyleSet += delegate {
-                UpdateIcons ();
-            };
-
-            source_combo_box.RowSeparatorFunc = (model, iter) => {
-                return model.GetValue (iter, 2) == null;
-            };
+        protected override void OnStyleSet (Style previous_style)
+        {
+            base.OnStyleSet (previous_style);
+            UpdateIcons ();
         }
 
         private void UpdateImportLabel ()
@@ -104,7 +133,7 @@ namespace Banshee.Library.Gui
             source_combo_box = new ComboBox ();
             source_combo_box.Changed += delegate { UpdateImportLabel (); };
             source_combo_box.Model = source_model;
-            choose_label.MnemonicWidget = source_combo_box;
+            source_combo_box.RowSeparatorFunc = (model, iter) => model.GetValue (iter, 2) == null;
 
             CellRendererPixbuf pixbuf_cr = new CellRendererPixbuf ();
             CellRendererText text_cr = new CellRendererText ();
@@ -148,9 +177,6 @@ namespace Banshee.Library.Gui
                 source_model.GetIterFirst (out active_iter))) {
                 source_combo_box.SetActiveIter (active_iter);
             }
-
-            (Glade["ComboVBox"] as Box).PackStart (source_combo_box, false, false, 0);
-            source_combo_box.ShowAll ();
         }
 
         private void UpdateIcons ()
@@ -239,12 +265,12 @@ namespace Banshee.Library.Gui
         }
 
         public bool DoNotShowAgainVisible {
-            get { return Glade["DoNotShowCheckBox"].Visible; }
-            set { Glade["DoNotShowCheckBox"].Visible = value; }
+            get { return do_not_show_check_button.Visible; }
+            set { do_not_show_check_button.Visible = value; }
         }
 
         public bool DoNotShowAgain {
-            get { return (Glade["DoNotShowCheckBox"] as CheckButton).Active; }
+            get { return do_not_show_check_button.Active; }
         }
 
         public IImportSource ActiveSource {
