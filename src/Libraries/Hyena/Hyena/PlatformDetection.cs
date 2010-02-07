@@ -37,7 +37,6 @@ namespace Hyena
         public static readonly bool IsWindows;
         public static readonly bool IsLinux;
         public static readonly bool IsUnix;
-        public static readonly bool IsPosix;
         public static readonly bool IsMoblin;
 
         public static readonly string PosixSystemName;
