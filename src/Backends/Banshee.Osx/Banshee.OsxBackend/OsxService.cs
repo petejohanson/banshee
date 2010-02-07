@@ -136,14 +136,7 @@ namespace Banshee.OsxBackend
 
         private void BindMenuBar ()
         {
-            UIManager ui = interface_action_service.UIManager;
-
-            // retreive and hide the gtk menu
-            MenuShell menu = (MenuShell) ui.GetWidget ("/MainMenu");
-            menu.Hide ();
-
-            // bind menu
-            IgeMacMenu.MenuBar = menu;
+            IgeMacMenu.MenuBar =(MenuShell)interface_action_service.UIManager.GetWidget ("/MainMenu");
         }
 
         private void AdjustMainMenu () {
