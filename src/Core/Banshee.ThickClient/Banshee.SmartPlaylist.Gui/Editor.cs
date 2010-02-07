@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Gtk;
-using Glade;
 
 using Mono.Unix;
 
@@ -20,7 +19,7 @@ using Banshee.Query.Gui;
 
 namespace Banshee.SmartPlaylist
 {
-    public class Editor : GladeDialog
+    public class Editor : BansheeDialog
     {
         private BansheeQueryBox builder;
         private SmartPlaylistSource playlist = null;
@@ -31,15 +30,13 @@ namespace Banshee.SmartPlaylist
             get { return currently_editing; }
         }
 
-        [Widget] private Gtk.Entry name_entry;
-        [Widget] private Gtk.VBox builder_box;
-        [Widget] private Gtk.Button ok_button;
-        [Widget] private Gtk.TreeView adv_tree_view;
-        [Widget] private Gtk.Button adv_use_button;
-        [Widget] private Gtk.Button adv_add_button;
-        [Widget] private Gtk.Expander advanced_expander;
+        private Gtk.Entry name_entry;
+        private Gtk.Button ok_button;
+        private Gtk.TreeView adv_tree_view;
+        private Gtk.Button adv_use_button;
+        private Gtk.Button adv_add_button;
 
-        public Editor (SmartPlaylistSource playlist) : base ("SmartPlaylistEditorDialog")
+        public Editor (SmartPlaylistSource playlist)
         {
             currently_editing = playlist;
             this.playlist = playlist;
@@ -49,7 +46,7 @@ namespace Banshee.SmartPlaylist
 
             Initialize ();
 
-            Dialog.Title = Catalog.GetString ("Edit Smart Playlist");
+            Title = Catalog.GetString ("Edit Smart Playlist");
 
             name_entry.Text = playlist.Name;
 
@@ -72,7 +69,7 @@ namespace Banshee.SmartPlaylist
             }
         }
 
-        public Editor (PrimarySource primary_source) : base ("SmartPlaylistEditorDialog")
+        public Editor (PrimarySource primary_source)
         {
             this.primary_source = primary_source;
             Initialize ();
@@ -80,16 +77,59 @@ namespace Banshee.SmartPlaylist
 
         private void Initialize ()
         {
-            Dialog.Title = Catalog.GetString ("New Smart Playlist");
+            Title = Catalog.GetString ("New Smart Playlist");
+            VBox.Spacing = 8;
 
-            builder = new BansheeQueryBox ();
+            AddStockButton (Stock.Cancel, ResponseType.Cancel);
+            ok_button = AddStockButton (Stock.Save, ResponseType.Ok, true);
 
+            var builder_box = new VBox () {
+                BorderWidth = 5,
+                Spacing = 10
+            };
+
+            var name_box = new HBox () {
+                Spacing = 2
+            };
+
+            name_box.PackStart (new Label () {
+                    Text = Catalog.GetString ("Playlist _Name:"),
+                    UseUnderline = true
+                }, false, false, 0);
+
+            name_box.PackStart (name_entry = new Entry (), true, true, 0);
+            name_entry.Changed += HandleNameChanged;
+            builder_box.PackStart (name_box, false, false, 0);
+
+            builder_box.PackStart (builder = new BansheeQueryBox (), true, true, 0);
             builder.Show ();
             builder.Spacing = 4;
 
-            builder_box.PackStart (builder, true, true, 0);
+            var expander = new Expander ("Predefined Smart Playlists");
+            var hbox = new HBox () { Spacing = 8 };
+            var scrolled_window = new ScrolledWindow () {
+                HscrollbarPolicy = PolicyType.Never,
+                VscrollbarPolicy = PolicyType.Automatic,
+                ShadowType = ShadowType.In
+            };
+            var button_box = new VButtonBox () {
+                Spacing = 2,
+                LayoutStyle = ButtonBoxStyle.Start
+            };
+            button_box.PackStart (adv_add_button = new Button (Catalog.GetString ("Open in editor")), false, false, 0);
+            button_box.PackStart (adv_use_button = new Button (Catalog.GetString ("Create and save")), false, false, 0);
 
-            name_entry.Changed += HandleNameChanged;
+            scrolled_window.Add (adv_tree_view = new TreeView () {
+                HeightRequest = 150,
+                HeadersVisible = false
+            });
+            hbox.PackStart (scrolled_window, true, true, 0);
+            hbox.PackStart (button_box, false, false, 0);
+
+            expander.Add (hbox);
+
+            VBox.PackStart (builder_box, true, true, 0);
+            VBox.PackStart (expander, false, false, 0);
 
             // Model is Name, SmartPlaylistDefinition
             ListStore list_model = new ListStore (typeof(string), typeof(SmartPlaylistDefinition));
@@ -115,13 +155,15 @@ namespace Banshee.SmartPlaylist
             adv_use_button.Clicked += HandleAdvUse;
 
             if (!have_any_predefined) {
-                advanced_expander.NoShowAll = true;
-                advanced_expander.Hide ();
+                expander.NoShowAll = true;
+                expander.Hide ();
             }
 
             Update ();
 
             name_entry.GrabFocus ();
+
+            ShowAll ();
         }
 
         /*public void SetQueryFromSearch ()
@@ -184,15 +226,11 @@ namespace Banshee.SmartPlaylist
         public void RunDialog ()
         {
             Run ();
-            Dialog.Destroy ();
+            Destroy ();
         }
 
-        public override ResponseType Run ()
+        protected override void OnResponse (ResponseType response)
         {
-            Dialog.ShowAll ();
-
-            ResponseType response = (ResponseType)Dialog.Run ();
-
             //int w = -1, h = -1;
             //dialog.GetSize (out w, out h);
             //Console.WriteLine ("w = {0}, h = {1}", w, h);
@@ -247,7 +285,6 @@ namespace Banshee.SmartPlaylist
             }
 
             currently_editing = null;
-            return response;
         }
 
         private void HandleAdvSelectionChanged (object sender, EventArgs args)
@@ -279,7 +316,7 @@ namespace Banshee.SmartPlaylist
             }
 
             currently_editing = null;
-            Dialog.Destroy ();
+            Destroy ();
         }
 
         private void HandleAdvUse (object sender, EventArgs args)
