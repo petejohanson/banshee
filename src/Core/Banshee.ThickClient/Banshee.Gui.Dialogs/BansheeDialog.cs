@@ -48,7 +48,7 @@ namespace Banshee.Gui.Dialogs
         public BansheeDialog (string title, Window parent) : base ()
         {
             Title = title;
-            BorderWidth = 5;
+            BorderWidth = 12;
             Visible = false;
             HasSeparator = false;
 
