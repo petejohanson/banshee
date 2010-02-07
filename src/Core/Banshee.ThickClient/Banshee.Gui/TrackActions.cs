@@ -237,7 +237,9 @@ namespace Banshee.Gui
                     UpdateAction ("AddToPlaylistAction", in_database && primary_source != null &&
                             primary_source.SupportsPlaylists && !primary_source.PlaylistsReadOnly, has_selection, null);
 
-                    if (primary_source != null && !(primary_source is LibrarySource)) {
+                    if (primary_source != null &&
+                        !(primary_source is LibrarySource) &&
+                        primary_source.StorageName != null) {
                         this["DeleteTracksFromDriveAction"].Label = String.Format (
                             Catalog.GetString ("_Delete From \"{0}\""), primary_source.StorageName);
                     }

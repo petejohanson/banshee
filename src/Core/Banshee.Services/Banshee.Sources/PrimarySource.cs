@@ -545,7 +545,16 @@ namespace Banshee.Sources
 
         protected virtual bool DeleteTrack (DatabaseTrackInfo track)
         {
-            throw new Exception ("PrimarySource DeleteTrack method not implemented");
+            if (!track.Uri.IsLocalPath)
+                throw new Exception ("Cannot delete a non-local resource: " + track.Uri.Scheme);
+
+            try {
+                Banshee.IO.Utilities.DeleteFileTrimmingParentDirectories (track.Uri);
+            } catch (System.IO.FileNotFoundException) {
+            } catch (System.IO.DirectoryNotFoundException) {
+            }
+
+            return true;
         }
 
         public override bool AcceptsInputFromSource (Source source)

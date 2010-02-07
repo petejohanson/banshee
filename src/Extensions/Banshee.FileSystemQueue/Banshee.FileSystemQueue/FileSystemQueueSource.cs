@@ -106,6 +106,8 @@ namespace Banshee.FileSystemQueue
                     Enqueue (Path.GetFullPath (path));
                 }
             }
+
+            StorageName = null;
         }
 
         public void Enqueue (string path)
@@ -196,11 +198,6 @@ namespace Banshee.FileSystemQueue
                     }
                 }
             }
-        }
-
-        // until we implement DeleteTrack, at least
-        public override bool CanDeleteTracks {
-            get { return false; }
         }
 
         public override void Dispose ()
