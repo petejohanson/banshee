@@ -40,7 +40,7 @@ all: $(ASSEMBLY_FILE) theme-icons
 
 run: 
 	@pushd $(top_builddir); \
-	make run \
+	make run; \
 	popd;
 
 build-debug:
