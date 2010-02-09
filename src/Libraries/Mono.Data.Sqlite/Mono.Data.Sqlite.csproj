@@ -34,6 +34,7 @@
     <OutputPath>..\..\..\bin</OutputPath>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <DefineConstants>NET_2_0 MONO_BACKWARD_COMPAT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +43,7 @@
     <OutputPath>..\..\..\bin</OutputPath>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <DefineConstants>NET_2_0 MONO_BACKWARD_COMPAT</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
