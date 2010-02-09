@@ -406,6 +406,9 @@ namespace Banshee.Gui.Widgets
             string artwork_id = track.ArtworkId;
             if (current_artwork_id != artwork_id || force) {
                 current_artwork_id = artwork_id;
+                if (incoming_image != null && current_image != incoming_image && !IsMissingImage (incoming_image)) {
+                    ((IDisposable)incoming_image).Dispose ();
+                }
                 incoming_image = artwork_manager.LookupScaleSurface (artwork_id, ArtworkSizeRequest);
             }
 
@@ -414,6 +417,9 @@ namespace Banshee.Gui.Widgets
             }
 
             if (track == current_track) {
+                if (current_image != null && current_image != incoming_image && !IsMissingImage (current_image)) {
+                    ((IDisposable)current_image).Dispose ();
+                }
                 current_image = incoming_image;
             }
         }
