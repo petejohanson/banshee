@@ -102,24 +102,9 @@ namespace Banshee.Equalizer.Gui
 
             box.PackStart (eq_view, true, true, 0);
 
-            eq_enabled_checkbox.Active = EqualizerSetting.EnabledSchema.Get ();
-            eq_preset_combo.ActivatePreferredEqualizer (EqualizerSetting.PresetSchema.Get ());
-
-            if (eq_enabled_checkbox.Active) {
-                // enable equalizer if was enabled last session
-                EqualizerManager.Instance.Enable (eq_preset_combo.ActiveEqualizer);
-            }
-
-            if (eq_preset_combo.ActiveEqualizer == null) {
-                // user has no presets, so create one
-                OnNewPreset (null, null);
-
-                // enable our new preset (it has no effect though, since all bands are 0db)
-                eq_enabled_checkbox.Active = true;
-                OnEnableDisable (null, null);
-            }
-
+            eq_enabled_checkbox.Active = EqualizerManager.Instance.IsActive;
             eq_enabled_checkbox.Clicked += OnEnableDisable;
+            eq_preset_combo.ActiveEqualizer = EqualizerManager.Instance.SelectedEqualizer;
 
             Gdk.Geometry limits = new Gdk.Geometry ();
             limits.MinWidth = -1;
@@ -155,7 +140,8 @@ namespace Banshee.Equalizer.Gui
 
         private void OnNewPreset (object o, EventArgs args)
         {
-            EqualizerSetting eq = new EqualizerSetting (Catalog.GetString ("New Preset"));
+            EqualizerSetting eq = new EqualizerSetting (EqualizerManager.Instance,
+                Catalog.GetString ("New Preset"));
             EqualizerManager.Instance.Add (eq);
             eq_preset_combo.ActiveEqualizer = eq;
             eq_preset_combo.Entry.SelectRegion (0, eq_preset_combo.Entry.Text.Length);
@@ -170,17 +156,13 @@ namespace Banshee.Equalizer.Gui
         {
             if (eq_preset_combo.ActiveEqualizer != eq_view.EqualizerSetting) {
                 eq_view.EqualizerSetting = eq_preset_combo.ActiveEqualizer;
-                OnEnableDisable (null, null);
+                EqualizerManager.Instance.Select (eq_preset_combo.ActiveEqualizer);
             }
         }
 
         private void OnEnableDisable (object o, EventArgs args)
         {
-            if (eq_enabled_checkbox.Active) {
-                EqualizerManager.Instance.Enable (eq_preset_combo.ActiveEqualizer);
-            } else {
-                EqualizerManager.Instance.Disable (eq_preset_combo.ActiveEqualizer);
-            }
+            EqualizerManager.Instance.IsActive = eq_enabled_checkbox.Active;
         }
     }
 }

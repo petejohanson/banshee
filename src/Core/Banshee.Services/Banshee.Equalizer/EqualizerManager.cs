@@ -5,7 +5,7 @@
 //   Aaron Bockover <abockover@novell.com>
 //   Alexander Hixon <hixon.alexander@mediati.org>
 //
-// Copyright (C) 2006-2007 Novell, Inc.
+// Copyright 2006-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -33,46 +33,53 @@ using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
 
+using Mono.Unix;
+
 using Hyena;
+using Hyena.Json;
+
 using Banshee.Base;
 using Banshee.MediaEngine;
 using Banshee.ServiceStack;
+using Banshee.Configuration;
 
 namespace Banshee.Equalizer
 {
     public class EqualizerManager : IEnumerable<EqualizerSetting>, IEnumerable
     {
-        private List<EqualizerSetting> equalizers = new List<EqualizerSetting> ();
-        private string path;
-
-        public delegate void EqualizerSettingEventHandler (object o, Hyena.EventArgs<EqualizerSetting> args);
-        public event EqualizerSettingEventHandler EqualizerAdded;
-        public event EqualizerSettingEventHandler EqualizerRemoved;
-        public event EqualizerSettingEventHandler EqualizerChanged;
+        private static string legacy_xml_path = System.IO.Path.Combine (
+            Paths.ApplicationData, "equalizers.xml");
 
         private static EqualizerManager instance;
         public static EqualizerManager Instance {
             get {
                 if (instance == null) {
                     instance = new EqualizerManager (System.IO.Path.Combine (
-                        Paths.ApplicationData, "equalizers.xml"));
+                        Paths.ApplicationData, "equalizers.json"));
                 }
 
                 return instance;
             }
         }
 
-        public EqualizerManager ()
-        {
-        }
+        private List<EqualizerSetting> equalizers = new List<EqualizerSetting> ();
 
-        public EqualizerManager (string path)
+        public string Path { get; private set; }
+        public EqualizerSetting SelectedEqualizer { get; private set; }
+
+        public delegate void EqualizerSettingEventHandler (object o, Hyena.EventArgs<EqualizerSetting> args);
+        public event EqualizerSettingEventHandler EqualizerAdded;
+        public event EqualizerSettingEventHandler EqualizerRemoved;
+        public event EqualizerSettingEventHandler EqualizerChanged;
+
+        private EqualizerManager (string path)
         {
-            this.path = path;
+            Path = path;
 
             try {
                 Load ();
-            } catch {
+            } catch (Exception e) {
+                Log.Exception ("Failed to load equalizer", e);
             }
         }
 
@@ -113,124 +120,216 @@ namespace Banshee.Equalizer
             QueueSave ();
         }
 
-        public void Enable (EqualizerSetting eq)
+        public EqualizerSetting Find (string name)
         {
+            return String.IsNullOrEmpty (name) ? null : equalizers.Find (eq => eq.Name == name);
+        }
+
+        public void Select ()
+        {
+            Select (PresetSchema.Get ());
+        }
+
+        public void Select (string name)
+        {
+            Select (Find (name));
+        }
+
+        public void Select (EqualizerSetting eq)
+        {
+            if (SelectedEqualizer == eq) {
+                return;
+            }
+
+            bool sync = SelectedEqualizer != eq;
+            SelectedEqualizer = eq;
+
             if (eq != null) {
-                eq.Enabled = true;
+                PresetSchema.Set (eq.Name);
+                Log.DebugFormat ("Selected equalizer: {0}", eq.Name);
+            }
 
-                // Make a copy of the Dictionary first, otherwise it'll become out of sync
-                // when we begin to change the gain on the bands.
-                Dictionary<uint, double> bands = new Dictionary<uint, double> (eq.Bands);
-
-                foreach(KeyValuePair<uint, double> band in bands)
-                {
-                    eq.SetGain (band.Key, band.Value);
-                }
-
-                // Reset preamp.
-                eq.AmplifierLevel = eq.AmplifierLevel;
+            if (IsActive && sync) {
+                FlushToEngine (eq);
             }
         }
 
-        public void Disable (EqualizerSetting eq)
+        private void FlushToEngine (EqualizerSetting eq)
         {
-            if (eq != null) {
-                eq.Enabled = false;
-
-                // Set the actual equalizer gain on all bands to 0 dB,
-                // but don't change the gain in the dictionary (we can use/change those values
-                // later, but not affect the actual audio stream until we're enabled again).
-                for (uint i = 0; i < eq.BandCount; i++) {
-                    ((IEqualizer) ServiceManager.PlayerEngine.ActiveEngine).SetEqualizerGain (i, 0);
+            if (eq == null) {
+                var engine_eq = (IEqualizer)ServiceManager.PlayerEngine.ActiveEngine;
+                engine_eq.AmplifierLevel = 0;
+                for (uint i = 0; i < engine_eq.EqualizerFrequencies.Length; i++) {
+                    engine_eq.SetEqualizerGain (i, 0);
                 }
 
-                ((IEqualizer) ServiceManager.PlayerEngine.ActiveEngine).AmplifierLevel = 0;
+                Log.DebugFormat ("Disabled equalizer");
+            } else {
+                eq.FlushToEngine ();
+                Log.DebugFormat ("Syncing equalizer to engine: {0}", eq.Name);
+            }
+        }
+
+        public bool IsActive {
+            get { return EnabledSchema.Get (); }
+            set {
+                EnabledSchema.Set (value);
+
+                if (value) {
+                    if (SelectedEqualizer != null) {
+                        FlushToEngine (SelectedEqualizer);
+                    }
+                } else {
+                    FlushToEngine (null);
+                }
             }
         }
 
         public void Load ()
         {
-            Load (path);
+            Load (Path);
         }
 
         public void Load (string path)
         {
-            XmlDocument doc = new XmlDocument ();
-
-            try {
-                doc.Load (path);
-            } catch {
-            }
+            var timer = Log.DebugTimerStart ();
 
             Clear ();
 
-            if (doc.DocumentElement == null || doc.DocumentElement.ChildNodes == null) {
-                return;
-            }
-
-            foreach (XmlNode node in doc.DocumentElement.ChildNodes) {
-                if(node.Name != "equalizer") {
-                    throw new XmlException ("equalizer node was expected");
-                }
-
-                EqualizerSetting eq = new EqualizerSetting (node.Attributes["name"].Value);
-
-                foreach (XmlNode child in node) {
-                    if (child.Name == "preamp") {
-                        eq.AmplifierLevel = Convert.ToDouble (child.InnerText);
-                    } else if (child.Name == "band") {
-                        eq.SetGain (Convert.ToUInt32 (child.Attributes["num"].Value),
-                            Convert.ToDouble (child.InnerText));
-                    } else {
-                        throw new XmlException ("Invalid node, expected one of preamp or band");
+            try {
+                if (File.Exists (Path)) {
+                    using (var reader = new StreamReader (path)) {
+                        var deserializer = new Deserializer (reader);
+                        foreach (var node in (JsonObject)deserializer.Deserialize ()) {
+                            var eq_data = (JsonObject)node.Value;
+                            var eq = new EqualizerSetting (this, node.Key);
+                            eq.SetAmplifierLevel (Convert.ToDouble (eq_data["preamp"]), false);
+                            var bands = (JsonArray)eq_data["bands"];
+                            for (uint band = 0; band < bands.Count; band++) {
+                                eq.SetGain (band, Convert.ToDouble (bands[(int)band]), false);
+                            }
+                            Add (eq);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                try {
+                    if (File.Exists (legacy_xml_path)) {
+                        var reader = new XmlTextReader (legacy_xml_path);
+                        if (reader.ReadToDescendant ("equalizers")) {
+                            while (reader.ReadToFollowing ("equalizer")) {
+                                var eq = new EqualizerSetting (this, reader["name"]);
+                                while (reader.Read () && !(reader.NodeType == XmlNodeType.EndElement &&
+                                    reader.Name == "equalizer")) {
+                                    if (reader.NodeType != XmlNodeType.Element) {
+                                        continue;
+                                    } else if (reader.Name == "preamp") {
+                                        eq.SetAmplifierLevel (reader.ReadElementContentAsDouble (), false);
+                                    } else if (reader.Name == "band") {
+                                        eq.SetGain (Convert.ToUInt32 (reader["num"]),
+                                            reader.ReadElementContentAsDouble (), false);
+                                    }
+                                }
+                                Add (eq);
+                            }
+                        }
+                        Log.Information ("Converted legaxy XML equalizer presets to new JSON format");
+                    }
+                } catch (Exception xe) {
+                    Log.Exception ("Could not load equalizers.xml", xe);
+                }
 
-                Add (eq);
+                Log.Exception ("Could not load equalizers.json", e);
             }
+
+            if (equalizers.Count == 0) {
+                LoadDefaults ();
+            }
+
+            Log.DebugTimerPrint (timer, "Loaded equalizer presets: {0}");
+        }
+
+        private void LoadDefaults ()
+        {
+            equalizers = new List<EqualizerSetting> () {
+                new EqualizerSetting (this, Catalog.GetString ("Classical"), 0, new [] {
+                    0, 0, 0, 0, 0, 0, -7.2, -7.2, -7.2, -9.6
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Club"), 0, new [] {
+                    0, 0, 8, 5.6, 5.6, 5.6, 3.2, 0, 0, 0
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Dance"), -1.1, new [] {
+                    9.6, 7.2, 2.4, -1.1, -1.1, -5.6, -7.2, -7.2, -1.1, -1.1
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Full Bass"), -1.1, new [] {
+                    -8, 9.6, 9.6, 5.6, 1.6, -4, -8, -10.4, -11.2, -11.2
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Full Bass and Treble"), -1.1, new [] {
+                    7.2, 5.6, -1.1, -7.2, -4.8, 1.6, 8, 11.2, 12, 12
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Full Treble"), -1.1, new [] {
+                    -9.6, -9.6, -9.6, -4, 2.4, 11.2, 11.5, 11.8, 11.8, 12
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Laptop Speakers and Headphones"), -1.1, new [] {
+                    4.8, 11.2, 5.6, -3.2, -2.4, 1.6, 4.8, 9.6, 11.9, 11.9
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Large Hall"), -1.1, new [] {
+                    10.4, 10.4, 5.6, 5.6, -1.1, -4.8, -4.8, -4.8, -1.1, -1.1
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Live"), -1.1, new [] {
+                    -4.8, -1.1, 4, 5.6, 5.6, 5.6, 4, 2.4, 2.4, 2.4
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Party"), -1.1, new [] {
+                    7.2, 7.2, -1.1, -1.1, -1.1, -1.1, -1.1, -1.1, 7.2, 7.2
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Pop"), -1.1, new [] {
+                    -1.6, 4.8, 7.2, 8, 5.6, -1.1, -2.4, -2.4, -1.6, -1.6
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Reggae"), -1.1, new [] {
+                    -1.1, -1.1, -1.1, -5.6, -1.1, 6.4, 6.4, -1.1, -1.1, -1.1
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Rock"), -1.1, new [] {
+                    8, 4.8, -5.6, -8, -3.2, 4, 8.8, 11.2, 11.2, 11.2
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Ska"), -1.1, new [] {
+                    -2.4, -4.8, -4, -1.1, 4, 5.6, 8.8, 9.6, 11.2, 9.6
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Soft"), -1.1, new [] {
+                    4.8, 1.6, -1.1, -2.4, -1.1, 4, 8, 9.6, 11.2, 12,
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Soft Rock"), -1.1, new [] {
+                    4, 4, 2.4, -1.1, -4, -5.6, -3.2, -1.1, 2.4, 8.8,
+                }),
+                new EqualizerSetting (this, Catalog.GetString ("Techno"), -1.1, new [] {
+                    8, 5.6, -1.1, -5.6, -4.8, -1.1, 8, 9.6, 9.6, 8.8
+                })
+            };
+
+            Select ("Pop");
         }
 
         public void Save ()
         {
-            Save (path);
+            Save (Path);
         }
 
         public void Save (string path)
         {
-            XmlDocument doc = new XmlDocument ();
-            XmlNode root = doc.CreateNode (XmlNodeType.Element, "equalizers", null);
-            doc.AppendChild (root);
-
-            foreach (EqualizerSetting eq in this) {
-                XmlNode root_node = doc.CreateNode (XmlNodeType.Element, "equalizer", null);
-
-                XmlAttribute name_node = doc.CreateAttribute ("name");
-                name_node.Value = eq.Name;
-                XmlNode preamp_node = doc.CreateNode (XmlNodeType.Element, "preamp", null);
-                XmlNode preamp_node_value = doc.CreateNode (XmlNodeType.Text, "value", null);
-                preamp_node_value.Value = Convert.ToString (eq.AmplifierLevel);
-                preamp_node.AppendChild (preamp_node_value);
-
-                root_node.Attributes.Append (name_node);
-                root_node.AppendChild (preamp_node);
-
-                foreach (KeyValuePair<uint, double> band in eq.Bands) {
-                    XmlNode band_node = doc.CreateNode (XmlNodeType.Element, "band", null);
-                    XmlNode band_node_value = doc.CreateNode (XmlNodeType.Text, "value", null);
-                    band_node_value.Value = Convert.ToString (band.Value);
-                    band_node.AppendChild (band_node_value);
-
-                    XmlAttribute frequency_node = doc.CreateAttribute ("num");
-                    frequency_node.Value = Convert.ToString (band.Key);
-                    band_node.Attributes.Append (frequency_node);
-
-                    root_node.AppendChild (band_node);
+            try {
+                using (var writer = new StreamWriter (Path)) {
+                    writer.Write ("{");
+                    writer.WriteLine ();
+                    foreach (var eq in this) {
+                        writer.Write (eq);
+                        writer.Write (",");
+                        writer.WriteLine ();
+                    }
+                    writer.Write ("}");
                 }
-
-                root.AppendChild (root_node);
+                Log.Debug ("EqualizerManager", "Saved equalizers to disk");
+            } catch (Exception e) {
+                Log.Exception ("Unable to save equalizers", e);
             }
-
-            doc.Save (path);
         }
 
         protected virtual void OnEqualizerAdded (EqualizerSetting eq)
@@ -287,8 +386,18 @@ namespace Banshee.Equalizer
             return equalizers.GetEnumerator ();
         }
 
-        public string Path {
-            get { return path; }
-        }
+        public static readonly SchemaEntry<bool> EnabledSchema = new SchemaEntry<bool> (
+            "player_engine", "equalizer_enabled",
+            false,
+            "Equalizer status",
+            "Whether or not the equalizer is set to be enabled."
+        );
+
+        public static readonly SchemaEntry<string> PresetSchema = new SchemaEntry<string> (
+            "player_engine", "equalizer_preset",
+            "",
+            "Equalizer preset",
+            "Default preset to load into equalizer."
+        );
     }
 }

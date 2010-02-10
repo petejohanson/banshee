@@ -100,22 +100,6 @@ namespace Banshee.Equalizer.Gui
             }
         }
 
-        public bool ActivatePreferredEqualizer (string name)
-        {
-            if (name == null || name == "") {
-                return ActivateFirstEqualizer ();
-            } else {
-                foreach (EqualizerSetting eq in manager) {
-                    if (eq.Name == name) {
-                        ActiveEqualizer = eq;
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
-
         public bool ActivateFirstEqualizer ()
         {
             TreeIter iter;
