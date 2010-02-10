@@ -51,7 +51,7 @@ namespace Banshee.Sources.Gui
             }
 
             renderer.Source = source;
-            renderer.Path = model.GetPath (iter);
+            renderer.Iter = iter;
 
             if (source == null) {
                 return;
@@ -75,10 +75,10 @@ namespace Banshee.Sources.Gui
             set { parent_widget = value; }
         }
 
-        private TreePath path;
-        public TreePath Path {
-            get { return path; }
-            set { path = value; }
+        private TreeIter iter = TreeIter.Zero;
+        public TreeIter Iter {
+            get { return iter; }
+            set { iter = value; }
         }
 
         private int padding;
@@ -140,10 +140,10 @@ namespace Banshee.Sources.Gui
             }
 
             view = widget as SourceView;
-            bool path_selected = view != null && view.Selection.PathIsSelected (path);
+            bool selected = view != null && view.Selection.IterIsSelected (iter);
             StateType state = RendererStateToWidgetState (widget, flags);
 
-            RenderSelection (drawable, background_area, path_selected, state);
+            RenderSelection (drawable, background_area, selected, state);
 
             int title_layout_width = 0, title_layout_height = 0;
             int count_layout_width = 0, count_layout_height = 0;
@@ -232,13 +232,13 @@ namespace Banshee.Sources.Gui
         }
 
         private void RenderSelection (Gdk.Drawable drawable, Gdk.Rectangle background_area,
-            bool path_selected, StateType state)
+            bool selected, StateType state)
         {
             if (view == null) {
                 return;
             }
 
-            if (path_selected && view.Cr != null) {
+            if (selected && view.Cr != null) {
                 Gdk.Rectangle rect = background_area;
                 rect.X -= 2;
                 rect.Width += 4;
@@ -251,12 +251,11 @@ namespace Banshee.Sources.Gui
                     view.Theme.DrawRowSelection (view.Cr, background_area.X + 1, background_area.Y + 1,
                         background_area.Width - 2, background_area.Height - 2);
                 }
-            } else if (path != null && path.Equals (view.HighlightedPath) && view.Cr != null) {
+            } else if (!TreeIter.Zero.Equals (iter) && iter.Equals (view.HighlightedIter) && view.Cr != null) {
                 view.Theme.DrawRowSelection (view.Cr, background_area.X + 1, background_area.Y + 1,
                     background_area.Width - 2, background_area.Height - 2, false);
             } else if (view.NotifyStage.ActorCount > 0 && view.Cr != null) {
-                TreeIter iter;
-                if (view.Model.GetIter (out iter, path) && view.NotifyStage.Contains (iter)) {
+                if (!TreeIter.Zero.Equals (iter) && view.NotifyStage.Contains (iter)) {
                     Actor<TreeIter> actor = view.NotifyStage[iter];
                     Cairo.Color color = view.Theme.Colors.GetWidgetColor (GtkColorClass.Background, StateType.Active);
                     color.A = Math.Sin (actor.Percent * Math.PI);
@@ -294,7 +293,9 @@ namespace Banshee.Sources.Gui
             }
 
             view.EditingRow = false;
-            view.UpdateRow (new TreePath (edit.path), edit.Text);
+            using (var tree_path = new TreePath (edit.path)) {
+                view.UpdateRow (tree_path, edit.Text);
+            }
         }
     }
 }

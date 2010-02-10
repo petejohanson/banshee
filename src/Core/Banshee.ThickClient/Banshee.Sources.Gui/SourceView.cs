@@ -59,7 +59,7 @@ namespace Banshee.Sources.Gui
         private Stage<TreeIter> notify_stage = new Stage<TreeIter> (2000);
 
         private TreeViewColumn focus_column;
-        private TreePath highlight_path;
+        private TreeIter highlight_iter = TreeIter.Zero;
         private SourceModel store;
         private int current_timeout = -1;
         private bool editing_row = false;
@@ -131,8 +131,10 @@ namespace Banshee.Sources.Gui
                     return false;
                 }
 
-                Gdk.Rectangle rect = GetBackgroundArea (store.GetPath (actor.Target), focus_column);
-                QueueDrawArea (rect.X, rect.Y, rect.Width, rect.Height);
+                using (var path = store.GetPath (actor.Target) ) {
+                    Gdk.Rectangle rect = GetBackgroundArea (path, focus_column);
+                    QueueDrawArea (rect.X, rect.Y, rect.Width, rect.Height);
+                }
                 return true;
             };
         }
@@ -192,9 +194,12 @@ namespace Banshee.Sources.Gui
             }
 
             if (press.Button == 3) {
-                HighlightPath (path);
-                OnPopupMenu ();
-                return true;
+                TreeIter iter;
+                if (Model.GetIter (out iter, path)) {
+                    HighlightIter (iter);
+                    OnPopupMenu ();
+                    return true;
+                }
             }
 
             if (!source.CanActivate) {
@@ -334,8 +339,9 @@ namespace Banshee.Sources.Gui
 
         private void Expand (TreeIter iter)
         {
-            TreePath path = store.GetPath (iter);
-            ExpandRow (path, true);
+            using (var path = store.GetPath (iter)) {
+                ExpandRow (path, true);
+            }
         }
 
         private void OnSourceUserNotifyUpdated (object o, EventArgs args)
@@ -392,7 +398,9 @@ namespace Banshee.Sources.Gui
             }
 
             renderer.Editable = true;
-            SetCursor (store.GetPath (iter), focus_column, true);
+            using (var path = store.GetPath (iter)) {
+                SetCursor (path, focus_column, true);
+            }
             renderer.Editable = false;
         }
 
@@ -405,15 +413,15 @@ namespace Banshee.Sources.Gui
             }
         }
 
-        public void HighlightPath (TreePath path)
+        public void HighlightIter (TreeIter iter)
         {
-            highlight_path = path;
+            highlight_iter = iter;
             QueueDraw ();
         }
 
         public void ResetHighlight ()
         {
-            highlight_path = null;
+            highlight_iter = TreeIter.Zero;
             QueueDraw ();
         }
 
@@ -423,13 +431,11 @@ namespace Banshee.Sources.Gui
 
         public Source HighlightedSource {
             get {
-                TreeIter iter;
-
-                if (highlight_path == null || !store.GetIter (out iter, highlight_path)) {
+                if (TreeIter.Zero.Equals (highlight_iter)) {
                     return null;
                 }
 
-                return store.GetValue (iter, 0) as Source;
+                return store.GetValue (highlight_iter, 0) as Source;
             }
         }
 
@@ -445,8 +451,8 @@ namespace Banshee.Sources.Gui
 
 #region Internal Properties
 
-        internal TreePath HighlightedPath {
-            get { return highlight_path; }
+        internal TreeIter HighlightedIter {
+            get { return highlight_iter; }
         }
 
         internal Cairo.Context Cr {
