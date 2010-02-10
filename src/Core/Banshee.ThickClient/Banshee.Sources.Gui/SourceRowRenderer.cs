@@ -190,7 +190,7 @@ namespace Banshee.Sources.Gui
             if (!hide_counts && max_title_layout_width < 0) {
                 hide_counts = true;
             }
-			
+
             title_layout.FontDescription = fd;
             title_layout.Width = (int)(max_title_layout_width * Pango.Scale.PangoScale);
             title_layout.Ellipsize = EllipsizeMode.End;
@@ -204,6 +204,8 @@ namespace Banshee.Sources.Gui
                 Middle (cell_area, title_layout_height),
                 title_layout);
 
+            title_layout.Dispose ();
+
             if (icon != null) {
                 drawable.DrawPixbuf (main_gc, icon, 0, 0,
                     cell_area.X, Middle (cell_area, icon.Height),
@@ -211,6 +213,7 @@ namespace Banshee.Sources.Gui
             }
 
             if (hide_counts) {
+                fd.Dispose ();
                 return;
             }
 
@@ -229,6 +232,9 @@ namespace Banshee.Sources.Gui
                 cell_area.X + cell_area.Width - count_layout_width - 2,
                 Middle (cell_area, count_layout_height),
                 count_layout);
+
+            count_layout.Dispose ();
+            fd.Dispose ();
         }
 
         private void RenderSelection (Gdk.Drawable drawable, Gdk.Rectangle background_area,

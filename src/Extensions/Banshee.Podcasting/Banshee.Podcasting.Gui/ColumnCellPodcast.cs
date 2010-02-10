@@ -164,6 +164,7 @@ namespace Banshee.Podcasting.Gui
             layout.GetPixelSize (out text_w, out text_h);
             height += text_h;
 
+            layout.FontDescription.Dispose ();
             layout.Dispose ();
 
             return (height < image_size ? image_size : height) + 6;
