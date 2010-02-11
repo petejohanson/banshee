@@ -121,8 +121,10 @@ namespace Banshee.MediaEngine
             if (current_state != PlayerState.Playing) {
                 // Pre-buffering the next track only makes sense when we're currently playing
                 // Instead, just open.
-                HandleOpen (uri);
-                Play ();
+                if (uri != null) {
+                    HandleOpen (uri);
+                    Play ();
+                }
                 return;
             }
 
