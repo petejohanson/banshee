@@ -50,6 +50,7 @@ namespace Banshee.Equalizer
         internal EqualizerSetting (EqualizerManager manager,
             string name, double amp, double [] gains) : this (manager, name)
         {
+            IsReadOnly = true;
             for (uint i = 0; i < gains.Length; i++) {
                 SetGain (i, gains[i], false);
             }
@@ -60,6 +61,8 @@ namespace Banshee.Equalizer
             this.manager = manager;
             this.name = name;
         }
+
+        public bool IsReadOnly { get; private set; }
 
         public string Name {
             get { return name; }
@@ -144,7 +147,9 @@ namespace Banshee.Equalizer
         public override string ToString ()
         {
             var builder = new System.Text.StringBuilder ();
-            builder.AppendFormat ("    \"{0}\": {{", Name.Replace ("\"", "\\\""));
+            builder.Append ("    {");
+            builder.AppendLine ();
+            builder.AppendFormat ("        \"name\": \"{0}\",", Name.Replace ("\"", "\\\""));
             builder.AppendLine ();
             builder.AppendFormat ("        \"preamp\": {0},", AmplifierLevel);
             builder.AppendLine ();

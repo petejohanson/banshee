@@ -185,7 +185,7 @@ namespace Banshee.Equalizer.Gui
             }
         }
 
-        public void SetBand(uint band, double value)
+        public void SetBand (uint band, double value)
         {
             band_scales[band].Value = (int) (value * 10);
         }
@@ -211,11 +211,12 @@ namespace Banshee.Equalizer.Gui
                     return;
                 }
 
+                amplifier_scale.Sensitive = !value.IsReadOnly;
                 AmplifierLevel = active_eq.AmplifierLevel;
 
-                for (int i = 0; i < active_eq.BandCount; i++) {
-                    uint x = (uint) i;
-                    SetBand (x, active_eq[x]);
+                for (uint i = 0; i < active_eq.BandCount; i++) {
+                    band_scales[i].Sensitive = !value.IsReadOnly;
+                    SetBand (i, active_eq[i]);
                 }
 
                 loading = false;

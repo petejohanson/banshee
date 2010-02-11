@@ -43,6 +43,7 @@ namespace Banshee.Equalizer.Gui
         private EqualizerPresetComboBox eq_preset_combo;
         private CheckButton eq_enabled_checkbox;
         private HBox header_box;
+        private Button delete_preset_button;
 
         private static EqualizerWindow instance;
         public static EqualizerWindow Instance {
@@ -88,7 +89,7 @@ namespace Banshee.Equalizer.Gui
             new_preset_button.Relief = ReliefStyle.None;
             new_preset_button.Clicked += OnNewPreset;
 
-            Button delete_preset_button = new Button (new Image (Stock.Remove, IconSize.Button));
+            delete_preset_button = new Button (new Image (Stock.Remove, IconSize.Button));
             delete_preset_button.Relief = ReliefStyle.None;
             delete_preset_button.Clicked += OnDeletePreset;
 
@@ -157,6 +158,8 @@ namespace Banshee.Equalizer.Gui
             if (eq_preset_combo.ActiveEqualizer != eq_view.EqualizerSetting) {
                 eq_view.EqualizerSetting = eq_preset_combo.ActiveEqualizer;
                 EqualizerManager.Instance.Select (eq_preset_combo.ActiveEqualizer);
+                delete_preset_button.Sensitive = eq_preset_combo.ActiveEqualizer != null &&
+                    !eq_preset_combo.ActiveEqualizer.IsReadOnly;
             }
         }
 

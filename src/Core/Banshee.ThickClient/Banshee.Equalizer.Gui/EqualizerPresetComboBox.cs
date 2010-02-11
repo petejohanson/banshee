@@ -37,6 +37,8 @@ namespace Banshee.Equalizer.Gui
         private EqualizerManager manager;
         private ListStore store;
         private EqualizerSetting active_eq;
+        private int user_count;
+        private TreeIter separator_iter = TreeIter.Zero;
 
         public EqualizerPresetComboBox () : this (EqualizerManager.Instance)
         {
@@ -58,17 +60,36 @@ namespace Banshee.Equalizer.Gui
             Model = store;
             TextColumn = 0;
 
+            store.SetSortColumnId (1, SortType.Ascending);
+            store.SetSortFunc (1, (model, ia, ib) => {
+                var a = GetEqualizerSettingForIter (ia);
+                var b = GetEqualizerSettingForIter (ib);
+                if (a != null && b != null) {
+                    if ((!a.IsReadOnly && !b.IsReadOnly) ||
+                        (a.IsReadOnly && b.IsReadOnly)) {
+                        return a.Name.CompareTo (b.Name);
+                    }
+                    return a.IsReadOnly.CompareTo (b.IsReadOnly);
+                } else if (a == null && b == null) {
+                    return 0;
+                } else if ((a == null && b.IsReadOnly) || (b == null && !a.IsReadOnly)) {
+                    return -1;
+                } else if ((a == null && !b.IsReadOnly) || (b == null && a.IsReadOnly)) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            RowSeparatorFunc = (model, iter) =>
+                store.GetValue (iter, 0) == null &&
+                store.GetValue (iter, 1) == null;
+
             foreach (EqualizerSetting eq in manager) {
                 AddEqualizerSetting(eq);
             }
 
-            manager.EqualizerAdded += delegate (object o, EventArgs<EqualizerSetting> args) {
-                AddEqualizerSetting (args.Value);
-            };
-
-            manager.EqualizerRemoved += delegate (object o, EventArgs<EqualizerSetting> args) {
-                RemoveEqualizerSetting (args.Value);
-            };
+            manager.EqualizerAdded += (o, e) => AddEqualizerSetting (e.Value);
+            manager.EqualizerRemoved += (o, e) => RemoveEqualizerSetting (e.Value);
         }
 
         protected override void OnChanged ()
@@ -83,7 +104,7 @@ namespace Banshee.Equalizer.Gui
                 eq = active_eq;
             }
 
-            if (Entry == null) {
+            if (Entry == null || eq.IsReadOnly) {
                 return;
             }
 
@@ -114,6 +135,13 @@ namespace Banshee.Equalizer.Gui
 
         private void AddEqualizerSetting (EqualizerSetting eq)
         {
+            if (!eq.IsReadOnly) {
+                user_count++;
+                if (separator_iter.Equals (TreeIter.Zero)) {
+                    separator_iter = store.AppendValues (null, null);
+                }
+            }
+
             store.AppendValues (eq.Name, eq);
         }
 
@@ -121,6 +149,11 @@ namespace Banshee.Equalizer.Gui
         {
             TreeIter iter;
             if (GetIterForEqualizerSetting (eq, out iter)) {
+                if (!eq.IsReadOnly && --user_count <= 0) {
+                    user_count = 0;
+                    store.Remove (ref separator_iter);
+                    separator_iter = TreeIter.Zero;
+                }
                 store.Remove (ref iter);
             }
 
@@ -157,6 +190,9 @@ namespace Banshee.Equalizer.Gui
 
             set {
                 active_eq = value;
+                if (value != null) {
+                    Entry.IsEditable = !active_eq.IsReadOnly;
+                }
 
                 TreeIter iter;
                 if (GetIterForEqualizerSetting (value, out iter)) {
