@@ -60,16 +60,13 @@ namespace Banshee.Equalizer.Gui
             Model = store;
             TextColumn = 0;
 
-            store.SetSortColumnId (1, SortType.Ascending);
-            store.SetSortFunc (1, (model, ia, ib) => {
+            store.DefaultSortFunc = (model, ia, ib) => {
                 var a = GetEqualizerSettingForIter (ia);
                 var b = GetEqualizerSettingForIter (ib);
                 if (a != null && b != null) {
-                    if ((!a.IsReadOnly && !b.IsReadOnly) ||
-                        (a.IsReadOnly && b.IsReadOnly)) {
-                        return a.Name.CompareTo (b.Name);
-                    }
-                    return a.IsReadOnly.CompareTo (b.IsReadOnly);
+                    return a.IsReadOnly == b.IsReadOnly
+                        ? a.Name.CompareTo (b.Name)
+                        : a.IsReadOnly.CompareTo (b.IsReadOnly);
                 } else if (a == null && b == null) {
                     return 0;
                 } else if ((a == null && b.IsReadOnly) || (b == null && !a.IsReadOnly)) {
@@ -78,10 +75,13 @@ namespace Banshee.Equalizer.Gui
                     return 1;
                 }
                 return 0;
-            });
+            };
+
+
+            store.SetSortColumnId (-1, SortType.Ascending);
 
             RowSeparatorFunc = (model, iter) =>
-                store.GetValue (iter, 0) == null &&
+                store.GetValue (iter, 0) as String == String.Empty &&
                 store.GetValue (iter, 1) == null;
 
             foreach (EqualizerSetting eq in manager) {
@@ -138,7 +138,12 @@ namespace Banshee.Equalizer.Gui
             if (!eq.IsReadOnly) {
                 user_count++;
                 if (separator_iter.Equals (TreeIter.Zero)) {
-                    separator_iter = store.AppendValues (null, null);
+                    // FIXME: Very strange bug if (null, null) is stored
+                    // here regarding RowSeparatorFunc - not sure where the
+                    // bug might be, but I'm 99% sure this is a bug in GTK+
+                    // or Gtk#. I demand answers! Thanks to Sandy Armstrong
+                    // for thinking outside of his box.
+                    separator_iter = store.AppendValues (String.Empty, null);
                 }
             }
 
