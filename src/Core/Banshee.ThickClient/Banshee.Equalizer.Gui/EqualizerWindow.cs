@@ -141,11 +141,12 @@ namespace Banshee.Equalizer.Gui
 
         private void OnNewPreset (object o, EventArgs args)
         {
-            EqualizerSetting eq = new EqualizerSetting (EqualizerManager.Instance,
-                Catalog.GetString ("New Preset"));
+            var eq = new EqualizerSetting (EqualizerManager.Instance, Catalog.GetString ("New Preset"));
+            eq.SetFrom (eq_preset_combo.ActiveEqualizer);
             EqualizerManager.Instance.Add (eq);
             eq_preset_combo.ActiveEqualizer = eq;
             eq_preset_combo.Entry.SelectRegion (0, eq_preset_combo.Entry.Text.Length);
+            eq_preset_combo.Entry.HasFocus = true;
         }
 
         private void OnDeletePreset (object o, EventArgs args)

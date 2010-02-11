@@ -136,6 +136,14 @@ namespace Banshee.Equalizer
             OnChanged ();
         }
 
+        public void SetFrom (EqualizerSetting eq)
+        {
+            if (eq != null) {
+                amp = eq.amp;
+                eq.bands.CopyTo (bands, 0);
+            }
+        }
+
         protected virtual void OnChanged ()
         {
             EventHandler handler = Changed;
