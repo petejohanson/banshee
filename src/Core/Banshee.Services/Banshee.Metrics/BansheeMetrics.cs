@@ -101,7 +101,8 @@ namespace Banshee.Metrics
             // TODO schedule sending the data to the server in some timeout?
 
             // TODO remove this, just for testing
-            Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToString ());
+            Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
+            //System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
         }
 
         private void AddMetrics ()

@@ -30,6 +30,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 
+using Hyena.Json;
+
 namespace Hyena.Metrics
 {
     public sealed class MetricsCollection : List<Metric>, IDisposable
@@ -80,6 +82,25 @@ namespace Hyena.Metrics
             }
 
             return sb.ToString ();
+        }
+
+        public string ToJsonString ()
+        {
+            var report = new Dictionary<string, object> ();
+
+            report["ID"] = AnonymousUserId;
+            report["Metrics"] = this.GroupBy<Metric, string> (m => m.Category)
+                .Select (c => {
+                    var d = new Dictionary<string, object> ();
+                    foreach (var metric in c) {
+                        d[metric.Name] = Store.GetFor (metric).Select (s =>
+                            new object [] { s.Stamp, s.Value }
+                        );
+                    }
+                    return d;
+                });
+
+            return report.ToJsonString ();
         }
 
         public void AddDefaults ()
