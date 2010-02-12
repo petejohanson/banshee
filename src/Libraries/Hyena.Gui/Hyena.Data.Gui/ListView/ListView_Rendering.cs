@@ -73,6 +73,7 @@ namespace Hyena.Data.Gui
             Gdk.Drawable drawable = cell_context != null ? cell_context.Drawable : null;
 
             if (pango_layout != null) {
+                pango_layout.FontDescription.Dispose ();
                 pango_layout.Dispose ();
                 pango_layout = null;
             }
