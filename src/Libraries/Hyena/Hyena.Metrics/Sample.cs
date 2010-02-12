@@ -1,5 +1,5 @@
 //
-// Metric.cs
+// Sample.cs
 //
 // Author:
 //   Gabriel Burt <gabriel.burt@gmail.com>
