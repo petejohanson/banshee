@@ -42,7 +42,11 @@ namespace Banshee.Metrics
     public class BansheeMetrics : IDisposable
     {
         private static BansheeMetrics banshee_metrics;
+
         public BansheeMetrics Instance { get { return banshee_metrics; } }
+
+        public static event System.Action Started;
+        public static event System.Action Stopped;
 
         public static void Start ()
         {
@@ -69,7 +73,7 @@ namespace Banshee.Metrics
         private MetricsCollection metrics;
         private string id_key = "AnonymousUsageData.Userid";
 
-        private Metric shutdown, duration, source_changed;
+        private Metric shutdown, duration, source_changed, sqlite_executed;
 
         private BansheeMetrics ()
         {
@@ -97,6 +101,11 @@ namespace Banshee.Metrics
 
             metrics.AddDefaults ();
             AddMetrics ();
+
+            var handler = Started;
+            if (handler != null) {
+                handler ();
+            }
 
             // TODO schedule sending the data to the server in some timeout?
 
@@ -150,7 +159,10 @@ namespace Banshee.Metrics
             duration = Add ("RunDuration", () => DateTime.Now - ApplicationContext.StartedAt, true);
             Application.ShutdownRequested += OnShutdownRequested;
 
-            // TODO add Mono.Addins extension point for metric providers?
+            sqlite_executed = Add ("LongSqliteCommand", null, true);
+            HyenaSqliteCommand.CommandExecuted += OnSqliteCommandExecuted;
+            HyenaSqliteCommand.RaiseCommandExecuted = true;
+            HyenaSqliteCommand.RaiseCommandExecutedThresholdMs = 400;
         }
 
         public Metric Add (string name, Func<object> func)
@@ -165,9 +177,15 @@ namespace Banshee.Metrics
 
         public void Dispose ()
         {
+            var handler = Stopped;
+            if (handler != null) {
+                handler ();
+            }
+
             // Disconnect from events we're listening to
             ServiceManager.SourceManager.ActiveSourceChanged -= OnActiveSourceChanged;
             Application.ShutdownRequested -= OnShutdownRequested;
+            HyenaSqliteCommand.CommandExecuted -= OnSqliteCommandExecuted;
 
             // Delete any collected data
             metrics.Store.Clear ();
@@ -187,12 +205,14 @@ namespace Banshee.Metrics
 
         private bool OnShutdownRequested ()
         {
-            try {
-                shutdown.TakeSample ();
-                duration.TakeSample ();
-            } catch {}
-
+            shutdown.TakeSample ();
+            duration.TakeSample ();
             return true;
+        }
+
+        private void OnSqliteCommandExecuted (object o, CommandExecutedArgs args)
+        {
+            sqlite_executed.PushSample (String.Format ("{0}ms -- {1}", args.Ms, args.Sql));
         }
 
         #endregion
