@@ -49,10 +49,6 @@ namespace Hyena.Tests
             metrics.AddDefaults ();
             Assert.IsTrue (metrics.Count > 0);
 
-            foreach (var metric in metrics) {
-                metric.TakeSample ();
-            }
-
             string metrics_str = metrics.ToString ();
             Assert.IsTrue (metrics_str.Contains ("ID: myuniqueid"));
 
