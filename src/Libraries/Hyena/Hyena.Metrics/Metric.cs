@@ -62,13 +62,27 @@ namespace Hyena.Metrics
         {
         }
 
+        public void PushSample (object sampleValue)
+        {
+            try {
+                store.Add (new Sample (this, sampleValue));
+            } catch (Exception e) {
+                Log.Exception ("Error taking sample", e);
+            }
+        }
+
         public void TakeSample ()
         {
             if (sample_func == null) {
-                throw new InvalidOperationException ("sampleFunc is null.  Are you calling TakeSample on a non-event-driven metric?");
+                Log.Warning ("sampleFunc is null.  Are you calling TakeSample on a non-event-driven metric?");
+                return;
             }
 
-            store.Add (new Sample (this, sample_func ()));
+            try {
+                store.Add (new Sample (this, sample_func ()));
+            } catch (Exception e) {
+                Log.Exception ("Error taking sample", e);
+            }
         }
     }
 }
