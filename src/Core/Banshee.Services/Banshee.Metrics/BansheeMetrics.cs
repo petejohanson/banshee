@@ -34,6 +34,8 @@ using Hyena.Metrics;
 using Banshee.Configuration;
 using Banshee.ServiceStack;
 using System.Reflection;
+using Banshee.Sources;
+using Hyena.Data.Sqlite;
 
 namespace Banshee.Metrics
 {
@@ -46,7 +48,12 @@ namespace Banshee.Metrics
         {
             Log.Information ("Starting collection of anonymous usage data");
             if (banshee_metrics == null) {
-                banshee_metrics = new BansheeMetrics ();
+                try {
+                    banshee_metrics = new BansheeMetrics ();
+                } catch (Exception e) {
+                    Hyena.Log.Exception ("Failed to start collection of anonymous usage data", e);
+                    banshee_metrics = null;
+                }
             }
         }
 
@@ -62,13 +69,13 @@ namespace Banshee.Metrics
         private MetricsCollection metrics;
         private string id_key = "AnonymousUsageData.Userid";
 
-        private Metric shutdown, duration;
+        private Metric shutdown, duration, source_changed;
 
         private BansheeMetrics ()
         {
             string unique_userid = DatabaseConfigurationClient.Client.Get<string> (id_key, null);
 
-            if (unique_userid == null) {
+            if (String.IsNullOrEmpty (unique_userid)) {
                 unique_userid = System.Guid.NewGuid ().ToString ();
                 DatabaseConfigurationClient.Client.Set<string> (id_key, unique_userid);
             }
@@ -76,9 +83,29 @@ namespace Banshee.Metrics
             metrics = new MetricsCollection (unique_userid, new DbSampleStore (
                 ServiceManager.DbConnection, "AnonymousUsageData"
             ));
-            metrics.AddDefaults ();
 
-            // TODO add more Banshee-specific metrics
+            if (Application.ActiveClient != null && Application.ActiveClient.IsStarted) {
+                Initialize (null);
+            } else {
+                Application.ClientStarted += Initialize;
+            }
+        }
+
+        private void Initialize (Client client)
+        {
+            Application.ClientStarted -= Initialize;
+
+            metrics.AddDefaults ();
+            AddMetrics ();
+
+            // TODO schedule sending the data to the server in some timeout?
+
+            // TODO remove this, just for testing
+            Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToString ());
+        }
+
+        private void AddMetrics ()
+        {
             Add ("Client",       () => Application.ActiveClient);
             Add ("BuildHostCpu", () => Application.BuildHostCpu);
             Add ("BuildHostOS",  () => Application.BuildHostOperatingSystem);
@@ -87,27 +114,42 @@ namespace Banshee.Metrics
             Add ("Version",      () => Application.Version);
             Add ("StartedAt",    () => ApplicationContext.StartedAt);
 
-            // TODO add metrics based on assemblies/versions; put in AddDefaults?
+            Console.WriteLine ("SourceMgr is null? {0}", ServiceManager.SourceManager == null);
+            foreach (var src in ServiceManager.SourceManager.FindSources<PrimarySource> ()) {
+                var type_name = src.TypeName;
+                var reader = new HyenaDataReader (ServiceManager.DbConnection.Query (
+                    @"SELECT COUNT(*),
+                             COUNT(CASE ifnull(Rating, 0)        WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE ifnull(BPM, 0)           WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE ifnull(LastStreamError, 0) WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE ifnull(Grouping, 0)      WHEN 0 THEN NULL ELSE 1 END),
+                             SUM(PlayCount),
+                             SUM(SkipCount),
+                             CAST (SUM(PlayCount * (Duration/1000)) AS INTEGER),
+                             SUM(FileSize)
+                    FROM CoreTracks WHERE PrimarySourceID = ?", src.DbId
+                ));
+
+                // DateAdded, Grouping
+                var results = new string [] {
+                    "TrackCount", "RatedTrackCount", "BpmTrackCount", "ErrorTrackCount",
+                    "GroupingTrackCount", "TotalPlayCount", "TotalSkipCount", "TotalPlaySeconds", "TotalFileSize"
+                };
+
+                for (int i = 0; i < results.Length; i++) {
+                    metrics.Add (type_name, results[i], () => reader.Get<long> (i));
+                }
+                reader.Dispose ();
+            }
+
+            source_changed = Add ("ActiveSourceChanged", () => ServiceManager.SourceManager.ActiveSource.TypeName, true);
+            ServiceManager.SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
 
             shutdown = Add ("ShutdownAt",  () => DateTime.Now, true);
             duration = Add ("RunDuration", () => DateTime.Now - ApplicationContext.StartedAt, true);
             Application.ShutdownRequested += OnShutdownRequested;
 
             // TODO add Mono.Addins extension point for metric providers?
-            // TODO schedule sending the data to the server in some timeout?
-
-            // TODO remove this, just for testing
-            Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToString ());
-        }
-
-        private bool OnShutdownRequested ()
-        {
-            try {
-                shutdown.TakeSample ();
-                duration.TakeSample ();
-            } catch {}
-
-            return true;
         }
 
         public Metric Add (string name, Func<object> func)
@@ -123,6 +165,7 @@ namespace Banshee.Metrics
         public void Dispose ()
         {
             // Disconnect from events we're listening to
+            ServiceManager.SourceManager.ActiveSourceChanged -= OnActiveSourceChanged;
             Application.ShutdownRequested -= OnShutdownRequested;
 
             // Delete any collected data
@@ -131,8 +174,27 @@ namespace Banshee.Metrics
             metrics = null;
 
             // Forget the user's unique id
-            DatabaseConfigurationClient.Client.Set<string> (id_key, null);
+            DatabaseConfigurationClient.Client.Set<string> (id_key, "");
         }
+
+        #region Event Handlers
+
+        private void OnActiveSourceChanged (SourceEventArgs args)
+        {
+            source_changed.TakeSample ();
+        }
+
+        private bool OnShutdownRequested ()
+        {
+            try {
+                shutdown.TakeSample ();
+                duration.TakeSample ();
+            } catch {}
+
+            return true;
+        }
+
+        #endregion
 
         public static SchemaEntry<bool> EnableCollection = new SchemaEntry<bool> (
             "core", "send_anonymous_usage_data", false, // disabled by default
