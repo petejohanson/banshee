@@ -62,6 +62,7 @@ SOURCES =  \
 	Hyena.Json/JsonArray.cs \
 	Hyena.Json/JsonObject.cs \
 	Hyena.Json/Tests/DeserializerTests.cs \
+	Hyena.Json/Tests/SerializerTests.cs \
 	Hyena.Json/Tests/TokenizerTests.cs \
 	Hyena.Json/Token.cs \
 	Hyena.Json/Tokenizer.cs \

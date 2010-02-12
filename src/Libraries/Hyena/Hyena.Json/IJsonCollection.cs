@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections;
+using System.Text;
 
 namespace Hyena.Json
 {
@@ -35,5 +36,6 @@ namespace Hyena.Json
     {
         void Dump ();
         void Dump (int count);
+        void Dump (StringBuilder sb, int level);
     }
 }

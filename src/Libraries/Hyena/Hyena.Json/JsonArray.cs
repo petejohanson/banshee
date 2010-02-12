@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Hyena.Json
 {
@@ -38,23 +39,40 @@ namespace Hyena.Json
             Dump (1);
         }
 
-        public void Dump (int levels)
+        public void Dump (int level)
+        {
+            Console.Write (ToString (level));
+        }
+
+        public override string ToString ()
+        {
+            return ToString (1);
+        }
+
+        public string ToString (int level)
+        {
+            var sb = new StringBuilder ();
+            Dump (sb, level);
+            return sb.ToString ();
+        }
+
+        public void Dump (StringBuilder sb, int level)
         {
             if (Count == 0) {
-                Console.WriteLine ("[ ]");
+                sb.AppendLine ("[ ]");
                 return;
             }
 
-            Console.WriteLine ("[");
+            sb.AppendLine ("[");
             foreach (object item in this) {
-                Console.Write (String.Empty.PadLeft (levels * 2, ' '));
+                sb.Append (String.Empty.PadLeft (level * 2, ' '));
                 if (item is IJsonCollection) {
-                    ((IJsonCollection)item).Dump (levels + 1);
+                    ((IJsonCollection)item).Dump (sb, level + 1);
                 } else {
-                    Console.WriteLine (item);
+                    sb.AppendLine (item.ToString ());
                 }
             }
-            Console.WriteLine ("{0}]", String.Empty.PadLeft ((levels - 1) * 2, ' '));
+            sb.AppendFormat ("{0}]\n", String.Empty.PadLeft ((level - 1) * 2, ' '));
         }
     }
 }
