@@ -170,12 +170,26 @@ namespace Banshee.Gui.Widgets
 
             if (missing_audio_image != null) {
                 ((IDisposable)missing_audio_image).Dispose ();
+                var disposed = missing_audio_image;
                 missing_audio_image = null;
+                if (current_image == disposed) {
+                    current_image = MissingAudioImage;
+                }
+                if (incoming_image == disposed) {
+                    incoming_image = MissingAudioImage;
+                }
             }
 
             if (missing_video_image != null) {
                 ((IDisposable)missing_video_image).Dispose ();
+                var disposed = missing_video_image;
                 missing_video_image = null;
+                if (current_image == disposed) {
+                    current_image = MissingVideoImage;
+                }
+                if (incoming_image == disposed) {
+                    incoming_image = MissingVideoImage;
+                }
             }
 
             if (current_track == null) {
