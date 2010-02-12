@@ -32,6 +32,7 @@ using Mono.Unix;
 using Banshee.ServiceStack;
 using Banshee.Library;
 using Banshee.Configuration.Schema;
+using Banshee.Configuration;
 
 namespace Banshee.Preferences
 {
@@ -61,7 +62,17 @@ namespace Banshee.Preferences
             policies.Add (Banshee.Metadata.SaveTrackMetadataService.RenameEnabled);
 
             // Misc section
-            general.Add (new Section ("misc", Catalog.GetString ("Miscellaneous"), 20));
+            var misc = new Section ("misc", Catalog.GetString ("Miscellaneous"), 20);
+            general.Add (misc);
+
+            var anon_data = misc.Add (Banshee.Metrics.BansheeMetrics.EnableCollection);
+            anon_data.ValueChanged += (o) => {
+                if (Banshee.Metrics.BansheeMetrics.EnableCollection.Get ()) {
+                    Banshee.Metrics.BansheeMetrics.Start ();
+                } else {
+                    Banshee.Metrics.BansheeMetrics.Stop ();
+                }
+            };
         }
 
         public void RequestWidgetAdapters ()
