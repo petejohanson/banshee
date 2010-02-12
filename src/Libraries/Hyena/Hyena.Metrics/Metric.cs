@@ -32,30 +32,26 @@ namespace Hyena.Metrics
 {
     public sealed class Metric : IDisposable
     {
-        public string FullName {
-            get { return String.Format ("{0}.{1}", Category, Name); }
-        }
-
-        public string Category { get; private set; }
         public string Name { get; private set; }
-        public bool IsEventDriven { get; private set; }
+        public bool CanTakeSample { get { return sample_func != null; } }
 
         private ISampleStore store;
         private Func<object> sample_func;
 
-        internal Metric (string category, string name, ISampleStore store, Func<object> sampleFunc, bool isEventDriven)
+        internal Metric (string name, ISampleStore store)
         {
-            Category = category;
             Name = name;
             this.store = store;
-            sample_func = sampleFunc;
-            IsEventDriven = isEventDriven;
+        }
 
-            if (!isEventDriven) {
-                // Take the sample and forget the delegate so it can be GC'd
-                TakeSample ();
-                sample_func = null;
-            }
+        internal Metric (string name, ISampleStore store, Func<object> sampleFunc) : this (name, store)
+        {
+            sample_func = sampleFunc;
+        }
+
+        internal Metric (string name, ISampleStore store, object value) : this (name, store)
+        {
+            PushSample (value);
         }
 
         public void Dispose ()

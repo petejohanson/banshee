@@ -46,7 +46,7 @@ namespace Hyena.Metrics
 
         public IEnumerable<Sample> GetFor (Metric metric)
         {
-            return this[metric.FullName];
+            return this[metric.Name];
         }
     }
 }

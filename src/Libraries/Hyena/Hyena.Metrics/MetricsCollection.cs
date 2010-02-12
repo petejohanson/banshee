@@ -45,15 +45,24 @@ namespace Hyena.Metrics
             Store = store;
         }
 
-        public Metric Add (string category, string metricName, Func<object> sampleFunc)
+        public Metric Add (string name)
         {
-            return Add (category, metricName, sampleFunc, false);
+            return Add (new Metric (name, Store));
         }
 
-        public Metric Add (string category, string metricName, Func<object> sampleFunc, bool isEventDriven)
+        public Metric Add (string name, object value)
         {
-            var metric = new Metric (category, metricName, Store, sampleFunc, isEventDriven);
-            Add (metric);
+            return Add (new Metric (name, Store, value));
+        }
+
+        public Metric Add (string name, Func<object> sampleFunc)
+        {
+            return Add (new Metric (name, Store, sampleFunc));
+        }
+
+        public new Metric Add (Metric metric)
+        {
+            base.Add (metric);
             return metric;
         }
 
@@ -65,56 +74,33 @@ namespace Hyena.Metrics
             Clear ();
         }
 
-        public override string ToString ()
-        {
-            var sb = new StringBuilder ();
-
-            // TODO handle dates in a culture-invariant manner
-            sb.AppendFormat ("ID: {0}\n", AnonymousUserId);
-            foreach (var category in this.GroupBy<Metric, string> (m => m.Category)) {
-                sb.AppendFormat ("{0}:\n", category.Key);
-                foreach (var metric in category) {
-                    sb.AppendFormat ("  {0}\n", metric.Name);
-                    foreach (var sample in Store.GetFor (metric)) {
-                        sb.AppendFormat ("    {0}\n", sample.Value);
-                    }
-                }
-            }
-
-            return sb.ToString ();
-        }
-
         public string ToJsonString ()
         {
             var report = new Dictionary<string, object> ();
 
             report["ID"] = AnonymousUserId;
-            report["Metrics"] = this.GroupBy<Metric, string> (m => m.Category)
-                .Select (c => {
-                    var d = new Dictionary<string, object> ();
-                    foreach (var metric in c) {
-                        d[metric.Name] = Store.GetFor (metric).Select (s =>
-                            new object [] { s.Stamp, s.Value }
-                        );
-                    }
-                    return d;
-                });
+
+            var metrics = new Dictionary<string, object> ();
+            foreach (var metric in this.OrderBy (m => m.Name)) {
+                metrics[metric.Name] = Store.GetFor (metric).Select (s => new object [] { s.Stamp, s.Value ?? "" });
+            }
+            report["Metrics"] = metrics;
 
             return report.ToJsonString ();
         }
 
         public void AddDefaults ()
         {
-            Add ("Env", "OS Platform",          () => PlatformDetection.SystemName);
-            Add ("Env", "OS Version",           () => System.Environment.OSVersion);
-            Add ("Env", "Processor Count",      () => System.Environment.ProcessorCount);
-            Add ("Env", ".NET Runtime Version", () => System.Environment.Version);
-            Add ("Env", "Debugging",            () => ApplicationContext.Debugging);
-            Add ("Env", "CultureInfo",          () => System.Globalization.CultureInfo.CurrentCulture.Name);
+            Add ("Env/OS Platform",          PlatformDetection.SystemName);
+            Add ("Env/OS Version",           System.Environment.OSVersion);
+            Add ("Env/Processor Count",      System.Environment.ProcessorCount);
+            Add ("Env/.NET Runtime Version", System.Environment.Version);
+            Add ("Env/Debugging",            ApplicationContext.Debugging);
+            Add ("Env/CultureInfo",          System.Globalization.CultureInfo.CurrentCulture.Name);
 
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies ()) {
                 var name = asm.GetName ();
-                Add ("Assemblies", name.Name, () => name.Version);
+                Add (String.Format ("Assemblies/{0}", name.Name), name.Version);
             }
         }
     }

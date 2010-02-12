@@ -46,7 +46,7 @@ namespace Hyena.Metrics
 
         public IEnumerable<Sample> GetFor (Metric metric)
         {
-            return FetchAllMatching ("MetricName = ? ORDER BY Stamp ASC", metric.FullName);
+            return FetchAllMatching ("MetricName = ? ORDER BY Stamp ASC", metric.Name);
         }
 
         public void Clear ()
