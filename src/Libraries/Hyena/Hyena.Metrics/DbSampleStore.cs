@@ -51,7 +51,7 @@ namespace Hyena.Metrics
 
         public void Clear ()
         {
-            conn.Execute ("DELETE FROM {0}", TableName);
+            conn.Execute (String.Format ("DELETE FROM {0}", TableName));
         }
     }
 }

@@ -31,6 +31,9 @@ namespace Hyena.Metrics
 {
     public class Sample
     {
+        [DatabaseColumn (Constraints = DatabaseColumnConstraints.PrimaryKey)]
+        private long Id { get; set; }
+
         [DatabaseColumn]
         public string MetricName { get; protected set; }
 
@@ -41,7 +44,7 @@ namespace Hyena.Metrics
         public string Value { get; protected set; }
 
         // For SqliteModelProvider's use
-        internal Sample () {}
+        public Sample () {}
 
         public Sample (Metric metric, object value)
         {

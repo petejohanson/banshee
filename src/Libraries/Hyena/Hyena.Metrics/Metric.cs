@@ -33,6 +33,7 @@ namespace Hyena.Metrics
     {
         public string Category { get; private set; }
         public string Name { get; private set; }
+        public bool IsEventDriven { get; set; }
 
         private Func<object> sample_func;
         private ISampleStore store;

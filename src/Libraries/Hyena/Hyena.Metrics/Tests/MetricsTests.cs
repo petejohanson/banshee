@@ -53,8 +53,11 @@ namespace Hyena.Tests
                 metric.TakeSample ();
             }
 
+            string metrics_str = metrics.ToString ();
+            Assert.IsTrue (metrics_str.Contains ("ID: myuniqueid"));
+
             // tests/Makefile.am runs the tests with Locale=it_IT
-            Assert.IsTrue (metrics.ToString ().Contains ("it-IT"));
+            Assert.IsTrue (metrics_str.Contains ("it-IT"));
         }
     }
 }

@@ -51,6 +51,7 @@ namespace Hyena.Metrics
         {
             var sb = new StringBuilder ();
 
+            sb.AppendFormat ("ID: {0}\n", UniqueUserId);
             foreach (var category in this.GroupBy<Metric, string> (m => m.Category)) {
                 sb.AppendFormat ("{0}:\n", category.Key);
                 foreach (var metric in category) {
