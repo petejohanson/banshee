@@ -33,12 +33,14 @@ using Hyena.Metrics;
 
 using Banshee.Configuration;
 using Banshee.ServiceStack;
+using System.Reflection;
 
 namespace Banshee.Metrics
 {
     public class BansheeMetrics : IDisposable
     {
         private static BansheeMetrics banshee_metrics;
+        public BansheeMetrics Instance { get { return banshee_metrics; } }
 
         public static void Start ()
         {
@@ -58,15 +60,17 @@ namespace Banshee.Metrics
         }
 
         private MetricsCollection metrics;
+        private string id_key = "AnonymousUsageData.Userid";
+
+        private Metric shutdown, duration;
 
         private BansheeMetrics ()
         {
-            string key = "AnonymousUsageData.Userid";
-            string unique_userid = DatabaseConfigurationClient.Client.Get<string> (key, null);
+            string unique_userid = DatabaseConfigurationClient.Client.Get<string> (id_key, null);
 
             if (unique_userid == null) {
                 unique_userid = System.Guid.NewGuid ().ToString ();
-                DatabaseConfigurationClient.Client.Set<string> (key, unique_userid);
+                DatabaseConfigurationClient.Client.Set<string> (id_key, unique_userid);
             }
 
             metrics = new MetricsCollection (unique_userid, new DbSampleStore (
@@ -74,27 +78,65 @@ namespace Banshee.Metrics
             ));
             metrics.AddDefaults ();
 
-            foreach (var metric in metrics) {
-                metric.TakeSample ();
-            }
+            // TODO add more Banshee-specific metrics
+            Add ("Client",       () => Application.ActiveClient);
+            Add ("BuildHostCpu", () => Application.BuildHostCpu);
+            Add ("BuildHostOS",  () => Application.BuildHostOperatingSystem);
+            Add ("BuildTime",    () => Application.BuildTime);
+            Add ("BuildVendor",  () => Application.BuildVendor);
+            Add ("Version",      () => Application.Version);
+            Add ("StartedAt",    () => ApplicationContext.StartedAt);
+
+            // TODO add metrics based on assemblies/versions; put in AddDefaults?
+
+            shutdown = Add ("ShutdownAt",  () => DateTime.Now, true);
+            duration = Add ("RunDuration", () => DateTime.Now - ApplicationContext.StartedAt, true);
+            Application.ShutdownRequested += OnShutdownRequested;
+
+            // TODO add Mono.Addins extension point for metric providers?
+            // TODO schedule sending the data to the server in some timeout?
 
             // TODO remove this, just for testing
             Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToString ());
+        }
 
-            // TODO add Banshee-specific metrics
-            // TODO add Mono.Addins extension point for metric providers?
-            // TODO schedule sending the data to the server in some timeout?
+        private bool OnShutdownRequested ()
+        {
+            try {
+                shutdown.TakeSample ();
+                duration.TakeSample ();
+            } catch {
+            } finally {
+                return true;
+            }
+        }
+
+        public Metric Add (string name, Func<object> func)
+        {
+            return Add (name, func, null);
+        }
+
+        public Metric Add (string name, Func<object> func, EventInfo triggerEvent)
+        {
+            return metrics.Add ("Banshee", name, func, triggerEvent);
         }
 
         public void Dispose ()
         {
+            // Disconnect from events we're listening to
+            Application.ShutdownRequested -= OnShutdownRequested;
+
             // Delete any collected data
             metrics.Store.Clear ();
+            metrics.Dispose ();
             metrics = null;
+
+            // Forget the user's unique id
+            DatabaseConfigurationClient.Client.Set<string> (id_key, null);
         }
 
         public static SchemaEntry<bool> EnableCollection = new SchemaEntry<bool> (
-            "core", "send_anonymous_usage_data", false,
+            "core", "send_anonymous_usage_data", false, // disabled by default
             Catalog.GetString ("Improve Banshee by sending anonymous usage data"), null
         );
     }

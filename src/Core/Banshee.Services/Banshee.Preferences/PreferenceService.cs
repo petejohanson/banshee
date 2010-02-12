@@ -73,6 +73,11 @@ namespace Banshee.Preferences
                     Banshee.Metrics.BansheeMetrics.Stop ();
                 }
             };
+
+            // TODO this should probably be elsewhere
+            if (Banshee.Metrics.BansheeMetrics.EnableCollection.Get ()) {
+                Banshee.Metrics.BansheeMetrics.Start ();
+            }
         }
 
         public void RequestWidgetAdapters ()
