@@ -141,8 +141,7 @@ namespace Hyena.Widgets
                 theme.DrawFrame (cr, Allocation, CairoExtensions.GdkColorToCairoColor (color));
                 return base.OnExposeEvent (evnt);
             } finally {
-                ((IDisposable)cr.Target).Dispose ();
-                ((IDisposable)cr).Dispose ();
+                CairoExtensions.DisposeContext (cr);
             }
         }
 

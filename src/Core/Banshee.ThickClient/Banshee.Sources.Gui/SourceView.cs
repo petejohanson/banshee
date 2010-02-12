@@ -34,6 +34,7 @@ using Cairo;
 using Mono.Unix;
 
 using Hyena;
+using Hyena.Gui;
 using Hyena.Gui.Theming;
 using Hyena.Gui.Theatrics;
 
@@ -250,8 +251,7 @@ namespace Banshee.Sources.Gui
                 cr = Gdk.CairoHelper.Create (evnt.Window);
                 return base.OnExposeEvent (evnt);
             } finally {
-                ((IDisposable)cr.Target).Dispose ();
-                ((IDisposable)cr).Dispose ();
+                CairoExtensions.DisposeContext (cr);
                 cr = null;
             }
         }

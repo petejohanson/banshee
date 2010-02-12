@@ -116,8 +116,7 @@ namespace Hyena.Data.Gui
 
             PaintDraggingColumn (damage);
 
-            ((IDisposable)cairo_context.Target).Dispose ();
-            ((IDisposable)cairo_context).Dispose ();
+            CairoExtensions.DisposeContext (cairo_context);
 
             return true;
         }

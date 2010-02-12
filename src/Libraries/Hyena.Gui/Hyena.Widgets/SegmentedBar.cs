@@ -374,8 +374,7 @@ namespace Hyena.Widgets
             }
 
             bar.Destroy ();
-            ((IDisposable)cr.Target).Dispose ();
-            ((IDisposable)cr).Dispose ();
+            CairoExtensions.DisposeContext (cr);
 
             return true;
         }

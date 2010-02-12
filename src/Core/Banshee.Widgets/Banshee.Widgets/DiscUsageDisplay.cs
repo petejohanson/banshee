@@ -118,7 +118,7 @@ namespace Banshee.Widgets
                 Draw(cr);
             }
 
-            ((IDisposable)cr).Dispose();
+            CairoExtensions.DisposeContext (cr);
             return false;
         }
 

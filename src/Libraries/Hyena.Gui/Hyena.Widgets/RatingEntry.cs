@@ -268,8 +268,7 @@ namespace Hyena.Widgets
                 State == StateType.Insensitive ? 1 : 0.90,
                 State == StateType.Insensitive ? 1 : 0.55,
                 State == StateType.Insensitive ? 1 : 0.45);
-            ((IDisposable)cr.Target).Dispose ();
-            ((IDisposable)cr).Dispose ();
+            CairoExtensions.DisposeContext (cr);
 
             return true;
         }
