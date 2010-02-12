@@ -58,6 +58,7 @@ SOURCES =  \
 	Hyena.Jobs/SimpleAsyncJob.cs \
 	Hyena.Jobs/Tests/SchedulerTests.cs \
 	Hyena.Json/Deserializer.cs \
+	Hyena.Json/ExtensionMethods.cs \
 	Hyena.Json/IJsonCollection.cs \
 	Hyena.Json/JsonArray.cs \
 	Hyena.Json/JsonObject.cs \

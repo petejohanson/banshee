@@ -4,7 +4,7 @@
 // Author:
 //   Gabriel Burt <gabriel.burt@gmail.com>
 //
-// Copyright (c) 2010 Gabriel Burt
+// Copyright (c) 2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@
 #if ENABLE_TESTS
 
 using System;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -58,16 +59,33 @@ namespace Hyena.Json.Tests
         [Test]
         public void Array ()
         {
+            var empty = new JsonArray ();
+            Assert.AreEqual ("[ ]\n", empty.ToString ());
+
+            empty.Add (new JsonArray ());
+            Assert.AreEqual ("[\n  [ ]\n]\n", empty.ToString ());
+
+            empty.Add (new JsonObject ());
+            Assert.AreEqual ("[\n  [ ]\n  { }\n]\n", empty.ToString ());
+
             var a = new JsonArray ();
             a.Add ("foo");
             a.Add (obj);
-
             Assert.AreEqual (array_serialized, a.ToString ());
         }
 
         [Test]
         public void ExtensionMethods ()
         {
+            Assert.AreEqual (
+                "[\n  0\n  1\n  2\n  3\n]\n",
+                Enumerable.Range (0, 4).ToJsonString ()
+            );
+
+            Assert.AreEqual (
+                "[\n  [\n    0\n    2\n  ]\n  [\n    1\n    3\n  ]\n]\n",
+                 Enumerable.Range (0, 4).GroupBy<int, bool> (i => i % 2 == 0).ToJsonString ()
+            );
         }
     }
 }

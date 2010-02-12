@@ -36,6 +36,5 @@ namespace Hyena.Json
     {
         void Dump ();
         void Dump (int count);
-        void Dump (StringBuilder sb, int level);
     }
 }
