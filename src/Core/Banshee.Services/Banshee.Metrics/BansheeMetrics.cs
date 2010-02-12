@@ -42,8 +42,7 @@ namespace Banshee.Metrics
     public class BansheeMetrics : IDisposable
     {
         private static BansheeMetrics banshee_metrics;
-
-        public BansheeMetrics Instance { get { return banshee_metrics; } }
+        public static BansheeMetrics Instance { get { return banshee_metrics; } }
 
         public static event System.Action Started;
         public static event System.Action Stopped;
@@ -72,7 +71,6 @@ namespace Banshee.Metrics
 
         private MetricsCollection metrics;
         private string id_key = "AnonymousUsageData.Userid";
-
         private Metric shutdown, duration, source_changed, sqlite_executed;
 
         private BansheeMetrics ()
@@ -87,6 +85,8 @@ namespace Banshee.Metrics
             metrics = new MetricsCollection (unique_userid, new DbSampleStore (
                 ServiceManager.DbConnection, "AnonymousUsageData"
             ));
+
+            Configuration.Start ();
 
             if (Application.ActiveClient != null && Application.ActiveClient.IsStarted) {
                 Initialize (null);
@@ -116,13 +116,13 @@ namespace Banshee.Metrics
 
         private void AddMetrics ()
         {
-            Add ("Client",       () => Application.ActiveClient);
-            Add ("BuildHostCpu", () => Application.BuildHostCpu);
-            Add ("BuildHostOS",  () => Application.BuildHostOperatingSystem);
-            Add ("BuildTime",    () => Application.BuildTime);
-            Add ("BuildVendor",  () => Application.BuildVendor);
-            Add ("Version",      () => Application.Version);
-            Add ("StartedAt",    () => ApplicationContext.StartedAt);
+            Add ("Client",       Application.ActiveClient);
+            Add ("BuildHostCpu", Application.BuildHostCpu);
+            Add ("BuildHostOS",  Application.BuildHostOperatingSystem);
+            Add ("BuildTime",    Application.BuildTime);
+            Add ("BuildVendor",  Application.BuildVendor);
+            Add ("Version",      Application.Version);
+            Add ("StartedAt",    ApplicationContext.StartedAt);
 
             Console.WriteLine ("SourceMgr is null? {0}", ServiceManager.SourceManager == null);
             foreach (var src in ServiceManager.SourceManager.FindSources<PrimarySource> ()) {
@@ -147,32 +147,45 @@ namespace Banshee.Metrics
                 };
 
                 for (int i = 0; i < results.Length; i++) {
-                    metrics.Add (type_name, results[i], () => reader.Get<long> (i));
+                    Add (String.Format ("{0}/{1}", type_name, results[i]), reader.Get<long> (i));
                 }
                 reader.Dispose ();
             }
 
-            source_changed = Add ("ActiveSourceChanged", () => ServiceManager.SourceManager.ActiveSource.TypeName, true);
+            source_changed = Add ("ActiveSourceChanged", () => ServiceManager.SourceManager.ActiveSource.TypeName);
             ServiceManager.SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
 
-            shutdown = Add ("ShutdownAt",  () => DateTime.Now, true);
-            duration = Add ("RunDuration", () => DateTime.Now - ApplicationContext.StartedAt, true);
+            shutdown = Add ("ShutdownAt",  () => DateTime.Now);
+            duration = Add ("RunDuration", () => DateTime.Now - ApplicationContext.StartedAt);
             Application.ShutdownRequested += OnShutdownRequested;
 
-            sqlite_executed = Add ("LongSqliteCommand", null, true);
+            sqlite_executed = Add ("LongSqliteCommand");
             HyenaSqliteCommand.CommandExecuted += OnSqliteCommandExecuted;
             HyenaSqliteCommand.RaiseCommandExecuted = true;
             HyenaSqliteCommand.RaiseCommandExecutedThresholdMs = 400;
+
+            /*ServiceManager.PlaybackController.
+                    public event EventHandler SourceChanged;
+            public event EventHandler NextSourceChanged;
+            public event EventHandler TrackStarted;
+            public event EventHandler Transition;
+            public event EventHandler<EventArgs<PlaybackShuffleMode>> ShuffleModeChanged;
+            public event EventHandler<EventArgs<PlaybackRepeatMode>> RepeatModeChanged;*/
+        }
+
+        public Metric Add (string name)
+        {
+            return metrics.Add (String.Format ("Banshee/{0}", name));
+        }
+
+        public Metric Add (string name, object value)
+        {
+            return metrics.Add (String.Format ("Banshee/{0}", name), value);
         }
 
         public Metric Add (string name, Func<object> func)
         {
-            return Add (name, func, false);
-        }
-
-        public Metric Add (string name, Func<object> func, bool isEventDriven)
-        {
-            return metrics.Add ("Banshee", name, func, isEventDriven);
+            return metrics.Add (String.Format ("Banshee/{0}", name), func);
         }
 
         public void Dispose ()
@@ -181,6 +194,8 @@ namespace Banshee.Metrics
             if (handler != null) {
                 handler ();
             }
+
+            Configuration.Stop ();
 
             // Disconnect from events we're listening to
             ServiceManager.SourceManager.ActiveSourceChanged -= OnActiveSourceChanged;

@@ -93,6 +93,10 @@ namespace Banshee.Database
                     RollbackTransaction ();
                 }
             }
+
+            if (Banshee.Metrics.BansheeMetrics.EnableCollection.Get ()) {
+                Banshee.Metrics.BansheeMetrics.Start ();
+            }
         }
 
         private void OptimizeDatabase ()
