@@ -52,11 +52,6 @@ namespace Hyena.Metrics
         {
             var metric = new Metric (category, metricName, Store, sampleFunc, isEventDriven);
             Add (metric);
-
-            if (!metric.IsEventDriven) {
-                metric.TakeSample ();
-            }
-
             return metric;
         }
 
@@ -95,6 +90,11 @@ namespace Hyena.Metrics
             Add ("Env", ".NET Runtime Version", () => System.Environment.Version);
             Add ("Env", "Debugging",            () => ApplicationContext.Debugging);
             Add ("Env", "CultureInfo",          () => System.Globalization.CultureInfo.CurrentCulture.Name);
+
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies ()) {
+                var name = asm.GetName ();
+                Add ("Assemblies", name.Name, () => name.Version);
+            }
         }
     }
 }

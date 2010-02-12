@@ -32,6 +32,10 @@ namespace Hyena.Metrics
 {
     public sealed class Metric : IDisposable
     {
+        public string FullName {
+            get { return String.Format ("{0}.{1}", Category, Name); }
+        }
+
         public string Category { get; private set; }
         public string Name { get; private set; }
         public bool IsEventDriven { get; private set; }
@@ -46,6 +50,12 @@ namespace Hyena.Metrics
             this.store = store;
             sample_func = sampleFunc;
             IsEventDriven = isEventDriven;
+
+            if (!isEventDriven) {
+                // Take the sample and forget the delegate so it can be GC'd
+                TakeSample ();
+                sample_func = null;
+            }
         }
 
         public void Dispose ()
@@ -54,6 +64,10 @@ namespace Hyena.Metrics
 
         public void TakeSample ()
         {
+            if (sample_func == null) {
+                throw new InvalidOperationException ("sampleFunc is null.  Are you calling TakeSample on a non-event-driven metric?");
+            }
+
             store.Add (new Sample (this, sample_func ()));
         }
     }

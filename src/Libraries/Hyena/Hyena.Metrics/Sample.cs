@@ -48,7 +48,7 @@ namespace Hyena.Metrics
 
         public Sample (Metric metric, object value)
         {
-            MetricName = metric.Name;
+            MetricName = metric.FullName;
             Stamp = DateTime.Now;
             Value = value == null ? "" : value.ToString ();
         }
