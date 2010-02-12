@@ -318,6 +318,7 @@ Global
 		{C856EFD8-E812-4E61-8B76-E3583D94C233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C856EFD8-E812-4E61-8B76-E3583D94C233}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C856EFD8-E812-4E61-8B76-E3583D94C233}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
+		{C856EFD8-E812-4E61-8B76-E3583D94C233}.Windows|Any CPU.Build.0 = Windows|Any CPU
 		{C9E904B1-1141-49F4-BE84-85222A8E8A79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9E904B1-1141-49F4-BE84-85222A8E8A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9E904B1-1141-49F4-BE84-85222A8E8A79}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
@@ -419,7 +420,7 @@ Global
 		$3.LineAlign = 0
 		$2.inheritsSet = Mono
 		$0.DotNetNamingPolicy = $4
-		$4.DirectoryNamespaceAssociation = None
+		$4.DirectoryNamespaceAssociation = Flat
 		$4.ResourceNamePolicy = FileName
 		$0.TextStylePolicy = $5
 		$5.FileWidth = 120
@@ -439,6 +440,9 @@ Global
 		$6.inheritsSet = Mono
 		$6.inheritsScope = text/x-csharp
 		$6.scope = text/x-csharp
+		$0.StandardHeader = $7
+		$7.Text = @\n${FileName}\n\nAuthor:\n      ${AuthorName} <${AuthorEmail}>\n\nCopyright (c) ${Year} ${CopyrightHolder}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the "Software"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.
+		$7.inheritsSet = MITX11License
 		version = 1.3
 		outputpath = .
 		name = Banshee
