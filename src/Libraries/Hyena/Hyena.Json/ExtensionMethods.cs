@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -61,6 +62,35 @@ namespace Hyena.Json
             sb.AppendFormat ("{0}}}\n", String.Empty.PadLeft ((level - 1) * 2, ' '));
         }
 
+        // System.Linq.IGrouping serializer
+        public static string ToJsonString<K, V> (this IEnumerable<IGrouping<K, V>> obj)
+        {
+            return obj.ToJsonString (1);
+        }
+
+        public static string ToJsonString<K, V> (this IEnumerable<IGrouping<K, V>> obj, int level)
+        {
+            var sb = new StringBuilder ();
+            obj.ToJsonString (sb, level);
+            return sb.ToString ();
+        }
+
+        public static void ToJsonString<K, V> (this IEnumerable<IGrouping<K, V>> obj, StringBuilder sb, int level)
+        {
+            bool first = true;
+
+            sb.Append ("{");
+            foreach (var item in obj) {
+                if (first) {
+                    first = false;
+                    sb.AppendLine ();
+                }
+                sb.AppendFormat ("{0}\"{1}\" : ", String.Empty.PadLeft (level * 2, ' '), item.Key);
+                item.ToJsonString (sb, level + 1);
+            }
+            sb.AppendFormat ("{0}}}\n", first ? " " : String.Empty.PadLeft ((level - 1) * 2, ' '));
+        }
+
         // JsonArray serializer
         public static string ToJsonString (this IEnumerable list)
         {
@@ -88,11 +118,7 @@ namespace Hyena.Json
                 item.ToJsonString (sb, level + 1);
             }
 
-            if (first) {
-                sb.Append (" ");
-            }
-
-            sb.AppendFormat ("{0}]\n", first ? "" : String.Empty.PadLeft ((level - 1) * 2, ' '));
+            sb.AppendFormat ("{0}]\n", first ? " " : String.Empty.PadLeft ((level - 1) * 2, ' '));
         }
 
         // Utility method
@@ -100,6 +126,8 @@ namespace Hyena.Json
         {
             if (item is Dictionary<string, object>) {
                 ((Dictionary<string, object>)item).ToJsonString (sb, level);
+            //} else if (item is IGrouping) {
+                //((IGrouping)item).ToJsonString (sb, level);
             } else if (item is IEnumerable && !(item is string)) {
                 ((IEnumerable)item).ToJsonString (sb, level);
             } else {

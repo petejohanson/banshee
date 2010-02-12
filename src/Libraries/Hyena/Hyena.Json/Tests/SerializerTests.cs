@@ -32,6 +32,7 @@ using System.Reflection;
 using NUnit.Framework;
 
 using Hyena.Json;
+using System.Collections;
 
 namespace Hyena.Json.Tests
 {
@@ -83,9 +84,16 @@ namespace Hyena.Json.Tests
             );
 
             Assert.AreEqual (
-                "[\n  [\n    0\n    2\n  ]\n  [\n    1\n    3\n  ]\n]\n",
+                "{\n  \"True\" : [\n    0\n    2\n  ]\n  \"False\" : [\n    1\n    3\n  ]\n}\n",
                  Enumerable.Range (0, 4).GroupBy<int, bool> (i => i % 2 == 0).ToJsonString ()
             );
+
+            /*var a = new ArrayList ();
+            a.Add (Enumerable.Range (0, 4).GroupBy<int, bool> (i => i % 2 == 0));
+            Assert.AreEqual (
+                "",
+                a.ToJsonString ()
+            );*/
         }
     }
 }
