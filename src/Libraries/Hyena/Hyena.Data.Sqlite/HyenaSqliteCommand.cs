@@ -38,18 +38,14 @@ namespace Hyena.Data.Sqlite
 {
     public class CommandExecutedArgs : EventArgs
     {
-        public CommandExecutedArgs (string sql, string sqlWithValues, string stackTrace, long ms)
+        public CommandExecutedArgs (string sql, int ms)
         {
             Sql = sql;
-            SqlWithValues = sqlWithValues;
-            StackTrace = stackTrace;
             Ms = ms;
         }
 
         public string Sql;
-        public string SqlWithValues;
-        public string StackTrace;
-        public long Ms;
+        public int Ms;
     }
 
     public class HyenaSqliteCommand
@@ -66,24 +62,11 @@ namespace Hyena.Data.Sqlite
         private object [] current_values;
         private int ticks;
 
-#region Properties
-
-        private static bool log_all = false;
-        public static bool LogAll {
-            get { return log_all; }
-            set { log_all = value; }
-        }
-
-        public delegate void CommandExecutedHandler (object o, CommandExecutedArgs args);
-        public static event CommandExecutedHandler CommandExecuted;
-
         public string Text {
             get { return command; }
         }
 
         internal HyenaCommandType CommandType;
-
-#endregion
 
         public HyenaSqliteCommand (string command)
         {
@@ -104,6 +87,7 @@ namespace Hyena.Data.Sqlite
 
             execution_exception = null;
             result = null;
+            int execution_ms = 0;
 
             using (SqliteCommand sql_command = new SqliteCommand (CurrentSqlText)) {
                 sql_command.Connection = connection;
@@ -111,8 +95,7 @@ namespace Hyena.Data.Sqlite
                 hconnection.OnExecuting (sql_command);
 
                 try {
-                    if (log_all)
-                        ticks = System.Environment.TickCount;
+                    ticks = System.Environment.TickCount;
 
                     switch (CommandType) {
                         case HyenaCommandType.Reader:
@@ -132,12 +115,9 @@ namespace Hyena.Data.Sqlite
                             break;
                     }
 
+                    execution_ms = System.Environment.TickCount - ticks;
                     if (log_all) {
-                        Log.DebugFormat ("Executed in {0}ms {1}", System.Environment.TickCount - ticks, sql_command.CommandText);
-                        CommandExecutedHandler handler = CommandExecuted;
-                        if (handler != null) {
-                            handler (this, new CommandExecutedArgs (Text, sql_command.CommandText, null, System.Environment.TickCount - ticks));
-                        }
+                        Log.DebugFormat ("Executed in {0}ms {1}", execution_ms, sql_command.CommandText);
                     }
                 } catch (Exception e) {
                     Log.DebugFormat (String.Format ("Exception executing command: {0}", sql_command.CommandText), e.ToString ());
@@ -145,8 +125,25 @@ namespace Hyena.Data.Sqlite
                 }
             }
 
+            // capture the text
+            string raise_text = null;
+            if (raise_command_executed && execution_ms >= raise_command_executed_threshold_ms) {
+                raise_text = Text;
+            }
+
             finished_event.Reset ();
             finished = true;
+
+            if (raise_command_executed && execution_ms >= raise_command_executed_threshold_ms) {
+                var handler = CommandExecuted;
+                if (handler != null) {
+
+                    // Don't raise this on this thread; this thread is dedicated for use by the db connection
+                    ThreadAssist.ProxyToMain (delegate {
+                        handler (this, new CommandExecutedArgs (raise_text, execution_ms));
+                    });
+                }
+            }
         }
 
         internal object WaitForResult (HyenaSqliteConnection conn)
@@ -264,5 +261,30 @@ namespace Hyena.Data.Sqlite
             }
             command_format = sb.ToString ();
         }
+
+        #region Static Debugging Facilities
+
+        private static bool log_all = false;
+        public static bool LogAll {
+            get { return log_all; }
+            set { log_all = value; }
+        }
+
+        public delegate void CommandExecutedHandler (object o, CommandExecutedArgs args);
+        public static event CommandExecutedHandler CommandExecuted;
+
+        private static bool raise_command_executed = false;
+        public static bool RaiseCommandExecuted {
+            get { return raise_command_executed; }
+            set { raise_command_executed = value; }
+        }
+
+        private static int raise_command_executed_threshold_ms = 400;
+        public static int RaiseCommandExecutedThresholdMs {
+            get { return raise_command_executed_threshold_ms; }
+            set { raise_command_executed_threshold_ms = value; }
+        }
+
+        #endregion
     }
 }
