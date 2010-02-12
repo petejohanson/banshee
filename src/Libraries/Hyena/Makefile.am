@@ -124,7 +124,6 @@ SOURCES =  \
 	Hyena/Timer.cs \
 	Hyena/UndoManager.cs \
 	Hyena/XdgBaseDirectorySpec.cs \
-	Metric.cs \
 	System.Web/Helpers.cs \
 	System.Web/HttpUtility.cs
 
