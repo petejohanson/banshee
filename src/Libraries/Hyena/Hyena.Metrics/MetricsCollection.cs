@@ -28,30 +28,52 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
 
 namespace Hyena.Metrics
 {
-    public sealed class MetricsCollection : List<Metric>
+    public sealed class MetricsCollection : List<Metric>, IDisposable
     {
-        public string UniqueUserId { get; private set; }
+        public string AnonymousUserId { get; private set; }
         public ISampleStore Store { get; private set; }
 
         public MetricsCollection (string uniqueUserId, ISampleStore store)
         {
-            UniqueUserId = uniqueUserId;
+            AnonymousUserId = uniqueUserId;
             Store = store;
         }
 
-        public void Add (string category, string metricName, Func<object> sampleFunc)
+        public Metric Add (string category, string metricName, Func<object> sampleFunc)
         {
-            Add (new Metric (category, metricName, Store, sampleFunc));
+            return Add (category, metricName, sampleFunc, false);
+        }
+
+        public Metric Add (string category, string metricName, Func<object> sampleFunc, bool isEventDriven)
+        {
+            var metric = new Metric (category, metricName, Store, sampleFunc, isEventDriven);
+            Add (metric);
+
+            if (!metric.IsEventDriven) {
+                metric.TakeSample ();
+            }
+
+            return metric;
+        }
+
+        public void Dispose ()
+        {
+            foreach (var m in this) {
+                m.Dispose ();
+            }
+            Clear ();
         }
 
         public override string ToString ()
         {
             var sb = new StringBuilder ();
 
-            sb.AppendFormat ("ID: {0}\n", UniqueUserId);
+            // TODO handle dates in a culture-invariant manner
+            sb.AppendFormat ("ID: {0}\n", AnonymousUserId);
             foreach (var category in this.GroupBy<Metric, string> (m => m.Category)) {
                 sb.AppendFormat ("{0}:\n", category.Key);
                 foreach (var metric in category) {

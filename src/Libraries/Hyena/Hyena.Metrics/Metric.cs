@@ -26,24 +26,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Hyena.Metrics
 {
-    public sealed class Metric
+    public sealed class Metric : IDisposable
     {
         public string Category { get; private set; }
         public string Name { get; private set; }
-        public bool IsEventDriven { get; set; }
+        public bool IsEventDriven { get; private set; }
 
-        private Func<object> sample_func;
         private ISampleStore store;
+        private Func<object> sample_func;
 
-        internal Metric (string category, string name, ISampleStore store, Func<object> sampleFunc)
+        internal Metric (string category, string name, ISampleStore store, Func<object> sampleFunc, bool isEventDriven)
         {
             Category = category;
             Name = name;
             this.store = store;
             sample_func = sampleFunc;
+            IsEventDriven = isEventDriven;
+        }
+
+        public void Dispose ()
+        {
         }
 
         public void TakeSample ()

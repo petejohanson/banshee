@@ -44,7 +44,7 @@ namespace Hyena.Tests
         public void MetricsCollection ()
         {
             var metrics = new MetricsCollection ("myuniqueid", new MemorySampleStore ());
-            Assert.AreEqual ("myuniqueid", metrics.UniqueUserId);
+            Assert.AreEqual ("myuniqueid", metrics.AnonymousUserId);
 
             metrics.AddDefaults ();
             Assert.IsTrue (metrics.Count > 0);
