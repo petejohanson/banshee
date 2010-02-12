@@ -105,20 +105,19 @@ namespace Banshee.Metrics
             try {
                 shutdown.TakeSample ();
                 duration.TakeSample ();
-            } catch {
-            } finally {
-                return true;
-            }
+            } catch {}
+
+            return true;
         }
 
         public Metric Add (string name, Func<object> func)
         {
-            return Add (name, func, null);
+            return Add (name, func, false);
         }
 
-        public Metric Add (string name, Func<object> func, EventInfo triggerEvent)
+        public Metric Add (string name, Func<object> func, bool isEventDriven)
         {
-            return metrics.Add ("Banshee", name, func, triggerEvent);
+            return metrics.Add ("Banshee", name, func, isEventDriven);
         }
 
         public void Dispose ()
