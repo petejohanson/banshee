@@ -6,7 +6,7 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <ProjectGuid>{3935AE8A-E283-4C0D-9094-7435A937DC90}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Banshee.AudioCd</AssemblyName>
+    <AssemblyName>Banshee.Dap.Mtp</AssemblyName>
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Optimize>true</Optimize>
@@ -20,12 +20,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
     <OutputPath>..\..\..\bin</OutputPath>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
