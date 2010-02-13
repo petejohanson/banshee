@@ -28,14 +28,14 @@ using System;
 using System.IO;
 using System.Net;
 
-/*namespace Hyena.Metrics
+namespace Hyena.Metrics
 {
     public class HttpPoster
     {
         private string url;
         private MetricsCollection metrics;
 
-        public void HttpPoster (string url, MetricsCollection metrics)
+        public HttpPoster (string url, MetricsCollection metrics)
         {
             this.url = url;
             this.metrics = metrics;
@@ -53,13 +53,14 @@ using System.Net;
             try {
                 using (var stream = request.GetRequestStream ()) {
                     using (var writer = new StreamWriter (stream)) {
-                        foreach (var metric in metrics.Metrics) {
-                            writer.Write (metric.ToString ());
-                        }
+                        writer.Write (metrics.ToJsonString ());
                     }
                 }
 
                 var response = (HttpWebResponse) request.GetResponse ();
+                using (var strm = new StreamReader (response.GetResponseStream ())) {
+                    Console.WriteLine (strm.ReadToEnd ());
+                }
                 return response.StatusCode == HttpStatusCode.OK;
             } catch (Exception e) {
                 Log.Exception ("Error posting metrics", e);
@@ -68,4 +69,4 @@ using System.Net;
             return false;
         }
     }
-}*/
+}
