@@ -26,16 +26,17 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 using Mono.Unix;
 
 using Hyena;
 using Hyena.Metrics;
+using Hyena.Data.Sqlite;
 
 using Banshee.Configuration;
 using Banshee.ServiceStack;
-using System.Reflection;
 using Banshee.Sources;
-using Hyena.Data.Sqlite;
+using Banshee.PlaybackController;
 
 namespace Banshee.Metrics
 {
@@ -71,7 +72,8 @@ namespace Banshee.Metrics
 
         private MetricsCollection metrics;
         private string id_key = "AnonymousUsageData.Userid";
-        private Metric shutdown, duration, source_changed, sqlite_executed;
+        private Metric shutdown, duration, active_source_changed, sqlite_executed;
+        private Metric playback_source_changed, shuffle_changed, repeat_changed;
 
         private BansheeMetrics ()
         {
@@ -110,9 +112,10 @@ namespace Banshee.Metrics
 
             // TODO schedule sending the data to the server in some timeout?
 
-            // TODO remove this, just for testing
-            //Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
-            //System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
+            if (ApplicationContext.CommandLine.Contains ("debug-metrics")) {
+                Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
+                System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
+            }
         }
 
         private void AddMetrics ()
@@ -130,10 +133,15 @@ namespace Banshee.Metrics
                 var type_name = src.TypeName;
                 var reader = new HyenaDataReader (ServiceManager.DbConnection.Query (
                     @"SELECT COUNT(*),
-                             COUNT(CASE ifnull(Rating, 0)        WHEN 0 THEN NULL ELSE 1 END),
-                             COUNT(CASE ifnull(BPM, 0)           WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE ifnull(Rating, 0)          WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE ifnull(BPM, 0)             WHEN 0 THEN NULL ELSE 1 END),
                              COUNT(CASE ifnull(LastStreamError, 0) WHEN 0 THEN NULL ELSE 1 END),
-                             COUNT(CASE ifnull(Grouping, 0)      WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE ifnull(Composer, 0)        WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE ifnull(LicenseUri, 0)      WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE ifnull(Grouping, 0)        WHEN 0 THEN NULL ELSE 1 END),
+                             COUNT(CASE PlayCount                  WHEN 0 THEN 1 ELSE NULL END),
+                             AVG(Score),
+                             AVG(BitRate),
                              SUM(PlayCount),
                              SUM(SkipCount),
                              CAST (SUM(PlayCount * (Duration/1000)) AS INTEGER),
@@ -143,8 +151,9 @@ namespace Banshee.Metrics
 
                 // DateAdded, Grouping
                 var results = new string [] {
-                    "TrackCount", "RatedTrackCount", "BpmTrackCount", "ErrorTrackCount",
-                    "GroupingTrackCount", "TotalPlayCount", "TotalSkipCount", "TotalPlaySeconds", "TotalFileSize"
+                    "TrackCount", "RatedTrackCount", "BpmTrackCount", "ErrorTrackCount", "ComposerTrackCount",
+                    "LicenseUriTrackCount", "GroupingTrackCount", "UnplayedTrackCount", "AvgScore",
+                    "AvgBitRate", "TotalPlayCount", "TotalSkipCount", "TotalPlaySeconds", "TotalFileSize"
                 };
 
                 for (int i = 0; i < results.Length; i++) {
@@ -154,7 +163,7 @@ namespace Banshee.Metrics
             }
 
             // Wire up event-triggered metrics
-            source_changed = Add ("ActiveSourceChanged", () => ServiceManager.SourceManager.ActiveSource.TypeName);
+            active_source_changed = Add ("ActiveSourceChanged");
             ServiceManager.SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
 
             shutdown = Add ("ShutdownAt",  () => DateTime.Now);
@@ -166,13 +175,14 @@ namespace Banshee.Metrics
             HyenaSqliteCommand.RaiseCommandExecuted = true;
             HyenaSqliteCommand.RaiseCommandExecutedThresholdMs = 400;
 
-            /*ServiceManager.PlaybackController.
-                    public event EventHandler SourceChanged;
-            public event EventHandler NextSourceChanged;
-            public event EventHandler TrackStarted;
-            public event EventHandler Transition;
-            public event EventHandler<EventArgs<PlaybackShuffleMode>> ShuffleModeChanged;
-            public event EventHandler<EventArgs<PlaybackRepeatMode>> RepeatModeChanged;*/
+            playback_source_changed = Add ("PlaybackSourceChanged");
+            ServiceManager.PlaybackController.SourceChanged += OnPlaybackSourceChanged;
+
+            shuffle_changed = Add ("ShuffleModeChanged");
+            ServiceManager.PlaybackController.ShuffleModeChanged += OnShuffleModeChanged;
+
+            repeat_changed = Add ("RepeatModeChanged");
+            ServiceManager.PlaybackController.RepeatModeChanged += OnRepeatModeChanged;
         }
 
         public Metric Add (string name)
@@ -204,6 +214,10 @@ namespace Banshee.Metrics
             Application.ShutdownRequested -= OnShutdownRequested;
             HyenaSqliteCommand.CommandExecuted -= OnSqliteCommandExecuted;
 
+            ServiceManager.PlaybackController.SourceChanged      -= OnPlaybackSourceChanged;
+            ServiceManager.PlaybackController.ShuffleModeChanged -= OnShuffleModeChanged;
+            ServiceManager.PlaybackController.RepeatModeChanged  -= OnRepeatModeChanged;
+
             // Delete any collected data
             metrics.Store.Clear ();
             metrics.Dispose ();
@@ -213,11 +227,24 @@ namespace Banshee.Metrics
             DatabaseConfigurationClient.Client.Set<string> (id_key, "");
         }
 
+        private string GetSourceString (Source src)
+        {
+            if (src == null)
+                return null;
+
+            var parent = src.Parent;
+            if (parent == null) {
+                return src.GetType ().ToString ();
+            } else {
+                return String.Format ("{0}/{1}", parent.GetType (), src.GetType ());
+            }
+        }
+
         #region Event Handlers
 
         private void OnActiveSourceChanged (SourceEventArgs args)
         {
-            source_changed.TakeSample ();
+            active_source_changed.PushSample (GetSourceString (ServiceManager.SourceManager.ActiveSource));
         }
 
         private bool OnShutdownRequested ()
@@ -230,6 +257,21 @@ namespace Banshee.Metrics
         private void OnSqliteCommandExecuted (object o, CommandExecutedArgs args)
         {
             sqlite_executed.PushSample (String.Format ("{0}ms -- {1}", args.Ms, args.Sql));
+        }
+
+        private void OnPlaybackSourceChanged (object o, EventArgs args)
+        {
+            playback_source_changed.PushSample (GetSourceString (ServiceManager.PlaybackController.Source as Source));
+        }
+
+        private void OnShuffleModeChanged (object o, EventArgs<PlaybackShuffleMode> args)
+        {
+            shuffle_changed.PushSample (args.Value);
+        }
+
+        private void OnRepeatModeChanged (object o, EventArgs<PlaybackRepeatMode> args)
+        {
+            repeat_changed.PushSample (args.Value);
         }
 
         #endregion
