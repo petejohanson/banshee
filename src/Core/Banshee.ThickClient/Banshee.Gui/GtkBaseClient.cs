@@ -144,17 +144,7 @@ namespace Banshee.Gui
             Application.TimeoutHandler = RunTimeout;
             Application.IdleHandler = RunIdle;
             Application.IdleTimeoutRemoveHandler = IdleTimeoutRemove;
-
-            BansheeMetrics.Started += () => {
-                var metrics = BansheeMetrics.Instance;
-                var screen = Gdk.Screen.Default;
-
-                metrics.Add ("Display/NScreens",    Gdk.Display.Default.NScreens);
-                metrics.Add ("Screen/Height",       screen.Height);
-                metrics.Add ("Screen/Width",        screen.Width);
-                metrics.Add ("Screen/IsComposited", screen.IsComposited);
-                metrics.Add ("Screen/NMonitors",    screen.NMonitors);
-            };
+            BansheeMetrics.Started += OnMetricsStarted;
 
             // Start the core boot process
 
@@ -168,6 +158,18 @@ namespace Banshee.Gui
             }
 
             Log.Notify += OnLogNotify;
+        }
+
+        private void OnMetricsStarted ()
+        {
+            var metrics = BansheeMetrics.Instance;
+            var screen = Gdk.Screen.Default;
+
+            metrics.Add ("Display/NScreens",    Gdk.Display.Default.NScreens);
+            metrics.Add ("Screen/Height",       screen.Height);
+            metrics.Add ("Screen/Width",        screen.Width);
+            metrics.Add ("Screen/IsComposited", screen.IsComposited);
+            metrics.Add ("Screen/NMonitors",    screen.NMonitors);
         }
 
         public virtual void Run ()

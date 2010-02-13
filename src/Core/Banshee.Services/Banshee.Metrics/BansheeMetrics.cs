@@ -75,6 +75,7 @@ namespace Banshee.Metrics
 
         private BansheeMetrics ()
         {
+            banshee_metrics = this;
             string unique_userid = DatabaseConfigurationClient.Client.Get<string> (id_key, null);
 
             if (String.IsNullOrEmpty (unique_userid)) {
@@ -110,7 +111,7 @@ namespace Banshee.Metrics
             // TODO schedule sending the data to the server in some timeout?
 
             // TODO remove this, just for testing
-            Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
+            //Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
             //System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
         }
 
@@ -124,7 +125,7 @@ namespace Banshee.Metrics
             Add ("Version",      Application.Version);
             Add ("StartedAt",    ApplicationContext.StartedAt);
 
-            Console.WriteLine ("SourceMgr is null? {0}", ServiceManager.SourceManager == null);
+            // Query basic stats about what content the user has
             foreach (var src in ServiceManager.SourceManager.FindSources<PrimarySource> ()) {
                 var type_name = src.TypeName;
                 var reader = new HyenaDataReader (ServiceManager.DbConnection.Query (
@@ -152,6 +153,7 @@ namespace Banshee.Metrics
                 reader.Dispose ();
             }
 
+            // Wire up event-triggered metrics
             source_changed = Add ("ActiveSourceChanged", () => ServiceManager.SourceManager.ActiveSource.TypeName);
             ServiceManager.SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
 
