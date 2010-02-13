@@ -379,6 +379,7 @@ namespace Banshee.Gui.Widgets
                 ServiceManager.PlayerEngine.CurrentState == PlayerState.Idle) {
                 incoming_track = null;
                 incoming_image = null;
+                current_artwork_id = null;
 
                 if (stage != null && stage.Actor == null) {
                     stage.Reset ();
