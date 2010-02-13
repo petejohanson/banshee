@@ -153,6 +153,7 @@ namespace Banshee.Sources.Gui
 
             Pixbuf icon = SourceIconResolver.ResolveIcon (source, RowHeight);
 
+            bool dispose_icon = false;
             if (state == StateType.Insensitive) {
                 // Code ported from gtk_cell_renderer_pixbuf_render()
                 var icon_source = new IconSource () {
@@ -163,6 +164,9 @@ namespace Banshee.Sources.Gui
 
                 icon = widget.Style.RenderIcon (icon_source, widget.Direction, state,
                     (IconSize)(-1), widget, "SourceRowRenderer");
+
+                dispose_icon = true;
+                icon_source.Dispose ();
             }
 
             FontDescription fd = widget.PangoContext.FontDescription.Copy ();
@@ -210,6 +214,10 @@ namespace Banshee.Sources.Gui
                 drawable.DrawPixbuf (main_gc, icon, 0, 0,
                     cell_area.X, Middle (cell_area, icon.Height),
                     icon.Width, icon.Height, RgbDither.None, 0, 0);
+
+                if (dispose_icon) {
+                    icon.Dispose ();
+                }
             }
 
             if (hide_counts) {

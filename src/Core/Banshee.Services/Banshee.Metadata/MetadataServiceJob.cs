@@ -163,10 +163,10 @@ namespace Banshee.Metadata
         {
             HttpWebResponse response = GetHttpStream(uri, ignoreMimeTypes);
             Stream from_stream = response == null ? null : response.GetResponseStream ();
+            if (response != null) {
+                response.Close ();
+            }
             if(from_stream == null) {
-                if (response != null) {
-                    response.Close ();
-                }
                 return false;
             }
 

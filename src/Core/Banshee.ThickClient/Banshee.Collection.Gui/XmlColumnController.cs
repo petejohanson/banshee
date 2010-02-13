@@ -41,11 +41,11 @@ namespace Banshee.Collection.Gui
     {
         public XmlColumnController (string xml) : base (false)
         {
-            XmlTextReader reader = new XmlTextReader (new StringReader (xml));
-
-            while (reader.Read ()) {
-                if (reader.NodeType == XmlNodeType.Element && reader.Name == "column-controller") {
-                    ReadColumnController (reader, reader.Depth);
+            using (var reader = new XmlTextReader (new StringReader (xml))) {
+                while (reader.Read ()) {
+                    if (reader.NodeType == XmlNodeType.Element && reader.Name == "column-controller") {
+                        ReadColumnController (reader, reader.Depth);
+                    }
                 }
             }
 

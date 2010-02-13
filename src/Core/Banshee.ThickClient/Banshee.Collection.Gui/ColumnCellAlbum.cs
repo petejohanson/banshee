@@ -101,6 +101,10 @@ namespace Banshee.Collection.Gui
             ArtworkRenderer.RenderThumbnail (context.Context, image, false, x, y,
                 image_render_size, image_render_size, !is_default, context.Theme.Context.Radius);
 
+            if (!is_default) {
+                ((IDisposable)image).Dispose ();
+            }
+
             int fl_width = 0, fl_height = 0, sl_width = 0, sl_height = 0;
             Cairo.Color text_color = context.Theme.Colors.GetWidgetColor (GtkColorClass.Text, state);
             text_color.A = 0.75;

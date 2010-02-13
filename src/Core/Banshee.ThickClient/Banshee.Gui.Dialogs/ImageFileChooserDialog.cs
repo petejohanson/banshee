@@ -70,8 +70,9 @@ namespace Banshee.Gui.Dialogs
                     throw new ApplicationException ();
                 }
 
-                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf (PreviewFilename);
-                preview.Pixbuf = pixbuf.ScaleSimple (100, 100, Gdk.InterpType.Bilinear);
+                using (var pixbuf = new Gdk.Pixbuf (PreviewFilename)) {
+                    preview.Pixbuf = pixbuf.ScaleSimple (100, 100, Gdk.InterpType.Bilinear);
+                }
                 preview.Show ();
             } catch {
                 preview.Hide ();

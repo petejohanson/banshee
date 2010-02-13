@@ -103,8 +103,9 @@ namespace Banshee.Configuration
                 foreach(XmlNode node in namespace_node.ChildNodes) {
                     if(node.Attributes[tag_identifier_attribute_name].Value == key && node.Name == value_tag_name) {
                         XmlSerializer serializer = new XmlSerializer(typeof(T));
-                        StringReader reader = new StringReader(node.InnerXml);
-                        return (T) serializer.Deserialize(reader);
+                        using (var reader = new StringReader(node.InnerXml) ) {
+                            return (T) serializer.Deserialize(reader);
+                        }
                     }
                 }
                 return fallback;
@@ -125,11 +126,11 @@ namespace Banshee.Configuration
         {
             lock(xml_document) {
                 XmlSerializer serializer = new XmlSerializer(typeof(T));
-                StringWriter writer = new StringWriter();
-                serializer.Serialize(writer, value);
-                XmlDocumentFragment fragment = xml_document.CreateDocumentFragment();
-                fragment.InnerXml = writer.ToString();
-                writer.Close();
+                var fragment = xml_document.CreateDocumentFragment();
+                using (var writer = new StringWriter()) {
+                    serializer.Serialize(writer, value);
+                    fragment.InnerXml = writer.ToString();
+                }
 
                 if(fragment.FirstChild is XmlDeclaration) {
                     fragment.RemoveChild(fragment.FirstChild); // This is only a problem with Microsoft's System.Xml

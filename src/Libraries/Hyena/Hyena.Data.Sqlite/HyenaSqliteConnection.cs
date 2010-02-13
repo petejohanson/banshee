@@ -465,6 +465,10 @@ namespace Hyena.Data.Sqlite
             dispose_requested = true;
             queue_signal.Set ();
             queue_thread.Join ();
+
+            queue_signal.Close ();
+            ResultReadySignal.Close ();
+            transaction_signal.Close ();
         }
     }
 }

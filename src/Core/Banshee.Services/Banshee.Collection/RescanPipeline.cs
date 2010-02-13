@@ -160,43 +160,46 @@ namespace Banshee.Collection
             try {
                 SafeUri uri = new SafeUri (file_path);
 
-                IDataReader reader = ServiceManager.DbConnection.Query (fetch_command, psource.DbId, uri.AbsoluteUri);
-                if (reader.Read () ) {
-                    //Hyena.Log.DebugFormat ("Found it in the db!");
-                    DatabaseTrackInfo track = DatabaseTrackInfo.Provider.Load (reader);
+                using (var reader = ServiceManager.DbConnection.Query (fetch_command, psource.DbId, uri.AbsoluteUri)) {
+                    if (reader.Read () ) {
+                        //Hyena.Log.DebugFormat ("Found it in the db!");
+                        DatabaseTrackInfo track = DatabaseTrackInfo.Provider.Load (reader);
 
-                    MergeIfModified (track);
+                        MergeIfModified (track);
 
-                    // Either way, update the LastSyncStamp
-                    track.LastSyncedStamp = DateTime.Now;
-                    track.Save (false);
-                    status = String.Format ("{0} - {1}", track.DisplayArtistName, track.DisplayTrackTitle);
-                } else {
-                    // This URI is not in the database - try to find it based on MetadataHash in case it was simply moved
-                    DatabaseTrackInfo track = new DatabaseTrackInfo ();
-                    Banshee.Streaming.StreamTagger.TrackInfoMerge (track, uri);
+                        // Either way, update the LastSyncStamp
+                        track.LastSyncedStamp = DateTime.Now;
+                        track.Save (false);
+                        status = String.Format ("{0} - {1}", track.DisplayArtistName, track.DisplayTrackTitle);
+                    } else {
+                        // This URI is not in the database - try to find it based on MetadataHash in case it was simply moved
+                        DatabaseTrackInfo track = new DatabaseTrackInfo ();
+                        Banshee.Streaming.StreamTagger.TrackInfoMerge (track, uri);
 
-                    IDataReader similar_reader = ServiceManager.DbConnection.Query (fetch_similar_command, psource.DbId, scan_started, track.MetadataHash);
-                    DatabaseTrackInfo similar_track = null;
-                    while (similar_reader.Read ()) {
-                        similar_track = DatabaseTrackInfo.Provider.Load (similar_reader);
-                        if (!Banshee.IO.File.Exists (similar_track.Uri)) {
-                            //Hyena.Log.DebugFormat ("Apparently {0} was moved to {1}", similar_track.Uri, file_path);
-                            similar_track.Uri = uri;
-                            MergeIfModified (similar_track);
-                            similar_track.LastSyncedStamp = DateTime.Now;
-                            similar_track.Save (false);
-                            status = String.Format ("{0} - {1}", similar_track.DisplayArtistName, similar_track.DisplayTrackTitle);
-                            break;
+                        using (var similar_reader = ServiceManager.DbConnection.Query (
+                            fetch_similar_command, psource.DbId, scan_started, track.MetadataHash)) {
+                            DatabaseTrackInfo similar_track = null;
+                            while (similar_reader.Read ()) {
+                                similar_track = DatabaseTrackInfo.Provider.Load (similar_reader);
+                                if (!Banshee.IO.File.Exists (similar_track.Uri)) {
+                                    //Hyena.Log.DebugFormat ("Apparently {0} was moved to {1}", similar_track.Uri, file_path);
+                                    similar_track.Uri = uri;
+                                    MergeIfModified (similar_track);
+                                    similar_track.LastSyncedStamp = DateTime.Now;
+                                    similar_track.Save (false);
+                                    status = String.Format ("{0} - {1}", similar_track.DisplayArtistName, similar_track.DisplayTrackTitle);
+                                    break;
+                                }
+                                similar_track = null;
+                            }
+
+                            // If we still couldn't find it, try to import it
+                            if (similar_track == null) {
+                                //Hyena.Log.DebugFormat ("Couldn't find it, so queueing to import it");
+                                status = System.IO.Path.GetFileNameWithoutExtension (file_path);
+                                ServiceManager.Get<Banshee.Library.LibraryImportManager> ().ImportTrack (file_path);
+                            }
                         }
-                        similar_track = null;
-                    }
-
-                    // If we still couldn't find it, try to import it
-                    if (similar_track == null) {
-                        //Hyena.Log.DebugFormat ("Couldn't find it, so queueing to import it");
-                        status = System.IO.Path.GetFileNameWithoutExtension (file_path);
-                        ServiceManager.Get<Banshee.Library.LibraryImportManager> ().ImportTrack (file_path);
                     }
                 }
             } catch (Exception e) {
