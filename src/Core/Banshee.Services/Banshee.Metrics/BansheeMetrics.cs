@@ -115,6 +115,9 @@ namespace Banshee.Metrics
             if (ApplicationContext.CommandLine.Contains ("debug-metrics")) {
                 Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
                 System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
+
+                var poster = new HttpPoster ("http://download.banshee-project.org/metrics/metrics.py", metrics);
+                Log.InformationFormat ("Posted usage data? {0}", poster.Post ());
             }
         }
 
