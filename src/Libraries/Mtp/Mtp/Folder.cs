@@ -87,25 +87,22 @@ namespace Mtp
         
         public List<Folder> GetChildren ()
         {
-            using (FolderHandle handle = GetFolderList(device.Handle))
+            IntPtr root = GetFolderList(device.Handle);
+            IntPtr ptr = Find (root, folderId);
+
+            FolderStruct f = (FolderStruct)Marshal.PtrToStructure(ptr, typeof(FolderStruct));
+
+            ptr = f.child;
+            List<Folder> folders = new List<Folder>();
+            while (ptr != IntPtr.Zero)
             {
-                // Find the pointer to the folderstruct representing this folder
-                IntPtr ptr = handle.DangerousGetHandle();
-                ptr = Find (ptr, folderId);
-                
-                FolderStruct f = (FolderStruct)Marshal.PtrToStructure(ptr, typeof(FolderStruct));
-                
-                ptr = f.child;
-                List<Folder> folders = new List<Folder>();
-                while (ptr != IntPtr.Zero)
-                {
-                    FolderStruct folder = (FolderStruct)Marshal.PtrToStructure(ptr, typeof(FolderStruct));
-                    folders.Add(new Folder(folder, device));
-                    ptr = folder.sibling;
-                }
-                
-                return folders;
+                FolderStruct folder = (FolderStruct)Marshal.PtrToStructure(ptr, typeof(FolderStruct));
+                folders.Add(new Folder(folder, device));
+                ptr = folder.sibling;
             }
+
+            LIBMTP_destroy_folder_t (root);
+            return folders;
         }
         
         public void Remove()
@@ -117,20 +114,22 @@ namespace Mtp
         {
             return String.Format ("{0} (id {1}, parent id {2})", Name, FolderId, ParentId);
         }
-        
+
         internal static List<Folder> GetRootFolders (MtpDevice device)
         {
             List<Folder> folders = new List<Folder>();
-            using (FolderHandle handle = GetFolderList (device.Handle))
-            {
-                for (IntPtr ptr = handle.DangerousGetHandle(); ptr != IntPtr.Zero;)
-                {
+            IntPtr root = GetFolderList (device.Handle);
+            try {
+                for (IntPtr ptr = root; ptr != IntPtr.Zero;) {
                     FolderStruct folder = (FolderStruct)Marshal.PtrToStructure(ptr, typeof(FolderStruct));
                     folders.Add(new Folder (folder, device));
                     ptr = folder.sibling;
                 }
-                return folders;
+            } finally {
+                // Recursively destroy the folder tree
+                LIBMTP_destroy_folder_t (root);
             }
+            return folders;
         }
 
         internal static uint CreateFolder (MtpDeviceHandle handle, string name, uint parentId)
@@ -159,10 +158,9 @@ namespace Mtp
             return LIBMTP_Find_Folder (folderList, folderId);
         }
 
-        internal static FolderHandle GetFolderList (MtpDeviceHandle handle)
+        internal static IntPtr GetFolderList (MtpDeviceHandle handle)
         {
-            IntPtr ptr = LIBMTP_Get_Folder_List (handle);
-            return new FolderHandle(ptr);
+            return LIBMTP_Get_Folder_List (handle);
         }
 
         // Folder Management
@@ -187,38 +185,6 @@ namespace Mtp
 #endif
     }
 
-    internal class FolderHandle : SafeHandle
-    {
-        private FolderHandle()
-            : base(IntPtr.Zero, true)
-        {
-            
-        }
-        
-        internal FolderHandle(IntPtr ptr)
-            : this(ptr, true)
-        {
-            
-        }
-        
-        internal FolderHandle(IntPtr ptr, bool ownsHandle)
-            : base (IntPtr.Zero, ownsHandle)
-        {
-            SetHandle (ptr);
-        }
-        
-        public override bool IsInvalid
-        {
-            get { return handle == IntPtr.Zero; }
-        }
-
-        protected override bool ReleaseHandle ()
-        {
-            Folder.DestroyFolder (handle);
-            return true;
-        }
-    }
-    
     [StructLayout(LayoutKind.Sequential)]
     internal struct FolderStruct
     {

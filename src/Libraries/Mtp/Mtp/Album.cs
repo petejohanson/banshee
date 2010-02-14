@@ -35,6 +35,21 @@ namespace Mtp
 {
     public class Album : AbstractTrackList
     {
+        internal static List<Album> GetAlbums (MtpDevice device)
+        {
+            List<Album> albums = new List<Album> ();
+
+            IntPtr ptr = LIBMTP_Get_Album_List (device.Handle);
+            while (ptr != IntPtr.Zero) {
+                AlbumStruct d = (AlbumStruct)Marshal.PtrToStructure(ptr, typeof(AlbumStruct));
+                LIBMTP_destroy_album_t (ptr);
+                albums.Add (new Album (device, d));
+                ptr = d.next;
+            }
+
+            return albums;
+        }
+
         private AlbumStruct album;
 
         public uint AlbumId {
@@ -154,21 +169,23 @@ namespace Mtp
             if (ptr == IntPtr.Zero) {
                 return null;
             } else {
-                return new Album (device, (AlbumStruct) Marshal.PtrToStructure(ptr, typeof (AlbumStruct)));
+                AlbumStruct album = (AlbumStruct) Marshal.PtrToStructure(ptr, typeof (AlbumStruct));
+                LIBMTP_destroy_album_t (ptr);
+                return new Album (device, album);
             }
         }
 
-        [DllImport("libmtp.dll")]
-        internal static extern IntPtr LIBMTP_new_album_t (); // LIBMTP_album_t*
+        //[DllImport("libmtp.dll")]
+        //internal static extern IntPtr LIBMTP_new_album_t (); // LIBMTP_album_t*
 
         [DllImport("libmtp.dll")]
-        internal static extern void LIBMTP_destroy_album_t (ref AlbumStruct album);
+        static extern void LIBMTP_destroy_album_t (IntPtr album);
 
         [DllImport("libmtp.dll")]
-        internal static extern IntPtr LIBMTP_Get_Album_List (MtpDeviceHandle handle); // LIBMTP_album_t*
+        static extern IntPtr LIBMTP_Get_Album_List (MtpDeviceHandle handle); // LIBMTP_album_t*
 
         [DllImport("libmtp.dll")]
-        internal static extern IntPtr LIBMTP_Get_Album (MtpDeviceHandle handle, uint albumId); // LIBMTP_album_t*
+        static extern IntPtr LIBMTP_Get_Album (MtpDeviceHandle handle, uint albumId); // LIBMTP_album_t*
 
 #if LIBMTP8
         [DllImport("libmtp.dll")]
@@ -179,7 +196,7 @@ namespace Mtp
 #endif
 
         [DllImport("libmtp.dll")]
-        internal static extern int LIBMTP_Update_Album (MtpDeviceHandle handle, ref AlbumStruct album);
+        static extern int LIBMTP_Update_Album (MtpDeviceHandle handle, ref AlbumStruct album);
     }
 
     [StructLayout(LayoutKind.Sequential)]
