@@ -53,8 +53,8 @@ namespace Banshee.Gui
 
         private static readonly string [] require_selection_actions = new string [] {
             "TrackContextMenuAction", "TrackPropertiesAction", "AddToPlaylistAction",
-            "RemoveTracksAction", "RemoveTracksFromLibraryAction", "DeleteTracksFromDriveAction",
-            "RateTracksAction", "SelectNoneAction"
+            "RemoveTracksAction", "RemoveTracksFromLibraryAction", "OpenContainingFolderAction",
+            "DeleteTracksFromDriveAction", "RateTracksAction", "SelectNoneAction"
         };
 
         public event EventHandler SelectionChanged;
@@ -98,6 +98,10 @@ namespace Banshee.Gui
                 new ActionEntry ("RemoveTracksFromLibraryAction", null,
                     Catalog.GetString ("Remove From _Library"), "",
                     Catalog.GetString ("Remove selected track(s) from library"), OnRemoveTracksFromLibrary),
+
+                new ActionEntry ("OpenContainingFolderAction", null,
+                    Catalog.GetString ("_Open Containing Folder"), null,
+                    Catalog.GetString ("Open the folder that contains the selected item"), OnOpenContainingFolder),
 
                 new ActionEntry ("DeleteTracksFromDriveAction", null,
                     Catalog.GetString ("_Delete From Drive"), null,
@@ -229,6 +233,10 @@ namespace Banshee.Gui
 
                     UpdateAction ("RemoveTracksAction", is_track_source && track_source.CanRemoveTracks, has_selection, source);
                     UpdateAction ("DeleteTracksFromDriveAction", is_track_source && track_source.CanDeleteTracks, has_selection, source);
+
+                    //if it can delete tracks, most likely it can open their folder
+                    UpdateAction ("OpenContainingFolderAction", is_track_source && track_source.CanDeleteTracks, has_single_selection, source);
+
                     UpdateAction ("RemoveTracksFromLibraryAction", source.Parent is LibrarySource, has_selection, null);
 
                     UpdateAction ("TrackPropertiesAction", source.HasViewableTrackProperties, has_selection, source);
@@ -400,6 +408,41 @@ namespace Banshee.Gui
                         library.RemoveSelectedTracks (source.TrackModel as DatabaseTrackListModel);
                     });
                 }
+            }
+        }
+
+        private void OnOpenContainingFolder (object o, EventArgs args)
+        {
+            var source = ActiveSource as ITrackModelSource;
+
+            if (source == null ||
+                source.TrackModel == null ||
+                source.TrackModel.SelectedItems == null ||
+                source.TrackModel.SelectedItems.Count != 1) {
+                Log.Error ("Could not open containing folder");
+                return;
+            }
+
+            foreach (var track in source.TrackModel.SelectedItems) {
+                var path = System.IO.Path.GetDirectoryName (track.Uri.AbsolutePath);
+                if (Banshee.IO.Directory.Exists (path)) {
+                    System.Diagnostics.Process.Start (path);
+                    return;
+                }
+            }
+
+            var md = new HigMessageDialog (
+                ServiceManager.Get<GtkElementsService> ("GtkElementsService").PrimaryWindow,
+                DialogFlags.DestroyWithParent, MessageType.Warning,
+                ButtonsType.None, Catalog.GetString ("The folder could not be found."),
+                Catalog.GetString ("Please check that the track's location is accessible by the system.")
+            );
+            md.AddButton ("gtk-ok", ResponseType.Ok, true);
+
+            try {
+                md.Run ();
+            } finally {
+                md.Destroy ();
             }
         }
 
