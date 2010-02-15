@@ -174,7 +174,7 @@ namespace Banshee.Gui.Widgets
             cr.Pattern = mask;
             cr.Fill ();
 
-            CairoExtensions.DisposeContext (cr);
+            ((IDisposable)cr).Dispose ();
             return surface;
         }
 
