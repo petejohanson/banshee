@@ -289,6 +289,7 @@ namespace Hyena.Data.Gui
                 IsReorderable = sortable.SortColumn == null || sortable.SortColumn.SortType == SortType.None;
 
                 Model.Reload ();
+                CenterOnSelection ();
                 RecalculateColumnSizes ();
                 RegenerateColumnCache ();
                 InvalidateHeader ();
