@@ -49,8 +49,8 @@ namespace Hyena.Tests
             metrics.AddDefaults ();
             Assert.IsTrue (metrics.Count > 0);
 
-            string metrics_str = metrics.ToString ();
-            Assert.IsTrue (metrics_str.Contains ("ID: myuniqueid"));
+            string metrics_str = metrics.ToJsonString ();
+            Assert.IsTrue (metrics_str.Contains ("\"ID\" : myuniqueid"));
 
             // tests/Makefile.am runs the tests with Locale=it_IT
             Assert.IsTrue (metrics_str.Contains ("it-IT"));
