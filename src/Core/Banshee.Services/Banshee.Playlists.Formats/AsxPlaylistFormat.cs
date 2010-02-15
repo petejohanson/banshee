@@ -49,10 +49,9 @@ namespace Banshee.Playlists.Formats
         public static bool MagicHandler(StreamReader reader)
         {
             try {
-                using (var xml_reader = new XmlTextReader(reader)) {
-                    xml_reader.WhitespaceHandling = WhitespaceHandling.None;
-                    return CheckAsxHeader(xml_reader);
-                }
+                XmlTextReader xml_reader = new XmlTextReader(reader);
+                xml_reader.WhitespaceHandling = WhitespaceHandling.None;
+                return CheckAsxHeader(xml_reader);
             } catch {
                 return false;
             }
@@ -125,7 +124,6 @@ namespace Banshee.Playlists.Formats
                     }
                 } while(!xml_reader.EOF && xml_reader.Depth > 1);
             }
-            xml_reader.Close ();
         }
 
         public override void Save(Stream stream, ITrackModelSource source)

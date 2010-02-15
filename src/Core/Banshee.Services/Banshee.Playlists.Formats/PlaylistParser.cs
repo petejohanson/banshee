@@ -128,11 +128,9 @@ namespace Banshee.Playlists.Formats
                 foreach (PlaylistFormatDescription format in playlist_formats) {
                     stream.Position = 0;
 
-                    using (var reader = new StreamReader (stream)) {
-                        if (format.MagicHandler (reader)) {
-                            matching_format = format;
-                            break;
-                        }
+                    if (format.MagicHandler (new StreamReader (stream))) {
+                        matching_format = format;
+                        break;
                     }
                 }
 
