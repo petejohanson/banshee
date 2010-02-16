@@ -30,6 +30,7 @@ using System;
 using System.Reflection;
 using System.Text;
 using Mono.Data.Sqlite;
+using System.Collections.Generic;
 
 namespace Hyena.Data.Sqlite
 {
@@ -123,6 +124,39 @@ namespace Hyena.Data.Sqlite
                 builder.Append (default_value);
             }
             return builder.ToString ();
+        }
+    }
+
+    [SqliteFunction (Name = "HYENA_BINARY_FUNCTION", FuncType = FunctionType.Scalar, Arguments = 3)]
+    public sealed class BinaryFunction : SqliteFunction
+    {
+        private static Dictionary<string, Func<object, object, object>> funcs = new Dictionary<string, Func<object, object, object>> ();
+
+        public static void Add (string functionId, Func<object, object, object> func)
+        {
+            lock (funcs) {
+                if (funcs.ContainsKey (functionId)) {
+                    throw new ArgumentException (String.Format ("{0} is already taken", functionId), "functionId");
+                }
+
+                funcs[functionId] = func;
+            }
+        }
+
+        public static void Remove (string functionId)
+        {
+            lock (funcs) {
+                if (!funcs.ContainsKey (functionId)) {
+                    throw new ArgumentException (String.Format ("{0} does not exist", functionId), "functionId");
+                }
+
+                funcs.Remove (functionId);
+            }
+        }
+
+        public override object Invoke (object[] args)
+        {
+            return funcs[args[0] as string] (args[1], args[2]);
         }
     }
 
