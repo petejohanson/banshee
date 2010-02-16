@@ -78,7 +78,7 @@ namespace Banshee.Collection.Database
                             FROM {2} {3} LEFT OUTER JOIN CoreShuffles ON (CoreShuffles.ShufflerId = {4} AND CoreShuffles.TrackID = CoreTracks.TrackID)
                             WHERE {5} {6} AND {7} AND
                                 LastStreamError = 0 AND (CoreShuffles.LastShuffledAt < ? OR CoreShuffles.LastShuffledAt IS NULL)
-                            ORDER BY {8}",
+                            ORDER BY {8} LIMIT 1",
                         provider.Select, Select,
                         Model.FromFragment, From, Shuffler.DbId,
                         String.IsNullOrEmpty (provider.Where) ? "1=1" : provider.Where, Model.ConditionFragment ?? "1=1", Condition,
