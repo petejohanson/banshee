@@ -29,6 +29,7 @@
 using System;
 
 using Banshee.PlaybackController;
+using Mono.Unix;
 
 namespace Banshee.Collection.Database
 {
@@ -36,8 +37,12 @@ namespace Banshee.Collection.Database
     {
         private static string track_condition = String.Format ("AND (CoreTracks.Score BETWEEN ? AND ? OR (? = 50 AND CoreTracks.Score = 0)) {0} ORDER BY RANDOM()", RANDOM_CONDITION);
 
-        public RandomByScore (Shuffler shuffler) : base (PlaybackShuffleMode.Score, shuffler)
+        public RandomByScore (Shuffler shuffler) : base ("score", shuffler)
         {
+            Label = Catalog.GetString ("Shuffle by S_core");
+            Adverb = Catalog.GetString ("by score");
+            Description = Catalog.GetString ("Play songs randomly, prefer higher scored songs");
+
             Condition = "(CoreTracks.Score BETWEEN ? AND ? OR (? = 50 AND CoreTracks.Score = 0))";
             OrderBy = "RANDOM()";
         }

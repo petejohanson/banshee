@@ -34,6 +34,7 @@ using Hyena.Data.Sqlite;
 
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
+using Mono.Unix;
 
 namespace Banshee.Collection.Database
 {
@@ -41,8 +42,12 @@ namespace Banshee.Collection.Database
     {
         private static string track_condition = String.Format ("{0} ORDER BY RANDOM()", RANDOM_CONDITION);
 
-        public RandomByTrack (Shuffler shuffler) : base (PlaybackShuffleMode.Song, shuffler)
+        public RandomByTrack (Shuffler shuffler) : base ("song", shuffler)
         {
+            Label = Catalog.GetString ("Shuffle by _Song");
+            Adverb = Catalog.GetString ("by song");
+            Description = Catalog.GetString ("Play songs randomly from the playlist");
+
             Condition = "1=1";
             OrderBy = "RANDOM()";
         }

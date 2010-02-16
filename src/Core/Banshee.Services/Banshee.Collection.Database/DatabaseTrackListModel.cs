@@ -368,14 +368,14 @@ namespace Banshee.Collection.Database
 
         public override TrackInfo GetRandom (DateTime notPlayedSince)
         {
-            return GetRandom (notPlayedSince, PlaybackShuffleMode.Song, true, false, Shuffler.Playback);
+            return GetRandom (notPlayedSince, "song", true, false, Shuffler.Playback);
         }
 
-        public TrackInfo GetRandom (DateTime notPlayedSince, PlaybackShuffleMode mode, bool repeat, bool resetSinceTime, Shuffler shuffler)
+        public TrackInfo GetRandom (DateTime notPlayedSince, string shuffle_mode, bool repeat, bool resetSinceTime, Shuffler shuffler)
         {
             lock (this) {
                 shuffler.SetModelAndCache (this, cache);
-                return shuffler.GetRandom (notPlayedSince, mode, repeat, resetSinceTime);
+                return shuffler.GetRandom (notPlayedSince, shuffle_mode, repeat, resetSinceTime);
             }
         }
 

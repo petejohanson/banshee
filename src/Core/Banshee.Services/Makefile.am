@@ -25,6 +25,7 @@ SOURCES =  \
 	Banshee.Collection.Database/RandomBy.cs \
 	Banshee.Collection.Database/RandomByAlbum.cs \
 	Banshee.Collection.Database/RandomByArtist.cs \
+	Banshee.Collection.Database/RandomByOff.cs \
 	Banshee.Collection.Database/RandomByRating.cs \
 	Banshee.Collection.Database/RandomByScore.cs \
 	Banshee.Collection.Database/RandomBySlot.cs \
@@ -138,7 +139,6 @@ SOURCES =  \
 	Banshee.PlaybackController/PlaybackControllerDatabaseStack.cs \
 	Banshee.PlaybackController/PlaybackControllerService.cs \
 	Banshee.PlaybackController/PlaybackRepeatMode.cs \
-	Banshee.PlaybackController/PlaybackShuffleMode.cs \
 	Banshee.Playlist/AbstractPlaylistSource.cs \
 	Banshee.Playlist/PlaylistFileUtil.cs \
 	Banshee.Playlist/PlaylistSource.cs \

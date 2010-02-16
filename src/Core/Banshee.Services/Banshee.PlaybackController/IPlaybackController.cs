@@ -30,7 +30,7 @@ namespace Banshee.PlaybackController
 {
     public interface IPlaybackController : IBasicPlaybackController
     {
-        PlaybackShuffleMode ShuffleMode { get; set; }
+        string ShuffleMode { get; set; }
         PlaybackRepeatMode RepeatMode { get; set; }
         bool StopWhenFinished { get; set; }
     }

@@ -70,7 +70,7 @@ namespace Banshee.PlayQueue
         private SourcePage pref_page;
         private Section pref_section;
 
-        private PlaybackShuffleMode populate_mode = (PlaybackShuffleMode) PopulateModeSchema.Get ();
+        private string populate_shuffle_mode = PopulateModeSchema.Get ();
         private string populate_from_name = PopulateFromSchema.Get ();
         private DatabaseSource populate_from = null;
         private int played_songs_number = PlayedSongsNumberSchema.Get ();
@@ -128,21 +128,20 @@ namespace Banshee.PlayQueue
         {
             base.Initialize ();
 
+            shuffler = new Shuffler (UniqueId);
             InstallPreferences ();
             header_widget = CreateHeaderWidget ();
             header_widget.ShowAll ();
-
-            shuffler = new Shuffler (UniqueId);
 
             Properties.Set<Gtk.Widget> ("Nereid.SourceContents.HeaderWidget", header_widget);
         }
 
         public HeaderWidget CreateHeaderWidget ()
         {
-            var header_widget = new HeaderWidget (populate_mode, populate_from_name);
-            header_widget.ModeChanged += delegate (object sender, EventArgs<PlaybackShuffleMode> e) {
-                populate_mode = e.Value;
-                PopulateModeSchema.Set ((int) e.Value);
+            var header_widget = new HeaderWidget (shuffler, populate_shuffle_mode, populate_from_name);
+            header_widget.ModeChanged += delegate (object sender, EventArgs<RandomBy> e) {
+                populate_shuffle_mode = e.Value.Id;
+                PopulateModeSchema.Set (populate_shuffle_mode);
                 UpdatePlayQueue ();
                 OnUpdated ();
             };
@@ -603,7 +602,7 @@ namespace Banshee.PlayQueue
                 for (int i = 0; i < tracks_to_add; i++) {
 
                     var track = populate_from.DatabaseTrackModel.GetRandom (
-                        source_set_at, populate_mode, false, skip && i == 0, shuffler) as DatabaseTrackInfo;
+                        source_set_at, populate_shuffle_mode, false, skip && i == 0, shuffler) as DatabaseTrackInfo;
 
                     if (track != null) {
                         EnqueueId (track.TrackId, false, true);
@@ -717,7 +716,7 @@ namespace Banshee.PlayQueue
         }
 
         public bool Populate {
-            get { return populate_mode != PlaybackShuffleMode.Linear; }
+            get { return populate_shuffle_mode != "off"; }
         }
 
         private ITrackModelSource PriorSource {
@@ -820,9 +819,9 @@ namespace Banshee.PlayQueue
             "Current offset of the Play Queue"
         );
 
-        public static readonly SchemaEntry<int> PopulateModeSchema = new SchemaEntry<int> (
-            "plugins.play_queue", "populate_mode",
-            (int) PlaybackShuffleMode.Linear,
+        public static readonly SchemaEntry<string> PopulateModeSchema = new SchemaEntry<string> (
+            "plugins.play_queue", "populate_shuffle_mode",
+            "off",
             "Play Queue population mode",
             "How (and if) the Play Queue should be randomly populated"
         );

@@ -34,6 +34,7 @@ using Hyena.Data.Sqlite;
 
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
+using Mono.Unix;
 
 namespace Banshee.Collection.Database
 {
@@ -44,8 +45,12 @@ namespace Banshee.Collection.Database
         private HyenaSqliteCommand album_query;
         private int? album_id;
 
-        public RandomByAlbum (Shuffler shuffler) : base (PlaybackShuffleMode.Album, shuffler)
+        public RandomByAlbum (Shuffler shuffler) : base ("album", shuffler)
         {
+            Label = Catalog.GetString ("Shuffle by A_lbum");
+            Adverb = Catalog.GetString ("by album");
+            Description = Catalog.GetString ("Play all songs from an album, then randomly choose another album");
+
             Condition = "CoreTracks.AlbumID = ?";
             OrderBy = "Disc ASC, TrackNumber ASC";
         }

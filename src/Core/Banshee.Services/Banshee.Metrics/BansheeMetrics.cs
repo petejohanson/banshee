@@ -267,7 +267,7 @@ namespace Banshee.Metrics
             playback_source_changed.PushSample (GetSourceString (ServiceManager.PlaybackController.Source as Source));
         }
 
-        private void OnShuffleModeChanged (object o, EventArgs<PlaybackShuffleMode> args)
+        private void OnShuffleModeChanged (object o, EventArgs<string> args)
         {
             shuffle_changed.PushSample (args.Value);
         }
