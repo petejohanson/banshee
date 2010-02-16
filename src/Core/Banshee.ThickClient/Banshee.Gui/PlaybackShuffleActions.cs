@@ -242,12 +242,12 @@ namespace Banshee.Gui
 
         private static string ConfigIdToActionName (string configuration)
         {
-            return String.Format ("{0}", StringUtil.UnderCaseToCamelCase (configuration));
+            return "S" + configuration.Substring (1);
         }
 
         private static string ActionNameToConfigId (string actionName)
         {
-            return StringUtil.CamelCaseToUnderCase (actionName);
+            return actionName.ToLowerInvariant ();
         }
 
         public static readonly SchemaEntry<string> ShuffleMode = new SchemaEntry<string> (
