@@ -96,7 +96,7 @@ namespace Banshee.Collection.Database
                 }
             } else {
                 lock (random_modes) {
-                    random_by = random_modes.First (r => r.GetType () == tnode.Type);
+                    random_by = random_modes.FirstOrDefault (r => r.GetType () == tnode.Type);
                 }
 
                 if (random_by != null) {
