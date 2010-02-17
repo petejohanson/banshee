@@ -120,7 +120,7 @@ namespace Hyena.Data.Sqlite
                         Log.DebugFormat ("Executed in {0}ms {1}", execution_ms, sql_command.CommandText);
                     }
                 } catch (Exception e) {
-                    Log.DebugFormat (String.Format ("Exception executing command: {0}", sql_command.CommandText), e.ToString ());
+                    Log.DebugFormat ("Exception executing command: {0}", sql_command.CommandText);
                     execution_exception = e;
                 }
             }
