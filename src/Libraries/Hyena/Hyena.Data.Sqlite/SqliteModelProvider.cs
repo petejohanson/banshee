@@ -449,6 +449,11 @@ namespace Hyena.Data.Sqlite
             Delete (PrimaryKeyFor (item));
         }
 
+        public void Delete (string condition, params object [] vals)
+        {
+            connection.Execute (String.Format ("DELETE FROM {0} WHERE {1}", TableName, condition), vals);
+        }
+
         public virtual void Delete (IEnumerable<T> items)
         {
             List<long> ids = new List<long> ();
