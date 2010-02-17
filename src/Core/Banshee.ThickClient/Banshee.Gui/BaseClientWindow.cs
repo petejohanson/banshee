@@ -164,7 +164,7 @@ namespace Banshee.Gui
             }
 
             Banshee.ServiceStack.Application.Shutdown ();
-            return base.OnDeleteEvent (evnt);
+            return true;
         }
 
         protected override bool OnWindowStateEvent (Gdk.EventWindowState evnt)
