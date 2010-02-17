@@ -74,6 +74,14 @@ run-trace: $(MO_FILES)
 run-profile-heap: $(MO_FILES)
 	(cd bin; $(MONO) --profile=logging:heap=all,gc-dumps=-1 --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS))
 
+query-trace:
+	@echo "Did you set BANSHEE_DEV_MONO_OPTIONS to --trace=disabled?"; \
+	MONO_PID=$$(ps aux | grep mono | grep '\--uninstalled' | grep -v 'cd bin' | awk '{print$$2}'); \
+	kill -USR2 $$MONO_PID
+
+push-moblin:
+	@extras/push-moblin
+
 gdb:
 	@pushd bin; \
 	gdb mono --eval-command="handle SIGXCPU SIG35 SIGPWR nostop noprint" --eval-command="b g_return_if_fail_warning" --eval-command="r --debug Nereid.exe --debug --uninstalled"; \
