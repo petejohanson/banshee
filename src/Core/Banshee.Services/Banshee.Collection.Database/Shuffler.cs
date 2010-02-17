@@ -154,7 +154,7 @@ namespace Banshee.Collection.Database
                 }
             }
 
-            var random = random_modes.First (r => r.Id == mode);
+            var random = random_modes.FirstOrDefault (r => r.Id == mode);
             if (random != null) {
                 if (!random.IsReady) {
                     if (!random.Next (random_began_at) && repeat) {

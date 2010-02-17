@@ -127,7 +127,10 @@ namespace Banshee.Collection.Database
             }
         }
 
+        // The playback track we choose is dependent on the current PlaybackSource, and what
+        // (if any) query/filter is active there, represented by its DatabaseTrackModel (and its underlying cache).
         public abstract TrackInfo GetPlaybackTrack (DateTime after);
+
         public abstract DatabaseTrackInfo GetShufflerTrack (DateTime after);
 
         protected DatabaseTrackInfo GetTrack (HyenaSqliteCommand cmd, params object [] args)
