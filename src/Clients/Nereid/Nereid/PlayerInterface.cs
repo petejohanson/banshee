@@ -97,14 +97,31 @@ namespace Nereid
 
         protected override void Initialize ()
         {
+            InitialShowPresent ();
+        }
+
+        private bool interface_constructed;
+
+        protected override void OnShown ()
+        {
+            if (interface_constructed) {
+                base.OnShown ();
+                return;
+            }
+
+            interface_constructed = true;
+            uint timer = Log.DebugTimerStart ();
+
             BuildPrimaryLayout ();
             ConnectEvents ();
 
             ActionService.SourceActions.SourceView = this;
-
             composite_view.TrackView.HasFocus = true;
+            OnActiveSourceChanged (null);
 
-            InitialShowPresent ();
+            Log.DebugTimerPrint (timer, "Constructed Nereid interface: {0}");
+
+            base.OnShown ();
         }
 
 #region System Overrides
@@ -156,9 +173,10 @@ namespace Nereid
             header_toolbar = (Toolbar)ActionService.UIManager.GetWidget ("/HeaderToolbar");
             header_toolbar.ShowArrow = false;
             header_toolbar.ToolbarStyle = ToolbarStyle.BothHoriz;
+            header_toolbar.Show ();
 
             toolbar_alignment.Add (header_toolbar);
-            toolbar_alignment.ShowAll ();
+            toolbar_alignment.Show ();
 
             header_table.Attach (toolbar_alignment, 0, 2, 1, 2,
                 AttachOptions.Expand | AttachOptions.Fill,

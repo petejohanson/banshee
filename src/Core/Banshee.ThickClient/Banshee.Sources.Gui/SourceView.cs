@@ -81,6 +81,8 @@ namespace Banshee.Sources.Gui
             ConnectEvents ();
 
             RowSeparatorFunc = RowSeparatorHandler;
+
+            ResetSelection ();
         }
 
 #region Setup Methods
