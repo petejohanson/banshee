@@ -107,18 +107,18 @@ namespace Hyena.Data.Sqlite
 
             if (model.CachesJoinTableEntries) {
                 select_str = String.Format (
-                    @"SELECT {0}, OrderID, {5}.ItemID  FROM {1}
+                    @"SELECT {0} {10}, OrderID, {5}.ItemID  FROM {1}
                         INNER JOIN {2}
                             ON {3} = {2}.{4}
                         INNER JOIN {5}
-                            ON {2}.{6} = {5}.ItemID
+                            ON {2}.{6} = {5}.ItemID {11}
                         WHERE
                             {5}.ModelID = {7} {8} {9}",
                     provider.Select, provider.From,
                     model.JoinTable, provider.PrimaryKey, model.JoinColumn,
                     CacheTableName, model.JoinPrimaryKey, uid,
                     String.IsNullOrEmpty (provider.Where) ? null : "AND",
-                    provider.Where
+                    provider.Where, "{0}", "{1}"
                 );
 
                 reload_sql = String.Format (@"
@@ -128,8 +128,8 @@ namespace Hyena.Data.Sqlite
                 );
             } else if (model.CachesValues) {
                 select_str = String.Format (
-                    @"SELECT OrderID, ItemID FROM {0} WHERE {0}.ModelID = {1}",
-                    CacheTableName, uid
+                    @"SELECT 1 {2}, OrderID, ItemID FROM {0} {3} WHERE {0}.ModelID = {1}",
+                    CacheTableName, uid, "{0}", "{1}"
                 );
 
                 reload_sql = String.Format (@"
@@ -139,15 +139,15 @@ namespace Hyena.Data.Sqlite
                 );
             } else {
                 select_str = String.Format (
-                    @"SELECT {0}, OrderID, {2}.ItemID FROM {1}
+                    @"SELECT {0} {7}, OrderID, {2}.ItemID FROM {1}
                         INNER JOIN {2}
-                            ON {3} = {2}.ItemID
+                            ON {3} = {2}.ItemID {8}
                         WHERE
                             {2}.ModelID = {4} {5} {6}",
                     provider.Select, provider.From, CacheTableName,
                     provider.PrimaryKey, uid,
                     String.IsNullOrEmpty (provider.Where) ? String.Empty : "AND",
-                    provider.Where
+                    provider.Where, "{0}", "{1}"
                 );
 
                 reload_sql = String.Format (@"
@@ -168,7 +168,7 @@ namespace Hyena.Data.Sqlite
             );
 
             select_range_command = new HyenaSqliteCommand (
-                String.Format ("{0} {1}", select_str, "LIMIT ?, ?")
+                String.Format (String.Format ("{0} {1}", select_str, "LIMIT ?, ?"), null, null)
             );
 
             select_first_command = new HyenaSqliteCommand (
@@ -201,6 +201,8 @@ namespace Hyena.Data.Sqlite
             set { has_select_all_item = value; }
         }
 
+        // The idea behind this was we could preserve the CoreCache table across restarts of Banshee,
+        // and indicate whether the cache was already primed via this property.  It's not used, and may never be.
         public bool Warm {
             //get { return warm; }
             get { return false; }
@@ -247,7 +249,7 @@ namespace Hyena.Data.Sqlite
                 }
 
                 string sql = String.Format ("{0} {1} LIMIT ?, 1", select_str, where_fragment);
-                indexof_command = new HyenaSqliteCommand (sql);
+                indexof_command = new HyenaSqliteCommand (String.Format (sql, null, null));
             }
 
             lock (this) {
@@ -289,15 +291,26 @@ namespace Hyena.Data.Sqlite
             }
         }
 
-        private HyenaSqliteCommand get_single_command;
-        private string last_get_single_fragment;
-        public T GetSingle (string fragment, params object [] args)
+        public T GetSingle (string conditionOrderFragment, params object [] args)
         {
-            if (fragment != last_get_single_fragment || get_single_command == null) {
-                last_get_single_fragment = fragment;
-                get_single_command = new HyenaSqliteCommand (
-                    String.Format ("{0} {1} {2}", select_str, fragment, "LIMIT 1")
-                );
+            return GetSingle (null, null, conditionOrderFragment, args);
+        }
+
+        private HyenaSqliteCommand get_single_command;
+        private string last_get_single_select_fragment, last_get_single_condition_fragment, last_get_single_from_fragment;
+        public T GetSingle (string selectFragment, string fromFragment, string conditionOrderFragment, params object [] args)
+        {
+            if (selectFragment != last_get_single_select_fragment
+                || conditionOrderFragment != last_get_single_condition_fragment
+                ||fromFragment != last_get_single_from_fragment
+                || get_single_command == null)
+            {
+                last_get_single_select_fragment = selectFragment;
+                last_get_single_condition_fragment = conditionOrderFragment;
+                last_get_single_from_fragment = fromFragment;
+                get_single_command = new HyenaSqliteCommand (String.Format (String.Format (
+                        "{0} {1} {2}", select_str, conditionOrderFragment, "LIMIT 1"), selectFragment, fromFragment
+                ));
             }
 
             using (IDataReader reader = connection.Query (get_single_command, args)) {
@@ -310,7 +323,6 @@ namespace Hyena.Data.Sqlite
             }
             return default(T);
         }
-
 
         private HyenaSqliteCommand last_reload_command;
         private string last_reload_fragment;
