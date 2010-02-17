@@ -339,12 +339,21 @@ namespace Banshee.PlayQueue
 
         public void Clear ()
         {
+            Clear (false);
+        }
+
+        private void Clear (bool disposing)
+        {
             ServiceManager.DbConnection.Execute (@"
                 DELETE FROM CorePlaylistEntries
                 WHERE PlaylistID = ?", DbId
             );
             offset = 0;
             SetCurrentTrack (null);
+
+            if (disposing) {
+                return;
+            }
 
             if (this == ServiceManager.PlaybackController.Source && ServiceManager.PlayerEngine.IsPlaying ()) {
                 ServiceManager.PlayerEngine.Close();
@@ -375,7 +384,7 @@ namespace Banshee.PlayQueue
             }
 
             if (!Populate && ClearOnQuitSchema.Get ()) {
-                Clear ();
+                Clear (true);
             }
         }
 
