@@ -47,6 +47,8 @@ namespace Banshee.Widgets
             AddAttribute (text_renderer, "text", 0);
         }
 
+        public T Default { get; set; }
+
         public TreeIter Add (string str, T value)
         {
             return store.AppendValues (str, value, row++);
@@ -60,11 +62,23 @@ namespace Banshee.Widgets
         public bool Remove (T value)
         {
             var iter = IterFor (value);
-            return store.Remove (ref iter);
+            return Remove (ref iter);
         }
 
         public bool Remove (ref TreeIter iter)
         {
+            // Try to change the active value to the default
+            TreeIter active_iter;
+            if (GetActiveIter (out active_iter)) {
+                if (active_iter.Equals (iter)) {
+                    if (Default != null) {
+                        ActiveValue = Default;
+                    } else if (store.IterNChildren () > 0) {
+                        Active = 0;
+                    }
+                }
+            }
+
             return store.Remove (ref iter);
         }
 
