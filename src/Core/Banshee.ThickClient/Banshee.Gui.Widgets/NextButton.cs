@@ -37,7 +37,6 @@ namespace Banshee.Gui.Widgets
     public class NextButton : MenuButton
     {
         PlaybackShuffleActions shuffle_actions;
-        Menu menu;
         Widget button;
 
         public NextButton (InterfaceActionService actionService)
@@ -45,7 +44,7 @@ namespace Banshee.Gui.Widgets
             shuffle_actions = actionService.PlaybackActions.ShuffleActions;
 
             button = actionService.PlaybackActions["NextAction"].CreateToolItem ();
-            menu = shuffle_actions.CreateMenu ();
+            var menu = shuffle_actions.CreateMenu ();
             Construct (button, menu, true);
 
             TooltipText = actionService.PlaybackActions["NextAction"].Tooltip;
@@ -56,8 +55,11 @@ namespace Banshee.Gui.Widgets
         private void OnActionsChanged (object o, EventArgs args)
         {
             if (!shuffle_actions.Sensitive) {
-                menu.Deactivate ();
+                Menu.Deactivate ();
             }
+
+            Menu = shuffle_actions.CreateMenu ();
+
             ToggleButton.Sensitive = shuffle_actions.Sensitive;
             if (Arrow != null) {
                 Arrow.Sensitive = shuffle_actions.Sensitive;

@@ -149,6 +149,7 @@ namespace Banshee.Gui
             }
 
             Active.Activate ();
+            OnChanged ();
         }
 
         private void OnShuffleModeChanged (object o, EventArgs<string> args)

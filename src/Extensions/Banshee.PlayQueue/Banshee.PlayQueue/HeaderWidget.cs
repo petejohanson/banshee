@@ -55,6 +55,9 @@ namespace Banshee.PlayQueue
             var mode_combo = new DictionaryComboBox<RandomBy> ();
             foreach (var random_by in shuffler.RandomModes.OrderBy (r => r.Adverb)) {
                 mode_combo.Add (random_by.Adverb, random_by);
+                if (random_by.Id == "off") {
+                    mode_combo.Default = random_by;
+                }
             }
 
             fill_label.MnemonicWidget = mode_combo;
@@ -93,7 +96,12 @@ namespace Banshee.PlayQueue
             var default_randomby = shuffler.RandomModes.FirstOrDefault (r => r.Id == shuffle_mode_id);
             if (default_randomby != null) {
                 mode_combo.ActiveValue = default_randomby;
+            } else {
+                mode_combo.ActiveValue = mode_combo.Default;
             }
+
+            shuffler.RandomModeAdded   += (r) => mode_combo.Add (r.Adverb, r);
+            shuffler.RandomModeRemoved += (r) => mode_combo.Remove (r);
         }
     }
 }
