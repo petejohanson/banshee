@@ -143,7 +143,7 @@ namespace Banshee.Gui
 
             var action = this[ConfigIdToActionName (ShuffleMode.Get ())];
             if (action is RadioAction) {
-                active_action = (RadioAction)action;
+                Active = (RadioAction)action;
             } else {
                 Active = (RadioAction)this[shuffle_off_action];
             }
