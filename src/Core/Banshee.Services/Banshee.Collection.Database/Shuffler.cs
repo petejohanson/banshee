@@ -78,11 +78,11 @@ namespace Banshee.Collection.Database
             if (args.Change == ExtensionChange.Add) {
                 lock (random_modes) {
                     try {
-                    random_by = (RandomBy) Activator.CreateInstance (tnode.Type, this);
+                        random_by = (RandomBy) Activator.CreateInstance (tnode.Type, this);
+                        random_modes.Add (random_by);
                     } catch (Exception e) {
                         Log.Exception (String.Format ("Failed to load RandomBy extension: {0}", args.Path), e);
                     }
-                    random_modes.Add (random_by);
                 }
 
                 if (random_by != null) {
@@ -97,6 +97,9 @@ namespace Banshee.Collection.Database
             } else {
                 lock (random_modes) {
                     random_by = random_modes.FirstOrDefault (r => r.GetType () == tnode.Type);
+                    if (random_by != null) {
+                        random_modes.Remove (random_by);
+                    }
                 }
 
                 if (random_by != null) {
