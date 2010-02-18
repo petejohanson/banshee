@@ -29,6 +29,7 @@
 #if ENABLE_TESTS
 
 using System;
+using System.Linq;
 using System.IO;
 using NUnit.Framework;
 
@@ -54,6 +55,11 @@ namespace Hyena.Tests
 
             // tests/Makefile.am runs the tests with Locale=it_IT
             Assert.IsTrue (metrics_str.Contains ("it-IT"));
+
+            // Make sure DateTime samples are saved as invariant strings
+            var now = DateTime.Now;
+            var time_metric = metrics.Add ("Foo", now);
+            Assert.AreEqual (Hyena.DateTimeUtil.ToInvariantString (now), metrics.Store.GetFor (time_metric).First ().Value);
         }
     }
 }

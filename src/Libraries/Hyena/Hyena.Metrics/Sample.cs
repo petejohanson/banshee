@@ -50,7 +50,14 @@ namespace Hyena.Metrics
         {
             MetricName = metric.Name;
             Stamp = DateTime.Now;
-            Value = value == null ? "" : value.ToString ();
+
+            if (value == null) {
+                Value = "";
+            } else if (value is DateTime) {
+                Value = Hyena.DateTimeUtil.ToInvariantString ((DateTime) value);
+            } else {
+                Value = value.ToString ();
+            }
         }
     }
 }

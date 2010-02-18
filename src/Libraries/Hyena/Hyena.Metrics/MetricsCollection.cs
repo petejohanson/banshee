@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 
+using Hyena;
 using Hyena.Json;
 
 namespace Hyena.Metrics
@@ -74,15 +75,19 @@ namespace Hyena.Metrics
             Clear ();
         }
 
+        const int CUR_FMT_VERSION = 1;
+
         public string ToJsonString ()
         {
             var report = new Dictionary<string, object> ();
 
             report["ID"] = AnonymousUserId;
+            report["Now"] = DateTimeUtil.ToInvariantString (DateTime.Now);
+            report["FormatVersion"] = CUR_FMT_VERSION;
 
             var metrics = new Dictionary<string, object> ();
             foreach (var metric in this.OrderBy (m => m.Name)) {
-                metrics[metric.Name] = Store.GetFor (metric).Select (s => new object [] { s.Stamp, s.Value ?? "" });
+                metrics[metric.Name] = Store.GetFor (metric).Select (s => new object [] { DateTimeUtil.ToInvariantString (s.Stamp), s.Value ?? "" });
             }
             report["Metrics"] = metrics;
 
