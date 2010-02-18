@@ -128,6 +128,7 @@ SOURCES =  \
 	Hyena/PlatformDetection.cs \
 	Hyena/StringUtil.cs \
 	Hyena/Tests/CryptoUtilTests.cs \
+	Hyena/Tests/DateTimeUtilTests.cs \
 	Hyena/Tests/StringUtilTests.cs \
 	Hyena/Tests/TestBase.cs \
 	Hyena/ThreadAssist.cs \
