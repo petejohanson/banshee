@@ -509,12 +509,7 @@ namespace Banshee.Dap.MassStorage
                     !String.IsNullOrEmpty (CoverArtFileName) && (FolderDepth == -1 || FolderDepth > 0)) {
                 SafeUri cover_uri = new SafeUri (System.IO.Path.Combine (System.IO.Path.GetDirectoryName (new_uri.LocalPath),
                                                                          CoverArtFileName));
-                string coverart_id;
-                if (track.HasAttribute (TrackMediaAttributes.Podcast)) {
-                    coverart_id = String.Format ("podcast-{0}", Banshee.Base.CoverArtSpec.EscapePart (track.AlbumTitle));
-                } else {
-                    coverart_id = track.ArtworkId;
-                }
+                string coverart_id = track.ArtworkId;
 
                 if (!File.Exists (cover_uri) && CoverArtSpec.CoverExists (coverart_id)) {
                     Gdk.Pixbuf pic = null;

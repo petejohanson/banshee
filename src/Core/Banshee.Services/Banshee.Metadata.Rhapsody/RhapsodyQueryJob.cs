@@ -48,6 +48,19 @@ namespace Banshee.Metadata.Rhapsody
     {
         private static Uri base_uri = new Uri("http://www.rhapsody.com/");
 
+        private static Regex filter_regex = new Regex (@"[^A-Za-z0-9]*", RegexOptions.Compiled);
+        private static string EscapeUrlPart (string part)
+        {
+            return filter_regex.Replace (part, "").Replace (" ", "-").ToLower ();
+        }
+
+        private static string GetAlbumUrl (IBasicTrackInfo track)
+        {
+            string artist = EscapeUrlPart (track.AlbumArtist);
+            string album = EscapeUrlPart (track.AlbumTitle);
+            return String.Format ("{0}/{1}", artist, album);
+        }
+
         public RhapsodyQueryJob(IBasicTrackInfo track)
         {
             Track = track;
@@ -65,7 +78,7 @@ namespace Banshee.Metadata.Rhapsody
                 return;
             }
 
-            Uri data_uri = new Uri(base_uri, String.Format("/{0}/data.xml", artwork_id.Replace('-', '/')));
+            Uri data_uri = new Uri(base_uri, String.Format("/{0}/data.xml", GetAlbumUrl (Track)));
 
             XmlDocument doc = new XmlDocument();
             HttpWebResponse response = GetHttpStream (data_uri);
