@@ -110,15 +110,22 @@ namespace Banshee.Metrics
                 handler ();
             }
 
-            // TODO schedule sending the data to the server in some timeout?
+            Application.RunTimeout (5*1000, delegate {
+                if (BansheeMetrics.Instance == null) {
+                    return false;
+                }
 
-            if (ApplicationContext.CommandLine.Contains ("debug-metrics")) {
-                Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
-                System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
+                ThreadAssist.SpawnFromMain (delegate {
+                    if (ApplicationContext.CommandLine.Contains ("debug-metrics")) {
+                        Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
+                        System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
+                    }
 
-                var poster = new HttpPoster ("http://download.banshee-project.org/metrics/metrics.py", metrics);
-                Log.InformationFormat ("Posted usage data? {0}", poster.Post ());
-            }
+                    var poster = new HttpPoster ("http://download.banshee-project.org/metrics/metrics.py", metrics);
+                    Log.InformationFormat ("Posted usage data? {0}", poster.Post ());
+                });
+                return false;
+            });
         }
 
         private void AddMetrics ()
