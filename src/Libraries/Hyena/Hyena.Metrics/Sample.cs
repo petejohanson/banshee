@@ -32,7 +32,7 @@ namespace Hyena.Metrics
     public class Sample
     {
         [DatabaseColumn (Constraints = DatabaseColumnConstraints.PrimaryKey)]
-        private long Id { get; set; }
+        protected long Id { get; set; }
 
         [DatabaseColumn]
         public string MetricName { get; protected set; }
@@ -50,7 +50,11 @@ namespace Hyena.Metrics
         {
             MetricName = metric.Name;
             Stamp = DateTime.Now;
+            SetValue (value);
+        }
 
+        protected void SetValue (object value)
+        {
             if (value == null) {
                 Value = "";
             } else if (value is DateTime) {

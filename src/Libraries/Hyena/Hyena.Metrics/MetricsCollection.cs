@@ -37,6 +37,8 @@ namespace Hyena.Metrics
 {
     public sealed class MetricsCollection : List<Metric>, IDisposable
     {
+        public static readonly int FormatVersion = 1;
+
         public string AnonymousUserId { get; private set; }
         public ISampleStore Store { get; private set; }
 
@@ -75,15 +77,13 @@ namespace Hyena.Metrics
             Clear ();
         }
 
-        const int CUR_FMT_VERSION = 1;
-
         public string ToJsonString ()
         {
             var report = new Dictionary<string, object> ();
 
             report["ID"] = AnonymousUserId;
             report["Now"] = DateTimeUtil.ToInvariantString (DateTime.Now);
-            report["FormatVersion"] = CUR_FMT_VERSION;
+            report["FormatVersion"] = FormatVersion;
 
             var metrics = new Dictionary<string, object> ();
             foreach (var metric in this.OrderBy (m => m.Name)) {
