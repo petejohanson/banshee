@@ -116,8 +116,9 @@ namespace Banshee.PlayQueue
 
             TrackModel.Reloaded += HandleReloaded;
 
+            int saved_offset = DatabaseConfigurationClient.Client.Get (CurrentOffsetSchema, CurrentOffsetSchema.Get ());
             Offset = Math.Min (
-                CurrentOffsetSchema.Get (),
+                saved_offset,
                 ServiceManager.DbConnection.Query<long> (@"
                     SELECT MAX(ViewOrder) + 1
                     FROM CorePlaylistEntries
@@ -365,7 +366,7 @@ namespace Banshee.PlayQueue
         public void Dispose ()
         {
             int track_index = current_track == null ? Count : Math.Max (0, TrackModel.IndexOf (current_track));
-            CurrentTrackSchema.Set (track_index);
+            DatabaseConfigurationClient.Client.Set (CurrentTrackSchema, track_index);
 
             ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
             ServiceManager.PlaybackController.TrackStarted -= OnTrackStarted;
@@ -447,7 +448,7 @@ namespace Banshee.PlayQueue
 
         private void HandleReloaded(object sender, EventArgs e)
         {
-            int track_index = CurrentTrackSchema.Get ();
+            int track_index = DatabaseConfigurationClient.Client.Get (CurrentTrackSchema, CurrentTrackSchema.Get ());
             if (track_index < Count) {
                 SetCurrentTrack (TrackModel[track_index] as DatabaseTrackInfo);
             }
@@ -647,7 +648,7 @@ namespace Banshee.PlayQueue
             protected set {
                 if (value != offset) {
                     offset = value;
-                    CurrentOffsetSchema.Set ((int) offset);
+                    DatabaseConfigurationClient.Client.Set (CurrentOffsetSchema, (int)offset);
                     Reload ();
                 }
             }
@@ -814,14 +815,17 @@ namespace Banshee.PlayQueue
             "Clear the play queue when quitting"
         );
 
-        public static readonly SchemaEntry<int> CurrentTrackSchema = new SchemaEntry<int> (
+        // TODO: By 1.8 next two schemas can be removed. They are kept only to ease
+        // the migration from GConfConfigurationClient to DatabaseConfigurationClient.
+
+        private static readonly SchemaEntry<int> CurrentTrackSchema = new SchemaEntry<int> (
             "plugins.play_queue", "current_track",
             0,
             "Current Track",
             "Current track in the Play Queue"
         );
 
-        public static readonly SchemaEntry<int> CurrentOffsetSchema = new SchemaEntry<int> (
+        private static readonly SchemaEntry<int> CurrentOffsetSchema = new SchemaEntry<int> (
             "plugins.play_queue", "current_offset",
             0,
             "Current Offset",
