@@ -458,6 +458,11 @@ namespace Banshee.MediaEngine
             active_engine.VideoExpose (displayContext, direct);
         }
 
+        public void VideoWindowRealize (IntPtr displayContext)
+        {
+            active_engine.VideoWindowRealize (displayContext);
+        }
+
         public IntPtr VideoDisplayContext {
             set { active_engine.VideoDisplayContext = value; }
             get { return active_engine.VideoDisplayContext; }

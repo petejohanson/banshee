@@ -122,6 +122,11 @@ namespace Banshee.MediaEngine
             throw new NotImplementedException ("Engine must implement VideoExpose since this method only gets called when SupportsVideo is true");
         }
 
+        public virtual void VideoWindowRealize (IntPtr displayContext)
+        {
+            throw new NotImplementedException ("Engine must implement VideoWindowRealize since this method only gets called when SupportsVideo is true");
+        }
+
         public virtual IntPtr [] GetBaseElements ()
         {
             return null;
