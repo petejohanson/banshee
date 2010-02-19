@@ -168,6 +168,30 @@ namespace Banshee.Gui.Widgets
         {
             base.OnSizeAllocated (allocation);
 
+            ResetMissingImages ();
+
+            if (current_track == null) {
+                LoadCurrentTrack ();
+            } else {
+                Invalidate ();
+            }
+        }
+
+        protected override void OnStyleSet (Style previous)
+        {
+            base.OnStyleSet (previous);
+
+            text_color = CairoExtensions.GdkColorToCairoColor (Style.Foreground (StateType.Normal));
+            background_color = CairoExtensions.GdkColorToCairoColor (Style.Background (StateType.Normal));
+            text_light_color = Hyena.Gui.Theming.GtkTheme.GetCairoTextMidColor (this);
+
+            ResetMissingImages ();
+
+            OnThemeChanged ();
+        }
+
+        private void ResetMissingImages ()
+        {
             if (missing_audio_image != null) {
                 ((IDisposable)missing_audio_image).Dispose ();
                 var disposed = missing_audio_image;
@@ -191,33 +215,6 @@ namespace Banshee.Gui.Widgets
                     incoming_image = MissingVideoImage;
                 }
             }
-
-            if (current_track == null) {
-                LoadCurrentTrack ();
-            } else {
-                Invalidate ();
-            }
-        }
-
-        protected override void OnStyleSet (Style previous)
-        {
-            base.OnStyleSet (previous);
-
-            text_color = CairoExtensions.GdkColorToCairoColor (Style.Foreground (StateType.Normal));
-            background_color = CairoExtensions.GdkColorToCairoColor (Style.Background (StateType.Normal));
-            text_light_color = Hyena.Gui.Theming.GtkTheme.GetCairoTextMidColor (this);
-
-            if (missing_audio_image != null) {
-                ((IDisposable)missing_audio_image).Dispose ();
-                missing_audio_image = null;
-            }
-
-            if (missing_video_image != null) {
-                ((IDisposable)missing_video_image).Dispose ();
-                missing_video_image = null;
-            }
-
-            OnThemeChanged ();
         }
 
         protected virtual void OnThemeChanged ()
