@@ -34,6 +34,7 @@ using System.IO;
 using NUnit.Framework;
 
 using Hyena;
+using Hyena.Json;
 using Hyena.Metrics;
 
 namespace Hyena.Tests
@@ -44,14 +45,15 @@ namespace Hyena.Tests
         [Test]
         public void MetricsCollection ()
         {
-            var metrics = new MetricsCollection ("myuniqueid", new MemorySampleStore ());
+            string id = "myuniqueid";
+            var metrics = new MetricsCollection (id, new MemorySampleStore ());
             Assert.AreEqual ("myuniqueid", metrics.AnonymousUserId);
 
             metrics.AddDefaults ();
             Assert.IsTrue (metrics.Count > 0);
 
             string metrics_str = metrics.ToJsonString ();
-            Assert.IsTrue (metrics_str.Contains ("\"ID\" : myuniqueid"));
+            Assert.IsTrue (metrics_str.Contains ("\"ID\":\"myuniqueid\""));
 
             // tests/Makefile.am runs the tests with Locale=it_IT
             Assert.IsTrue (metrics_str.Contains ("it-IT"));
@@ -60,6 +62,13 @@ namespace Hyena.Tests
             var now = DateTime.Now;
             var time_metric = metrics.Add ("Foo", now);
             Assert.AreEqual (Hyena.DateTimeUtil.ToInvariantString (now), metrics.Store.GetFor (time_metric).First ().Value);
+
+            // Make sure we can read the JSON back in
+            var ds = new Json.Deserializer ();
+            ds.SetInput (metrics.ToJsonString ());
+            var json_obj = ds.Deserialize () as JsonObject;
+            Assert.AreEqual (id, json_obj["ID"]);
+            Assert.IsTrue (json_obj["Metrics"] is JsonObject);
         }
     }
 }

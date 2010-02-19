@@ -42,12 +42,12 @@ namespace Hyena.Json
 
         public void Dump (int level)
         {
-            Console.Write (this.ToJsonString (level));
+            Console.Write (ToString ());
         }
 
         public override string ToString ()
         {
-            return this.ToJsonString ();
+            return new Serializer (this).Serialize ();
         }
     }
 }

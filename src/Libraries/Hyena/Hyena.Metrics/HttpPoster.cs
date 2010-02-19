@@ -53,6 +53,7 @@ namespace Hyena.Metrics
             try {
                 using (var stream = request.GetRequestStream ()) {
                     using (var writer = new StreamWriter (stream)) {
+                        // TODO gzip the data
                         writer.Write (metrics.ToJsonString ());
                     }
                 }

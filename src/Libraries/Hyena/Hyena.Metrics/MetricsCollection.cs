@@ -91,7 +91,7 @@ namespace Hyena.Metrics
             }
             report["Metrics"] = metrics;
 
-            return report.ToJsonString ();
+            return new Serializer (report).Serialize ();
         }
 
         public void AddDefaults ()
