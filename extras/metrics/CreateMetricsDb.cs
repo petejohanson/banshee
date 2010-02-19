@@ -33,13 +33,20 @@ using Hyena.Json;
 
 namespace metrics
 {
-    public class CreateMetricsDb
+    public class Database
     {
-        public static void Main ()
+        const string db_path = "metrics.db";
+
+        public static HyenaSqliteConnection Open ()
         {
-            string db_path = "metrics.db";
-            System.IO.File.Delete (db_path);
-            using (var db = new HyenaSqliteConnection (db_path)) {
+            return new HyenaSqliteConnection (db_path);
+        }
+
+        public static bool Exists { get { return System.IO.File.Exists (db_path); } }
+
+        public static void Import ()
+        {
+            using (var db = Open ()) {
                 MultiUserSample.Provider = new SqliteModelProvider<MultiUserSample> (db, "Samples", true);
                 foreach (var file in System.IO.Directory.GetFiles ("data")) {
                     Log.InformationFormat ("Importing {0}", file);

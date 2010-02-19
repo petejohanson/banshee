@@ -1,5 +1,5 @@
 //
-// MultiUserSample.cs
+// MetaMetrics.cs
 //
 // Author:
 //   Gabriel Burt <gabriel.burt@gmail.com>
@@ -25,45 +25,22 @@
 // THE SOFTWARE.
 
 using System;
-
-using Hyena;
-using Hyena.Metrics;
 using Hyena.Data.Sqlite;
-using Hyena.Json;
 
 namespace metrics
 {
-    public class MultiUserSample : Sample
+    public class MetaMetrics
     {
-        public static SqliteModelProvider<MultiUserSample> Provider;
-
-        [DatabaseColumn]
-        public string UserId;
-
-        public MultiUserSample ()
+        public DateTime FirstReport { get; private set; }
+        public DateTime LastReport  { get; private set; }
+        public MetaMetrics (HyenaSqliteConnection db)
         {
-        }
+            FirstReport = db.Query<DateTime> ("SELECT Stamp FROM Samples ORDER BY STAMP ASC");
+            LastReport  = db.Query<DateTime> ("SELECT Stamp FROM Samples ORDER BY STAMP DESC");
 
-        public static void Import (string user_id, string metric_name, string stamp, object val)
-        {
-            var sample = new MultiUserSample ();
-            sample.UserId = user_id;
-            sample.MetricName = metric_name;
-
-            DateTime stamp_dt;
-            if (DateTimeUtil.TryParseInvariant (stamp, out stamp_dt)) {
-                sample.Stamp = stamp_dt;
-            }
-
-            DateTime value_dt;
-            if (DateTimeUtil.TryParseInvariant (val as string, out value_dt)) {
-                // We want numeric dates to compare with
-                sample.Value = DateTimeUtil.ToTimeT (value_dt).ToString ();
-            } else {
-                sample.SetValue (val);
-            }
-
-            Provider.Save (sample);
+            Console.WriteLine ("First report was on {0}", FirstReport);
+            Console.WriteLine ("Last report was on {0}", LastReport);
+            Console.WriteLine ("Total unique users: {0}", db.Query<long> ("SELECT COUNT(DISTINCT(UserId)) FROM Samples"));
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-// MultiUserSample.cs
+// Main.cs
 //
 // Author:
 //   Gabriel Burt <gabriel.burt@gmail.com>
@@ -27,43 +27,21 @@
 using System;
 
 using Hyena;
-using Hyena.Metrics;
-using Hyena.Data.Sqlite;
-using Hyena.Json;
+using Hyena.CommandLine;
 
 namespace metrics
 {
-    public class MultiUserSample : Sample
+    public class MainEntry
     {
-        public static SqliteModelProvider<MultiUserSample> Provider;
-
-        [DatabaseColumn]
-        public string UserId;
-
-        public MultiUserSample ()
+        public static void Main (string [] args)
         {
-        }
-
-        public static void Import (string user_id, string metric_name, string stamp, object val)
-        {
-            var sample = new MultiUserSample ();
-            sample.UserId = user_id;
-            sample.MetricName = metric_name;
-
-            DateTime stamp_dt;
-            if (DateTimeUtil.TryParseInvariant (stamp, out stamp_dt)) {
-                sample.Stamp = stamp_dt;
-            }
-
-            DateTime value_dt;
-            if (DateTimeUtil.TryParseInvariant (val as string, out value_dt)) {
-                // We want numeric dates to compare with
-                sample.Value = DateTimeUtil.ToTimeT (value_dt).ToString ();
+            if (!Database.Exists) {
+                Database.Import ();
             } else {
-                sample.SetValue (val);
+                using (var db = Database.Open ()) {
+                    new MetaMetrics (db);
+                }
             }
-
-            Provider.Save (sample);
         }
     }
 }
