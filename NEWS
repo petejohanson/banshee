@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.3 - Released January 27, 2010
+WELCOME TO BANSHEE 1.5.4 - Released February 24, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,90 +10,69 @@ WELCOME TO BANSHEE 1.5.3 - Released January 27, 2010
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.5.3
+  * Learn More: http://banshee-project.org/download/archives/1.5.4
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.5.3 brings many big changes, new features, and fixes!
+    Banshee 1.5.4 brings many big changes, new features, and fixes!
 
     New Features:
 
-      * Sync device from playlist option
+      * Opt-In Usage Data Collection
 
-          Either manually manage what files are added/removed to your device,
-          or choose a playlist to sync from.  You can make a size-limited smart
-          playlist to sync just the right amount to your device.
+          Under Preferences, you can choose to "Improve Banshee by sending
+          anonymous usage data" back to the Banshee developers.  This collects
+          information on what version you're running, what OS, library size,
+          slow SQL queries, and a whitelisted subset of your preferences. This
+          information will help us choose better defaults and see what parts of
+          Banshee are used most and can be improved.
 
-      * Type-ahead find in track, artist, and album lists
+      * Default Equalizer Presets
 
-          An alternative to filtering, type-ahead find jumps you to the first
-          track to match your query.  Activate with shift+/, cancel with Esc,
-          and jump to next match with F3.  In track list it matches against
-          artist, album, or title.
+          Banshee now ships with several equalizer presets.
 
-      * Optional cover art in lower-left corner
+      * Banshee Community Extensions
 
-          Turn on via View > Show Cover Art
+          A new sub-project named Banshee Community Extensions has been
+          created.  Its code is hosted on Gitorious, and its bugs tracked
+          in bugzilla.gnome.org.  It already contains 9 extensions, including
+          AlarmClock, Lyrics, and Mirage, and has 15 maintainers.  Its releases
+          track Banshee's; for more information, see
 
-      * Cover art editable via drag-and-drop and right-click
+            http://banshee-project.org/download/extensions/
 
-          Can edit via the cover art in the track editor, lower-left corner,
-          and beside the seek-slider.
+      * Extensible Shuffle Modes
 
-      * Audiobooks library extension
-
-          Rough first version, main benefits are separating your books from
-          your music and defining a different file system organization.  In
-          future versions we plan to add intuitive bookmarking and a better
-          browsing experience.  Enable in Extensions tab of Preferences.
-
-      * Library-folder watcher extension
-
-          Watches your libraries' folders for added, renamed, or deleted
-          files, and updates your libraries appropriately.  Requires
-          Mono >= 2.4.3.  Enable in Extensions tab of Preferences.
-
-      * eMusic importer/downloader extension
-
-          If you have purchased music from eMusic and have a .emx file, Banshee
-          will download and import the music files for you.  Select
-          'eMusic Files' from the normal Media > Import Media dialog. Enable
-          in Extensions tab of Preferences.
-
-      * GIO file backend, supports non-local files
-
-          This backend uses the GIO library to support importing local files
-          and network-share files alike.  Requires glib >= 2.22 and Gio#.
-
-      * Return of the Mac OS X release
-
-          OS X 10.5 and 10.6 is now supported again (but still considered
-          beta quality). Additionally, Mono and GTK are now bundled with the
-          binary release, so there are no dependencies for OS X users.
+          Extensions can now add new shuffle modes and PlayQueue fill-by
+          modes.  The Mirage extension is the first to take advantage of this,
+          adding a Shuffle/Fill-by Similar mode based on acoustical analysis.
 
     Enhancements:
 
-      * Improved Podcast filtering/browsing
-      * Extension preferences tab reworked
-      * Extension names/descriptions translated
-      * Improved sqlite performance
-      * Added --set-rating=RATING command line option
-      * Support for Nexus One devices
+      * Wikipedia context pane extension enabled by default
+      * Add tooltip to playback error column
+      * On close Internet Archive item, return to Search
+      * Notify user if try to sync missing file to DAP
+      * Popup explanation of manual playlist ordering when appropriate
+      * Simplify the default set of columns in Podcasts
+      * Enable 'Delete From Drive' action in File System Queue
+      * Make debuggable from within MonoDevelop
+      * Coverart for unicode artist/albums now supported
 
     Notable bug fixes:
 
-      * DAPs (ipods, etc) should work on DeviceKit-using distros
-      * Fix issue with DAAP authenticating
-      * Podcast renaming should work well now
-      * Podcast download cancelling is now fast
-      * Internet Archive results paging off-by-one fixed
-      * Should build with older Mono/Gtk# again (eg on openSUSE 11.0)
-      * Fix issue with MTP devices on 64-bit distros
+      * Fixes to GIO backend
+      * Many crash/startup fixes for OS X build
+      * Enable LibraryWatcher only for Music and Video libraries
+      * Do better job preserving IsCompilation metadata
+      * Store some PlayQueue settings in the db (not GConf)
+      * Fix several memory leaks
+      * 
 
-      * 75 bugs were fixed since 1.5.2
+      * 40 bugs were fixed since 1.5.3
 
 
 ===============================================================================
@@ -103,9 +82,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.5.3 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.tar.gz
+    * Banshee 1.5.4 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.tar.gz
 
 Packages
 --------
@@ -122,13 +101,13 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee-project.org/banshee/banshee-1-1.5.3.macosx.intel.dmg
+    * http://download.banshee-project.org/banshee/banshee-1-1.5.4.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.sha1sum
+    * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.changes
+    * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.sha1sum
 
 
 ===============================================================================
@@ -193,7 +172,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.3
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.4
 
 
 ===============================================================================
