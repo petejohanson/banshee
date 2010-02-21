@@ -9,8 +9,7 @@ SOURCES =  \
 	Banshee.MiniMode/SourceModel.cs
 
 RESOURCES =  \
-	Banshee.MiniMode.addin.xml \
-	Resources/minimode.glade
+	Banshee.MiniMode.addin.xml
 
 include $(top_srcdir)/build/build.mk
 
