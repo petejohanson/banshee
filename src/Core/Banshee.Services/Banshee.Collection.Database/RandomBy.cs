@@ -73,6 +73,7 @@ namespace Banshee.Collection.Database
             get {
                 if (shuffler_query == null) {
                     var provider = DatabaseTrackInfo.Provider;
+                    // TODO also filter on LastPlayed/SkippedStamp if not PlaybackShuffler (eg for manually added songs)
                     shuffler_query = new HyenaSqliteCommand (String.Format (@"
                         SELECT {0} {1}
                             FROM {2} {3} LEFT OUTER JOIN CoreShuffles ON (CoreShuffles.ShufflerId = {4} AND CoreShuffles.TrackID = CoreTracks.TrackID)
