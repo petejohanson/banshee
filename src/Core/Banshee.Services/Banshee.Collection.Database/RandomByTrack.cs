@@ -42,7 +42,7 @@ namespace Banshee.Collection.Database
     {
         private static string track_condition = String.Format ("{0} ORDER BY RANDOM()", RANDOM_CONDITION);
 
-        public RandomByTrack (Shuffler shuffler) : base ("song", shuffler)
+        public RandomByTrack () : base ("song")
         {
             Label = Catalog.GetString ("Shuffle by _Song");
             Adverb = Catalog.GetString ("by song");

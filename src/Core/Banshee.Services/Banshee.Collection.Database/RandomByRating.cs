@@ -41,7 +41,7 @@ namespace Banshee.Collection.Database
     {
         private static string track_condition = String.Format ("AND (CoreTracks.Rating = ? OR (? = 3 AND CoreTracks.Rating = 0)) {0} ORDER BY RANDOM()", RANDOM_CONDITION);
 
-        public RandomByRating (Shuffler shuffler) : base ("rating", shuffler)
+        public RandomByRating () : base ("rating")
         {
             Label = Catalog.GetString ("Shuffle by _Rating");
             Adverb = Catalog.GetString ("by rating");

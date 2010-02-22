@@ -49,7 +49,7 @@ namespace Banshee.Collection.Database
         private HyenaSqliteCommand query;
         protected int slot;
 
-        public RandomBySlot (string id, Shuffler shuffler) : base (id, shuffler)
+        public RandomBySlot (string id) : base (id)
         {
         }
 

@@ -48,6 +48,7 @@ namespace Banshee.Collection.Database
         private DateTime random_began_at = DateTime.MinValue;
         private DateTime last_random = DateTime.MinValue;
         private List<RandomBy> random_modes;
+        private Dictionary<TypeExtensionNode, RandomBy> node_map = new Dictionary<TypeExtensionNode, RandomBy> ();
         private DatabaseTrackListModel model;
 
         public string Id { get; private set; }
@@ -78,15 +79,17 @@ namespace Banshee.Collection.Database
             if (args.Change == ExtensionChange.Add) {
                 lock (random_modes) {
                     try {
-                        random_by = (RandomBy) Activator.CreateInstance (tnode.Type, this);
+                        random_by = (RandomBy) tnode.CreateInstance ();
+                        random_by.SetShuffler (this);
                         random_modes.Add (random_by);
+                        node_map[tnode] = random_by;
                     } catch (Exception e) {
                         Log.Exception (String.Format ("Failed to load RandomBy extension: {0}", args.Path), e);
                     }
                 }
 
                 if (random_by != null) {
-                    if (!tnode.Type.AssemblyQualifiedName.Contains ("Banshee.Service")) {
+                    if (!random_by.GetType ().AssemblyQualifiedName.Contains ("Banshee.Service")) {
                         Log.DebugFormat ("Loaded RandomBy: {0}", random_by.Id);
                     }
                     var handler = RandomModeAdded;
@@ -96,8 +99,9 @@ namespace Banshee.Collection.Database
                 }
             } else {
                 lock (random_modes) {
-                    random_by = random_modes.FirstOrDefault (r => r.GetType () == tnode.Type);
-                    if (random_by != null) {
+                    if (node_map.ContainsKey (tnode)) {
+                        random_by = node_map[tnode];
+                        node_map.Remove (tnode);
                         random_modes.Remove (random_by);
                     }
                 }

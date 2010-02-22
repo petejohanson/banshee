@@ -61,11 +61,18 @@ namespace Banshee.Collection.Database
         protected string Condition { get; set; }
         protected string OrderBy { get; set; }
 
-        public RandomBy (string id, Shuffler shuffler)
+        public RandomBy (string id)
         {
             Id = id;
-            Shuffler = shuffler;
             insert_shuffle = new HyenaSqliteCommand ("INSERT OR REPLACE INTO CoreShuffles (ShufflerID, TrackID, LastShuffledAt) VALUES (?, ?, ?)");
+        }
+
+        public void SetShuffler (Shuffler shuffler)
+        {
+            if (Shuffler != null)
+                throw new InvalidOperationException ("RandomBy already has Shuffler");
+
+            Shuffler = shuffler;
         }
 
         private HyenaSqliteCommand shuffler_query;

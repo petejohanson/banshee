@@ -45,7 +45,7 @@ namespace Banshee.Collection.Database
         private HyenaSqliteCommand album_query;
         private int? album_id;
 
-        public RandomByAlbum (Shuffler shuffler) : base ("album", shuffler)
+        public RandomByAlbum () : base ("album")
         {
             Label = Catalog.GetString ("Shuffle by A_lbum");
             Adverb = Catalog.GetString ("by album");

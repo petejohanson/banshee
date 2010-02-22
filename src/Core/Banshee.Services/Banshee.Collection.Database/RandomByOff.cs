@@ -31,7 +31,7 @@ namespace Banshee.Collection.Database
 {
     public class RandomByOff : RandomBy
     {
-        public RandomByOff (Shuffler shuffler) : base ("off", shuffler)
+        public RandomByOff () : base ("off")
         {
             Label = Catalog.GetString ("Shuffle _Off");
             Adverb = Catalog.GetString ("manually");
