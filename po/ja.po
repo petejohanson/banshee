@@ -4,6 +4,7 @@
 # Takeshi AIHANA <aihana@gnome.gr.jp>, 2005.
 # Koike Kazuhiko <kazhik@mozilla.gr.jp>, 2005-2007.
 # Kentaro KAZUHAMA <kazken3@gmail.com>, 2010.
+# OKANO Takayoshi <kano@na.rim.or.jp>, 2010.
 #
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:122
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:125
@@ -13,9 +14,9 @@ msgstr ""
 "Project-Id-Version: banshee master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-02-07 23:20+0900\n"
+"POT-Creation-Date: 2010-02-22 21:16+0900\n"
 "PO-Revision-Date: 2010-02-07 21:48+0900\n"
-"Last-Translator: kentaro kazuhama <kazken3@gmail.com>\n"
+"Last-Translator: OKANO Takayoshi <kano@na.rim.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -626,7 +627,7 @@ msgstr "Windows Media Audio"
 #: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:72
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:94
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:201
-#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:71
+#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:60
 msgid "Banshee Media Player"
 msgstr "Banshee メディア・プレイヤー"
 
@@ -765,15 +766,15 @@ msgstr ""
 msgid "Could not initialize GStreamer library"
 msgstr "GStreamer ライブラリを初期化できませんでした"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:267
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:272
 msgid "Unknown Error"
 msgstr "未知のエラー"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:560
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:565
 msgid "_Enable ReplayGain correction"
 msgstr "ReplayGain補正を有効にする(_E)"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:561
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:566
 msgid ""
 "For tracks that have ReplayGain data, automatically scale (normalize) "
 "playback volume"
@@ -1130,7 +1131,7 @@ msgstr "コメント"
 msgid "Search"
 msgstr "Search"
 
-#: ../src/Core/Banshee.Core/Banshee.Base/CoverArtSpec.cs:41
+#: ../src/Core/Banshee.Core/Banshee.Base/CoverArtSpec.cs:43
 #: ../src/Core/Banshee.Core/Banshee.Collection/ArtistInfo.cs:37
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdDiscModel.cs:100
 #: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtJob.cs:137
@@ -1138,7 +1139,7 @@ msgstr "Search"
 msgid "Unknown Artist"
 msgstr "不明なアーティスト"
 
-#: ../src/Core/Banshee.Core/Banshee.Base/CoverArtSpec.cs:43
+#: ../src/Core/Banshee.Core/Banshee.Base/CoverArtSpec.cs:45
 #: ../src/Core/Banshee.Core/Banshee.Collection/AlbumInfo.cs:40
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdDiscModel.cs:101
 #: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtJob.cs:136
@@ -1225,6 +1226,79 @@ msgstr "すべてのアーティスト ({0})"
 msgid "Value"
 msgstr "Value"
 
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:50
+msgid "Shuffle by A_lbum"
+msgstr "アルバムでシャッフル(_L)"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:51
+msgid "by album"
+msgstr "アルバムで"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:52
+msgid "Play all songs from an album, then randomly choose another album"
+msgstr "アルバムから全ての曲を再生し、他のアルバムをランダムに選択する"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByArtist.cs:49
+msgid "Shuffle by A_rtist"
+msgstr "アーティストでシャッフル(_R)"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByArtist.cs:50
+msgid "by artist"
+msgstr "アーティストで"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByArtist.cs:51
+msgid "Play all songs by an artist, then randomly choose another artist"
+msgstr ""
+"アーティストごとに全ての曲を再生し、他のアーティストをランダムで選択する"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:36
+msgid "Shuffle _Off"
+msgstr "シャッフルをオフ(_O)"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:37
+msgid "manually"
+msgstr "手動"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:38
+msgid "Do not shuffle playlist"
+msgstr "プレイリストをシャッフルしない"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:46
+msgid "Shuffle by _Rating"
+msgstr "評価でシャッフル(_R)"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:47
+msgid "by rating"
+msgstr "評価で"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:48
+msgid "Play songs randomly, prefer higher rated songs"
+msgstr "曲をランダムに再生し、高い評価の曲を選ぶ"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByScore.cs:42
+msgid "Shuffle by S_core"
+msgstr "スコアでシャッフル(_C)"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByScore.cs:43
+msgid "by score"
+msgstr "評価で"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByScore.cs:44
+msgid "Play songs randomly, prefer higher scored songs"
+msgstr "曲をランダムに再生し、高いスコアの曲を選ぶ"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:47
+msgid "Shuffle by _Song"
+msgstr "曲でシャッフル(_S)"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:48
+msgid "by song"
+msgstr "曲で"
+
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:49
+msgid "Play songs randomly from the playlist"
+msgstr "プレイリストからランダムに曲を再生"
+
 #: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:137
 msgid "Scanning for media"
 msgstr "メディアをスキャンしています"
@@ -1273,6 +1347,82 @@ msgstr ""
 #: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1258
 msgid "Refreshing Metadata"
 msgstr "メタデータのリフレッシュ"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:261
+#, fuzzy
+msgid "Classical"
+msgstr "古い漫画"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:264
+msgid "Club"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:267
+#, fuzzy
+msgid "Dance"
+msgstr "キャンセル"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:270
+#, fuzzy
+msgid "Full Bass"
+msgstr "フルパス:"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:273
+msgid "Full Bass and Treble"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:276
+#, fuzzy
+msgid "Full Treble"
+msgstr "フルスクリーン(_F)"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:279
+msgid "Laptop Speakers and Headphones"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:282
+msgid "Large Hall"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:285
+#, fuzzy
+msgid "Live"
+msgstr "ドライブ"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:288
+#, fuzzy
+msgid "Party"
+msgstr "再生"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:291
+msgid "Pop"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:294
+#, fuzzy
+msgid "Reggae"
+msgstr "名前の変更"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:297
+msgid "Rock"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:300
+msgid "Ska"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:303
+#, fuzzy
+msgid "Soft"
+msgstr "of"
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:306
+msgid "Soft Rock"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:309
+msgid "Techno"
+msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Library/HomeDirectoryImportSource.cs:48
 msgid "Home Folder"
@@ -1367,7 +1517,7 @@ msgstr "音楽"
 
 #. Misc section
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:75
-#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:64
+#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:65
 msgid "Miscellaneous"
 msgstr "その他のセクション"
 
@@ -1488,7 +1638,7 @@ msgstr ""
 "再生エンジンが見つかりませんでした。Bansheeが正しくインストールされているかど"
 "うか確認してください。"
 
-#: ../src/Core/Banshee.Services/Banshee.MediaEngine/PlayerEngineService.cs:321
+#: ../src/Core/Banshee.Services/Banshee.MediaEngine/PlayerEngineService.cs:304
 msgid "Problem with Player Engine"
 msgstr "再生エンジンでエラー"
 
@@ -1556,6 +1706,11 @@ msgstr "評価のインポート(_R)"
 msgid "Import play _counts"
 msgstr "再生数のインポート(_C)"
 
+#. disabled by default
+#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:291
+msgid "Improve Banshee by sending anonymous usage data"
+msgstr ""
+
 #: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:52
 msgid "There is no available network connection"
 msgstr "利用可能なネットワーク接続がありません"
@@ -1602,8 +1757,8 @@ msgstr "プレイリストの削除"
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:396
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:169
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:90
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:359
-#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:467
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:367
+#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:475
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView_DragAndDrop.cs:213
 msgid "New Playlist"
 msgstr "新しいプレイリスト"
@@ -1629,24 +1784,24 @@ msgid "XML Shareable Playlist Format version 1 (*.xspf)"
 msgstr "XML共有可能プレイリストフォーマット バージョン1 (*.xspf)"
 
 #. Pages (tabs)
-#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:49
+#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:50
 msgid "General"
 msgstr "一般"
 
-#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:50
+#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:51
 msgid "Source Specific"
 msgstr "情報個別の項目"
 
-#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:51
+#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:52
 msgid "Extensions"
 msgstr "機能拡張"
 
 #. General policies
-#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:54
+#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:55
 msgid "File Policies"
 msgstr "ファイルポリシー"
 
-#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:57
+#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:58
 msgid "Co_py files to media folders when importing"
 msgstr "インポートしたファイルをメディアフォルダへコピーする(_P)"
 
@@ -2193,7 +2348,7 @@ msgid "Please file a bug with this error: {0}"
 msgstr "このエラーでバグを提出してください: {0}"
 
 #: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:67
-#: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:52
+#: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:49
 msgid "Edit Smart Playlist"
 msgstr "スマートプレイリストを編集"
 
@@ -2248,11 +2403,12 @@ msgstr "エラー報告を閉じる"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/ErrorSource.cs:83
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:222
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:6
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ErrorListDialog.cs:46
 msgid "Error"
 msgstr "エラー"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/ErrorSource.cs:84
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ErrorListDialog.cs:79
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:251
 msgid "Details"
 msgstr "詳細情報"
@@ -2345,7 +2501,7 @@ msgid "All"
 msgstr "全て"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:52
-#: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerWindow.cs:81
+#: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerWindow.cs:82
 msgid "Enabled"
 msgstr "有効"
 
@@ -2357,11 +2513,21 @@ msgstr "無効"
 msgid "Search:"
 msgstr "検索:"
 
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:74
+msgid "Cannot Reorder While Sorted"
+msgstr ""
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:75
+msgid ""
+"To put the playlist in manual sort mode, click the currently sorted column "
+"header until the sort arrow goes away."
+msgstr ""
+
 #. Translators: this is {disc number} of {disc count}
 #. Translators: this is {track number} of {track count}
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellDiscAndCount.cs:40
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellTrackAndCount.cs:40
-#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:172
+#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:173
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapPropertiesDialog.cs:148
 #, csharp-format
 msgid "{0} of {1}"
@@ -2424,11 +2590,11 @@ msgstr "再生開始を待っています..."
 msgid "Loading..."
 msgstr "ロード中..."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerWindow.cs:52
+#: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerWindow.cs:53
 msgid "Equalizer"
 msgstr "イコライザ"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerWindow.cs:158
+#: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerWindow.cs:144
 msgid "New Preset"
 msgstr "新しいプリセット"
 
@@ -2531,7 +2697,6 @@ msgstr "PNGファイル"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/OpenLocationDialog.cs:45
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/OpenLocationDialog.cs:103
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:8
 msgid "Open Location"
 msgstr "ファイルを開く"
 
@@ -2540,9 +2705,12 @@ msgid "Browse..."
 msgstr "参照..."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/OpenLocationDialog.cs:64
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:5
 msgid "Enter the address of the file you would like to open:"
 msgstr "開きたいファイルのパスを指定してください:"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/SeekDialog.cs:41
+msgid "Seek to Position"
+msgstr "指定の場所へシーク"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:50
 msgid "_Media"
@@ -2756,59 +2924,10 @@ msgstr "1曲リピート(_E)"
 msgid "Repeat the current playing song"
 msgstr "現在再生中の曲を繰り返します"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:75
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:76
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:79
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:80
 msgid "Shuffle"
 msgstr "シャッフル"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:81
-msgid "Shuffle _Off"
-msgstr "シャッフルをオフ(_O)"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:82
-msgid "Do not shuffle playlist"
-msgstr "プレイリストをシャッフルしない"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:86
-msgid "Shuffle by _Song"
-msgstr "曲でシャッフル(_S)"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:87
-msgid "Play songs randomly from the playlist"
-msgstr "プレイリストからランダムに曲を再生"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:91
-msgid "Shuffle by A_rtist"
-msgstr "アーティストでシャッフル(_R)"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:92
-msgid "Play all songs by an artist, then randomly choose another artist"
-msgstr ""
-"アーティストごとに全ての曲を再生し、他のアーティストをランダムで選択する"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:96
-msgid "Shuffle by A_lbum"
-msgstr "アルバムでシャッフル(_L)"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:97
-msgid "Play all songs from an album, then randomly choose another album"
-msgstr "アルバムから全ての曲を再生し、他のアルバムをランダムに選択する"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:101
-msgid "Shuffle by _Rating"
-msgstr "評価でシャッフル(_R)"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:102
-msgid "Play songs randomly, prefer higher rated songs"
-msgstr "曲をランダムに再生し、高い評価の曲を選ぶ"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:106
-msgid "Shuffle by S_core"
-msgstr "スコアでシャッフル(_C)"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:107
-msgid "Play songs randomly, prefer higher scored songs"
-msgstr "曲をランダムに再生し、高いスコアの曲を選ぶ"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:73
 msgid "_New Playlist"
@@ -2869,7 +2988,7 @@ msgstr "このソースに関連するプリファレンスを編集"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:113
 msgid "New _Smart Playlist"
-msgstr "新しいスマート付来リスト(_S)"
+msgstr "新しいスマートプレイリスト(_S)"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:122
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:74
@@ -2960,47 +3079,64 @@ msgid "Remove selected track(s) from library"
 msgstr "選択したトラックをライブラリから削除"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:103
+msgid "_Open Containing Folder"
+msgstr ""
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:104
+msgid "Open the folder that contains the selected item"
+msgstr ""
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:107
 msgid "_Delete From Drive"
 msgstr "ドライブから削除(_D)"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:104
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:108
 msgid "Permanently delete selected item(s) from medium"
 msgstr "選択したアイテムを媒体から永久に削除します"
 
 #. Translators: this is a verb (command), not a noun (things)
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:110
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:114
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:169
 #: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:108
 #, csharp-format
 msgid "_Search"
 msgstr "検索(_S)"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:111
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:115
 msgid "Search for items matching certain criteria"
 msgstr "いくつかの条件にあったアイテムを検索"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:114
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:118
 msgid "By Matching _Album"
 msgstr "一致するアルバム(_A)"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:115
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:119
 msgid "Search all songs of this album"
 msgstr "このアルバムの全ての曲を検索"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:118
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:122
 msgid "By Matching A_rtist"
 msgstr "一致するアーティスト(_R)"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:119
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:123
 msgid "Search all songs of this artist"
 msgstr "このアーティストの全ての曲を検索"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:244
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:252
 #, csharp-format
 msgid "_Delete From \"{0}\""
 msgstr " \"{0}\" から削除(_D)"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:461
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:437
+#, fuzzy
+msgid "The folder could not be found."
+msgstr "設定サービスを見つけることができませんでした。"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:438
+msgid "Please check that the track's location is accessible by the system."
+msgstr ""
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:504
 #, csharp-format
 msgid "Are you sure you want to permanently delete this item?"
 msgid_plural ""
@@ -3008,16 +3144,16 @@ msgid_plural ""
 msgstr[0] "本当にこのアイテムを永久に削除しますか?"
 msgstr[1] "本当に{0}アイテムを永久に削除しますか?"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:465
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:508
 msgid "If you delete the selection, it will be permanently lost."
 msgstr "選択された曲を削除すると永久に失われます。"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:468
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:511
 #, csharp-format
 msgid "Remove selection from {0}?"
 msgstr "{0} から選択を削除しますか?"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:471
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:514
 #, csharp-format
 msgid "Are you sure you want to remove the selected item from your {1}?"
 msgid_plural ""
@@ -3041,7 +3177,7 @@ msgid ""
 "This value will affect how this album is sorted; if you enter 'Various "
 "Artists' then the album will located with other albums that start with 'V'."
 msgstr ""
-"この値はアルバムをどのようにソートする課に影響します。あなたが'Various "
+"この値はアルバムをどのようにソートするかに影響します。あなたが'Various "
 "Artists'と入力したなら、アルバムは'V'で始まる他のアルバムと一緒に置かれます。"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/BasicTrackDetailsPage.cs:44
@@ -3411,24 +3547,24 @@ msgstr[1] "アクティブなタスクが実行中"
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Podcast Name and Published Date, respectively;
 #. e.g. 'from BBtv published 7/26/2007'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:478
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:496
 #, csharp-format
 msgid "{0}from{1} {2} {0}published{1} {3}"
 msgstr "{0}from{1} {2} {0}公開日{1} {3}"
 
 #. simply: "Chicago Public Radio" or whatever the artist name is
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:491
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:509
 msgid "Unknown Stream"
 msgstr "不明なストリーム"
 
 #. Translators: {0} and {1} are markup so ignore them, {2} is the name of the radio station
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:494
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:512
 #, csharp-format
 msgid "{0}on{1} {2}"
 msgstr "{0}on{1} {2}"
 
 #. Translators: {0} is the "from {album} by {artist}" type string, and {1} is the "on {radio station name}" string
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:497
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:515
 #, csharp-format
 msgid "{0} {1}"
 msgstr "{0} {1}"
@@ -3436,14 +3572,14 @@ msgstr "{0} {1}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Artist Name and Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:533
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:551
 #, csharp-format
 msgid "{0}by{1} {2} {0}from{1} {3}"
 msgstr "{0}by{1} {2} {0}from{1} {3}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Album Title;
 #. e.g. 'from Killing with a Smile'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:537
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:555
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:512
 #, csharp-format
 msgid "{0}from{1} {2}"
@@ -3451,7 +3587,7 @@ msgstr "{0}from{1} {2}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Artist Name;
 #. e.g. 'by Parkway Drive'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:541
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:559
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:516
 #, csharp-format
 msgid "{0}by{1} {2}"
@@ -3546,7 +3682,27 @@ msgstr "インポートするフォルダ(_F):"
 msgid "Select Folders"
 msgstr "フォルダの選択"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:96
+#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:72
+msgid "<big><b>Import Media to Library</b></big>"
+msgstr "<big><b>メディアをライブラリへインポート</b></big>"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:78
+msgid ""
+"Your media library is empty. You may import new music and videos into your "
+"library now, or choose to do so later."
+msgstr ""
+"あなたのメディアライブラリは空です。新しい音楽やビデオを今または後で選択して"
+"追加できます。"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:88
+msgid "Import _from:"
+msgstr "インポート(_F):"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:97
+msgid "Do not show this dialog again"
+msgstr "今後このダイアログを表示しない"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:125
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:82
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:385
 msgid "_Import"
@@ -3594,6 +3750,13 @@ msgstr "戻す"
 msgid "Reset location to default ({0})"
 msgstr "デフォルトの場所にリセットする ({0})"
 
+#. FIXME this shouldn't be hard-coded to 'Source:', but this is the only
+#. user of this code atm...
+#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/NotebookPage.cs:76
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:245
+msgid "Source:"
+msgstr "ソース:"
+
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/PreferenceDialog.cs:55
 msgid "Could not show preferences"
 msgstr "設定を表示できません"
@@ -3602,9 +3765,22 @@ msgstr "設定を表示できません"
 msgid "The preferences service could not be found."
 msgstr "設定サービスを見つけることができませんでした。"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:83
+#: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:80
 msgid "New Smart Playlist"
 msgstr "新しいスマートプレイリスト"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:96
+#, fuzzy
+msgid "Playlist _Name:"
+msgstr "プレイリスト名(_N):"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:119
+msgid "Open in editor"
+msgstr "編集"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:120
+msgid "Create and save"
+msgstr "作成と保存"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/FilteredListSourceContents.cs:110
 msgid "Browser on Left"
@@ -3630,50 +3806,6 @@ msgstr "ブラウザを表示"
 msgid "Show or hide the artist/album browser"
 msgstr "アーティスト/アルバムブラウザを表示/隠す"
 
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:1
-msgid "<b>Details</b>"
-msgstr "<b>詳細</b>"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:2
-msgid "<big><b>Import Media to Library</b></big>"
-msgstr "<big><b>メディアをライブラリへインポート</b></big>"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:3
-msgid "Create and save"
-msgstr "作成と保存"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:4
-msgid "Do not show this dialog again"
-msgstr "今後このダイアログを表示しない"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:7
-msgid "Import _from:"
-msgstr "インポート(_F):"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:9
-msgid "Open in editor"
-msgstr "編集"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:10
-msgid "Playlist _Name: "
-msgstr "プレイリスト名(_N):"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:11
-msgid "Predefined Smart Playlists"
-msgstr "事前に定義済みのスマートプレイリスト"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:12
-msgid "Seek to Position"
-msgstr "指定の場所へシーク"
-
-#: ../src/Core/Banshee.ThickClient/Resources/banshee-dialogs.glade.h:13
-msgid ""
-"Your media library is empty. You may import new music and videos into your "
-"library now, or choose to do so later."
-msgstr ""
-"あなたのメディアライブラリは空です。新しい音楽やビデオを今または後で選択して"
-"追加できます。"
-
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/DiscUsageDisplay.cs:189
 msgid ""
 "Insert\n"
@@ -3686,15 +3818,15 @@ msgstr ""
 msgid "Seek"
 msgstr "シーク"
 
-#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:148
+#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:149
 msgid "Idle"
 msgstr "待機中"
 
-#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:149
+#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:150
 msgid "Contacting..."
 msgstr "接続中です..."
 
-#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:159
+#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:160
 msgid "Buffering"
 msgstr "バッファリング"
 
@@ -3767,7 +3899,7 @@ msgstr "ファイルの変換エラー"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:133
 msgid "Sync when first plugged in and when the libraries change"
-msgstr "始めて差し込んだときとライブラリが変更されたときに同期する"
+msgstr "初めて差し込んだときとライブラリが変更されたときに同期する"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:134
 msgid ""
@@ -3840,8 +3972,8 @@ msgid "Sync entire library"
 msgstr "全てのライブラリと同期"
 
 #. Translators: {0} is the name of a playlist
-#: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:122
-#: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:152
+#: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:124
+#: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:154
 #, csharp-format
 msgid "Sync from “{0}”"
 msgstr "\"{0}\" から同期"
@@ -4627,10 +4759,6 @@ msgstr "追加者:"
 msgid "Collections:"
 msgstr "コレクション:"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:245
-msgid "Source:"
-msgstr "ソース:"
-
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:246
 msgid "Contributor:"
 msgstr "寄贈者:"
@@ -5057,7 +5185,7 @@ msgid "Add a new Internet Radio station or playlist"
 msgstr "新しいインターネットラジオステーションかプレイリストを追加"
 
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:81
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationEditor.cs:65
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationEditor.cs:59
 msgid "Edit Station"
 msgstr "ステーションを編集"
 
@@ -5246,44 +5374,44 @@ msgstr "このトラックのLast.fmページを見る"
 msgid "Recommend this track to someone"
 msgstr "このトラックを誰かに薦める"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:242
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:241
 #, csharp-format
 msgid "http://last.fm/music/{0}"
 msgstr "http://last.fm/music/{0}"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:250
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:249
 #, csharp-format
 msgid "http://last.fm/music/{0}/{1}"
 msgstr "http://last.fm/music/{0}/{1}"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:258
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:257
 #, csharp-format
 msgid "http://last.fm/music/{0}/_/{1}"
 msgstr "http://last.fm/music/{0}/_/{1}"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:266
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:265
 #, csharp-format
 msgid "http://www.last.fm/music/{0}/+videos"
 msgstr "http://www.last.fm/music/{0}/+videos"
 
 #. Translators: this is used for looking up artist pages on Wikipedia; change to your wikipedia language if you want
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:274
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:273
 #: ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia/WikipediaView.cs:48
 #, csharp-format
 msgid "http://en.wikipedia.org/wiki/{0}"
 msgstr "http://ja.wikipedia.org/wiki/{0}"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:308
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:307
 #, csharp-format
 msgid "Fans of {0}"
 msgstr "{0}のファン"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:329
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:328
 #, csharp-format
 msgid "Similar to {0}"
 msgstr "{0}にテイストが似ている"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:402
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:401
 msgid "_Add Station"
 msgstr "ステーションの追加(_A)"
 
@@ -5355,9 +5483,13 @@ msgstr "Last.fmにサインアップする"
 msgid "Check if Banshee has been authorized"
 msgstr "Bansheeが許可されたらチェックする"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationEditor.cs:73
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationEditor.cs:67
 msgid "New Station"
 msgstr "新しいステーション"
+
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationEditor.cs:89
+msgid "Station _Type:"
+msgstr "ステーションタイプ(_T):"
 
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:57
 msgid "Last.fm Station"
@@ -5512,34 +5644,21 @@ msgstr "{0}% の類似性"
 msgid "Unknown Similarity"
 msgstr "不明な類似性"
 
-#: ../src/Extensions/Banshee.Lastfm/Resources/lastfm.glade.h:1
-msgid "Station _Type:"
-msgstr "ステーションタイプ(_T):"
-
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeService.cs:25
 msgid "_Mini Mode"
 msgstr "ミニモード(_M)"
 
-#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:127
+#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:100
+msgid "Full Mode"
+msgstr "フルモード"
+
+#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:123
 msgid "Switch back to full mode"
 msgstr "フルモードに戻る"
 
-#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:128
+#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:124
 msgid "Change repeat playback mode"
 msgstr "リピート再生モードの ON/OFF を切り替えます"
-
-#: ../src/Extensions/Banshee.MiniMode/Resources/minimode.glade.h:1
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/X11NotificationAreaBox.cs:68
-msgid "Banshee"
-msgstr "Banshee"
-
-#: ../src/Extensions/Banshee.MiniMode/Resources/minimode.glade.h:2
-msgid "Current source:"
-msgstr "現在の再生元:"
-
-#: ../src/Extensions/Banshee.MiniMode/Resources/minimode.glade.h:3
-msgid "Full Mode"
-msgstr "フルモード"
 
 #: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/MediaPanelContents.cs:62
 msgid "Music Library"
@@ -5588,6 +5707,10 @@ msgid ""
 msgstr ""
 "{0}by{1} {2}\n"
 "{0}from{1} {3}"
+
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/X11NotificationAreaBox.cs:68
+msgid "Banshee"
+msgstr "Banshee"
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:143
 #, csharp-format
@@ -5677,35 +5800,11 @@ msgstr "Rhythmbox ミュージック・プレイヤー"
 msgid "Import _playlists"
 msgstr "プレイリストをインポート(_P)"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:48
-msgid "manually"
-msgstr "手動"
-
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:49
-msgid "by song"
-msgstr "曲で"
-
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:50
-msgid "by album"
-msgstr "アルバムで"
-
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:51
-msgid "by artist"
-msgstr "アーティストで"
-
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:52
-msgid "by rating"
-msgstr "評価で"
-
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:53
-msgid "by score"
-msgstr "評価で"
-
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:60
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:54
 msgid "_Fill"
 msgstr "_Fill"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:74
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:76
 msgid "f_rom"
 msgstr "f_rom"
 
@@ -5741,11 +5840,11 @@ msgstr "終了時に再生キューをクリアする"
 msgid "Remove From Play Queue"
 msgstr "再生キューから削除"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:782
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:791
 msgid "Number of _played songs to show"
 msgstr "演奏した曲の表示数(_P)"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:788
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:797
 msgid "Number of _upcoming songs to show"
 msgstr "これから演奏する曲の表示数(_U)"
 
@@ -5974,7 +6073,7 @@ msgstr "click"
 msgid "menu"
 msgstr "menu"
 
-#: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:606
+#: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:611
 #, csharp-format
 msgid "Hide <i>{0}</i>"
 msgstr "<i>{0}</i>を隠す"
@@ -6250,6 +6349,15 @@ msgstr "Last.fmへ接続しました。"
 #: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:94
 msgid "Unknown Podcast"
 msgstr "不明なポッドキャスト"
+
+#~ msgid "<b>Details</b>"
+#~ msgstr "<b>詳細</b>"
+
+#~ msgid "Predefined Smart Playlists"
+#~ msgstr "事前に定義済みのスマートプレイリスト"
+
+#~ msgid "Current source:"
+#~ msgstr "現在の再生元:"
 
 #~ msgid "_Search:"
 #~ msgstr "検索(_S):"
@@ -7184,9 +7292,6 @@ msgstr "不明なポッドキャスト"
 #~ "  <big>•</big> 楽曲がDRM技術で著作権保護されています\n"
 #~ "  <big>•</big> 再生をサポートしていないプレーヤー上にあります\n"
 
-#~ msgid "Play"
-#~ msgstr "再生"
-
 #~ msgid "Delete songs from drive"
 #~ msgstr "ドライブから曲を削除"
 
@@ -7558,9 +7663,6 @@ msgstr "不明なポッドキャスト"
 
 #~ msgid "Homepage"
 #~ msgstr "ホームページ"
-
-#~ msgid "Cancel"
-#~ msgstr "キャンセル"
 
 #~ msgid "Link"
 #~ msgstr "リンク"
