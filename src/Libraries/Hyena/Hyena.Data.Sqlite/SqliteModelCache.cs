@@ -291,7 +291,7 @@ namespace Hyena.Data.Sqlite
             }
         }
 
-        public T GetSingle (string conditionOrderFragment, params object [] args)
+        public T GetSingleWhere (string conditionOrderFragment, params object [] args)
         {
             return GetSingle (null, null, conditionOrderFragment, args);
         }

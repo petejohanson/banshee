@@ -362,7 +362,7 @@ namespace Banshee.Collection.Database
         public int IndexOfFirst (TrackInfo track)
         {
             lock (this) {
-                return IndexOf (cache.GetSingle ("AND MetadataHash = ? ORDER BY OrderID", track.MetadataHash));
+                return IndexOf (cache.GetSingleWhere ("AND MetadataHash = ? ORDER BY OrderID", track.MetadataHash));
             }
         }
 

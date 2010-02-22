@@ -46,7 +46,7 @@ namespace Banshee.Collection.Database
         long IndexOf (Hyena.Data.ICacheableItem item);
         long IndexOf (object item_entry_id);
         TrackInfo GetSingle (string selectFragment, string fromFragment, string conditionOrderFragment, params object [] args);
-        TrackInfo GetSingle (string conditionOrderFragment, params object [] args);
+        TrackInfo GetSingleWhere (string conditionOrderFragment, params object [] args);
         TrackInfo GetValue (long index);
         long CacheId { get; }
         event Action<IDataReader> AggregatesUpdated;

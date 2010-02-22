@@ -52,7 +52,7 @@ namespace Banshee.Collection.Database
             int min = slot * 100 / Slots + 1;
             int max = (slot + 1) * 100 / Slots;
 
-            var track = !IsReady ? null : Cache.GetSingle (track_condition, min, max, max, after, after);
+            var track = !IsReady ? null : Cache.GetSingleWhere (track_condition, min, max, max, after, after);
             Reset ();
             return track;
         }

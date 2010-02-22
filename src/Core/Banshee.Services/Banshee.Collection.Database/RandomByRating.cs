@@ -53,7 +53,7 @@ namespace Banshee.Collection.Database
 
         public override TrackInfo GetPlaybackTrack (DateTime after)
         {
-            var track = !IsReady ? null : Cache.GetSingle (track_condition, slot + 1, slot + 1, after, after);
+            var track = !IsReady ? null : Cache.GetSingleWhere (track_condition, slot + 1, slot + 1, after, after);
             Reset ();
             return track;
         }

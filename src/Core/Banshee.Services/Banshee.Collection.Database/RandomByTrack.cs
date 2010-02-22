@@ -59,7 +59,7 @@ namespace Banshee.Collection.Database
 
         public override TrackInfo GetPlaybackTrack (DateTime after)
         {
-            return Cache.GetSingle (track_condition, after, after);
+            return Cache.GetSingleWhere (track_condition, after, after);
         }
 
         public override DatabaseTrackInfo GetShufflerTrack (DateTime after)

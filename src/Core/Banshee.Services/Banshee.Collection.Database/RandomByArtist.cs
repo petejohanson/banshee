@@ -81,7 +81,7 @@ namespace Banshee.Collection.Database
 
         public override TrackInfo GetPlaybackTrack (DateTime after)
         {
-            return id == null ? null : Cache.GetSingle (track_condition, (int)id, after, after);
+            return id == null ? null : Cache.GetSingleWhere (track_condition, (int)id, after, after);
         }
 
         public override DatabaseTrackInfo GetShufflerTrack (DateTime after)
