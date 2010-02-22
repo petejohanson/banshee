@@ -127,8 +127,11 @@ namespace Hyena.Data.Sqlite
                     CacheTableName, uid, model.JoinPrimaryKey
                 );
             } else if (model.CachesValues) {
+                // The duplication of OrderID/ItemID in the select below is intentional!
+                // The first is used construct the QueryFilterInfo value, the last internally
+                // to this class
                 select_str = String.Format (
-                    @"SELECT 1 {2}, OrderID, ItemID FROM {0} {3} WHERE {0}.ModelID = {1}",
+                    @"SELECT OrderID, ItemID {2}, OrderID, ItemID FROM {0} {3} WHERE {0}.ModelID = {1}",
                     CacheTableName, uid, "{0}", "{1}"
                 );
 
