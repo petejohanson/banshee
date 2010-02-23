@@ -201,7 +201,7 @@ namespace Banshee.Dap.Ipod
 
             track.AlbumArtist = AlbumArtist;
             track.BitRate = BitRate;
-            track.SampleRate = SampleRate;
+            track.SampleRate = (ushort)SampleRate;
             track.BPM = (short)Bpm;
             track.Comment = Comment;
             track.Composer = Composer;
