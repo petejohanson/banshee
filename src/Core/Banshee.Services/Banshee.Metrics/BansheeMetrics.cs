@@ -122,7 +122,11 @@ namespace Banshee.Metrics
                     }
 
                     var poster = new HttpPoster ("http://download.banshee-project.org/metrics/metrics.py", metrics);
-                    Log.InformationFormat ("Posted usage data? {0}", poster.Post ());
+                    bool posted = poster.Post ();
+                    Log.InformationFormat ("Posted usage data? {0}", posted);
+                    if (posted) {
+                        metrics.Store.Clear ();
+                    }
                 });
                 return false;
             });
