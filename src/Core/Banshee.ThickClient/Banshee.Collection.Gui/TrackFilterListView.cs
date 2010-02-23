@@ -61,7 +61,7 @@ namespace Banshee.Collection.Gui
         protected virtual void OnRowActivated (object o, EventArgs args)
         {
             ServiceManager.PlaybackController.NextSource = (ServiceManager.SourceManager.ActiveSource as Banshee.Sources.ITrackModelSource);
-            ServiceManager.PlaybackController.Next ();
+            ServiceManager.PlaybackController.First ();
         }
 
         // TODO add context menu for artists/albums...probably need a Banshee.Gui/ArtistActions.cs file.  Should

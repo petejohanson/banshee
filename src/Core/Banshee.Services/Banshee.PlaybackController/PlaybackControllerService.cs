@@ -275,7 +275,11 @@ namespace Banshee.PlaybackController
         bool IBasicPlaybackController.First ()
         {
             if (Source.Count > 0) {
-                player_engine.OpenPlay (Source.TrackModel[0]);
+                if (ShuffleMode == "off") {
+                    player_engine.OpenPlay (Source.TrackModel[0]);
+                } else {
+                    ((IBasicPlaybackController)this).Next (false);
+                }
             }
             return true;
         }
