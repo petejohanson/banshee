@@ -25,6 +25,9 @@
   
   <!-- Any devices we wish to special case and support out of the box -->
   <Extension path="/Banshee/Dap/MassStorage/Device">
+    <MassStorageDevice class="Banshee.Dap.MassStorage.MaemoDevice"
+        vendor-name="Nokia" product-name="Nokia N900 Phone"
+        vendor-id="0x0421" product-id="0x01c7"/>
     <MassStorageDevice class="Banshee.Dap.MassStorage.AndroidDevice" 
         vendor-name="HTC" product-name="HTC Android Phone"
         vendor-id="0x0bb4" product-id="0x0c01,0x0c02"/>
