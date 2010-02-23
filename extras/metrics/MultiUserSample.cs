@@ -44,6 +44,8 @@ namespace metrics
         {
         }
 
+        static DateTime value_dt;
+        static TimeSpan value_span;
         public static void Import (string user_id, string metric_name, string stamp, object val)
         {
             var sample = new MultiUserSample ();
@@ -55,10 +57,11 @@ namespace metrics
                 sample.Stamp = stamp_dt;
             }
 
-            DateTime value_dt;
             if (DateTimeUtil.TryParseInvariant (val as string, out value_dt)) {
                 // We want numeric dates to compare with
                 sample.Value = DateTimeUtil.ToTimeT (value_dt).ToString ();
+            } else if (TimeSpan.TryParse (val as string, out value_span)) {
+                sample.Value = value_span.TotalMilliseconds.ToString ();
             } else {
                 sample.SetValue (val);
             }
