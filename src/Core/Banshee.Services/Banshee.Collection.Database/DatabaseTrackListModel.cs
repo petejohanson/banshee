@@ -159,6 +159,13 @@ namespace Banshee.Collection.Database
             return true;
         }
 
+        public void Resort ()
+        {
+            var column = sort_column;
+            sort_column = null;
+            Sort (column);
+        }
+
         private void HandleCacheAggregatesUpdated (IDataReader reader)
         {
             filtered_duration = TimeSpan.FromMilliseconds (reader.IsDBNull (1) ? 0 : Convert.ToInt64 (reader[1]));

@@ -72,7 +72,16 @@ namespace Banshee.Library
 
             SetFileNamePattern (MusicFileNamePattern);
 
-            PreferencesPage.Add (new Section ("misc", Catalog.GetString ("Miscellaneous"), 10));
+            Section misc = PreferencesPage.Add (new Section ("misc",
+                Catalog.GetString ("Miscellaneous"), 10));
+
+            misc.Add (new SchemaPreference<bool> (LibrarySchema.SortByAlbumYear,
+                Catalog.GetString ("_Sort an artist's albums by year, not title"), null,
+                delegate {
+                    DatabaseTrackModel.Resort ();
+                    DatabaseTrackModel.Reload ();
+                }
+            ));
         }
 
         public static string GetDefaultBaseDirectory ()
