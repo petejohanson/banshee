@@ -26,6 +26,7 @@
 
 using System;
 using Hyena.Data.Sqlite;
+using System.Collections;
 
 namespace metrics
 {
@@ -46,7 +47,22 @@ namespace metrics
             Console.WriteLine ("Last report was on {0}", LastReport);
             Console.WriteLine ("Total unique users: {0}", db.Query<long> ("SELECT COUNT(DISTINCT(UserId)) FROM Samples"));
 
-            SummarizeTextual ("Env/CultureInfo");
+            var metrics = db.QueryEnumerable<string> ("SELECT DISTINCT(MetricName) as name FROM Samples ORDER BY name ASC");
+
+            foreach (var metric in metrics) {
+                //var pieces = metric.Split ('/');
+                //var name = pieces[pieces.Length - 1];
+
+                switch (GetMetricType (metric)) {
+                    case "string": SummarizeTextual (metric); break;
+                    case "timespan" : SummarizeNumeric<TimeSpan> (metric); break;
+                    case "datetime" : SummarizeNumeric<DateTime> (metric); break;
+                    case "fixed": SummarizeNumeric<long> (metric); break;
+                    case "float": SummarizeNumeric<double> (metric); break;
+                }
+            }
+
+            /*SummarizeTextual ("Env/CultureInfo");
             SummarizeTextual ("Banshee/Configuration/core/io_provider");
 
             SummarizeNumeric<TimeSpan> ("Banshee/RunDuration");
@@ -54,19 +70,37 @@ namespace metrics
             SummarizeNumeric<long> ("Banshee/Screen/Width");
             SummarizeNumeric<long> ("Banshee/Screen/Height");
             SummarizeNumeric<long> ("Banshee/Screen/NMonitors");
-            SummarizeTextual ("Banshee/Screen/IsComposited");
+            SummarizeTextual ("Banshee/Screen/IsComposited");*/
 
             /*foreach (var metric in db.QueryEnumerable<string> ("SELECT DISTINCT(MetricName) as name FROM Samples ORDER BY name ASC")) {
                 Console.WriteLine (metric);
             }*/
         }
 
+        private string GetMetricType (string name)
+        {
+            var lower_name = name.ToLower ();
+            foreach (var str in new string [] { "avg", "count", "size", "width", "height", "duration", "playseconds", "_pos" }) {
+                if (lower_name.Contains (str))
+                    return "float";
+            }
+
+            if (name.EndsWith ("BuildTime"))
+                return "datetime";
+
+            if (name.EndsWith ("LongSqliteCommand") || name.EndsWith ("At"))
+                return null;
+
+            return "string";
+        }
+
         private void SummarizeNumeric<T> (string metric_name)
         {
             Console.WriteLine ("{0}:", metric_name);
-            Console.WriteLine ("   Min: {0,-20}", db.Query<T> ("SELECT MIN(Value) FROM Samples WHERE MetricName = ?", metric_name));
-            Console.WriteLine ("   Max: {0,-20}", db.Query<T> ("SELECT MAX(Value) FROM Samples WHERE MetricName = ?", metric_name));
-            Console.WriteLine ("   Avg: {0,-20}", db.Query<T> ("SELECT AVG(Value) FROM Samples WHERE MetricName = ?", metric_name));
+            string fmt = typeof(T) == typeof(DateTime) ? "{0}" : "{0,-20:N1}";
+            Console.WriteLine (String.Format ("   Min: {0}", fmt), db.Query<T> ("SELECT MIN(CAST(Value as NUMERIC)) FROM Samples WHERE MetricName = ?", metric_name));
+            Console.WriteLine (String.Format ("   Max: {0}", fmt), db.Query<T> ("SELECT MAX(CAST(Value as NUMERIC)) FROM Samples WHERE MetricName = ?", metric_name));
+            Console.WriteLine (String.Format ("   Avg: {0}", fmt), db.Query<T> ("SELECT AVG(CAST(Value as NUMERIC)) FROM Samples WHERE MetricName = ?", metric_name));
             Console.WriteLine ();
         }
 

@@ -57,12 +57,18 @@ namespace metrics
                 sample.Stamp = stamp_dt;
             }
 
-            if (DateTimeUtil.TryParseInvariant (val as string, out value_dt)) {
-                // We want numeric dates to compare with
-                sample.Value = DateTimeUtil.ToTimeT (value_dt).ToString ();
-            } else if (TimeSpan.TryParse (val as string, out value_span)) {
-                sample.Value = value_span.TotalMilliseconds.ToString ();
-            } else {
+
+            string value_str = val as string;
+            if (value_str != null) {
+                if (DateTimeUtil.TryParseInvariant (val as string, out value_dt)) {
+                    // We want numeric dates to compare with
+                    sample.Value = DateTimeUtil.ToTimeT (value_dt).ToString ();
+                } else if (value_str.Contains (":") && TimeSpan.TryParse (val as string, out value_span)) {
+                    sample.Value = value_span.TotalMilliseconds.ToString ();
+                }
+            }
+
+            if (sample.Value == null) {
                 sample.SetValue (val);
             }
 
