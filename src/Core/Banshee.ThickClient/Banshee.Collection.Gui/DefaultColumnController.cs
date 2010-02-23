@@ -91,6 +91,8 @@ namespace Banshee.Collection.Gui
                 DiscNumberAndCountColumn,
                 BpmColumn,
                 BitRateColumn,
+                SampleRateColumn,
+                BitsPerSampleColumn,
                 ConductorColumn,
                 GroupingColumn
             );
@@ -132,6 +134,12 @@ namespace Banshee.Collection.Gui
             ColumnCellPositiveInt br_cell = new ColumnCellPositiveInt (null, true, 3, 4);
             br_cell.TextFormat  = Catalog.GetString ("{0} kbps");
             bitrate_column      = Create (BansheeQuery.BitRateField, 0.10, false, br_cell);
+            ColumnCellPositiveInt sr_cell = new ColumnCellPositiveInt (null, true, 5, 6);
+            sr_cell.TextFormat  = Catalog.GetString ("{0} Hz");
+            samplerate_column   = Create (BansheeQuery.SampleRateField, 0.10, false, sr_cell);
+            ColumnCellPositiveInt bps_cell = new ColumnCellPositiveInt (null, true, 2, 2);
+            bps_cell.TextFormat = Catalog.GetString ("{0} bits");
+            bitspersample_column= Create (BansheeQuery.BitsPerSampleField, 0.10, false, bps_cell);
 
             rating_column       = Create (BansheeQuery.RatingField, 0.15, false, new ColumnCellRating (null, true));
             score_column        = Create (BansheeQuery.ScoreField, 0.15, false, new ColumnCellPositiveInt (null, true, 2, 5));
@@ -299,6 +307,16 @@ namespace Banshee.Collection.Gui
         private SortableColumn bitrate_column;
         public SortableColumn BitRateColumn {
             get { return bitrate_column; }
+        }
+
+        private SortableColumn samplerate_column;
+        public SortableColumn SampleRateColumn {
+            get { return samplerate_column; }
+        }
+
+        private SortableColumn bitspersample_column;
+        public SortableColumn BitsPerSampleColumn {
+            get { return bitspersample_column; }
         }
 
         private SortableColumn conductor_column;

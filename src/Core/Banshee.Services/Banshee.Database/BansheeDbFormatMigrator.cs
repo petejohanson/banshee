@@ -56,8 +56,8 @@ namespace Banshee.Database
         // NOTE: Whenever there is a change in ANY of the database schema,
         //       this version MUST be incremented and a migration method
         //       MUST be supplied to match the new version number
-        protected const int CURRENT_VERSION = 37;
-        protected const int CURRENT_METADATA_VERSION = 6;
+        protected const int CURRENT_VERSION = 38;
+        protected const int CURRENT_METADATA_VERSION = 7;
 
 #region Migration Driver
 
@@ -840,6 +840,18 @@ namespace Banshee.Database
 
 #endregion
 
+#region Version 38
+
+        [DatabaseVersion (38)]
+        private bool Migrate_38 ()
+        {
+            Execute ("ALTER TABLE CoreTracks ADD COLUMN SampleRate INTEGER DEFAULT 0");
+            Execute ("ALTER TABLE CoreTracks ADD COLUMN BitsPerSample INTEGER DEFAULT 0");
+            return true;
+        }
+
+#endregion
+
 #pragma warning restore 0169
 
 #region Fresh database setup
@@ -898,6 +910,8 @@ namespace Banshee.Database
                     MimeType            TEXT,
                     FileSize            INTEGER,
                     BitRate             INTEGER,
+                    SampleRate          INTEGER,
+                    BitsPerSample       INTEGER,
                     Attributes          INTEGER DEFAULT {0},
                     LastStreamError     INTEGER DEFAULT {1},
 

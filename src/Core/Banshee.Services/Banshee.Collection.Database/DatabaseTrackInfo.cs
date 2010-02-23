@@ -540,6 +540,18 @@ namespace Banshee.Collection.Database
             set { base.BitRate = value; }
         }
 
+        [DatabaseColumn]
+        public override int SampleRate {
+            get { return base.SampleRate; }
+            set { base.SampleRate = value; }
+        }
+
+        [DatabaseColumn]
+        public override int BitsPerSample {
+            get { return base.BitsPerSample; }
+            set { base.BitsPerSample = value; }
+        }
+
         [DatabaseColumn("Rating")]
         protected int rating;
         public override int Rating {

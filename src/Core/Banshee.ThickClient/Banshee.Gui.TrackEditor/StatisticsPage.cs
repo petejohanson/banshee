@@ -181,6 +181,10 @@ namespace Banshee.Gui.TrackEditor
                 AddItem (Catalog.GetString ("Audio Sample Rate:"), String.Format ("{0} Hz",
                     file.Properties.AudioSampleRate));
                 AddItem (Catalog.GetString ("Audio Channels:"), file.Properties.AudioChannels);
+                if (file.Properties.BitsPerSample > 0) {
+                    AddItem (Catalog.GetString ("Bits Per Sample:"), String.Format ("{0} bits",
+                        file.Properties.BitsPerSample));
+                }
 
                 if ((file.Properties.MediaTypes & TagLib.MediaTypes.Video) != 0) {
                     AddItem (Catalog.GetString ("Video Dimensions:"), String.Format ("{0}x{1}",

@@ -169,6 +169,24 @@ namespace Banshee.Query
             "bitrate", "kbs", "kps"
         );
 
+        public static QueryField SampleRateField = new QueryField (
+            "samplerate", "SampleRate",
+            // Translators: noun
+            Catalog.GetString ("Sample Rate"), "CoreTracks.SampleRate", typeof(NaturalIntegerQueryValue),
+            // Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+            Catalog.GetString ("samplerate"), Catalog.GetString ("Hz"),
+            "samplerate", "Hz"
+        );
+
+        public static QueryField BitsPerSampleField = new QueryField (
+            "bitspersample", "BitsPerSample",
+            // Translators: noun
+            Catalog.GetString ("Bits Per Sample"), "CoreTracks.BitsPerSample", typeof(NaturalIntegerQueryValue),
+            // Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+            Catalog.GetString ("bitspersample"), Catalog.GetString ("bitdepth"), Catalog.GetString ("quantization"),
+            "bitspersample", "bitdepth", "quantization"
+        );
+
         public static QueryField TitleField = new QueryField (
             "title", "DisplayTrackTitle",
             Catalog.GetString ("Name"), "CoreTracks.TitleLowered", true,
@@ -344,7 +362,7 @@ namespace Banshee.Query
             ArtistField, AlbumField, AlbumArtistField, TitleField, TrackNumberField, TrackCountField, DiscNumberField, DiscCountField,
             YearField, GenreField, ComposerField, ConductorField, GroupingField, CommentField, LicenseUriField, RatingField, PlayCountField,
             SkipCountField, FileSizeField, UriField, DurationField, MimeTypeField, LastPlayedField, LastSkippedField,
-            BpmField, BitRateField, DateAddedField, PlaylistField, SmartPlaylistField, ScoreField, PlaybackErrorField
+            BpmField, BitRateField, SampleRateField, BitsPerSampleField, DateAddedField, PlaylistField, SmartPlaylistField, ScoreField, PlaybackErrorField
         );
 
         // Type Initializer
@@ -448,6 +466,8 @@ namespace Banshee.Query
 
                 case "year":
                 case "bitrate":
+                case "samplerate":
+                case "bitspersample":
                 case "bpm":
                 case "trackcount":
                 case "disccount":

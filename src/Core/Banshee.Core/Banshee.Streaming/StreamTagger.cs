@@ -154,6 +154,8 @@ namespace Banshee.Streaming
                 track.MimeType = file.MimeType;
                 track.Duration = file.Properties.Duration;
                 track.BitRate  = file.Properties.AudioBitrate;
+                track.SampleRate  = file.Properties.AudioSampleRate;
+                track.BitsPerSample  = file.Properties.BitsPerSample;
 
                 FindTrackMediaAttributes (track, file);
 

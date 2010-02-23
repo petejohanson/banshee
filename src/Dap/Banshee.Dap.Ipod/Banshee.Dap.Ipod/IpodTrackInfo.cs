@@ -69,6 +69,7 @@ namespace Banshee.Dap.Ipod
                 AlbumTitle = track.AlbumTitle;
                 ArtistName = track.ArtistName;
                 BitRate = track.BitRate;
+                SampleRate = track.SampleRate;
                 Bpm = track.Bpm;
                 Comment = track.Comment;
                 Composer = track.Composer;
@@ -119,6 +120,7 @@ namespace Banshee.Dap.Ipod
             AlbumTitle = String.IsNullOrEmpty (track.Album) ? null : track.Album;
             ArtistName = String.IsNullOrEmpty (track.Artist) ? null : track.Artist;
             BitRate = track.BitRate;
+            SampleRate = track.SampleRate;
             Bpm = (int)track.BPM;
             Comment = track.Comment;
             Composer = track.Composer;
@@ -199,6 +201,7 @@ namespace Banshee.Dap.Ipod
 
             track.AlbumArtist = AlbumArtist;
             track.BitRate = BitRate;
+            track.SampleRate = SampleRate;
             track.BPM = (short)Bpm;
             track.Comment = Comment;
             track.Composer = Composer;

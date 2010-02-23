@@ -67,6 +67,7 @@ namespace Banshee.Dap.Mtp
             TrackNumber = file.TrackNumber < 0 ? 0 : (int)file.TrackNumber;
             Year = file.Year;
             BitRate = (int)file.Bitrate;
+            SampleRate = (int)file.SampleRate;
             FileSize = (long)file.FileSize;
 
             MediaAttributes = TrackMediaAttributes.AudioStream;
