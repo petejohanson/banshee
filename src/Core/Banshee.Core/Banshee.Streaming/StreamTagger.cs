@@ -215,6 +215,12 @@ namespace Banshee.Streaming
         private static bool IsCompilation (TagLib.File file)
         {
             try {
+                var xiph_tag = file.GetTag(TagLib.TagTypes.Xiph, true) as TagLib.Ogg.XiphComment;
+                if (xiph_tag != null && xiph_tag.IsCompilation)
+                    return true;
+            } catch {}
+
+            try {
                 TagLib.Id3v2.Tag id3v2_tag = file.GetTag(TagLib.TagTypes.Id3v2, true) as TagLib.Id3v2.Tag;
                 if (id3v2_tag != null && id3v2_tag.IsCompilation)
                     return true;
@@ -239,6 +245,14 @@ namespace Banshee.Streaming
 
         private static void SaveIsCompilation (TagLib.File file, bool is_compilation)
         {
+            try {
+                var xiph_tag = file.GetTag(TagLib.TagTypes.Xiph, true) as TagLib.Ogg.XiphComment;
+                if (xiph_tag != null) {
+                    xiph_tag.IsCompilation = is_compilation;
+                    return;
+                }
+            } catch {}
+
             try {
                 TagLib.Id3v2.Tag id3v2_tag = file.GetTag(TagLib.TagTypes.Id3v2, true) as TagLib.Id3v2.Tag;
                 if (id3v2_tag != null) {
