@@ -300,6 +300,7 @@ _bp_pipeline_construct (BansheePlayer *player)
         player->after_rgvolume = audiosink;
     }
     player->rgvolume_in_pipeline = FALSE;
+    _bp_replaygain_pipeline_rebuild (player);
 
     _bp_vis_pipeline_setup (player);
     
@@ -351,61 +352,4 @@ _bp_pipeline_destroy (BansheePlayer *player)
     _bp_vis_pipeline_destroy (player);
     
     player->playbin = NULL;
-}
-
-static void
-pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
-
-    if (blocked == FALSE) {
-        return;
-    }
-
-    BansheePlayer* player = (BansheePlayer*) user_data;
-    g_return_if_fail (IS_BANSHEE_PLAYER (player));
-
-    if (player->rgvolume_in_pipeline == TRUE) {
-        g_return_if_fail (player->rgvolume != NULL);
-        gst_element_unlink(player->before_rgvolume, player->rgvolume);
-        gst_element_unlink(player->rgvolume, player->after_rgvolume);
-    } else {
-        gst_element_unlink(player->before_rgvolume, player->after_rgvolume);
-    }
-
-    if (player->rgvolume == NULL && player->replaygain_enabled == TRUE) {
-        player->rgvolume = gst_element_factory_make ("rgvolume", NULL);
-        gst_bin_add (GST_BIN (player->audiobin), player->rgvolume);
-    }
-
-    if (player->replaygain_enabled == TRUE) {
-        gst_element_sync_state_with_parent(player->rgvolume);
-
-        // link in rgvolume and connect to the real audio sink.
-        gst_element_link (player->before_rgvolume, player->rgvolume);
-        gst_element_link (player->rgvolume, player->after_rgvolume);
-        player->rgvolume_in_pipeline = TRUE;
-    } else {
-        // link the queue with the real audio sink
-        gst_element_link (player->before_rgvolume, player->after_rgvolume);
-        player->rgvolume_in_pipeline = FALSE;
-    }
-
-    if (gst_pad_is_blocked (srcPad) == TRUE) {
-        gst_pad_set_blocked_async(srcPad, FALSE, &pad_block_cb, player);
-    }
-
-    _bp_rgvolume_print_volume(player);
-}
-
-void _bp_pipeline_rebuild (BansheePlayer* player)
-{
-    g_return_if_fail (IS_BANSHEE_PLAYER (player));
-    g_return_if_fail (GST_IS_ELEMENT (player->before_rgvolume));
-
-    GstPad* srcPad = gst_element_get_static_pad(player->before_rgvolume, "src");
-
-    if (gst_pad_is_active(srcPad) == TRUE && gst_pad_is_blocked (srcPad) == FALSE) {
-        gst_pad_set_blocked_async(srcPad, TRUE, &pad_block_cb, player);
-    } else if (srcPad->block_callback == NULL) {
-        pad_block_cb(srcPad, TRUE, player);
-    }
 }

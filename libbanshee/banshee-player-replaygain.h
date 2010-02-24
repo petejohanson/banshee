@@ -33,5 +33,6 @@
 
 GstElement* _bp_rgvolume_new          (BansheePlayer *player);
 void        _bp_rgvolume_print_volume (BansheePlayer *player);
+void        _bp_replaygain_pipeline_rebuild (BansheePlayer* player);
 
 #endif /* _BANSHEE_PLAYER_REPLAYGAIN_H */
