@@ -124,8 +124,6 @@ bp_new ()
     
     player->mutex = g_mutex_new ();
     
-    _bp_replaygain_init (player); 
-    
     return player;
 }
 
@@ -285,8 +283,11 @@ P_INVOKE void
 bp_set_volume (BansheePlayer *player, gdouble volume)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
+    g_return_if_fail (GST_IS_ELEMENT (player->playbin));
+
     player->current_volume = CLAMP (volume, 0.0, 1.0);
-    _bp_replaygain_update_volume (player);
+    g_object_set (player->playbin, "volume", player->current_volume, NULL);
+    _bp_rgvolume_print_volume (player);
 }
 
 P_INVOKE gdouble

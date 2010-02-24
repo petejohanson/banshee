@@ -105,6 +105,13 @@ struct BansheePlayer {
     GstElement *audiobin;
     GstElement *equalizer;
     GstElement *preamp;
+    GstElement *volume;
+    GstElement *rgvolume;
+
+    GstElement *before_rgvolume;
+    GstElement *after_rgvolume;
+    gboolean   rgvolume_in_pipeline;
+
     gint equalizer_status;
     gdouble current_volume;
     

@@ -33,5 +33,6 @@
 
 gboolean  _bp_pipeline_construct (BansheePlayer *player);
 void      _bp_pipeline_destroy   (BansheePlayer *player);
+void      _bp_pipeline_rebuild   (BansheePlayer* player);
 
 #endif /* _BANSHEE_PLAYER_PIPELINE_H */
