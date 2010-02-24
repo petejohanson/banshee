@@ -141,7 +141,7 @@ namespace Banshee.Library
                 source.NotifyTracksChanged ();
             } else {
                 // Figure out where we should put it if were to copy it
-                var pattern = this.FileNamePattern ?? MusicLibrarySource.MusicFileNamePattern;
+                var pattern = this.PathPattern ?? MusicLibrarySource.MusicFileNamePattern;
                 string path = pattern.BuildFull (BaseDirectory, track);
                 SafeUri uri = new SafeUri (path);
 

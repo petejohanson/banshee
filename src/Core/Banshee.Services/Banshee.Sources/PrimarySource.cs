@@ -239,11 +239,11 @@ namespace Banshee.Sources
             set { ExpandedSchema.Set (value); }
         }
 
-        public FileNamePattern FileNamePattern { get; private set; }
+        public PathPattern PathPattern { get; private set; }
 
-        protected void SetFileNamePattern (FileNamePattern pattern)
+        protected void SetFileNamePattern (PathPattern pattern)
         {
-            FileNamePattern = pattern;
+            PathPattern = pattern;
 
             var file_system = PreferencesPage.Add (new Section ("file-system", Catalog.GetString ("File Organization"), 5));
             file_system.Add (new SchemaPreference<string> (pattern.FolderSchema, Catalog.GetString ("Folder hie_rarchy")));

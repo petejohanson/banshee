@@ -43,8 +43,8 @@ namespace Banshee.Library
 {
     public class MusicLibrarySource : LibrarySource
     {
-        private static FileNamePattern music_filename_pattern = new MusicFileNamePattern ();
-        public static FileNamePattern MusicFileNamePattern {
+        private static PathPattern music_filename_pattern = new MusicFileNamePattern ();
+        public static PathPattern MusicFileNamePattern {
             get { return music_filename_pattern; }
         }
 
@@ -52,6 +52,7 @@ namespace Banshee.Library
         {
             music_filename_pattern.FolderSchema = LibrarySchema.FolderPattern;
             music_filename_pattern.FileSchema   = LibrarySchema.FilePattern;
+            Banshee.Base.FileNamePattern.MusicPattern = music_filename_pattern;
         }
 
         // Catalog.GetString ("Music Library")

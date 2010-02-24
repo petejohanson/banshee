@@ -38,7 +38,7 @@ using Banshee.Configuration.Schema;
 
 namespace Banshee.Audiobook
 {
-    public class AudiobookFileNamePattern : FileNamePattern
+    public class AudiobookFileNamePattern : PathPattern
     {
         public AudiobookFileNamePattern ()
         {

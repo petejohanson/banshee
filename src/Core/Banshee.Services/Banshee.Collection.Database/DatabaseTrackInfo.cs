@@ -642,10 +642,10 @@ namespace Banshee.Collection.Database
             }
         }
 
-        public FileNamePattern FileNamePattern {
+        public PathPattern PathPattern {
             get {
                 var src = PrimarySource;
-                var pattern = src == null ? null : src.FileNamePattern;
+                var pattern = src == null ? null : src.PathPattern;
                 return pattern ?? MusicLibrarySource.MusicFileNamePattern;
             }
         }
@@ -663,7 +663,7 @@ namespace Banshee.Collection.Database
             bool in_library = old_uri.IsLocalPath ? old_uri.AbsolutePath.StartsWith (PrimarySource.BaseDirectoryWithSeparator) : false;
 
             if (!in_library && (LibrarySchema.CopyOnImport.Get () || force_copy)) {
-                string new_filename = FileNamePattern.BuildFull (PrimarySource.BaseDirectory, this, Path.GetExtension (old_uri.ToString ()));
+                string new_filename = PathPattern.BuildFull (PrimarySource.BaseDirectory, this, Path.GetExtension (old_uri.ToString ()));
                 SafeUri new_uri = new SafeUri (new_filename);
 
                 try {
