@@ -1,5 +1,5 @@
 //
-// CreateMetricsDb.cs
+// Database.cs
 //
 // Author:
 //   Gabriel Burt <gabriel.burt@gmail.com>
@@ -30,6 +30,8 @@ using Hyena;
 using Hyena.Metrics;
 using Hyena.Data.Sqlite;
 using Hyena.Json;
+using Mono.Data.Sqlite;
+using System.Collections.Generic;
 
 namespace metrics
 {
@@ -39,7 +41,12 @@ namespace metrics
 
         public static HyenaSqliteConnection Open ()
         {
-            return new HyenaSqliteConnection (db_path);
+            var db =  new HyenaSqliteConnection (db_path);
+            db.Execute ("PRAGMA cache_size = ?", 32768 * 2);
+            db.Execute ("PRAGMA synchronous = OFF");
+            db.Execute ("PRAGMA temp_store = MEMORY");
+            db.Execute ("PRAGMA count_changes = OFF");
+            return db;
         }
 
         public static bool Exists { get { return System.IO.File.Exists (db_path); } }
@@ -80,6 +87,44 @@ namespace metrics
                     }
                 }
             }
+        }
+    }
+
+    [SqliteFunction (Name = "HYENA_METRICS_MEDIAN_LONG", FuncType = FunctionType.Aggregate, Arguments = 1)]
+    internal class MedianFunctionLong : MedianFunction<long>
+    {
+    }
+
+    [SqliteFunction (Name = "HYENA_METRICS_MEDIAN_DOUBLE", FuncType = FunctionType.Aggregate, Arguments = 1)]
+    internal class MedianFunctionDouble : MedianFunction<double>
+    {
+    }
+
+    [SqliteFunction (Name = "HYENA_METRICS_MEDIAN_DATETIME", FuncType = FunctionType.Aggregate, Arguments = 1)]
+    internal class MedianFunctionDateTime : MedianFunction<DateTime>
+    {
+    }
+
+    internal class MedianFunction<T> : SqliteFunction
+    {
+        public override void Step (object[] args, int stepNumber, ref object contextData)
+        {
+            List<T> list = null;
+            if (contextData == null) {
+                contextData = list = new List<T> ();
+            } else {
+                list = contextData as List<T>;
+            }
+
+            var val = (T)SqliteUtils.FromDbFormat (typeof(T), args[0]);
+            list.Add (val);
+        }
+
+        public override object Final (object contextData)
+        {
+            var list = contextData as List<T>;
+            list.Sort ();
+            return list[list.Count / 2];
         }
     }
 }

@@ -97,10 +97,23 @@ namespace metrics
         private void SummarizeNumeric<T> (string metric_name)
         {
             Console.WriteLine ("{0}:", metric_name);
-            string fmt = typeof(T) == typeof(DateTime) ? "{0}" : "{0,-20:N1}";
-            Console.WriteLine (String.Format ("   Min: {0}", fmt), db.Query<T> ("SELECT MIN(CAST(Value as NUMERIC)) FROM Samples WHERE MetricName = ?", metric_name));
-            Console.WriteLine (String.Format ("   Max: {0}", fmt), db.Query<T> ("SELECT MAX(CAST(Value as NUMERIC)) FROM Samples WHERE MetricName = ?", metric_name));
-            Console.WriteLine (String.Format ("   Avg: {0}", fmt), db.Query<T> ("SELECT AVG(CAST(Value as NUMERIC)) FROM Samples WHERE MetricName = ?", metric_name));
+            var t = typeof(T);
+            string fmt = t == typeof(DateTime) ? "{0}" : "{0,10:N1}";
+            string median_func = "HYENA_METRICS_MEDIAN_" + (t == typeof(DateTime) ? "DATETIME" : t == typeof(long) ? "LONG" : "DOUBLE");
+
+            using (var reader = new HyenaDataReader (db.Query (String.Format (@"
+                    SELECT
+                        MIN(CAST(Value as NUMERIC)), MAX(CAST(Value as NUMERIC)),
+                        AVG(CAST(Value as NUMERIC)), {0}(CAST(Value as NUMERIC))
+                    FROM Samples WHERE MetricName = ?", median_func), metric_name))) {
+                if (reader.Read ()) {
+                    Console.WriteLine (String.Format ("   Min:    {0}", fmt), reader.Get<T> (0));
+                    Console.WriteLine (String.Format ("   Avg:    {0}", fmt), reader.Get<T> (2));
+                    Console.WriteLine (String.Format ("   Median: {0}", fmt), reader.Get<T> (3));
+                    Console.WriteLine (String.Format ("   Max:    {0}", fmt), reader.Get<T> (1));
+                }
+            }
+
             Console.WriteLine ();
         }
 

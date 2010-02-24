@@ -34,9 +34,9 @@ using System.Collections.Generic;
 
 namespace Hyena.Data.Sqlite
 {
-    internal static class SqliteUtils
+    public static class SqliteUtils
     {
-        public static string GetType (Type type)
+        internal static string GetType (Type type)
         {
             if (type == typeof (string)) {
                 return "TEXT";
@@ -103,7 +103,7 @@ namespace Hyena.Data.Sqlite
             }
         }
 
-        public static string BuildColumnSchema (string type, string name, string default_value,
+        internal static string BuildColumnSchema (string type, string name, string default_value,
             DatabaseColumnConstraints constraints)
         {
             StringBuilder builder = new StringBuilder ();
