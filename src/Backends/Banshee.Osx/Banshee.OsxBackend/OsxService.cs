@@ -1,10 +1,12 @@
 //
 // OsxService.cs
 //
-// Author:
+// Authors:
+//   Aaron Bockover <abockover@novell.com>
 //   Eoin Hennessy <eoin@randomrules.org>
 //
-// Copyright (C) 2008 Eoin Hennessy
+// Copyright 2009-2010 Novell, Inc.
+// Copyright 2008 Eoin Hennessy
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
