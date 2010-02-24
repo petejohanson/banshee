@@ -43,7 +43,7 @@ bp_replaygain_db_to_linear(gdouble value)
 static void
 pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
 
-    if (blocked == FALSE) {
+    if (!blocked) {
         return;
     }
 
@@ -77,7 +77,7 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
         player->rgvolume_in_pipeline = FALSE;
     }
 
-    if (gst_pad_is_blocked (srcPad) == TRUE) {
+    if (gst_pad_is_blocked (srcPad)) {
         gst_pad_set_blocked_async(srcPad, FALSE, &pad_block_cb, player);
     }
 
@@ -103,14 +103,14 @@ GstElement* _bp_rgvolume_new (BansheePlayer *player)
 void _bp_rgvolume_print_volume(BansheePlayer *player)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
-    if ((player->replaygain_enabled == TRUE) && (player->rgvolume != NULL)) {
-    gdouble scale;
+    if (player->replaygain_enabled && (player->rgvolume != NULL)) {
+        gdouble scale;
 
-    g_object_get (G_OBJECT (player->rgvolume), "result-gain", &scale, NULL);
+        g_object_get (G_OBJECT (player->rgvolume), "result-gain", &scale, NULL);
 
-    bp_debug ("scaled volume: %.2f (ReplayGain) * %.2f (User) = %.2f",
-            bp_replaygain_db_to_linear(scale), player->current_volume,
-            bp_replaygain_db_to_linear(scale) * player->current_volume);
+        bp_debug ("scaled volume: %.2f (ReplayGain) * %.2f (User) = %.2f",
+                  bp_replaygain_db_to_linear(scale), player->current_volume,
+                  bp_replaygain_db_to_linear(scale) * player->current_volume);
     }
 }
 
@@ -144,7 +144,7 @@ bp_replaygain_set_enabled (BansheePlayer *player, gboolean enabled)
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     player->replaygain_enabled = enabled;
     bp_debug ("%s ReplayGain", enabled ? "Enabled" : "Disabled");
-    _bp_replaygain_pipeline_rebuild(player);
+    _bp_replaygain_pipeline_rebuild (player);
 }
 
 P_INVOKE gboolean
