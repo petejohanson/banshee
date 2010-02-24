@@ -28,11 +28,13 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
           information on what version you're running, what OS, library size,
           slow SQL queries, and a whitelisted subset of your preferences. This
           information will help us choose better defaults and see what parts of
-          Banshee are used most and can be improved.
+          Banshee are used most and can be improved. All collected data is
+          anonymous!
 
       * Default Equalizer Presets
 
-          Banshee now ships with several equalizer presets.
+          Banshee now ships with several equalizer presets, and the core of
+          the equalizer management has seen much internal improvement.
 
       * Banshee Community Extensions
 
@@ -56,7 +58,7 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
       * Add support for Nokia N900 phones
       * Add tooltip to playback error column
       * On close Internet Archive item, return to Search
-      * Notify user if try to sync missing file to DAP
+      * Notify user if trying to sync missing file to DAP
       * Popup explanation of manual playlist ordering when appropriate
       * Simplify the default set of columns in Podcasts
       * Enable 'Delete From Drive' action in File System Queue
@@ -65,11 +67,14 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
       * Dropped glade-sharp dep; GNOME 3.0 ready
       * Add columns showing track sample rate and bits per sample
       * Option to sort an artist's albums by year, not title
+      * If starting Banshee hidden (--hide), up to half a second of
+        startup time is saved; this is particularly useful in Moblin
 
     Notable bug fixes:
 
       * Fixes to GIO backend
       * Many crash/startup fixes for OS X build
+      * Strange input bug on OS X fixed - you can now type/search as expected
       * Enable LibraryWatcher only for Music and Video libraries
       * Do better job preserving IsCompilation metadata
       * Store some PlayQueue settings in the db (not GConf)
@@ -112,7 +117,7 @@ ChangeLogs & Checksums
 ----------------------
 
     * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.sha1sum
+    * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.sha256sum
 
 
 ===============================================================================
