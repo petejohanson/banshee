@@ -87,6 +87,18 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
     BansheePlayer* player = (BansheePlayer*) user_data;
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
 
+    // The pad_block_cb can get triggered multiple times, on different threads.
+    // Lock around the link/unlink code, so we don't end up going through here
+    // with inconsistent state.
+    g_mutex_lock (player->mutex);
+
+    if ((player->replaygain_enabled && player->rgvolume_in_pipeline) ||
+        (!player->replaygain_enabled && !player->rgvolume_in_pipeline)) {
+        // The pipeline is already in the correct state.  Do nothing.
+        g_mutex_unlock (player->mutex);
+        return;
+    }
+
     if (player->rgvolume_in_pipeline == TRUE) {
         gst_element_unlink(player->before_rgvolume, player->rgvolume);
         gst_element_unlink(player->rgvolume, player->after_rgvolume);
@@ -114,6 +126,9 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
         gst_element_link (player->before_rgvolume, player->after_rgvolume);
         player->rgvolume_in_pipeline = FALSE;
     }
+
+    // Our state is now consistent
+    g_mutex_unlock (player->mutex);
 
     if (gst_pad_is_blocked (srcPad)) {
         gst_pad_set_blocked_async(srcPad, FALSE, &pad_block_cb, player);
@@ -155,12 +170,6 @@ void _bp_rgvolume_print_volume(BansheePlayer *player)
 void _bp_replaygain_pipeline_rebuild (BansheePlayer* player)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
-
-    if ((player->replaygain_enabled && player->rgvolume_in_pipeline) ||
-        (!player->replaygain_enabled && !player->rgvolume_in_pipeline)) {
-        // The pipeline is already in the correct state.  Do nothing.
-        return;
-    }
 
     g_return_if_fail (GST_IS_ELEMENT (player->before_rgvolume));
     GstPad* srcPad = gst_element_get_static_pad(player->before_rgvolume, "src");
