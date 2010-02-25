@@ -53,11 +53,8 @@ bp_pipeline_process_tag (const GstTagList *tag_list, const gchar *tag_name, Bans
     
     value = gst_tag_list_get_value_index (tag_list, tag_name, 0);
 
-    if (value != NULL) {
-    
-        if (player->tag_found_cb != NULL) {
-            player->tag_found_cb (player, tag_name, value);
-        }
+    if (value != NULL && player->tag_found_cb != NULL) {
+        player->tag_found_cb (player, tag_name, value);
     }
 }
 
