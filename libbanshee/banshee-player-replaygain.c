@@ -40,6 +40,13 @@ bp_replaygain_db_to_linear(gdouble value)
     return pow(10, value / 20.0);
 }
 
+static void on_target_gain_changed (GstElement *rgvolume, GParamSpec *pspec, BansheePlayer *player)
+{
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+
+    _bp_rgvolume_print_volume (player);
+}
+
 static void
 pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
 
@@ -64,6 +71,7 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
     }
 
     if (player->replaygain_enabled && GST_IS_ELEMENT (player->rgvolume)) {
+        g_signal_connect (player->rgvolume, "notify::target-gain", G_CALLBACK (on_target_gain_changed), player);
         gst_bin_add (GST_BIN (player->audiobin), player->rgvolume);
         gst_element_sync_state_with_parent(player->rgvolume);
 
