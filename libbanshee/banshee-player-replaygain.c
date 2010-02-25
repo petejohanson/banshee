@@ -94,8 +94,11 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
 
     if ((player->replaygain_enabled && player->rgvolume_in_pipeline) ||
         (!player->replaygain_enabled && !player->rgvolume_in_pipeline)) {
-        // The pipeline is already in the correct state.  Do nothing.
+        // The pipeline is already in the correct state.  Unblock the pad, and return.
         g_mutex_unlock (player->mutex);
+        if (gst_pad_is_blocked (srcPad)) {
+            gst_pad_set_blocked_async(srcPad, FALSE, &pad_block_cb, player);
+        }
         return;
     }
 
@@ -108,6 +111,9 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
 
     if (player->replaygain_enabled) {
         player->rgvolume = _bp_rgvolume_new (player);
+        if (!GST_IS_ELEMENT (player->rgvolume)) {
+            player->replaygain_enabled = FALSE;
+        }
     } else {
         gst_element_set_state (player->rgvolume, GST_STATE_NULL);
         gst_bin_remove (GST_BIN (player->audiobin), player->rgvolume);
