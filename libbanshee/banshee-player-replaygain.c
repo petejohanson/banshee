@@ -40,10 +40,40 @@ bp_replaygain_db_to_linear(gdouble value)
     return pow(10, value / 20.0);
 }
 
+static gdouble bp_rg_calc_history_avg (BansheePlayer *player)
+{
+    gdouble sum = 0.0;
+    int i;
+    for (i = 0; i < player->history_size; ++i) {
+        sum += player->rg_gain_history[i];
+    }
+    return sum / player->history_size;
+}
+
+static void bp_replaygain_update_history (BansheePlayer *player)
+{
+    g_return_if_fail (player->history_size <= 10);
+
+    if (player->history_size == 10) {
+        memmove (player->rg_gain_history + 1, player->rg_gain_history, sizeof (gdouble) * 9);
+    } else {
+        memmove (player->rg_gain_history + 1, player->rg_gain_history, sizeof (gdouble) * player->history_size);
+        player->history_size++;
+    }
+
+    gdouble gain;
+    g_object_get (G_OBJECT (player->rgvolume), "target-gain", &gain, NULL);
+    player->rg_gain_history[0] = gain;
+    bp_debug ("[ReplayGain] Added gain: %.2f to history.", gain);
+
+    g_object_set (G_OBJECT (player->rgvolume), "fallback-gain", bp_rg_calc_history_avg (player), NULL);
+}
+
 static void on_target_gain_changed (GstElement *rgvolume, GParamSpec *pspec, BansheePlayer *player)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
 
+    bp_replaygain_update_history (player);
     _bp_rgvolume_print_volume (player);
 }
 

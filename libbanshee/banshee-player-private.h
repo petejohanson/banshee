@@ -153,15 +153,8 @@ struct BansheePlayer {
     // and the oldest at index 10. History is used to compute 
     // gain on a track where no adjustment information is present.
     // http://replaygain.hydrogenaudio.org/player_scale.html
-    gdouble volume_scale_history[11];
-    gboolean volume_scale_history_shift;
-    gboolean current_scale_from_history;
-    
-    // ReplayGain cache
-    gdouble album_gain;
-    gdouble album_peak;
-    gdouble track_gain;
-    gdouble track_peak;
+    gdouble rg_gain_history[10];
+    gint history_size;
 };
 
 #endif /* _BANSHEE_PLAYER_PRIVATE_H */
