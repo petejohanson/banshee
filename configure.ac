@@ -306,6 +306,8 @@ src/Extensions/Banshee.Sample/Makefile
 src/Extensions/Banshee.Torrent/Makefile
 src/Extensions/Banshee.RemoteAudio/Makefile
 src/Extensions/Banshee.Wikipedia/Makefile
+
+extras/metrics/Makefile
 ])
 
 cat <<EOF
