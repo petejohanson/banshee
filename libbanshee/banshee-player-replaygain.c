@@ -99,7 +99,7 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
         return;
     }
 
-    if (player->rgvolume_in_pipeline == TRUE) {
+    if (player->rgvolume_in_pipeline) {
         gst_element_unlink(player->before_rgvolume, player->rgvolume);
         gst_element_unlink(player->rgvolume, player->after_rgvolume);
     } else {
@@ -175,7 +175,7 @@ void _bp_replaygain_pipeline_rebuild (BansheePlayer* player)
     g_return_if_fail (GST_IS_ELEMENT (player->before_rgvolume));
     GstPad* srcPad = gst_element_get_static_pad(player->before_rgvolume, "src");
 
-    if (gst_pad_is_active(srcPad) == TRUE && gst_pad_is_blocked (srcPad) == FALSE) {
+    if (gst_pad_is_active(srcPad) && !gst_pad_is_blocked (srcPad)) {
         gst_pad_set_blocked_async(srcPad, TRUE, &pad_block_cb, player);
     } else if (srcPad->block_callback == NULL) {
         pad_block_cb(srcPad, TRUE, player);
