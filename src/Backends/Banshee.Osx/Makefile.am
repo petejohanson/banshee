@@ -18,7 +18,7 @@ SOURCES =  \
 
 RESOURCES = Banshee.Osx.addin.xml
 
-if ENABLE_OSX
+if PLATFORM_DARWIN
 include $(top_srcdir)/build/build.mk
 else
 EXTRA_DIST = $(SOURCES) $(RESOURCES)
