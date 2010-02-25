@@ -109,6 +109,7 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
     if (player->replaygain_enabled) {
         player->rgvolume = _bp_rgvolume_new (player);
     } else {
+        gst_element_set_state (player->rgvolume, GST_STATE_NULL);
         gst_bin_remove (GST_BIN (player->audiobin), player->rgvolume);
     }
 
