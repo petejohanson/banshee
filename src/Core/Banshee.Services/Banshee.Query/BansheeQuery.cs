@@ -56,31 +56,8 @@ namespace Banshee.Query
         private static bool asc = true;
         private static bool desc = false;
 
-        public static QueryOrder RandomOrder = CreateQueryOrder ("Random",     asc,  Catalog.GetString ("Random"), null);
-
-        public static QueryOrder [] Orders = new QueryOrder [] {
-            RandomOrder,
-            CreateQueryOrder ("Album",      asc,  Catalog.GetString ("Album"), AlbumField),
-            CreateQueryOrder ("Artist",     asc,  Catalog.GetString ("Artist"), ArtistField),
-            // Translators: noun
-            CreateQueryOrder ("Title",      asc,  Catalog.GetString ("Name"), TitleField),
-            CreateQueryOrder ("Genre",      asc,  Catalog.GetString ("Genre"), GenreField),
-            null,
-            CreateQueryOrder ("Rating",     desc, Catalog.GetString ("Highest Rating"), RatingField),
-            CreateQueryOrder ("Rating",     asc,  Catalog.GetString ("Lowest Rating"), RatingField),
-            null,
-            CreateQueryOrder ("Score",      desc, Catalog.GetString ("Highest Score"), ScoreField),
-            CreateQueryOrder ("Score",      asc,  Catalog.GetString ("Lowest Score"), ScoreField),
-            null,
-            CreateQueryOrder ("PlayCount",  desc, Catalog.GetString ("Most Often Played"), PlayCountField),
-            CreateQueryOrder ("PlayCount",  asc,  Catalog.GetString ("Least Often Played"), PlayCountField),
-            null,
-            CreateQueryOrder ("LastPlayedStamp", desc, Catalog.GetString ("Most Recently Played"), LastPlayedField),
-            CreateQueryOrder ("LastPlayedStamp", asc,  Catalog.GetString ("Least Recently Played"), LastPlayedField),
-            null,
-            CreateQueryOrder ("DateAddedStamp",  desc, Catalog.GetString ("Most Recently Added"), DateAddedField),
-            CreateQueryOrder ("DateAddedStamp",  asc,  Catalog.GetString ("Least Recently Added"), DateAddedField)
-        };
+        public static readonly QueryOrder RandomOrder;
+        public static readonly QueryOrder [] Orders;
 
         public static QueryLimit [] Limits = new QueryLimit [] {
             new QueryLimit ("songs",   Catalog.GetString ("items"), true),
@@ -375,6 +352,32 @@ namespace Banshee.Query
 
             default_sort = String.Format (default_sort_template, "");
             default_sort_by_year = String.Format (default_sort_template, "CoreTracks.Year ASC, ");
+
+            RandomOrder = CreateQueryOrder ("Random", asc, Catalog.GetString ("Random"), null);
+
+            Orders = new QueryOrder [] {
+                RandomOrder,
+                CreateQueryOrder ("Album",      asc,  Catalog.GetString ("Album"), AlbumField),
+                CreateQueryOrder ("Artist",     asc,  Catalog.GetString ("Artist"), ArtistField),
+                // Translators: noun
+                CreateQueryOrder ("Title",      asc,  Catalog.GetString ("Name"), TitleField),
+                CreateQueryOrder ("Genre",      asc,  Catalog.GetString ("Genre"), GenreField),
+                null,
+                CreateQueryOrder ("Rating",     desc, Catalog.GetString ("Highest Rating"), RatingField),
+                CreateQueryOrder ("Rating",     asc,  Catalog.GetString ("Lowest Rating"), RatingField),
+                null,
+                CreateQueryOrder ("Score",      desc, Catalog.GetString ("Highest Score"), ScoreField),
+                CreateQueryOrder ("Score",      asc,  Catalog.GetString ("Lowest Score"), ScoreField),
+                null,
+                CreateQueryOrder ("PlayCount",  desc, Catalog.GetString ("Most Often Played"), PlayCountField),
+                CreateQueryOrder ("PlayCount",  asc,  Catalog.GetString ("Least Often Played"), PlayCountField),
+                null,
+                CreateQueryOrder ("LastPlayedStamp", desc, Catalog.GetString ("Most Recently Played"), LastPlayedField),
+                CreateQueryOrder ("LastPlayedStamp", asc,  Catalog.GetString ("Least Recently Played"), LastPlayedField),
+                null,
+                CreateQueryOrder ("DateAddedStamp",  desc, Catalog.GetString ("Most Recently Added"), DateAddedField),
+                CreateQueryOrder ("DateAddedStamp",  asc,  Catalog.GetString ("Least Recently Added"), DateAddedField)
+            };
         }
 
         private const string default_sort_template = @"CoreAlbums.ArtistNameSortKey ASC, {0}CoreAlbums.TitleSortKey ASC, CoreTracks.Disc ASC, CoreTracks.TrackNumber ASC";
