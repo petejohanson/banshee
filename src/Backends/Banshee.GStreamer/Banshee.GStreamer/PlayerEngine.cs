@@ -90,6 +90,8 @@ namespace Banshee.GStreamer
         private BansheePlayerAboutToFinishCallback about_to_finish_callback;
 #endif
 
+        private SafeUri pending_uri;
+
         private bool buffering_finished;
         private int pending_volume = -1;
         private bool xid_is_set = false;
@@ -165,7 +167,7 @@ namespace Banshee.GStreamer
             bp_set_next_track_starting_callback (handle, next_track_starting_callback);
             bp_set_video_pipeline_setup_callback (handle, video_pipeline_setup_callback);
 
-            next_track_set = new EventWaitHandle (false, EventResetMode.AutoReset);
+            next_track_set = new EventWaitHandle (false, EventResetMode.ManualReset);
         }
 
         protected override void Initialize ()
@@ -236,6 +238,13 @@ namespace Banshee.GStreamer
 
         public override void SetNextTrackUri (SafeUri uri)
         {
+            if (next_track_set.WaitOne (0)) {
+                // We're not waiting for the next track to be set.
+                // This means that we've missed the window for gapless.
+                // Save this URI to be played when we receive EOS.
+                pending_uri = uri;
+                return;
+            }
             // If there isn't a next track for us, release the block on the about-to-finish callback.
             if (uri == null) {
                 next_track_set.Set ();
@@ -272,6 +281,14 @@ namespace Banshee.GStreamer
             OnEventChanged (PlayerEvent.EndOfStream);
             if (!GaplessEnabled) {
                 OnEventChanged (PlayerEvent.RequestNextTrack);
+            } else if (pending_uri != null) {
+                Log.Warning ("[Gapless] EOS signalled while waiting for next track.");
+                Log.Warning ("[Gapless] This means that Banshee was too slow at calculating what track to play next");
+                Log.Warning ("[Gapless] If this happens frequently, please file a bug.");
+                OnStateChanged (PlayerState.Loading);
+                OpenUri (pending_uri);
+                Play ();
+                pending_uri = null;
             }
         }
 
@@ -295,12 +312,16 @@ namespace Banshee.GStreamer
             CurrentTrack.LastPlayed = DateTime.Now;
             CurrentTrack.Save ();
 
+            next_track_set.Reset ();
+            pending_uri = null;
+
             OnEventChanged (PlayerEvent.RequestNextTrack);
             // Gapless playback with Playbin2 requires that the about-to-finish callback does not return until
             // the next uri has been set.  Block here for a second or until the RequestNextTrack event has
             // finished triggering.
             if (!next_track_set.WaitOne (1000, false)) {
                 Log.Debug ("[Gapless] Timed out while waiting for next_track_set to be raised");
+                next_track_set.Set ();
             }
         }
 #endif
