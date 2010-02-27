@@ -189,6 +189,7 @@ static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *pla
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
 
     if (player->about_to_finish_cb != NULL) {
+        bp_debug ("[Gapless] Requesting next track");
         player->about_to_finish_cb (player);
     }
 }
