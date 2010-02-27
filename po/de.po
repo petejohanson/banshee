@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: banshee 1.5.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-02-24 20:59+0000\n"
-"PO-Revision-Date: 2010-02-25 10:35+0100\n"
+"POT-Creation-Date: 2010-02-26 02:32+0000\n"
+"PO-Revision-Date: 2010-02-27 09:54+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -913,8 +913,11 @@ msgstr ""
 "entweder »true« oder »false« sein)"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:168
-msgid "Set the playback volume (0-100)"
-msgstr "Die Wiedergabelautstärke einstellen (0-100)"
+#| msgid "Set the playback volume (0-100)"
+msgid "Set the playback volume (0-100), prefix with +/- for relative values"
+msgstr ""
+"Die Wiedergabelautstärke einstellen (0-100), +/- vorangestellt für relative "
+"Werte"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:169
 msgid "Seek to a specific point (seconds, float)"
@@ -986,13 +989,13 @@ msgstr "Dauer"
 
 #. Translators: noun
 #: ../src/Clients/Booter/Booter/Entry.cs:188
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:140
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
 msgid "Track Number"
 msgstr "Titelnummer"
 
 #. Translators: noun
 #: ../src/Clients/Booter/Booter/Entry.cs:189
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:149
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:126
 msgid "Track Count"
 msgstr "Titelanzahl"
 
@@ -1005,7 +1008,7 @@ msgstr "CD-Nummer"
 #: ../src/Clients/Booter/Booter/Entry.cs:191
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:151
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:113
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:200
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:177
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:77
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:132
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:77
@@ -1014,7 +1017,7 @@ msgid "Year"
 msgstr "Jahr"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:192
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:253
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:230
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:131
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:60
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:96
@@ -1022,13 +1025,13 @@ msgid "Rating"
 msgstr "Bewertung"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:193
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:345
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:322
 msgid "Score"
-msgstr "Wertung"
+msgstr "Punktzahl"
 
 #. Translators: noun
 #: ../src/Clients/Booter/Booter/Entry.cs:194
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:166
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:143
 msgid "Bit Rate"
 msgstr "Bitrate"
 
@@ -1145,15 +1148,15 @@ msgstr "Interpret, Album oder Titel"
 
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:150
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:98
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:67
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:208
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:185
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:364
 #: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:87
 msgid "Genre"
 msgstr "Genre"
 
 #. Translators: noun
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:152
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:237
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:214
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -1314,12 +1317,12 @@ msgstr "Titel zufällig anhand der _Wertung wiedergeben"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByScore.cs:43
 msgid "by score"
-msgstr "nach Wertung"
+msgstr "nach Punktzahl"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByScore.cs:44
 msgid "Play songs randomly, prefer higher scored songs"
 msgstr ""
-"Titel zufällig wiedergeben, wobei Titel mit höherer Wertung bevorzugt werden"
+"Titel zufällig wiedergeben, wobei Titel mit höherer Punktzahl bevorzugt werden"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:47
 msgid "Shuffle by _Song"
@@ -1472,7 +1475,7 @@ msgstr "Titel-Interpret"
 #. Alias for %album_artist%
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:72
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:78
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:105
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:82
 msgid "Album Artist"
 msgstr "Album-Interpret"
 
@@ -1481,18 +1484,18 @@ msgid "Album Artist Initial"
 msgstr "Initialen des Alben-Künstlers"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:88
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:222
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:199
 msgid "Conductor"
 msgstr "Dirigent"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:93
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:215
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:192
 msgid "Composer"
 msgstr "Komponist"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:103
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:63
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:115
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:92
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:360
 msgid "Album"
 msgstr "Album"
 
@@ -1525,13 +1528,13 @@ msgid "Number (unsorted)"
 msgstr "Nummer (unsortiert)"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:143
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:131
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:108
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:107
 msgid "Disc Count"
 msgstr "CD-Anzahl"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:155
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:229
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:206
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:119
 msgid "Grouping"
 msgstr "Gruppierung"
@@ -1779,7 +1782,7 @@ msgid "The track's rating was set differently on the device and in Banshee"
 msgstr "Unterschiedliche Bewertung des Titels am Gerät und in Banshee"
 
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:59
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:332
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
 msgid "Playlist"
 msgstr "Wiedergabeliste"
 
@@ -1844,286 +1847,237 @@ msgstr "Dateirichtlinien"
 msgid "Co_py files to media folders when importing"
 msgstr "Beim Importieren alle Dateien in den Medienordner _kopieren"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:59
-msgid "Random"
-msgstr "Zufällig"
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:63
+msgid "items"
+msgstr "Elemente"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:64
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:97
+#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:60
+msgid "minutes"
+msgstr "Minuten"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:65
+#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:61
+msgid "hours"
+msgstr "Stunden"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:66
+#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:63
+msgid "MB"
+msgstr "MB"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:67
+#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:64
+msgid "GB"
+msgstr "GB"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:74
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:361
 msgid "Artist"
 msgstr "Interpret"
 
+#. Translators: These are unique search aliases for "artist". You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
+msgid "artist"
+msgstr "Interpret"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
+msgid "by"
+msgstr "von"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
+msgid "artists"
+msgstr "Interpreten"
+
+#. Translators: These are unique search aliases for "album artist". You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:84
+msgid "albumartist"
+msgstr "albuminterpret"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:84
+msgid "compilationartist"
+msgstr "Kompilationsinterpret"
+
+#. Translators: These are unique search aliases for "album". You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:94
+msgid "album"
+msgstr "Album"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:94
+msgid "on"
+msgstr "auf"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:94
+msgid "from"
+msgstr "aus"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:100
+msgid "Disc"
+msgstr "CD"
+
+#. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
+msgid "disc"
+msgstr "Disk"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
+msgid "cd"
+msgstr "Disc"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
+msgid "discnum"
+msgstr "CD-Nummer"
+
+#. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:110
+msgid "discs"
+msgstr "disks"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:110
+msgid "cds"
+msgstr "CDs"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:119
+msgid "track"
+msgstr "Titel"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:119
+msgid "trackno"
+msgstr "Titelnr."
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:119
+msgid "tracknum"
+msgstr "Titelnummer"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:128
+msgid "tracks"
+msgstr "titel"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:128
+msgid "trackcount"
+msgstr "titelanzahl"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:134
+msgid "Beats per Minute"
+msgstr "Schläge pro Minute"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:136
+msgid "bpm"
+msgstr "bpm"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:145
+msgid "bitrate"
+msgstr "bitrate"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:145
+msgid "kbs"
+msgstr "kbs"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:145
+msgid "kps"
+msgstr "kps"
+
 #. Translators: noun
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:66
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:192
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:152
+msgid "Sample Rate"
+msgstr "Abtastrate"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:154
+msgid "samplerate"
+msgstr "Abtastrate"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:154
+msgid "Hz"
+msgstr "Hz"
+
+#. Translators: noun
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:161
+msgid "Bits Per Sample"
+msgstr "Bits pro Sample"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:163
+msgid "bitspersample"
+msgstr "bitspersample"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:163
+msgid "bitdepth"
+msgstr ""
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:163
+msgid "quantization"
+msgstr "Quantisierung"
+
+#. Translators: noun
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:169
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:363
 #: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:662
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:89
 msgid "Name"
 msgstr "Name"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:69
-msgid "Highest Rating"
-msgstr "Höchste Bewertung"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:70
-msgid "Lowest Rating"
-msgstr "Niedrigste Bewertung"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:72
-msgid "Highest Score"
-msgstr "Höchste Wertung"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:73
-msgid "Lowest Score"
-msgstr "Niedrigste Wertung"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:75
-msgid "Most Often Played"
-msgstr "Am häufigsten wiedergegeben"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
-msgid "Least Often Played"
-msgstr "Am wenigsten wiedergegeben"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:78
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/MediaPanelContents.cs:58
-msgid "Most Recently Played"
-msgstr "Zuletzt häufig wiedergegeben"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:79
-msgid "Least Recently Played"
-msgstr "Zuletzt nicht häufig wiedergegeben"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:81
-msgid "Most Recently Added"
-msgstr "Zuletzt hinzugefügt"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:82
-msgid "Least Recently Added"
-msgstr "Früher hinzugefügt"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:86
-msgid "items"
-msgstr "Elemente"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:87
-#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:60
-msgid "minutes"
-msgstr "Minuten"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:88
-#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:61
-msgid "hours"
-msgstr "Stunden"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:89
-#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:63
-msgid "MB"
-msgstr "MB"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:90
-#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:64
-msgid "GB"
-msgstr "GB"
-
-#. Translators: These are unique search aliases for "artist". You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:99
-msgid "artist"
-msgstr "Interpret"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:99
-msgid "by"
-msgstr "von"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:99
-msgid "artists"
-msgstr "Interpreten"
-
-#. Translators: These are unique search aliases for "album artist". You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:107
-msgid "albumartist"
-msgstr "albuminterpret"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:107
-msgid "compilationartist"
-msgstr "Kompilationsinterpret"
-
-#. Translators: These are unique search aliases for "album". You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
-msgid "album"
-msgstr "Album"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
-msgid "on"
-msgstr "auf"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
-msgid "from"
-msgstr "aus"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:123
-msgid "Disc"
-msgstr "CD"
-
-#. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:125
-msgid "disc"
-msgstr "Disk"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:125
-msgid "cd"
-msgstr "Disc"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:125
-msgid "discnum"
-msgstr "CD-Nummer"
-
-#. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:133
-msgid "discs"
-msgstr "disks"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:133
-msgid "cds"
-msgstr "CDs"
-
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:142
-msgid "track"
-msgstr "Titel"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:142
-msgid "trackno"
-msgstr "Titelnr."
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:142
-msgid "tracknum"
-msgstr "Titelnummer"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:151
-msgid "tracks"
-msgstr "titel"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:151
-msgid "trackcount"
-msgstr "titelanzahl"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:157
-msgid "Beats per Minute"
-msgstr "Schläge pro Minute"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:159
-msgid "bpm"
-msgstr "bpm"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:168
-msgid "bitrate"
-msgstr "bitrate"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:168
-msgid "kbs"
-msgstr "kbs"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:168
-msgid "kps"
-msgstr "kps"
-
-#. Translators: noun
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:175
-#| msgid "Audio Sample Rate:"
-msgid "Sample Rate"
-msgstr "Abtastrate"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:177
-#| msgid "Sample"
-msgid "samplerate"
-msgstr "Abtastrate"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:177
-msgid "Hz"
-msgstr "Hz"
-
-#. Translators: noun
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:184
-msgid "Bits Per Sample"
-msgstr "Bits pro Sample"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:186
-#| msgid "bitrate"
-msgid "bitspersample"
-msgstr "bitspersample"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:186
-msgid "bitdepth"
-msgstr ""
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:186
-#| msgid "Station"
-msgid "quantization"
-msgstr "Quantisierung"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:194
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "title"
 msgstr "Titel"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:194
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "titled"
 msgstr "benannt"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:194
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "name"
 msgstr "Name"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:194
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "named"
 msgstr "genannt"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:202
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:179
 msgid "year"
 msgstr "Jahr"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:202
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:179
 msgid "released"
 msgstr "veröffentlicht"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:202
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:179
 msgid "yr"
 msgstr "erschienen"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:210
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:187
 msgid "genre"
 msgstr "Genre"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:217
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:194
 msgid "composer"
 msgstr "Komponist"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:224
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:201
 msgid "conductor"
 msgstr "Dirigent"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:231
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:208
 msgid "grouping"
 msgstr "Gruppierung"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:239
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:216
 msgid "comment"
 msgstr "Kommentar"
 
 #. Translators: noun
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:245
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:222
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:135
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:71
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:72
@@ -2131,220 +2085,265 @@ msgid "License"
 msgstr "Lizenz"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:247
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:224
 msgid "license"
 msgstr "Lizenz"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:247
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:224
 msgid "licensed"
 msgstr "lizensiert"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:247
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:224
 msgid "under"
 msgstr "unter"
 
 #. , typeof(NullQueryValue)},
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:255
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:232
 msgid "rating"
 msgstr "bewertet"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:255
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:232
 msgid "stars"
 msgstr "Sterne"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:261
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:238
 msgid "Play Count"
 msgstr "Wiedergabezähler"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:263
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:240
 msgid "plays"
 msgstr "Wiedergaben"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:263
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:240
 msgid "playcount"
 msgstr "Wiedergaben"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:263
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:240
 msgid "listens"
 msgstr "angehört"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:269
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:246
 msgid "Skip Count"
 msgstr "Überspringanzahl"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:271
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:248
 msgid "skips"
 msgstr "übersprungen"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:271
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:248
 msgid "skipcount"
 msgstr "übersprungen"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:277
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:254
 msgid "File Size"
 msgstr "Dateigröße"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:279
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:256
 msgid "size"
 msgstr "Größe"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:279
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:256
 msgid "filesize"
 msgstr "Dateigröße"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:285
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:262
 msgid "File Location"
 msgstr "Dateiort"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:287
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "uri"
 msgstr "Adresse"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:287
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "path"
 msgstr "Pfad"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:287
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "file"
 msgstr "Datei"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:287
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "location"
 msgstr "Ort"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:293
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:270
 msgid "Time"
 msgstr "Zeit"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:295
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "duration"
 msgstr "Dauer"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:295
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "length"
 msgstr "Länge"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:295
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "time"
 msgstr "Zeit"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:301
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:278
 msgid "Mime Type"
 msgstr "MIME-Typ"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:303
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "type"
 msgstr "Typ"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:303
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "mimetype"
 msgstr "MIME-Typ"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:303
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "format"
 msgstr "Format"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:303
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "ext"
 msgstr "Erweiterung"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:286
 msgid "Last Played"
 msgstr "letzte Wiedergabe"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:311
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:288
 msgid "lastplayed"
 msgstr "zuletztwiedergegeben"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:311
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:288
 msgid "played"
 msgstr "Wiedergabe"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:311
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:288
 msgid "playedon"
 msgstr "wiedergegeben"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:317
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:294
 msgid "Last Skipped"
 msgstr "Zuletzt übersprungen"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:319
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:296
 msgid "lastskipped"
 msgstr "zuletztübersprungen"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:319
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:296
 msgid "skipped"
 msgstr "übersprungen"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:319
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:296
 msgid "skippedon"
 msgstr "übersprungen"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:325
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:302
 msgid "Date Added"
 msgstr "Hinzugefügt am"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:327
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "added"
 msgstr "hinzugefügt"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:327
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "imported"
 msgstr "importiert"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:327
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "addedon"
 msgstr "hinzugefügtam"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:327
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "dateadded"
 msgstr "Hinzufügedatum"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:327
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "importedon"
 msgstr "Importdatum"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:338
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:315
 #: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:66
 msgid "Smart Playlist"
 msgstr "Intelligente Wiedergabeliste"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:347
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:324
 msgid "score"
-msgstr "Wertung"
+msgstr "Punktzahl"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:353
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:330
 msgid "Playback Error"
 msgstr "Fehler bei der Wiedergabe"
 
 #. Translators: These are unique search fields (and nouns). Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:355
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:332
 msgid "playbackerror"
 msgstr "Wiedergabefehler"
 
 #. Translators: noun
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:372
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:349
 msgid "BPM"
 msgstr "BPM"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:373
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:350
 msgid "Skips"
 msgstr "Überspringungen"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:374
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:351
 msgid "Plays"
 msgstr "Wiedergaben"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:356
+msgid "Random"
+msgstr "Zufällig"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:366
+msgid "Highest Rating"
+msgstr "Höchste Bewertung"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:367
+msgid "Lowest Rating"
+msgstr "Niedrigste Bewertung"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:369
+msgid "Highest Score"
+msgstr "Höchste Punktzahl"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:370
+msgid "Lowest Score"
+msgstr "Niedrigste Punktzahl"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:372
+msgid "Most Often Played"
+msgstr "Am häufigsten wiedergegeben"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:373
+msgid "Least Often Played"
+msgstr "Am wenigsten wiedergegeben"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:375
+#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/MediaPanelContents.cs:58
+msgid "Most Recently Played"
+msgstr "Zuletzt häufig wiedergegeben"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:376
+msgid "Least Recently Played"
+msgstr "Zuletzt nicht häufig wiedergegeben"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:378
+msgid "Most Recently Added"
+msgstr "Zuletzt hinzugefügt"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:379
+msgid "Least Recently Added"
+msgstr "Früher hinzugefügt"
 
 # CHECK
 #. Translators: These are unique strings for playback errors. Please, no spaces. Blank ok.
@@ -2657,15 +2656,11 @@ msgstr "{0} kbps"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:138
 #, csharp-format
-#| msgid "{0} day"
-#| msgid_plural "{0} days"
 msgid "{0} Hz"
 msgstr "{0} Hz"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:141
 #, csharp-format
-#| msgid "{0} item"
-#| msgid_plural "{0} items"
 msgid "{0} bits"
 msgstr "{0} bits"
 
@@ -3546,7 +3541,7 @@ msgstr "Überspringanzahl:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:214
 msgid "Score:"
-msgstr "Wertung:"
+msgstr "Punktzahl:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:220
 msgid "File Size:"
@@ -4841,7 +4836,7 @@ msgstr "Urheber"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:222
 msgid "Venue:"
-msgstr ""
+msgstr "Veranstaltung:"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:223
 msgid "Location:"
