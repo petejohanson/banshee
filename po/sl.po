@@ -1,15 +1,16 @@
 # Slovenian translation of banshee.
+# Copyright (C) 2006 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the banshee package.
 #
-# Matej Urbančič <matej.urban@gmail.com>, 2006 - 2008.
-# Andrej Žnidaršič <andrej.znidarsic@gmail.com>, 2009.
+# Matej Urbančič <mateju@svn.gnome.org>, 2006 - 2008.
+# Andrej Žnidaršič <andrej.znidarsic@gmail.com>, 2009 - 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&component=general\n"
-"POT-Creation-Date: 2010-02-16 10:31+0000\n"
-"PO-Revision-Date: 2010-02-16 13:51+0100\n"
+"POT-Creation-Date: 2010-02-28 00:30+0000\n"
+"PO-Revision-Date: 2010-02-28 13:26+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -290,7 +291,7 @@ msgstr "Zagotovi povezavo z Moblin, vključno z večpredstavnostnim pultom po me
 #. ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
 #: ../data/addin-xml-strings.cs:136
 msgid "Multimedia Keys"
-msgstr "Multimedijske tipke"
+msgstr "Večpredstavnostne tipke"
 
 #: ../data/addin-xml-strings.cs:137
 msgid "Control playback via the multimedia keys on your keyboard."
@@ -584,9 +585,9 @@ msgstr "Windows zvočna datoteka"
 #: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:72
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:94
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:201
-#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:71
+#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:60
 msgid "Banshee Media Player"
-msgstr "Banshee predvajalnik multimedijskih datotek"
+msgstr "Banshee predvajalnik večpredstavnostnih datotek"
 
 #: ../data/desktop-files/common.desktop.in.h:2
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:192
@@ -721,15 +722,15 @@ msgstr "Onemogoči majhen premor predvajanja ob spremembi skladb. Uporabno za te
 msgid "Could not initialize GStreamer library"
 msgstr "GStreamer knjižnice ni mogoče zagnati"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:267
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:272
 msgid "Unknown Error"
 msgstr "Neznana napaka"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:560
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:565
 msgid "_Enable ReplayGain correction"
 msgstr "_Omogoči popravek ReplayGain"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:561
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:566
 msgid "For tracks that have ReplayGain data, automatically scale (normalize) playback volume"
 msgstr "Samodejno izravnaj glasnost predvajanja skladb s podatki ReplayGain"
 
@@ -737,12 +738,12 @@ msgstr "Samodejno izravnaj glasnost predvajanja skladb s podatki ReplayGain"
 msgid "Could not create transcoder"
 msgstr "Prekodirnika ni mogoče ustvariti"
 
-#: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:87
+#: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:91
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:128
 msgid "_Close"
 msgstr "_Zapri"
 
-#: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:88
+#: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:92
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:129
 msgid "Close"
 msgstr "Zapri"
@@ -824,8 +825,8 @@ msgid "Enable or disable playback stopping after the currently playing track (va
 msgstr "Omogoči ali onemogoči zaustavitev predvajanja po koncu trenutno predvajajoče se skladbe (vrednost naj bo 'pravilno' ali 'napačno')"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:168
-msgid "Set the playback volume (0-100)"
-msgstr "Nastavitev glasnosti predvajanja (0-100)"
+msgid "Set the playback volume (0-100), prefix with +/- for relative values"
+msgstr "Nastavitev glasnosti predvajanja (0-100), predpona +/- za relativne vrednosti"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:169
 msgid "Seek to a specific point (seconds, float)"
@@ -895,13 +896,13 @@ msgstr "Trajanje"
 
 #. Translators: noun
 #: ../src/Clients/Booter/Booter/Entry.cs:188
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:140
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
 msgid "Track Number"
 msgstr "Številka skladbe"
 
 #. Translators: noun
 #: ../src/Clients/Booter/Booter/Entry.cs:189
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:149
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:126
 msgid "Track Count"
 msgstr "Števec skladbe"
 
@@ -914,7 +915,7 @@ msgstr "Številka diska"
 #: ../src/Clients/Booter/Booter/Entry.cs:191
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:151
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:113
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:182
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:177
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:77
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:132
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:77
@@ -923,7 +924,7 @@ msgid "Year"
 msgstr "Leto"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:192
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:235
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:230
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:131
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:60
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:96
@@ -931,13 +932,13 @@ msgid "Rating"
 msgstr "Ocena"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:193
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:327
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:322
 msgid "Score"
 msgstr "Rezultat"
 
 #. Translators: noun
 #: ../src/Clients/Booter/Booter/Entry.cs:194
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:166
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:143
 msgid "Bit Rate"
 msgstr "Bitna hitrost"
 
@@ -1045,15 +1046,15 @@ msgstr "Izvajalec, album ali naslov"
 
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:150
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:98
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:67
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:190
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:185
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:364
 #: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:87
 msgid "Genre"
 msgstr "Zvrst"
 
 #. Translators: noun
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:152
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:219
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:214
 msgid "Comment"
 msgstr "Opomba"
 
@@ -1063,7 +1064,7 @@ msgstr "Opomba"
 msgid "Search"
 msgstr "Iskanje"
 
-#: ../src/Core/Banshee.Core/Banshee.Base/CoverArtSpec.cs:41
+#: ../src/Core/Banshee.Core/Banshee.Base/CoverArtSpec.cs:43
 #: ../src/Core/Banshee.Core/Banshee.Collection/ArtistInfo.cs:37
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdDiscModel.cs:100
 #: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtJob.cs:137
@@ -1071,7 +1072,7 @@ msgstr "Iskanje"
 msgid "Unknown Artist"
 msgstr "Neznan izvajalec"
 
-#: ../src/Core/Banshee.Core/Banshee.Base/CoverArtSpec.cs:43
+#: ../src/Core/Banshee.Core/Banshee.Base/CoverArtSpec.cs:45
 #: ../src/Core/Banshee.Core/Banshee.Collection/AlbumInfo.cs:40
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdDiscModel.cs:101
 #: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtJob.cs:136
@@ -1087,59 +1088,59 @@ msgstr "Neznan naslov"
 msgid "Various Artists"
 msgstr "Različni izvajalci"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:334
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:340
 msgid "Stream location not found"
 msgstr "Mesta pretoka ni mogoče najti"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:334
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:340
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:321
 msgid "File not found"
 msgstr "Datoteke ni mogoče najti"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:336
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:342
 msgid "Codec for playing this media type not available"
 msgstr "Kodek za predvajanje te vrste medijev ni na vojo"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:338
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:344
 msgid "File protected by Digital Rights Management (DRM)"
 msgstr "Datoteka je zaščitena z upravljanjem digitalnih pravic (DRM)"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:340
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:346
 msgid "Unknown error"
 msgstr "Neznana napaka"
 
 #. TODO turn this into a PrimarySource-owned delegate?
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:409
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:415
 msgid "_Restart Podcast"
 msgstr "_Ponovno predvajaj podcast"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:410
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:416
 msgid "_Restart Video"
 msgstr "_Ponovno predvajaj video"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:411
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:417
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:86
 msgid "_Restart Song"
 msgstr "_Ponovno predvajaj"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:412
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:418
 msgid "_Restart Item"
 msgstr "_Ponovno zaženi predmet"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:426
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:432
 msgid "_Jump to Playing Podcast"
 msgstr "_Skok na predvajan podcast"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:427
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:433
 msgid "_Jump to Playing Video"
 msgstr "_Skoči na predvajan video"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:428
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:434
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:82
 msgid "_Jump to Playing Song"
 msgstr "_Skoči na predvajano pesem"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:429
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:435
 msgid "_Jump to Playing Item"
 msgstr "_Skoči na predvajan predmet"
 
@@ -1235,7 +1236,7 @@ msgid "Scanning for media"
 msgstr "Preiskovanje za večpredstavnostne datoteke"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:187
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1261
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1275
 msgid "Scanning..."
 msgstr "Preiskovanje ..."
 
@@ -1273,7 +1274,7 @@ msgstr "Nadgrajevanje podatkovne zbirke Banshee"
 msgid "Please wait while your old Banshee database is migrated to the new format."
 msgstr "Počakajte, da se stara Banshee podatkovna zbirka pretvori v novo vrsto zapisa."
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1258
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1272
 msgid "Refreshing Metadata"
 msgstr "Osveževanje metapodatkov"
 
@@ -1366,7 +1367,7 @@ msgstr "Izvajalec skladbe"
 #. Alias for %album_artist%
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:72
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:78
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:105
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:82
 msgid "Album Artist"
 msgstr "Izvajalec albuma"
 
@@ -1375,18 +1376,18 @@ msgid "Album Artist Initial"
 msgstr "Začetnice izvajalca albuma"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:88
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:204
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:199
 msgid "Conductor"
 msgstr "Dirigent"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:93
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:197
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:192
 msgid "Composer"
 msgstr "Skladatelj"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:103
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:63
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:115
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:92
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:360
 msgid "Album"
 msgstr "Album"
 
@@ -1419,100 +1420,104 @@ msgid "Number (unsorted)"
 msgstr "Številka (neurejeno)"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:143
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:131
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:108
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:107
 msgid "Disc Count"
 msgstr "Število diskov"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:155
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:211
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:206
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:119
 msgid "Grouping"
 msgstr "Združevanje"
 
 #. Catalog.GetString ("Music Library")
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:58
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:59
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/MusicGroupSource.cs:38
 msgid "Music"
 msgstr "Glasba"
 
 #. Misc section
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:75
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:77
 #: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:65
 msgid "Miscellaneous"
 msgstr "Razno"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:97
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:80
+msgid "_Sort an artist's albums by year, not title"
+msgstr "_Razvrsti izvajalčeve albume po letu, ne naslovu"
+
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:107
 #: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:85
 msgid "Favorites"
 msgstr "Priljubljeno"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:98
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:108
 msgid "Songs rated four and five stars"
 msgstr "Skladbe ocenjene s štirimi in petimi zvezdicami"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:102
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:112
 msgid "Recent Favorites"
 msgstr "Nedavno priljubljeno"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:103
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:113
 msgid "Songs listened to often in the past week"
 msgstr "Pogosto poslušane skladbe v zadnjem tednu"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:107
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:117
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:95
 msgid "Recently Added"
 msgstr "Nedavno dodano"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:108
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:118
 msgid "Songs imported within the last week"
 msgstr "Skladbe uvožene v zadnjem tednu"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:112
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:122
 msgid "Unheard"
 msgstr "Ne slišano"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:113
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:123
 msgid "Songs that have not been played or skipped"
 msgstr "Nepredvajane in nikoli preskočene skladbe"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:119
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:129
 msgid "Neglected Favorites"
 msgstr "Spregledane priljubljene"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:120
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:130
 msgid "Favorites not played in over two months"
 msgstr "Priljubljene in nepredvajane v zadnjih 2 mesecih"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:124
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:134
 msgid "Least Favorite"
 msgstr "Najmanj priljubljeno"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:125
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:135
 msgid "Songs rated one or two stars or that you have frequently skipped"
 msgstr "Skladbe, ki so bile ocenjene z eno ali dvema zvezdicama, ali pa so pogosto preskočene"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:129
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:139
 msgid "700 MB of Favorites"
 msgstr "700 MB priljubljenih"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:130
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:140
 msgid "A data CD worth of favorite songs"
 msgstr "Podatkovni CD vreden priljubljenih skladb"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:135
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:145
 msgid "80 Minutes of Favorites"
 msgstr "80 minut priljubljenih"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:136
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:146
 msgid "An audio CD worth of favorite songs"
 msgstr "Zvočni CD vreden priljubljenih skladb"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:141
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:151
 msgid "Unrated"
 msgstr "Neocenjeno"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:142
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:152
 msgid "Songs that haven't been rated"
 msgstr "Neocenjene skladbe"
 
@@ -1614,7 +1619,7 @@ msgid "Import play _counts"
 msgstr "Uvozi _števila predvajanj"
 
 #. disabled by default
-#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:284
+#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:295
 msgid "Improve Banshee by sending anonymous usage data"
 msgstr "Izboljšajte Banshee s pošiljanjem anonimnih podatkov o uporabi"
 
@@ -1643,7 +1648,7 @@ msgid "The track's rating was set differently on the device and in Banshee"
 msgstr "Ocena skladbe v Banshee se razlikuje od ocene na napravi"
 
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:59
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:314
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
 msgid "Playlist"
 msgstr "Seznam predvajanja"
 
@@ -1661,7 +1666,7 @@ msgstr "Izbriši seznam predvajanja"
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:169
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:90
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:367
-#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:473
+#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:475
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView_DragAndDrop.cs:213
 msgid "New Playlist"
 msgstr "Nov seznam predvajanja"
@@ -1708,250 +1713,237 @@ msgstr "Pravila datotek"
 msgid "Co_py files to media folders when importing"
 msgstr "_Kopiraj datoteke v večpredstavnostne mape med uvažanjem"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:59
-msgid "Random"
-msgstr "Naključno"
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:63
+msgid "items"
+msgstr "predmeti"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:64
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:97
+#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:60
+msgid "minutes"
+msgstr "minut"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:65
+#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:61
+msgid "hours"
+msgstr "ur"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:66
+#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:63
+msgid "MB"
+msgstr "MB"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:67
+#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:64
+msgid "GB"
+msgstr "GB"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:74
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:361
 msgid "Artist"
 msgstr "Izvajalec"
 
+#. Translators: These are unique search aliases for "artist". You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
+msgid "artist"
+msgstr "izvajalec"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
+msgid "by"
+msgstr "z"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
+msgid "artists"
+msgstr "izvajalci"
+
+#. Translators: These are unique search aliases for "album artist". You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:84
+msgid "albumartist"
+msgstr "Izvajalec albuma"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:84
+msgid "compilationartist"
+msgstr "Mešani izvajalec"
+
+#. Translators: These are unique search aliases for "album". You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:94
+msgid "album"
+msgstr "album"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:94
+msgid "on"
+msgstr "na"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:94
+msgid "from"
+msgstr "izvajalec"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:100
+msgid "Disc"
+msgstr "Disk"
+
+#. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
+msgid "disc"
+msgstr "disk"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
+msgid "cd"
+msgstr "cd"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
+msgid "discnum"
+msgstr "Številka diska"
+
+#. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:110
+msgid "discs"
+msgstr "diski"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:110
+msgid "cds"
+msgstr "cd-ji"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:119
+msgid "track"
+msgstr "Skladba"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:119
+msgid "trackno"
+msgstr "ŠtSkladbe"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:119
+msgid "tracknum"
+msgstr "ŠtSkladbe"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:128
+msgid "tracks"
+msgstr "Skladb"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:128
+msgid "trackcount"
+msgstr "ŠteviloSkladb"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:134
+msgid "Beats per Minute"
+msgstr "Udarcev na minuto"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:136
+msgid "bpm"
+msgstr "UNM"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:145
+msgid "bitrate"
+msgstr "Bitna hitrost"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:145
+msgid "kbs"
+msgstr "kbs"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:145
+msgid "kps"
+msgstr "kps"
+
 #. Translators: noun
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:66
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:174
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:152
+msgid "Sample Rate"
+msgstr "Vzorčna hitrost"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:154
+msgid "samplerate"
+msgstr "Vzorčnahitrost"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:154
+msgid "Hz"
+msgstr "Hz"
+
+#. Translators: noun
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:161
+msgid "Bits Per Sample"
+msgstr "Biti na vzorec"
+
+#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:163
+msgid "bitspersample"
+msgstr "bitinavzorec"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:163
+msgid "bitdepth"
+msgstr "bitna globina"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:163
+msgid "quantization"
+msgstr "kvantizacija"
+
+#. Translators: noun
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:169
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:363
 #: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:662
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:89
 msgid "Name"
 msgstr "Ime"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:69
-msgid "Highest Rating"
-msgstr "Najvišja ocena"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:70
-msgid "Lowest Rating"
-msgstr "Najnižja ocena"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:72
-msgid "Highest Score"
-msgstr "Najvišji rezultat"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:73
-msgid "Lowest Score"
-msgstr "Najnižji rezultat"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:75
-msgid "Most Often Played"
-msgstr "Pogosto predvajano"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
-msgid "Least Often Played"
-msgstr "Redko predvajano"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:78
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/MediaPanelContents.cs:58
-msgid "Most Recently Played"
-msgstr "Nedavno predvajano"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:79
-msgid "Least Recently Played"
-msgstr "Davno predvajano"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:81
-msgid "Most Recently Added"
-msgstr "Nedavno dodano"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:82
-msgid "Least Recently Added"
-msgstr "Davno dodano"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:86
-msgid "items"
-msgstr "predmeti"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:87
-#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:60
-msgid "minutes"
-msgstr "minut"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:88
-#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:61
-msgid "hours"
-msgstr "ur"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:89
-#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:63
-msgid "MB"
-msgstr "MB"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:90
-#: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:64
-msgid "GB"
-msgstr "GB"
-
-#. Translators: These are unique search aliases for "artist". You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:99
-msgid "artist"
-msgstr "izvajalec"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:99
-msgid "by"
-msgstr "z"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:99
-msgid "artists"
-msgstr "izvajalci"
-
-#. Translators: These are unique search aliases for "album artist". You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:107
-msgid "albumartist"
-msgstr "Izvajalec albuma"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:107
-msgid "compilationartist"
-msgstr "Mešani izvajalec"
-
-#. Translators: These are unique search aliases for "album". You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
-msgid "album"
-msgstr "album"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
-msgid "on"
-msgstr "na"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
-msgid "from"
-msgstr "izvajalec"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:123
-msgid "Disc"
-msgstr "Disk"
-
-#. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:125
-msgid "disc"
-msgstr "disk"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:125
-msgid "cd"
-msgstr "cd"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:125
-msgid "discnum"
-msgstr "Številka diska"
-
-#. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:133
-msgid "discs"
-msgstr "diski"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:133
-msgid "cds"
-msgstr "cd-ji"
-
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:142
-msgid "track"
-msgstr "Skladba"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:142
-msgid "trackno"
-msgstr "ŠtSkladbe"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:142
-msgid "tracknum"
-msgstr "ŠtSkladbe"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:151
-msgid "tracks"
-msgstr "Skladb"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:151
-msgid "trackcount"
-msgstr "ŠteviloSkladb"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:157
-msgid "Beats per Minute"
-msgstr "Udarcev na minuto"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:159
-msgid "bpm"
-msgstr "UNM"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:168
-msgid "bitrate"
-msgstr "Bitna hitrost"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:168
-msgid "kbs"
-msgstr "kbs"
-
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:168
-msgid "kps"
-msgstr "kps"
-
-#. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:176
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "title"
 msgstr "naslov"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:176
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "titled"
 msgstr "naslovljeno"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:176
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "name"
 msgstr "ime"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:176
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "named"
 msgstr "imenovano"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:184
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:179
 msgid "year"
 msgstr "Leto"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:184
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:179
 msgid "released"
 msgstr "izdano"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:184
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:179
 msgid "yr"
 msgstr "leto"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:192
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:187
 msgid "genre"
 msgstr "Zvrst"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:199
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:194
 msgid "composer"
 msgstr "skladatelj"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:206
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:201
 msgid "conductor"
 msgstr "dirigent"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:213
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:208
 msgid "grouping"
 msgstr "združevanje"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:221
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:216
 msgid "comment"
 msgstr "Opomba"
 
 #. Translators: noun
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:227
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:222
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:135
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:71
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:72
@@ -1959,220 +1951,265 @@ msgid "License"
 msgstr "Dovoljenje"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:229
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:224
 msgid "license"
 msgstr "dovoljenje"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:229
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:224
 msgid "licensed"
 msgstr "Z dovoljenjem"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:229
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:224
 msgid "under"
 msgstr "pod"
 
 #. , typeof(NullQueryValue)},
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:237
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:232
 msgid "rating"
 msgstr "ocena"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:237
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:232
 msgid "stars"
 msgstr "zvezde"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:243
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:238
 msgid "Play Count"
 msgstr "Števec predvajanj"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:245
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:240
 msgid "plays"
 msgstr "predvajanj"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:245
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:240
 msgid "playcount"
 msgstr "Števec predvajanj"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:245
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:240
 msgid "listens"
 msgstr "poslušanj"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:251
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:246
 msgid "Skip Count"
 msgstr "Števec preskokov"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:253
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:248
 msgid "skips"
 msgstr "preskokov"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:253
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:248
 msgid "skipcount"
 msgstr "števec preskokov"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:259
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:254
 msgid "File Size"
 msgstr "Velikost datoteke"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:261
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:256
 msgid "size"
 msgstr "velikost"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:261
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:256
 msgid "filesize"
 msgstr "velikost datoteke"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:267
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:262
 msgid "File Location"
 msgstr "Mesto datoteke"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:269
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "uri"
 msgstr "uri"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:269
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "path"
 msgstr "pot"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:269
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "file"
 msgstr "datoteka"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:269
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "location"
 msgstr "mesto"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:275
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:270
 msgid "Time"
 msgstr "Čas"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:277
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "duration"
 msgstr "trajanje"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:277
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "length"
 msgstr "dolžina"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:277
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "time"
 msgstr "čas"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:283
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:278
 msgid "Mime Type"
 msgstr "Vrsta MIME"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:285
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "type"
 msgstr "vrsta"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:285
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "mimetype"
 msgstr "vrsta mime"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:285
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "format"
 msgstr "vrsta"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:285
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "ext"
 msgstr "pri"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:291
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:286
 msgid "Last Played"
 msgstr "Zadnjič predvajano"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:293
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:288
 msgid "lastplayed"
 msgstr "zadnjič predvajano"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:293
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:288
 msgid "played"
 msgstr "predvajano"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:293
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:288
 msgid "playedon"
 msgstr "predvajanoob"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:299
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:294
 msgid "Last Skipped"
 msgstr "Zadnjič preskočeno"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:301
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:296
 msgid "lastskipped"
 msgstr "zadnjič preskočeno"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:301
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:296
 msgid "skipped"
 msgstr "preskočeno"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:301
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:296
 msgid "skippedon"
 msgstr "preskočeno ob"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:307
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:302
 msgid "Date Added"
 msgstr "Datum uvoza"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "added"
 msgstr "dodano"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "imported"
 msgstr "uvoženo"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "addedon"
 msgstr "dodanoob"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "dateadded"
 msgstr "datum dodajanja"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:304
 msgid "importedon"
 msgstr "uvoženo ob"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:320
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:315
 #: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:66
 msgid "Smart Playlist"
 msgstr "Pameten seznam predvajanja"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:329
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:324
 msgid "score"
 msgstr "rezultat"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:335
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:330
 msgid "Playback Error"
 msgstr "Napaka predvajanja"
 
 #. Translators: These are unique search fields (and nouns). Please, no spaces. Blank ok.
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:337
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:332
 msgid "playbackerror"
 msgstr "napakapredvajanja"
 
 #. Translators: noun
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:354
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:349
 msgid "BPM"
 msgstr "UNM"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:355
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:350
 msgid "Skips"
 msgstr "Preskokov"
 
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:356
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:351
 msgid "Plays"
 msgstr "Predvajanj"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:356
+msgid "Random"
+msgstr "Naključno"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:366
+msgid "Highest Rating"
+msgstr "Najvišja ocena"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:367
+msgid "Lowest Rating"
+msgstr "Najnižja ocena"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:369
+msgid "Highest Score"
+msgstr "Najvišji rezultat"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:370
+msgid "Lowest Score"
+msgstr "Najnižji rezultat"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:372
+msgid "Most Often Played"
+msgstr "Pogosto predvajano"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:373
+msgid "Least Often Played"
+msgstr "Redko predvajano"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:375
+#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/MediaPanelContents.cs:58
+msgid "Most Recently Played"
+msgstr "Nedavno predvajano"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:376
+msgid "Least Recently Played"
+msgstr "Davno predvajano"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:378
+msgid "Most Recently Added"
+msgstr "Nedavno dodano"
+
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:379
+msgid "Least Recently Added"
+msgstr "Davno dodano"
 
 #. Translators: These are unique strings for playback errors. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:44
@@ -2230,9 +2267,9 @@ msgstr "drm"
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:64
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:66
 #: ../src/Core/Banshee.Services/Banshee.ServiceStack/Application.cs:311
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:203
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:205
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:207
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:209
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:211
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:380
 msgid "Unknown"
 msgstr "Neznano"
@@ -2464,26 +2501,36 @@ msgstr "Izberi novo naslovnico ..."
 msgid "Delete This Cover Art"
 msgstr "Izbriši naslovnico"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:124
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:126
 msgid "Track #"
 msgstr "Št. skladbe"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:125
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:127
 msgid "Track & Count"
 msgstr "Št. skladbe"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:129
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:131
 msgid "Disc #"
 msgstr "Št. diska"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:130
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:132
 msgid "Disc & Count"
 msgstr "Št. diska"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:133
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:135
 #, csharp-format
 msgid "{0} kbps"
 msgstr "{0} kbps"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:138
+#, csharp-format
+msgid "{0} Hz"
+msgstr "{0} Hz"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:141
+#, csharp-format
+msgid "{0} bits"
+msgstr "{0} bitov"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.ContextPane/ContextPane.cs:119
 msgid "Make the context pane larger or smaller"
@@ -2941,7 +2988,7 @@ msgid "Edit information on selected tracks"
 msgstr "Urejanje podrobnosti o izbranih skladbah"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:81
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:247
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:251
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:113
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:155
 msgid "Properties"
@@ -3290,49 +3337,53 @@ msgstr "Vzorčna hitrost zvoka:"
 msgid "Audio Channels:"
 msgstr "Zvočni kanali:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:186
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:185
+msgid "Bits Per Sample:"
+msgstr "Biti na vzorec"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:190
 msgid "Video Dimensions:"
 msgstr "Mere videa:"
 
 #. Translators: {0} is the description of the codec
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:193
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:197
 #, csharp-format
 msgid "{0} Codec:"
 msgstr "{0} kodek:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:198
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:202
 msgid "Container Formats:"
 msgstr "Vrste zabojnikov:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:202
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:206
 msgid "Imported On:"
 msgstr "Uvoženo:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:204
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:208
 msgid "Last Played:"
 msgstr "Zadnjič predvajano:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:206
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:210
 msgid "Last Skipped:"
 msgstr "Zadnjič preskočeno:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:208
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:212
 msgid "Play Count:"
 msgstr "Števec predvajanj:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:209
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:213
 msgid "Skip Count:"
 msgstr "Števec preskokov:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:210
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:214
 msgid "Score:"
 msgstr "Rezultat:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:216
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:220
 msgid "File Size:"
 msgstr "Velikost datoteke:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:217
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:221
 #: ../src/Libraries/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:61
 msgid "bytes"
 msgstr "bajtov"
@@ -3443,24 +3494,24 @@ msgstr[3] "V teku so dejavna opravila"
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Podcast Name and Published Date, respectively;
 #. e.g. 'from BBtv published 7/26/2007'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:499
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:496
 #, csharp-format
 msgid "{0}from{1} {2} {0}published{1} {3}"
 msgstr "{0}od{1} {2} {0}objavljeno{1} {3}"
 
 #. simply: "Chicago Public Radio" or whatever the artist name is
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:512
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:509
 msgid "Unknown Stream"
 msgstr "Neznan tok"
 
 #. Translators: {0} and {1} are markup so ignore them, {2} is the name of the radio station
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:515
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:512
 #, csharp-format
 msgid "{0}on{1} {2}"
 msgstr "{0}na{1} {2}"
 
 #. Translators: {0} is the "from {album} by {artist}" type string, and {1} is the "on {radio station name}" string
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:518
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:515
 #, csharp-format
 msgid "{0} {1}"
 msgstr "{0} {1}"
@@ -3468,14 +3519,14 @@ msgstr "{0} {1}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Artist Name and Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:554
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:551
 #, csharp-format
 msgid "{0}by{1} {2} {0}from{1} {3}"
 msgstr "{0}od{1} {2} {0}od{1} {3}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Album Title;
 #. e.g. 'from Killing with a Smile'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:558
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:555
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:512
 #, csharp-format
 msgid "{0}from{1} {2}"
@@ -3483,7 +3534,7 @@ msgstr "{0}od{1} {2}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Artist Name;
 #. e.g. 'by Parkway Drive'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:562
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:559
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:516
 #, csharp-format
 msgid "{0}by{1} {2}"
@@ -4183,11 +4234,11 @@ msgstr "Ob vstavitvi v pogon začne samodejno uvažanje CD-ja, če je mogoče na
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:247
 msgid "_Eject when done importing"
-msgstr "_Izvrži po koncu uvažanja"
+msgstr "_Izvrži po uvažanju"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:248
 msgid "When an audio CD has been imported, automatically eject it."
-msgstr "Zvočni CD naj bo po končanem uvažanju samodejno izvržen."
+msgstr "Zvočni CD naj se po končanem uvažanju samodejno izvrže."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:251
 msgid "Use error correction when importing"
@@ -4236,7 +4287,7 @@ msgstr "Zvočnega CD-ja ni mogoče podvojiti"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:363
 msgid "Ejecting audio CD..."
-msgstr "Vračanje zvočnega CD-ja ..."
+msgstr "Izmetavanje zvočnega CD-ja ..."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:381
 #, csharp-format
@@ -5497,26 +5548,17 @@ msgstr "Neznana podobnost"
 msgid "_Mini Mode"
 msgstr "_Enostavni način"
 
-#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:127
+#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:100
+msgid "Full Mode"
+msgstr "Polni način"
+
+#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:123
 msgid "Switch back to full mode"
 msgstr "Preklop nazaj na polni način"
 
-#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:128
+#: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:124
 msgid "Change repeat playback mode"
 msgstr "Spremeni način ponavljanja predvajanja"
-
-#: ../src/Extensions/Banshee.MiniMode/Resources/minimode.glade.h:1
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/X11NotificationAreaBox.cs:68
-msgid "Banshee"
-msgstr "Banshee"
-
-#: ../src/Extensions/Banshee.MiniMode/Resources/minimode.glade.h:2
-msgid "Current source:"
-msgstr "Trenutni vir:"
-
-#: ../src/Extensions/Banshee.MiniMode/Resources/minimode.glade.h:3
-msgid "Full Mode"
-msgstr "Polni način"
 
 #: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/MediaPanelContents.cs:62
 msgid "Music Library"
@@ -5561,6 +5603,10 @@ msgid ""
 msgstr ""
 "{0}od{1} {2}\n"
 "{0}od{1} {3}"
+
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/X11NotificationAreaBox.cs:68
+msgid "Banshee"
+msgstr "Banshee"
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:143
 #, csharp-format
@@ -5644,7 +5690,7 @@ msgstr "Uvoz sezname _predvajanja"
 msgid "_Fill"
 msgstr "_Zapolni"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:73
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:76
 msgid "f_rom"
 msgstr "o_d"
 
@@ -5680,11 +5726,11 @@ msgstr "Počisti čakalno vrsto predvajanja ob končanju"
 msgid "Remove From Play Queue"
 msgstr "Odstrani s čakalne vrste predvajanja"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:781
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:791
 msgid "Number of _played songs to show"
 msgstr "Število _predvajanih skladb za prikaz"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:787
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:797
 msgid "Number of _upcoming songs to show"
 msgstr "Število _prihajajočih skladb za prikaz"
 
@@ -5912,7 +5958,7 @@ msgstr "kliknite"
 msgid "menu"
 msgstr "meni"
 
-#: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:607
+#: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:611
 #, csharp-format
 msgid "Hide <i>{0}</i>"
 msgstr "Skrij <i>{0}</i>"
@@ -6181,6 +6227,8 @@ msgstr "Povezano z Last.fm "
 msgid "Unknown Podcast"
 msgstr "Neznan Podcast"
 
+#~ msgid "Current source:"
+#~ msgstr "Trenutni vir:"
 #~ msgid "<b>Details</b>"
 #~ msgstr "<b>Podrobnosti</b>"
 #~ msgid "Predefined Smart Playlists"
@@ -6223,7 +6271,7 @@ msgstr "Neznan Podcast"
 #~ msgid "Eject {0}"
 #~ msgstr "Izvrzi {0}"
 #~ msgid "Ejecting {0}..."
-#~ msgstr "Vračanje {0} ..."
+#~ msgstr "Izmetavanje {0} ..."
 #~ msgid "_Configure..."
 #~ msgstr "_Nastavitve ..."
 #~ msgid "Configure the Last.fm Extension"
@@ -6380,8 +6428,6 @@ msgstr "Neznan Podcast"
 #~ msgstr "Vidnost stolpca URI"
 #~ msgid "Visibility of Year column"
 #~ msgstr "Vidnost stolpca letnice"
-#~ msgid "Width"
-#~ msgstr "Širina"
 #~ msgid "Width of Album column"
 #~ msgstr "Širina stolpca albuma"
 #~ msgid "Width of Artist column"
@@ -6479,7 +6525,7 @@ msgstr "Neznan Podcast"
 #~ msgid ""
 #~ "The CD cannot be ejected while it is importing. Stop the import first."
 #~ msgstr ""
-#~ "CD-ja ni mogoče izvreči med uvažanje. Najprej je potrebno uvoz prekiniti."
+#~ "CD-ja ni mogoče izvreči med uvažanjem. Najprej je treba uvoz prekiniti."
 #~ msgid "Importing CD"
 #~ msgstr "Uvažanje CDja"
 #~ msgid ""
@@ -6500,8 +6546,6 @@ msgstr "Neznan Podcast"
 #~ msgstr " {0} minut"
 #~ msgid "Unknown MB"
 #~ msgstr "Neznano MB"
-#~ msgid "{0} MB"
-#~ msgstr " {0} MB"
 #~ msgid "New Audio C_D"
 #~ msgstr "Nov zvočni _CD"
 #~ msgid "Create a new audio CD"
@@ -6946,12 +6990,12 @@ msgstr "Neznan Podcast"
 #~ "Before you can eject your device, you need to start playing a song that "
 #~ "is not on it.  This is a known bug."
 #~ msgstr ""
-#~ "Pred izklopom naprave morate začeti predvajati skladbo, ki ni na tej "
+#~ "Pred izmetom naprave je treba začeti predvajati skladbo, ki ni na tej "
 #~ "napravi."
 #~ msgid "Make sure no other programs are using it."
 #~ msgstr "Prepričajte se, da ga ne uporablja drug program."
 #~ msgid "Failed to Eject {0}"
-#~ msgstr "Napaka med odpiranjem {0}"
+#~ msgstr "Napaka med izmetavanjem {0}"
 #~ msgid ": Found"
 #~ msgstr ": Najdeno"
 #~ msgid "Loading device"
