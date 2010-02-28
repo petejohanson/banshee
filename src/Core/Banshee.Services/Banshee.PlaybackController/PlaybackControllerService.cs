@@ -295,7 +295,7 @@ namespace Banshee.PlaybackController
                 if (ShuffleMode == "off") {
                     player_engine.OpenPlay (Source.TrackModel[0]);
                 } else {
-                    ((IBasicPlaybackController)this).Next (false);
+                    ((IBasicPlaybackController)this).Next (false, true);
                 }
             }
             return true;
