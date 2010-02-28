@@ -33,12 +33,14 @@ using Hyena.Json;
 
 namespace metrics
 {
-    public class MultiUserSample : Sample
+    public class MultiUserSample : Sample, Hyena.Data.ICacheableItem
     {
-        public static SqliteModelProvider<MultiUserSample> Provider;
-
-        [DatabaseColumn]
+        [DatabaseColumn (Index = "SampleUserIdIndex")]
         public string UserId;
+
+        // ICacheableItem
+        public object CacheEntryId { get; set; }
+        public long CacheModelId { get; set; }
 
         public MultiUserSample ()
         {
@@ -46,17 +48,21 @@ namespace metrics
 
         static DateTime value_dt;
         static TimeSpan value_span;
-        public static void Import (string user_id, string metric_name, string stamp, object val)
+        public static MultiUserSample Import (string user_id, string metric_name, string stamp, object val)
         {
             var sample = new MultiUserSample ();
             sample.UserId = user_id;
+
+            // TODO collapse various DAP and DAAP library stats?
             sample.MetricName = metric_name;
 
             DateTime stamp_dt;
-            if (DateTimeUtil.TryParseInvariant (stamp, out stamp_dt)) {
-                sample.Stamp = stamp_dt;
+            if (!DateTimeUtil.TryParseInvariant (stamp, out stamp_dt)) {
+                Hyena.Log.Error ("Invalid stamp: ", stamp);
+                return null;
             }
 
+            sample.Stamp = stamp_dt;
 
             string value_str = val as string;
             if (value_str != null) {
@@ -72,7 +78,7 @@ namespace metrics
                 sample.SetValue (val);
             }
 
-            Provider.Save (sample);
+            return sample;
         }
     }
 }

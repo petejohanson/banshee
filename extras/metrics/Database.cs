@@ -41,20 +41,25 @@ namespace metrics
 
         public static HyenaSqliteConnection Open ()
         {
+            HyenaSqliteCommand.LogAll = ApplicationContext.CommandLine.Contains ("debug-sql");
             var db =  new HyenaSqliteConnection (db_path);
             db.Execute ("PRAGMA cache_size = ?", 32768 * 2);
             db.Execute ("PRAGMA synchronous = OFF");
             db.Execute ("PRAGMA temp_store = MEMORY");
             db.Execute ("PRAGMA count_changes = OFF");
+            SampleProvider = new SqliteModelProvider<MultiUserSample> (db, "Samples", true);
             return db;
         }
 
         public static bool Exists { get { return System.IO.File.Exists (db_path); } }
 
+        public static SqliteModelProvider<MultiUserSample> SampleProvider { get; private set; }
+
         public static void Import ()
         {
             using (var db = Open ()) {
-                MultiUserSample.Provider = new SqliteModelProvider<MultiUserSample> (db, "Samples", true);
+                var sample_provider = SampleProvider;
+                db.BeginTransaction ();
                 foreach (var file in System.IO.Directory.GetFiles ("data")) {
                     Log.InformationFormat ("Importing {0}", file);
 
@@ -69,23 +74,21 @@ namespace metrics
                         }
 
                         var metrics = o["Metrics"] as JsonObject;
-                        db.BeginTransaction ();
                         try {
                             foreach (string metric_name in metrics.Keys) {
                                 var samples = metrics[metric_name] as JsonArray;
                                 foreach (JsonArray sample in samples) {
-                                    MultiUserSample.Import (user_id, metric_name, (string)sample[0], (object)sample[1]);
+                                    sample_provider.Save (MultiUserSample.Import (user_id, metric_name, (string)sample[0], (object)sample[1]));
                                 }
                             }
-                            db.CommitTransaction ();
                         } catch {
-                            db.RollbackTransaction ();
                             throw;
                         }
                     } catch (Exception e) {
                         Log.Exception (String.Format ("Failed to read {0}", file), e);
                     }
                 }
+                db.CommitTransaction ();
             }
         }
     }
@@ -123,6 +126,9 @@ namespace metrics
         public override object Final (object contextData)
         {
             var list = contextData as List<T>;
+            if (list == null || list.Count == 0)
+                return null;
+
             list.Sort ();
             return list[list.Count / 2];
         }
