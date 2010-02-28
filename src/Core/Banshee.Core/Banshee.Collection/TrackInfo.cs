@@ -303,6 +303,12 @@ namespace Banshee.Collection
         public virtual int BitRate { get; set; }
 
         [Exportable]
+        public virtual int SampleRate { get; set; }
+
+        [Exportable]
+        public virtual int BitsPerSample { get; set; }
+
+        [Exportable]
         public virtual int PlayCount { get; set; }
 
         [Exportable]

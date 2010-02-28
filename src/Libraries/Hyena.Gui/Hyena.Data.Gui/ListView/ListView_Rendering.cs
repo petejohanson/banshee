@@ -73,6 +73,7 @@ namespace Hyena.Data.Gui
             Gdk.Drawable drawable = cell_context != null ? cell_context.Drawable : null;
 
             if (pango_layout != null) {
+                pango_layout.FontDescription.Dispose ();
                 pango_layout.Dispose ();
                 pango_layout = null;
             }
@@ -116,8 +117,7 @@ namespace Hyena.Data.Gui
 
             PaintDraggingColumn (damage);
 
-            ((IDisposable)cairo_context.Target).Dispose ();
-            ((IDisposable)cairo_context).Dispose ();
+            CairoExtensions.DisposeContext (cairo_context);
 
             return true;
         }

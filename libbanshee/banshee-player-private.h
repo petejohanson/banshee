@@ -127,6 +127,7 @@ struct BansheePlayer {
     #ifdef GDK_WINDOWING_X11
     GstXOverlay *xoverlay;
     GdkWindow *video_window;
+    XID video_window_xid;
     #endif
        
     // Visualization State

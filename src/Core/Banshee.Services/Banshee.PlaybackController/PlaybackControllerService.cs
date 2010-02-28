@@ -61,7 +61,7 @@ namespace Banshee.PlaybackController
         private uint error_transition_id;
         private DateTime source_auto_set_at = DateTime.MinValue;
 
-        private PlaybackShuffleMode shuffle_mode;
+        private string shuffle_mode;
         private PlaybackRepeatMode repeat_mode;
         private bool stop_when_finished = false;
 
@@ -80,7 +80,7 @@ namespace Banshee.PlaybackController
         public event EventHandler NextSourceChanged;
         public event EventHandler TrackStarted;
         public event EventHandler Transition;
-        public event EventHandler<EventArgs<PlaybackShuffleMode>> ShuffleModeChanged;
+        public event EventHandler<EventArgs<string>> ShuffleModeChanged;
         public event EventHandler<EventArgs<PlaybackRepeatMode>> RepeatModeChanged;
 
         public PlaybackControllerService ()
@@ -292,7 +292,11 @@ namespace Banshee.PlaybackController
         bool IBasicPlaybackController.First ()
         {
             if (Source.Count > 0) {
-                player_engine.OpenPlay (Source.TrackModel[0]);
+                if (ShuffleMode == "off") {
+                    player_engine.OpenPlay (Source.TrackModel[0]);
+                } else {
+                    ((IBasicPlaybackController)this).Next (false);
+                }
             }
             return true;
         }
@@ -344,7 +348,7 @@ namespace Banshee.PlaybackController
         private TrackInfo QueryTrack (Direction direction, bool restart)
         {
             Log.DebugFormat ("Querying model for track to play in {0}:{1} mode", ShuffleMode, direction);
-            return ShuffleMode == PlaybackShuffleMode.Linear
+            return ShuffleMode == "off"
                 ? QueryTrackLinear (direction, restart)
                 : QueryTrackRandom (ShuffleMode, restart);
         }
@@ -375,12 +379,12 @@ namespace Banshee.PlaybackController
             }
         }
 
-        private TrackInfo QueryTrackRandom (PlaybackShuffleMode mode, bool restart)
+        private TrackInfo QueryTrackRandom (string shuffle_mode, bool restart)
         {
             var track_shuffler = Source.TrackModel as Banshee.Collection.Database.DatabaseTrackListModel;
             TrackInfo track = track_shuffler == null
                 ? Source.TrackModel.GetRandom (source_set_at)
-                : track_shuffler.GetRandom (source_set_at, mode, restart, last_was_skipped, Banshee.Collection.Database.Shuffler.Playback);
+                : track_shuffler.GetRandom (source_set_at, shuffle_mode, restart, last_was_skipped, Banshee.Collection.Database.Shuffler.Playback);
             // Reset to default of true, only ever set to false by EosTransition
             last_was_skipped = true;
             return track;
@@ -489,13 +493,13 @@ namespace Banshee.PlaybackController
             }
         }
 
-        public PlaybackShuffleMode ShuffleMode {
+        public string ShuffleMode {
             get { return shuffle_mode; }
             set {
                 shuffle_mode = value;
-                EventHandler<EventArgs<PlaybackShuffleMode>> handler = ShuffleModeChanged;
+                var handler = ShuffleModeChanged;
                 if (handler != null) {
-                    handler (this, new EventArgs<PlaybackShuffleMode> (shuffle_mode));
+                    handler (this, new EventArgs<string> (shuffle_mode));
                 }
             }
         }

@@ -26,7 +26,7 @@ RESOURCES =  \
 	Banshee.NotificationArea.addin.xml \
 	Resources/NotificationAreaMenu.xml
 
-if ENABLE_OSX
+if PLATFORM_DARWIN
 EXTRA_DIST = $(SOURCES) $(RESOURCES)
 else
 include $(top_srcdir)/build/build.mk

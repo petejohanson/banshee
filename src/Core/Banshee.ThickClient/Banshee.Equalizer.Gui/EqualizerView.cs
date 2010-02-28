@@ -6,7 +6,7 @@
 //   Ivan N. Zlatev <contact i-nZ.net>
 //   Alexander Hixon <hixon.alexander@mediati.org>
 //
-// Copyright (C) 2006-2007 Novell, Inc.
+// Copyright 2006-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -48,6 +48,7 @@ namespace Banshee.Equalizer.Gui
         private EqualizerBandScale amplifier_scale;
         private EqualizerSetting active_eq;
         private int [] range = new int[3];
+        private bool loading;
 
         public event EqualizerChangedEventHandler EqualizerChanged;
         public event AmplifierChangedEventHandler AmplifierChanged;
@@ -128,10 +129,14 @@ namespace Banshee.Equalizer.Gui
 
         private void OnEqualizerValueChanged (object o, EventArgs args)
         {
+            if (loading) {
+                return;
+            }
+
             EqualizerBandScale scale = o as EqualizerBandScale;
 
             if (active_eq != null) {
-                active_eq.SetGain (scale.Band, (double)scale.Value / 10);
+                active_eq.SetGain (scale.Band, (double)scale.Value / 10, true);
             }
 
             if (EqualizerChanged != null) {
@@ -141,6 +146,10 @@ namespace Banshee.Equalizer.Gui
 
         private void OnAmplifierValueChanged (object o, EventArgs args)
         {
+            if (loading) {
+                return;
+            }
+
             EqualizerBandScale scale = o as EqualizerBandScale;
             if (active_eq != null) {
                 active_eq.AmplifierLevel = (double) (scale.Value / 10.0);
@@ -176,7 +185,7 @@ namespace Banshee.Equalizer.Gui
             }
         }
 
-        public void SetBand(uint band, double value)
+        public void SetBand (uint band, double value)
         {
             band_scales[band].Value = (int) (value * 10);
         }
@@ -189,19 +198,28 @@ namespace Banshee.Equalizer.Gui
         public EqualizerSetting EqualizerSetting {
             get { return active_eq; }
             set {
+                if (active_eq == value) {
+                    return;
+                }
+
+                loading = true;
                 active_eq = value;
 
                 if (active_eq == null) {
                     AmplifierLevel = 0;
+                    loading = false;
                     return;
                 }
 
+                amplifier_scale.Sensitive = !value.IsReadOnly;
                 AmplifierLevel = active_eq.AmplifierLevel;
 
-                for (int i = 0; i < active_eq.BandCount; i++) {
-                    uint x = (uint) i;
-                    SetBand (x, active_eq[x]);
+                for (uint i = 0; i < active_eq.BandCount; i++) {
+                    band_scales[i].Sensitive = !value.IsReadOnly;
+                    SetBand (i, active_eq[i]);
                 }
+
+                loading = false;
             }
         }
     }

@@ -39,6 +39,7 @@ using Banshee.MediaProfiles.Gui;
 using Banshee.Widgets;
 
 using Hyena;
+using Hyena.Gui;
 using Hyena.Widgets;
 using Hyena.Gui.Theming;
 
@@ -85,7 +86,7 @@ namespace Banshee.Dap.Gui
                 DrawFrame (cr, evnt.Area);
                 return base.OnExposeEvent (evnt);
             } finally {
-                ((IDisposable)cr).Dispose ();
+                CairoExtensions.DisposeContext (cr);
             }
         }
 

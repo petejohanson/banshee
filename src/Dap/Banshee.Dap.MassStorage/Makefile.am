@@ -9,6 +9,7 @@ SOURCES =  \
 	Banshee.Dap.MassStorage/CustomMassStorageDevice.cs \
 	Banshee.Dap.MassStorage/DeviceMapper.cs \
 	Banshee.Dap.MassStorage/KeyValueParser.cs \
+	Banshee.Dap.MassStorage/MaemoDevice.cs \
 	Banshee.Dap.MassStorage/MassStorageDevice.cs \
 	Banshee.Dap.MassStorage/MassStorageSource.cs \
 	Banshee.Dap.MassStorage/WebOSDevice.cs

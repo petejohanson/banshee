@@ -90,16 +90,19 @@ namespace Banshee.Gui.Widgets
         protected override void OnThemeChanged ()
         {
             if (first_line_layout != null) {
+                first_line_layout.FontDescription.Dispose ();
                 first_line_layout.Dispose ();
                 first_line_layout = null;
             }
 
             if (second_line_layout != null) {
+                second_line_layout.FontDescription.Dispose ();
                 second_line_layout.Dispose ();
                 second_line_layout = null;
             }
 
             if (third_line_layout != null) {
+                third_line_layout.FontDescription.Dispose ();
                 third_line_layout.Dispose ();
                 third_line_layout = null;
             }

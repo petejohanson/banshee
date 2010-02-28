@@ -10,7 +10,6 @@
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -21,14 +20,9 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +30,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
@@ -72,6 +67,7 @@
     <Compile Include="Banshee.Dap.MassStorage\CustomMassStorageDevice.cs" />
     <Compile Include="Banshee.Dap.MassStorage\AmazonMp3GroupSource.cs" />
     <Compile Include="Banshee.Dap.MassStorage\WebOSDevice.cs" />
+    <Compile Include="Banshee.Dap.MassStorage\MaemoDevice.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Dap.MassStorage.addin.xml">

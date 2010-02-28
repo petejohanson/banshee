@@ -93,7 +93,7 @@ namespace Banshee.Dap.MassStorage
         };
 
         private static string [] icon_names = new string [] {
-            DapSource.FallbackIcon
+            "phone-palm-pre", DapSource.FallbackIcon
         };
 
         private AmazonMp3GroupSource amazon_source;

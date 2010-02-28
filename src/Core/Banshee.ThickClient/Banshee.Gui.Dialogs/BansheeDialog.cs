@@ -41,14 +41,18 @@ namespace Banshee.Gui.Dialogs
             get { return accel_group; }
         }
 
+        public BansheeDialog () : this (null, null)
+        {
+        }
+
         public BansheeDialog (string title) : this (title, null)
         {
         }
 
         public BansheeDialog (string title, Window parent) : base ()
         {
-            Title = title;
-            BorderWidth = 5;
+            Title = title ?? String.Empty;
+            BorderWidth = 12;
             Visible = false;
             HasSeparator = false;
 
@@ -66,6 +70,11 @@ namespace Banshee.Gui.Dialogs
 
             accel_group = new AccelGroup ();
             AddAccelGroup (accel_group);
+        }
+
+        public new ResponseType Run ()
+        {
+            return (ResponseType)base.Run ();
         }
 
         public Button AddDefaultCloseButton ()

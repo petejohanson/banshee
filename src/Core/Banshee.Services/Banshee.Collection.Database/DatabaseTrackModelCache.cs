@@ -41,9 +41,14 @@ namespace Banshee.Collection.Database
         {
         }
 
-        public new TrackInfo GetSingle (string random_fragment, params object [] args)
+        public new TrackInfo GetSingleWhere (string conditionOrderFragment, params object [] args)
         {
-            return base.GetSingle (random_fragment, args);
+            return base.GetSingleWhere (conditionOrderFragment, args);
+        }
+
+        public new TrackInfo GetSingle (string selectFragment, string fromFragment, string conditionOrderFragment, params object [] args)
+        {
+            return base.GetSingle (selectFragment, fromFragment, conditionOrderFragment, args);
         }
 
         public new TrackInfo GetValue (long index)

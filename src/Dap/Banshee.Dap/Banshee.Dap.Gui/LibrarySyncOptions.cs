@@ -106,6 +106,8 @@ namespace Banshee.Dap.Gui
             foreach (var child in library_sync.Library.Children) {
                 RemovePlaylist (child, true);
             }
+
+            combo.Dispose ();
         }
 
         private void AddPlaylist (Source source)

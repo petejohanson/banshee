@@ -34,6 +34,7 @@ using Hyena.Data.Sqlite;
 
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
+using Mono.Unix;
 
 namespace Banshee.Collection.Database
 {
@@ -43,8 +44,12 @@ namespace Banshee.Collection.Database
         private HyenaSqliteCommand query;
         private int? id;
 
-        public RandomByArtist (Shuffler shuffler) : base (PlaybackShuffleMode.Artist, shuffler)
+        public RandomByArtist () : base ("artist")
         {
+            Label = Catalog.GetString ("Shuffle by A_rtist");
+            Adverb = Catalog.GetString ("by artist");
+            Description = Catalog.GetString ("Play all songs by an artist, then randomly choose another artist");
+
             Condition = "CoreAlbums.ArtistID = ?";
             OrderBy = "CoreTracks.Year, CoreTracks.AlbumID ASC, Disc ASC, TrackNumber ASC";
         }
@@ -76,7 +81,7 @@ namespace Banshee.Collection.Database
 
         public override TrackInfo GetPlaybackTrack (DateTime after)
         {
-            return id == null ? null : Cache.GetSingle (track_condition, (int)id, after, after);
+            return id == null ? null : Cache.GetSingleWhere (track_condition, (int)id, after, after);
         }
 
         public override DatabaseTrackInfo GetShufflerTrack (DateTime after)

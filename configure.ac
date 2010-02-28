@@ -2,7 +2,7 @@ dnl Granularly define the version components
 dnl Remember to also update the Display Version
 m4_define([banshee_version_major], [1])
 m4_define([banshee_version_minor], [5])
-m4_define([banshee_version_micro], [3])
+m4_define([banshee_version_micro], [4])
 
 dnl set to 0 when doing an official release
 m4_define([banshee_version_pre_release], [0])
@@ -23,7 +23,7 @@ m4_define([banshee_version],
 
 dnl this can sometimes differ manually
 m4_define([banshee_display_version],
-	["1.6 Beta 4"])
+	["1.6 Beta 5"])
 
 m4_define([banshee_api_version],
 	[banshee_version_major.banshee_version_minor])
@@ -209,8 +209,6 @@ AC_SUBST(BUILD_HOST_OS)
 AC_SUBST(BUILD_HOST_CPU)
 AC_SUBST(BUILD_TIME)
 
-AM_CONDITIONAL([PLATFORM_DARWIN], [test "x${host_os%${host_os#??????}}" = "xdarwin"])
-
 SHAVE_INIT([build/m4/shave], [enable])
 
 dnl generated files
@@ -323,6 +321,8 @@ src/Extensions/Banshee.Sample/Makefile
 src/Extensions/Banshee.Torrent/Makefile
 src/Extensions/Banshee.RemoteAudio/Makefile
 src/Extensions/Banshee.Wikipedia/Makefile
+
+extras/metrics/Makefile
 ])
 
 cat <<EOF

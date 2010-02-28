@@ -38,6 +38,8 @@ namespace Hyena
 
     public static class ApplicationContext
     {
+        public static readonly DateTime StartedAt = DateTime.Now;
+
         static ApplicationContext ()
         {
             Log.Debugging = Debugging;

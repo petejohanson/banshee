@@ -11,7 +11,6 @@
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -21,14 +20,9 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +30,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Hyena.Gui\Hyena.Gui.csproj">
@@ -63,6 +58,8 @@
       <Name>Banshee.Widgets</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="atk-sharp" />
     <Reference Include="gdk-sharp" />
     <Reference Include="glade-sharp" />
@@ -101,17 +98,10 @@
     <Reference Include="taglib-sharp">
       <HintPath>..\..\..\winbin\taglib-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Posix" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Posix">
-      <HintPath>..\..\..\winbin\Mono.Posix.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Cairo" />
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="System.Xml" />
-    <Reference Include="taglib-sharp, Version=2.0.3.1, Culture=neutral, PublicKeyToken=db62eba44689b5b0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\browser-album-cover.png">
@@ -125,9 +115,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\core-ui-actions-layout.xml">
       <LogicalName>core-ui-actions-layout.xml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\banshee-dialogs.glade">
-      <LogicalName>banshee-dialogs.glade</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Banshee.ThickClient.addin.xml">
       <LogicalName>Banshee.ThickClient.addin.xml</LogicalName>
@@ -151,8 +138,6 @@
     <Compile Include="Banshee.Gui\IconThemeUtils.cs" />
     <Compile Include="Banshee.Gui.Dialogs\ConfirmShutdownDialog.cs" />
     <Compile Include="Banshee.Gui.Dialogs\ErrorListDialog.cs" />
-    <Compile Include="Banshee.Gui.Dialogs\GladeDialog.cs" />
-    <Compile Include="Banshee.Gui.Dialogs\GladeWindow.cs" />
     <Compile Include="Banshee.Gui\GtkElementsService.cs" />
     <Compile Include="Banshee.Gui\BansheeIconFactory.cs" />
     <Compile Include="Banshee.Gui\InterfaceActionService.cs" />

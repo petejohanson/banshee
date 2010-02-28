@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Hal", "src\Backends
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.NowPlaying.X11", "src\Backends\Banshee.NowPlaying.X11\Banshee.NowPlaying.X11.csproj", "{46C02D13-5ED4-4A14-9ACF-125B1E4B6EB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Osx", "src\Backends\Banshee.Osx\Banshee.Osx.csproj", "{379034DF-F34D-409B-8DE9-097BE78E37C8}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dap", "Dap", "{057215DF-2773-4B42-8B8A-64F2CF7764F2}"
 	ProjectSection(SolutionItems) = postProject
 	EndProjectSection
@@ -86,13 +88,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Lastfm", "src\Exten
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Wikipedia", "src\Extensions\Banshee.Wikipedia\Banshee.Wikipedia.csproj", "{BF5D1722-269B-452E-B577-AEBA0CB894BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.LibraryWatcher", "src\Extensions\Banshee.LibraryWatcher\Banshee.LibraryWatcher.csproj", "{49CA3F27-0BB6-428d-8B3A-20232493652E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.NowPlaying", "src\Extensions\Banshee.NowPlaying\Banshee.NowPlaying.csproj", "{16FB0D3A-53FA-4B8E-B02B-4AF66E87829A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.Bookmarks", "src\Extensions\Banshee.Bookmarks\Banshee.Bookmarks.csproj", "{0130499B-8A93-4CD9-8F3C-593B231609C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.AudioCd", "src\Extensions\Banshee.AudioCd\Banshee.AudioCd.csproj", "{F38B53BA-8F85-4DC6-9B94-029C1CF96F24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.LibraryWatcher", "src\Extensions\Banshee.LibraryWatcher\Banshee.LibraryWatcher.csproj", "{49CA3F27-0BB6-428d-8B3A-20232493652E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee.MiniMode", "src\Extensions\Banshee.MiniMode\Banshee.MiniMode.csproj", "{FCC1AE87-E10B-4B47-8ADE-D5F447E48518}"
 EndProject
@@ -142,10 +144,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Data.Sqlite", "src\Lib
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libbanshee", "libbanshee\libbanshee.cproj", "{6B781836-AB65-49EF-BECD-CCC193C5D589}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metrics", "extras\metrics\metrics.csproj", "{6D17167C-AC3F-4D40-A652-46627276A9A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Windows|Any CPU = Windows|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0092BF81-ECAB-4D0C-8691-6D19FB7E04A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -199,6 +204,12 @@ Global
 		{371ECE68-8D0F-4AFE-AC8F-147167AE3674}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{371ECE68-8D0F-4AFE-AC8F-147167AE3674}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
 		{371ECE68-8D0F-4AFE-AC8F-147167AE3674}.Windows|Any CPU.Build.0 = Windows|Any CPU
+		{379034DF-F34D-409B-8DE9-097BE78E37C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{379034DF-F34D-409B-8DE9-097BE78E37C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{379034DF-F34D-409B-8DE9-097BE78E37C8}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{379034DF-F34D-409B-8DE9-097BE78E37C8}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{379034DF-F34D-409B-8DE9-097BE78E37C8}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
+		{379034DF-F34D-409B-8DE9-097BE78E37C8}.Windows|Any CPU.Build.0 = Windows|Any CPU
 		{3935AE8A-E283-4C0D-9094-7435A937DC90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3935AE8A-E283-4C0D-9094-7435A937DC90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3935AE8A-E283-4C0D-9094-7435A937DC90}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
@@ -219,6 +230,10 @@ Global
 		{471E44F3-B404-413B-8E95-BCCA70C6E834}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{471E44F3-B404-413B-8E95-BCCA70C6E834}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
 		{471E44F3-B404-413B-8E95-BCCA70C6E834}.Windows|Any CPU.Build.0 = Windows|Any CPU
+		{49CA3F27-0BB6-428d-8B3A-20232493652E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49CA3F27-0BB6-428d-8B3A-20232493652E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49CA3F27-0BB6-428d-8B3A-20232493652E}.Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{49CA3F27-0BB6-428d-8B3A-20232493652E}.Windows|Any CPU.Build.0 = Debug|Any CPU
 		{4B890CB0-F5C8-4B1B-A1B8-3813BF5126C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B890CB0-F5C8-4B1B-A1B8-3813BF5126C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B890CB0-F5C8-4B1B-A1B8-3813BF5126C0}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
@@ -243,6 +258,12 @@ Global
 		{6B781836-AB65-49EF-BECD-CCC193C5D589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B781836-AB65-49EF-BECD-CCC193C5D589}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B781836-AB65-49EF-BECD-CCC193C5D589}.Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D17167C-AC3F-4D40-A652-46627276A9A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D17167C-AC3F-4D40-A652-46627276A9A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D17167C-AC3F-4D40-A652-46627276A9A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D17167C-AC3F-4D40-A652-46627276A9A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D17167C-AC3F-4D40-A652-46627276A9A1}.Windows|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D17167C-AC3F-4D40-A652-46627276A9A1}.Windows|Any CPU.Build.0 = Debug|Any CPU
 		{6FF6F049-9DAB-48A7-BC4B-F7F3ED0EBA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6FF6F049-9DAB-48A7-BC4B-F7F3ED0EBA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FF6F049-9DAB-48A7-BC4B-F7F3ED0EBA63}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
@@ -289,6 +310,7 @@ Global
 		{B574AEB0-59F1-4FB7-A91A-8E5A651970CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B574AEB0-59F1-4FB7-A91A-8E5A651970CE}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
 		{BB1D1D81-7A74-4183-B7B1-3E78B32D42F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB1D1D81-7A74-4183-B7B1-3E78B32D42F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB1D1D81-7A74-4183-B7B1-3E78B32D42F1}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
 		{BC2E94DF-7A82-461E-BE7C-60E41ADC3562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC2E94DF-7A82-461E-BE7C-60E41ADC3562}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -314,6 +336,7 @@ Global
 		{C856EFD8-E812-4E61-8B76-E3583D94C233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C856EFD8-E812-4E61-8B76-E3583D94C233}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C856EFD8-E812-4E61-8B76-E3583D94C233}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
+		{C856EFD8-E812-4E61-8B76-E3583D94C233}.Windows|Any CPU.Build.0 = Windows|Any CPU
 		{C9E904B1-1141-49F4-BE84-85222A8E8A79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9E904B1-1141-49F4-BE84-85222A8E8A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9E904B1-1141-49F4-BE84-85222A8E8A79}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
@@ -335,10 +358,6 @@ Global
 		{F38B53BA-8F85-4DC6-9B94-029C1CF96F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F38B53BA-8F85-4DC6-9B94-029C1CF96F24}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
 		{F38B53BA-8F85-4DC6-9B94-029C1CF96F24}.Windows|Any CPU.Build.0 = Windows|Any CPU
-		{49CA3F27-0BB6-428d-8B3A-20232493652E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{49CA3F27-0BB6-428d-8B3A-20232493652E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{49CA3F27-0BB6-428d-8B3A-20232493652E}.Windows|Any CPU.ActiveCfg = Debug|Any CPU
-		{49CA3F27-0BB6-428d-8B3A-20232493652E}.Windows|Any CPU.Build.0 = Debug|Any CPU
 		{FCC1AE87-E10B-4B47-8ADE-D5F447E48518}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCC1AE87-E10B-4B47-8ADE-D5F447E48518}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCC1AE87-E10B-4B47-8ADE-D5F447E48518}.Windows|Any CPU.ActiveCfg = Windows|Any CPU
@@ -367,6 +386,7 @@ Global
 		{C1065582-4F64-4810-8C35-E7EB2D2A432C} = {A03B194F-F644-4E95-A602-87200029240D}
 		{3B7DD288-5546-4907-B302-0CD0271D9713} = {A03B194F-F644-4E95-A602-87200029240D}
 		{46C02D13-5ED4-4A14-9ACF-125B1E4B6EB5} = {A03B194F-F644-4E95-A602-87200029240D}
+		{379034DF-F34D-409B-8DE9-097BE78E37C8} = {A03B194F-F644-4E95-A602-87200029240D}
 		{BC2E94DF-7A82-461E-BE7C-60E41ADC3562} = {057215DF-2773-4B42-8B8A-64F2CF7764F2}
 		{6B73E278-23FB-4A59-9B44-AB7F0212B936} = {057215DF-2773-4B42-8B8A-64F2CF7764F2}
 		{3935AE8A-E283-4C0D-9094-7435A937DC90} = {057215DF-2773-4B42-8B8A-64F2CF7764F2}
@@ -406,8 +426,6 @@ Global
 		{BB1D1D81-7A74-4183-B7B1-3E78B32D42F1} = {4F47D6F1-4047-4A89-AE85-3AE5EF9F2961}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		version = 1.3
-		outputpath = .
 		StartupItem = src\Clients\Nereid\Nereid.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
@@ -421,8 +439,31 @@ Global
 		$3.LineAlign = 0
 		$2.inheritsSet = Mono
 		$0.DotNetNamingPolicy = $4
-		$4.DirectoryNamespaceAssociation = None
+		$4.DirectoryNamespaceAssociation = Flat
 		$4.ResourceNamePolicy = FileName
+		$0.TextStylePolicy = $5
+		$5.FileWidth = 120
+		$5.NoTabsAfterNonTabs = True
+		$5.RemoveTrailingWhitespace = True
+		$5.inheritsSet = VisualStudio
+		$5.inheritsScope = text/plain
+		$5.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $6
+		$6.EnumBraceStyle = EndOfLine
+		$6.IfElseBraceForcement = AddBraces
+		$6.ForBraceForcement = AddBraces
+		$6.ForEachBraceForcement = AddBraces
+		$6.WhileBraceForcement = AddBraces
+		$6.UsingBraceForcement = AddBraces
+		$6.FixedBraceForcement = AddBraces
+		$6.inheritsSet = Mono
+		$6.inheritsScope = text/x-csharp
+		$6.scope = text/x-csharp
+		$0.StandardHeader = $7
+		$7.Text = @\n${FileName}\n\nAuthor:\n  ${AuthorName} <${AuthorEmail}>\n\nCopyright (c) ${Year} ${CopyrightHolder}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the "Software"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.
+		$7.inheritsSet = MITX11License
+		version = 1.3
+		outputpath = .
 		name = Banshee
 	EndGlobalSection
 EndGlobal

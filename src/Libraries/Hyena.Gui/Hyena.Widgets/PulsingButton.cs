@@ -108,7 +108,7 @@ namespace Hyena.Widgets
             cr.Fill ();
             fill.Destroy ();
 
-            ((IDisposable)cr).Dispose ();
+            CairoExtensions.DisposeContext (cr);
             return base.OnExposeEvent (evnt);
         }
 

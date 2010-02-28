@@ -3,8 +3,9 @@
 //
 // Authors:
 //   Gabriel Burt <gburt@novell.com>
+//   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2007-2008 Novell, Inc.
+// Copyright 2007-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -29,7 +30,6 @@
 using System;
 using System.Collections;
 using Gtk;
-using Glade;
 using Mono.Unix;
 
 using Hyena;
@@ -42,49 +42,68 @@ using Banshee.Gui.Dialogs;
 
 namespace Banshee.Lastfm.Radio
 {
-    public class StationEditor : GladeDialog
+    public class StationEditor : BansheeDialog
     {
-        const string dialog_name = "StationSourceEditorDialog";
-        const string dialog_resource = "lastfm.glade";
-
         private LastfmSource lastfm;
         private StationSource source;
 
-        [Widget] private Gtk.ComboBox type_combo;
-        [Widget] private Gtk.Entry arg_entry;
-        [Widget] private Gtk.Label arg_label;
-        [Widget] private Gtk.Button ok_button;
+        private Gtk.ComboBox type_combo;
+        private Gtk.Entry arg_entry;
+        private Gtk.Label arg_label;
 
-        public StationEditor (LastfmSource lastfm, StationSource source) : base (dialog_name, new Glade.XML (
-            System.Reflection.Assembly.GetExecutingAssembly (), dialog_resource, dialog_name, Banshee.ServiceStack.Application.InternalName))
+        public StationEditor (LastfmSource lastfm, StationSource source)
         {
             this.lastfm = lastfm;
             this.source = source;
-            Arg = source.Arg;
             Initialize ();
-            Dialog.Title = Catalog.GetString ("Edit Station");
+            Title = Catalog.GetString ("Edit Station");
+            Arg = source.Arg;
         }
 
-        public StationEditor (LastfmSource lastfm) : base (dialog_name, new Glade.XML (
-            System.Reflection.Assembly.GetExecutingAssembly (), dialog_resource, dialog_name, Banshee.ServiceStack.Application.InternalName))
+        public StationEditor (LastfmSource lastfm)
         {
             this.lastfm = lastfm;
             Initialize ();
-            Dialog.Title = Catalog.GetString ("New Station");
+            Title = Catalog.GetString ("New Station");
         }
 
         private void Initialize ()
         {
-            // Pressing enter should save and close the dialog
-            //Dialog.DefaultResponse = Gtk.ResponseType.Ok;
-            ok_button.HasDefault = true;
+            DefaultResponse = Gtk.ResponseType.Ok;
+            AddStockButton (Stock.Cancel, ResponseType.Cancel);
+            AddStockButton (Stock.Ok, ResponseType.Ok, true);
 
-            Gdk.Geometry limits = new Gdk.Geometry ();
-            limits.MinWidth = Dialog.SizeRequest ().Width;
-            limits.MaxWidth = Gdk.Screen.Default.Width;
-            limits.MinHeight = -1;
-            limits.MaxHeight = -1;
-            Dialog.SetGeometryHints (Dialog, limits, Gdk.WindowHints.MaxSize | Gdk.WindowHints.MinSize);
+            SetGeometryHints (this, new Gdk.Geometry () {
+                    MinWidth = SizeRequest ().Width,
+                    MaxWidth = Gdk.Screen.Default.Width,
+                    MinHeight = -1,
+                    MaxHeight = -1
+                }, Gdk.WindowHints.MaxSize | Gdk.WindowHints.MinSize);
+
+            var table = new Table (2, 2, false) {
+                RowSpacing = 12,
+                ColumnSpacing = 6
+            };
+
+            table.Attach (new Label () {
+                    Text = Catalog.GetString ("Station _Type:"),
+                    UseUnderline = true,
+                    Xalign = 0.0f
+                }, 0, 1, 0, 1, AttachOptions.Fill, AttachOptions.Shrink, 0, 0);
+
+            table.Attach (arg_label = new Label () {
+                    Xalign = 0.0f
+                }, 0, 1, 1, 2, AttachOptions.Fill, AttachOptions.Shrink, 0, 0);
+
+            table.Attach (type_combo = ComboBox.NewText (),
+                1, 2, 0, 1, AttachOptions.Fill | AttachOptions.Expand, AttachOptions.Shrink, 0, 0);
+
+            table.Attach (arg_entry = new Entry (),
+                1, 2, 1, 2, AttachOptions.Fill | AttachOptions.Expand, AttachOptions.Shrink, 0, 0);
+
+            VBox.PackStart (table, true, true, 0);
+            VBox.Spacing = 12;
+            VBox.ShowAll ();
 
             type_combo.RemoveText (0);
             int active_type = 0;
@@ -101,25 +120,20 @@ namespace Banshee.Lastfm.Radio
 
             type_combo.Changed += HandleTypeChanged;
             type_combo.Active = active_type;
-            ok_button.Sensitive = true;
             type_combo.GrabFocus ();
         }
 
         public void RunDialog ()
         {
             Run ();
-            Dialog.Destroy ();
+            Destroy ();
         }
 
-        public override ResponseType Run ()
+        protected override void OnResponse (ResponseType response)
         {
-            Dialog.ShowAll ();
-
-            ResponseType response = (ResponseType)Dialog.Run ();
-
             if (response == ResponseType.Ok) {
                 string name = SourceName;
-                StationType type = Type;
+                StationType type = StationType.FindByLabel (type_combo.ActiveText);
                 string arg = Arg;
 
                 ThreadAssist.Spawn (delegate {
@@ -137,8 +151,6 @@ namespace Banshee.Lastfm.Radio
                     }
                 });
             }
-
-            return response;
         }
 
         private void HandleTypeChanged (object sender, EventArgs args)
@@ -152,10 +164,6 @@ namespace Banshee.Lastfm.Radio
 
         private string SourceName {
             get { return source != null ? source.Name : arg_entry.Text; }
-        }
-
-        private StationType Type {
-            get { return StationType.FindByLabel (type_combo.ActiveText); }
         }
 
         private string Arg {

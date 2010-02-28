@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2006-2007 Novell, Inc.
+// Copyright 2006-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,48 +30,53 @@ using System;
 using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
-using Glade;
 
 using Banshee.Base;
 using Banshee.Configuration;
 
 namespace Banshee.Gui.Dialogs
 {
-    public class OpenLocationDialog : GladeDialog
+    public class OpenLocationDialog : BansheeDialog
     {
-        [Widget] private HBox location_box;
         private ComboBoxEntry address_entry;
-        private Button browse_button;
 
         private List<string> history = new List<string>();
 
-        public OpenLocationDialog() : base("OpenLocationDialog")
+        public OpenLocationDialog () : base (Catalog.GetString ("Open Location"))
         {
-            address_entry = ComboBoxEntry.NewText();
-            address_entry.Show();
-            address_entry.Entry.Activated += OnEntryActivated;
+            var location_box = new HBox () {
+                Spacing = 6
+            };
 
-            browse_button = new Button(Catalog.GetString("Browse..."));
+            address_entry = ComboBoxEntry.NewText();
+            address_entry.Entry.Activated += (o, e) => Respond (ResponseType.Ok);
+
+            var browse_button = new Button(Catalog.GetString("Browse..."));
             browse_button.Clicked += OnBrowseClicked;
-            browse_button.Show();
 
             location_box.PackStart(address_entry, true, true, 0);
             location_box.PackStart(browse_button, false, false, 0);
 
-            Dialog.Response += OnResponse;
+            VBox.Spacing = 6;
+            VBox.PackStart (new Label () {
+                Xalign = 0.0f,
+                Text = Catalog.GetString (
+                    "Enter the address of the file you would like to open:")
+                }, false, false, 0);
+            VBox.PackStart (location_box, false, false, 0);
+            VBox.ShowAll ();
+
+            AddStockButton (Stock.Cancel, ResponseType.Cancel);
+            AddStockButton (Stock.Open, ResponseType.Ok, true);
+
             LoadHistory();
 
             address_entry.Entry.HasFocus = true;
         }
 
-        private void OnEntryActivated(object o, EventArgs args)
+        protected override void OnResponse (ResponseType responseId)
         {
-            Dialog.Respond(ResponseType.Ok);
-        }
-
-        private void OnResponse(object o, ResponseArgs args)
-        {
-            if(args.ResponseId != ResponseType.Ok) {
+            if (responseId != ResponseType.Ok) {
                 return;
             }
 

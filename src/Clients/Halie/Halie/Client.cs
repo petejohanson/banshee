@@ -143,6 +143,17 @@ namespace Halie
                         player.Position = (uint)Math.Round (Double.Parse (arg.Value) * 1000);
                         break;
                     case "set-volume":
+                        if (arg.Value.Length > 1) {
+                            if (arg.Value[0] == '+') {
+                                player.Volume += UInt16.Parse (arg.Value.Substring (1));
+                                break;
+                            }
+                            if (arg.Value[0] == '-') {
+                                var dec = UInt16.Parse (arg.Value.Substring (1));
+                                player.Volume = (ushort)(player.Volume > dec ? player.Volume - dec : 0);
+                                break;
+                            }
+                        }
                         player.Volume = UInt16.Parse (arg.Value);
                         break;
                     case "set-rating":

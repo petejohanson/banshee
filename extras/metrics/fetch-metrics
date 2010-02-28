@@ -1,0 +1,11 @@
+#!/bin/bash
+
+rm -fr data
+mkdir data/
+ssh bansheeweb@banshee-project.org "cd download.banshee-project.org/metrics/data; tar -cf metrics.tar *.gz"
+scp bansheeweb@banshee-project.org:~/download.banshee-project.org/metrics/data/metrics.tar data/
+ssh bansheeweb@banshee-project.org "cd download.banshee-project.org/metrics/data; rm metrics.tar"
+cd data
+tar -xvf metrics.tar
+rm metrics.tar
+gunzip *.gz

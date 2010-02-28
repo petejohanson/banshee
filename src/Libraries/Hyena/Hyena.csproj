@@ -15,7 +15,6 @@
     <NoStdLib>False</NoStdLib>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -26,14 +25,10 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
+    <DefineConstants>ENABLE_TESTS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +36,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Hyena.Data\BaseListModel.cs" />
@@ -118,7 +114,6 @@
     <Compile Include="Hyena.Data.Sqlite\SqliteUtils.cs" />
     <Compile Include="Hyena\Log.cs" />
     <Compile Include="Hyena\CryptoUtil.cs" />
-    <Compile Include="Hyena\PlatformUtil.cs" />
     <Compile Include="Hyena.Query\IntegerKeyedObjectQueryValue.cs" />
     <Compile Include="Hyena\ConsoleCrayon.cs" />
     <Compile Include="Hyena\ApplicationContext.cs" />
@@ -167,6 +162,18 @@
     <Compile Include="Hyena\EventArgs.cs" />
     <Compile Include="System.Web\Helpers.cs" />
     <Compile Include="System.Web\HttpUtility.cs" />
+    <Compile Include="Hyena\PlatformDetection.cs" />
+    <Compile Include="Hyena.Metrics\Sample.cs" />
+    <Compile Include="Hyena.Metrics\MetricsCollection.cs" />
+    <Compile Include="Hyena.Metrics\HttpPoster.cs" />
+    <Compile Include="Hyena.Metrics\Metric.cs" />
+    <Compile Include="Hyena.Metrics\DbSampleStore.cs" />
+    <Compile Include="Hyena.Metrics\ISampleStore.cs" />
+    <Compile Include="Hyena.Metrics\Tests\MetricsTests.cs" />
+    <Compile Include="Hyena.Metrics\MemorySampleStore.cs" />
+    <Compile Include="Hyena.Json\Tests\SerializerTests.cs" />
+    <Compile Include="Hyena.Json\Serializer.cs" />
+    <Compile Include="Hyena\Tests\DateTimeUtilTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Posix">
@@ -181,6 +188,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mono.Data.Sqlite\Mono.Data.Sqlite.csproj">

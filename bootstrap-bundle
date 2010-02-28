@@ -41,9 +41,10 @@ CONFIGURE_ARGS="
 	--disable-ipod
 	--disable-boo
 	--disable-gnome
+	--disable-webkit
 	--disable-docs
 "
-[ $profile_name = darwin ] && CONFIGURE_ARGS="$CONFIGURE_ARGS --enable-osx"
+
 ./autogen.sh --prefix="$BUILD_PREFIX" $CONFIGURE_ARGS
 
 cat <<EOF

@@ -200,25 +200,8 @@ namespace Banshee.MediaEngine
                 MetadataService.Instance.Lookup (CurrentTrack);
             } else if (args.Current == PlayerState.Ready) {
                 // Enable our preferred equalizer if it exists and was enabled last time.
-                if (SupportsEqualizer && EqualizerSetting.EnabledSchema.Get ()) {
-                    string name = EqualizerSetting.PresetSchema.Get();
-                    if (!String.IsNullOrEmpty (name)) {
-                        // Don't use EqualizerManager.Instance - used by the eq dialog window.
-                        EqualizerManager manager = new EqualizerManager (EqualizerManager.Instance.Path);
-                        manager.Load ();
-                        EqualizerSetting equalizer = null;
-                        foreach (EqualizerSetting eq in manager) {
-                            if (eq.Name == name) {
-                                equalizer = eq;
-                                break;
-                            }
-                        }
-
-                        if (equalizer != null) {
-                            Log.DebugFormat ("Enabling equalizer preset: {0}", equalizer.Name);
-                            manager.Enable (equalizer);
-                        }
-                    }
+                if (SupportsEqualizer) {
+                    EqualizerManager.Instance.Select ();
                 }
 
                 if (pending_playback_for_not_ready != null) {
@@ -519,6 +502,11 @@ namespace Banshee.MediaEngine
         public void VideoExpose (IntPtr displayContext, bool direct)
         {
             active_engine.VideoExpose (displayContext, direct);
+        }
+
+        public void VideoWindowRealize (IntPtr displayContext)
+        {
+            active_engine.VideoWindowRealize (displayContext);
         }
 
         public IntPtr VideoDisplayContext {

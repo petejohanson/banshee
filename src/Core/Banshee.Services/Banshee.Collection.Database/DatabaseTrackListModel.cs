@@ -159,6 +159,13 @@ namespace Banshee.Collection.Database
             return true;
         }
 
+        public void Resort ()
+        {
+            var column = sort_column;
+            sort_column = null;
+            Sort (column);
+        }
+
         private void HandleCacheAggregatesUpdated (IDataReader reader)
         {
             filtered_duration = TimeSpan.FromMilliseconds (reader.IsDBNull (1) ? 0 : Convert.ToInt64 (reader[1]));
@@ -362,20 +369,20 @@ namespace Banshee.Collection.Database
         public int IndexOfFirst (TrackInfo track)
         {
             lock (this) {
-                return IndexOf (cache.GetSingle ("AND MetadataHash = ? ORDER BY OrderID", track.MetadataHash));
+                return IndexOf (cache.GetSingleWhere ("AND MetadataHash = ? ORDER BY OrderID", track.MetadataHash));
             }
         }
 
         public override TrackInfo GetRandom (DateTime notPlayedSince)
         {
-            return GetRandom (notPlayedSince, PlaybackShuffleMode.Song, true, false, Shuffler.Playback);
+            return GetRandom (notPlayedSince, "song", true, false, Shuffler.Playback);
         }
 
-        public TrackInfo GetRandom (DateTime notPlayedSince, PlaybackShuffleMode mode, bool repeat, bool resetSinceTime, Shuffler shuffler)
+        public TrackInfo GetRandom (DateTime notPlayedSince, string shuffle_mode, bool repeat, bool resetSinceTime, Shuffler shuffler)
         {
             lock (this) {
                 shuffler.SetModelAndCache (this, cache);
-                return shuffler.GetRandom (notPlayedSince, mode, repeat, resetSinceTime);
+                return shuffler.GetRandom (notPlayedSince, shuffle_mode, repeat, resetSinceTime);
             }
         }
 

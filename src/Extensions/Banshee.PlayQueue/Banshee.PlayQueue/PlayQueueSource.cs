@@ -70,7 +70,7 @@ namespace Banshee.PlayQueue
         private SourcePage pref_page;
         private Section pref_section;
 
-        private PlaybackShuffleMode populate_mode = (PlaybackShuffleMode) PopulateModeSchema.Get ();
+        private string populate_shuffle_mode = PopulateModeSchema.Get ();
         private string populate_from_name = PopulateFromSchema.Get ();
         private DatabaseSource populate_from = null;
         private int played_songs_number = PlayedSongsNumberSchema.Get ();
@@ -116,8 +116,9 @@ namespace Banshee.PlayQueue
 
             TrackModel.Reloaded += HandleReloaded;
 
+            int saved_offset = DatabaseConfigurationClient.Client.Get (CurrentOffsetSchema, CurrentOffsetSchema.Get ());
             Offset = Math.Min (
-                CurrentOffsetSchema.Get (),
+                saved_offset,
                 ServiceManager.DbConnection.Query<long> (@"
                     SELECT MAX(ViewOrder) + 1
                     FROM CorePlaylistEntries
@@ -128,21 +129,20 @@ namespace Banshee.PlayQueue
         {
             base.Initialize ();
 
+            shuffler = new Shuffler (UniqueId);
             InstallPreferences ();
             header_widget = CreateHeaderWidget ();
             header_widget.ShowAll ();
-
-            shuffler = new Shuffler (UniqueId);
 
             Properties.Set<Gtk.Widget> ("Nereid.SourceContents.HeaderWidget", header_widget);
         }
 
         public HeaderWidget CreateHeaderWidget ()
         {
-            var header_widget = new HeaderWidget (populate_mode, populate_from_name);
-            header_widget.ModeChanged += delegate (object sender, EventArgs<PlaybackShuffleMode> e) {
-                populate_mode = e.Value;
-                PopulateModeSchema.Set ((int) e.Value);
+            var header_widget = new HeaderWidget (shuffler, populate_shuffle_mode, populate_from_name);
+            header_widget.ModeChanged += delegate (object sender, EventArgs<RandomBy> e) {
+                populate_shuffle_mode = e.Value.Id;
+                PopulateModeSchema.Set (populate_shuffle_mode);
                 UpdatePlayQueue ();
                 OnUpdated ();
             };
@@ -340,12 +340,21 @@ namespace Banshee.PlayQueue
 
         public void Clear ()
         {
+            Clear (false);
+        }
+
+        private void Clear (bool disposing)
+        {
             ServiceManager.DbConnection.Execute (@"
                 DELETE FROM CorePlaylistEntries
                 WHERE PlaylistID = ?", DbId
             );
             offset = 0;
             SetCurrentTrack (null);
+
+            if (disposing) {
+                return;
+            }
 
             if (this == ServiceManager.PlaybackController.Source && ServiceManager.PlayerEngine.IsPlaying ()) {
                 ServiceManager.PlayerEngine.Close();
@@ -357,7 +366,7 @@ namespace Banshee.PlayQueue
         public void Dispose ()
         {
             int track_index = current_track == null ? Count : Math.Max (0, TrackModel.IndexOf (current_track));
-            CurrentTrackSchema.Set (track_index);
+            DatabaseConfigurationClient.Client.Set (CurrentTrackSchema, track_index);
 
             ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
             ServiceManager.PlaybackController.TrackStarted -= OnTrackStarted;
@@ -376,7 +385,7 @@ namespace Banshee.PlayQueue
             }
 
             if (!Populate && ClearOnQuitSchema.Get ()) {
-                Clear ();
+                Clear (true);
             }
         }
 
@@ -439,7 +448,7 @@ namespace Banshee.PlayQueue
 
         private void HandleReloaded(object sender, EventArgs e)
         {
-            int track_index = CurrentTrackSchema.Get ();
+            int track_index = DatabaseConfigurationClient.Client.Get (CurrentTrackSchema, CurrentTrackSchema.Get ());
             if (track_index < Count) {
                 SetCurrentTrack (TrackModel[track_index] as DatabaseTrackInfo);
             }
@@ -610,7 +619,7 @@ namespace Banshee.PlayQueue
                 for (int i = 0; i < tracks_to_add; i++) {
 
                     var track = populate_from.DatabaseTrackModel.GetRandom (
-                        source_set_at, populate_mode, false, skip && i == 0, shuffler) as DatabaseTrackInfo;
+                        source_set_at, populate_shuffle_mode, false, skip && i == 0, shuffler) as DatabaseTrackInfo;
 
                     if (track != null) {
                         EnqueueId (track.TrackId, false, true);
@@ -646,7 +655,7 @@ namespace Banshee.PlayQueue
             protected set {
                 if (value != offset) {
                     offset = value;
-                    CurrentOffsetSchema.Set ((int) offset);
+                    DatabaseConfigurationClient.Client.Set (CurrentOffsetSchema, (int)offset);
                     Reload ();
                 }
             }
@@ -724,7 +733,7 @@ namespace Banshee.PlayQueue
         }
 
         public bool Populate {
-            get { return populate_mode != PlaybackShuffleMode.Linear; }
+            get { return populate_shuffle_mode != "off"; }
         }
 
         private ITrackModelSource PriorSource {
@@ -813,23 +822,26 @@ namespace Banshee.PlayQueue
             "Clear the play queue when quitting"
         );
 
-        public static readonly SchemaEntry<int> CurrentTrackSchema = new SchemaEntry<int> (
+        // TODO: By 1.8 next two schemas can be removed. They are kept only to ease
+        // the migration from GConfConfigurationClient to DatabaseConfigurationClient.
+
+        private static readonly SchemaEntry<int> CurrentTrackSchema = new SchemaEntry<int> (
             "plugins.play_queue", "current_track",
             0,
             "Current Track",
             "Current track in the Play Queue"
         );
 
-        public static readonly SchemaEntry<int> CurrentOffsetSchema = new SchemaEntry<int> (
+        private static readonly SchemaEntry<int> CurrentOffsetSchema = new SchemaEntry<int> (
             "plugins.play_queue", "current_offset",
             0,
             "Current Offset",
             "Current offset of the Play Queue"
         );
 
-        public static readonly SchemaEntry<int> PopulateModeSchema = new SchemaEntry<int> (
-            "plugins.play_queue", "populate_mode",
-            (int) PlaybackShuffleMode.Linear,
+        public static readonly SchemaEntry<string> PopulateModeSchema = new SchemaEntry<string> (
+            "plugins.play_queue", "populate_shuffle_mode",
+            "off",
             "Play Queue population mode",
             "How (and if) the Play Queue should be randomly populated"
         );

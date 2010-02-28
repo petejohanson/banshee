@@ -608,7 +608,8 @@ namespace Banshee.Podcasting
 
         public static string ArtworkIdFor (Feed feed)
         {
-            return String.Format ("podcast-{0}", Banshee.Base.CoverArtSpec.EscapePart (feed.Title));
+            string digest = Banshee.Base.CoverArtSpec.Digest (feed.Title);
+            return digest == null ? null : String.Format ("podcast-{0}", digest);
         }
 
         // Via Monopod

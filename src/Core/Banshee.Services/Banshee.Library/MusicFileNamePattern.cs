@@ -39,7 +39,7 @@ using Banshee.Configuration.Schema;
 
 namespace Banshee.Library
 {
-    public class MusicFileNamePattern : FileNamePattern
+    public class MusicFileNamePattern : PathPattern
     {
         public MusicFileNamePattern ()
         {

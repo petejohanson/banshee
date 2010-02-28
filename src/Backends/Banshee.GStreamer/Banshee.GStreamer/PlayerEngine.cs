@@ -264,6 +264,11 @@ namespace Banshee.GStreamer
             bp_video_window_expose (handle, window, direct);
         }
 
+        public override void VideoWindowRealize (IntPtr window)
+        {
+            bp_video_window_realize (handle, window);
+        }
+
         public override IntPtr [] GetBaseElements ()
         {
             IntPtr [] elements = new IntPtr[3];
@@ -809,6 +814,9 @@ namespace Banshee.GStreamer
 
         [DllImport ("libbanshee.dll")]
         private static extern void bp_video_window_expose (HandleRef player, IntPtr displayContext, bool direct);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern void bp_video_window_realize (HandleRef player, IntPtr window);
 
         [DllImport ("libbanshee.dll")]
         private static extern void bp_get_error_quarks (out uint core, out uint library,

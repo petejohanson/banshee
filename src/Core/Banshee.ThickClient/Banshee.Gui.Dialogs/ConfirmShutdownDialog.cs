@@ -52,9 +52,9 @@ namespace Banshee.Gui.Dialogs
                 "Closing Banshee now will cancel any currently running tasks. They cannot " +
                 "be resumed automatically the next time Banshee is run.");
 
-            IconNameStock = Stock.DialogQuestion;
+            DialogIconNameStock = Stock.DialogQuestion;
 
-            Dialog.DefaultResponse = ResponseType.Cancel;
+            DefaultResponse = ResponseType.Cancel;
 
             AddButton(Catalog.GetString("Quit anyway"), ResponseType.Ok, false);
             AddButton(Catalog.GetString("Continue running"), ResponseType.Cancel, true);
@@ -87,7 +87,7 @@ namespace Banshee.Gui.Dialogs
         private void RemoveJob(Job job)
         {
             if(!scheduler.HasAnyDataLossJobs) {
-                Dialog.Respond(Gtk.ResponseType.Ok);
+                Respond(Gtk.ResponseType.Ok);
                 return;
             }
 

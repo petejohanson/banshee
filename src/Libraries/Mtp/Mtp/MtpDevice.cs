@@ -192,30 +192,12 @@ namespace Mtp
 
         public List<Playlist> GetPlaylists ()
         {
-            List<Playlist> playlists = new List<Playlist> ();
-
-            IntPtr ptr = Playlist.LIBMTP_Get_Playlist_List (Handle);
-            while (ptr != IntPtr.Zero) {
-                PlaylistStruct d = (PlaylistStruct)Marshal.PtrToStructure(ptr, typeof(PlaylistStruct));
-                playlists.Add (new Playlist (this, d));
-                ptr = d.next;
-            }
-            
-            return playlists;
+            return Playlist.GetPlaylists (this);
         }
 
         public List<Album> GetAlbums ()
         {
-            List<Album> albums = new List<Album> ();
-
-            IntPtr ptr = Album.LIBMTP_Get_Album_List (Handle);
-            while (ptr != IntPtr.Zero) {
-                AlbumStruct d = (AlbumStruct)Marshal.PtrToStructure(ptr, typeof(AlbumStruct));
-                albums.Add (new Album (this, d));
-                ptr = d.next;
-            }
-            
-            return albums;
+            return Album.GetAlbums (this);
         }
         
         public List<DeviceStorage> GetStorage ()

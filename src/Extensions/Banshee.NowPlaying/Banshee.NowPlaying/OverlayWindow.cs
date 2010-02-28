@@ -142,7 +142,7 @@ namespace Banshee.NowPlaying
                 color.Green / (double) ushort.MaxValue,
                 0.85));
 
-            ((IDisposable)cr).Dispose ();
+            CairoExtensions.DisposeContext (cr);
             return base.OnExposeEvent (evnt);
         }
 

@@ -28,6 +28,8 @@
 
 using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 using Mono.Unix;
@@ -85,25 +87,61 @@ namespace Banshee.Base
 
         public static string CreateArtistAlbumId (string artist, string album)
         {
-            return CreateArtistAlbumId (artist, album, false);
+            if (artist == unknown_artist || artist == unknown_artist_tr || album == unknown_album || album == unknown_album_tr) {
+                return null;
+            }
+
+            string digestible = String.Format ("{0}\t{1}", artist ?? "", album ?? "");
+
+            return String.Format ("album-{0}", Digest (digestible));
         }
 
-        public static string CreateArtistAlbumId (string artist, string album, bool asUriPart)
+        public static string Digest (string str)
+        {
+            if (String.IsNullOrEmpty (str)) {
+                return null;
+            }
+
+            str = str.Normalize (NormalizationForm.FormKD);
+            return Hyena.CryptoUtil.Md5Encode (str, Encoding.UTF8);
+        }
+
+        static CoverArtSpec () {
+            Hyena.Log.DebugFormat ("Album artwork path set to {0}", root_path);
+        }
+
+        private static string root_path = Path.Combine (XdgBaseDirectorySpec.GetUserDirectory (
+            "XDG_CACHE_HOME", ".cache"),  "media-art");
+
+        public static string RootPath {
+            get { return root_path; }
+        }
+
+        #region Old spec
+
+        private static string legacy_root_path = Path.Combine (XdgBaseDirectorySpec.GetUserDirectory (
+            "XDG_CACHE_HOME", ".cache"),  "album-art");
+
+        public static string LegacyRootPath {
+            get { return legacy_root_path; }
+        }
+
+        public static string CreateLegacyArtistAlbumId (string artist, string album)
         {
             if (artist == unknown_artist || artist == unknown_artist_tr || album == unknown_album || album == unknown_album_tr) {
                 return null;
             }
 
-            string sm_artist = EscapePart (artist);
-            string sm_album = EscapePart (album);
+            string sm_artist = LegacyEscapePart (artist);
+            string sm_album = LegacyEscapePart (album);
 
             return String.IsNullOrEmpty (sm_artist) || String.IsNullOrEmpty (sm_album)
                 ? null
-                : String.Format ("{0}{1}{2}", sm_artist, asUriPart ? "/" : "-", sm_album);
+                : String.Format ("{0}{1}{2}", sm_artist, "-", sm_album);
         }
 
-        private static Regex filter_regex = new Regex (@"[^A-Za-z0-9]*", RegexOptions.Compiled);
-        public static string EscapePart (string part)
+        private static Regex legacy_filter_regex = new Regex (@"[^A-Za-z0-9]*", RegexOptions.Compiled);
+        public static string LegacyEscapePart (string part)
         {
             if (String.IsNullOrEmpty (part)) {
                 return null;
@@ -113,19 +151,9 @@ namespace Banshee.Base
             if (lp_index > 0) {
                 part = part.Substring (0, lp_index);
             }
-
-            return filter_regex.Replace (part, "").ToLower ();
+            return legacy_filter_regex.Replace (part, "").ToLower ();
         }
 
-        private static string root_path = Path.Combine (XdgBaseDirectorySpec.GetUserDirectory (
-            "XDG_CACHE_HOME", ".cache"),  "album-art");
-
-        static CoverArtSpec () {
-            Hyena.Log.DebugFormat ("Album artwork path set to {0}", root_path);
-        }
-
-        public static string RootPath {
-            get { return root_path; }
-        }
+        #endregion Old spec
     }
 }

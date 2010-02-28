@@ -85,5 +85,12 @@ namespace Banshee.Configuration.Schema
             "Store ratings within supported files",
             "If enabled, rating and playcount metadata will be written back to audio files."
         );
+
+        public static readonly SchemaEntry<bool> SortByAlbumYear = new SchemaEntry<bool>(
+            "library", "sort_albums_by_year",
+            false,
+            "Sort tracks by album year",
+            "If set the tracks will be sorted by album year instead of by album name"
+        );
     }
 }

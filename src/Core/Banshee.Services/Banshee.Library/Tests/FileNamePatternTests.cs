@@ -45,7 +45,7 @@ namespace Banshee.Library.Tests
             return num < 10 ? "0" + str : str;
         }
 
-        public static FileNamePattern FileNamePattern { get { return MusicLibrarySource.MusicFileNamePattern; } }
+        public static PathPattern Pattern { get { return MusicLibrarySource.MusicFileNamePattern; } }
 
         [Test]
         public void MakePathsRelative ()
@@ -61,7 +61,7 @@ namespace Banshee.Library.Tests
         public void CreateFromTrackInfo()
         {
             SampleTrackInfo track = new SampleTrackInfo();
-            string built = FileNamePattern.CreateFromTrackInfo(
+            string built = Pattern.CreateFromTrackInfo(
                 "%artist%:%album%:%title%:%track_number%:" +
                 "%track_count%:%track_number_nz%:%track_count_nz%",
                 track);
@@ -93,7 +93,7 @@ namespace Banshee.Library.Tests
                 "{%track_number%. }%title%.oga";
             Assert.AreEqual (
                 "Esoteric/2008 The Maniacal Vale (disc 2 of 2)/01. Silence.oga",
-                FileNamePattern.Convert (pattern, conversion => conversion.Handler (track, null)));
+                Pattern.Convert (pattern, conversion => conversion.Handler (track, null)));
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace Banshee.Library.Tests
                 DiscNumber = 0
             };
             var pattern = "{ (disc %disc_number%)}";
-            Assert.IsEmpty (FileNamePattern.Convert (pattern, conversion => conversion.Handler (track, null)));
+            Assert.IsEmpty (Pattern.Convert (pattern, conversion => conversion.Handler (track, null)));
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace Banshee.Library.Tests
                 Genre = ""
             };
             var pattern = "{ (%genre%)}";
-            Assert.IsEmpty (FileNamePattern.Convert (pattern, conversion => conversion.Handler (track, null)));
+            Assert.IsEmpty (Pattern.Convert (pattern, conversion => conversion.Handler (track, null)));
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace Banshee.Library.Tests
                 DiscCount = 2
             };
             var pattern = "{ (disc %disc_number% of %disc_count%)}";
-            Assert.IsEmpty (FileNamePattern.Convert (pattern, conversion => conversion.Handler (track, null)));
+            Assert.IsEmpty (Pattern.Convert (pattern, conversion => conversion.Handler (track, null)));
         }
     }
 }
