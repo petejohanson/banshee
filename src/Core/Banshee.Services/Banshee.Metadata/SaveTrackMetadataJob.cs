@@ -73,6 +73,12 @@ namespace Banshee.Metadata
         {
             DatabaseTrackInfo track = DatabaseTrackInfo.Provider.Load (reader.Reader);
 
+            var write_delay = track.DateUpdated.AddSeconds (2) - DateTime.Now;
+            if (write_delay.TotalMilliseconds > 0) {
+                System.Threading.Thread.Sleep (write_delay);
+                return;
+            }
+
             bool wrote = false;
             bool renamed = false;
             try {
