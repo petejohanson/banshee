@@ -72,6 +72,7 @@ namespace Banshee.Metrics
 
         private MetricsCollection metrics;
         private string id_key = "AnonymousUsageData.Userid";
+        private string last_post_key = "AnonymousUsageData.LastPostStamp";
         private Metric shutdown, duration, active_source_changed, sqlite_executed;
         private Metric playback_source_changed, shuffle_changed, repeat_changed;
 
@@ -121,11 +122,17 @@ namespace Banshee.Metrics
                         System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
                     }
 
-                    var poster = new HttpPoster ("http://download.banshee-project.org/metrics/metrics.py", metrics);
-                    bool posted = poster.Post ();
-                    Log.InformationFormat ("Posted usage data? {0}", posted);
-                    if (posted) {
-                        metrics.Store.Clear ();
+                    // Don't post to server more than every 48 hours
+                    var last_post_time = DatabaseConfigurationClient.Client.Get<DateTime> (last_post_key, DateTime.MinValue);
+                    var last_post_rel = (DateTime.Now - last_post_time).TotalHours;
+                    if (last_post_rel < 0 || last_post_rel > 48.0) {
+                        var poster = new HttpPoster ("http://download.banshee-project.org/metrics/metrics.py", metrics);
+                        bool posted = poster.Post ();
+                        Log.InformationFormat ("Posted usage data? {0}", posted);
+                        if (posted) {
+                            metrics.Store.Clear ();
+                            DatabaseConfigurationClient.Client.Set<DateTime> (last_post_key, DateTime.Now);
+                        }
                     }
                 });
                 return false;
