@@ -29,6 +29,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using Banshee.MediaEngine;
 using Banshee.ServiceStack;
@@ -159,11 +160,11 @@ namespace Banshee.Equalizer
             builder.AppendLine ();
             builder.AppendFormat ("        \"name\": \"{0}\",", Name.Replace ("\"", "\\\""));
             builder.AppendLine ();
-            builder.AppendFormat ("        \"preamp\": {0},", AmplifierLevel);
+            builder.AppendFormat (CultureInfo.InvariantCulture, "        \"preamp\": {0},", AmplifierLevel);
             builder.AppendLine ();
             builder.Append ("        \"bands\": [ ");
             for (uint band = 0; band < bands.Length; band++) {
-                builder.Append (bands[band]);
+                builder.Append (bands[band].ToString (CultureInfo.InvariantCulture));
                 if (band < bands.Length - 1) {
                     builder.Append (", ");
                 }
