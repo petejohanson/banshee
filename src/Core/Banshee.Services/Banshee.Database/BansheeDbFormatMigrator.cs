@@ -56,7 +56,7 @@ namespace Banshee.Database
         // NOTE: Whenever there is a change in ANY of the database schema,
         //       this version MUST be incremented and a migration method
         //       MUST be supplied to match the new version number
-        protected const int CURRENT_VERSION = 38;
+        protected const int CURRENT_VERSION = 39;
         protected const int CURRENT_METADATA_VERSION = 7;
 
 #region Migration Driver
@@ -847,6 +847,44 @@ namespace Banshee.Database
         {
             Execute ("ALTER TABLE CoreTracks ADD COLUMN SampleRate INTEGER DEFAULT 0");
             Execute ("ALTER TABLE CoreTracks ADD COLUMN BitsPerSample INTEGER DEFAULT 0");
+            return true;
+        }
+
+#endregion
+
+#region Version 39
+
+        [DatabaseVersion (39)]
+        private bool Migrate_39 ()
+        {
+            // One time fixup to MetadataHash, since we no longer include the Duration
+            string sql_select = @"
+                SELECT t.TrackID, al.Title, ar.Name,
+                t.Genre, t.Title, t.TrackNumber, t.Year
+                FROM CoreTracks AS t
+                JOIN CoreAlbums AS al ON al.AlbumID=t.AlbumID
+                JOIN CoreArtists AS ar ON ar.ArtistID=t.ArtistID
+            ";
+
+            HyenaSqliteCommand sql_update = new HyenaSqliteCommand (@"
+                UPDATE CoreTracks SET MetadataHash = ? WHERE TrackID = ?
+            ");
+
+            StringBuilder sb = new StringBuilder ();
+            using (var reader = new HyenaDataReader (connection.Query (sql_select))) {
+                while (reader.Read ()) {
+                    sb.Length = 0;
+                    sb.Append (reader.Get<string> (1));
+                    sb.Append (reader.Get<string> (2));
+                    sb.Append (reader.Get<string> (3));
+                    sb.Append (reader.Get<string> (4));
+                    sb.Append (reader.Get<int> (5));
+                    sb.Append (reader.Get<int> (6));
+                    string hash = Hyena.CryptoUtil.Md5Encode (sb.ToString (), System.Text.Encoding.UTF8);
+                    connection.Execute (sql_update, hash, reader.Get<int> (0));
+                }
+            }
+
             return true;
         }
 

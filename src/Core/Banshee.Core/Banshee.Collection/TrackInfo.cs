@@ -382,7 +382,6 @@ namespace Banshee.Collection
                 System.Text.StringBuilder sb = new System.Text.StringBuilder ();
                 sb.Append (AlbumTitle);
                 sb.Append (ArtistName);
-                sb.Append ((int)Duration.TotalSeconds);
                 sb.Append (Genre);
                 sb.Append (TrackTitle);
                 sb.Append (TrackNumber);
