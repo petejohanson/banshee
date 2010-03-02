@@ -30,12 +30,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MultiUserSample.cs" />
     <Compile Include="MetaMetrics.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="Metric.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Libraries\Hyena\Hyena.csproj">

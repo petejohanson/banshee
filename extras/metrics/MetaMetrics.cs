@@ -88,7 +88,7 @@ namespace metrics
 
     public class MetaMetrics
     {
-        string fmt = "{0,20:N1}";
+        string fmt = "{0,20}";
 
         public MetaMetrics (HyenaSqliteConnection db)
         {
@@ -114,6 +114,7 @@ namespace metrics
                         Console.WriteLine ("   {0,-5}: {1,-20}", reader.Get<long> (0), reader.Get<string> (1));
                     }
                 }
+                Console.WriteLine ();
             };
 
             var numeric_slice = new MetricSampleModel (latest_samples.Cache, db,
@@ -123,10 +124,10 @@ namespace metrics
 
             numeric_slice.Cache.AggregatesUpdated += (reader) => {
                 Console.WriteLine (String.Format ("   Users:  {0}", fmt), reader[5]);
-                Console.WriteLine (String.Format ("   Min:    {0}", fmt), reader[1]);
-                Console.WriteLine (String.Format ("   Avg:    {0}", fmt), reader[3]);
-                Console.WriteLine (String.Format ("   Median: {0}", fmt), reader[4]);
-                Console.WriteLine (String.Format ("   Max:    {0}", fmt), reader[2]);
+                Console.WriteLine (String.Format ("   Min:    {0}", fmt), Metric.ToString (numeric_slice.MetricName, reader[1]));
+                Console.WriteLine (String.Format ("   Avg:    {0}", fmt), Metric.ToString (numeric_slice.MetricName, reader[3]));
+                Console.WriteLine (String.Format ("   Median: {0}", fmt), Metric.ToString (numeric_slice.MetricName, reader[4]));
+                Console.WriteLine (String.Format ("   Max:    {0}", fmt), Metric.ToString (numeric_slice.MetricName, reader[2]));
                 Console.WriteLine ();
             };
             
@@ -162,7 +163,8 @@ namespace metrics
             if (name.EndsWith ("BuildTime"))
                 return "datetime";
 
-            if (name.EndsWith ("LongSqliteCommand") || name.EndsWith ("At"))
+            if (name.EndsWith ("LongSqliteCommand") || name.EndsWith ("At") || name.StartsWith ("Assemblies/") ||
+                    name.EndsWith ("child_sort_id") || name.EndsWith ("separate_by_type") || name.EndsWith ("expanded"))
                 return null;
 
             return "string";
