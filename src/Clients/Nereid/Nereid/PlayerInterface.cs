@@ -606,6 +606,11 @@ namespace Nereid
             }
 
             status_label.Text = source.GetStatusText ();
+
+            // We need a bit longer delay between query character typed to search initiated
+            // when the library is sufficiently big; see bgo #540835
+            bool long_delay = source.FilteredCount > 10000 || (source.Parent ?? source).Count > 20000;
+            view_container.SearchEntry.ChangeTimeoutMs = long_delay ? (uint)250 : (uint)25;
         }
 
 #endregion
