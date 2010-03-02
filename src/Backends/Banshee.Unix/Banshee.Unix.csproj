@@ -42,7 +42,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Mono.Posix" />
-    <Reference Include="taglib-sharp, Version=2.0.3.4, Culture=neutral, PublicKeyToken=db62eba44689b5b0" />
+    <Reference Include="taglib-sharp">
+      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Unix.addin.xml">
