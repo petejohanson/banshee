@@ -45,6 +45,9 @@ namespace Banshee.Collection.Database
     {
         public static readonly Shuffler Playback = new Shuffler () { Id = "playback", DbId = 0 };
 
+        private static HyenaSqliteCommand add_shuffle_cmd = new HyenaSqliteCommand ("INSERT OR REPLACE INTO CoreShuffles (ShufflerID, TrackID, LastShuffledAt) VALUES (?, ?, ?)");
+        private static HyenaSqliteCommand add_discard_cmd = new HyenaSqliteCommand ("INSERT OR REPLACE INTO CoreShuffleDiscards (ShufflerID, TrackID, LastDiscardedAt) VALUES (?, ?, ?)");
+
         private DateTime random_began_at = DateTime.MinValue;
         private DateTime last_random = DateTime.MinValue;
         private List<RandomBy> random_modes;
@@ -90,7 +93,7 @@ namespace Banshee.Collection.Database
 
                 if (random_by != null) {
                     if (!random_by.GetType ().AssemblyQualifiedName.Contains ("Banshee.Service")) {
-                        Log.DebugFormat ("Loaded RandomBy: {0}", random_by.Id);
+                        Log.DebugFormat ("Loaded new mode into {0} shuffler: {1}", this.Id, random_by.Id);
                     }
                     var handler = RandomModeAdded;
                     if (handler != null) {
@@ -107,7 +110,7 @@ namespace Banshee.Collection.Database
                 }
 
                 if (random_by != null) {
-                    Log.DebugFormat ("Removed RandomBy: {0}", random_by.Id);
+                    Log.DebugFormat ("Removed mode from {0} shuffler: {1}", this.Id, random_by.Id);
                     var handler = RandomModeRemoved;
                     if (handler != null) {
                         handler (random_by);
@@ -150,6 +153,20 @@ namespace Banshee.Collection.Database
 
                 last_random = DateTime.Now;
                 return track;
+            }
+        }
+
+        public void RecordShuffle (DatabaseTrackInfo track)
+        {
+            if (track != null) {
+                ServiceManager.DbConnection.Execute (add_shuffle_cmd, this.DbId, track.TrackId, DateTime.Now);
+            }
+        }
+
+        public void RecordDiscard (DatabaseTrackInfo track)
+        {
+            if (track != null) {
+                ServiceManager.DbConnection.Execute (add_discard_cmd, this.DbId, track.TrackId, DateTime.Now);
             }
         }
 

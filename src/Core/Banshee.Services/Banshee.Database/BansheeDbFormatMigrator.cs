@@ -56,7 +56,7 @@ namespace Banshee.Database
         // NOTE: Whenever there is a change in ANY of the database schema,
         //       this version MUST be incremented and a migration method
         //       MUST be supplied to match the new version number
-        protected const int CURRENT_VERSION = 39;
+        protected const int CURRENT_VERSION = 40;
         protected const int CURRENT_METADATA_VERSION = 7;
 
 #region Migration Driver
@@ -809,7 +809,7 @@ namespace Banshee.Database
         {
             Execute(@"
                 CREATE TABLE CoreShuffles (
-                    ShufflerId           INTEGER,
+                    ShufflerId          INTEGER,
                     TrackID             INTEGER,
                     LastShuffledAt      INTEGER,
                     CONSTRAINT one_entry_per_track UNIQUE (ShufflerID, TrackID)
@@ -889,6 +889,22 @@ namespace Banshee.Database
         }
 
 #endregion
+
+        [DatabaseVersion (40)]
+        private bool Migrate_40 ()
+        {
+            Execute(@"
+                CREATE TABLE CoreShuffleDiscards (
+                    ShufflerId           INTEGER,
+                    TrackID              INTEGER,
+                    LastDiscardedAt      INTEGER,
+                    CONSTRAINT one_entry_per_track UNIQUE (ShufflerID, TrackID)
+                )
+            ");
+            Execute("CREATE INDEX CoreShuffleDiscardsIndex ON CoreShuffleDiscards (ShufflerId, TrackID, LastDiscardedAt)");
+            return true;
+        }
+
 
 #pragma warning restore 0169
 
@@ -1117,6 +1133,16 @@ namespace Banshee.Database
                     Id              TEXT UNIQUE
                 )
             ");
+
+            Execute(@"
+                CREATE TABLE CoreShuffleDiscards (
+                    ShufflerId           INTEGER,
+                    TrackID              INTEGER,
+                    LastDiscardedAt      INTEGER,
+                    CONSTRAINT one_entry_per_track UNIQUE (ShufflerID, TrackID)
+                )
+            ");
+            Execute("CREATE INDEX CoreShuffleDiscardsIndex ON CoreShuffleDiscards (ShufflerId, TrackID, LastDiscardedAt)");
         }
 
 #endregion

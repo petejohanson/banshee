@@ -44,8 +44,6 @@ namespace Banshee.Collection.Database
         protected DatabaseTrackListModel Model { get; private set; }
         protected IDatabaseTrackModelCache Cache { get; private set; }
 
-        private HyenaSqliteCommand insert_shuffle;
-
         protected Shuffler Shuffler { get; private set; }
 
         public string Id { get; private set; }
@@ -64,7 +62,6 @@ namespace Banshee.Collection.Database
         public RandomBy (string id)
         {
             Id = id;
-            insert_shuffle = new HyenaSqliteCommand ("INSERT OR REPLACE INTO CoreShuffles (ShufflerID, TrackID, LastShuffledAt) VALUES (?, ?, ?)");
         }
 
         public void SetShuffler (Shuffler shuffler)
@@ -127,9 +124,7 @@ namespace Banshee.Collection.Database
                 var track = GetShufflerTrack (after);
 
                 // Record this shuffle
-                if (track != null) {
-                    ServiceManager.DbConnection.Execute (insert_shuffle, Shuffler.DbId, track.TrackId, DateTime.Now);
-                }
+                Shuffler.RecordShuffle (track);
 
                 return track;
             }
