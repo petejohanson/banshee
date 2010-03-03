@@ -23,7 +23,7 @@ m4_define([banshee_version],
 
 dnl this can sometimes differ manually
 m4_define([banshee_display_version],
-	["1.6 Beta 6"])
+	["1.6 RC1"])
 
 m4_define([banshee_api_version],
 	[banshee_version_major.banshee_version_minor])
