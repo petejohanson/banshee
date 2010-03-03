@@ -110,6 +110,7 @@ SOURCES =  \
 	Banshee.Gui/GtkElementsService.cs \
 	Banshee.Gui/IClientWindow.cs \
 	Banshee.Gui/IconThemeUtils.cs \
+	Banshee.Gui/IDisableKeybindings.cs \
 	Banshee.Gui/IHasSourceView.cs \
 	Banshee.Gui/InterfaceActionService.cs \
 	Banshee.Gui/PersistentPaneController.cs \

@@ -548,8 +548,22 @@ namespace Nereid
         {
             bool focus_search = false;
 
-            if (Focus is Gtk.Entry && (GtkUtilities.NoImportantModifiersAreSet () &&
-                evnt.Key != Gdk.Key.Control_L && evnt.Key != Gdk.Key.Control_R)) {
+            bool disable_keybindings = Focus is Gtk.Entry;
+            if (!disable_keybindings) {
+                var widget = Focus;
+                while (widget != null) {
+                    if (widget is IDisableKeybindings) {
+                        disable_keybindings = true;
+                        break;
+                    }
+                    widget = widget.Parent;
+                }
+            }
+
+            disable_keybindings &= ((GtkUtilities.NoImportantModifiersAreSet () &&
+                evnt.Key != Gdk.Key.Control_L && evnt.Key != Gdk.Key.Control_R));
+
+            if (disable_keybindings) {
                 if (accel_group_active) {
                     RemoveAccelGroup (ActionService.UIManager.AccelGroup);
                     accel_group_active = false;
