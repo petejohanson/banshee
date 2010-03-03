@@ -64,14 +64,14 @@
       <Project>{A3701765-E571-413D-808C-9788A22791AF}</Project>
       <Name>Banshee.Widgets</Name>
     </ProjectReference>
-    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
-      <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
-    </Reference>
     <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
       <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
     </Reference>
     <Reference Include="NDesk.DBus.GLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
       <HintPath>..\..\..\bin\NDesk.DBus.GLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

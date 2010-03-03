@@ -74,11 +74,6 @@
       <Project>{6171E5DE-5B36-4AE4-8707-F6BEE0AD945B}</Project>
       <Name>Banshee.GStreamer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Banshee.Core\Banshee.Core.csproj">
-      <Project>{2ADB831A-A050-47D0-B6B9-9C19D60233BB}</Project>
-      <Name>Banshee.Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Banshee.Services\Banshee.Services.csproj">
       <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
       <Name>Banshee.Services</Name>
@@ -98,7 +93,12 @@
     <Reference Include="glib-sharp" />
     <Reference Include="gtk-sharp" />
     <Reference Include="atk-sharp" />
-    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+    <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
+      <Project>{2ADB831A-A050-47D0-B6B9-9C19D60233BB}</Project>
+      <Name>Banshee.Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <Reference Include="Mono.Posix">
       <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
     </Reference>
   </ItemGroup>
