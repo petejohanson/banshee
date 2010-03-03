@@ -1,9 +1,7 @@
-REAL_NOTIFY_SHARP_SOURCES = Notifications/Notifications.cs Notifications/Notification.cs
 if EXTERNAL_NOTIFY_SHARP
-NOTIFY_SHARP_SOURCES = 
 NOTIFY_SHARP_LIBS = $(NOTIFY_SHARP_LIBS)
 else
-NOTIFY_SHARP_SOURCES = $(REAL_NOTIFY_SHARP_SOURCES)
+GMCS_FLAGS="-define:INTERNAL_NOTIFY_SHARP"
 NOTIFY_SHARP_LIBS = 
 endif
 
@@ -18,9 +16,9 @@ SOURCES =  \
 	Banshee.NotificationArea/NotificationAreaService.cs \
 	Banshee.NotificationArea/TrackInfoPopup.cs \
 	Banshee.NotificationArea/X11NotificationArea.cs \
-	Banshee.NotificationArea/X11NotificationAreaBox.cs
-
-SOURCES += $(NOTIFY_SHARP_SOURCES)
+	Banshee.NotificationArea/X11NotificationAreaBox.cs \
+	Notifications/Notification.cs \
+	Notifications/Notifications.cs
 
 RESOURCES =  \
 	Banshee.NotificationArea.addin.xml \
