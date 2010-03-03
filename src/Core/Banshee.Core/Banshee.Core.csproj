@@ -46,17 +46,8 @@
       <Private>False</Private>
     </ProjectReference>
     <Reference Include="glib-sharp" />
-    <Reference Include="Mono.Addins">
-      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
-    </Reference>
-    <Reference Include="NDesk.DBus">
-      <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="taglib-sharp">
-      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
-    </Reference>
     <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-16.png">
       <Link>Resources\media-player-banshee-16.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -81,7 +72,17 @@
       <Link>Resources\media-player-banshee-48.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+    </Reference>
+    <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
+      <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
+    </Reference>
+    <Reference Include="taglib-sharp, Version=2.0.3.6, Culture=neutral, PublicKeyToken=db62eba44689b5b0">
+      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Posix" />
