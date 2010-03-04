@@ -101,6 +101,9 @@ SHAMROCK_CHECK_MONODOC
 dnl webkit (optional through --disable-webkit)
 BANSHEE_CHECK_WEBKIT
 
+dnl gdata (optional through --enable-gdata)
+BANSHEE_CHECK_GDATA
+
 dnl gtk#-beans and gio#
 BANSHEE_CHECK_GIO_SHARP
 
@@ -306,6 +309,7 @@ src/Extensions/Banshee.Sample/Makefile
 src/Extensions/Banshee.Torrent/Makefile
 src/Extensions/Banshee.RemoteAudio/Makefile
 src/Extensions/Banshee.Wikipedia/Makefile
+src/Extensions/Banshee.YouTube/Makefile
 
 extras/metrics/Makefile
 ])
@@ -360,6 +364,7 @@ EOF
 if test "x$enable_moonlight" = "xyes";    then br=yes; echo "  Moonlight Effects:   ${enable_moonlight}";    fi
 if test "x$enable_remote_audio" = "xyes"; then br=yes; echo "  Remote Audio:        ${enable_remote_audio}"; fi
 if test "x$enable_torrent" = "xyes";      then br=yes; echo "  Torrent Podcasts:    ${enable_torrent}";      fi
+if test "x$enable_gdata" = "xyes";        then br=yes; echo "  Google Data API:     ${enable_gdata}";        fi
 
 if test -d ${expanded_libdir}/${PACKAGE}; then
 	if test x$br = xyes; then echo; fi

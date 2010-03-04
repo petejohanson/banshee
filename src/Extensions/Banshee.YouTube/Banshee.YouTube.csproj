@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{387DC336-45F9-4263-9606-2881907D2105}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Banshee.YouTube</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <RootNamespace>Banshee.YouTube</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Build" command="make" workingdir="${SolutionDir}" />
+        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Banshee.YouTube\ContextPage.cs" />
+    <Compile Include="Banshee.YouTube.Gui\YouTubeTile.cs" />
+    <Compile Include="Banshee.YouTube.Data\DataFetch.cs" />
+    <Compile Include="Banshee.YouTube.Data\YouTubeData.cs" />
+    <Compile Include="Banshee.YouTube\YouTubePane.cs" />
+    <Compile Include="Banshee.YouTube.Gui\VideoStreamTile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Banshee.Core, Version=1.5.0.0, Culture=neutral">
+      <Package>banshee-1-core</Package>
+    </Reference>
+    <Reference Include="Banshee.Services, Version=1.5.0.0, Culture=neutral">
+      <Package>banshee-1-services</Package>
+    </Reference>
+    <Reference Include="Banshee.ThickClient, Version=1.5.0.0, Culture=neutral">
+      <Package>banshee-1-thickclient</Package>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="Hyena, Version=1.5.0.0, Culture=neutral">
+      <Package>banshee-1-hyena</Package>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib" />
+    <Reference Include="Hyena.Gui, Version=1.5.0.0, Culture=neutral">
+      <Package>banshee-1-hyena-gui</Package>
+    </Reference>
+    <Reference Include="Banshee.Widgets, Version=1.5.0.0, Culture=neutral">
+      <Package>banshee-1-thickclient</Package>
+    </Reference>
+    <Reference Include="Google.GData.YouTube, Version=1.4.0.2, Culture=neutral, PublicKeyToken=af04a32718ae8833">
+      <Package>gdata-sharp-youtube</Package>
+    </Reference>
+    <Reference Include="Google.GData.Extensions, Version=1.4.0.2, Culture=neutral, PublicKeyToken=0b4c5df2ebf20876">
+      <Package>gdata-sharp-core</Package>
+    </Reference>
+    <Reference Include="Google.GData.Client, Version=1.4.0.2, Culture=neutral, PublicKeyToken=04a59ca9b0273830">
+      <Package>gdata-sharp-core</Package>
+    </Reference>
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" RelativeConfigureInPath="../../..">
+          <BuildFilesVar Sync="true" Name="SOURCES" />
+          <DeployFilesVar />
+          <ResourcesVar Sync="true" Name="RESOURCES" />
+          <OthersVar Name="LINK" />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <EmbeddedResource Include="Banshee.YouTube.addin.xml" />
+  </ItemGroup>
+</Project>
