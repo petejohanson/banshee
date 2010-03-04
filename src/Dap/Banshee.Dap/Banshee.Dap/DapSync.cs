@@ -45,6 +45,10 @@ using Banshee.SmartPlaylist;
 using Banshee.Query;
 using Banshee.Preferences;
 
+using Banshee.Gui;
+using Hyena.Widgets;
+using Gtk;
+
 namespace Banshee.Dap
 {
     public sealed class DapSync : IDisposable
@@ -350,7 +354,42 @@ namespace Banshee.Dap
             }
 
             foreach (DapLibrarySync library_sync in library_syncs) {
-                library_sync.Sync ();
+                try {
+                    library_sync.Sync ();
+                } catch (DapLibrarySync.PossibleUserErrorException e) {
+
+                    string header = String.Format (
+                        Catalog.GetPluralString (
+                           // singular form unused b/c we know it's > 1, but we still need GetPlural
+                           "The sync operation will remove one track from your device.",
+                           "The sync operation will remove {0} tracks from your device.",
+                           e.TracksToRemove),
+                        e.TracksToRemove);
+                    string message = Catalog.GetString ("Are you sure you want to continue?");
+
+                    HigMessageDialog md = new HigMessageDialog (
+                        ServiceManager.Get<GtkElementsService> ("GtkElementsService").PrimaryWindow,
+                        DialogFlags.DestroyWithParent, MessageType.Warning,
+                        ButtonsType.None, header, message
+                    );
+                    md.AddButton ("gtk-cancel", ResponseType.No, true);
+                    md.AddButton (Catalog.GetString ("Remove tracks"), ResponseType.Yes, false);
+
+                    bool remove_tracks = false;
+                    ThreadAssist.BlockingProxyToMain (() => {
+                        try {
+                            if (md.Run () == (int) ResponseType.Yes) {
+                                remove_tracks = true;
+                            }
+                        } finally {
+                            md.Destroy ();
+                        }
+                    });
+
+                    if (remove_tracks) {
+                        library_sync.Sync (true);
+                    }
+                }
             }
 
             if (sync_playlists) {
