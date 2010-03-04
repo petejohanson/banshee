@@ -64,13 +64,10 @@
       <Package>banshee-1-thickclient</Package>
     </Reference>
     <Reference Include="Google.GData.YouTube, Version=1.4.0.2, Culture=neutral, PublicKeyToken=af04a32718ae8833">
-      <Package>gdata-sharp-youtube</Package>
     </Reference>
     <Reference Include="Google.GData.Extensions, Version=1.4.0.2, Culture=neutral, PublicKeyToken=0b4c5df2ebf20876">
-      <Package>gdata-sharp-core</Package>
     </Reference>
     <Reference Include="Google.GData.Client, Version=1.4.0.2, Culture=neutral, PublicKeyToken=04a59ca9b0273830">
-      <Package>gdata-sharp-core</Package>
     </Reference>
   </ItemGroup>
   <ProjectExtensions>
@@ -89,6 +86,8 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <EmbeddedResource Include="Banshee.YouTube.addin.xml" />
+    <EmbeddedResource Include="Banshee.YouTube.addin.xml">
+      <LogicalName>Banshee.YouTube.addin.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
