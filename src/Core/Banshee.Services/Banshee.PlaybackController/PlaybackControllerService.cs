@@ -483,6 +483,11 @@ namespace Banshee.PlaybackController
             get { return shuffle_mode; }
             set {
                 shuffle_mode = value;
+
+                // If the user changes the shuffle mode, she expects the "Next"
+                // button to behave according to the new selection. See bgo#528809
+                next_stack.Clear ();
+
                 var handler = ShuffleModeChanged;
                 if (handler != null) {
                     handler (this, new EventArgs<string> (shuffle_mode));
