@@ -1,10 +1,12 @@
 //
 // YouTubeTile.cs
 //
-// Author:
+// Authors:
 //   Kevin Duffus <KevinDuffus@gmail.com>
+//   Alexander Kojevnikov <alexander@kojevnikov.com>
 //
 // Copyright (C) 2009 Kevin Duffus
+// Copyright (C) 2010 Alexander Kojevnikov
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -51,34 +53,51 @@ namespace Banshee.YouTube.Gui
 {
     public class YouTubeTile : VideoStreamTile
     {
-        public YouTubeTile (Video video_entry)
+        public YouTubeTile (YouTubeTileData data)
         {
-            Info = video_entry;
+            BansheePlaybackUri = data.BansheePlaybackUri;
+            BrowserPlaybackUri = data.BrowserPlaybackUri;
+            Title = data.Title;
+            Uploader = data.Uploader;
+            RatingValue = data.RatingValue;
+
+            if (data.Thumbnail != null) {
+                Pixbuf = new Gdk.Pixbuf (data.Thumbnail);
+            } else {
+                Pixbuf = Banshee.Gui.IconThemeUtils.LoadIcon ("generic-artist", 48);
+            }
         }
+    }
 
-        private static string GetTParam (string yt_video_uri)
+    public class YouTubeTileData
+    {
+        public string BansheePlaybackUri { get; private set; }
+        public string BrowserPlaybackUri { get; private set; }
+        public string Title { get; private set; }
+        public string Uploader { get; private set; }
+        public int RatingValue { get; private set; }
+        public string Thumbnail { get; private set; }
+
+        public YouTubeTileData (Video video)
         {
-            string t_param;
-            DataFetch df = new DataFetch ();
-            string watch_page_contents = df.GetWatchPageContents (yt_video_uri);
+            BansheePlaybackUri = GetPlaybackUri (video);
+            BrowserPlaybackUri = video.WatchPage.AbsoluteUri;
+            Title = video.Title;
+            Uploader = video.Uploader;
 
-            if (String.IsNullOrEmpty (watch_page_contents)) {
-                return null;
+            try {
+                RatingValue = (int) Math.Round (video.RatingAverage);
+            } catch (Exception e) {
+                Log.DebugException (e);
             }
 
-            Regex regex = new Regex ("'SWF_ARGS'.*\"t\": \"([^\"]+)\"");
-            Match match = regex.Match (watch_page_contents);
-
-            if (!match.Success) {
-                return null;
+            try {
+                DataFetch df = new DataFetch ();
+                Thumbnail = df.DownloadContent (video.Thumbnails[0].Url, CacheDuration.Normal);
+            } catch (Exception e) {
+                Log.DebugException (e);
+                Thumbnail = null;
             }
-
-            t_param = Regex.Unescape (match.Result ("$1"));
-            if (t_param == null) {
-                t_param = match.Result ("$1");
-            }
-
-            return t_param;
         }
 
         private static string GetPlaybackUri (Video yt_video)
@@ -117,29 +136,29 @@ namespace Banshee.YouTube.Gui
             return playback_uri;
         }
 
-        public Video Info {
-            set {
-                BansheePlaybackUri = GetPlaybackUri (value);
-                BrowserPlaybackUri = value.WatchPage.AbsoluteUri;
-                Title = value.Title;
-                Uploader = value.Uploader;
+        private static string GetTParam (string yt_video_uri)
+        {
+            string t_param;
+            DataFetch df = new DataFetch ();
+            string watch_page_contents = df.GetWatchPageContents (yt_video_uri);
 
-                try {
-                    RatingValue = (int) Math.Round (value.RatingAverage);
-                } catch (Exception e) {
-                    Log.DebugException (e);
-                }
-
-                try {
-                    DataFetch df = new DataFetch ();
-                    string thumbnail = df.DownloadContent (value.Thumbnails[0].Url, CacheDuration.Normal);
-
-                    Pixbuf = new Gdk.Pixbuf (thumbnail);
-                } catch (Exception e) {
-                    Log.DebugException (e);
-                    Pixbuf = Banshee.Gui.IconThemeUtils.LoadIcon ("generic-artist", 48);
-                }
+            if (String.IsNullOrEmpty (watch_page_contents)) {
+                return null;
             }
+
+            Regex regex = new Regex ("'SWF_ARGS'.*\"t\": \"([^\"]+)\"");
+            Match match = regex.Match (watch_page_contents);
+
+            if (!match.Success) {
+                return null;
+            }
+
+            t_param = Regex.Unescape (match.Result ("$1"));
+            if (t_param == null) {
+                t_param = match.Result ("$1");
+            }
+
+            return t_param;
         }
     }
 }

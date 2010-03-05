@@ -1,10 +1,12 @@
 //
 // YouTubePane.cs
 //
-// Author:
+// Authors:
 //   Kevin Duffus <KevinDuffus@gmail.com>
+//   Alexander Kojevnikov <alexander@kojevnikov.com>
 //
 // Copyright (C) 2009 Kevin Duffus
+// Copyright (C) 2010 Alexander Kojevnikov
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -39,6 +41,7 @@ using Google.GData.YouTube;
 using Google.YouTube;
 
 using Hyena;
+using Hyena.Jobs;
 using Hyena.Widgets;
 
 using Banshee.Gui;
@@ -57,8 +60,8 @@ namespace Banshee.YouTube
         private Gtk.ScrolledWindow results_sw;
         private TileView results_tv;
         private Label no_results_label = new Label (Catalog.GetString ("No videos found"));
-        private Hyena.Jobs.Scheduler scheduler = new Hyena.Jobs.Scheduler ();
-        private Hyena.Jobs.Job refresh_videos_jobs;
+        private Scheduler scheduler = new Scheduler ();
+        private Job refresh_videos_jobs;
 
         private int max_results_display = 12;
         private bool showing_results = true;
@@ -163,7 +166,7 @@ namespace Banshee.YouTube
             results_tv.ModifyBg (StateType.Normal, Style.Base (StateType.Normal));
         }
 
-        private class RefreshVideosJob : Hyena.Jobs.Job
+        private class RefreshVideosJob : SimpleAsyncJob
         {
             private YouTubePane yt_pane;
             private string yt_query_val;
@@ -174,7 +177,7 @@ namespace Banshee.YouTube
                 this.yt_query_val = query_val;
             }
 
-            protected override void RunJob ()
+            protected override void Run ()
             {
                 DataCore yt_data = new DataCore();
                 bool init_request = yt_data.InitYouTubeRequest();
@@ -191,45 +194,46 @@ namespace Banshee.YouTube
         private void UpdateForQuery (Feed<Video> video_feed)
         {
             int result_display_count = 0;
-            List<YouTubeTile> tiles = new List<YouTubeTile> ();
+            var tiles = new List<YouTubeTileData> ();
+            bool cleanup;
 
-            results_tv.ClearWidgets ();
+            if (video_feed.TotalResults > 0) {
+                cleanup = !showing_results;
 
-            ThreadAssist.Spawn (delegate {
-                if (video_feed.TotalResults > 0) {
-                    if (!showing_results) {
+                foreach (Video entry in video_feed.Entries) {
+                    // Don't include videos that are not live
+                    if (entry.IsDraft) {
+                        continue;
+                    } else if (result_display_count++ < max_results_display) {
+                        tiles.Add (new YouTubeTileData (entry));
+                    }
+                }
+
+                showing_results = true;
+            } else {
+                Log.Debug ("YouTube: No videos found");
+                cleanup = showing_results;
+                showing_results = false;
+            }
+
+            ThreadAssist.BlockingProxyToMain (delegate {
+                results_tv.ClearWidgets ();
+
+                if (showing_results) {
+                    if (cleanup) {
                         Remove (no_results_label);
                         Add (results_sw);
                         ShowAll ();
                     }
 
-                    foreach (Video entry in video_feed.Entries) {
-                        // Don't include videos that are not live
-                        if (entry.IsDraft) {
-                            continue;
-                        } else if (result_display_count++ < max_results_display) {
-                            tiles.Add (new YouTubeTile (entry));
-                        }
+                    foreach (YouTubeTileData tile in tiles) {
+                        results_tv.AddWidget (new YouTubeTile (tile));
                     }
-
                     results_tv.ShowAll ();
-                    showing_results = true;
-                } else {
-                    Log.Debug ("YouTube: No videos found");
-                    if (showing_results) {
-                        Remove (results_sw);
-                        Add (no_results_label);
-                        showing_results = false;
-                        ShowAll ();
-                    }
-                }
-
-                if (showing_results) {
-                    ThreadAssist.ProxyToMain (delegate {
-                        foreach (YouTubeTile tile in tiles) {
-                            results_tv.AddWidget (tile);
-                        }
-                    });
+                } else if (cleanup) {
+                    Remove (results_sw);
+                    Add (no_results_label);
+                    ShowAll ();
                 }
 
                 ready = true;
