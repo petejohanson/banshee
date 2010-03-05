@@ -184,10 +184,12 @@ namespace Banshee.YouTube.Gui
         {
             if (track_info == null) {
                 try {
-                    track_info = new TrackInfo ();
-                    track_info.TrackTitle = video_title;
-                    track_info.ArtistName = video_uploader;
-                    track_info.Uri = new SafeUri(BansheePlaybackUri);
+                    track_info = new TrackInfo () {
+                        TrackTitle = video_title,
+                        ArtistName = video_uploader,
+                        AlbumTitle = "YouTube",
+                        Uri = new SafeUri (BansheePlaybackUri)
+                    };
                 } catch (Exception e) {
                     Log.DebugException (e);
                 }
