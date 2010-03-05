@@ -71,14 +71,12 @@ namespace Banshee.YouTube.Gui
         private Label secondary_label = new Label ();
         private RatingEntry rating = new RatingEntry ();
 
-        private string banshee_playback_uri;
-        private string browser_playback_uri;
         private string video_title;
         private string video_uploader;
         private string primary_text;
         private string secondary_text;
 
-        public VideoStreamTile () : base ()
+        public VideoStreamTile ()
         {
             hbox.BorderWidth = 2;
             hbox.Spacing = 6;
@@ -117,15 +115,8 @@ namespace Banshee.YouTube.Gui
             ConstructTile ();
         }
 
-        public string BansheePlaybackUri {
-            get { return banshee_playback_uri; }
-            set { banshee_playback_uri = value; }
-        }
-
-        public string BrowserPlaybackUri {
-            get { return browser_playback_uri; }
-            set { browser_playback_uri = value; }
-        }
+        public string BansheePlaybackUri { get; set; }
+        public string BrowserPlaybackUri { get; set; }
 
         public string Title {
             get { return primary_text; }
@@ -150,7 +141,7 @@ namespace Banshee.YouTube.Gui
         public Gdk.Pixbuf Pixbuf {
             get { return image.Pixbuf; }
             set {
-                if(value == null) {
+                if (value == null) {
                    return;
                 }
 

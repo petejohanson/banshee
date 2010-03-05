@@ -69,10 +69,13 @@ namespace Banshee.YouTube.Data
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create (url);
 
             try {
-                HttpWebResponse response = (HttpWebResponse) request.GetResponse ();
-                Stream stream = response.GetResponseStream ();
-                StreamReader stream_reader = new StreamReader (stream);
-                contents = stream_reader.ReadToEnd ();
+                using (var response = (HttpWebResponse) request.GetResponse ()) {
+                    using (var stream = response.GetResponseStream ()) {
+                        using (var stream_reader = new StreamReader (stream)) {
+                            contents = stream_reader.ReadToEnd ();
+                        }
+                    }
+                }
 
                 return contents;
             } catch (Exception e) {
