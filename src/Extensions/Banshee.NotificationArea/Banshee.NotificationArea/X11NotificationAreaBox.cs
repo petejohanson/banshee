@@ -80,13 +80,10 @@ namespace Banshee.NotificationArea
             panel_size = 16;
             event_box.Add (icon);
 
-            event_box.AppPaintable = true;
             event_box.ButtonPressEvent += OnButtonPressEvent;
             event_box.EnterNotifyEvent += OnEnterNotifyEvent;
             event_box.LeaveNotifyEvent += OnLeaveNotifyEvent;
             event_box.ScrollEvent += OnMouseScroll;
-            event_box.ExposeEvent += OnExposeEvent;
-            event_box.GdkWindow.SetBackPixmap(null, true);
 
             event_box.ShowAll ();
         }
@@ -399,15 +396,6 @@ namespace Banshee.NotificationArea
             }
 
             return result;
-        }
-
-        [GLib.ConnectBefore]
-        private void OnExposeEvent (object o, ExposeEventArgs e)
-        {
-            Gtk.Widget widget = (Gtk.Widget)o;
-            Gdk.Rectangle area = e.Event.Area;
-
-            widget.GdkWindow.ClearArea(area.X, area.Y, area.Width, area.Height);
         }
     }
 }
