@@ -209,6 +209,7 @@ namespace Muinshee
         {
             track_view = new TerseTrackListView ();
             track_view.HasFocus = true;
+            track_view.IsReorderable = true;
             track_view.ColumnController.Insert (new Column (null, "indicator", new ColumnCellStatusIndicator (null), 0.05, true, 20, 20), 0);
 
             Hyena.Widgets.ScrolledWindow sw = new Hyena.Widgets.ScrolledWindow ();
