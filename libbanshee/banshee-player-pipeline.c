@@ -253,14 +253,12 @@ _bp_pipeline_construct (BansheePlayer *player)
     
     // Playbin is the core element that handles autoplugging (finding the right
     // source and decoder elements) based on source URI and stream content
-#ifdef ENABLE_GAPLESS
     player->playbin = gst_element_factory_make ("playbin2", "playbin");
 
+#ifdef ENABLE_GAPLESS
     // Connect a proxy about-to-finish callback that will generate a next-track-starting callback.
     // This can be removed once playbin2 generates its own next-track signal.
     g_signal_connect (player->playbin, "about-to-finish", G_CALLBACK (bp_about_to_finish_callback), player);
-#else //ENABLE_GAPLESS
-    player->playbin = gst_element_factory_make ("playbin", "playbin");
 #endif //ENABLE_GAPLESS
 
     g_return_val_if_fail (player->playbin != NULL, FALSE);
