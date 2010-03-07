@@ -93,8 +93,6 @@ namespace Banshee.PlayQueue
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent);
             ServiceManager.PlaybackController.TrackStarted += OnTrackStarted;
 
-            ServiceManager.SourceManager.AddSource (this);
-
             // TODO change this Gtk.Action code so that the actions can be removed.  And so this
             // class doesn't depend on Gtk/ThickClient.
             actions = new PlayQueueActions (this);
@@ -123,6 +121,8 @@ namespace Banshee.PlayQueue
                     SELECT MAX(ViewOrder) + 1
                     FROM CorePlaylistEntries
                     WHERE PlaylistID = ?", DbId));
+
+            ServiceManager.SourceManager.AddSource (this);
         }
 
         protected override void Initialize ()
