@@ -163,6 +163,8 @@ bp_open (BansheePlayer *player, const gchar *uri)
     // Pass the request off to playbin
     g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);
     
+    player->in_gapless_transition = FALSE;
+    
     return TRUE;
 }
 
@@ -180,6 +182,8 @@ bp_stop (BansheePlayer *player, gboolean nullstate)
     
     bp_debug ("bp_stop: setting state to %s",
         state == GST_STATE_NULL ? "GST_STATE_NULL" : "GST_STATE_PAUSED");
+    
+    player->in_gapless_transition = FALSE;
     
     bp_pipeline_set_state (player, state);
 }

@@ -90,6 +90,7 @@ namespace Banshee.GStreamer
         private BansheePlayerAboutToFinishCallback about_to_finish_callback;
 #endif
 
+        private bool next_track_pending;
         private SafeUri pending_uri;
 
         private bool buffering_finished;
@@ -238,6 +239,7 @@ namespace Banshee.GStreamer
 
         public override void SetNextTrackUri (SafeUri uri)
         {
+            next_track_pending = false;
             if (next_track_set.WaitOne (0)) {
                 // We're not waiting for the next track to be set.
                 // This means that we've missed the window for gapless.
@@ -284,7 +286,7 @@ namespace Banshee.GStreamer
         {
             Close (false);
             OnEventChanged (PlayerEvent.EndOfStream);
-            if (!GaplessEnabled) {
+            if (!next_track_pending) {
                 OnEventChanged (PlayerEvent.RequestNextTrack);
             } else if (pending_uri != null) {
                 Log.Warning ("[Gapless] EOS signalled while waiting for next track.");
@@ -294,6 +296,13 @@ namespace Banshee.GStreamer
                 OpenUri (pending_uri);
                 Play ();
                 pending_uri = null;
+            } else {
+                // This should be unreachable - the RequestNextTrack event is delegated to the main thread
+                // and so blocks the bus callback from delivering the EOS message.
+                //
+                // Playback should continue as normal from here, when the RequestNextTrack message gets handled.
+                Log.Warning ("[Gapless] EndOfStream message recieved before the next track has been set");
+                Log.Warning ("[Gapless] If this happens frequently, please file a bug");
             }
         }
 
@@ -319,6 +328,7 @@ namespace Banshee.GStreamer
 
             next_track_set.Reset ();
             pending_uri = null;
+            next_track_pending = true;
 
             OnEventChanged (PlayerEvent.RequestNextTrack);
             // Gapless playback with Playbin2 requires that the about-to-finish callback does not return until

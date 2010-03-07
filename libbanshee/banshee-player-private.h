@@ -121,6 +121,7 @@ struct BansheePlayer {
     guint iterate_timeout_id;
     gboolean buffering;
     gchar *cdda_device;
+    gboolean in_gapless_transition;
     
     // Video State
     BpVideoDisplayContextType video_display_context_type;
