@@ -96,6 +96,7 @@ namespace Muinshee
         private void InitPlayQueue (PlayQueueSource play_queue)
         {
             if (actions == null) {
+                play_queue.Populate = false;
                 actions = new MuinsheeActions (play_queue);
                 actions.Actions.AddActionGroup (actions);
                 ServiceManager.SourceManager.SetActiveSource (play_queue);

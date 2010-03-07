@@ -732,8 +732,10 @@ namespace Banshee.PlayQueue
             SetAsPlaybackSourceUnlessPlaying ();
         }
 
+        private bool enable_population = true;
         public bool Populate {
-            get { return populate_shuffle_mode != "off"; }
+            get { return enable_population && populate_shuffle_mode != "off"; }
+            set { enable_population = value; }
         }
 
         private ITrackModelSource PriorSource {
