@@ -47,12 +47,16 @@ namespace Banshee.PlayQueue
 
         private readonly List<Widget> sensitive_widgets = new List<Widget> ();
 
+        private DictionaryComboBox<RandomBy> mode_combo;
+
+        public string ShuffleModeId { get { return mode_combo.ActiveValue.Id; } }
+
         public HeaderWidget (Shuffler shuffler, string shuffle_mode_id, string source_name) : base ()
         {
             this.Spacing = 6;
 
             var fill_label = new Label (Catalog.GetString ("_Fill"));
-            var mode_combo = new DictionaryComboBox<RandomBy> ();
+            mode_combo = new DictionaryComboBox<RandomBy> ();
             foreach (var random_by in shuffler.RandomModes.OrderBy (r => r.Adverb)) {
                 mode_combo.Add (random_by.Adverb, random_by);
                 if (random_by.Id == "off") {

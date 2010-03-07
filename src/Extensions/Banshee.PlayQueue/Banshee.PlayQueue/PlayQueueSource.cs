@@ -147,6 +147,8 @@ namespace Banshee.PlayQueue
                 OnUpdated ();
             };
 
+            populate_shuffle_mode = header_widget.ShuffleModeId;
+
             header_widget.SourceChanged += delegate (object sender, EventArgs<DatabaseSource> e) {
                 populate_from = e.Value;
                 if (populate_from == null) {
