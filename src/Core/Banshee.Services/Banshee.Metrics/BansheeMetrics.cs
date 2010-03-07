@@ -103,9 +103,6 @@ namespace Banshee.Metrics
         {
             Application.ClientStarted -= Initialize;
 
-            metrics.AddDefaults ();
-            AddMetrics ();
-
             var handler = Started;
             if (handler != null) {
                 handler ();
@@ -115,6 +112,9 @@ namespace Banshee.Metrics
                 if (BansheeMetrics.Instance == null) {
                     return false;
                 }
+
+                metrics.AddDefaults ();
+                AddMetrics ();
 
                 ThreadAssist.SpawnFromMain (delegate {
                     if (ApplicationContext.CommandLine.Contains ("debug-metrics")) {
