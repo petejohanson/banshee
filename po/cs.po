@@ -1,6 +1,7 @@
 # Czech translation of banshee.
 # Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010 the author(s) of banshee.
 # This file is distributed under the same license as the banshee package.
+#
 # Lukáš Novotný <lukasnov@cvs.gnome.org>, 2005, 2006.
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 # Jiří Eischmann <jiri@eischmann.cz>, 2009.
@@ -12,10 +13,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-01 21:00+0100\n"
-"PO-Revision-Date: 2010-03-01 20:59+0100\n"
-"Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=banshee&component=general\n"
+"POT-Creation-Date: 2010-03-07 07:09+0000\n"
+"PO-Revision-Date: 2010-03-05 11:13+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -636,7 +638,7 @@ msgid "Windows Media Audio"
 msgstr "Windows Media Audio"
 
 #: ../data/desktop-files/common.desktop.in.h:1
-#: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:72
+#: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:76
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:94
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:201
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:60
@@ -1112,7 +1114,7 @@ msgstr "Přehrát _album"
 msgid "Add an album to the playlist"
 msgstr "Přidat album do seznamu skladeb"
 
-#: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:252
+#: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:267
 #, csharp-format
 msgid "{0} remaining"
 msgstr "zbývá {0}"
@@ -1192,37 +1194,37 @@ msgid "Unknown error"
 msgstr "Neznámá chyba"
 
 #. TODO turn this into a PrimarySource-owned delegate?
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:415
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:414
 msgid "_Restart Podcast"
 msgstr "_Restartovat podcast"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:416
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:415
 msgid "_Restart Video"
 msgstr "_Přehrát video od začátku"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:417
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:416
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:86
 msgid "_Restart Song"
 msgstr "_Přehrát skladbu od začátku"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:418
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:417
 msgid "_Restart Item"
 msgstr "_Restartovat položku"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:432
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:431
 msgid "_Jump to Playing Podcast"
 msgstr "_Přejít na přehrávaný podcast"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:433
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:432
 msgid "_Jump to Playing Video"
 msgstr "_Přejít na přehrávané video"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:434
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:433
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:82
 msgid "_Jump to Playing Song"
 msgstr "_Přejít na přehrávanou skladbu"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:435
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:434
 msgid "_Jump to Playing Item"
 msgstr "_Přejít na přehrávanou položku"
 
@@ -1322,7 +1324,7 @@ msgid "Scanning for media"
 msgstr "Vyhledávají se média"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:187
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1275
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1339
 msgid "Scanning..."
 msgstr "Prohledává se…"
 
@@ -1363,7 +1365,7 @@ msgstr ""
 "Vyčkejte prosím, dokud nebude vaše stará databáze Banshee převedena do "
 "nového formátu."
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1272
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1336
 msgid "Refreshing Metadata"
 msgstr "Obnovování metadat"
 
@@ -1724,7 +1726,7 @@ msgid "Import play _counts"
 msgstr "Importovat _počet přehrání"
 
 #. disabled by default
-#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:295
+#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:302
 msgid "Improve Banshee by sending anonymous usage data"
 msgstr "Zdokonalte Banshee zasíláním anonymních dat o používání"
 
@@ -2702,7 +2704,7 @@ msgstr "Webové stránky Banshee"
 msgid "Important tasks are running"
 msgstr "Běží důležité úlohy"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:52
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:53
 msgid ""
 "Closing Banshee now will cancel any currently running tasks. They cannot be "
 "resumed automatically the next time Banshee is run."
@@ -2710,12 +2712,16 @@ msgstr ""
 "Pokud nyní Banshee ukončíte, budou zrušeny všechny běžící úlohy. Při dalším "
 "spuštění Banshee je nelze automaticky obnovit."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:59
-msgid "Quit anyway"
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:60
+#, fuzzy
+#| msgid "Quit anyway"
+msgid "Quit Anyway"
 msgstr "Přesto ukončit"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:60
-msgid "Continue running"
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:61
+#, fuzzy
+#| msgid "Continue running"
+msgid "Continue Running"
 msgstr "Pokračovat v běhu"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/DefaultApplicationHelperDialog.cs:69
@@ -3814,11 +3820,11 @@ msgstr "Zvolte formát: "
 msgid "Select library location"
 msgstr "Vyberte umístění knihovny"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:112
+#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:117
 msgid "Reset"
 msgstr "Obnovit výchozí"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:115
+#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:120
 #, csharp-format
 msgid "Reset location to default ({0})"
 msgstr "Vrátit umístění na výchozí ({0})"
@@ -3914,13 +3920,13 @@ msgstr "Ztišeno"
 msgid "Full Volume"
 msgstr "Nejvyšší hlasitost"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:130
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:131
 #, csharp-format
 msgid "Sync {0}"
 msgstr "Synchronizovat {0}"
 
 #. Note to translators: {0}, {1} and {2} will be replaced with numbers.
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:246
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:256
 #, csharp-format
 msgid "{0} to add, {1} to remove, {2} to update"
 msgstr "{0} přidat, {1} odstranit, {2} aktualizovat"
@@ -3969,21 +3975,38 @@ msgstr "Podpora převodu formátu souboru není dostupná"
 msgid "Error converting file"
 msgstr "Chyba při převádění souboru"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:133
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:137
 msgid "Sync when first plugged in and when the libraries change"
 msgstr ""
 "Synchronizovat, když je poprvé připojeno a když dojde ke změně v knihovnách"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:134
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:138
 msgid ""
 "Begin synchronizing the device as soon as the device is plugged in or the "
 "libraries change."
 msgstr ""
 "Začít synchronizaci zařízení, jakmile je připojeno nebo se změnily knihovny."
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:137
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:141
 msgid "Sync Preferences"
 msgstr "Předvolby synchronizace"
+
+#. singular form unused b/c we know it's > 1, but we still need GetPlural
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:364
+#, csharp-format
+msgid "The sync operation will remove one track from your device."
+msgid_plural "The sync operation will remove {0} tracks from your device."
+msgstr[0] "Synchronizací se z vašeho zařízení odstraní jedna stopa."
+msgstr[1] "Synchronizací se z vašeho zařízení odstraní {0} stopy."
+msgstr[2] "Synchronizací se z vašeho zařízení odstraní {0} stop."
+
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:368
+msgid "Are you sure you want to continue?"
+msgstr "Opravdu chcete pokračovat?"
+
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:376
+msgid "Remove tracks"
+msgstr "Odstranit stopy"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapActions.cs:52
 msgid "Sync"
@@ -5886,11 +5909,11 @@ msgstr "Hudební přehrávač Rhythmbox"
 msgid "Import _playlists"
 msgstr "Importovat _seznam skladeb"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:54
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:58
 msgid "_Fill"
 msgstr "_Vyplnit"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:76
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:80
 msgid "f_rom"
 msgstr "_z"
 
@@ -5926,11 +5949,11 @@ msgstr "Vyprázdnit frontu při ukončení"
 msgid "Remove From Play Queue"
 msgstr "Odstranit z fronty"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:791
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:800
 msgid "Number of _played songs to show"
 msgstr "Počet _přehraných skladeb, které se mají zobrazit"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:797
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:806
 msgid "Number of _upcoming songs to show"
 msgstr "Počet _nadcházejících skladeb, které se mají zobrazit"
 
@@ -6432,5 +6455,7 @@ msgstr "Připojeno k Last.fm."
 
 #: ../src/Libraries/Migo/Migo.Syndication/Feed.cs:149
 #: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:94
+#: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:97
 msgid "Unknown Podcast"
 msgstr "Neznámý podcast"
+
