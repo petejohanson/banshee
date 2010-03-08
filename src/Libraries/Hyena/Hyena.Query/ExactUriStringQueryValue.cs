@@ -1,8 +1,8 @@
 //
-// ExactStringQueryValue.cs
+// ExactUriStringQueryValue.cs
 //
 // Authors:
-//   John Millikin <jmillikin@gmail.com>
+//   Andrés G. Aragoneses <knocte@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,16 +28,10 @@ using System;
 
 namespace Hyena.Query
 {
-    // A query value that requires the string match exactly
-    public class ExactStringQueryValue : StringQueryValue
+    public class ExactUriStringQueryValue : ExactStringQueryValue
     {
-        public override string ToSql (Operator op)
-        {
-            return String.IsNullOrEmpty (value) ? null : EscapeString (op, StringValue);
-        }
-
-        protected virtual string StringValue {
-            get { return value.ToLower (); }
+        protected override string StringValue {
+            get { return System.Uri.EscapeUriString (base.StringValue); }
         }
     }
 }

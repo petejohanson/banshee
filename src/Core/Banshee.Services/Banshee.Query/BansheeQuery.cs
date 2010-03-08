@@ -259,7 +259,7 @@ namespace Banshee.Query
 
         public static QueryField UriField = new QueryField (
             "uri", "Uri",
-            Catalog.GetString ("File Location"), "CoreTracks.Uri", typeof(ExactStringQueryValue),
+            Catalog.GetString ("File Location"), "CoreTracks.Uri", typeof(ExactUriStringQueryValue),
             // Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
             Catalog.GetString ("uri"), Catalog.GetString ("path"), Catalog.GetString ("file"), Catalog.GetString ("location"),
             "uri", "path", "file", "location"
