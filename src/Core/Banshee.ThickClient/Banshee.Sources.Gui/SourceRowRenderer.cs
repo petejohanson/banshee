@@ -149,7 +149,7 @@ namespace Banshee.Sources.Gui
             int count_layout_width = 0, count_layout_height = 0;
             int max_title_layout_width;
 
-            bool hide_counts = source.Count <= 0;
+            bool hide_counts = source.EnabledCount <= 0;
 
             Pixbuf icon = SourceIconResolver.ResolveIcon (source, RowHeight);
 
@@ -185,7 +185,7 @@ namespace Banshee.Sources.Gui
             if (!hide_counts) {
                 count_layout = new Pango.Layout (widget.PangoContext);
                 count_layout.FontDescription = fd;
-                count_layout.SetMarkup (String.Format ("<span size=\"small\">{0}</span>", source.Count));
+                count_layout.SetMarkup (String.Format ("<span size=\"small\">{0}</span>", source.EnabledCount));
                 count_layout.GetPixelSize (out count_layout_width, out count_layout_height);
             }
 

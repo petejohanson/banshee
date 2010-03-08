@@ -754,6 +754,18 @@ namespace Banshee.PlayQueue
             }
         }
 
+        public override int EnabledCount {
+            get {
+                return current_track == null ? 0 : Count - TrackModel.IndexOf (current_track);
+            }
+        }
+
+        public override int FilteredCount {
+            get {
+                return EnabledCount;
+            }
+        }
+
         public override bool CanRename {
             get { return false; }
         }

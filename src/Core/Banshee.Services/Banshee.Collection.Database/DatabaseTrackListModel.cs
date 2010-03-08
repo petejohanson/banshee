@@ -398,11 +398,11 @@ namespace Banshee.Collection.Database
             get { return (int) filtered_count; }
         }
 
-        public TimeSpan Duration {
+        public virtual TimeSpan Duration {
             get { return filtered_duration; }
         }
 
-        public long FileSize {
+        public virtual long FileSize {
             get { return filtered_filesize; }
         }
 

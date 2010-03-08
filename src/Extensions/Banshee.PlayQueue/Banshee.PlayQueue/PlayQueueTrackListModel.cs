@@ -46,6 +46,32 @@ namespace Banshee.PlayQueue
             this.source = source;
         }
 
+        public override TimeSpan Duration {
+            get {
+                TimeSpan duration = new TimeSpan (0);
+                for (int i = 0; i < this.Count; i++) {
+                    TrackInfo track = this[i];
+                    if (track != null && track.Enabled) {
+                        duration += track.Duration;
+                    }
+                }
+                return duration;
+            }
+        }
+
+        public override long FileSize {
+            get {
+                long filesize = 0;
+                for (int i = 0; i < this.Count; i++) {
+                    TrackInfo track = this[i];
+                    if (track != null && track.Enabled) {
+                        filesize += track.FileSize;
+                    }
+                }
+                return filesize;
+            }
+        }
+
         public override TrackInfo this[int index] {
             get {
                 lock (this) {
