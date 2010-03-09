@@ -35,9 +35,9 @@
 // ---------------------------------------------------------------------------
 
 static gdouble
-bp_replaygain_db_to_linear(gdouble value)
+bp_replaygain_db_to_linear (gdouble value)
 {
-    return pow(10, value / 20.0);
+    return pow (10, value / 20.0);
 }
 
 static gdouble bp_rg_calc_history_avg (BansheePlayer *player)
@@ -97,16 +97,16 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
         // The pipeline is already in the correct state.  Unblock the pad, and return.
         g_mutex_unlock (player->mutex);
         if (gst_pad_is_blocked (srcPad)) {
-            gst_pad_set_blocked_async(srcPad, FALSE, &pad_block_cb, player);
+            gst_pad_set_blocked_async (srcPad, FALSE, &pad_block_cb, player);
         }
         return;
     }
 
     if (player->rgvolume_in_pipeline) {
-        gst_element_unlink(player->before_rgvolume, player->rgvolume);
-        gst_element_unlink(player->rgvolume, player->after_rgvolume);
+        gst_element_unlink (player->before_rgvolume, player->rgvolume);
+        gst_element_unlink (player->rgvolume, player->after_rgvolume);
     } else {
-        gst_element_unlink(player->before_rgvolume, player->after_rgvolume);
+        gst_element_unlink (player->before_rgvolume, player->after_rgvolume);
     }
 
     if (player->replaygain_enabled) {
@@ -122,7 +122,7 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
     if (player->replaygain_enabled && GST_IS_ELEMENT (player->rgvolume)) {
         g_signal_connect (player->rgvolume, "notify::target-gain", G_CALLBACK (on_target_gain_changed), player);
         gst_bin_add (GST_BIN (player->audiobin), player->rgvolume);
-        gst_element_sync_state_with_parent(player->rgvolume);
+        gst_element_sync_state_with_parent (player->rgvolume);
 
         // link in rgvolume and connect to the real audio sink
         gst_element_link (player->before_rgvolume, player->rgvolume);
@@ -138,10 +138,10 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
     g_mutex_unlock (player->mutex);
 
     if (gst_pad_is_blocked (srcPad)) {
-        gst_pad_set_blocked_async(srcPad, FALSE, &pad_block_cb, player);
+        gst_pad_set_blocked_async (srcPad, FALSE, &pad_block_cb, player);
     }
 
-    _bp_rgvolume_print_volume(player);
+    _bp_rgvolume_print_volume (player);
 }
 
 // ---------------------------------------------------------------------------
@@ -169,8 +169,8 @@ void _bp_rgvolume_print_volume(BansheePlayer *player)
         g_object_get (G_OBJECT (player->rgvolume), "result-gain", &scale, NULL);
 
         bp_debug ("scaled volume: %.2f (ReplayGain) * %.2f (User) = %.2f",
-                  bp_replaygain_db_to_linear(scale), player->current_volume,
-                  bp_replaygain_db_to_linear(scale) * player->current_volume);
+                  bp_replaygain_db_to_linear (scale), player->current_volume,
+                  bp_replaygain_db_to_linear (scale) * player->current_volume);
     }
 }
 
@@ -179,12 +179,12 @@ void _bp_replaygain_pipeline_rebuild (BansheePlayer* player)
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
 
     g_return_if_fail (GST_IS_ELEMENT (player->before_rgvolume));
-    GstPad* srcPad = gst_element_get_static_pad(player->before_rgvolume, "src");
+    GstPad* srcPad = gst_element_get_static_pad (player->before_rgvolume, "src");
 
-    if (gst_pad_is_active(srcPad) && !gst_pad_is_blocked (srcPad)) {
-        gst_pad_set_blocked_async(srcPad, TRUE, &pad_block_cb, player);
+    if (gst_pad_is_active (srcPad) && !gst_pad_is_blocked (srcPad)) {
+        gst_pad_set_blocked_async (srcPad, TRUE, &pad_block_cb, player);
     } else if (srcPad->block_callback == NULL) {
-        pad_block_cb(srcPad, TRUE, player);
+        pad_block_cb (srcPad, TRUE, player);
     }
 }
 
