@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,25 +11,25 @@
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <ReleaseVersion>1.3</ReleaseVersion>
+    <RootNamespace>Banshee.ThickClient</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Hyena.Gui\Hyena.Gui.csproj">
@@ -57,52 +57,47 @@
       <Name>Banshee.Widgets</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="atk-sharp" />
     <Reference Include="gdk-sharp" />
-    <Reference Include="glade-sharp" />
     <Reference Include="glib-sharp" />
     <Reference Include="gtk-sharp" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\..\winbin\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Addins">
-      <HintPath>..\..\..\winbin\Mono.Addins.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Addins.Gui">
-      <HintPath>..\..\..\winbin\Mono.Addins.Gui.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Addins.Setup">
-      <HintPath>..\..\..\winbin\Mono.Addins.Setup.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Posix">
-      <HintPath>..\..\..\winbin\Mono.Posix.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Security">
-      <HintPath>..\..\..\winbin\Mono.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoPosixHelper">
-      <HintPath>..\..\..\winbin\MonoPosixHelper.dll</HintPath>
-    </Reference>
-    <Reference Include="NDesk.DBus">
-      <HintPath>..\..\..\winbin\NDesk.DBus.dll</HintPath>
-    </Reference>
-    <Reference Include="NDesk.DBus.GLib">
-      <HintPath>..\..\..\winbin\NDesk.DBus.GLib.dll</HintPath>
-    </Reference>
-    <Reference Include="taglib-sharp">
-      <HintPath>..\..\..\winbin\taglib-sharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Posix" />
     <Reference Include="Mono.Cairo" />
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="System.Xml" />
-    <Reference Include="taglib-sharp, Version=2.0.3.1, Culture=neutral, PublicKeyToken=db62eba44689b5b0" />
+    <Reference Include="System.Data" />
+    <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Addins.Gui, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <HintPath>..\..\..\bin\Mono.Addins.Gui.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Addins.Setup, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <HintPath>..\..\..\bin\Mono.Addins.Setup.dll</HintPath>
+    </Reference>
+    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
+      <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
+    </Reference>
+    <Reference Include="NDesk.DBus.GLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
+      <HintPath>..\..\..\bin\NDesk.DBus.GLib.dll</HintPath>
+    </Reference>
+    <Reference Include="taglib-sharp, Version=2.0.3.6, Culture=neutral, PublicKeyToken=db62eba44689b5b0">
+      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\..\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\..\..\bin\Mono.Security.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\browser-album-cover.png">
@@ -117,10 +112,9 @@
     <EmbeddedResource Include="Resources\core-ui-actions-layout.xml">
       <LogicalName>core-ui-actions-layout.xml</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\banshee-dialogs.glade">
-      <LogicalName>banshee-dialogs.glade</LogicalName>
+    <EmbeddedResource Include="Banshee.ThickClient.addin.xml">
+      <LogicalName>Banshee.ThickClient.addin.xml</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Banshee.ThickClient.addin.xml" />
     <EmbeddedResource Include="Resources\banshee-logo.png">
       <LogicalName>banshee-logo.png</LogicalName>
     </EmbeddedResource>
@@ -140,13 +134,12 @@
     <Compile Include="Banshee.Gui\IconThemeUtils.cs" />
     <Compile Include="Banshee.Gui.Dialogs\ConfirmShutdownDialog.cs" />
     <Compile Include="Banshee.Gui.Dialogs\ErrorListDialog.cs" />
-    <Compile Include="Banshee.Gui.Dialogs\GladeDialog.cs" />
-    <Compile Include="Banshee.Gui.Dialogs\GladeWindow.cs" />
     <Compile Include="Banshee.Gui\GtkElementsService.cs" />
     <Compile Include="Banshee.Gui\BansheeIconFactory.cs" />
     <Compile Include="Banshee.Gui\InterfaceActionService.cs" />
     <Compile Include="Banshee.Gui\PlaybackActions.cs" />
     <Compile Include="Banshee.Gui\ViewActions.cs" />
+    <Compile Include="Banshee.Gui\IDisableKeybindings.cs" />
     <Compile Include="Banshee.Gui\GlobalActions.cs" />
     <Compile Include="Banshee.Gui.Widgets\ConnectedVolumeButton.cs" />
     <Compile Include="Banshee.Collection.Gui\ColumnCellStatusIndicator.cs" />
@@ -275,6 +268,9 @@
     <Compile Include="Banshee.ContextPane\ContextPageManager.cs" />
     <Compile Include="Banshee.ContextPane\ContextPane.cs" />
     <Compile Include="Banshee.Query.Gui\PlaybackErrorQueryValueEntry.cs" />
+    <Compile Include="Banshee.Collection.Gui\CoverArtEditor.cs" />
+    <Compile Include="Banshee.Collection.Gui\SearchableListView.cs" />
+    <Compile Include="Banshee.Gui.Widgets\CoverArtDisplay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
