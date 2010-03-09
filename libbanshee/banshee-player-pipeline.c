@@ -38,6 +38,15 @@
 // Private Functions
 // ---------------------------------------------------------------------------
 
+static gboolean
+bp_stream_has_video (GstElement *playbin)
+{
+    int n_video;
+    g_object_get (G_OBJECT (playbin), "n-video", &n_video, NULL);
+    return n_video > 0;
+}
+
+
 static void
 bp_pipeline_process_tag (const GstTagList *tag_list, const gchar *tag_name, BansheePlayer *player)
 {
@@ -53,13 +62,43 @@ bp_pipeline_process_tag (const GstTagList *tag_list, const gchar *tag_name, Bans
     
     value = gst_tag_list_get_value_index (tag_list, tag_name, 0);
 
-    if (value != NULL) {
-        _bp_replaygain_process_tag (player, tag_name, value);
-    
-        if (player->tag_found_cb != NULL) {
-            player->tag_found_cb (player, tag_name, value);
-        }
+    if (value != NULL && player->tag_found_cb != NULL) {
+        player->tag_found_cb (player, tag_name, value);
     }
+}
+
+static gboolean
+bp_next_track_starting (BansheePlayer *player)
+{
+    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
+    g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), FALSE);
+
+    // Work around BGO #602437 - gapless transition between tracks with 
+    // video streams results in broken behaviour - most obviously, huge A/V
+    // sync issues.
+    gboolean has_video = bp_stream_has_video (player->playbin);
+    if (player->in_gapless_transition && has_video) {
+        gchar *uri;
+    
+        bp_debug ("[Gapless]: Aborting gapless transition to stream with video.  Triggering normal track change");
+        g_object_get (G_OBJECT (player->playbin), "uri", &uri, NULL);
+        gst_element_set_state (player->playbin, GST_STATE_READY);
+        
+        g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);
+        gst_element_set_state (player->playbin, GST_STATE_PLAYING);
+        g_free (uri);
+        player->in_gapless_transition = FALSE;
+        // The transition to playing will happen asynchronously, and will trigger
+        // a second track-starting message.  Stop processing this one.
+        return FALSE;
+    }
+    player->in_gapless_transition = FALSE;
+
+    if (player->next_track_starting_cb != NULL) {
+        bp_debug ("[gapless] Triggering track-change signal");
+        player->next_track_starting_cb (player);
+    }
+    return FALSE;
 }
 
 static gboolean
@@ -83,9 +122,8 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
             gst_message_parse_state_changed (message, &old, &new, &pending);
             
             _bp_missing_elements_handle_state_changed (player, old, new);
-            _bp_replaygain_handle_state_changed (player, old, new, pending);
             
-            if (player->state_changed_cb != NULL) {
+            if (player->state_changed_cb != NULL && GST_MESSAGE_SRC (message) == GST_OBJECT (player->playbin)) {
                 player->state_changed_cb (player, old, new, pending);
             }
             break;
@@ -161,6 +199,11 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
         } 
         
         case GST_MESSAGE_ELEMENT: {
+            const GstStructure *messageStruct;
+            messageStruct = gst_message_get_structure (message);
+            if (GST_MESSAGE_SRC (message) == GST_OBJECT (player->playbin) && gst_structure_has_name (messageStruct, "playbin2-stream-changed")) {
+                bp_next_track_starting (player);
+            }
             _bp_missing_elements_process_message (player, message);
             break;
         }
@@ -170,6 +213,26 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
     
     return TRUE;
 }
+
+#ifdef ENABLE_GAPLESS
+static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *player)
+{
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+    g_return_if_fail (GST_IS_ELEMENT (playbin));
+
+    if (bp_stream_has_video (playbin)) {
+        bp_debug ("[Gapless]: Not attempting gapless transition from stream with video");
+        return;
+    }
+
+    if (player->about_to_finish_cb != NULL) {
+        player->in_gapless_transition = TRUE;
+
+        bp_debug ("[Gapless] Requesting next track");
+        player->about_to_finish_cb (player);
+    }
+}
+#endif //ENABLE_GAPLESS
 
 // ---------------------------------------------------------------------------
 // Internal Functions
@@ -189,7 +252,14 @@ _bp_pipeline_construct (BansheePlayer *player)
     
     // Playbin is the core element that handles autoplugging (finding the right
     // source and decoder elements) based on source URI and stream content
-    player->playbin = gst_element_factory_make ("playbin", "playbin");
+    player->playbin = gst_element_factory_make ("playbin2", "playbin");
+
+#ifdef ENABLE_GAPLESS
+    // Connect a proxy about-to-finish callback that will generate a next-track-starting callback.
+    // This can be removed once playbin2 generates its own next-track signal.
+    g_signal_connect (player->playbin, "about-to-finish", G_CALLBACK (bp_about_to_finish_callback), player);
+#endif //ENABLE_GAPLESS
+
     g_return_val_if_fail (player->playbin != NULL, FALSE);
 
     // Try to find an audio sink, prefer gconf, which typically is set to auto these days,
@@ -256,11 +326,17 @@ _bp_pipeline_construct (BansheePlayer *player)
         // link in equalizer, preamp and audioconvert.
         gst_element_link_many (audiosinkqueue, eq_audioconvert, player->preamp, 
             player->equalizer, eq_audioconvert2, audiosink, NULL);
+        player->before_rgvolume = eq_audioconvert;
+        player->after_rgvolume = player->preamp;
     } else {
         // link the queue with the real audio sink
         gst_element_link (audiosinkqueue, audiosink);
+        player->before_rgvolume = audiosinkqueue;
+        player->after_rgvolume = audiosink;
     }
-    
+    player->rgvolume_in_pipeline = FALSE;
+    _bp_replaygain_pipeline_rebuild (player);
+
     _bp_vis_pipeline_setup (player);
     
     // Now that our internal audio sink is constructed, tell playbin to use it

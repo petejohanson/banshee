@@ -28,128 +28,164 @@
 
 #include <math.h>
 #include "banshee-player-replaygain.h"
+#include "banshee-player-pipeline.h"
 
 // ---------------------------------------------------------------------------
 // Private Functions
 // ---------------------------------------------------------------------------
 
-static inline void
-bp_replaygain_debug (BansheePlayer *player)
+static gdouble
+bp_replaygain_db_to_linear (gdouble value)
 {
-    gint i;
-    for (i = 0; i < 11; i++) {
-       printf ("%g ", player->volume_scale_history[i]);
+    return pow (10, value / 20.0);
+}
+
+static gdouble bp_rg_calc_history_avg (BansheePlayer *player)
+{
+    gdouble sum = 0.0;
+    int i;
+    for (i = 0; i < player->history_size; ++i) {
+        sum += player->rg_gain_history[i];
     }
-    printf ("\n");
+    return sum / player->history_size;
+}
+
+static void bp_replaygain_update_history (BansheePlayer *player)
+{
+    g_return_if_fail (player->history_size <= 10);
+
+    if (player->history_size == 10) {
+        memmove (player->rg_gain_history + 1, player->rg_gain_history, sizeof (gdouble) * 9);
+    } else {
+        memmove (player->rg_gain_history + 1, player->rg_gain_history, sizeof (gdouble) * player->history_size);
+        player->history_size++;
+    }
+
+    gdouble gain;
+    g_object_get (G_OBJECT (player->rgvolume), "target-gain", &gain, NULL);
+    player->rg_gain_history[0] = gain;
+    bp_debug ("[ReplayGain] Added gain: %.2f to history.", gain);
+
+    g_object_set (G_OBJECT (player->rgvolume), "fallback-gain", bp_rg_calc_history_avg (player), NULL);
+}
+
+static void on_target_gain_changed (GstElement *rgvolume, GParamSpec *pspec, BansheePlayer *player)
+{
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+
+    bp_replaygain_update_history (player);
+    _bp_rgvolume_print_volume (player);
 }
 
 static void
-bp_replaygain_update_pipeline (BansheePlayer *player, 
-    gdouble album_gain, gdouble album_peak,
-    gdouble track_gain, gdouble track_peak)
-{
-    gdouble gain = album_gain == 0.0 ? album_gain : track_gain;
-    gdouble peak = album_peak == 0.0 ? album_peak : track_peak;
-    gdouble scale = 0.0;
-    
+pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data) {
+
+    if (!blocked) {
+        return;
+    }
+
+    BansheePlayer* player = (BansheePlayer*) user_data;
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
-    
-    if (gain == 0.0) {
-        gint i;
-        player->current_scale_from_history = TRUE;
-        // Compute the average scale from history
-        for (i = 1; i <= 10; i++) {
-            scale += player->volume_scale_history[i] / 10.0;
+
+    // The pad_block_cb can get triggered multiple times, on different threads.
+    // Lock around the link/unlink code, so we don't end up going through here
+    // with inconsistent state.
+    g_mutex_lock (player->mutex);
+
+    if ((player->replaygain_enabled && player->rgvolume_in_pipeline) ||
+        (!player->replaygain_enabled && !player->rgvolume_in_pipeline)) {
+        // The pipeline is already in the correct state.  Unblock the pad, and return.
+        g_mutex_unlock (player->mutex);
+        if (gst_pad_is_blocked (srcPad)) {
+            gst_pad_set_blocked_async (srcPad, FALSE, &pad_block_cb, player);
+        }
+        return;
+    }
+
+    if (player->rgvolume_in_pipeline) {
+        gst_element_unlink (player->before_rgvolume, player->rgvolume);
+        gst_element_unlink (player->rgvolume, player->after_rgvolume);
+    } else {
+        gst_element_unlink (player->before_rgvolume, player->after_rgvolume);
+    }
+
+    if (player->replaygain_enabled) {
+        player->rgvolume = _bp_rgvolume_new (player);
+        if (!GST_IS_ELEMENT (player->rgvolume)) {
+            player->replaygain_enabled = FALSE;
         }
     } else {
-        player->current_scale_from_history = FALSE;
-        scale = pow (10.0, gain / 20.0);
-        
-        if (peak != 0.0 && scale * peak > 1.0) {
-            scale = 1.0 / peak;
-        }
-        
-        if (scale > 15.0) {
-            scale = 15.0;
-        }
+        gst_element_set_state (player->rgvolume, GST_STATE_NULL);
+        gst_bin_remove (GST_BIN (player->audiobin), player->rgvolume);
     }
-    
-    player->volume_scale_history[0] = scale;
-    _bp_replaygain_update_volume (player);
+
+    if (player->replaygain_enabled && GST_IS_ELEMENT (player->rgvolume)) {
+        g_signal_connect (player->rgvolume, "notify::target-gain", G_CALLBACK (on_target_gain_changed), player);
+        gst_bin_add (GST_BIN (player->audiobin), player->rgvolume);
+        gst_element_sync_state_with_parent (player->rgvolume);
+
+        // link in rgvolume and connect to the real audio sink
+        gst_element_link (player->before_rgvolume, player->rgvolume);
+        gst_element_link (player->rgvolume, player->after_rgvolume);
+        player->rgvolume_in_pipeline = TRUE;
+    } else {
+        // link the queue with the real audio sink
+        gst_element_link (player->before_rgvolume, player->after_rgvolume);
+        player->rgvolume_in_pipeline = FALSE;
+    }
+
+    // Our state is now consistent
+    g_mutex_unlock (player->mutex);
+
+    if (gst_pad_is_blocked (srcPad)) {
+        gst_pad_set_blocked_async (srcPad, FALSE, &pad_block_cb, player);
+    }
+
+    _bp_rgvolume_print_volume (player);
 }
 
 // ---------------------------------------------------------------------------
 // Internal Functions
 // ---------------------------------------------------------------------------
 
-void
-_bp_replaygain_process_tag (BansheePlayer *player, const gchar *tag_name, const GValue *value)
+
+GstElement* _bp_rgvolume_new (BansheePlayer *player)
 {
-    if (strcmp (tag_name, GST_TAG_ALBUM_GAIN) == 0) {
-        player->album_gain = g_value_get_double (value);
-    } else if (strcmp (tag_name, GST_TAG_ALBUM_PEAK) == 0) {
-        player->album_peak = g_value_get_double (value);
-    } else if (strcmp (tag_name, GST_TAG_TRACK_GAIN) == 0) {
-        player->track_gain = g_value_get_double (value);
-    } else if (strcmp (tag_name, GST_TAG_TRACK_PEAK) == 0) {
-        player->track_peak = g_value_get_double (value);
+    GstElement *rgvolume = gst_element_factory_make ("rgvolume", NULL);
+
+    if (rgvolume == NULL) {
+        bp_debug ("Loading ReplayGain plugin failed.");
+    }
+
+    return rgvolume;
+}
+
+void _bp_rgvolume_print_volume(BansheePlayer *player)
+{
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+    if (player->replaygain_enabled && (player->rgvolume != NULL)) {
+        gdouble scale;
+
+        g_object_get (G_OBJECT (player->rgvolume), "result-gain", &scale, NULL);
+
+        bp_debug ("scaled volume: %.2f (ReplayGain) * %.2f (User) = %.2f",
+                  bp_replaygain_db_to_linear (scale), player->current_volume,
+                  bp_replaygain_db_to_linear (scale) * player->current_volume);
     }
 }
 
-void 
-_bp_replaygain_handle_state_changed (BansheePlayer *player, GstState old, GstState new, GstState pending)
+void _bp_replaygain_pipeline_rebuild (BansheePlayer* player)
 {
-    if (old == GST_STATE_READY && new == GST_STATE_NULL && 
-        pending == GST_STATE_VOID_PENDING && player->volume_scale_history_shift) {
-        
-        memmove (player->volume_scale_history + 1, 
-            player->volume_scale_history, sizeof (gdouble) * 10);
-            
-        if (player->current_scale_from_history) {
-            player->volume_scale_history[1] = 1.0;
-        }
-        
-        player->volume_scale_history[0] = 1.0;
-        player->volume_scale_history_shift = FALSE;
-        
-        player->album_gain = player->album_peak = 0.0;
-        player->track_gain = player->track_peak = 0.0;
-    } else if (old == GST_STATE_READY && new == GST_STATE_PAUSED && 
-        pending == GST_STATE_PLAYING &&  !player->volume_scale_history_shift) {
-        
-        player->volume_scale_history_shift = TRUE;
-        
-        bp_replaygain_update_pipeline (player, 
-            player->album_gain, player->album_peak, 
-            player->track_gain, player->track_peak);
-    }
-}
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
 
-void
-_bp_replaygain_update_volume (BansheePlayer *player)
-{
-    GParamSpec *volume_spec;
-    GValue value = { 0, };
-    gdouble scale;
-    
-    if (player == NULL || player->playbin == NULL) {
-        return;
+    g_return_if_fail (GST_IS_ELEMENT (player->before_rgvolume));
+    GstPad* srcPad = gst_element_get_static_pad (player->before_rgvolume, "src");
+
+    if (gst_pad_is_active (srcPad) && !gst_pad_is_blocked (srcPad)) {
+        gst_pad_set_blocked_async (srcPad, TRUE, &pad_block_cb, player);
+    } else if (srcPad->block_callback == NULL) {
+        pad_block_cb (srcPad, TRUE, player);
     }
-    
-    scale = player->replaygain_enabled ? player->volume_scale_history[0] : 1.0;
-    
-    volume_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (player->playbin), "volume");
-    g_value_init (&value, G_TYPE_DOUBLE);
-    g_value_set_double (&value, player->current_volume * scale);
-    g_param_value_validate (volume_spec, &value);
-    
-    if (player->replaygain_enabled) {
-        bp_debug ("scaled volume: %f (ReplayGain) * %f (User) = %f", scale, player->current_volume, 
-            g_value_get_double (&value));
-    }
-    
-    g_object_set_property (G_OBJECT (player->playbin), "volume", &value);
-    g_value_unset (&value);
 }
 
 // ---------------------------------------------------------------------------
@@ -162,7 +198,7 @@ bp_replaygain_set_enabled (BansheePlayer *player, gboolean enabled)
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     player->replaygain_enabled = enabled;
     bp_debug ("%s ReplayGain", enabled ? "Enabled" : "Disabled");
-    _bp_replaygain_update_volume (player);
+    _bp_replaygain_pipeline_rebuild (player);
 }
 
 P_INVOKE gboolean

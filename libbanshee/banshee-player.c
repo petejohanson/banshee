@@ -124,8 +124,6 @@ bp_new ()
     
     player->mutex = g_mutex_new ();
     
-    _bp_replaygain_init (player); 
-    
     return player;
 }
 
@@ -165,6 +163,8 @@ bp_open (BansheePlayer *player, const gchar *uri)
     // Pass the request off to playbin
     g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);
     
+    player->in_gapless_transition = FALSE;
+    
     return TRUE;
 }
 
@@ -180,8 +180,10 @@ bp_stop (BansheePlayer *player, gboolean nullstate)
         state = GST_STATE_NULL;
     }
     
-    bp_debug ("bp_stop: setting state to %s", 
+    bp_debug ("bp_stop: setting state to %s",
         state == GST_STATE_NULL ? "GST_STATE_NULL" : "GST_STATE_PAUSED");
+    
+    player->in_gapless_transition = FALSE;
     
     bp_pipeline_set_state (player, state);
 }
@@ -195,7 +197,17 @@ bp_pause (BansheePlayer *player)
 P_INVOKE void
 bp_play (BansheePlayer *player)
 {
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
     bp_pipeline_set_state (player, GST_STATE_PLAYING);
+}
+
+P_INVOKE gboolean
+bp_set_next_track (BansheePlayer *player, const gchar *uri)
+{
+    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
+    g_return_val_if_fail (player->playbin != NULL, FALSE);
+    g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);
+    return TRUE;
 }
 
 P_INVOKE gboolean
@@ -271,12 +283,25 @@ bp_can_seek (BansheePlayer *player)
     return can_seek && bp_get_duration (player) > 0;
 }
 
+P_INVOKE gboolean
+bp_supports_gapless (BansheePlayer *player)
+{
+#ifdef ENABLE_GAPLESS
+    return TRUE;
+#else
+    return FALSE;
+#endif //ENABLE_GAPLESS
+}
+
 P_INVOKE void
 bp_set_volume (BansheePlayer *player, gdouble volume)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
+    g_return_if_fail (GST_IS_ELEMENT (player->playbin));
+
     player->current_volume = CLAMP (volume, 0.0, 1.0);
-    _bp_replaygain_update_volume (player);
+    g_object_set (player->playbin, "volume", player->current_volume, NULL);
+    _bp_rgvolume_print_volume (player);
 }
 
 P_INVOKE gdouble
@@ -347,4 +372,16 @@ bp_get_error_quarks (GQuark *core, GQuark *library, GQuark *resource, GQuark *st
     *library = GST_LIBRARY_ERROR;
     *resource = GST_RESOURCE_ERROR;
     *stream = GST_STREAM_ERROR;
+}
+
+P_INVOKE void
+bp_set_next_track_starting_callback (BansheePlayer *player, BansheePlayerNextTrackStartingCallback cb)
+{
+    SET_CALLBACK (next_track_starting_cb);
+}
+
+P_INVOKE void
+bp_set_about_to_finish_callback (BansheePlayer *player, BansheePlayerAboutToFinishCallback cb)
+{
+    SET_CALLBACK (about_to_finish_cb);
 }

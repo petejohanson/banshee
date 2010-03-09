@@ -31,18 +31,8 @@
 
 #include "banshee-player-private.h"
 
-void _bp_replaygain_process_tag          (BansheePlayer *player, const gchar *tag_name, const GValue *value);
-void _bp_replaygain_handle_state_changed (BansheePlayer *player, GstState old, GstState new, GstState pending);
-void _bp_replaygain_update_volume        (BansheePlayer *player);
-
-static inline void
-_bp_replaygain_init (BansheePlayer *player)
-{
-    gint i;
-    for (i = 0; i < 11; i++) {
-        player->volume_scale_history[i] = 1.0;
-    }
-    
-}
+GstElement* _bp_rgvolume_new          (BansheePlayer *player);
+void        _bp_rgvolume_print_volume (BansheePlayer *player);
+void        _bp_replaygain_pipeline_rebuild (BansheePlayer* player);
 
 #endif /* _BANSHEE_PLAYER_REPLAYGAIN_H */

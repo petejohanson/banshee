@@ -96,7 +96,8 @@ namespace Banshee.NowPlaying
                 ServiceManager.SourceManager.SetActiveSource (this);
             }
 
-            if ((current_track.MediaAttributes & TrackMediaAttributes.VideoStream) != 0) {
+            if (current_track != null &&
+                (current_track.MediaAttributes & TrackMediaAttributes.VideoStream) != 0) {
                 OnUserNotifyUpdated ();
             }
         }
