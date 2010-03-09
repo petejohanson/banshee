@@ -80,8 +80,7 @@ bp_next_track_starting (BansheePlayer *player)
     if (player->in_gapless_transition && has_video) {
         gchar *uri;
     
-        bp_debug ("[Gapless]: Aborting gapless transition to stream with video.");
-        bp_debug ("[Gapless]: Triggering normal track change.");
+        bp_debug ("[Gapless]: Aborting gapless transition to stream with video.  Triggering normal track change");
         g_object_get (G_OBJECT (player->playbin), "uri", &uri, NULL);
         gst_element_set_state (player->playbin, GST_STATE_READY);
         
