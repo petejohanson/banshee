@@ -67,7 +67,10 @@ namespace Banshee.Collection.Gui
             };
 
             DragFailed += (o, a) => {
-                if (a.DragResult == DragResult.NoTarget) {
+                int x, y;
+                GetPointer (out x, out y);
+                bool inside_list = (x >= 0 && y >= 0) && (x < Allocation.Width && y < Allocation.Height);
+                if (inside_list && a.DragResult == DragResult.NoTarget) {
                     PlaylistSource playlist = ServiceManager.SourceManager.ActiveSource as PlaylistSource;
                     if (playlist != null && !IsReorderable) {
                         Hyena.Log.Information (
