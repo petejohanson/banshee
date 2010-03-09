@@ -76,6 +76,7 @@ namespace Hyena.Data.Gui
 
             InvalidateChildSize ();
             InvalidateChildCollection ();
+            InvalidateVirtualSize ();
             InvalidateChildLayout ();
         }
 
