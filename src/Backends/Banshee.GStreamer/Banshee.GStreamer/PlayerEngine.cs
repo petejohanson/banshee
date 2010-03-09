@@ -712,7 +712,7 @@ namespace Banshee.GStreamer
             "player_engine", "gapless_playback_enabled",
             true,
             "Enable gapless playback",
-            "Eliminate the small playback gap on track change.  Useful for concept albums & classical music.  EXPERIMENTAL"
+            "Eliminate the small playback gap on track change.  Useful for concept albums & classical music."
         );
 
 
