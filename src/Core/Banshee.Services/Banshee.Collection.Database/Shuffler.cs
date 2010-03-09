@@ -42,15 +42,20 @@ using Hyena.Collections;
 
 namespace Banshee.Collection.Database
 {
+    public enum ShuffleModificationType {
+        Discard = 0,
+        Insertion = 1
+    }
+
     public class Shuffler
     {
         public static readonly Shuffler Playback = new Shuffler () { Id = "playback", DbId = 0 };
 
         private static string shuffles_sql = "INSERT OR REPLACE INTO CoreShuffles (ShufflerID, LastShuffledAt, TrackID) ";
-        private static string discard_sql = "INSERT OR REPLACE INTO CoreShuffleDiscards (ShufflerID, LastDiscardedAt, TrackID) ";
+        private static string modify_sql   = "INSERT OR REPLACE INTO CoreShuffleModifications (ShufflerID, LastModifiedAt, ModificationType, TrackID) ";
 
         private static HyenaSqliteCommand add_shuffle_cmd = new HyenaSqliteCommand (String.Format ("{0} VALUES (?, ?, ?)", shuffles_sql));
-        private static HyenaSqliteCommand add_discard_cmd = new HyenaSqliteCommand (String.Format ("{0} VALUES (?, ?, ?)", discard_sql));
+        private static HyenaSqliteCommand add_discard_cmd = new HyenaSqliteCommand (String.Format ("{0} VALUES (?, ?, ?, ?)", modify_sql));
 
         private DateTime random_began_at = DateTime.MinValue;
         private DateTime last_random = DateTime.MinValue;
@@ -160,35 +165,32 @@ namespace Banshee.Collection.Database
             }
         }
 
-        public void RecordShuffle (DatabaseTrackInfo track)
+        internal void RecordShuffle (DatabaseTrackInfo track)
         {
             if (track != null) {
                 RecordShuffle (track.TrackId);
             }
         }
 
-        public void RecordShuffle (int trackId)
+        internal void RecordShuffle (int trackId)
         {
             ServiceManager.DbConnection.Execute (add_shuffle_cmd, this.DbId, DateTime.Now, trackId);
         }
 
-        public void RecordShuffles (DatabaseTrackListModel model, RangeCollection.Range range)
+        public void RecordShuffleModification (int trackId, ShuffleModificationType type)
         {
-            ServiceManager.DbConnection.Execute (String.Format ("{0} SELECT ?, ?, {1}", shuffles_sql, model.TrackIdsSql),
-                                                 DbId, DateTime.Now, model.CacheId, range.Start, range.Count);
+            ServiceManager.DbConnection.Execute (add_discard_cmd, this.DbId, DateTime.Now, (int)type, trackId);
         }
 
-        public void RecordDiscard (DatabaseTrackInfo track)
+        public void RecordInsertions (DatabaseTrackListModel model, RangeCollection.Range range)
         {
-            if (track != null) {
-                ServiceManager.DbConnection.Execute (add_discard_cmd, this.DbId, DateTime.Now, track.TrackId);
-            }
+            RecordShuffleModifications (model, range, ShuffleModificationType.Insertion);
         }
 
-        public void RecordDiscards (DatabaseTrackListModel model, RangeCollection.Range range)
+        public void RecordShuffleModifications (DatabaseTrackListModel model, RangeCollection.Range range, ShuffleModificationType type)
         {
-            ServiceManager.DbConnection.Execute (String.Format ("{0} SELECT ?, ?, {1}", discard_sql, model.TrackIdsSql),
-                                                 DbId, DateTime.Now, model.CacheId, range.Start, range.Count);
+            ServiceManager.DbConnection.Execute (String.Format ("{0} SELECT ?, ?, ?, {1}", modify_sql, model.TrackIdsSql),
+                                                 DbId, DateTime.Now, (int)type, model.CacheId, range.Start, range.Count);
         }
 
         private TrackInfo GetRandomTrack (string mode, bool repeat, bool resetSinceTime)

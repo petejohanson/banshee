@@ -237,7 +237,9 @@ namespace Banshee.PlayQueue
                 DbId, trackId, view_order, generated ? 1 : 0
             );
 
-            shuffler.RecordShuffle (trackId);
+            if (!generated) {
+                shuffler.RecordShuffleModification (trackId, ShuffleModificationType.Insertion);
+            }
 
             OnTracksAdded ();
             NotifyUser ();
@@ -292,7 +294,7 @@ namespace Banshee.PlayQueue
                     DbId, current_view_order
                 ));
 
-                WithTrackSelection (model, shuffler.RecordShuffles);
+                WithTrackSelection (model, shuffler.RecordInsertions);
 
                 // Add the tracks to the end of the queue.
                 WithTrackSelection (model, AddTrackRange);
@@ -442,7 +444,7 @@ namespace Banshee.PlayQueue
 
         protected override void RemoveTrackRange (DatabaseTrackListModel model, RangeCollection.Range range)
         {
-            shuffler.RecordDiscards (model, range);
+            shuffler.RecordShuffleModifications (model, range, ShuffleModificationType.Discard);
             base.RemoveTrackRange (model, range);
 
             model.Selection.UnselectRange (range.Start, range.End);
