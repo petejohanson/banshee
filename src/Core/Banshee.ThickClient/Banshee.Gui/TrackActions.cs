@@ -536,5 +536,11 @@ namespace Banshee.Gui
             }
             return ret;
         }
+
+        // Reserve strings in preparation for the 1.5.5 string freeze (BGO#611923)
+        public void ReservedStrings ()
+        {
+            Catalog.GetString ("View Track Information");
+        }
     }
 }

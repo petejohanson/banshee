@@ -213,7 +213,7 @@ namespace Banshee.Playlist
         protected abstract void Create ();
         protected abstract void Update ();
 
-        // Reserve strings in preparation for the forthcoming string freeze.
+        // Reserve strings in preparation for the forthcoming string freeze (BGO#389550)
         public void ReservedStrings ()
         {
             Catalog.GetString ("The track's rating was set differently on the device and in Banshee");
