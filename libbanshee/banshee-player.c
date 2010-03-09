@@ -283,6 +283,16 @@ bp_can_seek (BansheePlayer *player)
     return can_seek && bp_get_duration (player) > 0;
 }
 
+P_INVOKE gboolean
+bp_supports_gapless (BansheePlayer *player)
+{
+#ifdef ENABLE_GAPLESS
+    return TRUE;
+#else
+    return FALSE;
+#endif //ENABLE_GAPLESS
+}
+
 P_INVOKE void
 bp_set_volume (BansheePlayer *player, gdouble volume)
 {
