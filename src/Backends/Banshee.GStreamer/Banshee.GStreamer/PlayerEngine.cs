@@ -285,7 +285,7 @@ namespace Banshee.GStreamer
             } else if (pending_uri != null) {
                 Log.Warning ("[Gapless] EOS signalled while waiting for next track.  This means that Banshee " +
                     "was too slow at calculating what track to play next.  " +
-                    "If this happenrs frequently, please file a bug");
+                    "If this happens frequently, please file a bug");
                 OnStateChanged (PlayerState.Loading);
                 OpenUri (pending_uri);
                 Play ();
@@ -295,7 +295,7 @@ namespace Banshee.GStreamer
                 // and so blocks the bus callback from delivering the EOS message.
                 //
                 // Playback should continue as normal from here, when the RequestNextTrack message gets handled.
-                Log.Warning ("[Gapless] EndOfStream message recieved before the next track has been set.  " +
+                Log.Warning ("[Gapless] EndOfStream message received before the next track has been set.  " +
                     "If this happens frequently, please file a bug");
             }
         }
