@@ -479,7 +479,7 @@ namespace Hyena.Data.Gui
                 var layout_child = ViewLayout[layout_index];
                 var child_allocation = layout_child.Allocation;
 
-                if (!child_allocation.IntersectsWith (clip)) {
+                if (!child_allocation.IntersectsWith (clip) || layout_child.ModelRowIndex >= Model.Count) {
                     continue;
                 }
 
