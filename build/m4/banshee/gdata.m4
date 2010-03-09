@@ -3,7 +3,7 @@ AC_DEFUN([BANSHEE_CHECK_GDATA],
 	GDATASHARP_REQUIRED_VERSION=1.4
 	AC_SUBST(GDATASHARP_REQUIRED_VERSION)
 
-	AC_ARG_ENABLE(gdata, AC_HELP_STRING([--enable-gdata], [Enable experimental Youtube extension - unfinished, likely broken]), , enable_gdata="no")
+	AC_ARG_ENABLE(gdata, AC_HELP_STRING([--disable-gdata], [Disable Youtube extension]), , enable_gdata="yes")
 
 	if test "x$enable_gdata" = "xyes"; then
 		PKG_CHECK_MODULES(GDATASHARP,
