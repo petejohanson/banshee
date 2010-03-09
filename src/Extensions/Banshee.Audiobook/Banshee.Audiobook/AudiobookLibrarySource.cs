@@ -47,7 +47,7 @@ namespace Banshee.Audiobook
             NotMediaTypes = TrackMediaAttributes.Podcast | TrackMediaAttributes.VideoStream | TrackMediaAttributes.Music;
 
             // FIXME
-            Properties.SetStringList ("Icon.Name", "document", "source-library");
+            Properties.SetStringList ("Icon.Name", "audiobook", "source-library");
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
                 <column-controller>
                   <add-all-defaults />

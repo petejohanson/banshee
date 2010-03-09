@@ -49,17 +49,20 @@ namespace Banshee.Dap.MassStorage
         private void Parse ()
         {
             bool in_value = false;
+            bool in_quotes = false;
             char c;
 
             while ((c = Read ()) != Char.MaxValue) {
-                if (!in_value && c == '=') {
+                if (c == '"') {
+                    in_quotes = !in_quotes;
+                } else if (!in_value && c == '=') {
                     key = Collect ();
                     if (!String.IsNullOrEmpty (key)) {
                         in_value = true;
                     } else {
                         key = null;
                     }
-                } else if (Char.IsWhiteSpace (c) || c == ',') {
+                } else if (!in_quotes && (Char.IsWhiteSpace (c) || c == ',')) {
                     if (!in_value) {
                         continue;
                     }

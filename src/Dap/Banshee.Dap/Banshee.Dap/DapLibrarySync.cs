@@ -54,6 +54,7 @@ namespace Banshee.Dap
         private SchemaEntry<bool> enabled, sync_entire_library;
         private SchemaEntry<string> sync_source;
         private SmartPlaylistSource sync_src, to_add, to_remove;
+        private const int MAX_NOWARN_TRACKS_REMOVAL = 10;
 
         #region Public Properties
 
@@ -196,10 +197,19 @@ namespace Banshee.Dap
 
         internal void Sync ()
         {
+            Sync (false);
+        }
+
+        internal void Sync (bool force)
+        {
             if (Enabled) {
                 ThreadAssist.AssertNotInMainThread ();
 
                 CalculateSync ();
+
+                if (!force && to_remove.Count > MAX_NOWARN_TRACKS_REMOVAL) {
+                    throw new PossibleUserErrorException (to_remove.Count);
+                }
 
                 sync.Dap.DeleteAllTracks (to_remove);
                 sync.Dap.AddAllTracks (to_add);
@@ -244,6 +254,16 @@ namespace Banshee.Dap
         {
             // Note to translators: {0}, {1} and {2} will be replaced with numbers.
             Catalog.GetString ("{0} to add, {1} to remove, {2} to update");
+        }
+
+        internal class PossibleUserErrorException : ApplicationException {
+
+            internal int TracksToRemove { get; private set; }
+
+            public PossibleUserErrorException (int tracksToRemove) : base ()
+            {
+                TracksToRemove = tracksToRemove;
+            }
         }
     }
 }

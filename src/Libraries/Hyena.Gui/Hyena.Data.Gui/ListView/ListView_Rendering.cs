@@ -79,6 +79,7 @@ namespace Hyena.Data.Gui
             Gdk.Drawable drawable = cell_context != null ? cell_context.Drawable : null;
 
             if (pango_layout != null) {
+                pango_layout.FontDescription.Dispose ();
                 pango_layout.Dispose ();
                 pango_layout = null;
             }
@@ -118,12 +119,6 @@ namespace Hyena.Data.Gui
                 PaintHeader (damage);
             }
 
-            if (HasFocus) {
-                Theme.DrawFrameBorderFocused (cairo_context, Allocation);
-            } else {
-                Theme.DrawFrameBorder (cairo_context, Allocation);
-            }
-
             if (Model != null) {
                 // FIXME: ViewLayout will never be null in
                 // the future, PaintList will go away
@@ -134,10 +129,17 @@ namespace Hyena.Data.Gui
                 }
             }
 
+            // Focused frame border is bolder than BorderWidth,
+            // draw it after the rows to avoid visual artifacts.
+            if (HasFocus) {
+                Theme.DrawFrameBorderFocused (cairo_context, Allocation);
+            } else {
+                Theme.DrawFrameBorder (cairo_context, Allocation);
+            }
+
             PaintDraggingColumn (damage);
 
-            ((IDisposable)cairo_context.Target).Dispose ();
-            ((IDisposable)cairo_context).Dispose ();
+            CairoExtensions.DisposeContext (cairo_context);
 
             return true;
         }

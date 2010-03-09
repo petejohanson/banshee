@@ -56,8 +56,8 @@ namespace Banshee.Database
         // NOTE: Whenever there is a change in ANY of the database schema,
         //       this version MUST be incremented and a migration method
         //       MUST be supplied to match the new version number
-        protected const int CURRENT_VERSION = 37;
-        protected const int CURRENT_METADATA_VERSION = 6;
+        protected const int CURRENT_VERSION = 40;
+        protected const int CURRENT_METADATA_VERSION = 7;
 
 #region Migration Driver
 
@@ -809,7 +809,7 @@ namespace Banshee.Database
         {
             Execute(@"
                 CREATE TABLE CoreShuffles (
-                    ShufflerId           INTEGER,
+                    ShufflerId          INTEGER,
                     TrackID             INTEGER,
                     LastShuffledAt      INTEGER,
                     CONSTRAINT one_entry_per_track UNIQUE (ShufflerID, TrackID)
@@ -839,6 +839,72 @@ namespace Banshee.Database
         }
 
 #endregion
+
+#region Version 38
+
+        [DatabaseVersion (38)]
+        private bool Migrate_38 ()
+        {
+            Execute ("ALTER TABLE CoreTracks ADD COLUMN SampleRate INTEGER DEFAULT 0");
+            Execute ("ALTER TABLE CoreTracks ADD COLUMN BitsPerSample INTEGER DEFAULT 0");
+            return true;
+        }
+
+#endregion
+
+#region Version 39
+
+        [DatabaseVersion (39)]
+        private bool Migrate_39 ()
+        {
+            // One time fixup to MetadataHash, since we no longer include the Duration
+            string sql_select = @"
+                SELECT t.TrackID, al.Title, ar.Name,
+                t.Genre, t.Title, t.TrackNumber, t.Year
+                FROM CoreTracks AS t
+                JOIN CoreAlbums AS al ON al.AlbumID=t.AlbumID
+                JOIN CoreArtists AS ar ON ar.ArtistID=t.ArtistID
+            ";
+
+            HyenaSqliteCommand sql_update = new HyenaSqliteCommand (@"
+                UPDATE CoreTracks SET MetadataHash = ? WHERE TrackID = ?
+            ");
+
+            StringBuilder sb = new StringBuilder ();
+            using (var reader = new HyenaDataReader (connection.Query (sql_select))) {
+                while (reader.Read ()) {
+                    sb.Length = 0;
+                    sb.Append (reader.Get<string> (1));
+                    sb.Append (reader.Get<string> (2));
+                    sb.Append (reader.Get<string> (3));
+                    sb.Append (reader.Get<string> (4));
+                    sb.Append (reader.Get<int> (5));
+                    sb.Append (reader.Get<int> (6));
+                    string hash = Hyena.CryptoUtil.Md5Encode (sb.ToString (), System.Text.Encoding.UTF8);
+                    connection.Execute (sql_update, hash, reader.Get<int> (0));
+                }
+            }
+
+            return true;
+        }
+
+#endregion
+
+        [DatabaseVersion (40)]
+        private bool Migrate_40 ()
+        {
+            Execute(@"
+                CREATE TABLE CoreShuffleDiscards (
+                    ShufflerId           INTEGER,
+                    TrackID              INTEGER,
+                    LastDiscardedAt      INTEGER,
+                    CONSTRAINT one_entry_per_track UNIQUE (ShufflerID, TrackID)
+                )
+            ");
+            Execute("CREATE INDEX CoreShuffleDiscardsIndex ON CoreShuffleDiscards (ShufflerId, TrackID, LastDiscardedAt)");
+            return true;
+        }
+
 
 #pragma warning restore 0169
 
@@ -898,6 +964,8 @@ namespace Banshee.Database
                     MimeType            TEXT,
                     FileSize            INTEGER,
                     BitRate             INTEGER,
+                    SampleRate          INTEGER,
+                    BitsPerSample       INTEGER,
                     Attributes          INTEGER DEFAULT {0},
                     LastStreamError     INTEGER DEFAULT {1},
 
@@ -1065,6 +1133,16 @@ namespace Banshee.Database
                     Id              TEXT UNIQUE
                 )
             ");
+
+            Execute(@"
+                CREATE TABLE CoreShuffleDiscards (
+                    ShufflerId           INTEGER,
+                    TrackID              INTEGER,
+                    LastDiscardedAt      INTEGER,
+                    CONSTRAINT one_entry_per_track UNIQUE (ShufflerID, TrackID)
+                )
+            ");
+            Execute("CREATE INDEX CoreShuffleDiscardsIndex ON CoreShuffleDiscards (ShufflerId, TrackID, LastDiscardedAt)");
         }
 
 #endregion

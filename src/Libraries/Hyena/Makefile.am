@@ -61,15 +61,26 @@ SOURCES =  \
 	Hyena.Json/IJsonCollection.cs \
 	Hyena.Json/JsonArray.cs \
 	Hyena.Json/JsonObject.cs \
+	Hyena.Json/Serializer.cs \
 	Hyena.Json/Tests/DeserializerTests.cs \
+	Hyena.Json/Tests/SerializerTests.cs \
 	Hyena.Json/Tests/TokenizerTests.cs \
 	Hyena.Json/Token.cs \
 	Hyena.Json/Tokenizer.cs \
 	Hyena.Json/TokenType.cs \
+	Hyena.Metrics/DbSampleStore.cs \
+	Hyena.Metrics/HttpPoster.cs \
+	Hyena.Metrics/ISampleStore.cs \
+	Hyena.Metrics/MemorySampleStore.cs \
+	Hyena.Metrics/Metric.cs \
+	Hyena.Metrics/MetricsCollection.cs \
+	Hyena.Metrics/Sample.cs \
+	Hyena.Metrics/Tests/MetricsTests.cs \
 	Hyena.Query/AliasedObjectSet.cs \
 	Hyena.Query/DateQueryValue.cs \
 	Hyena.Query/EnumQueryValue.cs \
 	Hyena.Query/ExactStringQueryValue.cs \
+	Hyena.Query/ExactUriStringQueryValue.cs \
 	Hyena.Query/FileSizeQueryValue.cs \
 	Hyena.Query/IntegerKeyedObjectQueryValue.cs \
 	Hyena.Query/IntegerQueryValue.cs \
@@ -115,9 +126,10 @@ SOURCES =  \
 	Hyena/EventArgs.cs \
 	Hyena/IUndoAction.cs \
 	Hyena/Log.cs \
-	Hyena/PlatformUtil.cs \
+	Hyena/PlatformDetection.cs \
 	Hyena/StringUtil.cs \
 	Hyena/Tests/CryptoUtilTests.cs \
+	Hyena/Tests/DateTimeUtilTests.cs \
 	Hyena/Tests/StringUtilTests.cs \
 	Hyena/Tests/TestBase.cs \
 	Hyena/ThreadAssist.cs \

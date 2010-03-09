@@ -58,7 +58,7 @@ namespace Banshee.Database
 
                     UPDATE CoreAlbums SET
                         TitleSortKey      = HYENA_COLLATION_KEY(COALESCE(TitleSort, Title, ?)),
-                        ArtistNameSortKey = HYENA_COLLATION_KEY(COALESCE(ArtistName, ?)),
+                        ArtistNameSortKey = HYENA_COLLATION_KEY(COALESCE(ArtistNameSort, ArtistName, ?)),
                         TitleLowered      = HYENA_SEARCH_KEY(COALESCE(Title, ?)),
                         ArtistNameLowered = HYENA_SEARCH_KEY(COALESCE(ArtistName, ?));
 

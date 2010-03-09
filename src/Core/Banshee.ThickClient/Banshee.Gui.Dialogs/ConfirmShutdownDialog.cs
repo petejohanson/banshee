@@ -41,23 +41,24 @@ namespace Banshee.Gui.Dialogs
     {
         private Scheduler scheduler;
 
-        public ConfirmShutdownDialog() : base()
+        public ConfirmShutdownDialog ()
         {
-            ListView.Model = new ListStore(typeof(string), typeof(Job));
-            ListView.AppendColumn("Error", new CellRendererText(), "text", 0);
+            ListView.Model = new ListStore (typeof (string), typeof (Job));
+            ListView.AppendColumn ("Error", new CellRendererText (), "text", 0);
             ListView.HeadersVisible = false;
 
-            Header = Catalog.GetString("Important tasks are running");
-            Message = Catalog.GetString(
+            Header = Catalog.GetString ("Important tasks are running");
+            Title = "";
+            Message = Catalog.GetString (
                 "Closing Banshee now will cancel any currently running tasks. They cannot " +
                 "be resumed automatically the next time Banshee is run.");
 
-            IconNameStock = Stock.DialogQuestion;
+            DialogIconNameStock = Stock.DialogWarning;
 
-            Dialog.DefaultResponse = ResponseType.Cancel;
+            DefaultResponse = ResponseType.Cancel;
 
-            AddButton(Catalog.GetString("Quit anyway"), ResponseType.Ok, false);
-            AddButton(Catalog.GetString("Continue running"), ResponseType.Cancel, true);
+            AddButton (Catalog.GetString ("Quit Anyway"), ResponseType.Ok, false);
+            AddButton (Catalog.GetString ("Continue Running"), ResponseType.Cancel, true);
 
             scheduler = ServiceManager.JobScheduler;
             foreach (Job job in scheduler.Jobs) {
@@ -68,26 +69,26 @@ namespace Banshee.Gui.Dialogs
             scheduler.JobRemoved += RemoveJob;
         }
 
-        public void AddString(string message)
+        public void AddString (string message)
         {
-            (ListView.Model as ListStore).AppendValues(message, null);
+            (ListView.Model as ListStore).AppendValues (message, null);
         }
 
-        private void AddJob(Job job)
+        private void AddJob (Job job)
         {
             if (job.Has (PriorityHints.DataLossIfStopped)) {
-                ThreadAssist.ProxyToMain(delegate {
-                    TreeIter iter = (ListView.Model as ListStore).Prepend();
-                    (ListView.Model as ListStore).SetValue(iter, 0, job.Title);
-                    (ListView.Model as ListStore).SetValue(iter, 1, job);
+                ThreadAssist.ProxyToMain (delegate {
+                    TreeIter iter = (ListView.Model as ListStore).Prepend ();
+                    (ListView.Model as ListStore).SetValue (iter, 0, job.Title);
+                    (ListView.Model as ListStore).SetValue (iter, 1, job);
                 });
             }
         }
 
-        private void RemoveJob(Job job)
+        private void RemoveJob (Job job)
         {
-            if(!scheduler.HasAnyDataLossJobs) {
-                Dialog.Respond(Gtk.ResponseType.Ok);
+            if (!scheduler.HasAnyDataLossJobs) {
+                Respond (Gtk.ResponseType.Ok);
                 return;
             }
 
@@ -95,15 +96,15 @@ namespace Banshee.Gui.Dialogs
                 return;
             }
 
-            for(int i = 0, n = ListView.Model.IterNChildren(); i < n; i++) {
+            for (int i = 0, n = ListView.Model.IterNChildren (); i < n; i++) {
                 TreeIter iter;
-                if(!ListView.Model.IterNthChild(out iter, i)) {
+                if (!ListView.Model.IterNthChild (out iter, i)) {
                     break;
                 }
 
-                if(ListView.Model.GetValue(iter, 1) == job) {
-                    ThreadAssist.ProxyToMain(delegate {
-                        (ListView.Model as ListStore).Remove(ref iter);
+                if (ListView.Model.GetValue (iter, 1) == job) {
+                    ThreadAssist.ProxyToMain (delegate {
+                        (ListView.Model as ListStore).Remove (ref iter);
                     });
                     break;
                 }

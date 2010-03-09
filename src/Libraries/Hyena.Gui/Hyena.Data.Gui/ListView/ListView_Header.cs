@@ -117,6 +117,10 @@ namespace Hyena.Data.Gui
 
             for (i = 0; i < column_cache.Length; i++) {
                 column_cache[i].Column.Width *= scale_factor;
+                if (column_cache[i].Column.Width <= 0) {
+                    Hyena.Log.Warning ("Overriding 0-computed column cache width");
+                    column_cache[i].Column.Width = 0.01;
+                }
             }
 
             RecalculateColumnSizes ();
@@ -289,6 +293,7 @@ namespace Hyena.Data.Gui
                 IsReorderable = sortable.SortColumn == null || sortable.SortColumn.SortType == SortType.None;
 
                 Model.Reload ();
+                CenterOnSelection ();
                 RecalculateColumnSizes ();
                 RegenerateColumnCache ();
                 InvalidateHeader ();

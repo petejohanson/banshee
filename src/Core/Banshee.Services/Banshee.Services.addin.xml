@@ -21,6 +21,10 @@
     <ExtensionNode name="ImportSource"/>
   </ExtensionPoint>
 
+  <ExtensionPoint path="/Banshee/PlaybackController/ShuffleModes">
+    <ExtensionNode name="ShuffleMode"/>
+  </ExtensionPoint>
+
   <ExtensionPoint path="/Banshee/MediaEngine/PlayerEngine">
     <ExtensionNode name="PlayerEngine"/>
   </ExtensionPoint>
@@ -57,4 +61,12 @@
     <ExtensionNode name="ScreensaverManager"/>
   </ExtensionPoint>
 
+  <Extension path="/Banshee/PlaybackController/ShuffleModes">
+    <ShuffleMode class="Banshee.Collection.Database.RandomByOff"/>
+    <ShuffleMode class="Banshee.Collection.Database.RandomByTrack"/>
+    <ShuffleMode class="Banshee.Collection.Database.RandomByArtist"/>
+    <ShuffleMode class="Banshee.Collection.Database.RandomByAlbum"/>
+    <ShuffleMode class="Banshee.Collection.Database.RandomByRating"/>
+    <ShuffleMode class="Banshee.Collection.Database.RandomByScore"/>
+  </Extension>
 </Addin>

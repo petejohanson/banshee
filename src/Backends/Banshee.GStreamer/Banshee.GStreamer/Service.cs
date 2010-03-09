@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2006-2008 Novell, Inc.
+// Copyright 2006-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -59,24 +59,24 @@ namespace Banshee.GStreamer
             }
 
             // Setup the gst plugins/registry paths if running Windows
-            if (!Hyena.PlatformUtil.IsRunningUnix) {
-                string [] gst_paths = new String [] {
+            if (PlatformDetection.IsWindows) {
+                var gst_paths = new string [] {
                     "gst-plugins"
                 };
 
-                System.Environment.SetEnvironmentVariable ("GST_PLUGIN_PATH", String.Join (";", gst_paths));
-                System.Environment.SetEnvironmentVariable ("GST_PLUGIN_SYSTEM_PATH", "");
-                System.Environment.SetEnvironmentVariable ("GST_DEBUG", "1");
+                Environment.SetEnvironmentVariable ("GST_PLUGIN_PATH", String.Join (";", gst_paths));
+                Environment.SetEnvironmentVariable ("GST_PLUGIN_SYSTEM_PATH", "");
+                Environment.SetEnvironmentVariable ("GST_DEBUG", "1");
 
                 string registry = "registry.bin";
                 if (!System.IO.File.Exists (registry)) {
                     System.IO.File.Create (registry).Close ();
                 }
 
-                System.Environment.SetEnvironmentVariable ("GST_REGISTRY", registry);
+                Environment.SetEnvironmentVariable ("GST_REGISTRY", registry);
 
                 //System.Environment.SetEnvironmentVariable ("GST_REGISTRY_FORK", "no");
-                Console.WriteLine ("GST_PLUGIN_PATH = {0}", System.Environment.GetEnvironmentVariable ("GST_PLUGIN_PATH"));
+                Log.DebugFormat ("GST_PLUGIN_PATH = {0}", Environment.GetEnvironmentVariable ("GST_PLUGIN_PATH"));
             }
 
             gstreamer_initialize (debugging, native_log_handler);

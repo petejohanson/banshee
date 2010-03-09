@@ -8,9 +8,16 @@ class Package:
 	def __init__ (self, name, version, configure_flags = None, sources = None, source_dir_name = None, override_properties = None):
 		Package.last_instance = self
 		
+		self._dirstack = []
+
 		self.name = name
 		self.version = version
-		self.configure_flags = configure_flags
+
+		self.configure_flags = []
+		if Package.profile.global_configure_flags:
+			self.configure_flags.extend (Package.profile.global_configure_flags)
+		if configure_flags:
+			self.configure_flags.extend (configure_flags)
 
 		self.sources = sources
 		if self.sources == None \
@@ -122,6 +129,13 @@ class Package:
 		dir = expand_macros (dir, self)
 		log (1, 'cd "%s"' % dir)
 		os.chdir (dir)
+
+	def pushd (self, dir):
+		self._dirstack.append (os.getcwd ())
+		self.cd (dir)
+
+	def popd (self):
+		self.cd (self._dirstack.pop ())
 
 	def prep (self):
 		if self.sources == None:

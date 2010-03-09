@@ -135,6 +135,7 @@ namespace Banshee.CoverArt
                 action_service.RemoveActionGroup ("CoverArt");
                 action_service.UIManager.RemoveUi (ui_manager_id);
 
+                actions.Dispose ();
                 actions = null;
                 action_service = null;
 

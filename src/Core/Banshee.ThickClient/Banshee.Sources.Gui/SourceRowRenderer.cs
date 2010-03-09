@@ -51,7 +51,7 @@ namespace Banshee.Sources.Gui
             }
 
             renderer.Source = source;
-            renderer.Path = model.GetPath (iter);
+            renderer.Iter = iter;
 
             if (source == null) {
                 return;
@@ -75,10 +75,10 @@ namespace Banshee.Sources.Gui
             set { parent_widget = value; }
         }
 
-        private TreePath path;
-        public TreePath Path {
-            get { return path; }
-            set { path = value; }
+        private TreeIter iter = TreeIter.Zero;
+        public TreeIter Iter {
+            get { return iter; }
+            set { iter = value; }
         }
 
         private int padding;
@@ -140,19 +140,20 @@ namespace Banshee.Sources.Gui
             }
 
             view = widget as SourceView;
-            bool path_selected = view != null && view.Selection.PathIsSelected (path);
+            bool selected = view != null && view.Selection.IterIsSelected (iter);
             StateType state = RendererStateToWidgetState (widget, flags);
 
-            RenderSelection (drawable, background_area, path_selected, state);
+            RenderSelection (drawable, background_area, selected, state);
 
             int title_layout_width = 0, title_layout_height = 0;
             int count_layout_width = 0, count_layout_height = 0;
             int max_title_layout_width;
 
-            bool hide_counts = source.Count <= 0;
+            bool hide_counts = source.EnabledCount <= 0;
 
             Pixbuf icon = SourceIconResolver.ResolveIcon (source, RowHeight);
 
+            bool dispose_icon = false;
             if (state == StateType.Insensitive) {
                 // Code ported from gtk_cell_renderer_pixbuf_render()
                 var icon_source = new IconSource () {
@@ -163,6 +164,9 @@ namespace Banshee.Sources.Gui
 
                 icon = widget.Style.RenderIcon (icon_source, widget.Direction, state,
                     (IconSize)(-1), widget, "SourceRowRenderer");
+
+                dispose_icon = true;
+                icon_source.Dispose ();
             }
 
             FontDescription fd = widget.PangoContext.FontDescription.Copy ();
@@ -181,7 +185,7 @@ namespace Banshee.Sources.Gui
             if (!hide_counts) {
                 count_layout = new Pango.Layout (widget.PangoContext);
                 count_layout.FontDescription = fd;
-                count_layout.SetMarkup (String.Format ("<span size=\"small\">{0}</span>", source.Count));
+                count_layout.SetMarkup (String.Format ("<span size=\"small\">{0}</span>", source.EnabledCount));
                 count_layout.GetPixelSize (out count_layout_width, out count_layout_height);
             }
 
@@ -190,7 +194,7 @@ namespace Banshee.Sources.Gui
             if (!hide_counts && max_title_layout_width < 0) {
                 hide_counts = true;
             }
-			
+
             title_layout.FontDescription = fd;
             title_layout.Width = (int)(max_title_layout_width * Pango.Scale.PangoScale);
             title_layout.Ellipsize = EllipsizeMode.End;
@@ -204,13 +208,20 @@ namespace Banshee.Sources.Gui
                 Middle (cell_area, title_layout_height),
                 title_layout);
 
+            title_layout.Dispose ();
+
             if (icon != null) {
                 drawable.DrawPixbuf (main_gc, icon, 0, 0,
                     cell_area.X, Middle (cell_area, icon.Height),
                     icon.Width, icon.Height, RgbDither.None, 0, 0);
+
+                if (dispose_icon) {
+                    icon.Dispose ();
+                }
             }
 
             if (hide_counts) {
+                fd.Dispose ();
                 return;
             }
 
@@ -229,16 +240,19 @@ namespace Banshee.Sources.Gui
                 cell_area.X + cell_area.Width - count_layout_width - 2,
                 Middle (cell_area, count_layout_height),
                 count_layout);
+
+            count_layout.Dispose ();
+            fd.Dispose ();
         }
 
         private void RenderSelection (Gdk.Drawable drawable, Gdk.Rectangle background_area,
-            bool path_selected, StateType state)
+            bool selected, StateType state)
         {
             if (view == null) {
                 return;
             }
 
-            if (path_selected && view.Cr != null) {
+            if (selected && view.Cr != null) {
                 Gdk.Rectangle rect = background_area;
                 rect.X -= 2;
                 rect.Width += 4;
@@ -251,12 +265,11 @@ namespace Banshee.Sources.Gui
                     view.Theme.DrawRowSelection (view.Cr, background_area.X + 1, background_area.Y + 1,
                         background_area.Width - 2, background_area.Height - 2);
                 }
-            } else if (path != null && path.Equals (view.HighlightedPath) && view.Cr != null) {
+            } else if (!TreeIter.Zero.Equals (iter) && iter.Equals (view.HighlightedIter) && view.Cr != null) {
                 view.Theme.DrawRowSelection (view.Cr, background_area.X + 1, background_area.Y + 1,
                     background_area.Width - 2, background_area.Height - 2, false);
             } else if (view.NotifyStage.ActorCount > 0 && view.Cr != null) {
-                TreeIter iter;
-                if (view.Model.GetIter (out iter, path) && view.NotifyStage.Contains (iter)) {
+                if (!TreeIter.Zero.Equals (iter) && view.NotifyStage.Contains (iter)) {
                     Actor<TreeIter> actor = view.NotifyStage[iter];
                     Cairo.Color color = view.Theme.Colors.GetWidgetColor (GtkColorClass.Background, StateType.Active);
                     color.A = Math.Sin (actor.Percent * Math.PI);
@@ -294,7 +307,9 @@ namespace Banshee.Sources.Gui
             }
 
             view.EditingRow = false;
-            view.UpdateRow (new TreePath (edit.path), edit.Text);
+            using (var tree_path = new TreePath (edit.path)) {
+                view.UpdateRow (tree_path, edit.Text);
+            }
         }
     }
 }

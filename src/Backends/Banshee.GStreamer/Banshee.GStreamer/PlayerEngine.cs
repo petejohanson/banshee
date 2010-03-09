@@ -140,7 +140,9 @@ namespace Banshee.GStreamer
             tag_found_callback = new GstTaggerTagFoundCallback (OnTagFound);
 
             bp_set_eos_callback (handle, eos_callback);
+#if !WIN32
             bp_set_iterate_callback (handle, iterate_callback);
+#endif
             bp_set_error_callback (handle, error_callback);
             bp_set_state_changed_callback (handle, state_changed_callback);
             bp_set_buffering_callback (handle, buffering_callback);
@@ -216,6 +218,11 @@ namespace Banshee.GStreamer
         public override void VideoExpose (IntPtr window, bool direct)
         {
             bp_video_window_expose (handle, window, direct);
+        }
+
+        public override void VideoWindowRealize (IntPtr window)
+        {
+            bp_video_window_realize (handle, window);
         }
 
         public override IntPtr [] GetBaseElements ()
@@ -667,6 +674,9 @@ namespace Banshee.GStreamer
 
         [DllImport ("libbanshee.dll")]
         private static extern void bp_video_window_expose (HandleRef player, IntPtr displayContext, bool direct);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern void bp_video_window_realize (HandleRef player, IntPtr window);
 
         [DllImport ("libbanshee.dll")]
         private static extern void bp_get_error_quarks (out uint core, out uint library,

@@ -185,6 +185,11 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"View artist information from Wikipedia in the context pane.");
         Catalog.GetString (@"Context Pane");
 
+        // ../src/Extensions/Banshee.YouTube/Banshee.YouTube.addin.xml
+        Catalog.GetString (@"YouTube");
+        Catalog.GetString (@"Show related YouTube videos in the context pane");
+        Catalog.GetString (@"Context Pane");
+
         // ../src/Extensions/Template/Template.addin.xml
 
     }

@@ -34,59 +34,41 @@ using Banshee.Base;
 namespace Banshee.Base.Tests
 {
     [TestFixture]
-    public class EscapePartTests
+    public class DigestPartTests
     {
-        private void AssertEscaped (string original, string expected)
+        private void AssertDigested (string original, string expected)
         {
-            Assert.AreEqual (expected, CoverArtSpec.EscapePart (original));
+            Assert.AreEqual (expected, CoverArtSpec.Digest (original));
         }
 
         [Test]
         public void TestEmpty ()
         {
-            AssertEscaped (null, null);
-            AssertEscaped ("", null);
+            AssertDigested (null, null);
+            AssertDigested ("", null);
+            AssertDigested (" ", "7215ee9c7d9dc229d2921a40e899ec5f");
         }
 
         [Test]
-        public void TestLowercased ()
+        public void TestUnicode ()
         {
-            AssertEscaped ("A", "a");
+            AssertDigested ("\u00e9", "5526861fbb1e71a1bda6ac364310a807");
+            AssertDigested ("e\u0301", "5526861fbb1e71a1bda6ac364310a807");
         }
 
         [Test]
-        public void TestUnwanted ()
+        public void TestEscaped ()
         {
-            // Part of the in-progress media art storage spec
-            AssertEscaped ("!", "");
-            AssertEscaped ("@", "");
-            AssertEscaped ("#", "");
-            AssertEscaped ("$", "");
-            AssertEscaped ("^", "");
-            AssertEscaped ("&", "");
-            AssertEscaped ("*", "");
-            AssertEscaped ("_", "");
-            AssertEscaped ("+", "");
-            AssertEscaped ("=", "");
-            AssertEscaped ("|", "");
-            AssertEscaped ("\\", "");
-            AssertEscaped ("/", "");
-            AssertEscaped ("?", "");
-            AssertEscaped ("~", "");
-            AssertEscaped ("`", "");
-            AssertEscaped ("'", "");
-            AssertEscaped ("\"", "");
-
-            // Banshee-specific: strip *everything* non-ASCII
-            AssertEscaped ("\u00e9toile", "toile");
-            AssertEscaped ("e\u0301", "e");
+            AssertDigested ("(a)", "69dfdf4e6a7c8489262f9d8b9958c9b3");
         }
 
         [Test]
-        public void TestStripNotes ()
+        public void TestExamples ()
         {
-            AssertEscaped ("a(b)cd", "a");
-            AssertEscaped ("a(b)c(d)e", "abc");
+            AssertDigested ("Metallica", "8b0ee5a501cef4a5699fd3b2d4549e8f");
+            AssertDigested ("And Justice For All", "17e81b0a8cc3038f346e809fccda207d");
+            AssertDigested ("Radio ga ga", "baad45f3f55461478cf25e3221f4f40d");
+            AssertDigested ("World Soccer", "cd678d70c5c329759a7a7b476f7c71b1");
         }
     }
 }

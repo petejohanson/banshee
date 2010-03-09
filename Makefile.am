@@ -63,6 +63,9 @@ run: check-bootstrap-env $(MO_FILES)
 run-logged: check-bootstrap-env $(MO_FILES)
 	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS) | tee last-run-log)
 
+run-muinshee: check-bootstrap-env $(MO_FILES)
+	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Muinshee.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS))
+
 run-perf: run-logged
 	extras/perf-analyze-log bin/last-run-log
 
@@ -70,6 +73,17 @@ run-trace: $(MO_FILES)
 	(cd bin; $(MONO) \
 		--trace=$$(find . -name "*dll" | sed 's/\.\///' | sed 's/\.dll//' | sed 's/Mono.Data.Sqlite//' | sort | tr "\n" , | sed 's/,$$//') \
 		Nereid.exe --uninstalled $(BANSHEE_DEV_OPTIONS) > ../banshee.trace)
+
+run-profile-heap: $(MO_FILES)
+	(cd bin; $(MONO) --profile=logging:heap=all,gc-dumps=-1 --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS))
+
+query-trace:
+	@echo "Did you set BANSHEE_DEV_MONO_OPTIONS to --trace=disabled?"; \
+	MONO_PID=$$(ps aux | grep mono | grep '\--uninstalled' | grep -v 'cd bin' | awk '{print$$2}'); \
+	kill -USR2 $$MONO_PID
+
+push-moblin:
+	@extras/push-moblin
 
 gdb:
 	@pushd bin; \

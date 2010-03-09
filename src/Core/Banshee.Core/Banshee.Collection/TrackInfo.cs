@@ -303,6 +303,12 @@ namespace Banshee.Collection
         public virtual int BitRate { get; set; }
 
         [Exportable]
+        public virtual int SampleRate { get; set; }
+
+        [Exportable]
+        public virtual int BitsPerSample { get; set; }
+
+        [Exportable]
         public virtual int PlayCount { get; set; }
 
         [Exportable]
@@ -323,6 +329,24 @@ namespace Banshee.Collection
         public virtual StreamPlaybackError PlaybackError {
             get { return playback_error; }
             set { playback_error = value; }
+        }
+
+        public virtual string GetPlaybackErrorMessage ()
+        {
+            switch (PlaybackError) {
+                case StreamPlaybackError.None:
+                    return null;
+                case StreamPlaybackError.ResourceNotFound:
+                    return IsLive ? Catalog.GetString ("Stream location not found") : Catalog.GetString ("File not found");
+                case StreamPlaybackError.CodecNotFound:
+                    return Catalog.GetString ("Codec for playing this media type not available");
+                case StreamPlaybackError.Drm:
+                    return Catalog.GetString ("File protected by Digital Rights Management (DRM)");
+                case StreamPlaybackError.Unknown:
+                    return Catalog.GetString ("Unknown error");
+                default:
+                    return null;
+            }
         }
 
         public void SavePlaybackError (StreamPlaybackError value)
@@ -358,7 +382,6 @@ namespace Banshee.Collection
                 System.Text.StringBuilder sb = new System.Text.StringBuilder ();
                 sb.Append (AlbumTitle);
                 sb.Append (ArtistName);
-                sb.Append ((int)Duration.TotalSeconds);
                 sb.Append (Genre);
                 sb.Append (TrackTitle);
                 sb.Append (TrackNumber);

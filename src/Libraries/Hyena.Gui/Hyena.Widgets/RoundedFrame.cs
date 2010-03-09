@@ -156,8 +156,7 @@ namespace Hyena.Widgets
                 }
                 return false;
             } finally {
-                ((IDisposable)cr.Target).Dispose ();
-                ((IDisposable)cr).Dispose ();
+                CairoExtensions.DisposeContext (cr);
             }
         }
 

@@ -5,7 +5,7 @@
 //   Aaron Bockover <abockover@novell.com>
 //   Gabriel Burt <gburt@novell.com>
 //
-// Copyright (C) 2006-2007 Novell, Inc.
+// Copyright 2006-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,30 +28,26 @@
 //
 
 using System;
-using System.Collections;
 using Mono.Unix;
 using Gtk;
-using Glade;
 
 using Banshee.Base;
 using Banshee.Gui.Widgets;
 
 namespace Banshee.Gui.Dialogs
 {
-    public class SeekDialog : GladeDialog
+    public class SeekDialog : BansheeDialog
     {
-        [Widget] private VBox seek_box;
-        private ConnectedSeekSlider seek_slider;
-
-        public SeekDialog () : base ("SeekDialog")
+        public SeekDialog () : base (Catalog.GetString ("Seek to Position"))
         {
-            seek_slider = new ConnectedSeekSlider ();
+            var seek_slider = new ConnectedSeekSlider ();
             seek_slider.StreamPositionLabel.FormatString = "<big>{0}</big>";
+            seek_slider.ShowAll ();
 
-            seek_box.PackStart (seek_slider, false, false, 0);
-            seek_box.ShowAll ();
+            VBox.PackStart (seek_slider, false, false, 0);
+            AddDefaultCloseButton ();
 
-            Dialog.SetSizeRequest (300, -1);
+            SetSizeRequest (300, -1);
         }
     }
 }

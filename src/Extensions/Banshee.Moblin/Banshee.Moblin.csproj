@@ -9,26 +9,19 @@
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
     <AssemblyName>Banshee.Moblin</AssemblyName>
     <SchemaVersion>2.0</SchemaVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\Administrator\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <RootNamespace>Banshee.Moblin</RootNamespace>
     <AssemblyOriginatorKeyFile>.</AssemblyOriginatorKeyFile>
+    <ReleaseVersion>1.3</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>..\..\..\bin</OutputPath>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
@@ -36,7 +29,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\Windows</OutputPath>
+    <OutputPath>..\..\..\bin</OutputPath>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
@@ -59,7 +52,6 @@
     </ProjectReference>
     <Reference Include="glib-sharp" />
     <Reference Include="Mono.Posix" />
-    <Reference Include="MonoPosixHelper" />
     <Reference Include="NDesk.DBus" />
     <Reference Include="NDesk.DBus.GLib" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />

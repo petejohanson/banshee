@@ -1,32 +1,29 @@
-configure_flags = [
-	'--disable-mtp',
-	'--disable-daap',
-	'--disable-ipod',
-	'--disable-boo',
-	'--disable-gnome',
-	'--disable-docs'
-]
+class BansheePackage (Package):
+	def __init__ (self):
+		Package.__init__ (self, 'banshee-1', '1.5.4')
 
-if profile['name'] == 'osx':
-	configure_flags.append ('--enable-osx')
+		self.sources = [
+			'http://download.banshee-project.org/banshee/stable/%{version}/%{name}-%{version}.tar.bz2',
+			'patches/banshee-1.5.4-ige-mac-integration.patch'
+		]
 
-def change_to_gitdir (*args):
-	last_pwd = ''
-	while not os.path.isdir ('.git'):
-		os.chdir ('..')
-		if last_pwd == os.getcwd ():
-			break
-		last_pwd = os.getcwd ()
+		self.configure_flags = [
+			'--disable-docs',
+			'--disable-webkit'
+		]
 
-package = {
-	'name':    'banshee-1',
-	'version': '1.5.2',
-	'sources': [],
-	'prep': [
-		change_to_gitdir
-	],
-	'build': [
-		'./autogen.sh --prefix=%{_prefix} ' + ' '.join (configure_flags),
-		'%{__make}'
-	]
-}
+		if Package.profile.name == 'darwin':
+			self.configure_flags.extend ([
+				'--disable-mtp',
+				'--disable-daap',
+				'--disable-ipod',
+				'--disable-boo',
+				'--disable-gnome',
+				'--with-vendor-build-id="banshee-project.org OSX 10.5+ i386/Intel"'
+			])
+
+	def prep (self):
+		Package.prep (self)
+		self.sh ('patch -p1 < "%{sources[1]}"')
+
+BansheePackage ()

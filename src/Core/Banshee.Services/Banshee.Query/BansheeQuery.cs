@@ -56,31 +56,8 @@ namespace Banshee.Query
         private static bool asc = true;
         private static bool desc = false;
 
-        public static QueryOrder RandomOrder = CreateQueryOrder ("Random",     asc,  Catalog.GetString ("Random"), null);
-
-        public static QueryOrder [] Orders = new QueryOrder [] {
-            RandomOrder,
-            CreateQueryOrder ("Album",      asc,  Catalog.GetString ("Album"), AlbumField),
-            CreateQueryOrder ("Artist",     asc,  Catalog.GetString ("Artist"), ArtistField),
-            // Translators: noun
-            CreateQueryOrder ("Title",      asc,  Catalog.GetString ("Name"), TitleField),
-            CreateQueryOrder ("Genre",      asc,  Catalog.GetString ("Genre"), GenreField),
-            null,
-            CreateQueryOrder ("Rating",     desc, Catalog.GetString ("Highest Rating"), RatingField),
-            CreateQueryOrder ("Rating",     asc,  Catalog.GetString ("Lowest Rating"), RatingField),
-            null,
-            CreateQueryOrder ("Score",      desc, Catalog.GetString ("Highest Score"), ScoreField),
-            CreateQueryOrder ("Score",      asc,  Catalog.GetString ("Lowest Score"), ScoreField),
-            null,
-            CreateQueryOrder ("PlayCount",  desc, Catalog.GetString ("Most Often Played"), PlayCountField),
-            CreateQueryOrder ("PlayCount",  asc,  Catalog.GetString ("Least Often Played"), PlayCountField),
-            null,
-            CreateQueryOrder ("LastPlayedStamp", desc, Catalog.GetString ("Most Recently Played"), LastPlayedField),
-            CreateQueryOrder ("LastPlayedStamp", asc,  Catalog.GetString ("Least Recently Played"), LastPlayedField),
-            null,
-            CreateQueryOrder ("DateAddedStamp",  desc, Catalog.GetString ("Most Recently Added"), DateAddedField),
-            CreateQueryOrder ("DateAddedStamp",  asc,  Catalog.GetString ("Least Recently Added"), DateAddedField)
-        };
+        public static readonly QueryOrder RandomOrder;
+        public static readonly QueryOrder [] Orders;
 
         public static QueryLimit [] Limits = new QueryLimit [] {
             new QueryLimit ("songs",   Catalog.GetString ("items"), true),
@@ -167,6 +144,24 @@ namespace Banshee.Query
             // Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
             Catalog.GetString ("bitrate"), Catalog.GetString ("kbs"), Catalog.GetString ("kps"),
             "bitrate", "kbs", "kps"
+        );
+
+        public static QueryField SampleRateField = new QueryField (
+            "samplerate", "SampleRate",
+            // Translators: noun
+            Catalog.GetString ("Sample Rate"), "CoreTracks.SampleRate", typeof(NaturalIntegerQueryValue),
+            // Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+            Catalog.GetString ("samplerate"), Catalog.GetString ("Hz"),
+            "samplerate", "Hz"
+        );
+
+        public static QueryField BitsPerSampleField = new QueryField (
+            "bitspersample", "BitsPerSample",
+            // Translators: noun
+            Catalog.GetString ("Bits Per Sample"), "CoreTracks.BitsPerSample", typeof(NaturalIntegerQueryValue),
+            // Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
+            Catalog.GetString ("bitspersample"), Catalog.GetString ("bitdepth"), Catalog.GetString ("quantization"),
+            "bitspersample", "bitdepth", "quantization"
         );
 
         public static QueryField TitleField = new QueryField (
@@ -264,7 +259,7 @@ namespace Banshee.Query
 
         public static QueryField UriField = new QueryField (
             "uri", "Uri",
-            Catalog.GetString ("File Location"), "CoreTracks.Uri", typeof(ExactStringQueryValue),
+            Catalog.GetString ("File Location"), "CoreTracks.Uri", typeof(ExactUriStringQueryValue),
             // Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
             Catalog.GetString ("uri"), Catalog.GetString ("path"), Catalog.GetString ("file"), Catalog.GetString ("location"),
             "uri", "path", "file", "location"
@@ -344,7 +339,7 @@ namespace Banshee.Query
             ArtistField, AlbumField, AlbumArtistField, TitleField, TrackNumberField, TrackCountField, DiscNumberField, DiscCountField,
             YearField, GenreField, ComposerField, ConductorField, GroupingField, CommentField, LicenseUriField, RatingField, PlayCountField,
             SkipCountField, FileSizeField, UriField, DurationField, MimeTypeField, LastPlayedField, LastSkippedField,
-            BpmField, BitRateField, DateAddedField, PlaylistField, SmartPlaylistField, ScoreField, PlaybackErrorField
+            BpmField, BitRateField, SampleRateField, BitsPerSampleField, DateAddedField, PlaylistField, SmartPlaylistField, ScoreField, PlaybackErrorField
         );
 
         // Type Initializer
@@ -354,9 +349,41 @@ namespace Banshee.Query
             BpmField.ShortLabel         = Catalog.GetString ("BPM");
             SkipCountField.ShortLabel   = Catalog.GetString ("Skips");
             PlayCountField.ShortLabel   = Catalog.GetString ("Plays");
+
+            default_sort = String.Format (default_sort_template, "");
+            default_sort_by_year = String.Format (default_sort_template, "CoreTracks.Year ASC, ");
+
+            RandomOrder = CreateQueryOrder ("Random", asc, Catalog.GetString ("Random"), null);
+
+            Orders = new QueryOrder [] {
+                RandomOrder,
+                CreateQueryOrder ("Album",      asc,  Catalog.GetString ("Album"), AlbumField),
+                CreateQueryOrder ("Artist",     asc,  Catalog.GetString ("Artist"), ArtistField),
+                // Translators: noun
+                CreateQueryOrder ("Title",      asc,  Catalog.GetString ("Name"), TitleField),
+                CreateQueryOrder ("Genre",      asc,  Catalog.GetString ("Genre"), GenreField),
+                null,
+                CreateQueryOrder ("Rating",     desc, Catalog.GetString ("Highest Rating"), RatingField),
+                CreateQueryOrder ("Rating",     asc,  Catalog.GetString ("Lowest Rating"), RatingField),
+                null,
+                CreateQueryOrder ("Score",      desc, Catalog.GetString ("Highest Score"), ScoreField),
+                CreateQueryOrder ("Score",      asc,  Catalog.GetString ("Lowest Score"), ScoreField),
+                null,
+                CreateQueryOrder ("PlayCount",  desc, Catalog.GetString ("Most Often Played"), PlayCountField),
+                CreateQueryOrder ("PlayCount",  asc,  Catalog.GetString ("Least Often Played"), PlayCountField),
+                null,
+                CreateQueryOrder ("LastPlayedStamp", desc, Catalog.GetString ("Most Recently Played"), LastPlayedField),
+                CreateQueryOrder ("LastPlayedStamp", asc,  Catalog.GetString ("Least Recently Played"), LastPlayedField),
+                null,
+                CreateQueryOrder ("DateAddedStamp",  desc, Catalog.GetString ("Most Recently Added"), DateAddedField),
+                CreateQueryOrder ("DateAddedStamp",  asc,  Catalog.GetString ("Least Recently Added"), DateAddedField)
+            };
         }
 
-        private const string default_sort = @"CoreAlbums.ArtistNameSortKey ASC, CoreAlbums.TitleSortKey ASC, CoreTracks.Disc ASC, CoreTracks.TrackNumber ASC";
+        private const string default_sort_template = @"CoreAlbums.ArtistNameSortKey ASC, {0}CoreAlbums.TitleSortKey ASC, CoreTracks.Disc ASC, CoreTracks.TrackNumber ASC";
+        private static readonly string default_sort;
+        private static readonly string default_sort_by_year;
+
         public static string GetSort (string key)
         {
             return GetSort (key, false);
@@ -364,6 +391,10 @@ namespace Banshee.Query
 
         public static string GetSort (string key, bool asc)
         {
+            bool sort_by_year = Banshee.Configuration.Schema.LibrarySchema.SortByAlbumYear.Get ();
+            string sort_by_year_part = sort_by_year ? "CoreTracks.Year ASC," : "";
+            string sort = sort_by_year ? default_sort_by_year : default_sort;
+
             string ascDesc = asc ? "ASC" : "DESC";
             string sort_query = null;
             // TODO use the QueryFields here instead of matching on a string key
@@ -373,39 +404,44 @@ namespace Banshee.Query
                 case "grouping":
                     sort_query = String.Format (@"
                         CoreAlbums.ArtistNameSortKey ASC,
+                        {1}
                         CoreAlbums.TitleSortKey ASC,
                         CoreTracks.Disc ASC,
-                        CoreTracks.TrackNumber {0}", ascDesc);
+                        CoreTracks.TrackNumber {0}", ascDesc, sort_by_year_part);
                     break;
 
                 case "albumartist":
                     sort_query = String.Format (@"
                         CoreAlbums.ArtistNameSortKey {0},
+                        {1}
                         CoreAlbums.TitleSortKey ASC,
                         CoreTracks.Disc ASC,
-                        CoreTracks.TrackNumber ASC", ascDesc);
+                        CoreTracks.TrackNumber ASC", ascDesc, sort_by_year_part);
                     break;
 
                 case "artist":
                     sort_query = String.Format (@"
                         CoreArtists.NameSortKey {0},
+                        {1}
                         CoreAlbums.TitleSortKey ASC,
                         CoreTracks.Disc ASC,
-                        CoreTracks.TrackNumber ASC", ascDesc);
+                        CoreTracks.TrackNumber ASC", ascDesc, sort_by_year_part);
                     break;
 
                 case "album":
                     sort_query = String.Format (@"
                         CoreAlbums.TitleSortKey {0},
+                        {1}
                         CoreTracks.Disc ASC,
-                        CoreTracks.TrackNumber ASC", ascDesc);
+                        CoreTracks.TrackNumber ASC", ascDesc, sort_by_year_part);
                     break;
 
                 case "title":
                     sort_query = String.Format (@"
                         CoreTracks.TitleSortKey {0},
                         CoreAlbums.ArtistNameSortKey ASC,
-                        CoreAlbums.TitleSortKey ASC", ascDesc);
+                        {1}
+                        CoreAlbums.TitleSortKey ASC", ascDesc, sort_by_year_part);
                     break;
 
                 case "random":
@@ -415,9 +451,10 @@ namespace Banshee.Query
                 case "disc":
                     sort_query = String.Format (@"
                         CoreAlbums.ArtistNameSortKey ASC,
+                        {1}
                         CoreAlbums.TitleSortKey ASC,
                         CoreTracks.Disc {0},
-                        CoreTracks.TrackNumber ASC", ascDesc);
+                        CoreTracks.TrackNumber ASC", ascDesc, sort_by_year_part);
                     break;
 
                 // FIXME hacks to aid in migration of these sort keys to actually
@@ -436,18 +473,20 @@ namespace Banshee.Query
                 case "comment":
                     sort_query = String.Format (
                         "HYENA_COLLATION_KEY(CoreTracks.{0}) {1}, {2}",
-                        column ?? key, ascDesc, default_sort
+                        column ?? key, ascDesc, sort
                     );
                     break;
 
                 case "score":
                     sort_query = String.Format (@"
                         CoreTracks.Score {0},
-                        CoreTracks.Playcount {0}, {1}", ascDesc, default_sort);
+                        CoreTracks.Playcount {0}, {1}", ascDesc, sort);
                     break;
 
                 case "year":
                 case "bitrate":
+                case "samplerate":
+                case "bitspersample":
                 case "bpm":
                 case "trackcount":
                 case "disccount":
@@ -464,7 +503,7 @@ namespace Banshee.Query
                 case "licenseuri":
                     sort_query = String.Format (
                         "CoreTracks.{0} {1}, {2}",
-                        column ?? key, ascDesc, default_sort
+                        column ?? key, ascDesc, sort
                     );
                     break;
                 default:

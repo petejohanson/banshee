@@ -1,18 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env python
 
-[[ -e "$1" ]] || {
-	echo "File does not exist: $1";
-	exit 1;
-}
+import sys
+import re
 
-for SERVICE_TYPE in Core Extension; do
-	echo "$SERVICE_TYPE Services:"
-	awk '/'"$SERVICE_TYPE"' service started/{ 
-		gsub(/[\(\)\,]/, "")
-		gsub(/[0-9]s$/, "")
-		print "\t" $7 "\t    " $6
-	}' < "$1" | sort -nr
-	echo
-done
+times = {}
+grand_total = 0
 
+for line in open (sys.argv[1]):
+	match = re.match ('^\[.+\] (.+) service started \((\w+), ([0-9\.]+)s\)',
+		line.rstrip ('\r\n'))
+	if match:
+		type = match.group (1)
+		if type not in times:
+			times[type] = []
+		times[type].append ((match.group (2), float (match.group (3))))
 
+for k, v in times.iteritems ():
+	set_total = 0
+	print '%s Services:\n' % k
+	v.sort (lambda a, b: -cmp (a[1], b[1]))
+	for service, time in v:
+		set_total = set_total + time
+		print '\t%.8f\t%s' % (time, service)
+	print '\t----------\t-----'
+	print '\t%.8f\tTotal\n' % set_total
+	grand_total = grand_total + set_total
+
+print '\n\t%.8f\tGrand Total' % grand_total

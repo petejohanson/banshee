@@ -37,6 +37,7 @@ using Hyena.Gui;
 using Banshee.Configuration;
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
+using Banshee.Collection.Database;
 
 namespace Banshee.Gui
 {
@@ -45,12 +46,15 @@ namespace Banshee.Gui
         private RadioAction active_action;
         private RadioAction saved_action;
         private PlaybackActions playback_actions;
+        private const string shuffle_off_action = "Shuffle_off";
+
+        private Dictionary<int, string> shuffle_modes = new Dictionary<int, string> ();
 
         public RadioAction Active {
             get { return active_action; }
             set {
                 active_action = value;
-                ServiceManager.PlaybackController.ShuffleMode = (PlaybackShuffleMode)active_action.Value;
+                ServiceManager.PlaybackController.ShuffleMode = shuffle_modes[active_action.Value];
             }
         }
 
@@ -76,65 +80,85 @@ namespace Banshee.Gui
                     Catalog.GetString ("Shuffle"), null)
             });
 
-            Add (new RadioActionEntry [] {
-                new RadioActionEntry ("ShuffleOffAction", null,
-                    Catalog.GetString ("Shuffle _Off"), null,
-                    Catalog.GetString ("Do not shuffle playlist"),
-                    (int)PlaybackShuffleMode.Linear),
-
-                new RadioActionEntry ("ShuffleSongAction", null,
-                    Catalog.GetString ("Shuffle by _Song"), null,
-                    Catalog.GetString ("Play songs randomly from the playlist"),
-                    (int)PlaybackShuffleMode.Song),
-
-                new RadioActionEntry ("ShuffleArtistAction", null,
-                    Catalog.GetString ("Shuffle by A_rtist"), null,
-                    Catalog.GetString ("Play all songs by an artist, then randomly choose another artist"),
-                    (int)PlaybackShuffleMode.Artist),
-
-                new RadioActionEntry ("ShuffleAlbumAction", null,
-                    Catalog.GetString ("Shuffle by A_lbum"), null,
-                    Catalog.GetString ("Play all songs from an album, then randomly choose another album"),
-                    (int)PlaybackShuffleMode.Album),
-
-                new RadioActionEntry ("ShuffleRatingAction", null,
-                    Catalog.GetString ("Shuffle by _Rating"), null,
-                    Catalog.GetString ("Play songs randomly, prefer higher rated songs"),
-                    (int)PlaybackShuffleMode.Rating),
-
-                new RadioActionEntry ("ShuffleScoreAction", null,
-                    Catalog.GetString ("Shuffle by S_core"), null,
-                    Catalog.GetString ("Play songs randomly, prefer higher scored songs"),
-                    (int)PlaybackShuffleMode.Score)
-            }, 0, OnActionChanged);
-
-            this["ShuffleOffAction"].StockId = Gtk.Stock.MediaNext;
-            this["ShuffleSongAction"].IconName = "media-playlist-shuffle";
-            this["ShuffleArtistAction"].IconName = "media-playlist-shuffle";
-            this["ShuffleAlbumAction"].IconName = "media-playlist-shuffle";
-            this["ShuffleRatingAction"].IconName = "media-playlist-shuffle";
-            this["ShuffleScoreAction"].IconName = "media-playlist-shuffle";
-
             ServiceManager.PlaybackController.ShuffleModeChanged += OnShuffleModeChanged;
             ServiceManager.PlaybackController.SourceChanged += OnPlaybackSourceChanged;
 
-            Gtk.Action action = this[ConfigIdToActionName (ShuffleMode.Get ())];
+            SetShuffler (Banshee.Collection.Database.Shuffler.Playback);
+        }
+
+        private Shuffler shuffler;
+        public void SetShuffler (Shuffler shuffler)
+        {
+            if (this.shuffler == shuffler) {
+                return;
+            }
+
+            if (this.shuffler != null) {
+                this.shuffler.RandomModeAdded -= OnShufflerChanged;
+                this.shuffler.RandomModeRemoved -= OnShufflerChanged;
+            }
+
+            this.shuffler = shuffler;
+            this.shuffler.RandomModeAdded += OnShufflerChanged;
+            this.shuffler.RandomModeRemoved += OnShufflerChanged;
+
+            UpdateActions ();
+        }
+
+        private void OnShufflerChanged (RandomBy random_by)
+        {
+            UpdateActions ();
+        }
+
+        private void UpdateActions ()
+        {
+            // Clear out the old options
+            foreach (string id in shuffle_modes.Values) {
+                Remove (String.Format ("Shuffle_{0}", id));
+            }
+            shuffle_modes.Clear ();
+
+            var radio_group = new RadioActionEntry [shuffler.RandomModes.Count];
+            int i = 0;
+
+            // Add all the shuffle options
+            foreach (var random_by in shuffler.RandomModes) {
+                string action_name = String.Format ("Shuffle_{0}", random_by.Id);
+                int id = shuffle_modes.Count;
+                shuffle_modes[id] = random_by.Id;
+                radio_group[i++] = new RadioActionEntry (
+                        action_name, null,
+                        random_by.Label, null,
+                        random_by.Description,
+                        id);
+            }
+
+            Add (radio_group, 0, OnActionChanged);
+
+            // Set the icons
+            foreach (var random_by in shuffler.RandomModes) {
+                this[String.Format ("Shuffle_{0}", random_by.Id)].IconName = random_by.IconName ?? "media-playlist-shuffle";
+            }
+            this[shuffle_off_action].StockId = Gtk.Stock.MediaNext;
+
+            var action = this[ConfigIdToActionName (ShuffleMode.Get ())];
             if (action is RadioAction) {
-                active_action = (RadioAction)action;
+                Active = (RadioAction)action;
             } else {
-                Active = (RadioAction)this["ShuffleOffAction"];
+                Active = (RadioAction)this[shuffle_off_action];
             }
 
             Active.Activate ();
+            OnChanged ();
         }
 
-        private void OnShuffleModeChanged (object o, EventArgs<PlaybackShuffleMode> args)
+        private void OnShuffleModeChanged (object o, EventArgs<string> args)
         {
-            if (active_action.Value != (int)args.Value) {
+            if (shuffle_modes[active_action.Value] != args.Value) {
                 // This happens only when changing the mode using DBus.
                 // In this case we need to locate the action by its value.
                 foreach (RadioAction action in this) {
-                    if (action.Value == (int)args.Value) {
+                    if (shuffle_modes[action.Value] == args.Value) {
                         active_action = action;
                         break;
                     }
@@ -153,7 +177,7 @@ namespace Banshee.Gui
 
             if (saved_action == null && !source.CanShuffle) {
                 saved_action = Active;
-                Active = this["ShuffleOffAction"] as RadioAction;
+                Active = this[shuffle_off_action] as RadioAction;
                 Sensitive = false;
             } else if (saved_action != null && source.CanShuffle) {
                 Active = saved_action;
@@ -207,12 +231,9 @@ namespace Banshee.Gui
 
         public IEnumerator<RadioAction> GetEnumerator ()
         {
-            yield return (RadioAction)this["ShuffleOffAction"];
-            yield return (RadioAction)this["ShuffleSongAction"];
-            yield return (RadioAction)this["ShuffleArtistAction"];
-            yield return (RadioAction)this["ShuffleAlbumAction"];
-            yield return (RadioAction)this["ShuffleRatingAction"];
-            yield return (RadioAction)this["ShuffleScoreAction"];
+            foreach (string id in shuffle_modes.Values) {
+                yield return (RadioAction)this[String.Format ("Shuffle_{0}", id)];
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator ()
@@ -222,13 +243,12 @@ namespace Banshee.Gui
 
         private static string ConfigIdToActionName (string configuration)
         {
-            return String.Format ("{0}Action", StringUtil.UnderCaseToCamelCase (configuration));
+            return "S" + configuration.Substring (1);
         }
 
         private static string ActionNameToConfigId (string actionName)
         {
-            return StringUtil.CamelCaseToUnderCase (actionName.Substring (0,
-                actionName.Length - (actionName.EndsWith ("Action") ? 6 : 0)));
+            return actionName.ToLowerInvariant ();
         }
 
         public static readonly SchemaEntry<string> ShuffleMode = new SchemaEntry<string> (

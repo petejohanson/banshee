@@ -29,12 +29,16 @@
 using System;
 using System.Linq;
 
+using Mono.Addins;
+
 using Hyena;
 using Hyena.Data;
 using Hyena.Data.Sqlite;
 
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
+using System.Collections.Generic;
+using Hyena.Collections;
 
 namespace Banshee.Collection.Database
 {
@@ -42,19 +46,30 @@ namespace Banshee.Collection.Database
     {
         public static readonly Shuffler Playback = new Shuffler () { Id = "playback", DbId = 0 };
 
+        private static string shuffles_sql = "INSERT OR REPLACE INTO CoreShuffles (ShufflerID, LastShuffledAt, TrackID) ";
+        private static string discard_sql = "INSERT OR REPLACE INTO CoreShuffleDiscards (ShufflerID, LastDiscardedAt, TrackID) ";
+
+        private static HyenaSqliteCommand add_shuffle_cmd = new HyenaSqliteCommand (String.Format ("{0} VALUES (?, ?, ?)", shuffles_sql));
+        private static HyenaSqliteCommand add_discard_cmd = new HyenaSqliteCommand (String.Format ("{0} VALUES (?, ?, ?)", discard_sql));
+
         private DateTime random_began_at = DateTime.MinValue;
         private DateTime last_random = DateTime.MinValue;
-        private RandomBy [] randoms;
+        private List<RandomBy> random_modes;
+        private Dictionary<TypeExtensionNode, RandomBy> node_map = new Dictionary<TypeExtensionNode, RandomBy> ();
         private DatabaseTrackListModel model;
 
         public string Id { get; private set; }
         public int DbId { get; private set; }
 
+        public Action<RandomBy> RandomModeAdded;
+        public Action<RandomBy> RandomModeRemoved;
+
+        public IList<RandomBy> RandomModes { get { return random_modes; } }
+
         private Shuffler ()
         {
-            randoms = new RandomBy [] {
-                new RandomByTrack (this), new RandomByArtist (this), new RandomByAlbum (this), new RandomByRating (this), new RandomByScore (this)
-            };
+            random_modes = new List<RandomBy> ();
+            AddinManager.AddExtensionNodeHandler ("/Banshee/PlaybackController/ShuffleModes", OnExtensionChanged);
         }
 
         public Shuffler (string id) : this ()
@@ -63,16 +78,61 @@ namespace Banshee.Collection.Database
             LoadOrCreate ();
         }
 
+        private void OnExtensionChanged (object o, ExtensionNodeEventArgs args)
+        {
+            var tnode = (TypeExtensionNode)args.ExtensionNode;
+            RandomBy random_by = null;
+
+            if (args.Change == ExtensionChange.Add) {
+                lock (random_modes) {
+                    try {
+                        random_by = (RandomBy) tnode.CreateInstance ();
+                        random_by.SetShuffler (this);
+                        random_modes.Add (random_by);
+                        node_map[tnode] = random_by;
+                    } catch (Exception e) {
+                        Log.Exception (String.Format ("Failed to load RandomBy extension: {0}", args.Path), e);
+                    }
+                }
+
+                if (random_by != null) {
+                    if (!random_by.GetType ().AssemblyQualifiedName.Contains ("Banshee.Service")) {
+                        Log.DebugFormat ("Loaded new mode into {0} shuffler: {1}", this.Id, random_by.Id);
+                    }
+                    var handler = RandomModeAdded;
+                    if (handler != null) {
+                        handler (random_by);
+                    }
+                }
+            } else {
+                lock (random_modes) {
+                    if (node_map.ContainsKey (tnode)) {
+                        random_by = node_map[tnode];
+                        node_map.Remove (tnode);
+                        random_modes.Remove (random_by);
+                    }
+                }
+
+                if (random_by != null) {
+                    Log.DebugFormat ("Removed mode from {0} shuffler: {1}", this.Id, random_by.Id);
+                    var handler = RandomModeRemoved;
+                    if (handler != null) {
+                        handler (random_by);
+                    }
+                }
+            }
+        }
+
         public void SetModelAndCache (DatabaseTrackListModel model, IDatabaseTrackModelCache cache)
         {
             this.model = model;
 
-            foreach (var random in randoms) {
+            foreach (var random in random_modes) {
                 random.SetModelAndCache (model, cache);
             }
         }
 
-        public TrackInfo GetRandom (DateTime notPlayedSince, PlaybackShuffleMode mode, bool repeat, bool resetSinceTime)
+        public TrackInfo GetRandom (DateTime notPlayedSince, string mode, bool repeat, bool resetSinceTime)
         {
             lock (this) {
                 if (this == Playback) {
@@ -90,7 +150,7 @@ namespace Banshee.Collection.Database
                 }
 
                 TrackInfo track = GetRandomTrack (mode, repeat, resetSinceTime);
-                if (track == null && (repeat || mode != PlaybackShuffleMode.Linear)) {
+                if (track == null && (repeat || mode != "off")) {
                     random_began_at = (random_began_at == last_random) ? DateTime.Now : last_random;
                     track = GetRandomTrack (mode, repeat, true);
                 }
@@ -100,15 +160,46 @@ namespace Banshee.Collection.Database
             }
         }
 
-        private TrackInfo GetRandomTrack (PlaybackShuffleMode mode, bool repeat, bool resetSinceTime)
+        public void RecordShuffle (DatabaseTrackInfo track)
         {
-            foreach (var r in randoms) {
-                if (resetSinceTime || r.Mode != mode) {
+            if (track != null) {
+                RecordShuffle (track.TrackId);
+            }
+        }
+
+        public void RecordShuffle (int trackId)
+        {
+            ServiceManager.DbConnection.Execute (add_shuffle_cmd, this.DbId, DateTime.Now, trackId);
+        }
+
+        public void RecordShuffles (DatabaseTrackListModel model, RangeCollection.Range range)
+        {
+            ServiceManager.DbConnection.Execute (String.Format ("{0} SELECT ?, ?, {1}", shuffles_sql, model.TrackIdsSql),
+                                                 DbId, DateTime.Now, model.CacheId, range.Start, range.Count);
+        }
+
+        public void RecordDiscard (DatabaseTrackInfo track)
+        {
+            if (track != null) {
+                ServiceManager.DbConnection.Execute (add_discard_cmd, this.DbId, DateTime.Now, track.TrackId);
+            }
+        }
+
+        public void RecordDiscards (DatabaseTrackListModel model, RangeCollection.Range range)
+        {
+            ServiceManager.DbConnection.Execute (String.Format ("{0} SELECT ?, ?, {1}", discard_sql, model.TrackIdsSql),
+                                                 DbId, DateTime.Now, model.CacheId, range.Start, range.Count);
+        }
+
+        private TrackInfo GetRandomTrack (string mode, bool repeat, bool resetSinceTime)
+        {
+            foreach (var r in random_modes) {
+                if (resetSinceTime || r.Id != mode) {
                     r.Reset ();
                 }
             }
 
-            var random = randoms.First (r => r.Mode == mode);
+            var random = random_modes.FirstOrDefault (r => r.Id == mode);
             if (random != null) {
                 if (!random.IsReady) {
                     if (!random.Next (random_began_at) && repeat) {

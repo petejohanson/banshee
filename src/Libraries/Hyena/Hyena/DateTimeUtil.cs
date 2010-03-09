@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Globalization;
 
 namespace Hyena
 {
@@ -70,6 +71,17 @@ namespace Hyena
             return (hours > 0 ?
                     String.Format ("{0}:{1:00}:{2:00}", hours, minutes, seconds) :
                     String.Format ("{0}:{1:00}", minutes, seconds));
+        }
+
+        const string INVARIANT_FMT = "yyyy-MM-dd HH:mm:ss.fff zzz";
+        public static string ToInvariantString (DateTime dt)
+        {
+            return dt.ToString (INVARIANT_FMT, CultureInfo.InvariantCulture);
+        }
+
+        public static bool TryParseInvariant (string str, out DateTime dt)
+        {
+            return DateTime.TryParseExact (str, INVARIANT_FMT, CultureInfo.InvariantCulture, DateTimeStyles.None, out dt);
         }
     }
 }

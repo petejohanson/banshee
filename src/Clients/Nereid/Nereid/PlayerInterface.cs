@@ -97,14 +97,31 @@ namespace Nereid
 
         protected override void Initialize ()
         {
+            InitialShowPresent ();
+        }
+
+        private bool interface_constructed;
+
+        protected override void OnShown ()
+        {
+            if (interface_constructed) {
+                base.OnShown ();
+                return;
+            }
+
+            interface_constructed = true;
+            uint timer = Log.DebugTimerStart ();
+
             BuildPrimaryLayout ();
             ConnectEvents ();
 
             ActionService.SourceActions.SourceView = this;
-
             composite_view.TrackView.HasFocus = true;
+            OnActiveSourceChanged (null);
 
-            InitialShowPresent ();
+            Log.DebugTimerPrint (timer, "Constructed Nereid interface: {0}");
+
+            base.OnShown ();
         }
 
 #region System Overrides
@@ -141,11 +158,13 @@ namespace Nereid
             primary_vbox.PackStart (header_table, false, false, 0);
 
             main_menu = new MainMenu ();
-            main_menu.Show ();
 
-            header_table.Attach (main_menu, 0, 1, 0, 1,
-                AttachOptions.Expand | AttachOptions.Fill,
-                AttachOptions.Shrink, 0, 0);
+            if (!PlatformDetection.IsMac) {
+                main_menu.Show ();
+                header_table.Attach (main_menu, 0, 1, 0, 1,
+                    AttachOptions.Expand | AttachOptions.Fill,
+                    AttachOptions.Shrink, 0, 0);
+            }
 
             Alignment toolbar_alignment = new Alignment (0.0f, 0.0f, 1.0f, 1.0f);
             toolbar_alignment.TopPadding = 3;
@@ -154,9 +173,10 @@ namespace Nereid
             header_toolbar = (Toolbar)ActionService.UIManager.GetWidget ("/HeaderToolbar");
             header_toolbar.ShowArrow = false;
             header_toolbar.ToolbarStyle = ToolbarStyle.BothHoriz;
+            header_toolbar.Show ();
 
             toolbar_alignment.Add (header_toolbar);
-            toolbar_alignment.ShowAll ();
+            toolbar_alignment.Show ();
 
             header_table.Attach (toolbar_alignment, 0, 2, 1, 2,
                 AttachOptions.Expand | AttachOptions.Fill,
@@ -176,9 +196,11 @@ namespace Nereid
             editable.Show ();
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/TrackInfoDisplay", editable, true);
 
-            ConnectedVolumeButton volume_button = new ConnectedVolumeButton ();
-            volume_button.Show ();
-            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/VolumeButton", volume_button);
+            if (!PlatformDetection.IsMoblin) {
+                var volume_button = new ConnectedVolumeButton ();
+                volume_button.Show ();
+                ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/VolumeButton", volume_button);
+            }
         }
 
         private void BuildViews ()
@@ -223,7 +245,7 @@ namespace Nereid
                     cover_art_display = new CoverArtDisplay () { Visible = true };
                     source_box.SizeAllocated += OnSourceBoxSizeAllocated;
                     cover_art_display.HeightRequest = SourceViewWidth.Get ();
-                    source_box.PackStart (cover_art_container = TrackInfoDisplay.GetEditable (cover_art_display), false, false, 0);
+                    source_box.PackStart (cover_art_container = TrackInfoDisplay.GetEditable (cover_art_display), false, false, 4);
                     source_box.ShowAll ();
                 }
             } else if (cover_art_display != null) {
@@ -320,17 +342,9 @@ namespace Nereid
                 }
             };
 
-            header_toolbar.ExposeEvent += OnToolbarExposeEvent;
-        }
-
-        // Hack method for the Moblin extension to disable the custom
-        // theme overriding of the header toolbar rendering; we should
-        // probably just do away with it altogether, but it needs
-        // further evaluation.
-
-        public void DisableHeaderToolbarExposeEvent ()
-        {
-            header_toolbar.ExposeEvent -= OnToolbarExposeEvent;
+            if (!PlatformDetection.IsMoblin) {
+                header_toolbar.ExposeEvent += OnToolbarExposeEvent;
+            }
         }
 
 #endregion
@@ -534,8 +548,22 @@ namespace Nereid
         {
             bool focus_search = false;
 
-            if (Focus is Gtk.Entry && (GtkUtilities.NoImportantModifiersAreSet () &&
-                evnt.Key != Gdk.Key.Control_L && evnt.Key != Gdk.Key.Control_R)) {
+            bool disable_keybindings = Focus is Gtk.Entry;
+            if (!disable_keybindings) {
+                var widget = Focus;
+                while (widget != null) {
+                    if (widget is IDisableKeybindings) {
+                        disable_keybindings = true;
+                        break;
+                    }
+                    widget = widget.Parent;
+                }
+            }
+
+            disable_keybindings &= ((GtkUtilities.NoImportantModifiersAreSet () &&
+                evnt.Key != Gdk.Key.Control_L && evnt.Key != Gdk.Key.Control_R));
+
+            if (disable_keybindings) {
                 if (accel_group_active) {
                     RemoveAccelGroup (ActionService.UIManager.AccelGroup);
                     accel_group_active = false;
@@ -592,6 +620,11 @@ namespace Nereid
             }
 
             status_label.Text = source.GetStatusText ();
+
+            // We need a bit longer delay between query character typed to search initiated
+            // when the library is sufficiently big; see bgo #540835
+            bool long_delay = source.FilteredCount > 6000 || (source.Parent ?? source).Count > 12000;
+            view_container.SearchEntry.ChangeTimeoutMs = long_delay ? (uint)250 : (uint)25;
         }
 
 #endregion

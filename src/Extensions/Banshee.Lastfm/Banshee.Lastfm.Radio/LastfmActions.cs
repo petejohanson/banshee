@@ -191,7 +191,6 @@ namespace Banshee.Lastfm.Radio
         private void OnAddStation (object sender, EventArgs args)
         {
             StationEditor ed = new StationEditor (lastfm);
-            ed.Window.ShowAll ();
             ed.RunDialog ();
         }
 

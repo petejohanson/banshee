@@ -115,6 +115,11 @@ namespace Banshee.Moblin
                     (int)MoblinPanel.Instance.ToolbarPanelHeight);
             }
 
+            elements_service.PrimaryWindowClose = () => {
+                elements_service.PrimaryWindow.Hide ();
+                return true;
+            };
+
             // Since the Panel is running, we don't actually ever want to quit!
             Banshee.ServiceStack.Application.ShutdownRequested += () => {
                 elements_service.PrimaryWindow.Hide ();
@@ -151,18 +156,6 @@ namespace Banshee.Moblin
             var pwin_toolbar_align = (Alignment)pwin_toolbar.Parent;
             pwin_toolbar_align.TopPadding = 0;
             pwin_toolbar_align.BottomPadding = 6;
-            pwin_type.GetMethod ("DisableHeaderToolbarExposeEvent").Invoke (pwin, null);
-
-            // Remove the volume button since Moblin enforces the global volume
-            foreach (var child in pwin_toolbar.Children) {
-                if (child.GetType ().FullName.StartsWith ("Banshee.Widgets.GenericToolItem")) {
-                    var c = child as Container;
-                    if (c != null && c.Children[0] is Banshee.Gui.Widgets.ConnectedVolumeButton) {
-                        pwin_toolbar.Remove (child);
-                        break;
-                    }
-                }
-            }
 
             // Incredibly ugly hack to pack in a close button in a separate
             // toolbar so that it may be aligned at the top right of the

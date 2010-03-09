@@ -92,6 +92,9 @@ namespace Hyena.Data.Sqlite
 
         // These are 'parallel' queues; that is, when a value is pushed or popped to
         // one, a value is pushed or popped to all three.
+        // The 1st contains the command object itself, and the 2nd and 3rd contain the
+        // arguments to be applied to that command (filled in for any ? placeholder in the command).
+        // The 3rd exists as an optimization to avoid making an object [] for a single arg.
         private Queue<HyenaSqliteCommand> command_queue = new Queue<HyenaSqliteCommand>();
         private Queue<object[]> args_queue = new Queue<object[]>();
         private Queue<object> arg_queue = new Queue<object>();
@@ -465,6 +468,10 @@ namespace Hyena.Data.Sqlite
             dispose_requested = true;
             queue_signal.Set ();
             queue_thread.Join ();
+
+            queue_signal.Close ();
+            ResultReadySignal.Close ();
+            transaction_signal.Close ();
         }
     }
 }

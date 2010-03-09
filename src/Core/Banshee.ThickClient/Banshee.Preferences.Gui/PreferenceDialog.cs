@@ -73,10 +73,13 @@ namespace Banshee.Preferences.Gui
 
                 PageComboBox page_combo;
                 foreach (Widget child in notebook_page.Children) {
-                    page_combo = child as PageComboBox;
-                    if (page_combo != null) {
-                        page_combo.ActivePageId = id;
-                        break;
+                    var hbox = child as HBox;
+                    if (hbox != null) {
+                        page_combo = hbox.Children[1] as PageComboBox;
+                        if (page_combo != null) {
+                            page_combo.ActivePageId = id;
+                            break;
+                        }
                     }
                 }
             }

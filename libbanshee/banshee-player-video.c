@@ -111,7 +111,7 @@ bp_video_bus_element_sync_message (GstBus *bus, GstMessage *message, BansheePlay
     g_mutex_unlock (player->mutex);
 
     if (found_xoverlay) {
-        gst_x_overlay_set_xwindow_id (player->xoverlay, GDK_WINDOW_XWINDOW (player->video_window));
+        gst_x_overlay_set_xwindow_id (player->xoverlay, player->video_window_xid);
     }
 
     #endif
@@ -223,8 +223,6 @@ bp_video_get_display_context (BansheePlayer *player)
 P_INVOKE void
 bp_video_window_expose (BansheePlayer *player, GdkWindow *window, gboolean direct)
 {
-    XID window_id;
-    
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     
     if (direct && player->xoverlay != NULL && GST_IS_X_OVERLAY (player->xoverlay)) {
@@ -242,12 +240,30 @@ bp_video_window_expose (BansheePlayer *player, GdkWindow *window, gboolean direc
     gst_object_ref (player->xoverlay);
     g_mutex_unlock (player->mutex);
 
-    window_id = GDK_WINDOW_XWINDOW (window);
-
-    gst_x_overlay_set_xwindow_id (player->xoverlay, window_id);
+    gst_x_overlay_set_xwindow_id (player->xoverlay, player->video_window_xid);
     gst_x_overlay_expose (player->xoverlay);
 
     gst_object_unref (player->xoverlay);
+}
+
+// MUST be called from the GTK main thread; calling it in OnRealized will do the right thing.
+P_INVOKE void
+bp_video_window_realize (BansheePlayer *player, GdkWindow *window)
+{
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+
+// Code commented out - this requires including gtk/gtk.h for GTK_CHECK_VERSION, which requires too many
+// buildsystem changes for the benefit of a single debug message in the failure case.
+//
+//#if GTK_CHECK_VERSION(2,18,0)
+//    //Explicitly create the native window.  GDK_WINDOW_XWINDOW will call this
+//    //function anyway, but this way we can raise a more useful message should it fail.
+//    if (!gdk_window_ensure_native (window)) {
+//        banshee_log (BANSHEE_LOG_TYPE_ERROR, "player-video", "Couldn't create native window needed for GstXOverlay!");
+//    }
+//#endif
+
+    player->video_window_xid = GDK_WINDOW_XID (window);
 }
 
 #else /* GDK_WINDOWING_X11 */

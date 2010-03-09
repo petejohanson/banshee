@@ -312,7 +312,7 @@ namespace Banshee.Collection.Gui
                 Name = String.Format ("{0} - {1}", bound_album_info.DisplayTitle, bound_album_info.DisplayArtistName);
             }
         }
-
+        
         public override Atk.Object GetAccessible (ICellAccessibleParent parent)
         {
             return new ColumnCellAlbumAccessible (BoundObject, this, parent);

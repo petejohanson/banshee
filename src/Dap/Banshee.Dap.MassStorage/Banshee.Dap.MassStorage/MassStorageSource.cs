@@ -137,52 +137,56 @@ namespace Banshee.Dap.MassStorage
             }*/
         }
 
+        private System.Threading.ManualResetEvent import_reset_event;
         private DatabaseImportManager importer;
         // WARNING: This will be called from a thread!
         protected override void LoadFromDevice ()
         {
+            import_reset_event = new System.Threading.ManualResetEvent (false);
+
             importer = new DatabaseImportManager (this);
             importer.KeepUserJobHidden = true;
-            importer.Threaded = false; // We are already threaded
             importer.Finished += OnImportFinished;
 
             foreach (string audio_folder in BaseDirectories) {
                 importer.Enqueue (audio_folder);
             }
+
+            import_reset_event.WaitOne ();
         }
 
         private void OnImportFinished (object o, EventArgs args)
         {
             importer.Finished -= OnImportFinished;
 
-            if (!CanSyncPlaylists) {
-                return;
-            }
+            if (CanSyncPlaylists) {
+                var insert_cmd = new Hyena.Data.Sqlite.HyenaSqliteCommand (
+                    "INSERT INTO CorePlaylistEntries (PlaylistID, TrackID) VALUES (?, ?)");
+                int [] psources = new int [] {DbId};
+                foreach (string playlist_path in PlaylistFiles) {
+                    IPlaylistFormat loaded_playlist = PlaylistFileUtil.Load (playlist_path, new Uri (BaseDirectory));
+                    if (loaded_playlist == null)
+                        continue;
 
-            Hyena.Data.Sqlite.HyenaSqliteCommand insert_cmd = new Hyena.Data.Sqlite.HyenaSqliteCommand (
-                "INSERT INTO CorePlaylistEntries (PlaylistID, TrackID) VALUES (?, ?)");
-            int [] psources = new int [] {DbId};
-            foreach (string playlist_path in PlaylistFiles) {
-                IPlaylistFormat loaded_playlist = PlaylistFileUtil.Load (playlist_path, new Uri (BaseDirectory));
-                if (loaded_playlist == null)
-                    continue;
-
-                PlaylistSource playlist = new PlaylistSource (System.IO.Path.GetFileNameWithoutExtension (playlist_path), this);
-                playlist.Save ();
-                //Hyena.Data.Sqlite.HyenaSqliteCommand.LogAll = true;
-                foreach (Dictionary<string, object> element in loaded_playlist.Elements) {
-                    string track_path = (element["uri"] as Uri).LocalPath;
-                    int track_id = DatabaseTrackInfo.GetTrackIdForUri (new SafeUri (track_path), psources);
-                    if (track_id == 0) {
-                        Log.DebugFormat ("Failed to find track {0} in DAP library to load it into playlist {1}", track_path, playlist_path);
-                    } else {
-                        ServiceManager.DbConnection.Execute (insert_cmd, playlist.DbId, track_id);
+                    PlaylistSource playlist = new PlaylistSource (System.IO.Path.GetFileNameWithoutExtension (playlist_path), this);
+                    playlist.Save ();
+                    //Hyena.Data.Sqlite.HyenaSqliteCommand.LogAll = true;
+                    foreach (Dictionary<string, object> element in loaded_playlist.Elements) {
+                        string track_path = (element["uri"] as Uri).LocalPath;
+                        int track_id = DatabaseTrackInfo.GetTrackIdForUri (new SafeUri (track_path), psources);
+                        if (track_id == 0) {
+                            Log.DebugFormat ("Failed to find track {0} in DAP library to load it into playlist {1}", track_path, playlist_path);
+                        } else {
+                            ServiceManager.DbConnection.Execute (insert_cmd, playlist.DbId, track_id);
+                        }
                     }
+                    //Hyena.Data.Sqlite.HyenaSqliteCommand.LogAll = false;
+                    playlist.UpdateCounts ();
+                    AddChildSource (playlist);
                 }
-                //Hyena.Data.Sqlite.HyenaSqliteCommand.LogAll = false;
-                playlist.UpdateCounts ();
-                AddChildSource (playlist);
             }
+
+            import_reset_event.Set ();
         }
 
         public override void CopyTrackTo (DatabaseTrackInfo track, SafeUri uri, BatchUserJob job)
@@ -505,12 +509,7 @@ namespace Banshee.Dap.MassStorage
                     !String.IsNullOrEmpty (CoverArtFileName) && (FolderDepth == -1 || FolderDepth > 0)) {
                 SafeUri cover_uri = new SafeUri (System.IO.Path.Combine (System.IO.Path.GetDirectoryName (new_uri.LocalPath),
                                                                          CoverArtFileName));
-                string coverart_id;
-                if (track.HasAttribute (TrackMediaAttributes.Podcast)) {
-                    coverart_id = String.Format ("podcast-{0}", Banshee.Base.CoverArtSpec.EscapePart (track.AlbumTitle));
-                } else {
-                    coverart_id = track.ArtworkId;
-                }
+                string coverart_id = track.ArtworkId;
 
                 if (!File.Exists (cover_uri) && CoverArtSpec.CoverExists (coverart_id)) {
                     Gdk.Pixbuf pic = null;

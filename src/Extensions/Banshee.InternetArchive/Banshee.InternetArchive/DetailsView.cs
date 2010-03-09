@@ -69,16 +69,20 @@ namespace Banshee.InternetArchive
         {
             this.source = source;
             this.item = item;
-
             Spacing = 6;
+            source.LoadDetails ();
         }
 
+        private bool gui_built;
         public void UpdateDetails ()
         {
             details = item.Details;
-            BuildInfoBox ();
-            BuildFilesBox ();
-            ShowAll ();
+            if (!gui_built && details != null) {
+                gui_built = true;
+                BuildInfoBox ();
+                BuildFilesBox ();
+                ShowAll ();
+            }
         }
 
 #region ISourceContents

@@ -28,12 +28,26 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Mtp
 {
     public sealed class Playlist : AbstractTrackList
     {
+        internal static List<Playlist> GetPlaylists (MtpDevice device)
+        {
+            List<Playlist> playlists = new List<Playlist> ();
+            IntPtr ptr = Playlist.LIBMTP_Get_Playlist_List (device.Handle);
+            while (ptr != IntPtr.Zero) {
+                PlaylistStruct d = (PlaylistStruct)Marshal.PtrToStructure(ptr, typeof(PlaylistStruct));
+                LIBMTP_destroy_playlist_t (ptr);
+                playlists.Add (new Playlist (device, d));
+                ptr = d.next;
+            }
+            return playlists;
+        }
+
         private PlaylistStruct playlist;
 
         public override uint Count {
@@ -87,11 +101,11 @@ namespace Mtp
 
         // Playlist Management
 
-        //[DllImport("libmtp.dll")]
-        //private static extern void LIBMTP_destroy_playlist_t (ref PlaylistStruct playlist);
+        [DllImport("libmtp.dll")]
+        private static extern void LIBMTP_destroy_playlist_t (IntPtr playlist);
 
         [DllImport("libmtp.dll")]
-        internal static extern IntPtr LIBMTP_Get_Playlist_List (MtpDeviceHandle handle); // LIBMTP_playlist_t*
+        private static extern IntPtr LIBMTP_Get_Playlist_List (MtpDeviceHandle handle); // LIBMTP_playlist_t*
 
         [DllImport("libmtp.dll")]
 #if LIBMTP8

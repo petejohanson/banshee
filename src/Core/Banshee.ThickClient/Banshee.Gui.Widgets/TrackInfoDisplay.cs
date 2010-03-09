@@ -123,11 +123,6 @@ namespace Banshee.Gui.Widgets
                 PlayerEvent.StateChange);
 
             WidgetFlags |= WidgetFlags.NoWindow;
-
-            Events |= Gdk.EventMask.ButtonPressMask;
-
-            ButtonPressEvent += (o, a) => { ShowPopupMenu (); };
-            PopupMenu += (o, a) => { ShowPopupMenu (); };
         }
 
         public static Widget GetEditable (TrackInfoDisplay display)
@@ -137,11 +132,6 @@ namespace Banshee.Gui.Widgets
                 () => display.CurrentTrack,
                 () => {}
             );
-        }
-
-        private void ShowPopupMenu ()
-        {
-            Console.WriteLine ("Context menu for track info display!");
         }
 
         public override void Dispose ()
@@ -178,20 +168,12 @@ namespace Banshee.Gui.Widgets
         {
             base.OnSizeAllocated (allocation);
 
-            if (missing_audio_image != null) {
-                ((IDisposable)missing_audio_image).Dispose ();
-                missing_audio_image = null;
-            }
-
-            if (missing_video_image != null) {
-                ((IDisposable)missing_video_image).Dispose ();
-                missing_video_image = null;
-            }
+            ResetMissingImages ();
 
             if (current_track == null) {
                 LoadCurrentTrack ();
             } else {
-                LoadImage (current_track, true);
+                Invalidate ();
             }
         }
 
@@ -203,17 +185,36 @@ namespace Banshee.Gui.Widgets
             background_color = CairoExtensions.GdkColorToCairoColor (Style.Background (StateType.Normal));
             text_light_color = Hyena.Gui.Theming.GtkTheme.GetCairoTextMidColor (this);
 
+            ResetMissingImages ();
+
+            OnThemeChanged ();
+        }
+
+        private void ResetMissingImages ()
+        {
             if (missing_audio_image != null) {
                 ((IDisposable)missing_audio_image).Dispose ();
+                var disposed = missing_audio_image;
                 missing_audio_image = null;
+                if (current_image == disposed) {
+                    current_image = MissingAudioImage;
+                }
+                if (incoming_image == disposed) {
+                    incoming_image = MissingAudioImage;
+                }
             }
 
             if (missing_video_image != null) {
                 ((IDisposable)missing_video_image).Dispose ();
+                var disposed = missing_video_image;
                 missing_video_image = null;
+                if (current_image == disposed) {
+                    current_image = MissingVideoImage;
+                }
+                if (incoming_image == disposed) {
+                    incoming_image = MissingVideoImage;
+                }
             }
-
-            OnThemeChanged ();
         }
 
         protected virtual void OnThemeChanged ()
@@ -273,16 +274,18 @@ namespace Banshee.Gui.Widgets
                 return;
             }
 
-            // XFade only the cover art
-            RenderCoverArt (cr, incoming_image);
-
+            // Draw the old cover art more and more translucent
             CairoExtensions.PushGroup (cr);
             RenderCoverArt (cr, current_image);
             CairoExtensions.PopGroupToSource (cr);
-
             cr.PaintWithAlpha (1.0 - stage.Actor.Percent);
 
-            // Fade in/out the text
+            // Draw the new cover art more and more opaque
+            CairoExtensions.PushGroup (cr);
+            RenderCoverArt (cr, incoming_image);
+            CairoExtensions.PopGroupToSource (cr);
+            cr.PaintWithAlpha (stage.Actor.Percent);
+
             bool same_artist_album = incoming_track != null ? incoming_track.ArtistAlbumEqual (current_track) : false;
             bool same_track = incoming_track != null ? incoming_track.Equals (current_track) : false;
 
@@ -290,6 +293,8 @@ namespace Banshee.Gui.Widgets
                 RenderTrackInfo (cr, incoming_track, same_track, true);
             }
 
+            // Don't xfade the text since it'll look bad (overlapping words); instead, fade
+            // the old out, and then the new in
             if (stage.Actor.Percent <= 0.5) {
                 // Fade out old text
                 CairoExtensions.PushGroup (cr);
@@ -317,7 +322,7 @@ namespace Banshee.Gui.Widgets
         {
             ArtworkRenderer.RenderThumbnail (cr, image, false, Allocation.X, Allocation.Y,
                 ArtworkSizeRequest, ArtworkSizeRequest,
-                !IsMissingImage (image), 0,
+                !IsMissingImage (image), 0.0,
                 IsMissingImage (image), BackgroundColor);
         }
 
@@ -371,6 +376,7 @@ namespace Banshee.Gui.Widgets
                 ServiceManager.PlayerEngine.CurrentState == PlayerState.Idle) {
                 incoming_track = null;
                 incoming_image = null;
+                current_artwork_id = null;
 
                 if (stage != null && stage.Actor == null) {
                     stage.Reset ();
@@ -412,6 +418,9 @@ namespace Banshee.Gui.Widgets
             string artwork_id = track.ArtworkId;
             if (current_artwork_id != artwork_id || force) {
                 current_artwork_id = artwork_id;
+                if (incoming_image != null && current_image != incoming_image && !IsMissingImage (incoming_image)) {
+                    ((IDisposable)incoming_image).Dispose ();
+                }
                 incoming_image = artwork_manager.LookupScaleSurface (artwork_id, ArtworkSizeRequest);
             }
 
@@ -420,6 +429,9 @@ namespace Banshee.Gui.Widgets
             }
 
             if (track == current_track) {
+                if (current_image != null && current_image != incoming_image && !IsMissingImage (current_image)) {
+                    ((IDisposable)current_image).Dispose ();
+                }
                 current_image = incoming_image;
             }
         }

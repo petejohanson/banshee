@@ -48,7 +48,6 @@ namespace Nereid
         private HBox header;
         private EventBox header_box;
         private Label title_label;
-        private Label search_label;
         private Banshee.ContextPane.ContextPane context_pane;
         private VBox footer;
 
@@ -89,12 +88,8 @@ namespace Nereid
 
             BuildSearchEntry ();
 
-            search_label = new Label (Catalog.GetString ("_Search:"));
-            search_label.MnemonicWidget = search_entry.InnerEntry;
-
             header.PackStart (title_box, true, true, 0);
             header.PackStart (header_box, false, false, 0);
-            header.PackStart (search_label, false, false, 5);
             header.PackStart (search_entry, false, false, 0);
 
             InterfaceActionService uia = ServiceManager.Get<InterfaceActionService> ();
@@ -157,7 +152,7 @@ namespace Nereid
             AddSearchFilter (TrackFilterType.Comment, "comment", Catalog.GetString ("Comment"));
 
             search_entry = new SearchEntry ();
-            search_entry.SetSizeRequest (200, -1);
+            search_entry.SetSizeRequest (260, -1);
 
             foreach (SearchFilter filter in search_filters.Values) {
                 search_entry.AddFilterOption (filter.Id, filter.Title);
@@ -175,7 +170,7 @@ namespace Nereid
         private void OnSearchEntryFilterChanged (object o, EventArgs args)
         {
             /* Translators: this is a verb (command), not a noun (things) */
-            search_entry.EmptyMessage = String.Format (Catalog.GetString ("Filter Results"));
+            search_entry.EmptyMessage = String.Format (Catalog.GetString ("Search"));
             /*search_entry.EmptyMessage = String.Format (Catalog.GetString ("Filter on {0}"),
                 search_entry.GetLabelForFilterID (search_entry.ActiveFilterID));*/
 
@@ -268,9 +263,7 @@ namespace Nereid
             get { return search_entry.Sensitive; }
             set {
                 search_entry.Sensitive = value;
-                search_label.Sensitive = value;
                 search_entry.Visible = value;
-                search_label.Visible = value;
             }
         }
     }

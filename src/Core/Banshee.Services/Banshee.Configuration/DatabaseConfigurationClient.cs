@@ -81,12 +81,16 @@ namespace Banshee.Configuration
 
         public T Get <T> (string namespce, string key, T fallback)
         {
-            using (IDataReader reader = Get (namespce, key)) {
-                if (reader.Read ()) {
-                    return (T) Convert.ChangeType (reader.GetString (0), typeof (T));
-                } else {
-                    return fallback;
+            try {
+                using (IDataReader reader = Get (namespce, key)) {
+                    if (reader.Read ()) {
+                        return (T) Convert.ChangeType (reader.GetString (0), typeof (T));
+                    } else {
+                        return fallback;
+                    }
                 }
+            } catch {
+                return fallback;
             }
         }
 

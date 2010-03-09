@@ -52,9 +52,9 @@ namespace Banshee.Preferences.Gui
             foreach (var library in ServiceManager.SourceManager.FindSources<LibrarySource> ()) {
                 new LibraryLocationButton (library);
 
-                if (library.FileNamePattern != null) {
+                if (library.PathPattern != null) {
                     var library_page = library.PreferencesPage;
-                    var pattern = library.FileNamePattern;
+                    var pattern = library.PathPattern;
 
                     var folder_pattern = library_page["file-system"][pattern.FolderSchema.Key];
                     folder_pattern.DisplayWidget = new PatternComboBox (library, folder_pattern, pattern.SuggestedFolders);
@@ -104,6 +104,11 @@ namespace Banshee.Preferences.Gui
                 chooser = new FileChooserButton (Catalog.GetString ("Select library location"),
                     FileChooserAction.SelectFolder);
                 chooser.SetCurrentFolder (dir);
+                // Only set the LocalOnly property if false; setting it when true
+                // causes the "Other..." entry to be hidden in older Gtk+
+                if (!Banshee.IO.Provider.LocalOnly) {
+                    chooser.LocalOnly = Banshee.IO.Provider.LocalOnly;
+                }
                 chooser.SelectionChanged += OnChooserChanged;
 
                 HBox box = new HBox ();
@@ -180,11 +185,11 @@ namespace Banshee.Preferences.Gui
                         already_added = true;
                     }
 
-                    Add (source.FileNamePattern.CreatePatternDescription (pattern), pattern);
+                    Add (source.PathPattern.CreatePatternDescription (pattern), pattern);
                 }
 
                 if (!already_added) {
-                    Add (source.FileNamePattern.CreatePatternDescription (conf_pattern), conf_pattern);
+                    Add (source.PathPattern.CreatePatternDescription (conf_pattern), conf_pattern);
                 }
 
                 ActiveValue = conf_pattern;
@@ -217,11 +222,11 @@ namespace Banshee.Preferences.Gui
 
             private void OnChanged (object o, EventArgs args)
             {
-                var pattern = source.FileNamePattern.CreateFolderFilePattern (folder.ActiveValue, file.ActiveValue);
+                var pattern = source.PathPattern.CreateFolderFilePattern (folder.ActiveValue, file.ActiveValue);
 
                 var sb = new System.Text.StringBuilder ();
-                foreach (var track in source.FileNamePattern.SampleTracks) {
-                    string display = source.FileNamePattern.CreateFromTrackInfo (pattern, track);
+                foreach (var track in source.PathPattern.SampleTracks) {
+                    string display = source.PathPattern.CreateFromTrackInfo (pattern, track);
                     if (!String.IsNullOrEmpty (display)) {
                         sb.AppendFormat ("<small>{0}.ogg</small>", GLib.Markup.EscapeText (display));
                     }

@@ -65,12 +65,15 @@ namespace Banshee.Widgets
             remove { filter_changed -= value; }
         }
 
+        public uint ChangeTimeoutMs { get; set; }
+
         public Menu Menu {
             get { return menu; }
         }
 
         public SearchEntry()
         {
+            ChangeTimeoutMs = 25;
             AppPaintable = true;
 
             BuildWidget();
@@ -185,7 +188,7 @@ namespace Banshee.Widgets
             }
 
             if (Ready)
-                changed_timeout_id = GLib.Timeout.Add(25, OnChangedTimeout);
+                changed_timeout_id = GLib.Timeout.Add(ChangeTimeoutMs, OnChangedTimeout);
         }
 
         private bool OnChangedTimeout()

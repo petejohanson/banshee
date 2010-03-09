@@ -74,7 +74,12 @@ namespace Banshee.Base
         {
             // TODO: replace with managed conversion to avoid marshalling
             IntPtr path_ptr = GLib.Marshaller.StringToPtrGStrdup (localPath);
+
+#if WIN32
+            IntPtr uri_ptr = g_filename_to_uri_utf8 (path_ptr, IntPtr.Zero, IntPtr.Zero);
+#else
             IntPtr uri_ptr = g_filename_to_uri (path_ptr, IntPtr.Zero, IntPtr.Zero);
+#endif
             GLib.Marshaller.Free (path_ptr);
 
             if (uri_ptr == IntPtr.Zero) {
@@ -91,7 +96,12 @@ namespace Banshee.Base
         {
             // TODO: replace with managed conversion to avoid marshalling
             IntPtr uri_ptr = GLib.Marshaller.StringToPtrGStrdup (uri);
+#if WIN32
+            IntPtr path_ptr = g_filename_from_uri_utf8 (uri_ptr, IntPtr.Zero, IntPtr.Zero);
+#else
             IntPtr path_ptr = g_filename_from_uri (uri_ptr, IntPtr.Zero, IntPtr.Zero);
+#endif
+
             GLib.Marshaller.Free (uri_ptr);
 
             if (path_ptr == IntPtr.Zero) {
@@ -176,10 +186,18 @@ namespace Banshee.Base
             get { return Scheme == System.Uri.UriSchemeFile; }
         }
 
+#if WIN32
+        [DllImport ("libglib-2.0-0.dll")]
+        private static extern IntPtr g_filename_to_uri_utf8 (IntPtr filename, IntPtr hostname, IntPtr error);
+
+        [DllImport ("libglib-2.0-0.dll")]
+        private static extern IntPtr g_filename_from_uri_utf8 (IntPtr uri, IntPtr hostname, IntPtr error);
+#else
         [DllImport ("libglib-2.0-0.dll")]
         private static extern IntPtr g_filename_to_uri (IntPtr filename, IntPtr hostname, IntPtr error);
 
         [DllImport ("libglib-2.0-0.dll")]
         private static extern IntPtr g_filename_from_uri (IntPtr uri, IntPtr hostname, IntPtr error);
+#endif
     }
 }

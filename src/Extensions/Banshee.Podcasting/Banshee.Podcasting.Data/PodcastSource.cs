@@ -132,14 +132,14 @@ namespace Banshee.Podcasting.Gui
                         <sort-key>PodcastTitle</sort-key>
                         <renderer property=""ExternalObject.PodcastTitle""/>
                       </column>
+                      <column modify-default=""DurationColumn"">
+                          <visible>false</visible>
+                      </column>
                       <column>
-                          <visible>true</visible>
+                          <visible>false</visible>
                           <title>{4}</title>
                           <renderer type=""Hyena.Data.Gui.ColumnCellText"" property=""ExternalObject.Description"" />
                           <sort-key>Description</sort-key>
-                      </column>
-                      <column modify-default=""FileSizeColumn"">
-                          <visible>true</visible>
                       </column>
                       <column>
                           <visible>false</visible>

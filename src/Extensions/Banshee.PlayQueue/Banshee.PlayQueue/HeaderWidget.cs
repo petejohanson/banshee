@@ -35,47 +35,55 @@ using System.Linq;
 using Hyena;
 using Banshee.PlaybackController;
 using Banshee.Sources;
+using Banshee.Collection.Database;
+using Banshee.Widgets;
 
 namespace Banshee.PlayQueue
 {
     public class HeaderWidget : HBox
     {
-        public event EventHandler<EventArgs<PlaybackShuffleMode>> ModeChanged;
+        public event EventHandler<EventArgs<RandomBy>> ModeChanged;
         public event EventHandler<EventArgs<DatabaseSource>> SourceChanged;
 
         private readonly List<Widget> sensitive_widgets = new List<Widget> ();
-        private readonly Dictionary<string, PlaybackShuffleMode> modes = new Dictionary<string, PlaybackShuffleMode> {
-            { Catalog.GetString ("manually"), PlaybackShuffleMode.Linear },
-            { Catalog.GetString ("by song"), PlaybackShuffleMode.Song },
-            { Catalog.GetString ("by album"), PlaybackShuffleMode.Album },
-            { Catalog.GetString ("by artist"), PlaybackShuffleMode.Artist },
-            { Catalog.GetString ("by rating"), PlaybackShuffleMode.Rating },
-            { Catalog.GetString ("by score"), PlaybackShuffleMode.Score },
-        };
 
-        public HeaderWidget (PlaybackShuffleMode mode, string source_name) : base ()
+        private DictionaryComboBox<RandomBy> mode_combo;
+
+        public string ShuffleModeId { get { return mode_combo.ActiveValue.Id; } }
+
+        public HeaderWidget (Shuffler shuffler, string shuffle_mode_id, string source_name) : base ()
         {
             this.Spacing = 6;
 
             var fill_label = new Label (Catalog.GetString ("_Fill"));
-            var mode_combo = new ComboBox (modes.Keys.OrderBy (s => modes[s]).ToArray ());
+            mode_combo = new DictionaryComboBox<RandomBy> ();
+            foreach (var random_by in shuffler.RandomModes.OrderBy (r => r.Adverb)) {
+                mode_combo.Add (random_by.Adverb, random_by);
+                if (random_by.Id == "off") {
+                    mode_combo.Default = random_by;
+                }
+            }
+
             fill_label.MnemonicWidget = mode_combo;
             mode_combo.Changed += delegate {
-                var value = modes[mode_combo.ActiveText];
+                var random_by = mode_combo.ActiveValue;
                 foreach (var widget in sensitive_widgets) {
-                    widget.Sensitive = value != PlaybackShuffleMode.Linear;
+                    widget.Sensitive = random_by.Id != "off";
                 }
+
                 var handler = ModeChanged;
                 if (handler != null) {
-                    handler (this, new EventArgs<PlaybackShuffleMode> (value));
+                    handler (this, new EventArgs<RandomBy> (random_by));
                 }
             };
 
             var from_label = new Label (Catalog.GetString ("f_rom"));
-            sensitive_widgets.Add (from_label);
             var source_combo_box = new QueueableSourceComboBox (source_name);
             from_label.MnemonicWidget = source_combo_box;
+
             sensitive_widgets.Add (source_combo_box);
+            sensitive_widgets.Add (from_label);
+
             source_combo_box.Changed += delegate {
                 var handler = SourceChanged;
                 if (handler != null) {
@@ -88,14 +96,16 @@ namespace Banshee.PlayQueue
             PackStart (from_label, false, false, 0);
             PackStart (source_combo_box, false, false, 0);
 
-            // Select the population mode.
-            mode_combo.Model.Foreach (delegate (TreeModel model, TreePath path, TreeIter iter) {
-                if (modes[(string)model.GetValue (iter, 0)] == mode) {
-                    mode_combo.SetActiveIter (iter);
-                    return true;
-                }
-                return false;
-            });
+            // Select the saved population mode.
+            var default_randomby = shuffler.RandomModes.FirstOrDefault (r => r.Id == shuffle_mode_id);
+            if (default_randomby != null) {
+                mode_combo.ActiveValue = default_randomby;
+            } else {
+                mode_combo.ActiveValue = mode_combo.Default;
+            }
+
+            shuffler.RandomModeAdded   += (r) => mode_combo.Add (r.Adverb, r);
+            shuffler.RandomModeRemoved += (r) => mode_combo.Remove (r);
         }
     }
 }

@@ -1,35 +1,36 @@
-/***************************************************************************
- *  MiniModeWindow.cs
- *
- *  Copyright (C) 2006 Novell, Inc.
- *  Written by Aaron Bockover <aaron@abock.org>
- *             Felipe Almeida Lessa
- ****************************************************************************/
-
-/*  THIS FILE IS LICENSED UNDER THE MIT LICENSE AS OUTLINED IMMEDIATELY BELOW:
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a
- *  copy of this software and associated documentation files (the "Software"),
- *  to deal in the Software without restriction, including without limitation
- *  the rights to use, copy, modify, merge, publish, distribute, sublicense,
- *  and/or sell copies of the Software, and to permit persons to whom the
- *  Software is furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- *  DEALINGS IN THE SOFTWARE.
- */
+//
+// MiniModeWindow.cs
+//
+// Authors:
+//   Aaron Bockover <aaron@abock.org>
+//   Felipe Almeida Lessa
+//   Gabriel Burt <gburt@novell.com>
+//
+// Copyright (C) 2006-2010 Novell, Inc.
+// Copyright (C) 2006 Felipe Almeida Lessa
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 
 using System;
 using Gtk;
-using Glade;
 using Mono.Unix;
 
 using Hyena.Widgets;
@@ -48,16 +49,6 @@ namespace Banshee.MiniMode
 {
     public class MiniMode : Banshee.Gui.BaseClientWindow
     {
-        [Widget] private Gtk.Box SeekContainer;
-        [Widget] private Gtk.Box VolumeContainer;
-        [Widget] private Gtk.Box InfoBox;
-        [Widget] private Gtk.Box SourceBox;
-        [Widget] private Gtk.Box CoverBox;
-        [Widget] private Gtk.Box PlaybackBox;
-        [Widget] private Gtk.Box LowerButtonsBox;
-
-        [Widget] private Gtk.Button fullmode_button;
-
         private TrackInfoDisplay track_info_display;
         private ConnectedVolumeButton volume_button;
         private SourceComboBox source_combo_box;
@@ -66,74 +57,73 @@ namespace Banshee.MiniMode
 
         private BaseClientWindow default_main_window;
 
-        private Glade.XML glade;
-
         public MiniMode (BaseClientWindow defaultMainWindow) : base (Catalog.GetString ("Banshee Media Player"), "minimode", 0, 0)
         {
             default_main_window = defaultMainWindow;
 
-            glade = new Glade.XML (System.Reflection.Assembly.GetExecutingAssembly (), "minimode.glade", "MiniModeWindow", null);
-            glade.Autoconnect (this);
-
-            Widget child = glade["mini_mode_contents"];
-            (child.Parent as Container).Remove (child);
-            Add (child);
             BorderWidth = 12;
             Resizable = false;
 
-            // Playback Buttons
+            tooltip_host = TooltipSetter.CreateHost ();
+
+            Build ();
+            ShowAll ();
+
+            SetHeightLimit ();
+        }
+
+        private void Build ()
+        {
+            var vbox = new VBox () { Spacing = 12 };
+            var top = new HBox () { Spacing = 6 };
+            var mid = new HBox () { Spacing = 6 };
+            var bot = new HBox () { Spacing = 6 };
+            vbox.PackStart (top, false, false, 0);
+            vbox.PackStart (mid, false, false, 0);
+            vbox.PackStart (bot, false, false, 0);
+
+            // Top row: playback buttons, seek slider, full-mode button, volume
             Widget previous_button = ActionService.PlaybackActions["PreviousAction"].CreateToolItem ();
-
             Widget playpause_button = ActionService.PlaybackActions["PlayPauseAction"].CreateToolItem ();
-
             Widget button = ActionService.PlaybackActions["NextAction"].CreateToolItem ();
             Menu menu = ActionService.PlaybackActions.ShuffleActions.CreateMenu ();
             MenuButton next_button = new MenuButton (button, menu, true);
 
-            PlaybackBox.PackStart (previous_button, false, false, 0);
-            PlaybackBox.PackStart (playpause_button, false, false, 0);
-            PlaybackBox.PackStart (next_button, false, false, 0);
-            PlaybackBox.ShowAll ();
+            top.PackStart (previous_button, false, false, 0);
+            top.PackStart (playpause_button, false, false, 0);
+            top.PackStart (next_button, false, false, 0);
 
-            // Seek Slider/Position Label
             seek_slider = new ConnectedSeekSlider ();
+            top.PackStart (seek_slider, true, true, 0);
 
-            SeekContainer.PackStart (seek_slider, false, false, 0);
-            SeekContainer.ShowAll ();
+            var fullmode_button = new Button () {
+                Label = Catalog.GetString ("Full Mode"),
+                Image = new Image (Stock.LeaveFullscreen, Gtk.IconSize.Button),
+                Relief = Gtk.ReliefStyle.None
+            };
+            fullmode_button.Clicked += OnFullmode;
+            top.PackStart (fullmode_button, false, false, 0);
 
-            // Volume button
             volume_button = new ConnectedVolumeButton ();
-            VolumeContainer.PackStart (volume_button, false, false, 0);
-            volume_button.Show ();
+            top.PackStart (volume_button, false, false, 0);
 
-            // Source combobox
+            // Middle row: source dropdown
             source_combo_box = new SourceComboBox ();
-            SourceBox.PackStart (source_combo_box, true, true, 0);
-            source_combo_box.Show ();
+            mid.PackStart (source_combo_box, true, true, 0);
 
-            // Track info
+            // Bottom row: track info display (cover art, etc), repeat mode button
             track_info_display = new ClassicTrackInfoDisplay ();
-            track_info_display.Show ();
-            CoverBox.PackStart (track_info_display, true, true, 0);
+            bot.PackStart (track_info_display, true, true, 0);
 
-            // Repeat button
-            RepeatActionButton repeat_toggle_button = new RepeatActionButton ();
-
-            LowerButtonsBox.PackEnd (repeat_toggle_button, false, false, 0);
-            LowerButtonsBox.ShowAll ();
-
-            tooltip_host = TooltipSetter.CreateHost ();
+            var repeat_align = new Alignment (1, 1, 1, 1);
+            var repeat_toggle_button = new RepeatActionButton ();
+            repeat_align.Add (repeat_toggle_button);
+            bot.PackEnd (repeat_align, false, false, 0);
 
             SetTip (fullmode_button, Catalog.GetString ("Switch back to full mode"));
             SetTip (repeat_toggle_button, Catalog.GetString ("Change repeat playback mode"));
 
-            // Hook up everything
-            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
-                PlayerEvent.Error |
-                PlayerEvent.StateChange |
-                PlayerEvent.TrackInfoUpdated);
-
-            SetHeightLimit ();
+            Add (vbox);
         }
 
         protected override void Initialize ()
@@ -160,8 +150,6 @@ namespace Banshee.MiniMode
         public void Enable ()
         {
             source_combo_box.UpdateActiveSource ();
-            UpdateMetaDisplay ();
-
             default_main_window.Hide ();
 
             OverrideFullscreen ();
@@ -176,51 +164,10 @@ namespace Banshee.MiniMode
             default_main_window.Show ();
         }
 
-        // Called when the user clicks the fullmode_button
-        public void Hide (object o, EventArgs a)
+        private void OnFullmode (object o, EventArgs a)
         {
             ElementsService.PrimaryWindow = default_main_window;
             Disable ();
-        }
-
-        // ---- Player Event Handlers ----
-
-        private void OnPlayerEvent (PlayerEventArgs args)
-        {
-            switch (args.Event) {
-                case PlayerEvent.Error:
-                case PlayerEvent.TrackInfoUpdated:
-                    UpdateMetaDisplay ();
-                    break;
-                case PlayerEvent.StateChange:
-                    switch (((PlayerEventStateChangeArgs)args).Current) {
-                        case PlayerState.Loaded:
-                            UpdateMetaDisplay ();
-                            break;
-                        case PlayerState.Idle:
-                            InfoBox.Visible = false;
-                            UpdateMetaDisplay ();
-                            break;
-                    }
-                    break;
-            }
-        }
-
-        protected void UpdateMetaDisplay ()
-        {
-            TrackInfo track = ServiceManager.PlayerEngine.CurrentTrack;
-
-            if (track == null) {
-                InfoBox.Visible = false;
-                return;
-            }
-
-            InfoBox.Visible = true;
-
-            try {
-                SetHeightLimit ();
-            } catch (Exception) {
-            }
         }
 
 #region Mini-mode Fullscreen Override
@@ -257,4 +204,3 @@ namespace Banshee.MiniMode
 
     }
 }
-

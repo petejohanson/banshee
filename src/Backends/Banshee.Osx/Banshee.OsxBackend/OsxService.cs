@@ -1,10 +1,12 @@
 //
 // OsxService.cs
 //
-// Author:
+// Authors:
+//   Aaron Bockover <abockover@novell.com>
 //   Eoin Hennessy <eoin@randomrules.org>
 //
-// Copyright (C) 2008 Eoin Hennessy
+// Copyright 2009-2010 Novell, Inc.
+// Copyright 2008 Eoin Hennessy
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -34,7 +36,8 @@ using Mono.Unix;
 using Banshee.ServiceStack;
 using Banshee.Gui;
 
-using IgeMacIntegration;
+using OsxIntegration.Ige;
+using OsxIntegration.Framework;
 
 namespace Banshee.OsxBackend
 {
@@ -78,9 +81,10 @@ namespace Banshee.OsxBackend
             return true;
         }
 
-
-        void Initialize ()
+        private void Initialize ()
         {
+            elements_service.PrimaryWindow.WindowStateEvent += OnWindowStateEvent;
+
             // add close action
             interface_action_service.GlobalActions.Add (new ActionEntry [] {
                 new ActionEntry ("CloseAction", Stock.Close,
@@ -89,21 +93,32 @@ namespace Banshee.OsxBackend
             });
 
             // merge close menu item
-            ui_manager_id = interface_action_service.UIManager.AddUiFromResource ("osx-ui-actions-layout.xml");
+            ui_manager_id = interface_action_service.UIManager.AddUiFromString (@"
+              <ui>
+                <menubar name=""MainMenu"">
+                  <menu name=""MediaMenu"" action=""MediaMenuAction"">
+                    <placeholder name=""ClosePlaceholder"">
+                    <menuitem name=""Close"" action=""CloseAction""/>
+                    </placeholder>
+                  </menu>
+                </menubar>
+              </ui>
+            ");
+
             RegisterCloseHandler ();
+            ConfigureOsxMainMenu ();
 
-            elements_service.PrimaryWindow.WindowStateEvent += WindowStateHandler;
+            IgeMacMenu.GlobalKeyHandlerEnabled = false;
 
-            // bind gtk menu to global osx menu
-            BindMenuBar ();
+            ApplicationEvents.Quit += (o, e) => {
+                Banshee.ServiceStack.Application.Shutdown ();
+                e.Handled = true;
+            };
 
-            // make menu more osx-like
-            AdjustMainMenu ();
-
-            // add dock handlers
-            IgeMacDock doc = IgeMacDock.Default;
-            doc.Clicked += OnDockClicked;
-            doc.QuitActivate += OnDockQuitActivated;
+            ApplicationEvents.Reopen += (o, e) => {
+                SetWindowVisibility (true);
+                e.Handled = true;
+            };
         }
 
         public void Dispose ()
@@ -120,89 +135,62 @@ namespace Banshee.OsxBackend
             disposed = true;
         }
 
-        string IService.ServiceName {
-            get { return "OsxService"; }
-        }
-
-        private void OnDockClicked (object o, System.EventArgs args)
+        private void ConfigureOsxMainMenu ()
         {
-            SetWindowVisibility (true);
-        }
+            IgeMacMenu.MenuBar = (MenuShell)interface_action_service.UIManager.GetWidget ("/MainMenu");
 
-        private void OnDockQuitActivated (object o, System.EventArgs args)
-        {
-            Banshee.ServiceStack.Application.Shutdown ();
-        }
+            var ui = interface_action_service.UIManager;
 
-        private void BindMenuBar ()
-        {
-            UIManager ui = interface_action_service.UIManager;
+            IgeMacMenu.QuitMenuItem = ui.GetWidget ("/MainMenu/MediaMenu/Quit") as MenuItem;
 
-            // retreive and hide the gtk menu
-            MenuShell menu = (MenuShell) ui.GetWidget ("/MainMenu");
-            menu.Hide ();
-
-            // bind menu
-            IgeMacMenu.MenuBar = menu;
-        }
-
-        private void AdjustMainMenu () {
-            UIManager ui = interface_action_service.UIManager;
-
-            MenuItem about_item = ui.GetWidget ("/MainMenu/HelpMenu/About") as MenuItem;
-            MenuItem prefs_item = ui.GetWidget ("/MainMenu/EditMenu/Preferences") as MenuItem;
-            MenuItem quit_item  = ui.GetWidget ("/MainMenu/MediaMenu/Quit") as MenuItem;
-
-            IgeMacMenuGroup about_group = IgeMacMenu.AddAppMenuGroup ();
-            IgeMacMenuGroup prefs_group = IgeMacMenu.AddAppMenuGroup ();
-
-            IgeMacMenu.QuitMenuItem = quit_item;
-
-            about_group.AddMenuItem (about_item, null);
-            prefs_group.AddMenuItem (prefs_item, null);
+            var group = IgeMacMenu.AddAppMenuGroup ();
+            group.AddMenuItem (ui.GetWidget ("/MainMenu/HelpMenu/About") as MenuItem, null);
+            group.AddMenuItem (ui.GetWidget ("/MainMenu/EditMenu/Preferences") as MenuItem, null);
         }
 
         private void RegisterCloseHandler ()
         {
             if (elements_service.PrimaryWindowClose == null) {
-                elements_service.PrimaryWindowClose = OnPrimaryWindowClose;
+                elements_service.PrimaryWindowClose = () => {
+                    CloseWindow (null, null);
+                    return true;
+                };
             }
-        }
-
-        private bool OnPrimaryWindowClose ()
-        {
-            CloseWindow (null, null);
-            return true;
         }
 
         private void CloseWindow (object o, EventArgs args)
         {
-            SetWindowVisibility(false);
+            SetWindowVisibility (false);
         }
 
-        private void SetCloseMenuItemSensitivity (bool sensitivity) {
-            UIManager ui = interface_action_service.UIManager;
-            MenuItem close_item = ui.GetWidget ("/MainMenu/MediaMenu/ClosePlaceholder/Close") as MenuItem;
-            close_item.Sensitive = sensitivity;
+        private void SetCloseMenuItemSensitivity (bool sensitivity)
+        {
+            ((MenuItem)interface_action_service.UIManager.GetWidget (
+                "/MainMenu/MediaMenu/ClosePlaceholder/Close")).Sensitive = sensitivity;
         }
 
         private void SetWindowVisibility (bool visible)
         {
-            SetCloseMenuItemSensitivity(visible);
+            SetCloseMenuItemSensitivity (visible);
             if (elements_service.PrimaryWindow.Visible != visible) {
                 elements_service.PrimaryWindow.ToggleVisibility ();
             }
         }
 
-        private void WindowStateHandler (object obj, WindowStateEventArgs args) {
+        private void OnWindowStateEvent (object obj, WindowStateEventArgs args)
+        {
             switch (args.Event.NewWindowState) {
-            case Gdk.WindowState.Iconified:
-                SetCloseMenuItemSensitivity(false);
-                break;
-            case (Gdk.WindowState) 0:
-                SetCloseMenuItemSensitivity(true);
-                break;
+                case Gdk.WindowState.Iconified:
+                    SetCloseMenuItemSensitivity (false);
+                    break;
+                case (Gdk.WindowState)0:
+                    SetCloseMenuItemSensitivity (true);
+                    break;
             }
+        }
+
+        string IService.ServiceName {
+            get { return "OsxService"; }
         }
     }
 }

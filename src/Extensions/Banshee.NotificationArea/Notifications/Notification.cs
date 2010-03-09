@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+#if INTERNAL_NOTIFY_SHARP
+
 using System;
 using System.Reflection;
 using System.Collections.Generic;
@@ -382,3 +384,5 @@ namespace Notifications {
 		}
 	}
 }
+
+#endif

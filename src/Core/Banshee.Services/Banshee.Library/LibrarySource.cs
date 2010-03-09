@@ -118,17 +118,6 @@ namespace Banshee.Library
             Banshee.IO.File.Copy (track.Uri, uri, false);
         }*/
 
-        protected override bool DeleteTrack (DatabaseTrackInfo track)
-        {
-            try {
-                Banshee.IO.Utilities.DeleteFileTrimmingParentDirectories (track.Uri);
-            } catch (System.IO.FileNotFoundException) {
-            } catch (System.IO.DirectoryNotFoundException) {
-            }
-
-            return true;
-        }
-
         protected override void AddTrack (DatabaseTrackInfo track)
         {
             // Ignore if already have it
@@ -152,7 +141,7 @@ namespace Banshee.Library
                 source.NotifyTracksChanged ();
             } else {
                 // Figure out where we should put it if were to copy it
-                var pattern = this.FileNamePattern ?? MusicLibrarySource.MusicFileNamePattern;
+                var pattern = this.PathPattern ?? MusicLibrarySource.MusicFileNamePattern;
                 string path = pattern.BuildFull (BaseDirectory, track);
                 SafeUri uri = new SafeUri (path);
 

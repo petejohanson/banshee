@@ -12,6 +12,11 @@ LIB_DIR="$RES_DIR/lib"
 BIN_DIR="$RES_DIR/bin"
 DATA_DIR="$RES_DIR/share"
 
+# Shell environment
+export PATH="/bin:/usr/bin:$BIN_DIR"
+export BUNDLE_BIN_DIR="$BIN_DIR"
+export BUNDLE_LIB_DIR="$LIB_DIR"
+
 # XDG environment
 export XDG_CONFIG_DIRS="$ETC_DIR/xdg"
 export XDG_DATA_DIRS="$DATA_DIR"
@@ -27,7 +32,7 @@ export GDK_PIXBUF_MODULE_FILE="$ETC_DIR/gtk-2.0/gdk-pixbuf.loaders"
 export PANGO_RC_FILE="$ETC_DIR/pango/pangorc"
 
 # Banshee/Mono/GStreamer environment
-export DYLD_LIBRARY_PATH="$LIB_DIR:$LIB_DIR/banshee-1"
+export DYLD_LIBRARY_PATH="$LIB_DIR:$LIB_DIR/banshee-1:$LIB_DIR/banshee-1/Extensions"
 export GST_PLUGIN_SYSTEM_PATH="$LIB_DIR/gstreamer-0.10"
 export BANSHEE_CONFIG_DIR="$XDG_CONFIG_HOME/banshee-1"
 BANSHEE_OPTIONS=""
@@ -58,7 +63,14 @@ EOF
 fi
 
 mkdir -p "$BANSHEE_CONFIG_DIR"
-PREVIOUS_APP_ROOT="$(cat "$BANSHEE_CONFIG_DIR/app-bundle-location" 2>/dev/null)"
+if [ -f "$RES_DIR/first-run" ]; then
+	echo "Appears to be first run of this application bundle."
+	rm -f -- "$RES_DIR/first-run"
+	PREVIOUS_APP_ROOT=""
+else
+	PREVIOUS_APP_ROOT="$(cat "$BANSHEE_CONFIG_DIR/app-bundle-location" 2>/dev/null)"
+fi
+
 if [ ! "$APP_ROOT" = "$PREVIOUS_APP_ROOT" ]; then
 	echo "Application bundle has moved. Adjusting bundle..."
 

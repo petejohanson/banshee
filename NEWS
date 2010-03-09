@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.3 - NOT YET RELEASED
+WELCOME TO BANSHEE 1.5.4 - Released February 24, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,82 +10,79 @@ WELCOME TO BANSHEE 1.5.3 - NOT YET RELEASED
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.5.3
+  * Learn More: http://banshee-project.org/download/archives/1.5.4
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.5.3 brings many big changes, new features, and fixes!
+    Banshee 1.5.4 brings many big changes, new features, and fixes!
 
     New Features:
 
-      * Sync device from playlist option
+      * Opt-In Usage Data Collection
 
-           Either manually manage what files are added/removed to your device,
-           or choose a playlist to sync from.  You can make a size-limited smart
-           playlist to sync just the right amount to your device.
+          Under Preferences, you can choose to "Improve Banshee by sending
+          anonymous usage data" back to the Banshee developers.  This collects
+          information on what version you're running, what OS, library size,
+          slow SQL queries, and a whitelisted subset of your preferences. This
+          information will help us choose better defaults and see what parts of
+          Banshee are used most and can be improved. All collected data is
+          anonymous!
 
-      * Type-ahead find in track, artist, and album lists
+      * Default Equalizer Presets
 
-           An alternative to filtering, type-ahead find jumps you to the first
-           track to match your query.  Activate with shift+/, cancel with Esc,
-           and jump to next match with F3.  In track list it matches against
-           artist, album, or title.
+          Banshee now ships with several equalizer presets, and the core of
+          the equalizer management has seen much internal improvement.
 
-      * Optional cover art in lower-left corner
+      * Banshee Community Extensions
 
-          Turn on via View > Show Cover Art
+          A new sub-project named Banshee Community Extensions has been
+          created.  Its code is hosted on Gitorious, and its bugs tracked
+          in bugzilla.gnome.org.  It already contains 9 extensions, including
+          AlarmClock, Lyrics, and Mirage, and has 15 maintainers.  Its releases
+          track Banshee's; for more information, see
 
-      * Cover art editable via DnD and right-click
+            http://banshee-project.org/download/extensions/
 
-          Can edit via the cover art in the track editor, lower-left corner,
-          and beside the seek-slider.
+      * Extensible Shuffle Modes
 
-      * Audiobooks library extension
-
-          Rough first version, main benefits are separating your books from
-          your music and defining a different file system organization.  In
-          future versions we plan to add intuitive bookmarking and a better
-          browsing experience.  Enable in Extensions tab of Preferences.
-
-      * Library-folder watcher extension
-
-          Watches your libraries' folders for added, renamed, or deleted
-          files, and updates your libraries appropriately.  Requires
-          Mono >= 2.4.3.  Enable in Extensions tab of Preferences.
-
-      * eMusic importer/downloader extension
-
-          If you have purchased music from eMusic and have a .emx file, Banshee
-          will download and import the music files for you.  Select
-          'eMusic Files' from the normal Media > Import Media dialog. Enable
-          in Extensions tab of Preferences.
-
-      * GIO file backend, supports non-local files
-
-          This backend uses the GIO library to support importing local files
-          and network-share files alike.  Requires glib >= 2.22 and Gio#.
+          Extensions can now add new shuffle modes and PlayQueue fill-by
+          modes.  The Mirage extension is the first to take advantage of this,
+          adding a Shuffle/Fill-by Similar mode based on acoustical analysis.
 
     Enhancements:
 
-      * Improved Podcast filtering/browsing
-      * Extension preferences tab reworked
-      * Extension names/descriptions translated
-      * Improved sqlite performance
-      * Support for Nexus One devices
+      * Wikipedia context pane extension enabled by default
+      * Add support for Nokia N900 phones
+      * Add tooltip to playback error column
+      * On close Internet Archive item, return to Search
+      * Notify user if trying to sync missing file to DAP
+      * Popup explanation of manual playlist ordering when appropriate
+      * Simplify the default set of columns in Podcasts
+      * Enable 'Delete From Drive' action in File System Queue
+      * Make debuggable from within MonoDevelop
+      * Coverart for unicode artist/albums now supported
+      * Dropped glade-sharp dep; GNOME 3.0 ready
+      * Add columns showing track sample rate and bits per sample
+      * Option to sort an artist's albums by year, not title
+      * If starting Banshee hidden (--hide), up to half a second of
+        startup time is saved; this is particularly useful in Moblin
 
     Notable bug fixes:
 
-      * DAPs (ipods, etc) should work on DeviceKit-using distros
-      * Podcast renaming should work well now
-      * Podcast download cancelling is now fast
-      * Internet Archive results paging off-by-one fixed
-      * Should build with older Mono/Gtk# again (eg on openSUSE 11.0)
-      * Fix issue with MTP devices on 64-bit distros
+      * Fixes to GIO backend
+      * Many crash/startup fixes for OS X build
+      * Strange input bug on OS X fixed - you can now type/search as expected
+      * Enable LibraryWatcher only for Music and Video libraries
+      * Do better job preserving IsCompilation metadata
+      * Store some PlayQueue settings in the db (not GConf)
+      * Update to Last.fm's API change for scrobbling/recs
+      * Bring back static FileNamePattern API used by some scripts
+      * Fix several memory leaks
 
-      * N bugs were fixed since 1.5.2
+      * 40 bugs were fixed since 1.5.3
 
 
 ===============================================================================
@@ -95,9 +92,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.5.3 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.tar.gz
+    * Banshee 1.5.4 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.tar.gz
 
 Packages
 --------
@@ -106,22 +103,21 @@ Packages
 
     * http://banshee-project.org/download/
 
-    Packages for openSUSE 11.1, openSUSE 11.0, and openSUSE Factory are
-    available from the openSUSE Build Service in the Banshee project.
+    Packages for openSUSE 11.2, openSUSE 11.1, openSUSE 11.0 and
+    openSUSE Factory are available from the openSUSE Build Service in the
+    Banshee project.
 
     * http://download.opensuse.org/repositories/Banshee/
 
-    Binaries for Mac OS X 10.4 and 10.5:
+    Binaries for Mac OS X 10.5 and 10.6:
 
-    * There is no build for OS X for Banshee 1.5.2 due to a time crunch and
-      technical difficulties with the latest Mono releases for OS X.  We plan to
-      have this resolved in time for the 1.5.3 release.
+    * http://download.banshee-project.org/banshee/banshee-1-1.5.4.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.3/banshee-1-1.5.3.sha1sum
+    * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.changes
+    * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.sha256sum
 
 
 ===============================================================================
@@ -136,7 +132,7 @@ DEPENDENCIES
     * NDesk DBus (ndesk-dbus) 0.5
     * NDesk DBus GLib (ndesk-dbus-glib) 0.3
     * Mono.Addins (mono-addins) 0.3.1
-    * TagLib# (taglib-sharp) 2.0.3.2
+    * TagLib# (taglib-sharp) >= 2.0.3.5
 
     * Required to build default feature stack:
       * libmtp >= 0.2.0
@@ -146,13 +142,13 @@ DEPENDENCIES
       * ipod-sharp >= 0.8.5
       * mono-zeroconf >= 0.8.0
       * boo >= 0.8.1
-      * GIO support reequires glib >= 2.22 and gio-sharp and gtk-sharp-beans
+      * GIO support requires glib >= 2.22, gio-sharp and gtk-sharp-beans
       * Library Watcher extension requires Mono >= 2.4.3
       * Accessibilty for ListView and Rating widgets requires Gtk# >= 2.12.10
 
     * Run-time requirements for default feature stack:
-      * PodSleuth (0.6.6 recommended)
-      * Brasero   (0.8.1)
+      * PodSleuth >= 0.6.6
+      * Brasero >= 0.8.1
       * Avahi
       * gst-plugins-bad (providing the bpmdetect GStreamer plugin)
 
@@ -186,7 +182,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.3
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.4
 
 
 ===============================================================================
@@ -199,44 +195,47 @@ Contributors For This Release
     The following people directly contributed to the release of this version
     of Banshee. Without their help, there would be no release!
 
-      Aaron Bockover, Alexander Kojevnikov, Benjamín Valero Espinosa,
-      Bertrand Lorentz, Chow Loong Jin, Eitan Isaacson, Gabriel Burt,
-      Götz Waschk, Jason Taylor, Jérémie Laval, Michael Martin-Smucker,
-      Neil Loknath, Nicholas Parker, Pratik Patel, Sandy Armstrong
+      Aaron Bockover, Alan McGovern, Alexander Kojevnikov, Anders Petersson,
+      Andreas Nilsson, Andrés G. Aragoneses, Bertrand Lorentz, Chow Loong Jin,
+      Christopher Halse Rogers, Gabriel Burt, Jakub Steiner,
+      K. Vishnoo Charan Reddy, Pavel Antonov, Romain Tartière, Sandy Armstrong
 
     The following people contributed updated translations to this release.
     Without them, our project's reach would be much more limited.
 
-      Andrej Žnidaršič, Benjamín Valero Espinosa, Daniel Nylander,
-      Gianvito Cavasoli, Mario Blättermann, Sweta Kothari, Tao Wei
+      Andrej Žnidaršič, António Lima, Benjamin Valero Espinosa, Gabor Kelemen,
+      Okano Takayoshi, Petr Kovar, Kentaro Kazuhama, Žygimantas Beručka
 
 Contributors In Past Releases
 -----------------------------
 
-    Aaron Bockover, Gabriel Burt, Alexander Kojevnikov, Bertrand Lorentz,
-    John Millikin, Scott Peterson, Alan McGovern, Alex Bennee, Alex Kloss,
-    Alex Launi, Alexander Hixon, Alexandros Frantzis, Alp Toker,
-    Andrea Cimitan, Andreas Neustifter, Andrew Conkling, Andrés G. Aragoneses,
-    Andy Midgette, Arthur Carli, Aydemir Ulaş Şahin, Ben Maurer,
-    Benjamín Valero Espinosa, Bertrand Lorentz, Bill Dawson, Bob Copeland,
+    Aaron Bockover, Alan McGovern, Alex Bennee, Alex Kloss, Alex Launi,
+    Alexander Hixon, Alexander Kojevnikov, Alexandros Frantzis, Alp Toker,
+    Anders Petersson, Andrea Cimitan, Andreas Neustifter, Andreas Nilsson,
+    Andrew Conkling, Andrés G. Aragoneses, Andy Midgette, Arthur Carli,
+    Aydemir Ulaş Şahin, Ben Maurer, Benjamín Valero Espinosa,
+    Bertrand Lorentz, Bertrand Lorentz, Bill Dawson, Bob Copeland,
     Bojan Rajkovic, Brad Taylor, Brandon Perry, Brian Lucas, Brian Nickel,
     Brian Teague, Chow Loong Jin, Chris Howie, Chris Jones, Chris Lahey,
     Chris Toshok, Chris Turchin, Christian Krause, Christoph Burgdorf,
     Christopher James Halse Rogers, Cody Russell, Cosmin Banu, Dan Wilson,
     Dan Winship, Daniel Munkton, Daniel Siegel, David Spreen, David Stone,
     Diego E. Pettenò, Eitan Isaacson, Elena Grassi, Eoin Hennessy,
-    Eric Butler, Erik Schmidt, Fabian Jost, Florent Thoumie, Fredrik Hedberg,
-    Félix Velasco, Götz Waschk, Haitao Feng, Hans Petter Jansson, Iain Lane,
+    Eric Butler, Erik Schmidt, Fabian Jost, Felipe Almeida Lessa,
+    Florent Thoumie, Fredrik Hedberg, Félix Velasco, Gabriel Burt,
+    Garrett LeSage, Götz Waschk, Haitao Feng, Hans Petter Jansson, Iain Lane,
     Igor Guerrero Fonseca, Ilya Konstantinov, Ivan N. Zlatev, Jack Deslippe,
-    James Willcox, Jan Arne Petersen, Jason Conti, Jason Taylor, Jeff Tickle,
-    Jeff Wheeler, Jensen Somers, Jérémie Laval, Jo Shields, Johannes Kuhn,
-    Jorge Castro, Juri Pakaste, Ken Vandine, Larry Ewing, Lauri Kotilainen,
-    Matt Enright, Michael Kaiser, Michael Martin-Smucker, Michael Monreal,
-    Miguel de Icaza, Mike Urbanski, Moritz Schallaböck, Nathan Palmer,
-    Neil Loknath, Nicholas Doyle, Nicholas Parker, Nicolò Chieffo,
-    Nils Naumann, Olivier Duff, Oscar Forero, Pacho Ramos,
-    Patrick van Staveren, Paul Lange, Pepijn van de Geer, Peter de Kraker,
-    Pratik Patel, Przemysław Grzegorczyk, Roderich Schupp, Romain Tartière,
-    Ruben Vermeersch, Sandy Armstrong, Sebastian Dröge, Tim Yamin,
+    Jakub Steiner, James Willcox, Jan Arne Petersen, Jason Conti, Jason Taylor,
+    Jeff Tickle, Jeff Wheeler, Jensen Somers, Jo Shields, Johannes Kuhn,
+    John Millikin, Jorge Castro, Juri Pakaste, Jérémie Laval,
+    K. Vishnoo Charan Reddy, Ken Vandine, Larry Ewing, Lauri Kotilainen,
+    Lukas Lipka, Matt Enright, Michael Kaiser, Michael Martin-Smucker,
+    Michael Monreal, Michael Monreal, Miguel de Icaza, Mike Urbanski,
+    Moritz Schallaböck, Nathan Palmer, Neil Loknath, Nicholas Doyle,
+    Nicholas Parker, Nicolò Chieffo, Nils Naumann, Oben Sonne, Olivier Duff,
+    Oscar Forero, Pacho Ramos, Patrick van Staveren, Paul Lange, Pavel Antonov,
+    Pepijn van de Geer, Peter de Kraker, Pratik Patel, Przemysław Grzegorczyk,
+    Roderich Schupp, Romain Tartière, Ruben Vermeersch, Ryan Collier,
+    Sandy Armstrong, Scott Peterson, Sebastian Dröge, Tim Yamin,
     Tobias Mueller, Todd Berman, Travis Glenn Hansen, Trey Ethridge,
     Valentin Sawadski, Will Farrington, William Pettersson, Wouter Bolsterlee

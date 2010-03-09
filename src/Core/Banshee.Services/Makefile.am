@@ -25,6 +25,7 @@ SOURCES =  \
 	Banshee.Collection.Database/RandomBy.cs \
 	Banshee.Collection.Database/RandomByAlbum.cs \
 	Banshee.Collection.Database/RandomByArtist.cs \
+	Banshee.Collection.Database/RandomByOff.cs \
 	Banshee.Collection.Database/RandomByRating.cs \
 	Banshee.Collection.Database/RandomByScore.cs \
 	Banshee.Collection.Database/RandomBySlot.cs \
@@ -122,6 +123,8 @@ SOURCES =  \
 	Banshee.Metadata/SaveTrackMetadataJob.cs \
 	Banshee.Metadata/SaveTrackMetadataService.cs \
 	Banshee.Metadata/Tests/TaglibReadWriteTests.cs \
+	Banshee.Metrics/BansheeMetrics.cs \
+	Banshee.Metrics/Configuration.cs \
 	Banshee.Networking/INetworkAvailabilityService.cs \
 	Banshee.Networking/Network.cs \
 	Banshee.Networking/NetworkManager.cs \
@@ -136,7 +139,6 @@ SOURCES =  \
 	Banshee.PlaybackController/PlaybackControllerDatabaseStack.cs \
 	Banshee.PlaybackController/PlaybackControllerService.cs \
 	Banshee.PlaybackController/PlaybackRepeatMode.cs \
-	Banshee.PlaybackController/PlaybackShuffleMode.cs \
 	Banshee.Playlist/AbstractPlaylistSource.cs \
 	Banshee.Playlist/PlaylistFileUtil.cs \
 	Banshee.Playlist/PlaylistSource.cs \

@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2008-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -62,13 +62,14 @@ namespace Hyena.Gui
                 return null;
             }
 
-            if (Hyena.PlatformUtil.IsRunningUnix) {
+            if (!PlatformDetection.IsWindows) {
                 try {
                     return new PixbufImageSurface (pixbuf, disposePixbuf);
                 } catch {
                     return null;
                 }
             } else {
+                // FIXME:
                 // Windows has some trouble running the PixbufImageSurface, so as a
                 // workaround a slower but working version of this factory method is
                 // implemented. One day we can come back and optimize this by finding
@@ -76,12 +77,14 @@ namespace Hyena.Gui
                 // violations when the object is disposed.
                 ImageSurface target = new ImageSurface (Format.ARGB32, pixbuf.Width, pixbuf.Height);
                 Context context = new Context (target);
-                Gdk.CairoHelper.SetSourcePixbuf (context, pixbuf, 0, 0);
-                context.Paint ();
-                ((IDisposable)context).Dispose ();
-
-                if (disposePixbuf) {
-                    ((IDisposable)pixbuf).Dispose ();
+                try {
+                    Gdk.CairoHelper.SetSourcePixbuf (context, pixbuf, 0, 0);
+                    context.Paint ();
+                } finally {
+                    ((IDisposable)context).Dispose ();
+                    if (disposePixbuf) {
+                        ((IDisposable)pixbuf).Dispose ();
+                    }
                 }
 
                 return target;

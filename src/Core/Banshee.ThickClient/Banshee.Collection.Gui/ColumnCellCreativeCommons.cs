@@ -64,25 +64,27 @@ namespace Banshee.Collection.Gui
             foreach (int i in AttributesForBoundObject) {
                 Gdk.Pixbuf render_pixbuf = pixbufs[i];
 
-                Cairo.Rectangle pixbuf_area = new Cairo.Rectangle (draw_x,
-                    (cellHeight - render_pixbuf.Height) / 2, render_pixbuf.Width, render_pixbuf.Height);
+                if (render_pixbuf != null) {
+                    Cairo.Rectangle pixbuf_area = new Cairo.Rectangle (draw_x,
+                        (cellHeight - render_pixbuf.Height) / 2, render_pixbuf.Width, render_pixbuf.Height);
 
-                if (!context.Opaque) {
-                    context.Context.Save ();
+                    if (!context.Opaque) {
+                        context.Context.Save ();
+                    }
+
+                    Gdk.CairoHelper.SetSourcePixbuf (context.Context, render_pixbuf, pixbuf_area.X, pixbuf_area.Y);
+                    context.Context.Rectangle (pixbuf_area);
+
+                    if (!context.Opaque) {
+                        context.Context.Clip ();
+                        context.Context.PaintWithAlpha (0.5);
+                        context.Context.Restore ();
+                    } else {
+                        context.Context.Fill ();
+                    }
                 }
 
-                Gdk.CairoHelper.SetSourcePixbuf (context.Context, render_pixbuf, pixbuf_area.X, pixbuf_area.Y);
-                context.Context.Rectangle (pixbuf_area);
-
-                if (!context.Opaque) {
-                    context.Context.Clip ();
-                    context.Context.PaintWithAlpha (0.5);
-                    context.Context.Restore ();
-                } else {
-                    context.Context.Fill ();
-                }
-
-                draw_x += render_pixbuf.Width;
+                draw_x += ICON_SIZE;
             }
         }
 

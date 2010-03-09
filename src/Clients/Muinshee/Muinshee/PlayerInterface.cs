@@ -44,6 +44,7 @@ using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.MediaEngine;
 using Banshee.Configuration;
+using Banshee.Preferences;
 
 using Banshee.Gui;
 using Banshee.Gui.Widgets;
@@ -68,6 +69,9 @@ namespace Muinshee
         // Major Interaction Components
         private TerseTrackListView track_view;
         private Label list_label;
+
+        private int played_songs_number = -1;
+        private SchemaPreference<int> played_songs_number_pref;
 
         public PlayerInterface () : base (Catalog.GetString ("Banshee Media Player"), "muinshee", -1, 450)
         {
@@ -96,6 +100,13 @@ namespace Muinshee
         private void InitPlayQueue (PlayQueueSource play_queue)
         {
             if (actions == null) {
+                play_queue.Populate = false;
+                played_songs_number = PlayQueueSource.PlayedSongsNumberSchema.Get ();
+                var service = ServiceManager.Get<PreferenceService> ();
+                var section = service["source-specific"].ChildPages[play_queue.PreferencesPageId][null];
+                played_songs_number_pref = (SchemaPreference<int>) section[PlayQueueSource.PlayedSongsNumberSchema.Key];
+                played_songs_number_pref.Value = 0;
+
                 actions = new MuinsheeActions (play_queue);
                 actions.Actions.AddActionGroup (actions);
                 ServiceManager.SourceManager.SetActiveSource (play_queue);
@@ -116,6 +127,9 @@ namespace Muinshee
         {
             lock (this) {
                 Hide ();
+                if (played_songs_number >= 0) {
+                    played_songs_number_pref.Value = played_songs_number;
+                }
                 if (actions != null) {
                     actions.Dispose ();
                 }
@@ -195,6 +209,7 @@ namespace Muinshee
         {
             track_view = new TerseTrackListView ();
             track_view.HasFocus = true;
+            track_view.IsReorderable = true;
             track_view.ColumnController.Insert (new Column (null, "indicator", new ColumnCellStatusIndicator (null), 0.05, true, 20, 20), 0);
 
             Hyena.Widgets.ScrolledWindow sw = new Hyena.Widgets.ScrolledWindow ();

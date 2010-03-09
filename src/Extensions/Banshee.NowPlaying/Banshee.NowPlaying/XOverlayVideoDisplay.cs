@@ -83,6 +83,7 @@ namespace Banshee.NowPlaying
 
             if (ServiceManager.PlayerEngine.VideoDisplayContextType == VideoDisplayContextType.GdkWindow) {
                 ServiceManager.PlayerEngine.VideoDisplayContext = video_window.Handle;
+                ServiceManager.PlayerEngine.VideoWindowRealize (video_window.Handle);
             } else {
                 ServiceManager.PlayerEngine.VideoDisplayContext = IntPtr.Zero;
             }

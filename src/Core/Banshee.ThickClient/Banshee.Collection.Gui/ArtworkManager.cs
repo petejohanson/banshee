@@ -37,6 +37,7 @@ using Gdk;
 using Hyena;
 using Hyena.Gui;
 using Hyena.Collections;
+using Hyena.Data.Sqlite;
 
 using Banshee.Base;
 using Banshee.IO;
@@ -255,7 +256,7 @@ namespace Banshee.Collection.Gui
 
 #region Cache Directory Versioning/Migration
 
-        private const int CUR_VERSION = 2;
+        private const int CUR_VERSION = 3;
         private void MigrateCacheDir ()
         {
             int version = CacheVersion;
@@ -263,16 +264,16 @@ namespace Banshee.Collection.Gui
                 return;
             }
 
-            var root_path = CoverArtSpec.RootPath;
+            var legacy_root_path = CoverArtSpec.LegacyRootPath;
 
             if (version < 1) {
                 string legacy_artwork_path = Paths.Combine (Paths.LegacyApplicationData, "covers");
 
-                if (!Directory.Exists (root_path)) {
-                    Directory.Create (CoverArtSpec.RootPath);
+                if (!Directory.Exists (legacy_root_path)) {
+                    Directory.Create (legacy_root_path);
 
                     if (Directory.Exists (legacy_artwork_path)) {
-                        Directory.Move (new SafeUri (legacy_artwork_path), new SafeUri (root_path));
+                        Directory.Move (new SafeUri (legacy_artwork_path), new SafeUri (legacy_root_path));
                     }
                 }
 
@@ -284,7 +285,7 @@ namespace Banshee.Collection.Gui
 
             if (version < 2) {
                 int deleted = 0;
-                foreach (string dir in Directory.GetDirectories (root_path)) {
+                foreach (string dir in Directory.GetDirectories (legacy_root_path)) {
                     int size;
                     string dirname = System.IO.Path.GetFileName (dir);
                     if (Int32.TryParse (dirname, out size) && !IsCachedSize (size)) {
@@ -298,14 +299,84 @@ namespace Banshee.Collection.Gui
                 }
             }
 
+            if (version < 3) {
+                Log.Information ("Migrating album-art cache directory");
+                var started = DateTime.Now;
+                int count = 0;
+
+                var root_path = CoverArtSpec.RootPath;
+                if (!Directory.Exists (root_path)) {
+                    Directory.Create (root_path);
+                }
+
+                string sql = "SELECT Title, ArtistName FROM CoreAlbums";
+                using (var reader = new HyenaDataReader (ServiceManager.DbConnection.Query (sql))) {
+                    while (reader.Read ()) {
+                        var album = reader.Get<string>(0);
+                        var artist = reader.Get<string>(1);
+                        var old_file = CoverArtSpec.CreateLegacyArtistAlbumId (artist, album);
+                        var new_file = CoverArtSpec.CreateArtistAlbumId (artist, album);
+
+                        if (String.IsNullOrEmpty (old_file) || String.IsNullOrEmpty (new_file)) {
+                            continue;
+                        }
+
+                        old_file = String.Format ("{0}.jpg", old_file);
+                        new_file = String.Format ("{0}.jpg", new_file);
+
+                        var old_path = new SafeUri (Paths.Combine (legacy_root_path, old_file));
+                        var new_path = new SafeUri (Paths.Combine (root_path, new_file));
+
+                        if (Banshee.IO.File.Exists (old_path) && !Banshee.IO.File.Exists (new_path)) {
+                            Banshee.IO.File.Move (old_path, new_path);
+                            count++;
+                        }
+                    }
+                }
+
+                if (ServiceManager.DbConnection.TableExists ("PodcastSyndications")) {
+                    sql = "SELECT Title FROM PodcastSyndications";
+                    foreach (var title in ServiceManager.DbConnection.QueryEnumerable<string> (sql)) {
+                        var old_digest = CoverArtSpec.LegacyEscapePart (title);
+                        var new_digest = CoverArtSpec.Digest (title);
+
+                        if (String.IsNullOrEmpty (old_digest) || String.IsNullOrEmpty (new_digest)) {
+                            continue;
+                        }
+
+                        var old_file = String.Format ("podcast-{0}.jpg", old_digest);
+                        var new_file = String.Format ("podcast-{0}.jpg", new_digest);
+
+                        var old_path = new SafeUri (Paths.Combine (legacy_root_path, old_file));
+                        var new_path = new SafeUri (Paths.Combine (root_path, new_file));
+
+                        if (Banshee.IO.File.Exists (old_path) && !Banshee.IO.File.Exists (new_path)) {
+                            Banshee.IO.File.Move (old_path, new_path);
+                            count++;
+                        }
+                    }
+                }
+
+                Directory.Delete (legacy_root_path, true);
+                Log.InformationFormat ("Migrated {0} files in {1}s", count, DateTime.Now.Subtract(started).TotalSeconds);
+            }
+
             CacheVersion = CUR_VERSION;
         }
 
         private static SafeUri cache_version_file = new SafeUri (Paths.Combine (CoverArtSpec.RootPath, ".cache_version"));
         private static int CacheVersion {
             get {
-                if (Banshee.IO.File.Exists (cache_version_file)) {
-                    using (var reader = new System.IO.StreamReader (Banshee.IO.File.OpenRead (cache_version_file))) {
+                var file = cache_version_file;
+                if (!Banshee.IO.File.Exists (file)) {
+                    file = new SafeUri (Paths.Combine (CoverArtSpec.LegacyRootPath, ".cache_version"));
+                    if (!Banshee.IO.File.Exists (file)) {
+                        file = null;
+                    }
+                }
+
+                if (file != null) {
+                    using (var reader = new System.IO.StreamReader (Banshee.IO.File.OpenRead (file))) {
                         int version;
                         if (Int32.TryParse (reader.ReadLine (), out version)) {
                             return version;

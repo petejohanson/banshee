@@ -58,11 +58,24 @@ namespace Banshee.Collection.Gui
             ForceDragSourceSet = true;
             IsEverReorderable = true;
 
-            RowActivated += delegate (object o, RowActivatedArgs<TrackInfo> args) {
+            RowActivated += (o, a) => {
                 ITrackModelSource source = ServiceManager.SourceManager.ActiveSource as ITrackModelSource;
                 if (source != null && source.TrackModel == Model) {
                     ServiceManager.PlaybackController.Source = source;
-                    ServiceManager.PlayerEngine.OpenPlay (args.RowValue);
+                    ServiceManager.PlayerEngine.OpenPlay (a.RowValue);
+                }
+            };
+
+            DragFailed += (o, a) => {
+                if (a.DragResult == DragResult.NoTarget) {
+                    PlaylistSource playlist = ServiceManager.SourceManager.ActiveSource as PlaylistSource;
+                    if (playlist != null && !IsReorderable) {
+                        Hyena.Log.Information (
+                            Catalog.GetString ("Cannot Reorder While Sorted"),
+                            Catalog.GetString ("To put the playlist in manual sort mode, click the currently sorted column header until the sort arrow goes away."),
+                            true
+                        );
+                    }
                 }
             };
         }

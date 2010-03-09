@@ -93,6 +93,9 @@ namespace Migo.Syndication
             try {
                 if (feed.Title == null || feed.Title.Trim () == "" || feed.Title == Mono.Unix.Catalog.GetString ("Unknown Podcast")) {
                     feed.Title = StringUtil.RemoveNewlines (GetXmlNodeText (doc, "/rss/channel/title"));
+                    if (String.IsNullOrEmpty (feed.Title)) {
+                        feed.Title = Mono.Unix.Catalog.GetString ("Unknown Podcast");
+                    }
                 }
 
                 feed.Description      = StringUtil.RemoveNewlines (GetXmlNodeText (doc, "/rss/channel/description"));
@@ -251,10 +254,8 @@ namespace Migo.Syndication
                 throw new FormatException ("Invalid RSS document.");
             }
 
-            if (GetXmlNodeText (doc, "/rss/channel/title") == String.Empty) {
-                throw new FormatException (
-                    "node: 'title', 'description', and 'link' nodes must exist."
-                );
+            if (doc.SelectSingleNode ("/rss/channel/title") == null) {
+                throw new FormatException ("Invalid RSS document. Node 'title' is required");
             }
 
             mgr = new XmlNamespaceManager (doc.NameTable);

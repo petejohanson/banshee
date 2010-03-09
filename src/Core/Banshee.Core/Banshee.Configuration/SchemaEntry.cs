@@ -30,6 +30,19 @@ using System;
 
 namespace Banshee.Configuration
 {
+    public static class SchemaEntry
+    {
+        public static event Action<string, string, object> SchemaAdded;
+
+        internal static void OnSchemaAdded (string ns, string key, object value)
+        {
+            var handler = SchemaAdded;
+            if (handler != null) {
+                handler (ns, key, value);
+            }
+        }
+    }
+
     public struct SchemaEntry<T> : IEquatable<SchemaEntry<T>>
     {
         public static SchemaEntry<T> Zero;
@@ -50,6 +63,8 @@ namespace Banshee.Configuration
             MaxValue = maxValue;
             ShortDescription = shortDescription;
             LongDescription = longDescription;
+
+            SchemaEntry.OnSchemaAdded (Namespace, Key, Get ());
         }
 
         public T Get ()

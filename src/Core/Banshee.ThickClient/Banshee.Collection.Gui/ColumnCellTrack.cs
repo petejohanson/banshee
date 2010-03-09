@@ -68,7 +68,6 @@ namespace Banshee.Collection.Gui
 
             context.Layout.Width = (int)((cellWidth - 8) * Pango.Scale.PangoScale);
             context.Layout.Ellipsize = Pango.EllipsizeMode.End;
-            //context.Layout.FontDescription = context.Widget.PangoContext.FontDescription.Copy ();
             context.Layout.FontDescription.Weight = font_weight;
             context.Layout.SetMarkup (String.Format ("<b>{0}</b>\n<small><i>{1}</i></small>",
                 GLib.Markup.EscapeText (track.DisplayTrackTitle),

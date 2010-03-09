@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2006-2007 Novell, Inc.
+// Copyright 2006-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,94 +30,89 @@ using System;
 using System.Collections;
 using Mono.Unix;
 using Gtk;
-using Glade;
 
 namespace Banshee.Gui.Dialogs
 {
-    public class ErrorListDialog : GladeDialog
+    public class ErrorListDialog : BansheeDialog
     {
-        [Widget] private Label header_label;
-        [Widget] private Label message_label;
-        [Widget] private TreeView list_view;
-        [Widget] private Image icon_image;
-        [Widget] private Expander details_expander;
+        private Label header_label;
+        private Hyena.Widgets.WrapLabel message_label;
+        private TreeView list_view;
+        private Image icon_image;
+        private Expander details_expander;
 
         private ListStore simple_model;
-        private AccelGroup accel_group;
 
-        public ErrorListDialog() : base("ErrorListDialog")
+        public ErrorListDialog () : base (Catalog.GetString ("Error"))
         {
-            accel_group = new AccelGroup();
-            Dialog.AddAccelGroup(accel_group);
-		
-            list_view.SetSizeRequest(-1, 120);
-            details_expander.Activated += delegate {
-                ConfigureGeometry();
+            var table = new Table (3, 2, false) {
+                RowSpacing = 12,
+                ColumnSpacing = 16
             };
 
-            Dialog.Realized += delegate {
-                ConfigureGeometry();
+            table.Attach (icon_image = new Image () {
+                    IconName = "dialog-error",
+                    IconSize = (int)IconSize.Dialog,
+                    Yalign = 0.0f
+                }, 0, 1, 0, 3, AttachOptions.Shrink, AttachOptions.Fill | AttachOptions.Expand, 0, 0);
+
+            table.Attach (header_label = new Label () { Xalign = 0.0f }, 1, 2, 0, 1,
+                AttachOptions.Fill | AttachOptions.Expand,
+                AttachOptions.Shrink, 0, 0);
+
+            table.Attach (message_label = new Hyena.Widgets.WrapLabel (), 1, 2, 1, 2,
+                AttachOptions.Fill | AttachOptions.Expand,
+                AttachOptions.Shrink, 0, 0);
+
+            var scrolled_window = new ScrolledWindow () {
+                HscrollbarPolicy = PolicyType.Automatic,
+                VscrollbarPolicy = PolicyType.Automatic,
+                ShadowType = ShadowType.In
             };
+
+            list_view = new TreeView () {
+                HeightRequest = 120,
+                WidthRequest = 200
+            };
+            scrolled_window.Add (list_view);
+
+            table.Attach (details_expander = new Expander (Catalog.GetString ("Details")),
+                1, 2, 2, 3,
+                AttachOptions.Fill | AttachOptions.Expand,
+                AttachOptions.Fill | AttachOptions.Expand,
+                0, 0);
+            details_expander.Add (scrolled_window);
+
+            VBox.PackStart (table, true, true, 0);
+            VBox.Spacing = 12;
+            VBox.ShowAll ();
+
+            details_expander.Activated += OnConfigureGeometry;
+            Realized += OnConfigureGeometry;
         }
 
-        private void ConfigureGeometry()
+        private void OnConfigureGeometry (object o, EventArgs args)
         {
-            Gdk.Geometry limits = new Gdk.Geometry();
+            var limits = new Gdk.Geometry () {
+                MinWidth = SizeRequest ().Width,
+                MaxWidth = Gdk.Screen.Default.Width
+            };
 
-            limits.MinWidth = Dialog.SizeRequest().Width;
-            limits.MaxWidth = Gdk.Screen.Default.Width;
-
-            if(details_expander.Expanded) {
-                limits.MinHeight = Dialog.SizeRequest().Height + list_view.SizeRequest().Height;
+            if (details_expander.Expanded) {
+                limits.MinHeight = SizeRequest ().Height + list_view.SizeRequest ().Height;
                 limits.MaxHeight = Gdk.Screen.Default.Height;
             } else {
                 limits.MinHeight = -1;
                 limits.MaxHeight = -1;
             }
 
-            Dialog.SetGeometryHints(Dialog, limits,
+            SetGeometryHints (this, limits,
                 Gdk.WindowHints.MaxSize | Gdk.WindowHints.MinSize);
-        }
-
-        public void AddButton(string message, ResponseType response)
-        {
-            AddButton(message, response, false);
-        }
-
-        public void AddStockButton(string stock, ResponseType response)
-        {
-            AddStockButton(stock, response, false);
-        }
-
-        public void AddButton(string message, ResponseType response, bool isDefault)
-        {
-            AddButton(message, response, isDefault, false);
-        }
-
-        public void AddStockButton(string stock, ResponseType response, bool isDefault)
-        {
-            AddButton(stock, response, isDefault, true);
-        }
-
-        public void AddButton(string message, ResponseType response, bool isDefault, bool isStock)
-        {
-            Button button = new Button(message);
-            button.CanDefault = true;
-            button.UseStock = isStock;
-            button.Show();
-
-            Dialog.AddActionWidget(button, response);
-
-            if(isDefault) {
-                Dialog.DefaultResponse = response;
-                button.AddAccelerator("activate", accel_group, (uint)Gdk.Key.Return,
-                    0, AccelFlags.Visible);
-            }
         }
 
         public string Header {
             set {
-                Dialog.Title = value;
+                Title = value;
                 header_label.Markup = String.Format("<b><big>{0}</big></b>",
                     GLib.Markup.EscapeText(value));
             }
@@ -148,11 +143,11 @@ namespace Banshee.Gui.Dialogs
             set { message_label.Text = value; }
         }
 
-        public string IconName {
+        public string DialogIconName {
             set { icon_image.SetFromIconName(value, IconSize.Dialog); }
         }
 
-        public string IconNameStock {
+        public string DialogIconNameStock {
             set { icon_image.SetFromStock(value, IconSize.Dialog); }
         }
 

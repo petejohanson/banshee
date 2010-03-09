@@ -1,10 +1,11 @@
 //
 // EqualizerSetting.cs
 //
-// Author:
+// Authors:
+//   Aaron Bockover <abockover@novell.com>
 //   Alexander Hixon <hixon.alexander@mediati.org>
 //
-// Copyright (C) 2007 Novell, Inc.
+// Copyright 2007-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,6 +29,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using Banshee.MediaEngine;
 using Banshee.ServiceStack;
@@ -37,96 +39,110 @@ namespace Banshee.Equalizer
 {
     public class EqualizerSetting
     {
-        private string name;
-        private Dictionary<uint, double> bands = new Dictionary<uint, double> ();
-        private double amp = 0;    // amplifier dB (0 dB == passthrough)
-        private bool enabled = true;
         private const uint bandcount = 10;
+
+        private EqualizerManager manager;
+        private string name;
+        private double [] bands = new double[bandcount];
+        private double amp = 0; // amplifier dB (0 dB == passthrough)
 
         public event EventHandler Changed;
 
-        public EqualizerSetting (string name)
+        internal EqualizerSetting (EqualizerManager manager,
+            string name, double amp, double [] gains) : this (manager, name)
         {
-            this.name = name;
-
-            // Fill in 0 dB for all bands at init.
-            for (uint i = 0; i < bandcount; i++) {
-                bands.Add(i, 0);
+            IsReadOnly = true;
+            for (uint i = 0; i < gains.Length; i++) {
+                SetGain (i, gains[i], false);
             }
         }
 
-        /// <summary>
-        /// Human-readable name of this equalizer instance.
-        /// </summary>
+        public EqualizerSetting (EqualizerManager manager, string name)
+        {
+            this.manager = manager;
+            this.name = name;
+        }
+
+        public bool IsReadOnly { get; private set; }
+
         public string Name {
             get { return name; }
-            set
-            {
+            set {
                 name = value;
-                PresetSchema.Set (this.name);
                 OnChanged ();
             }
-        }
-
-        public bool Enabled {
-            get { return enabled; }
-            set
-            {
-                enabled = value;
-                EnabledSchema.Set (value);
-
-                // Make this the new default preset (last changed).
-                PresetSchema.Set (this.name);
-            }
-        }
-
-        public Dictionary<uint, double> Bands {
-            get { return bands; }
         }
 
         public uint BandCount {
             get { return bandcount; }
         }
 
-        /// <summary>
-        /// Sets/gets the preamp gain.
-        /// </summary>
-        public double AmplifierLevel {
-            get { return amp; }
-            set
-            {
-                amp = value;
-                if (enabled) {
-                    ((IEqualizer) ServiceManager.PlayerEngine.ActiveEngine).AmplifierLevel = value;
-                }
-                OnChanged ();
-            }
+        public double this[uint band] {
+            get { return bands[band]; }
+            set { SetGain (band, value, true); }
         }
 
-        /// <summary>
-        /// Sets the gain on a selected band.
-        /// </summary>
-        /// <param name="band">The band to adjust gain.</param>
-        /// <param name="val">The value in dB to set the band gain to.</param>
-        public void SetGain (uint band, double val)
+        public double AmplifierLevel {
+            get { return amp; }
+            set { SetAmplifierLevel (value, true); }
+        }
+
+        public void SetAmplifierLevel (double value, bool flushToEngine)
         {
-            if (bands.ContainsKey (band)) {
-                bands[band] = val;
-            } else {
-                bands.Add (band, val);
+            amp = value;
+
+            if (!flushToEngine) {
+                return;
             }
 
-            // Tell engine that we've changed.
-            if (enabled) {
-                ((IEqualizer) ServiceManager.PlayerEngine.ActiveEngine).SetEqualizerGain (band, val);
+            if (manager.IsActive) {
+                ((IEqualizer)ServiceManager.PlayerEngine.ActiveEngine).AmplifierLevel = value;
             }
 
             OnChanged ();
         }
 
-        public double this[uint band] {
-            get { return bands[band]; }
-            set { SetGain (band, value); }
+        public void SetGain (uint band, double value, bool flushToEngine)
+        {
+            if (band >= bandcount) {
+                throw new ArgumentOutOfRangeException (String.Format (
+                    "Band number {0} invalid - only up to {1} bands supported.", band, bandcount));
+            }
+
+            bands[band] = value;
+
+            if (!flushToEngine) {
+                return;
+            }
+
+            if (manager.IsActive) {
+                ((IEqualizer)ServiceManager.PlayerEngine.ActiveEngine).SetEqualizerGain (band, value);
+            }
+
+            OnChanged ();
+        }
+
+        public void FlushToEngine ()
+        {
+            if (!manager.IsActive) {
+                return;
+            }
+
+            var engine_eq = (IEqualizer)ServiceManager.PlayerEngine.ActiveEngine;
+            engine_eq.AmplifierLevel = AmplifierLevel;
+            for (uint band = 0; band < bands.Length; band++) {
+                engine_eq.SetEqualizerGain (band, bands[band]);
+            }
+
+            OnChanged ();
+        }
+
+        public void SetFrom (EqualizerSetting eq)
+        {
+            if (eq != null) {
+                amp = eq.amp;
+                eq.bands.CopyTo (bands, 0);
+            }
         }
 
         protected virtual void OnChanged ()
@@ -137,18 +153,26 @@ namespace Banshee.Equalizer
             }
         }
 
-        public static readonly SchemaEntry<bool> EnabledSchema = new SchemaEntry<bool> (
-            "player_engine", "equalizer_enabled",
-            false,
-            "Equalizer status",
-            "Whether or not the equalizer is set to be enabled."
-        );
-
-        public static readonly SchemaEntry<string> PresetSchema = new SchemaEntry<string> (
-            "player_engine", "equalizer_preset",
-            "",
-            "Equalizer preset",
-            "Default preset to load into equalizer."
-        );
+        public override string ToString ()
+        {
+            var builder = new System.Text.StringBuilder ();
+            builder.Append ("    {");
+            builder.AppendLine ();
+            builder.AppendFormat ("        \"name\": \"{0}\",", Name.Replace ("\"", "\\\""));
+            builder.AppendLine ();
+            builder.AppendFormat (CultureInfo.InvariantCulture, "        \"preamp\": {0},", AmplifierLevel);
+            builder.AppendLine ();
+            builder.Append ("        \"bands\": [ ");
+            for (uint band = 0; band < bands.Length; band++) {
+                builder.Append (bands[band].ToString (CultureInfo.InvariantCulture));
+                if (band < bands.Length - 1) {
+                    builder.Append (", ");
+                }
+            }
+            builder.Append (" ]");
+            builder.AppendLine ();
+            builder.Append ("    }");
+            return builder.ToString ();
+        }
     }
 }

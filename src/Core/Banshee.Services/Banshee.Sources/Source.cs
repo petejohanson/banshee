@@ -636,6 +636,10 @@ namespace Banshee.Sources
             get { return 0; }
         }
 
+        public virtual int EnabledCount {
+            get { return Count; }
+        }
+
         private string parent_conf_id;
         public string ParentConfigurationId {
             get {

@@ -44,21 +44,32 @@ namespace Banshee.Collection.Database
         protected DatabaseTrackListModel Model { get; private set; }
         protected IDatabaseTrackModelCache Cache { get; private set; }
 
-        private HyenaSqliteCommand insert_shuffle;
-
         protected Shuffler Shuffler { get; private set; }
 
-        public virtual bool IsReady { get { return true; } }
-        public PlaybackShuffleMode Mode { get; private set; }
+        public string Id { get; private set; }
+        public string Label { get; protected set; }
+        public string Adverb { get; protected set; }
+        public string Description { get; protected set; }
+        public string IconName { get; protected set; }
 
+        public virtual bool IsReady { get { return true; } }
+
+        protected string Select { get; set; }
+        protected string From { get; set; }
         protected string Condition { get; set; }
         protected string OrderBy { get; set; }
 
-        public RandomBy (PlaybackShuffleMode mode, Shuffler shuffler)
+        public RandomBy (string id)
         {
+            Id = id;
+        }
+
+        public void SetShuffler (Shuffler shuffler)
+        {
+            if (Shuffler != null)
+                throw new InvalidOperationException ("RandomBy already has Shuffler");
+
             Shuffler = shuffler;
-            Mode = mode;
-            insert_shuffle = new HyenaSqliteCommand ("INSERT OR REPLACE INTO CoreShuffles (ShufflerID, TrackID, LastShuffledAt) VALUES (?, ?, ?)");
         }
 
         private HyenaSqliteCommand shuffler_query;
@@ -66,14 +77,15 @@ namespace Banshee.Collection.Database
             get {
                 if (shuffler_query == null) {
                     var provider = DatabaseTrackInfo.Provider;
+                    // TODO also filter on LastPlayed/SkippedStamp if not PlaybackShuffler (eg for manually added songs)
                     shuffler_query = new HyenaSqliteCommand (String.Format (@"
-                        SELECT {0}
-                            FROM {1} LEFT OUTER JOIN CoreShuffles ON (CoreShuffles.ShufflerId = {2} AND CoreShuffles.TrackID = CoreTracks.TrackID)
-                            WHERE {3} {4} AND {5} AND
+                        SELECT {0} {1}
+                            FROM {2} {3} LEFT OUTER JOIN CoreShuffles ON (CoreShuffles.ShufflerId = {4} AND CoreShuffles.TrackID = CoreTracks.TrackID)
+                            WHERE {5} {6} AND {7} AND
                                 LastStreamError = 0 AND (CoreShuffles.LastShuffledAt < ? OR CoreShuffles.LastShuffledAt IS NULL)
-                            ORDER BY {6}",
-                        provider.Select,
-                        Model.FromFragment, Shuffler.DbId,
+                            ORDER BY {8} LIMIT 1",
+                        provider.Select, Select,
+                        Model.FromFragment, From, Shuffler.DbId,
                         String.IsNullOrEmpty (provider.Where) ? "1=1" : provider.Where, Model.ConditionFragment ?? "1=1", Condition,
                         OrderBy
                     ));
@@ -112,15 +124,16 @@ namespace Banshee.Collection.Database
                 var track = GetShufflerTrack (after);
 
                 // Record this shuffle
-                if (track != null) {
-                    ServiceManager.DbConnection.Execute (insert_shuffle, Shuffler.DbId, track.TrackId, DateTime.Now);
-                }
+                Shuffler.RecordShuffle (track);
 
                 return track;
             }
         }
 
+        // The playback track we choose is dependent on the current PlaybackSource, and what
+        // (if any) query/filter is active there, represented by its DatabaseTrackModel (and its underlying cache).
         public abstract TrackInfo GetPlaybackTrack (DateTime after);
+
         public abstract DatabaseTrackInfo GetShufflerTrack (DateTime after);
 
         protected DatabaseTrackInfo GetTrack (HyenaSqliteCommand cmd, params object [] args)

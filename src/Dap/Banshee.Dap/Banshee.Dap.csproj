@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -6,31 +6,30 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <ProjectGuid>{BC2E94DF-7A82-461E-BE7C-60E41ADC3562}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Banshee.AudioCd</AssemblyName>
+    <AssemblyName>Banshee.Dap</AssemblyName>
     <SchemaVersion>2.0</SchemaVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <ReleaseVersion>1.3</ReleaseVersion>
+    <RootNamespace>Banshee.Dap</RootNamespace>
+    <AssemblyOriginatorKeyFile>.</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
-    <AssemblyKeyFile>.</AssemblyKeyFile>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <AssemblyKeyFile>.</AssemblyKeyFile>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
@@ -60,9 +59,21 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="Mono.Cairo" />
+    <Reference Include="Mono.Cairo">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Core">
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="Mono.Posix">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.Dap\DapSource.cs" />
@@ -82,9 +93,12 @@
     <Compile Include="Banshee.Dap\PodcastGroupSource.cs" />
     <Compile Include="Banshee.Dap\IPurchasedMusicSource.cs" />
     <Compile Include="Banshee.Dap.Gui\PurchasedMusicActions.cs" />
+    <Compile Include="Banshee.Dap.Gui\LibrarySyncOptions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Banshee.Dap.addin.xml" />
+    <EmbeddedResource Include="Banshee.Dap.addin.xml">
+      <LogicalName>Banshee.Dap.addin.xml</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ActiveSourceUI.xml">
       <LogicalName>ActiveSourceUI.xml</LogicalName>
     </EmbeddedResource>
@@ -99,7 +113,7 @@
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="./Makefile.am">
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am">
           <BuildFilesVar Sync="true" Name="SOURCES" />
           <DeployFilesVar />
           <ResourcesVar Sync="true" Name="RESOURCES" />

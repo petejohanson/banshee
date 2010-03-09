@@ -67,6 +67,7 @@ namespace Banshee.Widgets
         private void BuildLayouts ()
         {
             if (layout != null) {
+                layout.FontDescription.Dispose ();
                 layout.Dispose ();
             }
 

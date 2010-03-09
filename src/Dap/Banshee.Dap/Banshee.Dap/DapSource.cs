@@ -28,6 +28,7 @@
 //
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Threading;
 using Mono.Unix;
@@ -316,8 +317,12 @@ namespace Banshee.Dap
 
         private void AttemptToAddTrackToDevice (DatabaseTrackInfo track, SafeUri fromUri)
         {
+            if (!Banshee.IO.File.Exists (fromUri)) {
+                throw new FileNotFoundException (Catalog.GetString ("File not found"), fromUri.ToString ());
+            }
+
             // Ensure there's enough space
-            if (Banshee.IO.File.Exists (fromUri) && BytesAvailable - Banshee.IO.File.GetSize (fromUri) >= 0) {
+            if (BytesAvailable - Banshee.IO.File.GetSize (fromUri) >= 0) {
                 // Ensure it's not already on the device
                 if (ServiceManager.DbConnection.Query<int> (track_on_dap_query, DbId, track.MetadataHash) == 0) {
                     AddTrackToDevice (track, fromUri);
@@ -502,19 +507,19 @@ namespace Banshee.Dap
         }
 
         public override bool CanRemoveTracks {
-            get { return base.CanRemoveTracks && !Sync.Enabled; }
+            get { return base.CanRemoveTracks; }
         }
 
         public override bool CanDeleteTracks {
-            get { return base.CanDeleteTracks && !Sync.Enabled; }
+            get { return base.CanDeleteTracks; }
         }
 
         public override bool CanAddTracks {
-            get { return base.CanAddTracks && !Sync.Enabled; }
+            get { return base.CanAddTracks; }
         }
 
         public override bool PlaylistsReadOnly {
-            get { return Sync.Enabled || IsReadOnly; }
+            get { return IsReadOnly; }
         }
 
         private Banshee.Configuration.SchemaEntry<long> space_for_data;

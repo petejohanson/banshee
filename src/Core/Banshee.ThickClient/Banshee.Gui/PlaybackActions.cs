@@ -220,7 +220,7 @@ namespace Banshee.Gui
 
         private void OnSeekToAction (object o, EventArgs args)
         {
-            GladeDialog dialog = new SeekDialog ();
+            var dialog = new SeekDialog ();
             dialog.Run ();
             dialog.Destroy ();
         }

@@ -27,7 +27,6 @@ class BansheePackages:
 			'packages/intltool.py',
 			'packages/gtk+.py',
 			'packages/gconf-dummy.py',
-			'packages/libglade.py',
 			'packages/libproxy.py',
 			'packages/libsoup.py',
 			'packages/sqlite.py'
@@ -79,6 +78,9 @@ class BansheePackages:
 
 		if isinstance (self, DarwinProfile):
 			self.packages.extend ([
-				'packages/ige-mac-integration.py',
-				'packages/ige-mac-integration-sharp.py'
+				'packages/monobjc.py',
+				'packages/ige-mac-integration.py'
 			])
+
+		if self.cmd_options.release_build:
+			self.packages.append ('packages/banshee.py')

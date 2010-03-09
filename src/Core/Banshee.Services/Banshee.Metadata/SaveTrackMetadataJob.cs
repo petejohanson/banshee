@@ -115,7 +115,7 @@ namespace Banshee.Metadata
                 return false;
             }
 
-            string new_filename = track.FileNamePattern.BuildFull (source.BaseDirectory, track, System.IO.Path.GetExtension (old_uri.ToString ()));
+            string new_filename = track.PathPattern.BuildFull (source.BaseDirectory, track, System.IO.Path.GetExtension (old_uri.ToString ()));
             SafeUri new_uri = new SafeUri (new_filename);
 
             if (!new_uri.Equals (old_uri) && !Banshee.IO.File.Exists (new_uri)) {

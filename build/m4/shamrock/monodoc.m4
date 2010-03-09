@@ -1,7 +1,7 @@
 AC_DEFUN([SHAMROCK_CHECK_MONODOC],
 [
 	AC_ARG_ENABLE(docs, AC_HELP_STRING([--disable-docs], 
-		[Do not build documentation]), enable_docs=no, enable_docs=yes)
+		[Do not build documentation]), , enable_docs=yes)
 
 	if test "x$enable_docs" = "xyes"; then
 		AC_PATH_PROG(MONODOCER, monodocer, no)

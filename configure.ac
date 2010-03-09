@@ -2,7 +2,7 @@ dnl Granularly define the version components
 dnl Remember to also update the Display Version
 m4_define([banshee_version_major], [1])
 m4_define([banshee_version_minor], [5])
-m4_define([banshee_version_micro], [3])
+m4_define([banshee_version_micro], [5])
 
 dnl set to 0 when doing an official release
 m4_define([banshee_version_pre_release], [0])
@@ -23,7 +23,7 @@ m4_define([banshee_version],
 
 dnl this can sometimes differ manually
 m4_define([banshee_display_version],
-	["1.6 Beta 4"])
+	["1.6 RC1"])
 
 m4_define([banshee_api_version],
 	[banshee_version_major.banshee_version_minor])
@@ -79,6 +79,10 @@ dnl Check for mono >= 2.4.3 for LibraryWatcher extension, with fix for bnc#32233
 PKG_CHECK_MODULES(MONO_2_4_3, mono >= 2.4.3, HAVE_MONO_2_4_3=yes, HAVE_MONO_2_4_3=no)
 AM_CONDITIONAL(ENABLE_LIBRARY_WATCHER, test "x$HAVE_MONO_2_4_3" = "xyes")
 
+dnl Check for GNOME >= 2.28 to see if we should remove 'Media Player' from the app Name, bgo#596242
+PKG_CHECK_MODULES(GNOME_LT_2_28, gnome-desktop-2.0 < 2.28, BANSHEE_DESKTOP_NAME="_Name=Banshee Media Player", BANSHEE_DESKTOP_NAME="_Name=Banshee")
+AC_SUBST(BANSHEE_DESKTOP_NAME)
+
 dnl NDesk DBus libraries
 BANSHEE_CHECK_NDESK_DBUS
 
@@ -94,8 +98,11 @@ BANSHEE_CHECK_BOO
 dnl Monodoc (optional through --disable-docs)
 SHAMROCK_CHECK_MONODOC
 
-dnl webkit (optional through --enable-webkit)
+dnl webkit (optional through --disable-webkit)
 BANSHEE_CHECK_WEBKIT
+
+dnl gdata (optional through --enable-gdata)
+BANSHEE_CHECK_GDATA
 
 dnl gtk#-beans and gio#
 BANSHEE_CHECK_GIO_SHARP
@@ -190,8 +197,6 @@ AC_SUBST(BUILD_HOST_OS)
 AC_SUBST(BUILD_HOST_CPU)
 AC_SUBST(BUILD_TIME)
 
-AM_CONDITIONAL(PLATFORM_DARWIN, test "x${host_os:0:6}" = "xdarwin")
-
 SHAVE_INIT([build/m4/shave], [enable])
 
 dnl generated files
@@ -209,6 +214,7 @@ data/org.bansheeproject.Banshee.service
 data/org.bansheeproject.CollectionIndexer.service
 data/audio-profiles/Makefile
 data/desktop-files/Makefile
+data/desktop-files/common.desktop
 data/icon-theme-hicolor/Makefile
 
 docs/Makefile
@@ -303,6 +309,9 @@ src/Extensions/Banshee.Sample/Makefile
 src/Extensions/Banshee.Torrent/Makefile
 src/Extensions/Banshee.RemoteAudio/Makefile
 src/Extensions/Banshee.Wikipedia/Makefile
+src/Extensions/Banshee.YouTube/Makefile
+
+extras/metrics/Makefile
 ])
 
 cat <<EOF
@@ -335,12 +344,13 @@ ${PACKAGE}-${VERSION}
     Karma:             ${enable_karmasharp}
 
   Extra Features:
-    DAAP Support:      ${enable_daap}
-    Podcast Support:   ${enable_podcast}
     Boo Scripting:     ${enable_boo}
     Builtin Equalizer: ${enable_builtin_equalizer}
+    DAAP:              ${enable_daap}
+    GIO Backend:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
     Library Watcher:   ${HAVE_MONO_2_4_3} (requires Mono >= 2.4.3)
-    GIO Support:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
+    Podcasts:          ${enable_podcast}
+    Wikipedia:         ${enable_webkit} (requires webkit-sharp)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
@@ -353,8 +363,8 @@ EOF
 # Unstable/in-development features; only show them if they were manually enabled
 if test "x$enable_moonlight" = "xyes";    then br=yes; echo "  Moonlight Effects:   ${enable_moonlight}";    fi
 if test "x$enable_remote_audio" = "xyes"; then br=yes; echo "  Remote Audio:        ${enable_remote_audio}"; fi
-if test "x$enable_webkit" = "xyes";       then br=yes; echo "  WebKit:              ${enable_webkit}";     fi
 if test "x$enable_torrent" = "xyes";      then br=yes; echo "  Torrent Podcasts:    ${enable_torrent}";      fi
+if test "x$enable_gdata" = "xyes";        then br=yes; echo "  Google Data API:     ${enable_gdata}";        fi
 
 if test -d ${expanded_libdir}/${PACKAGE}; then
 	if test x$br = xyes; then echo; fi

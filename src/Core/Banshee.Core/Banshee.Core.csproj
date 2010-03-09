@@ -9,29 +9,30 @@
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
     <AssemblyName>Banshee.Core</AssemblyName>
     <SchemaVersion>2.0</SchemaVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <ReleaseVersion>1.3</ReleaseVersion>
+    <RootNamespace>Banshee.Core</RootNamespace>
+    <AssemblyOriginatorKeyFile>.</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
-    <AssemblyKeyFile>.</AssemblyKeyFile>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
+    <DefineConstants>ENABLE_TESTS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <AssemblyKeyFile>.</AssemblyKeyFile>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
+    <DefineConstants>WIN32</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Hyena\Hyena.csproj">
@@ -45,17 +46,8 @@
       <Private>False</Private>
     </ProjectReference>
     <Reference Include="glib-sharp" />
-    <Reference Include="Mono.Addins">
-      <HintPath>..\..\..\winbin\Mono.Addins.dll</HintPath>
-    </Reference>
-    <Reference Include="NDesk.DBus">
-      <HintPath>..\..\..\winbin\NDesk.DBus.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="taglib-sharp">
-      <HintPath>..\..\..\winbin\taglib-sharp.dll</HintPath>
-    </Reference>
     <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-16.png">
       <Link>Resources\media-player-banshee-16.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -80,10 +72,20 @@
       <Link>Resources\media-player-banshee-48.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Reference Include="System.Core">
+    </Reference>
+    <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
+      <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
+    </Reference>
+    <Reference Include="taglib-sharp, Version=2.0.3.6, Culture=neutral, PublicKeyToken=db62eba44689b5b0">
+      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Posix" />
-    <Reference Include="taglib-sharp, Version=2.0.3.1, Culture=neutral, PublicKeyToken=db62eba44689b5b0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.Kernel\IInstanceCriticalJob.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Banshee.Kernel\Scheduler.cs" />
     <Compile Include="Banshee.Configuration\SchemaEntry.cs" />
     <Compile Include="Banshee.Base\FileNamePattern.cs" />
+    <Compile Include="Banshee.Base\PathPattern.cs" />
     <Compile Include="Banshee.Base\Paths.cs" />
     <Compile Include="Banshee.Base\SafeUri.cs" />
     <Compile Include="Banshee.Base\UriList.cs" />
@@ -110,14 +113,12 @@
     <Compile Include="Banshee.Collection\TrackFilterType.cs" />
     <Compile Include="Banshee.Base\PlatformHacks.cs" />
     <Compile Include="Banshee.Streaming\CommonTags.cs" />
-    <Compile Include="Banshee.Streaming\SaveTrackMetadataJob.cs" />
     <Compile Include="Banshee.Streaming\StreamRatingTagger.cs" />
     <Compile Include="Banshee.Streaming\StreamTag.cs" />
     <Compile Include="Banshee.Streaming\StreamTagger.cs" />
     <Compile Include="Banshee.Streaming\StreamPlaybackError.cs" />
     <Compile Include="Banshee.Collection\IBasicTrackInfo.cs" />
     <Compile Include="Banshee.Configuration.Schema\ImportSchema.cs" />
-    <Compile Include="Banshee.Configuration.Schema\LibrarySchema.cs" />
     <Compile Include="Banshee.Base\ProductInformation.cs" />
     <Compile Include="Banshee.Base\Localization.cs" />
     <Compile Include="Banshee.Configuration\XmlConfigurationClient.cs" />
@@ -140,14 +141,13 @@
     <Compile Include="Banshee.Configuration\ConfigurationClient.cs" />
     <Compile Include="Banshee.Configuration\IConfigurationClient.cs" />
     <Compile Include="Banshee.Collection\TrackMediaAttributes.cs" />
-    <Compile Include="Banshee.Base\Tests\FileNamePatternTests.cs" />
-    <Compile Include="Banshee.Base\Tests\TaglibReadWriteTests.cs" />
     <Compile Include="Banshee.Kernel\DelegateJob.cs" />
     <Compile Include="Banshee.Collection\CacheableItem.cs" />
     <Compile Include="Banshee.IO\DirectoryScannerPipelineElement.cs" />
     <Compile Include="Banshee.Configuration\MemoryConfigurationClient.cs" />
     <Compile Include="Banshee.IO\ExtensionSet.cs" />
     <Compile Include="Banshee.Base\Tests\CoverArtSpecTests.cs" />
+    <Compile Include="Banshee.Collection\IPodcastInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\contributors.xml">
@@ -159,13 +159,15 @@
     <EmbeddedResource Include="Resources\COPYING">
       <LogicalName>COPYING</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Banshee.Core.addin.xml" />
+    <EmbeddedResource Include="Banshee.Core.addin.xml">
+      <LogicalName>Banshee.Core.addin.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="./Makefile.am">
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am">
           <BuildFilesVar Sync="true" Name="SOURCES" />
           <DeployFilesVar />
           <ResourcesVar Sync="true" Name="RESOURCES" />

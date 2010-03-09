@@ -52,8 +52,6 @@ SOURCES =  \
 	Banshee.Gui.Dialogs/ErrorListDialog.cs \
 	Banshee.Gui.Dialogs/ExtensionManagerDialog.cs \
 	Banshee.Gui.Dialogs/FileChooserDialog.cs \
-	Banshee.Gui.Dialogs/GladeDialog.cs \
-	Banshee.Gui.Dialogs/GladeWindow.cs \
 	Banshee.Gui.Dialogs/ImageFileChooserDialog.cs \
 	Banshee.Gui.Dialogs/OpenLocationDialog.cs \
 	Banshee.Gui.Dialogs/SeekDialog.cs \
@@ -113,6 +111,7 @@ SOURCES =  \
 	Banshee.Gui/GtkElementsService.cs \
 	Banshee.Gui/IClientWindow.cs \
 	Banshee.Gui/IconThemeUtils.cs \
+	Banshee.Gui/IDisableKeybindings.cs \
 	Banshee.Gui/IHasSourceView.cs \
 	Banshee.Gui/InterfaceActionService.cs \
 	Banshee.Gui/PersistentPaneController.cs \
@@ -161,7 +160,6 @@ SOURCES =  \
 
 RESOURCES =  \
 	Banshee.ThickClient.addin.xml \
-	Resources/banshee-dialogs.glade \
 	Resources/banshee-logo.png \
 	Resources/browser-album-cover.png \
 	Resources/context-pane-close.png \

@@ -106,6 +106,8 @@ namespace Banshee.Dap.Gui
             foreach (var child in library_sync.Library.Children) {
                 RemovePlaylist (child, true);
             }
+
+            combo.Dispose ();
         }
 
         private void AddPlaylist (Source source)
@@ -119,7 +121,7 @@ namespace Banshee.Dap.Gui
             }
 
             // Translators: {0} is the name of a playlist
-            combo.Add (db_src, String.Format (Catalog.GetString ("Sync from “{0}”"), db_src.Name), db_src.Order);
+            combo.Add (db_src, String.Format (Catalog.GetString ("Sync from \u201c{0}\u201d"), db_src.Name), db_src.Order);
             db_src.Updated += OnPlaylistChanged;
             playlist_count++;
         }

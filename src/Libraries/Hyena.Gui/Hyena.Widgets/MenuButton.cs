@@ -55,8 +55,7 @@ namespace Hyena.Widgets
             WidgetFlags |= WidgetFlags.NoWindow;
 
             button_widget = buttonWidget;
-            this.menu = menu;
-            menu.Deactivated += delegate { toggle_button.Active = false; };
+            Menu = menu;
 
             toggle_button.Parent = this;
             toggle_button.FocusOnClick = false;
@@ -88,6 +87,21 @@ namespace Hyena.Widgets
 
         public Menu Menu {
             get { return menu; }
+            set {
+                if (menu == value)
+                    return;
+
+                if (menu != null)
+                    menu.Deactivated -= OnMenuDeactivated;
+
+                menu = value;
+                menu.Deactivated += OnMenuDeactivated;
+            }
+        }
+
+        private void OnMenuDeactivated (object o, EventArgs args)
+        {
+            toggle_button.Active = false;
         }
 
         protected ToggleButton ToggleButton {

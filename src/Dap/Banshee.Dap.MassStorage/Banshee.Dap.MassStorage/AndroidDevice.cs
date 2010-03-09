@@ -69,10 +69,6 @@ namespace Banshee.Dap.MassStorage
 
         private static string playlists_path = "Playlists/";
 
-        private static string [] icon_names = new string [] {
-            "phone-htc-g1-white", DapSource.FallbackIcon
-        };
-
         private AmazonMp3GroupSource amazon_source;
         private string amazon_base_dir;
 
@@ -87,10 +83,6 @@ namespace Banshee.Dap.MassStorage
         public override bool LoadDeviceConfiguration ()
         {
             return true;
-        }
-
-        public override string Name {
-            get { return VendorProductInfo.ProductName; }
         }
 
         public override string [] AudioFolders {
@@ -135,6 +127,19 @@ namespace Banshee.Dap.MassStorage
 
         public override string [] GetIconNames ()
         {
+            string [] icon_names = new string [] {
+                null, DapSource.FallbackIcon
+            };
+
+            switch (Name) {
+                case "Google Nexus One":
+                    icon_names[0] = "phone-google-nexus-one";
+                    break;
+                default:
+                    icon_names[0] = "phone-htc-g1-white";
+                    break;
+            }
+
             return icon_names;
         }
 
