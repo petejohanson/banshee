@@ -367,6 +367,7 @@ ${PACKAGE}-${VERSION}
     Podcasts:          ${enable_podcast}
     Wikipedia:         ${enable_webkit} (requires webkit-sharp)
     Gapless playback:  ${ENABLE_GAPLESS} (requires gstreamer-plugins-base > 0.10.25.2)
+    YouTube extension: ${enable_gdata} (requires gdata-sharp >= 1.4)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
@@ -380,7 +381,6 @@ EOF
 if test "x$enable_moonlight" = "xyes";    then br=yes; echo "  Moonlight Effects:   ${enable_moonlight}";    fi
 if test "x$enable_remote_audio" = "xyes"; then br=yes; echo "  Remote Audio:        ${enable_remote_audio}"; fi
 if test "x$enable_torrent" = "xyes";      then br=yes; echo "  Torrent Podcasts:    ${enable_torrent}";      fi
-if test "x$enable_gdata" = "xyes";        then br=yes; echo "  Google Data API:     ${enable_gdata}";        fi
 
 if test -d ${expanded_libdir}/${PACKAGE}; then
 	if test x$br = xyes; then echo; fi
