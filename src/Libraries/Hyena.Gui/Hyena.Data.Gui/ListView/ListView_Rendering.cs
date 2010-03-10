@@ -34,6 +34,7 @@ using Gdk;
 
 using Hyena.Gui;
 using Hyena.Gui.Theming;
+using Hyena.Gui.Canvas;
 using GtkColorClass=Hyena.Gui.Theming.GtkColorClass;
 
 namespace Hyena.Data.Gui
@@ -66,7 +67,12 @@ namespace Hyena.Data.Gui
             changing_style = false;
 
             base.OnStyleSet (old_style);
-            RecomputeRowHeight = true;
+
+            // FIXME: legacy list foo
+            if (ViewLayout == null) {
+                OnInvalidateMeasure ();
+            }
+
             theme = Hyena.Gui.Theming.ThemeEngine.CreateTheme (this);
 
             // Save the drawable so we can reuse it
@@ -86,12 +92,13 @@ namespace Hyena.Data.Gui
 
         protected override bool OnExposeEvent (EventExpose evnt)
         {
-            Rectangle damage = new Rectangle ();
+            var damage = new Rectangle ();
             foreach (Rectangle rect in evnt.Region.GetRectangles ()) {
                 damage = damage.Union (rect);
             }
 
             cairo_context = CairoHelper.Create (evnt.Window);
+
             if (pango_layout == null) {
                 pango_layout = CairoExtensions.CreateLayout (this, cairo_context);
             }
@@ -99,21 +106,36 @@ namespace Hyena.Data.Gui
             cell_context.Context = cairo_context;
             cell_context.Layout = pango_layout;
 
+            // FIXME: legacy list foo
+            if (ViewLayout == null) {
+                OnMeasure ();
+            }
+
             Theme.DrawFrameBackground (cairo_context, Allocation, true);
-            if (header_visible && column_controller != null) {
+
+            // FIXME: ViewLayout will never be null in the future but we'll need
+            // to deterministically render a header somehow...
+            if (header_visible && ViewLayout == null && column_controller != null) {
                 PaintHeader (damage);
             }
 
             if (Model != null) {
-                PaintRows (damage);
+                // FIXME: ViewLayout will never be null in
+                // the future, PaintList will go away
+                if (ViewLayout == null) {
+                    PaintList (damage);
+                } else {
+                    PaintView ((Rect)damage);
+                }
             }
 
             // Focused frame border is bolder than BorderWidth,
             // draw it after the rows to avoid visual artifacts.
-            if (HasFocus)
+            if (HasFocus) {
                 Theme.DrawFrameBorderFocused (cairo_context, Allocation);
-            else
+            } else {
                 Theme.DrawFrameBorder (cairo_context, Allocation);
+            }
 
             PaintDraggingColumn (damage);
 
@@ -121,6 +143,8 @@ namespace Hyena.Data.Gui
 
             return true;
         }
+
+#region Header Rendering
 
         private void PaintHeader (Rectangle clip)
         {
@@ -203,8 +227,16 @@ namespace Hyena.Data.Gui
             }
         }
 
-        private void PaintRows (Rectangle clip)
+#endregion
+
+#region List Rendering
+
+        private void PaintList (Rectangle clip)
         {
+            if (ChildSize.Height <= 0) {
+                return;
+            }
+
             // TODO factor this out?
             // Render the sort effect to the GdkWindow.
             if (sort_column_index != -1 && (!pressed_column_is_dragging || pressed_column_index != sort_column_index)) {
@@ -223,9 +255,9 @@ namespace Hyena.Data.Gui
             cell_context.TextAsForeground = false;
 
             int vadjustment_value = VadjustmentValue;
-            int first_row = vadjustment_value / RowHeight;
+            int first_row = vadjustment_value / ChildSize.Height;
             int last_row = Math.Min (model.Count, first_row + RowsInView);
-            int offset = list_rendering_alloc.Y - vadjustment_value % RowHeight;
+            int offset = list_rendering_alloc.Y - vadjustment_value % ChildSize.Height;
 
             Rectangle selected_focus_alloc = Rectangle.Zero;
             Rectangle single_list_alloc = new Rectangle ();
@@ -233,7 +265,7 @@ namespace Hyena.Data.Gui
             single_list_alloc.X = list_rendering_alloc.X - HadjustmentValue;
             single_list_alloc.Y = offset;
             single_list_alloc.Width = list_rendering_alloc.Width + HadjustmentValue;
-            single_list_alloc.Height = RowHeight;
+            single_list_alloc.Height = ChildSize.Height;
 
             int selection_height = 0;
             int selection_y = 0;
@@ -341,10 +373,14 @@ namespace Hyena.Data.Gui
             bool bold = IsRowBold (item);
 
             Rectangle cell_area = new Rectangle ();
-            cell_area.Height = RowHeight;
+            cell_area.Height = ChildSize.Height;
             cell_area.Y = area.Y;
 
+            cell_context.ViewRowIndex = cell_context.ModelRowIndex = row_index;
+
             for (int ci = 0; ci < column_cache.Length; ci++) {
+                cell_context.ViewColumnIndex = ci;
+
                 if (pressed_column_is_dragging && pressed_column_index == ci) {
                     continue;
                 }
@@ -424,18 +460,75 @@ namespace Hyena.Data.Gui
             cairo_context.Stroke ();
         }
 
+#endregion
+
+#region View Layout Rendering
+
+        private void PaintView (Rect clip)
+        {
+            clip.Intersect ((Rect)list_rendering_alloc);
+            cairo_context.Rectangle ((Cairo.Rectangle)clip);
+            cairo_context.Clip ();
+
+            cell_context.Clip = (Gdk.Rectangle)clip;
+            cell_context.TextAsForeground = false;
+
+            selected_rows.Clear ();
+
+            for (int layout_index = 0; layout_index < ViewLayout.ChildCount; layout_index++) {
+                var layout_child = ViewLayout[layout_index];
+                var child_allocation = layout_child.Allocation;
+
+                if (!child_allocation.IntersectsWith (clip) || layout_child.ModelRowIndex >= Model.Count) {
+                    continue;
+                }
+
+                if (Selection != null && Selection.Contains (layout_child.ModelRowIndex)) {
+                    selected_rows.Add (layout_child.ModelRowIndex);
+
+                    var selection_color = Theme.Colors.GetWidgetColor (GtkColorClass.Background, StateType.Selected);
+                    if (!HasFocus || HeaderFocused) {
+                        selection_color = CairoExtensions.ColorShade (selection_color, 1.1);
+                    }
+
+                    Theme.DrawRowSelection (cairo_context,
+                        (int)child_allocation.X, (int)child_allocation.Y,
+                        (int)child_allocation.Width, (int)child_allocation.Height,
+                        true, true, selection_color, CairoCorners.All);
+
+                    cell_context.State = StateType.Selected;
+                } else {
+                    cell_context.State = StateType.Normal;
+                }
+
+                cairo_context.Save ();
+                cairo_context.Translate (child_allocation.X, child_allocation.Y);
+                layout_child.Render (cell_context);
+                cairo_context.Restore ();
+            }
+
+            cairo_context.ResetClip ();
+        }
+
+#endregion
+
         protected void InvalidateList ()
         {
             if (IsRealized) {
-                QueueDrawArea (list_rendering_alloc.X, list_rendering_alloc.Y, list_rendering_alloc.Width, list_rendering_alloc.Height);
+                QueueDirtyRegion (list_rendering_alloc);
             }
         }
 
         private void InvalidateHeader ()
         {
             if (IsRealized) {
-                QueueDrawArea (header_rendering_alloc.X, header_rendering_alloc.Y, header_rendering_alloc.Width, header_rendering_alloc.Height);
+                QueueDirtyRegion (header_rendering_alloc);
             }
+        }
+
+        protected void QueueDirtyRegion ()
+        {
+            QueueDirtyRegion (list_rendering_alloc);
         }
 
         protected virtual void ColumnCellDataProvider (ColumnCell cell, object boundItem)
@@ -451,44 +544,45 @@ namespace Hyena.Data.Gui
             }
         }
 
-        private ListViewRowHeightHandler row_height_handler;
-        public virtual ListViewRowHeightHandler RowHeightProvider {
-            get { return row_height_handler; }
-            set {
-                if (value != row_height_handler) {
-                    row_height_handler = value;
-                    RecomputeRowHeight = true;
-                }
+// FIXME: Obsolete all this measure stuff on the view since it's in the layout
+#region Measuring
+
+        private Gdk.Size child_size = Gdk.Size.Empty;
+        public Gdk.Size ChildSize {
+            get { return child_size; }
+        }
+
+        private bool measure_pending;
+
+        protected virtual void OnInvalidateMeasure ()
+        {
+            measure_pending = true;
+            if (IsMapped && IsRealized) {
+                QueueDirtyRegion ();
             }
         }
 
-        private bool recompute_row_height = true;
-        protected bool RecomputeRowHeight {
-            get { return recompute_row_height; }
-            set {
-                recompute_row_height = value;
-                if (value && IsMapped && IsRealized) {
-                    QueueDraw ();
-                }
-            }
+        protected virtual Gdk.Size OnMeasureChild ()
+        {
+            return ViewLayout != null
+                ? new Gdk.Size ((int)ViewLayout.ChildSize.Width, (int)ViewLayout.ChildSize.Height)
+                : new Gdk.Size (0, ColumnCellText.ComputeRowHeight (this));
         }
 
-        private int row_height = 32;
-        public int RowHeight {
-            get {
-                if (RecomputeRowHeight) {
-                    row_height = RowHeightProvider != null
-                        ? RowHeightProvider (this)
-                        : ColumnCellText.ComputeRowHeight (this);
-
-                    header_height = 0;
-                    MoveResize (Allocation);
-
-                    RecomputeRowHeight = false;
-                }
-
-                return row_height;
+        private void OnMeasure ()
+        {
+            if (!measure_pending) {
+                return;
             }
+
+            measure_pending = false;
+
+            header_height = 0;
+            child_size = OnMeasureChild ();
+            UpdateAdjustments ();
         }
+
+#endregion
+
     }
 }

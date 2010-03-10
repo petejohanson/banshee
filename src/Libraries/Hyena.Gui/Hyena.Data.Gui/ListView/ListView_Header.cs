@@ -265,7 +265,7 @@ namespace Hyena.Data.Gui
             InvalidateColumnCache ();
             RegenerateColumnCache ();
             UpdateAdjustments ();
-            QueueDraw ();
+            QueueDirtyRegion ();
         }
 
         protected virtual void OnColumnLeftClicked (Column clickedColumn)
@@ -417,7 +417,7 @@ namespace Hyena.Data.Gui
             resizing_column.Column.Width += resize_delta;
 
             RegenerateColumnCache ();
-            QueueDraw ();
+            QueueDirtyRegion ();
         }
 
         private Column GetColumnForResizeHandle (int x)
@@ -528,7 +528,8 @@ namespace Hyena.Data.Gui
         private int header_height = 0;
         private int HeaderHeight {
             get {
-                if (!header_visible) {
+                // FIXME: ViewLayout should have the header info and never be null
+                if (!header_visible || ViewLayout != null) {
                     return 0;
                 }
 

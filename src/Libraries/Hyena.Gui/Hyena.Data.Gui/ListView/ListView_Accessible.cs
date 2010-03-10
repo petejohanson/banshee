@@ -59,9 +59,9 @@ namespace Hyena.Data.Gui
         public Gdk.Rectangle GetColumnCellExtents (int row, int column, bool clip, Atk.CoordType coord_type)
         {
             int width = GetColumnWidth (column);
-            int height = RowHeight;
+            int height = ChildSize.Height;
 
-            int y = (int)GetYAtRow (row) - VadjustmentValue + ListAllocation.Y;
+            int y = (int)GetViewPointForModelRow (row).Y - VadjustmentValue + ListAllocation.Y;
 
             int x = ListAllocation.X - HadjustmentValue;
             for (int index=0;index<column;index++)
@@ -127,7 +127,7 @@ namespace Hyena.Data.Gui
 
             CachedColumn cached_column = GetCachedColumnForColumn (column);
 
-            row = GetRowAtY (y);
+            row = GetModelRowAt (x, y);
             col = cached_column.Index;
         }
 

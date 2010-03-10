@@ -44,14 +44,14 @@ namespace Banshee.Collection.Gui
         {
         }
 
-        public int ComputeRowHeight (Widget widget)
+        public override Gdk.Size Measure (Widget widget)
         {
-            int lw, lh;
-            Pango.Layout layout = new Pango.Layout (widget.PangoContext);
-            layout.SetMarkup ("<b>W</b>\n<small><i>W</i></small>");
-            layout.GetPixelSize (out lw, out lh);
-            layout.Dispose ();
-            return lh + 8;
+            using (var layout = new Pango.Layout (widget.PangoContext)) {
+                int lw, lh;
+                layout.SetMarkup ("<b>W</b>\n<small><i>W</i></small>");
+                layout.GetPixelSize (out lw, out lh);
+                return new Gdk.Size (0, lh + 8);
+            }
         }
 
         public override void Render (CellContext context, StateType state, double cellWidth, double cellHeight)

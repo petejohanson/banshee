@@ -36,7 +36,7 @@ popd &>/dev/null
 source "$envfile"
 
 CONFIGURE_ARGS="
-	--disable-mtp
+	--disable-mtp \
 	--disable-daap
 	--disable-ipod
 	--disable-boo

@@ -33,7 +33,7 @@ namespace Hyena.Gui.Theming
 {
     public class ThemeContext
     {
-        private double radius = 3.0;
+        private double radius = 0.0;
         public double Radius {
             get { return radius; }
             set { radius = value; }

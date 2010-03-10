@@ -33,6 +33,7 @@ using System;
 using Gtk;
 
 using Hyena.Collections;
+using Hyena.Gui.Canvas;
 using Selection = Hyena.Collections.Selection;
 
 namespace Hyena.Data.Gui
@@ -141,15 +142,15 @@ namespace Hyena.Data.Gui
             }
 
             // Scroll if needed
-            double y_at_row = GetYAtRow (row_index);
+            double y_at_row = GetViewPointForModelRow (row_index).Y;
             if (align_y) {
                 if (y_at_row < VadjustmentValue) {
                     ScrollTo (y_at_row);
-                } else if (vadjustment != null && (y_at_row + RowHeight) > (vadjustment.Value + vadjustment.PageSize)) {
-                    ScrollTo (y_at_row + RowHeight - (vadjustment.PageSize));
+                } else if (vadjustment != null && (y_at_row + ChildSize.Height) > (vadjustment.Value + vadjustment.PageSize)) {
+                    ScrollTo (y_at_row + ChildSize.Height - (vadjustment.PageSize));
                 }
             } else if (vadjustment != null) {
-                ScrollTo (vadjustment.Value + ((row_index - Selection.FocusedIndex) * RowHeight));
+                ScrollTo (vadjustment.Value + y_at_row - GetViewPointForModelRow (Selection.FocusedIndex).Y);
             }
 
             Selection.FocusedIndex = row_index;
@@ -160,6 +161,9 @@ namespace Hyena.Data.Gui
         protected override bool OnKeyPressEvent (Gdk.EventKey press)
         {
             bool handled = false;
+            // FIXME: hard-coded grid logic here...
+            bool grid = ViewLayout != null;
+            int items_per_row = grid ? 1 : 1;
 
             switch (press.Key) {
                 case Gdk.Key.a:
@@ -180,8 +184,9 @@ namespace Hyena.Data.Gui
                 case Gdk.Key.K:
                 case Gdk.Key.Up:
                 case Gdk.Key.KP_Up:
-                    if (!HeaderFocused)
-                        handled = KeyboardScroll (press.State, -1, true);
+                    if (!HeaderFocused) {
+                        handled = KeyboardScroll (press.State, -items_per_row, true);
+                    }
                     break;
 
                 case Gdk.Key.j:
@@ -189,40 +194,44 @@ namespace Hyena.Data.Gui
                 case Gdk.Key.Down:
                 case Gdk.Key.KP_Down:
                     if (!HeaderFocused) {
-                        handled = KeyboardScroll (press.State, 1, true);
-                    } else if (HeaderFocused) {
+                        handled = KeyboardScroll (press.State, items_per_row, true);
+                    } else {
                         handled = true;
                         HeaderFocused = false;
                     }
                     break;
                 case Gdk.Key.Right:
                 case Gdk.Key.KP_Right:
-                    if (ActiveColumn + 1 < column_cache.Length) {
+                    handled = true;
+                    if (grid && !HeaderFocused) {
+                        handled = KeyboardScroll (press.State, 1, true);
+                    } else if (ActiveColumn + 1 < column_cache.Length) {
                         ActiveColumn++;
                         InvalidateHeader ();
                     }
-                    handled = true;
                     break;
                 case Gdk.Key.Left:
                 case Gdk.Key.KP_Left:
-                    if (ActiveColumn - 1 >= 0) {
+                    handled = true;
+                    if (grid && !HeaderFocused) {
+                        handled = KeyboardScroll (press.State, -1, true);
+                    } else if (ActiveColumn - 1 >= 0) {
                         ActiveColumn--;
                         InvalidateHeader ();
                     }
-                    handled = true;
                     break;
                 case Gdk.Key.Page_Up:
                 case Gdk.Key.KP_Page_Up:
                     if (!HeaderFocused)
                         handled = vadjustment != null && KeyboardScroll (press.State,
-                            (int)(-vadjustment.PageIncrement / (double)RowHeight), false);
+                            (int)(-vadjustment.PageIncrement / (double)ChildSize.Height) * items_per_row, false);
                     break;
 
                 case Gdk.Key.Page_Down:
                 case Gdk.Key.KP_Page_Down:
                     if (!HeaderFocused)
                         handled = vadjustment != null && KeyboardScroll (press.State,
-                            (int)(vadjustment.PageIncrement / (double)RowHeight), false);
+                            (int)(vadjustment.PageIncrement / (double)ChildSize.Height) * items_per_row, false);
                     break;
 
                 case Gdk.Key.Home:
@@ -292,10 +301,76 @@ namespace Hyena.Data.Gui
             return false;
         }
 
-#region Cell Event Proxy
+#region DataViewLayout Interaction Events
+
+        private DataViewChild last_layout_child;
+
+        private bool LayoutChildHandlesEvent (Gdk.Event evnt, bool press)
+        {
+            if (ViewLayout == null) {
+                return false;
+            }
+
+            var point = new Point (0, 0);
+            bool handled = false;
+
+            var evnt_button = evnt as Gdk.EventButton;
+            var evnt_motion = evnt as Gdk.EventMotion;
+
+            if (evnt_motion != null) {
+                point = new Point (evnt_motion.X, evnt_motion.Y);
+            } else if (evnt_button != null) {
+                point = new Point (evnt_button.X, evnt_button.Y);
+            } else if (evnt is Gdk.EventCrossing && last_layout_child != null) {
+                last_layout_child.CursorLeaveEvent ();
+                last_layout_child = null;
+                return false;
+            }
+
+            var child = GetLayoutChildAt (point);
+            if (child == null) {
+                return false;
+            }
+
+            point.Offset (-child.VirtualAllocation.X, -child.VirtualAllocation.Y);
+
+            if (evnt_motion != null) {
+                if (last_layout_child != child) {
+                    if (last_layout_child != null) {
+                        last_layout_child.CursorLeaveEvent ();
+                    }
+                    last_layout_child = child;
+                    child.CursorEnterEvent ();
+                }
+                handled = child.CursorMotionEvent (point);
+            } else if (evnt_button != null) {
+                handled = child.ButtonEvent (point, press, evnt_button.Button);
+            }
+
+            return handled;
+        }
+
+        private DataViewChild GetLayoutChildAt (Point point)
+        {
+            point.Offset (-list_interaction_alloc.X, -list_interaction_alloc.Y);
+            return ViewLayout.FindChildAtPoint (point);
+        }
+
+#endregion
+
+#region Cell Event Proxy (FIXME: THIS ENTIRE SECTION IS OBSOLETE YAY YAY YAY!)
 
         private IInteractiveCell last_icell;
         private Gdk.Rectangle last_icell_area = Gdk.Rectangle.Zero;
+
+        private void InvalidateLastIcell ()
+        {
+            if (last_icell != null && last_icell.PointerLeaveEvent ()) {
+                QueueDirtyRegion (last_icell_area);
+                last_icell = null;
+                last_icell_area = Gdk.Rectangle.Zero;
+            }
+        }
 
         private void ProxyEventToCell (Gdk.Event evnt, bool press)
         {
@@ -308,20 +383,29 @@ namespace Hyena.Data.Gui
 
             if (last_icell_area != icell_area) {
                 if (last_icell != null && last_icell.PointerLeaveEvent ()) {
-                    QueueDrawArea (last_icell_area.X - xoffset, last_icell_area.Y - yoffset,
-                        last_icell_area.Width, last_icell_area.Height);
+                    QueueDirtyRegion (new Gdk.Rectangle () {
+                        X = last_icell_area.X - xoffset,
+                        Y = last_icell_area.Y - yoffset,
+                        Width = last_icell_area.Width,
+                        Height = last_icell_area.Height
+                    });
                 }
                 last_icell = icell;
                 last_icell_area = icell_area;
             }
 
             if (redraw) {
-                QueueDrawArea (icell_area.X - xoffset, icell_area.Y - yoffset,
-                    icell_area.Width, icell_area.Height);
+                QueueDirtyRegion (new Gdk.Rectangle () {
+                    X = icell_area.X - xoffset,
+                    Y = icell_area.Y - yoffset,
+                    Width = icell_area.Width,
+                    Height = icell_area.Height
+                });
             }
         }
 
-        private bool ProxyEventToCell (Gdk.Event evnt, bool press, out IInteractiveCell icell, out Gdk.Rectangle icell_area)
+        private bool ProxyEventToCell (Gdk.Event evnt, bool press,
+            out IInteractiveCell icell, out Gdk.Rectangle icell_area)
         {
             icell = null;
             icell_area = Gdk.Rectangle.Zero;
@@ -330,8 +414,8 @@ namespace Hyena.Data.Gui
             int x, y, row_index;
             x = y = row_index = 0;
 
-            Gdk.EventButton evnt_button = evnt as Gdk.EventButton;
-            Gdk.EventMotion evnt_motion = evnt as Gdk.EventMotion;
+            var evnt_button = evnt as Gdk.EventButton;
+            var evnt_motion = evnt as Gdk.EventMotion;
 
             if (evnt_motion != null) {
                 evnt_x = (int)evnt_motion.X;
@@ -356,13 +440,14 @@ namespace Hyena.Data.Gui
             // Turn the view-absolute coordinates into cell-relative coordinates
             CachedColumn cached_column = GetCachedColumnForColumn (column);
             x -= cached_column.X1 - HadjustmentValue;
-            int page_offset = VadjustmentValue % RowHeight;
-            y = (y + page_offset) % RowHeight;
+            int page_offset = VadjustmentValue % ChildSize.Height;
+            y = (y + page_offset) % ChildSize.Height;
 
+            var view_point = GetViewPointForModelRow (row_index);
+            icell_area.Y = (int)view_point.Y + list_interaction_alloc.Y + Allocation.Y;
             icell_area.X = cached_column.X1 + Allocation.X;
-            icell_area.Y = (int)GetYAtRow (row_index) + list_interaction_alloc.Y + Allocation.Y;
             icell_area.Width = cached_column.Width;
-            icell_area.Height = RowHeight;
+            icell_area.Height = ChildSize.Height;
 
             // Send the cell a synthesized input event
             if (evnt_motion != null) {
@@ -387,7 +472,7 @@ namespace Hyena.Data.Gui
             x -= list_interaction_alloc.X;
             y -= list_interaction_alloc.Y;
 
-            row_index = GetRowAtY (y);
+            row_index = GetModelRowAt (x, y);
             if (row_index < 0 || row_index >= Model.Count) {
                 return false;
             }
@@ -467,14 +552,19 @@ namespace Hyena.Data.Gui
                 return true;
             }
 
+            int x = (int)evnt.X - list_interaction_alloc.X;
             int y = (int)evnt.Y - list_interaction_alloc.Y;
 
             GrabFocus ();
 
-            int row_index = GetRowAtY (y);
+            int row_index = GetModelRowAt (x, y);
 
             if (row_index < 0 || row_index >= Model.Count) {
                 Gtk.Drag.SourceUnset (this);
+                return true;
+            }
+
+            if (LayoutChildHandlesEvent (evnt, true)) {
                 return true;
             }
 
@@ -520,7 +610,7 @@ namespace Hyena.Data.Gui
                     }
                 }
 
-                FocusRow (row_index);
+                FocusModelRow (row_index);
 
                 // Now that we've worked out the selections, open the context menu
                 if (evnt.Button == 3) {
@@ -558,6 +648,9 @@ namespace Hyena.Data.Gui
                 return OnHeaderButtonRelease (evnt);
             } else if (list_interaction_alloc.Contains ((int)evnt.X, (int)evnt.Y) && model != null &&
                 (evnt.State & (Gdk.ModifierType.ShiftMask | Gdk.ModifierType.ControlMask)) == 0) {
+                if (LayoutChildHandlesEvent (evnt, false)) {
+                    return true;
+                }
                 ProxyEventToCell (evnt, false);
                 return OnListButtonRelease (evnt);
             }
@@ -586,11 +679,12 @@ namespace Hyena.Data.Gui
                 return true;
             }
 
+            int x = (int)evnt.X - list_interaction_alloc.X;
             int y = (int)evnt.Y - list_interaction_alloc.Y;
 
             GrabFocus ();
 
-            int row_index = GetRowAtY (y);
+            int row_index = GetModelRowAt (x, y);
 
             if (row_index >= Model.Count) {
                 return true;
@@ -606,7 +700,7 @@ namespace Hyena.Data.Gui
                 if (Selection.Count > 1) {
                     Selection.Clear (false);
                     Selection.Select (row_index);
-                    FocusRow (row_index);
+                    FocusModelRow (row_index);
                     InvalidateList ();
                 }
             }
@@ -641,6 +735,10 @@ namespace Hyena.Data.Gui
 
             if (resizing_column_index >= 0) {
                 ResizeColumn (x);
+            }
+
+            if (LayoutChildHandlesEvent (evnt, false)) {
+                return true;
             }
 
             ProxyEventToCell (evnt, false);
@@ -686,7 +784,7 @@ namespace Hyena.Data.Gui
 
             pressed_column_x_drag = x - pressed_column_x_offset - (pressed_column_x_start_hadjustment - HadjustmentValue);
 
-            QueueDraw ();
+            QueueDirtyRegion ();
             return true;
         }
 
@@ -701,6 +799,9 @@ namespace Hyena.Data.Gui
         {
             if (evnt.Mode == Gdk.CrossingMode.Normal) {
                 GdkWindow.Cursor = null;
+                if (LayoutChildHandlesEvent (evnt, false)) {
+                    return true;
+                }
                 ProxyEventToCell (evnt, false);
             }
             return base.OnLeaveNotifyEvent (evnt);
@@ -746,32 +847,44 @@ namespace Hyena.Data.Gui
                 pressed_column_is_dragging = false;
                 pressed_column_index = -1;
                 GdkWindow.Cursor = null;
-                QueueDraw ();
+                QueueDirtyRegion ();
                 return true;
             }
             return false;
         }
 
-        protected int GetRowAtY (int y)
+        // FIXME: replace all invocations with direct call to ViewLayout
+        protected int GetModelRowAt (int x, int y)
         {
-            if (y < 0) {
-                return -1;
+            if (ViewLayout != null) {
+                var child = ViewLayout.FindChildAtPoint (new Point (x, y));
+                return child == null ? -1 : child.ModelRowIndex;
+            } else {
+                if (y < 0 || ChildSize.Height <= 0) {
+                    return -1;
+                }
+
+                int v_page_offset = VadjustmentValue % ChildSize.Height;
+                int first_row = VadjustmentValue / ChildSize.Height;
+                int row_offset = (y + v_page_offset) / ChildSize.Height;
+                return first_row + row_offset;
             }
-
-            int page_offset = VadjustmentValue % RowHeight;
-            int first_row = VadjustmentValue / RowHeight;
-            int row_offset = (y + page_offset) / RowHeight;
-
-            return first_row + row_offset;
         }
 
-        protected double GetYAtRow (int row)
+        protected Gdk.Point GetViewPointForModelRow (int row)
         {
-            double y = (double)RowHeight * row;
-            return y;
+            // FIXME: hard-coded grid logic
+            if (ViewLayout != null) {
+                var child = ViewLayout.FindChildAtModelRowIndex (row);
+                return child == null
+                    ? new Gdk.Point (0, 0)
+                    : new Gdk.Point ((int)child.Allocation.X, (int)child.Allocation.Y);
+            } else {
+                return new Gdk.Point (0, ChildSize.Height * row);
+            }
         }
 
-        private void FocusRow (int index)
+        private void FocusModelRow (int index)
         {
             Selection.FocusedIndex = index;
         }
@@ -795,6 +908,8 @@ namespace Hyena.Data.Gui
                 vadjustment = vadj;
             }
 
+            // FIXME: with ViewLayout, hadj and vadj should be unified
+            // since the layout will take the header into account...
             if (hadjustment != null) {
                 hadjustment.Upper = header_width;
                 hadjustment.StepIncrement = 10.0;
@@ -804,8 +919,15 @@ namespace Hyena.Data.Gui
             }
 
             if (vadjustment != null && model != null) {
-                vadjustment.Upper = (RowHeight * (model.Count));
-                vadjustment.StepIncrement = RowHeight;
+                // FIXME: hard-coded grid logic
+                if (ViewLayout != null) {
+                    vadjustment.Upper = ViewLayout.VirtualSize.Height;
+                    vadjustment.StepIncrement = ViewLayout.ChildSize.Height;
+                } else {
+                    vadjustment.Upper = ChildSize.Height * model.Count;
+                    vadjustment.StepIncrement = ChildSize.Height;
+                }
+
                 if (vadjustment.Value + vadjustment.PageSize > vadjustment.Upper) {
                     vadjustment.Value = vadjustment.Upper - vadjustment.PageSize;
                 }
@@ -822,13 +944,23 @@ namespace Hyena.Data.Gui
 
         private void OnHadjustmentChanged (object o, EventArgs args)
         {
+            InvalidateLastIcell ();
             InvalidateHeader ();
             InvalidateList ();
+
+            if (ViewLayout != null) {
+                ViewLayout.UpdatePosition (HadjustmentValue, VadjustmentValue);
+            }
         }
 
         private void OnVadjustmentChanged (object o, EventArgs args)
         {
+            InvalidateLastIcell ();
             InvalidateList ();
+
+            if (ViewLayout != null) {
+                ViewLayout.UpdatePosition (HadjustmentValue, VadjustmentValue);
+            }
         }
 
         public void ScrollTo (double val)
@@ -845,17 +977,17 @@ namespace Hyena.Data.Gui
 
         public void ScrollTo (int index)
         {
-            ScrollTo (GetYAtRow (index));
+            ScrollTo (GetViewPointForModelRow (index).Y);
         }
 
         public void CenterOn (int index)
         {
-            ScrollTo (index - RowsInView/2 + 1);
+            ScrollTo (index - RowsInView / 2 + 1);
         }
 
         public bool IsRowVisible (int index)
         {
-            double y = GetYAtRow (index);
+            double y = GetViewPointForModelRow (index).Y;
             return vadjustment.Value <= y && y < vadjustment.Value + vadjustment.PageSize;
         }
 
@@ -863,7 +995,7 @@ namespace Hyena.Data.Gui
         {
             if (Selection != null && Selection.Count > 0 && !Selection.AllSelected) {
                 bool selection_in_view = false;
-                int first_row = GetRowAtY (0);
+                int first_row = GetModelRowAt (0, 0);
                 for (int i = 0; i < RowsInView; i++) {
                     if (Selection.Contains (first_row + i)) {
                         selection_in_view = true;

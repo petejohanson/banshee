@@ -9,6 +9,7 @@ endif
 
 SOURCES =  \
 	Banshee.Addins.Gui/AddinView.cs \
+	Banshee.CairoGlyphs/BansheeLineLogo.cs \
 	Banshee.Collection.Gui/AlbumListView.cs \
 	Banshee.Collection.Gui/ArtistListView.cs \
 	Banshee.Collection.Gui/ArtworkManager.cs \
@@ -28,6 +29,7 @@ SOURCES =  \
 	Banshee.Collection.Gui/ColumnCellTrackAndCount.cs \
 	Banshee.Collection.Gui/ColumnCellTrackNumber.cs \
 	Banshee.Collection.Gui/CoverArtEditor.cs \
+	Banshee.Collection.Gui/DataViewChildAlbum.cs \
 	Banshee.Collection.Gui/DefaultColumnController.cs \
 	Banshee.Collection.Gui/PersistentColumnController.cs \
 	Banshee.Collection.Gui/QueryFilterView.cs \

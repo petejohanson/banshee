@@ -32,75 +32,64 @@ namespace Hyena.Gui.Theatrics
 {
     public class Actor<T>
     {
-        private T target;
-
         private DateTime start_time;
-        private uint duration;
-        private double frames;
-        private double percent;
-        private bool can_expire = true;
+        private DateTime last_step_time;
 
-        public Actor (T target, uint duration)
+        public Actor (T target, double duration)
         {
-            this.target = target;
-            this.duration = duration;
+            Target = target;
+            Duration = duration;
+            CanExpire = true;
             Reset ();
         }
 
         public void Reset ()
         {
-            Reset (duration);
+            Reset (Duration);
         }
 
-        public void Reset (uint duration)
+        public void Reset (double duration)
         {
             start_time = DateTime.Now;
-            frames = 0.0;
-            percent = 0.0;
-            this.duration = duration;
+            last_step_time = DateTime.Now;
+            Frames = 0.0;
+            Percent = 0.0;
+            Duration = duration;
         }
 
         public virtual void Step ()
         {
-            if (!CanExpire && percent >= 1.0) {
+            if (!CanExpire && Percent >= 1.0) {
                 Reset ();
             }
 
-            percent = (DateTime.Now - start_time).TotalMilliseconds / duration;
-            frames++;
+            StepDelta = (DateTime.Now - last_step_time).TotalMilliseconds;
+            last_step_time = DateTime.Now;
+            Percent = PClamp ((last_step_time - start_time).TotalMilliseconds / Duration);
+            StepDeltaPercent = PClamp (StepDelta / Duration);
+            Frames++;
+        }
+
+        private static double PClamp (double value)
+        {
+            return Math.Max (0.1, Math.Min (1.0, value));
+        }
+
+        public bool CanExpire { get; set; }
+        public T Target { get; private set; }
+        public double Duration { get; private set; }
+        public DateTime StartTime { get; private set; }
+        public double StepDelta { get; private set; }
+        public double StepDeltaPercent { get; private set; }
+        public double Percent { get; private set; }
+        public double Frames { get; private set; }
+
+        public double FramesPerSecond {
+            get { return Frames / ((double)Duration / 1000.0); }
         }
 
         public bool Expired {
-            get { return CanExpire && percent >= 1.0; }
-        }
-
-        public bool CanExpire {
-            get { return can_expire; }
-            set { can_expire = value; }
-        }
-
-        public T Target {
-            get { return target; }
-        }
-
-        public double Duration {
-            get { return duration; }
-        }
-
-        public DateTime StartTime {
-            get { return start_time; }
-        }
-
-        public double Frames {
-            get { return frames; }
-        }
-
-        public double FramesPerSecond {
-            get { return frames / ((double)duration / 1000.0); }
-        }
-
-        public double Percent {
-            get { return Math.Max (0.0, Math.Min (1.0, percent)); }
+            get { return CanExpire && Percent >= 1.0; }
         }
     }
 }

@@ -176,11 +176,33 @@ namespace Hyena.Data.Gui
                 model.RowsInView = RowsInView;
             }
 
+            OnInvalidateMeasure ();
             InvalidateList ();
+
+            if (ViewLayout != null) {
+                ViewLayout.Allocate ((Hyena.Gui.Canvas.Rect)list_rendering_alloc);
+            }
         }
 
+        // FIXME: obsolete
         protected int RowsInView {
-            get { return (int) Math.Ceiling ((list_rendering_alloc.Height + RowHeight) / (double) RowHeight); }
+            get {
+                if (ChildSize.Height <= 0) {
+                    return 0;
+                }
+
+                return (int)Math.Ceiling ((list_rendering_alloc.Height +
+                    ChildSize.Height) / (double)ChildSize.Height);
+            }
+        }
+
+        private DataViewLayout view_layout;
+        protected DataViewLayout ViewLayout {
+            get { return view_layout; }
+            set {
+                view_layout = value;
+                QueueResize ();
+            }
         }
     }
 }

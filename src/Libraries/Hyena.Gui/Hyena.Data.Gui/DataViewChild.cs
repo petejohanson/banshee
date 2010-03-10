@@ -1,10 +1,10 @@
 //
-// ColumnCell.cs
+// DataViewChild.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2007 Novell, Inc.
+// Copyright 2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,63 +28,47 @@
 
 using System;
 using System.Reflection;
-using Gtk;
-using Cairo;
 
-using Hyena.Data.Gui.Accessibility;
+using Hyena.Gui.Canvas;
 
 namespace Hyena.Data.Gui
 {
-    public abstract class ColumnCell
+    public abstract class DataViewChild : CanvasItem
     {
-        private bool expand;
-        private string property, sub_property;
-        private PropertyInfo property_info, sub_property_info;
-        private object bound_object;
-        private object bound_object_parent;
+        public DataViewLayout ParentLayout { get; set; }
+        public int ModelRowIndex { get; set; }
 
-        public virtual Atk.Object GetAccessible (ICellAccessibleParent parent)
+        protected override void OnInvalidate (Rect area)
         {
-            return new ColumnCellAccessible (BoundObject, this, parent);
+            ParentLayout.View.QueueDirtyRegion (area);
         }
 
-        public virtual string GetTextAlternative (object obj)
-        {
-            return "";
-        }
+#region Data Binding
 
-        public ColumnCell (string property, bool expand)
-        {
-            Property = property;
-            Expand = expand;
-        }
+        private PropertyInfo property_info;
+        private PropertyInfo sub_property_info;
 
-        public void BindListItem (object item)
+        public void BindDataItem (object item)
         {
             if (item == null) {
-                bound_object_parent = null;
+                BoundObjectParent = null;
                 bound_object = null;
                 return;
             }
 
-            bound_object_parent = item;
+            BoundObjectParent = item;
 
-            if (property != null) {
-                EnsurePropertyInfo ();
-                bound_object = property_info.GetValue (bound_object_parent, null);
+            if (Property != null) {
+                EnsurePropertyInfo (Property, ref property_info, BoundObjectParent);
+                bound_object = property_info.GetValue (BoundObjectParent, null);
 
-                if (sub_property != null) {
-                    EnsurePropertyInfo (sub_property, ref sub_property_info, bound_object);
+                if (SubProperty != null) {
+                    EnsurePropertyInfo (SubProperty, ref sub_property_info, bound_object);
                     bound_object = sub_property_info.GetValue (bound_object, null);
                 }
             } else {
-                bound_object = bound_object_parent;
+                bound_object = BoundObjectParent;
             }
-        }
-
-        private void EnsurePropertyInfo ()
-        {
-            EnsurePropertyInfo (property, ref property_info, bound_object_parent);
         }
 
         private void EnsurePropertyInfo (string name, ref PropertyInfo prop, object obj)
@@ -94,48 +78,29 @@ namespace Hyena.Data.Gui
                 if (prop == null) {
                     throw new Exception (String.Format (
                         "In {0}, type {1} does not have property {2}",
-                        this, obj.GetType (), name
-                    ));
+                        this, obj.GetType (), name));
                 }
             }
-        }
-
-        public virtual void NotifyThemeChange ()
-        {
         }
 
         protected Type BoundType {
             get { return bound_object.GetType (); }
         }
 
+        private object bound_object;
         protected object BoundObject {
             get { return bound_object; }
             set {
-                if (property != null) {
-                    EnsurePropertyInfo ();
-                    property_info.SetValue (bound_object_parent, value, null);
+                if (Property != null) {
+                    EnsurePropertyInfo (Property, ref property_info, BoundObjectParent);
+                    property_info.SetValue (BoundObjectParent, value, null);
                 }
             }
         }
 
-        protected object BoundObjectParent {
-            get { return bound_object_parent; }
-        }
+        protected object BoundObjectParent { get; private set; }
 
-        public abstract void Render (CellContext context, StateType state, double cellWidth, double cellHeight);
-
-        public virtual Gdk.Size Measure (Gtk.Widget widget)
-        {
-            return Gdk.Size.Empty;
-        }
-
-        public bool Expand {
-            get { return expand; }
-            set { expand = value; }
-        }
-
-        public DataViewLayout ViewLayout { get; set; }
-
+        private string property;
         public string Property {
             get { return property; }
             set {
@@ -150,9 +115,56 @@ namespace Hyena.Data.Gui
             }
         }
 
-        public string SubProperty {
-            get { return sub_property; }
-            set { sub_property = value; }
+        public string SubProperty { get; set; }
+
+#endregion
+
+    }
+
+    public abstract class CanvasItem
+    {
+        public CanvasItem Parent { get; set; }
+        public Rect Allocation { get; set; }
+        public Rect VirtualAllocation { get; set; }
+
+        public Thickness Margin { get; set; }
+        public Thickness Padding { get; set; }
+
+        public abstract void Render (CellContext context);
+        public abstract void Arrange ();
+        public abstract Size Measure (Size available);
+
+        protected virtual void OnInvalidate (Rect area)
+        {
+        }
+
+        public void Invalidate (Rect area)
+        {
+            area.Offset (Allocation.X, Allocation.Y);
+            OnInvalidate (area);
+        }
+
+        public void Invalidate ()
+        {
+            Invalidate (Allocation);
+        }
+
+        public virtual bool ButtonEvent (Point cursor, bool pressed, uint button)
+        {
+            return false;
+        }
+
+        public virtual bool CursorMotionEvent (Point cursor)
+        {
+            return false;
+        }
+
+        public virtual void CursorEnterEvent ()
+        {
+        }
+
+        public virtual void CursorLeaveEvent ()
+        {
         }
     }
 }

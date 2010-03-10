@@ -18,6 +18,9 @@ SOURCES =  \
 	Hyena.Data.Gui/ColumnCellText.cs \
 	Hyena.Data.Gui/ColumnController.cs \
 	Hyena.Data.Gui/ColumnHeaderCellText.cs \
+	Hyena.Data.Gui/DataViewChild.cs \
+	Hyena.Data.Gui/DataViewLayout.cs \
+	Hyena.Data.Gui/DataViewLayoutGrid.cs \
 	Hyena.Data.Gui/IHeaderCell.cs \
 	Hyena.Data.Gui/IInteractiveCell.cs \
 	Hyena.Data.Gui/IListView.cs \
@@ -37,6 +40,10 @@ SOURCES =  \
 	Hyena.Data.Gui/ObjectListView.cs \
 	Hyena.Data.Gui/RowActivatedHandler.cs \
 	Hyena.Data.Gui/SortableColumn.cs \
+	Hyena.Gui.Canvas/Point.cs \
+	Hyena.Gui.Canvas/Rect.cs \
+	Hyena.Gui.Canvas/Size.cs \
+	Hyena.Gui.Canvas/Thickness.cs \
 	Hyena.Gui.Dialogs/ExceptionDialog.cs \
 	Hyena.Gui.Dialogs/VersionInformationDialog.cs \
 	Hyena.Gui.Theatrics/Actor.cs \
@@ -52,6 +59,7 @@ SOURCES =  \
 	Hyena.Gui.Theming/ThemeEngine.cs \
 	Hyena.Gui/ActionManager.cs \
 	Hyena.Gui/BaseWidgetAccessible.cs \
+	Hyena.Gui/CairoDamageDebugger.cs \
 	Hyena.Gui/CairoExtensions.cs \
 	Hyena.Gui/CleanRoomStartup.cs \
 	Hyena.Gui/CompositeUtils.cs \
@@ -64,6 +72,7 @@ SOURCES =  \
 	Hyena.Gui/GtkWorkarounds.cs \
 	Hyena.Gui/HyenaActionGroup.cs \
 	Hyena.Gui/PangoCairoHelper.cs \
+	Hyena.Gui/PangoExtensions.cs \
 	Hyena.Gui/PixbufImageSurface.cs \
 	Hyena.Gui/RatingRenderer.cs \
 	Hyena.Gui/ShadingTestWindow.cs \

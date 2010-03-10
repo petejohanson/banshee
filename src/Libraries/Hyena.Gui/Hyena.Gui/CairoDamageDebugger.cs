@@ -1,10 +1,10 @@
 //
-// IListModel.cs
+// CairoDamageDebugger.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2007 Novell, Inc.
+// Copyright 2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,32 +27,32 @@
 //
 
 using System;
+using Cairo;
 
-using Hyena.Collections;
-
-namespace Hyena.Data
+namespace Hyena.Gui
 {
-    public interface IListModel : ISelectable
+    public static class CairoDamageDebugger
     {
-        event EventHandler Cleared;
-        event EventHandler Reloaded;
+        private static Random rand = new Random ();
 
-        void Clear ();
-        void Reload ();
+        public static void RenderDamage (this Context cr, Gdk.Rectangle damage)
+        {
+            RenderDamage (cr, damage.X, damage.Y, damage.Width, damage.Height);
+        }
 
-        int Count { get; }
-        bool CanReorder { get; }
+        public static void RenderDamage (this Context cr, Cairo.Rectangle damage)
+        {
+            RenderDamage (cr, damage.X, damage.Y, damage.Width, damage.Height);
+        }
 
-        object GetItem (int index);
-    }
-
-    public interface IListModel<T> : IListModel
-    {
-        T this[int index] { get; }
-    }
-
-    public interface IObjectListModel : IListModel<object>
-    {
-        ColumnDescription [] ColumnDescriptions { get; }
+        public static void RenderDamage (this Context cr, double x, double y, double w, double h)
+        {
+            cr.Save ();
+            cr.LineWidth = 1.0;
+            cr.Color = CairoExtensions.RgbToColor ((uint)rand.Next (0, 0xffffff));
+            cr.Rectangle (x + 0.5, y + 0.5, w - 1, h - 1);
+            cr.Stroke ();
+            cr.Restore ();
+        }
     }
 }

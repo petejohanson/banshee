@@ -123,6 +123,11 @@ namespace Banshee.Sources
             OnReloaded ();
         }
 
+        public object GetItem (int index)
+        {
+            return this[index];
+        }
+
         public override int Count {
             get { return messages.Count; }
         }

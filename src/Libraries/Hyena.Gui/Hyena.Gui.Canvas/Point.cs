@@ -1,10 +1,10 @@
 //
-// TerseTrackListView.cs
+// Point.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,35 +28,59 @@
 
 using System;
 
-using Hyena.Data;
-using Hyena.Data.Gui;
-
-using Banshee.Collection;
-using Banshee.ServiceStack;
-using Banshee.Gui;
-
-namespace Banshee.Collection.Gui
+namespace Hyena.Gui.Canvas
 {
-    public class TerseTrackListView : BaseTrackListView
+    public struct Point
     {
-        private ColumnController column_controller;
-        private ColumnCellTrack renderer;
-        
-        public TerseTrackListView () : base ()
+        public double X { get; set; }
+        public double Y { get; set; }
+
+        public Point (double x, double y)
         {
-            renderer = new ColumnCellTrack ();
-
-            column_controller = new ColumnController ();
-            column_controller.Add (new Column ("Track", renderer, 1.0));
-
-            ColumnController = column_controller;
-
-            HeaderVisible = false;
+            X = x;
+            Y = y;
         }
 
-        protected override Gdk.Size OnMeasureChild ()
+        public void Offset (double dx, double dy)
         {
-            return renderer.Measure (this);
+            X += dx;
+            Y += dy;
+        }
+
+        public void Offset (Point delta)
+        {
+            X += delta.X;
+            Y += delta.Y;
+        }
+
+        public override bool Equals (object o)
+        {
+            return o is Point ? Equals ((Point)o) : false;
+        }
+
+        public bool Equals (Point value)
+        {
+            return value.X == X && value.Y == Y;
+        }
+
+        public static bool operator == (Point point1, Point point2)
+        {
+            return point1.X == point2.X && point1.Y == point2.Y;
+        }
+
+        public static bool operator != (Point point1, Point point2)
+        {
+            return !(point1 == point2);
+        }
+
+        public override int GetHashCode ()
+        {
+            return X.GetHashCode () ^ Y.GetHashCode ();
+        }
+
+        public override string ToString ()
+        {
+            return String.Format ("{0},{1}", X, Y);
         }
     }
 }
