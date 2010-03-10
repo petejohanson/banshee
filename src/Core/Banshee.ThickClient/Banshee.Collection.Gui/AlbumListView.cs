@@ -40,14 +40,28 @@ namespace Banshee.Collection.Gui
 {
     public class AlbumListView : TrackFilterListView<AlbumInfo>
     {
+        private ColumnCellAlbum renderer;
+
         public AlbumListView () : base ()
         {
-            ViewLayout = new DataViewLayoutGrid () {
-                ChildAllocator = () => new DataViewChildAlbum (),
-                View = this
-            };
+            if (!String.IsNullOrEmpty (Environment.GetEnvironmentVariable ("BANSHEE_DISABLE_GRID"))) {
+                column_controller.Add (new Column ("Album", renderer = new ColumnCellAlbum (), 1.0));
+                ColumnController = column_controller;
+            } else {
+                ViewLayout = new DataViewLayoutGrid () {
+                    ChildAllocator = () => new DataViewChildAlbum (),
+                    View = this
+                };
+            }
 
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.TrackInfoUpdated);
+        }
+
+        protected override Gdk.Size OnMeasureChild ()
+        {
+            return ViewLayout != null
+                ? base.OnMeasureChild ()
+                : new Gdk.Size (0, renderer.ComputeRowHeight (this));
         }
 
         private void OnPlayerEvent (PlayerEventArgs args)
