@@ -54,10 +54,9 @@ using Banshee.YouTube.Gui;
 
 namespace Banshee.YouTube
 {
-    public class YouTubePane : HBox
+    public class YouTubePane : Gtk.ScrolledWindow
     {
         private ContextPage yt_context_page;
-        private Gtk.ScrolledWindow results_sw;
         private TileView results_tv;
         private Label no_results_label = new Label (Catalog.GetString ("No videos found"));
         private Scheduler scheduler = new Scheduler ();
@@ -143,21 +142,8 @@ namespace Banshee.YouTube
 
             results_tv = new TileView (max_results_display);
 
-            results_sw = new Gtk.ScrolledWindow ();
-            results_sw.SetPolicy (PolicyType.Never, PolicyType.Automatic);
-            results_sw.ShadowType = ShadowType.EtchedIn;
-            results_sw.SizeAllocated += HandleSizeAllocated;
-
-            results_sw.Add (results_tv);
-            results_sw.ShowAll ();
-
-            Add (results_sw);
+            Add (results_tv);
             ShowAll ();
-        }
-
-        void HandleSizeAllocated(object o, SizeAllocatedArgs args)
-        {
-            SetSizeRequest (-1, args.Allocation.Height + (Allocation.Height - args.Allocation.Height));
         }
 
         protected override void OnStyleSet (Style previous_style)
@@ -222,7 +208,7 @@ namespace Banshee.YouTube
                 if (showing_results) {
                     if (cleanup) {
                         Remove (no_results_label);
-                        Add (results_sw);
+                        Add (results_tv);
                         ShowAll ();
                     }
 
@@ -231,7 +217,7 @@ namespace Banshee.YouTube
                     }
                     results_tv.ShowAll ();
                 } else if (cleanup) {
-                    Remove (results_sw);
+                    Remove (results_tv);
                     Add (no_results_label);
                     ShowAll ();
                 }
