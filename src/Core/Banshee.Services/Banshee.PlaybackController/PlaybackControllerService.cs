@@ -144,7 +144,11 @@ namespace Banshee.PlaybackController
 
                     CancelErrorTransition ();
                     // TODO why is this so long? any reason not to be instantaneous?
-                    Application.RunTimeout (250, EosTransition);
+                    error_transition_id = Application.RunTimeout (250, delegate {
+                        EosTransition ();
+                        RequestTrackHandler ();
+                        return true;
+                    });
                     break;
                 case PlayerEvent.StateChange:
                     if (((PlayerEventStateChangeArgs)args).Current != PlayerState.Loading) {
