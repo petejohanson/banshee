@@ -108,6 +108,10 @@ namespace Banshee.LibraryWatcher
                 watcher.Deleted -= OnChanged;
                 watcher.Renamed -= OnChanged;
 
+                lock (queue) {
+                    queue.Clear ();
+                }
+
                 watcher.Dispose ();
                 disposed = true;
             }
