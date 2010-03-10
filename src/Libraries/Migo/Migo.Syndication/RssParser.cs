@@ -41,9 +41,11 @@ namespace Migo.Syndication
     {
         private XmlDocument doc;
         private XmlNamespaceManager mgr;
+        private string url;
 
         public RssParser (string url, string xml)
         {
+            this.url = url;
             xml = xml.TrimStart ();
             doc = new XmlDocument ();
             try {
@@ -79,6 +81,7 @@ namespace Migo.Syndication
 
         public RssParser (string url, XmlDocument doc)
         {
+            this.url = url;
             this.doc = doc;
             CheckRss ();
         }
@@ -196,7 +199,7 @@ namespace Migo.Syndication
                 enclosure.Keywords = GetXmlNodeText (node, "itunes:keywords");
                 return enclosure;
              } catch (Exception e) {
-                 Hyena.Log.Exception ("Caught error parsing RSS enclosure", e);
+                 Hyena.Log.Exception (String.Format ("Caught error parsing RSS enclosure in {0}", url), e);
              }
 
              return null;
