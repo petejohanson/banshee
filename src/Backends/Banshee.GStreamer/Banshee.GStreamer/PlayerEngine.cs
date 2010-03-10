@@ -251,8 +251,8 @@ namespace Banshee.GStreamer
                 bp_set_next_track (handle, uri_ptr);
             } finally {
                 GLib.Marshaller.Free (uri_ptr);
+                next_track_set.Set ();
             }
-            next_track_set.Set ();
         }
 
         public override void VideoExpose (IntPtr window, bool direct)
@@ -340,7 +340,11 @@ namespace Banshee.GStreamer
 
         private void OnStateChange (IntPtr player, GstState old_state, GstState new_state, GstState pending_state)
         {
-            if (old_state == GstState.Ready && new_state == GstState.Paused && pending_state == GstState.Playing) {
+            if (CurrentState != PlayerState.Loaded && old_state == GstState.Ready && new_state == GstState.Paused && pending_state == GstState.Playing) {
+                if (ready_timeout != 0) {
+                    Application.IdleTimeoutRemove (ready_timeout);
+                    ready_timeout = 0;
+                }
                 OnStateChanged (PlayerState.Loaded);
                 return;
             } else if (old_state == GstState.Paused && new_state == GstState.Playing && pending_state == GstState.VoidPending) {
@@ -352,7 +356,28 @@ namespace Banshee.GStreamer
             } else if (CurrentState == PlayerState.Playing && old_state == GstState.Playing && new_state == GstState.Paused) {
                 OnStateChanged (PlayerState.Paused);
                 return;
+            } else if (new_state == GstState.Ready && pending_state == GstState.Playing) {
+                if (ready_timeout == 0) {
+                    ready_timeout = Application.RunTimeout (1000, OnReadyTimeout);
+                }
+                return;
             }
+        }
+
+        private uint ready_timeout;
+        private bool OnReadyTimeout ()
+        {
+            ready_timeout = 0;
+            var uri = CurrentUri;
+            if (CurrentState == PlayerState.Loading && uri != null && uri.IsLocalPath) {
+                // This is a dirty workaround.  I was seeing the playback get stuck on track transition,
+                // about one in 20 songs, where it would load the new track's duration, but be stuck at 0:00,
+                // but if I moved the seek slider it would unstick it, hence setting Position...
+                Log.WarningFormat ("Seem to be stuck loading {0}, so re-trying", uri);
+                Position = 0;
+            }
+
+            return false;
         }
 
         private void OnError (IntPtr player, uint domain, int code, IntPtr error, IntPtr debug)
