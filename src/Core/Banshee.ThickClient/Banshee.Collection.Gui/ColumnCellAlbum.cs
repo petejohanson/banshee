@@ -32,294 +32,147 @@ using Cairo;
 
 using Hyena.Gui;
 using Hyena.Gui.Theming;
-using Hyena.Gui.Canvas;
 using Hyena.Data.Gui;
 using Hyena.Data.Gui.Accessibility;
-using Hyena.Gui.Theatrics;
 
 using Banshee.Gui;
 using Banshee.ServiceStack;
 
 namespace Banshee.Collection.Gui
 {
-    public class DataViewChildAlbum : DataViewChild
+    public class ColumnCellAlbum : ColumnCell
     {
-        private static Stage<DataViewChildAlbum> stage = new Stage<DataViewChildAlbum> (250);
+        private static int image_spacing = 4;
+        private static int image_size = 48;
 
-        static DataViewChildAlbum ()
-        {
-            stage.ActorStep += actor => {
-                var alpha = actor.Target.prelight_opacity;
-                alpha += actor.Target.prelight_in
-                    ? actor.StepDeltaPercent
-                    : -actor.StepDeltaPercent;
-                actor.Target.prelight_opacity = alpha = Math.Max (0.0, Math.Min (1.0, alpha));
-                actor.Target.InvalidateImage ();
-                return alpha > 0 && alpha < 1;
-            };
-        }
+        private static ImageSurface default_cover_image
+            = PixbufImageSurface.Create (IconThemeUtils.LoadIcon (image_size, "media-optical", "browser-album-cover"));
 
         private ArtworkManager artwork_manager;
 
-        private bool prelight_in;
-        private double prelight_opacity;
-
-        private ImageSurface image_surface;
-        private string [] lines;
-
-        private Rect inner_allocation;
-        private Rect image_allocation;
-        private Rect first_line_allocation;
-        private Rect second_line_allocation;
-
-        public double ImageSize { get; set; }
-        public double ImageSpacing { get; set; }
-        public double TextSpacing { get; set; }
-
-        private bool IsGridLayout {
-            // FIXME: Cache this after implementing virtual notification
-            // on ColumnCell that ViewLayout has changed ...
-            get { return ParentLayout is DataViewLayoutGrid; }
-        }
-
-        public DataViewChildAlbum ()
+        public ColumnCellAlbum () : base (null, true)
         {
             artwork_manager = ServiceManager.Get<ArtworkManager> ();
-
-            Padding = new Thickness (6);
-            ImageSize = 48;
-            ImageSpacing = 4;
-            TextSpacing = 2;
-
-            Padding = new Thickness (5);
-            ImageSize = 90;
-            ImageSpacing = 2;
         }
-
-        public override void Arrange ()
-        {
-            if (!HandleBoundObject (out image_surface, out lines)) {
-                return;
-            }
-
-            inner_allocation = new Rect () {
-                X = Padding.Left,
-                Y = Padding.Top,
-                Width = Allocation.Width - Padding.X,
-                Height = Allocation.Height - Padding.Y
-            };
-
-            double width = ImageSize;
-            double height = ImageSize;
-
-            if (image_surface != null) {
-                width = image_surface.Width;
-                height = image_surface.Height;
-            }
-
-            image_allocation = new Rect () {
-                Width = Math.Min (inner_allocation.Width, width),
-                Height = Math.Min (inner_allocation.Height, height)
-            };
-
-            if (IsGridLayout) {
-                image_allocation.X = Math.Round ((inner_allocation.Width - width) / 2.0);
-            } else {
-                image_allocation.Y = Math.Round ((inner_allocation.Height - height) / 2.0);
-            }
-
-            if (IsGridLayout) {
-                first_line_allocation.Y = image_allocation.Height + ImageSpacing;
-                first_line_allocation.Width = second_line_allocation.Width = inner_allocation.Width;
-            } else {
-                first_line_allocation.X = second_line_allocation.X = image_allocation.Width + ImageSpacing;
-                first_line_allocation.Width = second_line_allocation.Width =
-                    inner_allocation.Width - image_allocation.Width - ImageSpacing;
-            }
-
-            second_line_allocation.Y = first_line_allocation.Bottom + TextSpacing;
-        }
-
-        public override void Render (CellContext context)
-        {
-            if (inner_allocation.IsEmpty) {
-                return;
-            }
-
-            context.Context.Translate (inner_allocation.X, inner_allocation.Y);
-
-            RenderImageSurface (context, image_allocation, image_surface);
-
-            // Render the overlay
-            if (IsGridLayout && prelight_opacity > 0) {
-                var a = prelight_opacity;
-                var cr = context.Context;
-                var grad = new RadialGradient (5, 5, (image_allocation.Width + image_allocation.Height) / 2.0, 5, 5, 0);
-                grad.AddColorStop (0, new Color (0, 0, 0, 0.65 * a));
-                grad.AddColorStop (1, new Color (0, 0, 0, 0.15 * a));
-                cr.Pattern = grad;
-                cr.Rectangle ((Cairo.Rectangle)image_allocation);
-                cr.Fill ();
-                grad.Destroy ();
-
-                /*cr.Save ();
-                cr.LineWidth = 2;
-                cr.Antialias = Cairo.Antialias.Default;
-
-                // math prep for rendering multiple controls...
-                double max_controls = 3;
-                double spacing = 4;
-                double radius = (width - ((max_controls + 1) * spacing)) / max_controls / 2;
-
-                // render first control
-                cr.Arc (width / 2, height - radius - 2 * spacing, radius, 0, 2 * Math.PI);
-
-                cr.Color = new Color (0, 0, 0, 0.4);
-                cr.FillPreserve ();
-                cr.Color = new Color (1, 1, 1, 0.8);
-                cr.Stroke ();
-
-                cr.Restore ();*/
-            }
-
-            if (lines == null || lines.Length < 2) {
-                return;
-            }
-
-            var text_color = context.Theme.Colors.GetWidgetColor (GtkColorClass.Text, context.State);
-
-            var layout = context.Layout;
-            layout.Ellipsize = Pango.EllipsizeMode.End;
-            layout.Width = (int)(first_line_allocation.Width * Pango.Scale.PangoScale);
-
-            int normal_size = layout.FontDescription.Size;
-            int small_size = (int)(normal_size * Pango.Scale.Small);
-
-            if (!String.IsNullOrEmpty (lines[0])) {
-                layout.FontDescription.Weight = Pango.Weight.Bold;
-                layout.FontDescription.Size = normal_size;
-                layout.SetText (lines[0]);
-
-                context.Context.Color = text_color;
-                context.Context.MoveTo (first_line_allocation.X, first_line_allocation.Y);
-                PangoCairoHelper.ShowLayout (context.Context, layout);
-            }
-
-            if (!String.IsNullOrEmpty (lines[1])) {
-                layout.FontDescription.Weight = Pango.Weight.Normal;
-                layout.FontDescription.Size = small_size;
-                layout.SetText (lines[1]);
-
-                text_color.A = 0.75;
-                context.Context.Color = text_color;
-                context.Context.MoveTo (second_line_allocation.X, second_line_allocation.Y);
-                PangoCairoHelper.ShowLayout (context.Context, layout);
-            }
-
-            layout.FontDescription.Size = normal_size;
-        }
-
-        public override Size Measure (Size available)
-        {
-            var widget = ParentLayout.View;
-
-            using (var layout = new Pango.Layout (widget.PangoContext) {
-                    FontDescription = widget.PangoContext.FontDescription.Copy ()
-                }) {
-                layout.FontDescription.Weight = Pango.Weight.Bold;
-                first_line_allocation.Height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
-
-                layout.FontDescription.Weight = Pango.Weight.Normal;
-                layout.FontDescription.Size = (int)(layout.FontDescription.Size * Pango.Scale.Small);
-                layout.FontDescription.Style = Pango.Style.Italic;
-                second_line_allocation.Height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
-            }
-
-            double width, height;
-            double text_height = first_line_allocation.Height + second_line_allocation.Height;
-
-            if (IsGridLayout) {
-                width = ImageSize + Padding.X;
-                height = ImageSize + ImageSpacing + TextSpacing + text_height + Padding.Y;
-            } else {
-                double list_text_height = text_height + TextSpacing;
-                width = ImageSize + ImageSpacing + Padding.Y;
-                height = (list_text_height < ImageSize ? ImageSize : list_text_height) + Padding.X;
-            }
-
-            return new Size (Math.Round (width), Math.Round (height));
-        }
-
-        protected void InvalidateImage ()
-        {
-            var damage = image_allocation;
-            damage.Offset (inner_allocation);
-            Invalidate (damage);
-        }
-
-        protected virtual void RenderImageSurface (CellContext context, Rect allocation, ImageSurface imageSurface)
-        {
-            ArtworkRenderer.RenderThumbnail (context.Context,
-                imageSurface, false,
-                allocation.X, allocation.Y, allocation.Width, allocation.Height,
-                true, context.Theme.Context.Radius,
-                imageSurface == null, new Color (0.8, 0.8, 0.8));
-        }
-
-        protected virtual bool HandleBoundObject (out ImageSurface image, out string [] lines)
-        {
-            image = null;
-            lines = null;
-
-            var album = BoundObject as AlbumInfo;
-            if (album == null) {
-                if (BoundObject == null) {
-                    return false;
-                };
-
-                throw new InvalidCastException ("ColumnCellAlbum can only bind to AlbumInfo objects");
-            }
-
-            lines = new [] { album.DisplayTitle, album.DisplayArtistName };
-            image = artwork_manager != null
-                ? artwork_manager.LookupScaleSurface (album.ArtworkId, (int)ImageSize, true)
-                : null;
-
-            return true;
-        }
-
-        public override void CursorEnterEvent ()
-        {
-            prelight_in = true;
-            stage.AddOrReset (this);
-        }
-
-        public override void CursorLeaveEvent ()
-        {
-            prelight_in = false;
-            stage.AddOrReset (this);
-        }
-
-#if false
-#region Accessibility
 
         private class ColumnCellAlbumAccessible : ColumnCellAccessible
         {
             public ColumnCellAlbumAccessible (object bound_object, ColumnCellAlbum cell, ICellAccessibleParent parent)
                 : base (bound_object, cell as ColumnCell, parent)
             {
-                var bound_album_info = (AlbumInfo)bound_object;
-                Name = String.Format ("{0} - {1}", bound_album_info.DisplayTitle, bound_album_info.DisplayArtistName);
+                AlbumInfo bound_album_info = (AlbumInfo)bound_object;
+                Name = String.Format ("{0} - {1}",
+                                     bound_album_info.DisplayTitle,
+                                     bound_album_info.DisplayArtistName);
             }
         }
-        
+
         public override Atk.Object GetAccessible (ICellAccessibleParent parent)
         {
             return new ColumnCellAlbumAccessible (BoundObject, this, parent);
         }
 
-#endregion
-#endif
+        public override void Render (CellContext context, StateType state, double cellWidth, double cellHeight)
+        {
+            if (BoundObject == null) {
+                return;
+            }
 
+            if (!(BoundObject is AlbumInfo)) {
+                throw new InvalidCastException ("ColumnCellAlbum can only bind to AlbumInfo objects");
+            }
+
+            AlbumInfo album = (AlbumInfo)BoundObject;
+
+            bool is_default = false;
+            ImageSurface image = artwork_manager == null ? null
+                : artwork_manager.LookupScaleSurface (album.ArtworkId, image_size, true);
+
+            if (image == null) {
+                image = default_cover_image;
+                is_default = true;
+            }
+
+            // int image_render_size = is_default ? image.Height : (int)cellHeight - 8;
+            int image_render_size = image_size;
+            int x = image_spacing;
+            int y = ((int)cellHeight - image_render_size) / 2;
+
+            ArtworkRenderer.RenderThumbnail (context.Context, image, false, x, y,
+                image_render_size, image_render_size, !is_default, context.Theme.Context.Radius);
+
+            int fl_width = 0, fl_height = 0, sl_width = 0, sl_height = 0;
+            Cairo.Color text_color = context.Theme.Colors.GetWidgetColor (GtkColorClass.Text, state);
+            text_color.A = 0.75;
+
+            Pango.Layout layout = context.Layout;
+            layout.Width = (int)((cellWidth - cellHeight - x - 10) * Pango.Scale.PangoScale);
+            layout.Ellipsize = Pango.EllipsizeMode.End;
+            layout.FontDescription.Weight = Pango.Weight.Bold;
+
+            // Compute the layout sizes for both lines for centering on the cell
+            int old_size = layout.FontDescription.Size;
+
+            layout.SetText (album.DisplayTitle);
+            layout.GetPixelSize (out fl_width, out fl_height);
+
+            if (!String.IsNullOrEmpty (album.ArtistName)) {
+                layout.FontDescription.Weight = Pango.Weight.Normal;
+                layout.FontDescription.Size = (int)(old_size * Pango.Scale.Small);
+                layout.FontDescription.Style = Pango.Style.Italic;
+                layout.SetText (album.ArtistName);
+                layout.GetPixelSize (out sl_width, out sl_height);
+            }
+
+            // Calculate the layout positioning
+            x = ((int)cellHeight - x) + 10;
+            y = (int)((cellHeight - (fl_height + sl_height)) / 2);
+
+            // Render the second line first since we have that state already
+            if (!String.IsNullOrEmpty (album.ArtistName)) {
+                context.Context.MoveTo (x, y + fl_height);
+                context.Context.Color = text_color;
+                PangoCairoHelper.ShowLayout (context.Context, layout);
+            }
+
+            // Render the first line, resetting the state
+            layout.SetText (album.DisplayTitle);
+            layout.FontDescription.Weight = Pango.Weight.Bold;
+            layout.FontDescription.Size = old_size;
+            layout.FontDescription.Style = Pango.Style.Normal;
+
+            layout.SetText (album.DisplayTitle);
+
+            context.Context.MoveTo (x, y);
+            text_color.A = 1;
+            context.Context.Color = text_color;
+            PangoCairoHelper.ShowLayout (context.Context, layout);
+        }
+
+        public int ComputeRowHeight (Widget widget)
+        {
+            int height;
+            int text_w, text_h;
+
+            Pango.Layout layout = new Pango.Layout (widget.PangoContext);
+            layout.FontDescription = widget.PangoContext.FontDescription.Copy ();
+
+            layout.FontDescription.Weight = Pango.Weight.Bold;
+            layout.SetText ("W");
+            layout.GetPixelSize (out text_w, out text_h);
+            height = text_h;
+
+            layout.FontDescription.Weight = Pango.Weight.Normal;
+            layout.FontDescription.Size = (int)(layout.FontDescription.Size * Pango.Scale.Small);
+            layout.FontDescription.Style = Pango.Style.Italic;
+            layout.SetText ("W");
+            layout.GetPixelSize (out text_w, out text_h);
+            height += text_h;
+
+            layout.FontDescription.Dispose ();
+            layout.Dispose ();
+
+            return (height < image_size ? image_size : height) + 6;
+        }
     }
 }
