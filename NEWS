@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.4 - Released February 24, 2010
+WELCOME TO BANSHEE 1.5.5 - Released March 10, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,79 +10,50 @@ WELCOME TO BANSHEE 1.5.4 - Released February 24, 2010
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.5.4
+  * Learn More: http://banshee-project.org/download/archives/1.5.5
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.5.4 brings many big changes, new features, and fixes!
+    Banshee 1.5.5 is mostly a bug fix release, with a few enhancements.  This
+    release marks the start of our string freeze in preparation for 1.6.
 
     New Features:
 
-      * Opt-In Usage Data Collection
+      * Gapless Playback (playbin2)
 
-          Under Preferences, you can choose to "Improve Banshee by sending
-          anonymous usage data" back to the Banshee developers.  This collects
-          information on what version you're running, what OS, library size,
-          slow SQL queries, and a whitelisted subset of your preferences. This
-          information will help us choose better defaults and see what parts of
-          Banshee are used most and can be improved. All collected data is
-          anonymous!
+          Banshee now uses the playbin2 GStreamer element.  With this comes
+          support for gapless playback, which is the default now for users
+          with GStreamer > 0.10.25.2.
 
-      * Default Equalizer Presets
+      * YouTube Extension
 
-          Banshee now ships with several equalizer presets, and the core of
-          the equalizer management has seen much internal improvement.
-
-      * Banshee Community Extensions
-
-          A new sub-project named Banshee Community Extensions has been
-          created.  Its code is hosted on Gitorious, and its bugs tracked
-          in bugzilla.gnome.org.  It already contains 9 extensions, including
-          AlarmClock, Lyrics, and Mirage, and has 15 maintainers.  Its releases
-          track Banshee's; for more information, see
-
-            http://banshee-project.org/download/extensions/
-
-      * Extensible Shuffle Modes
-
-          Extensions can now add new shuffle modes and PlayQueue fill-by
-          modes.  The Mirage extension is the first to take advantage of this,
-          adding a Shuffle/Fill-by Similar mode based on acoustical analysis.
+          This extension shows YouTube videos in the Context Pane related to
+          what you're playing, and lets you watch them within Banshee.  You
+          can enable it in the Extensions tab of Preferences.
 
     Enhancements:
 
-      * Wikipedia context pane extension enabled by default
-      * Add support for Nokia N900 phones
-      * Add tooltip to playback error column
-      * On close Internet Archive item, return to Search
-      * Notify user if trying to sync missing file to DAP
-      * Popup explanation of manual playlist ordering when appropriate
-      * Simplify the default set of columns in Podcasts
-      * Enable 'Delete From Drive' action in File System Queue
-      * Make debuggable from within MonoDevelop
-      * Coverart for unicode artist/albums now supported
-      * Dropped glade-sharp dep; GNOME 3.0 ready
-      * Add columns showing track sample rate and bits per sample
-      * Option to sort an artist's albums by year, not title
-      * If starting Banshee hidden (--hide), up to half a second of
-        startup time is saved; this is particularly useful in Moblin
+      * Improve search responsiveness on large libraries
+      * Add icons for Nexus One and Audiobooks
+      * Play Queue item count, size, duration now ignores old tracks
+      * Muinshee fixes: disable Auto-DJ, allow reordering, hide previous song
 
     Notable bug fixes:
 
-      * Fixes to GIO backend
-      * Many crash/startup fixes for OS X build
-      * Strange input bug on OS X fixed - you can now type/search as expected
-      * Enable LibraryWatcher only for Music and Video libraries
-      * Do better job preserving IsCompilation metadata
-      * Store some PlayQueue settings in the db (not GConf)
-      * Update to Last.fm's API change for scrobbling/recs
-      * Bring back static FileNamePattern API used by some scripts
-      * Fix several memory leaks
+      * Fix a very common, SQL-related crash in 1.5.4
+      * Fix saving eq settings in culture-invariant way
+      * Jumping to a source's prefs via its context menu works again
+      * Usage data not submitted more than every 48 hours
+      * Fix repeatedly resyncing some files to a device b/c transcoded
+      * Clear the redo stack on shuffle mode change
+      * Accept feeds with empty title
+      * Uri encode file location queries, making them work properly
+      * Fixes to the OS X build
 
-      * 40 bugs were fixed since 1.5.3
+      * 26 bugs were fixed since 1.5.4
 
 
 ===============================================================================
@@ -92,9 +63,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.5.4 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.tar.gz
+    * Banshee 1.5.5 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.tar.gz
 
 Packages
 --------
@@ -111,13 +82,13 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee-project.org/banshee/banshee-1-1.5.4.macosx.intel.dmg
+    * http://download.banshee-project.org/banshee/banshee-1-1.5.5.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.4/banshee-1-1.5.4.sha256sum
+    * http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.changes
+    * http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.sha256sum
 
 
 ===============================================================================
@@ -145,6 +116,7 @@ DEPENDENCIES
       * GIO support requires glib >= 2.22, gio-sharp and gtk-sharp-beans
       * Library Watcher extension requires Mono >= 2.4.3
       * Accessibilty for ListView and Rating widgets requires Gtk# >= 2.12.10
+      * Wikipedia extensions requires webkit-sharp-1.0 >= 0.2
       * YouTube extension requires gdata-sharp-core and
         gdata-sharp-youtube >= 1.4
 
@@ -184,7 +156,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.4
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.5
 
 
 ===============================================================================
