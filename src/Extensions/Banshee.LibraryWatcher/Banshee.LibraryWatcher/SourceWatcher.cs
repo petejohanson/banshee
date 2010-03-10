@@ -102,7 +102,6 @@ namespace Banshee.LibraryWatcher
         public void Dispose ()
         {
             if (!disposed) {
-                watcher.EnableRaisingEvents = false;
                 active = false;
                 watcher.Changed -= OnChanged;
                 watcher.Created -= OnChanged;
