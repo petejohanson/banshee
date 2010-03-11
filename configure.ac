@@ -101,8 +101,8 @@ SHAMROCK_CHECK_MONODOC
 dnl webkit (optional through --disable-webkit)
 BANSHEE_CHECK_WEBKIT
 
-dnl gdata (optional through --enable-gdata)
-BANSHEE_CHECK_GDATA
+dnl gdata (optional through --disable-youtube)
+BANSHEE_CHECK_YOUTUBE
 
 dnl gtk#-beans and gio#
 BANSHEE_CHECK_GIO_SHARP
@@ -367,7 +367,7 @@ ${PACKAGE}-${VERSION}
     Podcasts:          ${enable_podcast}
     Wikipedia:         ${enable_webkit} (requires webkit-sharp)
     Gapless playback:  ${ENABLE_GAPLESS} (requires gstreamer-plugins-base > 0.10.25.2)
-    YouTube extension: ${enable_gdata} (requires gdata-sharp >= 1.4)
+    YouTube extension: ${enable_youtube} (requires gdata-sharp >= 1.4)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
