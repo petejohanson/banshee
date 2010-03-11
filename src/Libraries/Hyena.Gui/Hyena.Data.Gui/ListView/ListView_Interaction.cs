@@ -163,7 +163,7 @@ namespace Hyena.Data.Gui
             bool handled = false;
             // FIXME: hard-coded grid logic here...
             bool grid = ViewLayout != null;
-            int items_per_row = grid ? 1 : 1;
+            int items_per_row = grid ? (ViewLayout as DataViewLayoutGrid).Columns : 1;
 
             switch (press.Key) {
                 case Gdk.Key.a:

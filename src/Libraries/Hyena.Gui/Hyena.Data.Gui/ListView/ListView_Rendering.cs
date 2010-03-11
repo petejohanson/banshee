@@ -549,7 +549,11 @@ namespace Hyena.Data.Gui
 
         private Gdk.Size child_size = Gdk.Size.Empty;
         public Gdk.Size ChildSize {
-            get { return child_size; }
+            get {
+                return ViewLayout != null
+                    ? new Gdk.Size ((int)ViewLayout.ChildSize.Width, (int)ViewLayout.ChildSize.Height)
+                    : child_size;
+            }
         }
 
         private bool measure_pending;
