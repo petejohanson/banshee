@@ -68,7 +68,9 @@ namespace Banshee.Podcasting.Gui
 
         protected override Gdk.Size OnMeasureChild ()
         {
-            return renderer.Measure (this);
+            return ViewLayout != null
+                ? base.OnMeasureChild ()
+                : new Gdk.Size (0, renderer.ComputeRowHeight (this));
         }
     }
 

@@ -149,7 +149,7 @@ namespace Banshee.Collection.Gui
             PangoCairoHelper.ShowLayout (context.Context, layout);
         }
 
-        public int ComputeRowHeight (Widget widget)
+        public virtual int ComputeRowHeight (Widget widget)
         {
             int height;
             int text_w, text_h;
