@@ -129,6 +129,7 @@ namespace Banshee.PlaybackController
         {
             switch (args.Event) {
                 case PlayerEvent.StartOfStream:
+                    CurrentTrack = player_engine.CurrentTrack;
                     consecutive_errors = 0;
                     break;
                 case PlayerEvent.EndOfStream:
@@ -297,7 +298,8 @@ namespace Banshee.PlaybackController
         {
             if (Source.Count > 0) {
                 if (ShuffleMode == "off") {
-                    player_engine.OpenPlay (Source.TrackModel[0]);
+                    CurrentTrack = Source.TrackModel[0];
+                    player_engine.OpenPlay (CurrentTrack);
                 } else {
                     ((IBasicPlaybackController)this).Next (false, true);
                 }
