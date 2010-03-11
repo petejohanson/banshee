@@ -180,7 +180,7 @@ namespace Hyena.Data.Gui
 
         private bool OnDragVScrollTimeout ()
         {
-            ScrollTo (VadjustmentValue + (drag_scroll_velocity * drag_scroll_velocity_max));
+            ScrollToY (VadjustmentValue + (drag_scroll_velocity * drag_scroll_velocity_max));
             DragReorderUpdateRow ();
             return true;
         }

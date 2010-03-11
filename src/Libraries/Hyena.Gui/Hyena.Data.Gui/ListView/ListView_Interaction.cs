@@ -145,12 +145,12 @@ namespace Hyena.Data.Gui
             double y_at_row = GetViewPointForModelRow (row_index).Y;
             if (align_y) {
                 if (y_at_row < VadjustmentValue) {
-                    ScrollTo (y_at_row);
+                    ScrollToY (y_at_row);
                 } else if (vadjustment != null && (y_at_row + ChildSize.Height) > (vadjustment.Value + vadjustment.PageSize)) {
-                    ScrollTo (y_at_row + ChildSize.Height - (vadjustment.PageSize));
+                    ScrollToY (y_at_row + ChildSize.Height - (vadjustment.PageSize));
                 }
             } else if (vadjustment != null) {
-                ScrollTo (vadjustment.Value + y_at_row - GetViewPointForModelRow (Selection.FocusedIndex).Y);
+                ScrollToY (vadjustment.Value + y_at_row - GetViewPointForModelRow (Selection.FocusedIndex).Y);
             }
 
             Selection.FocusedIndex = row_index;
@@ -790,7 +790,7 @@ namespace Hyena.Data.Gui
 
         private bool OnDragHScrollTimeout ()
         {
-            ScrollTo (hadjustment, HadjustmentValue + (drag_scroll_velocity * drag_scroll_velocity_max));
+            ScrollToY (hadjustment, HadjustmentValue + (drag_scroll_velocity * drag_scroll_velocity_max));
             OnMotionNotifyEvent (pressed_column_x);
             return true;
         }
@@ -963,12 +963,12 @@ namespace Hyena.Data.Gui
             }
         }
 
-        public void ScrollTo (double val)
+        public void ScrollToY (double val)
         {
-            ScrollTo (vadjustment, val);
+            ScrollToY (vadjustment, val);
         }
 
-        private void ScrollTo (Adjustment adjustment, double val)
+        private void ScrollToY (Adjustment adjustment, double val)
         {
             if (adjustment != null) {
                 adjustment.Value = Math.Max (0.0, Math.Min (val, adjustment.Upper - adjustment.PageSize));
@@ -977,7 +977,7 @@ namespace Hyena.Data.Gui
 
         public void ScrollTo (int index)
         {
-            ScrollTo (GetViewPointForModelRow (index).Y);
+            ScrollToY (GetViewPointForModelRow (index).Y);
         }
 
         public void CenterOn (int index)
