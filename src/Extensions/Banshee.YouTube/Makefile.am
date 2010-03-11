@@ -1,6 +1,7 @@
 ASSEMBLY = Banshee.YouTube
 TARGET = library
 LINK = $(LINK_BANSHEE_THICKCLIENT_DEPS) $(LINK_GDATA)
+INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
 	Banshee.YouTube.Data/DataFetch.cs \
