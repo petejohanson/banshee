@@ -1,5 +1,6 @@
 audioprofilesdir = $(pkgdatadir)/audio-profiles
 audioprofiles_in_files = \
+	aac-novell.xml.in \
 	base.xml.in \
 	flac.xml.in \
 	mp3-lame.xml.in \

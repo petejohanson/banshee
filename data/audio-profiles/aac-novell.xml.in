@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<audio-profiles>
+  <profiles>
+    <profile id="novell-aac">
+      <_name>AAC (Novell Encoder)</_name>
+      <_description>Designed to be the successor of the MP3 format, AAC generally achieves better sound quality than MP3 at many bit rates.</_description>
+      <output-file-extension>m4a</output-file-extension>
+      <mimetype>audio/aac</mimetype>
+      <mimetype>audio/mp4</mimetype>
+      <mimetype>audio/m4a</mimetype>
+      <mimetype>audio/x-aac</mimetype>
+      <mimetype>audio/x-mp4</mimetype>
+      <mimetype>audio/x-m4a</mimetype>
+      <mimetype>taglib/aac</mimetype>
+      <mimetype>taglib/mp4</mimetype>
+      <mimetype>taglib/m4a</mimetype>
+      <pipeline>
+        <process id="gstreamer">
+        <![CDATA[
+            (gst-construct-pipeline
+                "audioconvert"
+                (gst-construct-element "novellaacenc"
+                    "bitrate" (* bitrate 1000)
+                    "profile" profile
+                    "outputformat" outputformat)
+                container)
+        ]]>
+        </process>
+        <variable id="bitrate">
+          <_name>Bitrate</_name>
+          <control-type>combo</control-type>
+          <default-value>128</default-value>
+          <possible-values>
+            <value value="8">8 Kbps</value>
+            <value value="16">16 Kbps</value>
+            <value value="32">32 Kbps</value>
+            <value value="48">48 Kbps</value>
+            <value value="64">64 Kbps</value>
+            <value value="96">96 Kbps</value>
+            <value value="128">128 Kbps</value>
+            <value value="160">160 Kbps</value>
+            <value value="192">192 Kbps</value>
+            <value value="256">256 Kbps</value>
+            <value value="320">320 Kbps</value>
+          </possible-values>
+        </variable>
+        <variable id="container">
+          <_name>Container</_name>
+          <output-file-extension>3gp</output-file-extension>
+          <control-type>combo</control-type>
+          <default-value>novellqtmux</default-value>
+          <possible-values>
+            <_value value="novellmp4mux">MPEG-4 ISO</_value>
+            <_value value="novellqtmux">MPEG-4 QuickTime</_value>
+            <_value value="novellgppmux">3GPP</_value>
+          </possible-values>
+        </variable>
+        <variable id="profile">
+          <_name>Profile</_name>
+          <control-type>combo</control-type>
+          <default-value>2</default-value>
+          <possible-values>
+            <_value value="2">Low Complexity</_value>
+            <_value value="4">Long Term Prediction</_value>
+          </possible-values>
+          <advanced/>
+        </variable>
+        <variable id="outputformat">
+          <_name>Output Format</_name>
+          <control-type>combo</control-type>
+          <default-value>0</default-value>
+          <possible-values>
+            <value value="0">RAW</value>
+            <value value="1">ADTS</value>
+          </possible-values>
+          <advanced/>
+        </variable>
+      </pipeline>
+    </profile>
+  </profiles>
+</audio-profiles>
