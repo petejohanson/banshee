@@ -982,7 +982,7 @@ namespace Hyena.Data.Gui
 
         public void CenterOn (int index)
         {
-            ScrollTo (index - RowsInView / 2 + 1);
+            ScrollTo (index - ItemsInView / 2 + 1);
         }
 
         public bool IsRowVisible (int index)
@@ -996,7 +996,7 @@ namespace Hyena.Data.Gui
             if (Selection != null && Selection.Count > 0 && !Selection.AllSelected) {
                 bool selection_in_view = false;
                 int first_row = GetModelRowAt (0, 0);
-                for (int i = 0; i < RowsInView; i++) {
+                for (int i = 0; i < ItemsInView; i++) {
                     if (Selection.Contains (first_row + i)) {
                         selection_in_view = true;
                         break;

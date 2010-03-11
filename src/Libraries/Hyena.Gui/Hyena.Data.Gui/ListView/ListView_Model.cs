@@ -102,7 +102,7 @@ namespace Hyena.Data.Gui
 
             if (vpos != null) {
                 ScrollToY ((double) vpos);
-            } else if (Model.Count <= RowsInView) {
+            } else if (Model.Count <= ItemsInView) {
                 // If our view fits all rows at once, make sure we're scrolled to the top
                 ScrollToY (0.0);
             } else if (vadjustment != null) {

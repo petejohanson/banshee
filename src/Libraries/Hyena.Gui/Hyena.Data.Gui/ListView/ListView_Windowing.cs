@@ -184,6 +184,14 @@ namespace Hyena.Data.Gui
             }
         }
 
+        protected int ItemsInView {
+            get {
+                // FIXME hardcoded grid
+                int columns = ViewLayout == null ? 1 : (ViewLayout as DataViewLayoutGrid).Columns;
+                return RowsInView * columns;
+            }
+        }
+
         // FIXME: obsolete
         protected int RowsInView {
             get {
