@@ -147,7 +147,11 @@ function osx_build_dmg () {
 }
 
 distcheck
-osx_build_dmg
+if [[ -z $OSX_USER ]]; then
+    echo "Skipping OS X build"
+else
+    osx_build_dmg
+fi
 prepare_upload
 upload_release
 tag_release
