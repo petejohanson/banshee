@@ -236,7 +236,7 @@ namespace Banshee.GStreamer
         public override void SetNextTrackUri (SafeUri uri)
         {
             next_track_pending = false;
-            if (next_track_set.WaitOne (0)) {
+            if (next_track_set.WaitOne (0, false)) {
                 // We're not waiting for the next track to be set.
                 // This means that we've missed the window for gapless.
                 // Save this URI to be played when we receive EOS.
