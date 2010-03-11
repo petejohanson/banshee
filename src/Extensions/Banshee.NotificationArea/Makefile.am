@@ -1,7 +1,7 @@
 if EXTERNAL_NOTIFY_SHARP
 NOTIFY_SHARP_LIBS = $(NOTIFY_SHARP_LIBS)
 else
-GMCS_FLAGS="-define:INTERNAL_NOTIFY_SHARP"
+GMCS_FLAGS+="-define:INTERNAL_NOTIFY_SHARP"
 NOTIFY_SHARP_LIBS = 
 endif
 
@@ -29,5 +29,5 @@ EXTRA_DIST = $(SOURCES) $(RESOURCES)
 else
 include $(top_srcdir)/build/build.mk
 module_SCRIPTS += Banshee.NotificationArea.dll.config
-EXTRA_DIST += Banshee.NotificationArea.dll.config $(REAL_NOTIFY_SHARP_SOURCES)
+EXTRA_DIST += Banshee.NotificationArea.dll.config $(SOURCES) $(RESOURCES)
 endif
