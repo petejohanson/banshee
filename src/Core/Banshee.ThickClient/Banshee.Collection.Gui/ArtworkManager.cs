@@ -121,9 +121,9 @@ namespace Banshee.Collection.Gui
 
                 if (cache == null) {
                     int bytes = 4 * size * size;
-                    int max = (1 << 20) / bytes;
+                    int max = (1 << 21) / bytes;
 
-                    Log.DebugFormat ("Creating new surface cache for {0}px, {1} KB (max) images, capped at 1 MB ({2} items)",
+                    Log.DebugFormat ("Creating new surface cache for {0}px, {1} KB (max) images, capped at 2 MB ({2} items)",
                         size, bytes, max);
 
                     cache = new SurfaceCache (max);
