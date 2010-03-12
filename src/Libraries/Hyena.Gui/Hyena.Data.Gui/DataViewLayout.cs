@@ -68,6 +68,7 @@ namespace Hyena.Data.Gui
         public void ModelUpdated ()
         {
             InvalidateVirtualSize ();
+            InvalidateChildLayout ();
         }
 
         public virtual void Allocate (Rect actualAllocation)
