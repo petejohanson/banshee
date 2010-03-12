@@ -96,47 +96,57 @@ namespace Lastfm
 
         public StationError RequestAuthorization ()
         {
-            LastfmRequest get_token = new LastfmRequest ("auth.getToken", RequestType.Read, ResponseFormat.Json);
-            get_token.Send ();
+            try {
+                LastfmRequest get_token = new LastfmRequest ("auth.getToken", RequestType.Read, ResponseFormat.Json);
+                get_token.Send ();
 
-            var response = get_token.GetResponseObject ();
-            object error_code;
-            if (response.TryGetValue ("error", out error_code)) {
-                Log.WarningFormat ("Lastfm error {0} : {1}", (int)error_code, (string)response["message"]);
-                return (StationError) error_code;
+                var response = get_token.GetResponseObject ();
+                object error_code;
+                if (response.TryGetValue ("error", out error_code)) {
+                    Log.WarningFormat ("Lastfm error {0} : {1}", (int)error_code, (string)response["message"]);
+                    return (StationError) error_code;
+                }
+
+                authentication_token = (string)response["token"];
+                Browser.Open (String.Format ("http://www.last.fm/api/auth?api_key={0}&token={1}", LastfmCore.ApiKey, authentication_token));
+
+                return StationError.None;
+            } catch (Exception e) {
+                Log.Exception ("Error in Lastfm.Account.RequestAuthorization", e);
+                return StationError.Unknown;
             }
-
-            authentication_token = (string)response["token"];
-            Browser.Open (String.Format ("http://www.last.fm/api/auth?api_key={0}&token={1}", LastfmCore.ApiKey, authentication_token));
-
-            return StationError.None;
         }
 
         public StationError FetchSessionKey ()
         {
             if (authentication_token == null) {
-                throw new InvalidOperationException ("RequestAuthorization should be called before calling FetchSessionKey");
+                return StationError.TokenNotAuthorized;
             }
 
-            LastfmRequest get_session = new LastfmRequest ("auth.getSession", RequestType.SessionRequest, ResponseFormat.Json);
-            get_session.AddParameter ("token", authentication_token);
-            get_session.Send ();
-            var response = get_session.GetResponseObject ();
-            object error_code;
-            if (response.TryGetValue ("error", out error_code)) {
-                Log.WarningFormat ("Lastfm error {0} : {1}", (int)error_code, (string)response["message"]);
-                return (StationError) error_code;
+            try {
+                LastfmRequest get_session = new LastfmRequest ("auth.getSession", RequestType.SessionRequest, ResponseFormat.Json);
+                get_session.AddParameter ("token", authentication_token);
+                get_session.Send ();
+                var response = get_session.GetResponseObject ();
+                object error_code;
+                if (response.TryGetValue ("error", out error_code)) {
+                    Log.WarningFormat ("Lastfm error {0} : {1}", (int)error_code, (string)response["message"]);
+                    return (StationError) error_code;
+                }
+
+                var session = (Hyena.Json.JsonObject)response["session"];
+                UserName = (string)session["name"];
+                SessionKey = (string)session["key"];
+                Subscriber = session["subscriber"].ToString ().Equals ("1");
+
+                // The authentication token is only valid once, and for a limited time
+                authentication_token = null;
+
+                return StationError.None;
+            } catch (Exception e) {
+                Log.Exception ("Error in Lastfm.Account.FetchSessionKey", e);
+                return StationError.Unknown;
             }
-
-            var session = (Hyena.Json.JsonObject)response["session"];
-            UserName = (string)session["name"];
-            SessionKey = (string)session["key"];
-            Subscriber = session["subscriber"].ToString ().Equals ("1");
-
-            // The authentication token is only valid once, and for a limited time
-            authentication_token = null;
-
-            return StationError.None;
         }
 
         protected void OnUpdated ()
