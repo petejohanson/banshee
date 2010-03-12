@@ -570,7 +570,7 @@ namespace Nereid
 
                     // Reinstate the AccelGroup as soon as the focus leaves the entry
                     Focus.FocusOutEvent += OnEntryFocusOutEvent;
-                 }
+                }
             } else {
                 if (!accel_group_active) {
                     AddAccelGroup (ActionService.UIManager.AccelGroup);
@@ -585,8 +585,14 @@ namespace Nereid
                     }
                     break;
 
-                case Gdk.Key.S:  case Gdk.Key.s:
-                case Gdk.Key.F3: case Gdk.Key.slash:
+                case Gdk.Key.S:
+                case Gdk.Key.s:
+                case Gdk.Key.slash:
+                    if (!disable_keybindings) {
+                        focus_search = true;
+                    }
+                    break;
+                case Gdk.Key.F3:
                     focus_search = true;
                     break;
                 case Gdk.Key.F11:
