@@ -139,10 +139,10 @@ namespace Hyena.Data.Gui
         private void ResizeChildCollection (int newChildCount)
         {
             int difference = Children.Count - newChildCount;
-            while (Children.Count != newChildCount) {
-                if (difference > 0) {
-                    Children.RemoveAt (0);
-                } else {
+            if (difference > 0) {
+                Children.RemoveRange (newChildCount, difference);
+            } else {
+                for (int i=0; i>difference; i--) {
                     Children.Add (CreateChild ());
                 }
             }
