@@ -51,20 +51,10 @@ namespace Hyena.Data.Gui
 
         protected override void InvalidateVirtualSize ()
         {
-            // FIXME: Improper virtual size allocation
-            //          - Verify width and height generally computed correctly
-            //          - Not accounting for spacing/padding or rounding error
-            int model_rows = Model == null ? 0 : Model.Count;
+            double model_rows = Model == null ? 0 : Model.Count;
             VirtualSize = new Size (
                 ChildSize.Width * Math.Max (Columns, 1),
-                (ChildSize.Height * (model_rows + 1)) / Math.Max (Columns, 1));
-
-            /*Console.WriteLine ("======");
-            Console.WriteLine ("   VIEW COLUMNS = {0}", Columns);
-            Console.WriteLine ("   VIEW ROWS = {0}", Rows);
-            Console.WriteLine ("   MODEL ROWS = {0}", model_rows);
-            Console.WriteLine ("   CHILD SIZE = {0}", ChildSize);
-            Console.WriteLine ("   VIRTUAL SIZE = {0}", VirtualSize);*/
+                ChildSize.Height * Math.Ceiling (model_rows / Math.Max (Columns, 1)));
         }
 
         protected override void InvalidateChildCollection ()
