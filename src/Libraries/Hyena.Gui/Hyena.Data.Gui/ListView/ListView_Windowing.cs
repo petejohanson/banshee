@@ -163,6 +163,10 @@ namespace Hyena.Data.Gui
             RecalculateColumnSizes ();
             RegenerateColumnCache ();
 
+            if (ViewLayout != null) {
+                ViewLayout.Allocate ((Hyena.Gui.Canvas.Rect)list_rendering_alloc);
+            }
+
             if (vadjustment != null) {
                 hadjustment.PageSize = header_interaction_alloc.Width;
                 hadjustment.PageIncrement = header_interaction_alloc.Width;
@@ -178,10 +182,6 @@ namespace Hyena.Data.Gui
 
             OnInvalidateMeasure ();
             InvalidateList ();
-
-            if (ViewLayout != null) {
-                ViewLayout.Allocate ((Hyena.Gui.Canvas.Rect)list_rendering_alloc);
-            }
         }
 
         protected int ItemsInView {
