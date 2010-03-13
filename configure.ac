@@ -272,6 +272,7 @@ src/Backends/Makefile
 src/Backends/Banshee.Gio/Makefile
 src/Backends/Banshee.Gnome/Makefile
 src/Backends/Banshee.GStreamer/Makefile
+src/Backends/Banshee.GStreamerSharp/Makefile
 src/Backends/Banshee.Hal/Makefile
 src/Backends/Banshee.Unix/Makefile
 src/Backends/Banshee.Osx/Makefile
