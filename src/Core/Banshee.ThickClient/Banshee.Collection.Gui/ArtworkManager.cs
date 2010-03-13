@@ -121,13 +121,10 @@ namespace Banshee.Collection.Gui
 
                 if (cache == null) {
                     int bytes = 4 * size * size;
-                    int max = (1 << 21) / bytes;
+                    int max = (1 << 20) / bytes;
 
-                    Log.DebugFormat ("Creating new surface cache for {0}px, {1} KB (max) images, capped at 2 MB ({2} items)",
-                        size, bytes, max);
-
-                    cache = new SurfaceCache (max);
-                    scale_caches.Add (size, cache);
+                    ChangeCacheSize (size, max);
+                    cache = scale_caches[size];
                 }
 
                 cache.Add (id, surface);
@@ -231,6 +228,24 @@ namespace Banshee.Collection.Gui
         public IEnumerable<int> CachedSizes ()
         {
             return cacheable_cover_sizes;
+        }
+
+        public void ChangeCacheSize (int size, int max_count)
+        {
+            SurfaceCache cache;
+            if (scale_caches.TryGetValue (size, out cache)) {
+                if (max_count > cache.MaxCount) {
+                    Log.DebugFormat (
+                        "Growing surface cache for {0}px images to {1:0.00} MiB ({2} items)",
+                        size, 4 * size * size * max_count / 1048576d, max_count);
+                    cache.MaxCount = max_count;
+                }
+            } else {
+                Log.DebugFormat (
+                    "Creating new surface cache for {0}px images, capped at {1:0.00} MiB ({2} items)",
+                    size, 4 * size * size * max_count / 1048576d, max_count);
+                scale_caches.Add (size, new SurfaceCache (max_count));
+            }
         }
 
         private static int dispose_count = 0;

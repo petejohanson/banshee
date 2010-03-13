@@ -48,10 +48,20 @@ namespace Banshee.Collection.Gui
                 column_controller.Add (new Column ("Album", renderer = new ColumnCellAlbum (), 1.0));
                 ColumnController = column_controller;
             } else {
-                ViewLayout = new DataViewLayoutGrid () {
+                var layout = new DataViewLayoutGrid () {
                     ChildAllocator = () => new DataViewChildAlbum (),
                     View = this
                 };
+
+                layout.ChildCountChanged += (o, e) => {
+                    var artwork_manager = ServiceManager.Get<ArtworkManager> ();
+                    if (artwork_manager != null && e.Value > 0) {
+                        int size = (int)((DataViewChildAlbum)layout[0]).ImageSize;
+                        artwork_manager.ChangeCacheSize (size, e.Value);
+                    }
+                };
+
+                ViewLayout = layout;
             }
 
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.TrackInfoUpdated);

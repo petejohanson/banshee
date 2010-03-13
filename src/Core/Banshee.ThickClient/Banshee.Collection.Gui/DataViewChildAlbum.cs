@@ -86,14 +86,10 @@ namespace Banshee.Collection.Gui
         {
             artwork_manager = ServiceManager.Get<ArtworkManager> ();
 
-            Padding = new Thickness (6);
-            ImageSize = 48;
-            ImageSpacing = 4;
-            TextSpacing = 2;
-
             Padding = new Thickness (5);
             ImageSize = 90;
             ImageSpacing = 2;
+            TextSpacing = 2;
         }
 
         public override void Arrange ()

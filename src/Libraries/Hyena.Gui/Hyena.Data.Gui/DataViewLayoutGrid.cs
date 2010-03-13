@@ -39,6 +39,7 @@ namespace Hyena.Data.Gui
         public int Columns { get; private set; }
 
         public Func<DataViewChild> ChildAllocator { get; set; }
+        public event EventHandler<EventArgs<int>> ChildCountChanged;
 
         protected override void InvalidateChildSize ()
         {
@@ -68,6 +69,11 @@ namespace Hyena.Data.Gui
                 : 0;
 
             ResizeChildCollection (Rows * Columns);
+
+            var handler = ChildCountChanged;
+            if (handler != null) {
+                handler (this, new EventArgs<int> (Rows * Columns));
+            }
         }
 
         protected override void InvalidateChildLayout ()
