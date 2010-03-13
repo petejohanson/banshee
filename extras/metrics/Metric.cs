@@ -39,6 +39,14 @@ namespace metrics
 {
     public class Metric
     {
+        [DatabaseColumn (Constraints = DatabaseColumnConstraints.PrimaryKey)]
+        public long Id { get; private set; }
+
+        [DatabaseColumn (Index = "MetricNameIndex")]
+        public string Name { get; set; }
+
+        public Metric () {}
+
         static Metric ()
         {
             var time = new Func<double, string> (d => String.Format ("{0:N0}", SqliteUtils.FromDbFormat (typeof(DateTime), d)));
@@ -126,13 +134,13 @@ namespace metrics
             }
         }
 
-        private string key;
+        //private string key;
         private bool ends_with;
         private Func<double, string> func;
 
         public Metric (string key, Func<double, string> func)
         {
-            this.key = key;
+            Name = key;
             this.func = func;
             this.ends_with = key[0] == '/';
         }
@@ -149,9 +157,9 @@ namespace metrics
         public bool Matching (string key)
         {
             if (ends_with) {
-                return key.EndsWith (this.key);
+                return key.EndsWith (Name);
             } else {
-                return key == this.key;
+                return key == Name;
             }
         }
     }

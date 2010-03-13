@@ -50,12 +50,12 @@ namespace metrics
 
         private static int id;
 
-        public SampleModel (string condition, HyenaSqliteConnection db, string aggregates)
+        public SampleModel (string condition, Database db, string aggregates)
         {
             Selection = new Hyena.Collections.Selection ();
             ReloadFragment = String.Format ("FROM Samples {0}", condition);
             SelectAggregates = aggregates;
-            Cache = new SqliteModelCache<MultiUserSample> (db, (id++).ToString (), this, Database.SampleProvider);
+            Cache = new SqliteModelCache<MultiUserSample> (db, (id++).ToString (), this, db.SampleProvider);
         }
 
         public void Reload ()
@@ -67,21 +67,24 @@ namespace metrics
 
     public class MetricSampleModel : SampleModel
     {
+        private Metric metric;
         public string MetricName { get; private set; }
+        public long MetricId { get { return metric.Id; } }
 
         private string condition;
-        public MetricSampleModel (SqliteModelCache<MultiUserSample> limiter, HyenaSqliteConnection db, string aggregates) : base (null, db, aggregates)
+        public MetricSampleModel (SqliteModelCache<MultiUserSample> limiter, Database db, string aggregates) : base (null, db, aggregates)
         {
             condition = String.Format (
-                "FROM Samples, HyenaCache WHERE Samples.MetricName = '{0}' AND HyenaCache.ModelID = {1} AND Samples.ID = HyenaCache.ItemID",
+                "FROM Samples, HyenaCache WHERE Samples.MetricID = {0} AND HyenaCache.ModelID = {1} AND Samples.ID = HyenaCache.ItemID",
                 "{0}", limiter.CacheId
             );
         }
 
-        public void ChangeMetric (string metricName)
+        public void ChangeMetric (Database db, string metricName)
         {
             MetricName = metricName;
-            ReloadFragment = String.Format (condition, metricName);
+            metric = db.GetMetric (metricName);
+            ReloadFragment = String.Format (condition, metric.Id);
             Reload ();
         }
     }
@@ -90,9 +93,9 @@ namespace metrics
     {
         string fmt = "{0,20}";
 
-        public MetaMetrics (HyenaSqliteConnection db)
+        public MetaMetrics (Database db)
         {
-            var latest_samples = new SampleModel ("GROUP BY UserID, MetricName ORDER BY stamp desc", db, "COUNT(DISTINCT(UserID)), MIN(Stamp), MAX(Stamp)");
+            var latest_samples = new SampleModel ("GROUP BY UserID, MetricID ORDER BY stamp desc", db, "COUNT(DISTINCT(UserID)), MIN(Stamp), MAX(Stamp)");
             latest_samples.Cache.AggregatesUpdated += (reader) => {
                 Console.WriteLine ("Total unique users for this time slice: {0}", reader[1]);
                 Console.WriteLine ("First report was on {0}", SqliteUtils.FromDbFormat (typeof(DateTime), reader[2]));
@@ -108,8 +111,8 @@ namespace metrics
                 Console.WriteLine (String.Format ("   Users:  {0}", fmt), agg_reader[1]);
                 using (var reader = new HyenaDataReader (db.Query (
                     @"SELECT COUNT(DISTINCT(UserId)) as users, Value FROM Samples, HyenaCache
-                        WHERE MetricName = ? AND HyenaCache.ModelID = ? AND HyenaCache.ItemID = Samples.ID
-                        GROUP BY Value ORDER BY users DESC", string_summary.MetricName, string_summary.Cache.CacheId))) {
+                        WHERE MetricId = ? AND HyenaCache.ModelID = ? AND HyenaCache.ItemID = Samples.ID
+                        GROUP BY Value ORDER BY users DESC", string_summary.MetricId, string_summary.Cache.CacheId))) {
                     while (reader.Read ()) {
                         Console.WriteLine ("   {0,-5}: {1,-20}", reader.Get<long> (0), reader.Get<string> (1));
                     }
@@ -131,19 +134,19 @@ namespace metrics
                 Console.WriteLine ();
             };
             
-            var metrics = db.QueryEnumerable<string> ("SELECT DISTINCT(MetricName) as name FROM Samples ORDER BY name ASC");
+            var metrics = db.QueryEnumerable<string> ("SELECT Name FROM Metrics ORDER BY Name ASC");
             foreach (var metric in metrics) {
                 switch (GetMetricType (metric)) {
                 case "string":
                     Console.WriteLine ("{0}:", metric);
-                    string_summary.ChangeMetric (metric);
+                    string_summary.ChangeMetric (db, metric);
                     break;
                 //case "timespan" : SummarizeNumeric<TimeSpan> (metric); break;
                 //case "datetime" : SummarizeNumeric<DateTime> (metric); break;
                 case "float":
                     Console.WriteLine ("{0}:", metric);
                     //SummarizeNumeric<long> (metric_cache);
-                    numeric_slice.ChangeMetric (metric);
+                    numeric_slice.ChangeMetric (db, metric);
                     break;
                 //case "float":
                     //SummarizeNumeric<double> (metric_cache);

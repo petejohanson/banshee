@@ -32,6 +32,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core">
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MultiUserSample.cs" />
@@ -39,6 +40,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Metric.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Libraries\Hyena\Hyena.csproj">
@@ -48,6 +50,10 @@
     <ProjectReference Include="..\..\src\Libraries\Mono.Data.Sqlite\Mono.Data.Sqlite.csproj">
       <Project>{BB1D1D81-7A74-4183-B7B1-3E78B32D42F1}</Project>
       <Name>Mono.Data.Sqlite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Core\Banshee.Services\Banshee.Services.csproj">
+      <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
+      <Name>Banshee.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -32,64 +32,163 @@ using Hyena.Data.Sqlite;
 using Hyena.Json;
 using Mono.Data.Sqlite;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using ICSharpCode.SharpZipLib.GZip;
 
 namespace metrics
 {
-    public class Database
+    public class Config
     {
-        const string db_path = "metrics.db";
+        [DatabaseColumn (Constraints = DatabaseColumnConstraints.PrimaryKey)]
+        public long Id;
 
-        public static HyenaSqliteConnection Open ()
+        [DatabaseColumn]
+        public string Key;
+
+        [DatabaseColumn]
+        public string Value;
+    }
+
+    public class Database : HyenaSqliteConnection
+    {
+        public Database (string db_path) : base (db_path)
         {
             HyenaSqliteCommand.LogAll = ApplicationContext.CommandLine.Contains ("debug-sql");
-            var db =  new HyenaSqliteConnection (db_path);
-            db.Execute ("PRAGMA cache_size = ?", 32768 * 2);
-            db.Execute ("PRAGMA synchronous = OFF");
-            db.Execute ("PRAGMA temp_store = MEMORY");
-            db.Execute ("PRAGMA count_changes = OFF");
-            SampleProvider = new SqliteModelProvider<MultiUserSample> (db, "Samples", true);
-            return db;
+            Execute ("PRAGMA cache_size = ?", 32768 * 4);
+            Execute ("PRAGMA synchronous = OFF");
+            Execute ("PRAGMA temp_store = MEMORY");
+            Execute ("PRAGMA count_changes = OFF");
+
+            Config = new SqliteModelProvider<Config> (this, "Config", true);
+            SampleProvider = new SqliteModelProvider<MultiUserSample> (this, "Samples", true);
+            MetricProvider = new SqliteModelProvider<Metric> (this, "Metrics", true);
+            Users = new SqliteModelProvider<User> (this, "Users", true);
+
+            Execute ("CREATE INDEX IF NOT EXISTS SampleUserMetricIndex ON Samples (UserID, MetricID)");
         }
 
-        public static bool Exists { get { return System.IO.File.Exists (db_path); } }
+        public SqliteModelProvider<Config> Config { get; private set; }
+        public SqliteModelProvider<MultiUserSample> SampleProvider { get; private set; }
+        public SqliteModelProvider<Metric> MetricProvider { get; private set; }
+        public SqliteModelProvider<User> Users { get; private set; }
 
-        public static SqliteModelProvider<MultiUserSample> SampleProvider { get; private set; }
-
-        public static void Import ()
+        private const string collapse_source_metric = "Banshee/Configuration/sources.";
+        private static char [] collapse_source_chars = new char [] {'-', '/', '.', '_'};
+        private Dictionary<string, Metric> metrics = new Dictionary<string, Metric> ();
+        public Metric GetMetric (string name)
         {
-            using (var db = Open ()) {
-                var sample_provider = SampleProvider;
-                db.BeginTransaction ();
-                foreach (var file in System.IO.Directory.GetFiles ("data")) {
-                    Log.InformationFormat ("Importing {0}", file);
+            Metric metric;
+            if (metrics.TryGetValue (name, out metric))
+                return metric;
 
-                    try {
-                        var o = new Deserializer (System.IO.File.ReadAllText (file)).Deserialize () as JsonObject;
-
-                        string user_id = (string) o["ID"];
-                        int format_version = (int) o["FormatVersion"];
-                        if (format_version != MetricsCollection.FormatVersion) {
-                            Log.WarningFormat ("Ignoring user report with old FormatVersion: {0}", format_version);
-                            continue;
-                        }
-
-                        var metrics = o["Metrics"] as JsonObject;
-                        try {
-                            foreach (string metric_name in metrics.Keys) {
-                                var samples = metrics[metric_name] as JsonArray;
-                                foreach (JsonArray sample in samples) {
-                                    sample_provider.Save (MultiUserSample.Import (user_id, metric_name, (string)sample[0], (object)sample[1]));
-                                }
-                            }
-                        } catch {
-                            throw;
-                        }
-                    } catch (Exception e) {
-                        Log.Exception (String.Format ("Failed to read {0}", file), e);
-                    }
-                }
-                db.CommitTransaction ();
+            metric = MetricProvider.FetchFirstMatching ("Name = ?", name);
+            if (metric == null) {
+                metric = new Metric () { Name = name };
+                MetricProvider.Save (metric);
             }
+
+            metrics[name] = metric;
+            return metric;
+        }
+
+        private Dictionary<string, User> users = new Dictionary<string, User> ();
+        public User GetUser (string guid)
+        {
+            User user;
+            if (users.TryGetValue (guid, out user))
+                return user;
+
+            user = Users.FetchFirstMatching ("Guid = ?", guid);
+            if (user == null) {
+                user = new User () { Guid = guid };
+                Users.Save (user);
+            }
+
+            users[guid] = user;
+            return user;
+        }
+
+        public static bool Exists (string db_path)
+        {
+            return System.IO.File.Exists (db_path);
+        }
+
+        private Config LastReportNumber {
+            get {
+                return Config.FetchFirstMatching ("Key = 'LastReportNumber'") ?? new Config () { Key = "LastReportNumber", Value = "0" };
+            }
+        }
+
+        private Regex report_number_regex = new Regex ("data/(.{24}).json.gz", RegexOptions.Compiled);
+
+        public void Import ()
+        {
+            var db = this;
+            var sample_provider = SampleProvider;
+
+            var last_config = LastReportNumber;
+            long last_report_number = Int64.Parse (last_config.Value);
+
+            db.BeginTransaction ();
+            foreach (var file in System.IO.Directory.GetFiles ("data")) {
+                var match = report_number_regex.Match (file);
+                if (!match.Success) {
+                    continue;
+                }
+
+                long num = Int64.Parse (match.Groups[1].Captures[0].Value);
+                if (num <= last_report_number) {
+                    continue;
+                }
+
+                last_report_number = num;
+                Log.DebugFormat ("Importing {0}", file);
+
+                try {
+                    JsonObject o = null;
+                    using (var stream = System.IO.File.OpenRead (file)) {
+                        using (var gzip_stream = new GZipInputStream (stream)) {
+                            using (var txt_stream = new System.IO.StreamReader (gzip_stream)) {
+                                o = new Deserializer (txt_stream.ReadToEnd ()).Deserialize () as JsonObject;
+                            }
+                        }
+                    }
+
+                    if (o == null)
+                        throw new Exception ("Unable to parse JSON; empty file, maybe?");
+
+                    string user_id = (string) o["ID"];
+                    int format_version = (int) o["FormatVersion"];
+                    if (format_version != MetricsCollection.FormatVersion) {
+                        Log.WarningFormat ("Ignoring user report with old FormatVersion: {0}", format_version);
+                        continue;
+                    }
+
+                    var metrics = o["Metrics"] as JsonObject;
+                    foreach (string metric_name in metrics.Keys) {
+                        var samples = metrics[metric_name] as JsonArray;
+
+                        string name = metric_name;
+                        if (name.StartsWith (collapse_source_metric)) {
+                            string [] pieces = name.Split ('/');
+                            var reduced_name = pieces[2].Substring (8, pieces[2].IndexOfAny (collapse_source_chars, 8) - 8);
+                            name = String.Format ("{0}{1}/{2}", collapse_source_metric, reduced_name, pieces[pieces.Length - 1]);
+                        }
+
+                        foreach (JsonArray sample in samples) {
+                            sample_provider.Save (MultiUserSample.Import (db, user_id, name, (string)sample[0], (object)sample[1]));
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.Exception (String.Format ("Failed to read {0}", file), e);
+                }
+            }
+            db.CommitTransaction ();
+
+            last_config.Value = last_report_number.ToString ();
+            Config.Save (last_config);
+
+            Log.InformationFormat ("Done importing - last report # = {0}", last_report_number);
         }
     }
 

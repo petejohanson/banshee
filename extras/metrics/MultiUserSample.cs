@@ -36,7 +36,10 @@ namespace metrics
     public class MultiUserSample : Sample, Hyena.Data.ICacheableItem
     {
         [DatabaseColumn (Index = "SampleUserIdIndex")]
-        public string UserId;
+        public long UserId;
+
+        [DatabaseColumn (Index = "SampleMetricIdIndex")]
+        public long MetricId;
 
         // ICacheableItem
         public object CacheEntryId { get; set; }
@@ -48,13 +51,13 @@ namespace metrics
 
         static DateTime value_dt;
         static TimeSpan value_span;
-        public static MultiUserSample Import (string user_id, string metric_name, string stamp, object val)
+        public static MultiUserSample Import (Database db, string user_id, string metric_name, string stamp, object val)
         {
             var sample = new MultiUserSample ();
-            sample.UserId = user_id;
+            sample.UserId = db.GetUser (user_id).Id;
 
             // TODO collapse various DAP and DAAP library stats?
-            sample.MetricName = metric_name;
+            sample.MetricId = db.GetMetric (metric_name).Id;
 
             DateTime stamp_dt;
             if (!DateTimeUtil.TryParseInvariant (stamp, out stamp_dt)) {

@@ -1,11 +1,18 @@
 #!/bin/bash
 
-rm -fr data
-mkdir data/
-ssh bansheeweb@banshee-project.org "cd download.banshee-project.org/metrics/data; tar -cf metrics.tar *.gz"
-scp bansheeweb@banshee-project.org:~/download.banshee-project.org/metrics/data/metrics.tar data/
-ssh bansheeweb@banshee-project.org "cd download.banshee-project.org/metrics/data; rm metrics.tar"
+mkdir -p data/
 cd data
-tar -xvf metrics.tar
-rm metrics.tar
-gunzip *.gz
+
+echo "Updating remote tar file"
+ssh bansheeweb@banshee-project.org "cd download.banshee-project.org/metrics/data; tar --append --remove-files -f metrics.tar *.gz 2>&1 | grep -v 'No such file or directory' | grep -v 'exit delayed from previous'"
+
+echo "Downloading changes with rsync"
+rsync --progress bansheeweb@banshee-project.org:~/download.banshee-project.org/metrics/data/metrics.tar .
+
+echo "Untarring new records"
+tar --keep-old-files -xf metrics.tar 2>&1 | grep -v "Cannot open: File exists" | grep -v "exit delayed from previous"
+
+#echo "Unzipping $(ls -l *.gz 2>/dev/null | wc -l) new records"
+#gunzip -q *.gz
+
+echo "Done!"
