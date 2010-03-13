@@ -157,6 +157,12 @@ namespace Banshee.Collection.Database
             Save (NotifySaved);
         }
 
+        public override void UpdateLastPlayed ()
+        {
+            base.UpdateLastPlayed ();
+            Save (NotifySaved, BansheeQuery.LastPlayedField);
+        }
+
         public void Save (bool notify, params QueryField [] fields_changed)
         {
             // If either the artist or album changed,

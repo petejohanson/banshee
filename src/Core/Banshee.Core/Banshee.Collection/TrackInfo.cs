@@ -132,6 +132,11 @@ namespace Banshee.Collection
         {
         }
 
+        public virtual void UpdateLastPlayed ()
+        {
+            LastPlayed = DateTime.Now;
+        }
+
         public bool IsPlaying {
             get { return (IsPlayingMethod != null) ? IsPlayingMethod (this) : false; }
         }
