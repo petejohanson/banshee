@@ -7,6 +7,8 @@ SOURCES =  \
 RESOURCES = Banshee.GStreamerSharp.addin.xml
 INSTALL_DIR = $(BACKENDS_INSTALL_DIR)
 
+BUILD_DEFINES="-define:HAVE_GST_SHARP"
+
 include $(top_srcdir)/build/build.mk
 
 if ENABLE_GAPLESS

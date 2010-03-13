@@ -74,6 +74,9 @@ namespace Banshee.GStreamerSharp
         protected override void OpenUri (SafeUri uri)
         {
             Console.WriteLine ("Gst# PlayerEngine OpenUri: {0}", uri);
+            if (pipeline.CurrentState == State.Playing) {
+                pipeline.SetState (Gst.State.Null);
+            }
             playbin.Uri = uri.AbsoluteUri;
         }
 
