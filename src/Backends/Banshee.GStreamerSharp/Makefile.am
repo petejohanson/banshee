@@ -1,6 +1,6 @@
 ASSEMBLY = Banshee.GStreamerSharp
 TARGET = library
-LINK = $(REF_BACKEND_GSTREAMER)
+LINK = $(REF_BACKEND_GSTREAMER) $(GST_SHARP_LIBS)
 SOURCES =  \
 	Banshee.GStreamerSharp/PlayerEngine.cs
 

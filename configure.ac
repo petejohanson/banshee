@@ -62,6 +62,9 @@ dnl libbanshee/native dependencies (required)
 BANSHEE_CHECK_LIBBANSHEE
 BANSHEE_CHECK_GSTREAMER
 
+dnl For the new media backend using gstreamer-sharp
+BANSHEE_CHECK_GSTREAMER_SHARP
+
 BANSHEE_CHECK_NOW_PLAYING_X11
 
 dnl Mono and gmcs

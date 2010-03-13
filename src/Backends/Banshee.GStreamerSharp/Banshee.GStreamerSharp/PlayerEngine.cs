@@ -26,6 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#if HAVE_GST_SHARP
+
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
@@ -34,6 +36,7 @@ using System.Threading;
 using Mono.Unix;
 
 using Gst;
+using Gst.BasePlugins;
 
 using Hyena;
 using Hyena.Data;
@@ -49,6 +52,99 @@ namespace Banshee.GStreamerSharp
 {
     public class PlayerEngine : Banshee.MediaEngine.PlayerEngine
     {
-        //override
+        Pipeline pipeline;
+        PlayBin2 playbin;
+
+        public PlayerEngine ()
+        {
+            Console.WriteLine ("Gst# PlayerEngine ctor - completely experimental, still a WIP");
+            Gst.Application.Init ();
+            pipeline = new Pipeline ();
+            playbin = new PlayBin2 ();
+            pipeline.Add (playbin);
+
+            Banshee.ServiceStack.Application.RunTimeout (200, delegate {
+                OnEventChanged (PlayerEvent.Iterate);
+                return true;
+            });
+
+            OnStateChanged (PlayerState.Ready);
+        }
+
+        protected override void OpenUri (SafeUri uri)
+        {
+            Console.WriteLine ("Gst# PlayerEngine OpenUri: {0}", uri);
+            playbin.Uri = uri.AbsoluteUri;
+        }
+
+        public override void Play ()
+        {
+            Console.WriteLine ("Gst# PlayerEngine play");
+            pipeline.SetState (Gst.State.Playing);
+            OnStateChanged (PlayerState.Playing);
+        }
+
+        public override void Pause ()
+        {
+            Console.WriteLine ("Gst# PlayerEngine pause");
+            pipeline.SetState (Gst.State.Paused);
+            OnStateChanged (PlayerState.Paused);
+        }
+
+        public override ushort Volume {
+            get { return (ushort) Math.Round (playbin.Volume * 100.0); }
+            set { playbin.Volume = (value / 100.0); }
+        }
+
+        public override bool CanSeek {
+            get { return true; }
+        }
+
+        private static Format query_format = Format.Time;
+        public override uint Position {
+            get {
+                long pos;
+                playbin.QueryPosition (ref query_format, out pos);
+                return (uint) ((ulong)pos / Gst.Clock.MSecond);
+            }
+            set {
+                playbin.Seek (Format.Time, SeekFlags.Accurate, (long)(value * Gst.Clock.MSecond));
+            }
+        }
+
+        public override uint Length {
+            get {
+                long duration;
+                playbin.QueryDuration (ref query_format, out duration);
+                return (uint) ((ulong)duration / Gst.Clock.MSecond);
+            }
+        }
+
+        private static string [] source_capabilities = { "file", "http", "cdda" };
+        public override IEnumerable SourceCapabilities {
+            get { return source_capabilities; }
+        }
+
+        private static string [] decoder_capabilities = { "ogg", "wma", "asf", "flac", "mp3", "" };
+        public override IEnumerable ExplicitDecoderCapabilities {
+            get { return decoder_capabilities; }
+        }
+
+        public override string Id {
+            get { return "gstreamer-sharp"; }
+        }
+
+        public override string Name {
+            get { return Catalog.GetString ("GStreamer# 0.10"); }
+        }
+
+        public override bool SupportsEqualizer {
+            get { return false; }
+        }
+
+        public override VideoDisplayContextType VideoDisplayContextType {
+            get { return VideoDisplayContextType.Unsupported; }
+        }
     }
 }
+#endif

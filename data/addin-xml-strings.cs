@@ -13,6 +13,9 @@ internal static class AddinXmlStringCatalog
         // ../src/Backends/Banshee.GStreamer/Banshee.GStreamer.addin.xml
         Catalog.GetString (@"GStreamer multimedia services including playback, CD ripping, and transcoding.");
 
+        // ../src/Backends/Banshee.GStreamerSharp/Banshee.GStreamerSharp.addin.xml
+        Catalog.GetString (@"GStreamer multimedia services including playback, CD ripping, and transcoding.");
+
         // ../src/Backends/Banshee.Hal/Banshee.Hal.addin.xml
         Catalog.GetString (@"Provides hardware support through HAL.");
 
