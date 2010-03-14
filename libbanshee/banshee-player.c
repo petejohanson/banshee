@@ -299,8 +299,7 @@ bp_set_volume (BansheePlayer *player, gdouble volume)
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     g_return_if_fail (GST_IS_ELEMENT (player->playbin));
 
-    player->current_volume = CLAMP (volume, 0.0, 1.0);
-    g_object_set (player->playbin, "volume", player->current_volume, NULL);
+    g_object_set (player->playbin, "volume", CLAMP (volume, 0.0, 1.0), NULL);
     _bp_rgvolume_print_volume (player);
 }
 
@@ -308,7 +307,16 @@ P_INVOKE gdouble
 bp_get_volume (BansheePlayer *player)
 {
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), 0.0);
-    return player->current_volume;
+    g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), 0.0);
+    gdouble volume;
+    g_object_get (player->playbin, "volume", &volume, NULL);
+    return volume;
+}
+
+P_INVOKE void
+bp_set_volume_changed_callback (BansheePlayer *player, BansheePlayerVolumeChangedCallback cb)
+{
+    SET_CALLBACK (volume_changed_cb);
 }
 
 P_INVOKE gboolean

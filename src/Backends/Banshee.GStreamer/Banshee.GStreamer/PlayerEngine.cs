@@ -61,6 +61,7 @@ namespace Banshee.GStreamer
     internal delegate void BansheePlayerNextTrackStartingCallback (IntPtr player);
     internal delegate void BansheePlayerAboutToFinishCallback (IntPtr player);
     internal delegate IntPtr VideoPipelineSetupHandler (IntPtr player, IntPtr bus);
+    internal delegate void BansheePlayerVolumeChangedCallback (IntPtr player, double newVolume);
 
     internal delegate void GstTaggerTagFoundCallback (IntPtr player, string tagName, ref GLib.Value value);
 
@@ -76,7 +77,6 @@ namespace Banshee.GStreamer
         private uint GST_STREAM_ERROR = 0;
 
         private HandleRef handle;
-        private bool initialized;
 
         private BansheePlayerEosCallback eos_callback;
         private BansheePlayerErrorCallback error_callback;
@@ -88,12 +88,12 @@ namespace Banshee.GStreamer
         private GstTaggerTagFoundCallback tag_found_callback;
         private BansheePlayerNextTrackStartingCallback next_track_starting_callback;
         private BansheePlayerAboutToFinishCallback about_to_finish_callback;
+        private BansheePlayerVolumeChangedCallback volume_changed_callback;
 
         private bool next_track_pending;
         private SafeUri pending_uri;
 
         private bool buffering_finished;
-        private int pending_volume = -1;
         private bool xid_is_set = false;
 
         private bool gapless_enabled;
@@ -152,6 +152,7 @@ namespace Banshee.GStreamer
             tag_found_callback = new GstTaggerTagFoundCallback (OnTagFound);
             next_track_starting_callback = new BansheePlayerNextTrackStartingCallback (OnNextTrackStarting);
             about_to_finish_callback = new BansheePlayerAboutToFinishCallback (OnAboutToFinish);
+            volume_changed_callback = new BansheePlayerVolumeChangedCallback (OnVolumeChanged);
             bp_set_eos_callback (handle, eos_callback);
 #if !WIN32
             bp_set_iterate_callback (handle, iterate_callback);
@@ -162,6 +163,7 @@ namespace Banshee.GStreamer
             bp_set_tag_found_callback (handle, tag_found_callback);
             bp_set_next_track_starting_callback (handle, next_track_starting_callback);
             bp_set_video_pipeline_setup_callback (handle, video_pipeline_setup_callback);
+            bp_set_volume_changed_callback (handle, volume_changed_callback);
 
             next_track_set = new EventWaitHandle (false, EventResetMode.ManualReset);
         }
@@ -174,12 +176,9 @@ namespace Banshee.GStreamer
                 throw new ApplicationException (Catalog.GetString ("Could not initialize GStreamer library"));
             }
 
-            initialized = true;
             OnStateChanged (PlayerState.Ready);
 
-            if (pending_volume >= 0) {
-                Volume = (ushort)pending_volume;
-            }
+            Volume = (ushort)PlayerEngineService.VolumeSchema.Get ();
 
             InstallPreferences ();
             ReplayGainEnabled = ReplayGainEnabledSchema.Get ();
@@ -480,6 +479,11 @@ namespace Banshee.GStreamer
             }
         }
 
+        private void OnVolumeChanged (IntPtr player, double newVolume)
+        {
+            OnEventChanged (PlayerEvent.Volume);
+        }
+
         private static StreamTag ProcessNativeTagResult (string tagName, ref GLib.Value valueRaw)
         {
             if (tagName == String.Empty || tagName == null) {
@@ -508,11 +512,6 @@ namespace Banshee.GStreamer
         public override ushort Volume {
             get { return (ushort)Math.Round (bp_get_volume (handle) * 100.0); }
             set {
-                if (!initialized) {
-                    pending_volume = value;
-                    return;
-                }
-
                 bp_set_volume (handle, value / 100.0);
                 OnEventChanged (PlayerEvent.Volume);
             }
@@ -813,6 +812,10 @@ namespace Banshee.GStreamer
 
         [DllImport("libbanshee.dll")]
         private static extern double bp_get_volume (HandleRef player);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern void bp_set_volume_changed_callback (HandleRef player,
+            BansheePlayerVolumeChangedCallback cb);
 
         [DllImport ("libbanshee.dll")]
         private static extern bool bp_can_seek (HandleRef player);
