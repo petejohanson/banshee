@@ -187,11 +187,6 @@ namespace Banshee.Equalizer
 
         public void Load ()
         {
-            Load (Path);
-        }
-
-        public void Load (string path)
-        {
             var timer = Log.DebugTimerStart ();
 
             if (equalizers.Count > 0) {
@@ -199,8 +194,8 @@ namespace Banshee.Equalizer
             }
 
             try {
-                if (File.Exists (Path)) {
-                    using (var reader = new StreamReader (path)) {
+                if (Banshee.IO.File.Exists (new SafeUri (Path))) {
+                    using (var reader = new StreamReader (Path)) {
                         var deserializer = new Deserializer (reader);
                         foreach (var node in (JsonArray)deserializer.Deserialize ()) {
                             var eq_data = (JsonObject)node;
@@ -216,34 +211,33 @@ namespace Banshee.Equalizer
                             Add (eq);
                         }
                     }
-                }
-            } catch (Exception e) {
-                try {
-                    if (File.Exists (legacy_xml_path)) {
-                        var reader = new XmlTextReader (legacy_xml_path);
-                        if (reader.ReadToDescendant ("equalizers")) {
-                            while (reader.ReadToFollowing ("equalizer")) {
-                                var eq = new EqualizerSetting (this, reader["name"]);
-                                while (reader.Read () && !(reader.NodeType == XmlNodeType.EndElement &&
-                                    reader.Name == "equalizer")) {
-                                    if (reader.NodeType != XmlNodeType.Element) {
-                                        continue;
-                                    } else if (reader.Name == "preamp") {
-                                        eq.SetAmplifierLevel (reader.ReadElementContentAsDouble (), false);
-                                    } else if (reader.Name == "band") {
-                                        eq.SetGain (Convert.ToUInt32 (reader["num"]),
-                                            reader.ReadElementContentAsDouble (), false);
+                } else if (Banshee.IO.File.Exists (new SafeUri (legacy_xml_path))) {
+                    try {
+                        using (var reader = new XmlTextReader (legacy_xml_path)) {
+                            if (reader.ReadToDescendant ("equalizers")) {
+                                while (reader.ReadToFollowing ("equalizer")) {
+                                    var eq = new EqualizerSetting (this, reader["name"]);
+                                    while (reader.Read () && !(reader.NodeType == XmlNodeType.EndElement &&
+                                        reader.Name == "equalizer")) {
+                                        if (reader.NodeType != XmlNodeType.Element) {
+                                            continue;
+                                        } else if (reader.Name == "preamp") {
+                                            eq.SetAmplifierLevel (reader.ReadElementContentAsDouble (), false);
+                                        } else if (reader.Name == "band") {
+                                            eq.SetGain (Convert.ToUInt32 (reader["num"]),
+                                                reader.ReadElementContentAsDouble (), false);
+                                        }
                                     }
+                                    Add (eq);
                                 }
-                                Add (eq);
                             }
                         }
-                        Log.Information ("Converted legaxy XML equalizer presets to new JSON format");
+                        Log.Information ("Converted legacy XML equalizer presets to new JSON format");
+                    } catch (Exception xe) {
+                        Log.Exception ("Could not load equalizers.xml", xe);
                     }
-                } catch (Exception xe) {
-                    Log.Exception ("Could not load equalizers.xml", xe);
                 }
-
+            } catch (Exception e) {
                 Log.Exception ("Could not load equalizers.json", e);
             }
 
@@ -253,6 +247,8 @@ namespace Banshee.Equalizer
             equalizers.AddRange (GetDefaultEqualizers ());
             if (!any_user_defined) {
                 Select ("Pop");
+            } else {
+                Select ();
             }
         }
 
@@ -312,11 +308,6 @@ namespace Banshee.Equalizer
         }
 
         public void Save ()
-        {
-            Save (Path);
-        }
-
-        public void Save (string path)
         {
             try {
                 using (var writer = new StreamWriter (Path)) {
