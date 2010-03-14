@@ -192,8 +192,7 @@ namespace Banshee.Collection.Gui
             int small_size = (int)(normal_size * Pango.Scale.Small);
 
             if (!String.IsNullOrEmpty (lines[0])) {
-                layout.FontDescription.Weight = Pango.Weight.Bold;
-                layout.FontDescription.Size = normal_size;
+                layout.FontDescription.Size = small_size;
                 layout.SetText (lines[0]);
 
                 context.Context.Color = text_color;
@@ -206,7 +205,7 @@ namespace Banshee.Collection.Gui
                 layout.FontDescription.Size = small_size;
                 layout.SetText (lines[1]);
 
-                text_color.A = 0.75;
+                text_color.A = 0.60;
                 context.Context.Color = text_color;
                 context.Context.MoveTo (second_line_allocation.X, second_line_allocation.Y);
                 PangoCairoHelper.ShowLayout (context.Context, layout);
@@ -222,12 +221,11 @@ namespace Banshee.Collection.Gui
             var fd = widget.PangoContext.FontDescription;
             int normal_size = fd.Size;
 
-            fd.Weight = Pango.Weight.Bold;
+            fd.Size = (int)(fd.Size * Pango.Scale.Small);
             first_line_allocation.Height = fd.MeasureTextHeight (widget.PangoContext);
 
             fd.Weight = Pango.Weight.Normal;
             fd.Size = (int)(fd.Size * Pango.Scale.Small);
-            fd.Style = Pango.Style.Italic;
             second_line_allocation.Height = fd.MeasureTextHeight (widget.PangoContext);
 
             fd.Size = normal_size;
