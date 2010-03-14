@@ -91,7 +91,6 @@ namespace Migo.Syndication.Tests
         {
             foreach (string file in System.IO.Directory.GetFiles (rss_directory)) {
                 if (file.EndsWith (".rss.gz")) {
-                    Console.WriteLine ("Have rss file: {0}", file);
                     using (var stream = System.IO.File.OpenRead (file)) {
                         using (var gzip_stream = new GZipInputStream (stream)) {
                             using (var txt_stream = new System.IO.StreamReader (gzip_stream)) {

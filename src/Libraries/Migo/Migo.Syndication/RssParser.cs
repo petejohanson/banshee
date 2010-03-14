@@ -279,19 +279,23 @@ namespace Migo.Syndication
                 return TimeSpan.Zero;
             }
 
-            int hours = 0, minutes = 0, seconds = 0;
-            string [] parts = duration.Split (':');
+            try {
+                int hours = 0, minutes = 0, seconds = 0;
+                string [] parts = duration.Split (':');
 
-            if (parts.Length > 0)
-                seconds = Int32.Parse (parts[parts.Length - 1]);
+                if (parts.Length > 0)
+                    seconds = Int32.Parse (parts[parts.Length - 1]);
 
-            if (parts.Length > 1)
-                minutes = Int32.Parse (parts[parts.Length - 2]);
+                if (parts.Length > 1)
+                    minutes = Int32.Parse (parts[parts.Length - 2]);
 
-            if (parts.Length > 2)
-                hours = Int32.Parse (parts[parts.Length - 3]);
+                if (parts.Length > 2)
+                    hours = Int32.Parse (parts[parts.Length - 3]);
 
-            return TimeSpan.FromSeconds (hours * 3600 + minutes * 60 + seconds);
+                return TimeSpan.FromSeconds (hours * 3600 + minutes * 60 + seconds);
+            } catch {
+                return TimeSpan.Zero;
+            }
         }
 
 #region Xml Convienience Methods
