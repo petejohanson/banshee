@@ -534,8 +534,8 @@ namespace Banshee.MediaEngine
 
         private void CheckPending ()
         {
-            if(pending_engine != null && pending_engine != active_engine) {
-                if(active_engine.CurrentState == PlayerState.Idle) {
+            if (pending_engine != null && pending_engine != active_engine) {
+                if (active_engine.CurrentState == PlayerState.Idle) {
                     Close ();
                 }
 
