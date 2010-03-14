@@ -77,7 +77,6 @@ namespace Banshee.GStreamer
         private uint GST_STREAM_ERROR = 0;
 
         private HandleRef handle;
-        private bool initialized;
 
         private BansheePlayerEosCallback eos_callback;
         private BansheePlayerErrorCallback error_callback;
@@ -95,7 +94,6 @@ namespace Banshee.GStreamer
         private SafeUri pending_uri;
 
         private bool buffering_finished;
-        private int pending_volume = -1;
         private bool xid_is_set = false;
 
         private bool gapless_enabled;
@@ -178,12 +176,9 @@ namespace Banshee.GStreamer
                 throw new ApplicationException (Catalog.GetString ("Could not initialize GStreamer library"));
             }
 
-            initialized = true;
             OnStateChanged (PlayerState.Ready);
 
-            if (pending_volume >= 0) {
-                Volume = (ushort)pending_volume;
-            }
+            Volume = (ushort)PlayerEngineService.VolumeSchema.Get ();
 
             InstallPreferences ();
             ReplayGainEnabled = ReplayGainEnabledSchema.Get ();
@@ -517,11 +512,6 @@ namespace Banshee.GStreamer
         public override ushort Volume {
             get { return (ushort)Math.Round (bp_get_volume (handle) * 100.0); }
             set {
-                if (!initialized) {
-                    pending_volume = value;
-                    return;
-                }
-
                 bp_set_volume (handle, value / 100.0);
                 OnEventChanged (PlayerEvent.Volume);
             }
