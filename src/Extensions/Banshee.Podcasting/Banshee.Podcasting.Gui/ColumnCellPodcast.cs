@@ -150,7 +150,7 @@ namespace Banshee.Podcasting.Gui
             int text_w, text_h;
 
             Pango.Layout layout = new Pango.Layout (widget.PangoContext);
-            layout.FontDescription = widget.PangoContext.FontDescription.Copy ();
+            layout.FontDescription = widget.PangoContext.FontDescription;
 
             layout.FontDescription.Weight = Pango.Weight.Bold;
             layout.SetText ("W");
@@ -164,7 +164,6 @@ namespace Banshee.Podcasting.Gui
             layout.GetPixelSize (out text_w, out text_h);
             height += text_h;
 
-            layout.FontDescription.Dispose ();
             layout.Dispose ();
 
             return (height < image_size ? image_size : height) + 6;

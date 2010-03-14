@@ -506,7 +506,7 @@ namespace Banshee.Widgets
 
                 if (layout == null) {
                     layout = new Pango.Layout(PangoContext);
-                    layout.FontDescription = PangoContext.FontDescription.Copy();
+                    layout.FontDescription = PangoContext.FontDescription;
                 }
 
                 int width, height;

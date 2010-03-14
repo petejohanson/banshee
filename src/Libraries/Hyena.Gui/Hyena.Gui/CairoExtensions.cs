@@ -51,7 +51,7 @@ namespace Hyena.Gui
         public static Pango.Layout CreateLayout (Gtk.Widget widget, Cairo.Context cairo_context)
         {
             Pango.Layout layout = PangoCairoHelper.CreateLayout (cairo_context);
-            layout.FontDescription = widget.PangoContext.FontDescription.Copy ();
+            layout.FontDescription = widget.PangoContext.FontDescription;
 
             double resolution = widget.Screen.Resolution;
             if (resolution != -1) {

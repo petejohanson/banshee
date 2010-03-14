@@ -104,6 +104,7 @@ namespace Banshee.InternetArchive
             var font = entry.InnerEntry.Style.FontDescription.Copy ();
             font.Size = (int) (font.Size * Pango.Scale.XLarge);
             entry.InnerEntry.ModifyFont (font);
+            font.Dispose ();
 
             var button = new Hyena.Widgets.ImageButton (Catalog.GetString ("_Go"), Stock.Find);
             entry.Activated += (o, a) => { button.Activate (); };
