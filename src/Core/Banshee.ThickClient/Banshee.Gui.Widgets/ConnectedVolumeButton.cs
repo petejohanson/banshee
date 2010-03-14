@@ -37,9 +37,11 @@ namespace Banshee.Gui.Widgets
     {
         private bool emit_lock = false;
 
-        public ConnectedVolumeButton () : base ()
+        public ConnectedVolumeButton () : base()
         {
+            emit_lock = true;
             Volume = PlayerEngineService.VolumeSchema.Get ();
+            emit_lock = false;
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.Volume);
         }
 
