@@ -298,10 +298,10 @@ namespace Banshee.Lastfm.Radio
         }
 
         private bool playback_requested;
-        bool IBasicPlaybackController.Next (bool restart, bool userRequested)
+        bool IBasicPlaybackController.Next (bool restart, bool changeImmediately)
         {
             TrackInfo next = NextTrack;
-            if (userRequested) {
+            if (changeImmediately) {
                 if (next != null) {
                     ServiceManager.PlayerEngine.OpenPlay (next);
                 }  else {

@@ -277,15 +277,15 @@ namespace Banshee.InternetRadio
             return false;
         }
 
-        public bool Next (bool restart, bool userRequested)
+        public bool Next (bool restart, bool changeImmediately)
         {
             /*
-             * TODO: It should be technically possible to handle userRequested=False
+             * TODO: It should be technically possible to handle changeImmediately=False
              * correctly here, but the current implementation is quite hostile.
              * For the moment, just SetNextTrack (null), and go on to OpenPlay if
              * the engine isn't currently playing.
              */
-            if (!userRequested) {
+            if (!changeImmediately) {
                 ServiceManager.PlayerEngine.SetNextTrack ((SafeUri)null);
                 if (ServiceManager.PlayerEngine.IsPlaying ()) {
                     return true;
