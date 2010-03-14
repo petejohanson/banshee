@@ -308,7 +308,16 @@ P_INVOKE gdouble
 bp_get_volume (BansheePlayer *player)
 {
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), 0.0);
-    return player->current_volume;
+    g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), 0.0);
+    gdouble volume;
+    g_object_get (player->playbin, "volume", &volume, NULL);
+    return volume;
+}
+
+P_INVOKE void
+bp_set_volume_changed_callback (BansheePlayer *player, BansheePlayerVolumeChangedCallback cb)
+{
+    SET_CALLBACK (volume_changed_cb);
 }
 
 P_INVOKE gboolean

@@ -234,6 +234,19 @@ static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *pla
 }
 #endif //ENABLE_GAPLESS
 
+static void bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, BansheePlayer *player)
+{
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+    g_return_if_fail (GST_IS_ELEMENT (playbin));
+
+    gdouble volume;
+    g_object_get (G_OBJECT (playbin), "volume", &volume, NULL);
+
+    if (player->volume_changed_cb != NULL) {
+        player->volume_changed_cb (player, volume);
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Internal Functions
 // ---------------------------------------------------------------------------
@@ -261,6 +274,8 @@ _bp_pipeline_construct (BansheePlayer *player)
 #endif //ENABLE_GAPLESS
 
     g_return_val_if_fail (player->playbin != NULL, FALSE);
+
+    g_signal_connect (player->playbin, "notify::volume", G_CALLBACK (bp_volume_changed_callback), player);
 
     // Try to find an audio sink, prefer gconf, which typically is set to auto these days,
     // fall back on auto, which should work on windows, and as a last ditch, try alsa

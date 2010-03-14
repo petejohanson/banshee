@@ -79,6 +79,7 @@ typedef void (* BansheePlayerVisDataCallback)      (BansheePlayer *player, gint 
 typedef void (* BansheePlayerNextTrackStartingCallback)     (BansheePlayer *player);
 typedef void (* BansheePlayerAboutToFinishCallback)         (BansheePlayer *player);
 typedef GstElement * (* BansheePlayerVideoPipelineSetupCallback) (BansheePlayer *player, GstBus *bus);
+typedef void (* BansheePlayerVolumeChangedCallback) (BansheePlayer *player, gdouble new_volume);
 
 typedef enum {
     BP_VIDEO_DISPLAY_CONTEXT_UNSUPPORTED = 0,
@@ -98,6 +99,7 @@ struct BansheePlayer {
     BansheePlayerNextTrackStartingCallback next_track_starting_cb;
     BansheePlayerAboutToFinishCallback about_to_finish_cb;
     BansheePlayerVideoPipelineSetupCallback video_pipeline_setup_cb;
+    BansheePlayerVolumeChangedCallback volume_changed_cb;
 
     // Pipeline Elements
     GstElement *playbin;

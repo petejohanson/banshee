@@ -57,12 +57,13 @@ namespace Banshee.Gui.Widgets
 
         protected override void OnVolumeChanged ()
         {
+            PlayerEngineService.VolumeSchema.Set (Volume);
+
             if (emit_lock) {
                 return;
             }
 
             ServiceManager.PlayerEngine.Volume = (ushort)Volume;
-            PlayerEngineService.VolumeSchema.Set(Volume);
 
             base.OnVolumeChanged ();
         }
