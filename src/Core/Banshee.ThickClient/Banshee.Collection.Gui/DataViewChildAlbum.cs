@@ -219,17 +219,18 @@ namespace Banshee.Collection.Gui
         {
             var widget = ParentLayout.View;
 
-            using (var layout = new Pango.Layout (widget.PangoContext) {
-                    FontDescription = widget.PangoContext.FontDescription.Copy ()
-                }) {
-                layout.FontDescription.Weight = Pango.Weight.Bold;
-                first_line_allocation.Height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
+            var fd = widget.PangoContext.FontDescription;
+            int normal_size = fd.Size;
 
-                layout.FontDescription.Weight = Pango.Weight.Normal;
-                layout.FontDescription.Size = (int)(layout.FontDescription.Size * Pango.Scale.Small);
-                layout.FontDescription.Style = Pango.Style.Italic;
-                second_line_allocation.Height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
-            }
+            fd.Weight = Pango.Weight.Bold;
+            first_line_allocation.Height = fd.MeasureTextHeight (widget.PangoContext);
+
+            fd.Weight = Pango.Weight.Normal;
+            fd.Size = (int)(fd.Size * Pango.Scale.Small);
+            fd.Style = Pango.Style.Italic;
+            second_line_allocation.Height = fd.MeasureTextHeight (widget.PangoContext);
+
+            fd.Size = normal_size;
 
             double width, height;
             double text_height = first_line_allocation.Height + second_line_allocation.Height;
