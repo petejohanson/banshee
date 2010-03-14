@@ -115,7 +115,6 @@ struct BansheePlayer {
     gboolean   rgvolume_in_pipeline;
 
     gint equalizer_status;
-    gdouble current_volume;
     
     // Pipeline/Playback State
     GMutex *mutex;
