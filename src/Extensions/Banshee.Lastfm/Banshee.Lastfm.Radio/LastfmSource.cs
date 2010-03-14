@@ -341,7 +341,9 @@ namespace Banshee.Lastfm.Radio
                     account.UserName = LastUserSchema.Get ();
                     account.FetchSessionKey ();
                     account.Save ();
-                    LastSessionKeySchema.Set (account.SessionKey);
+                    if (account.SessionKey != null) {
+                        LastSessionKeySchema.Set (account.SessionKey);
+                    }
                 }
 
                 auth_button.Sensitive = refresh_button.Sensitive = NeedAuth;
