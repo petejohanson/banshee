@@ -196,7 +196,6 @@ namespace Banshee.MediaEngine
         private void HandleStateChange (PlayerEventStateChangeArgs args)
         {
             if (args.Current == PlayerState.Loaded && CurrentTrack != null) {
-                active_engine.Volume = (ushort) VolumeSchema.Get ();
                 MetadataService.Instance.Lookup (CurrentTrack);
             } else if (args.Current == PlayerState.Ready) {
                 // Enable our preferred equalizer if it exists and was enabled last time.
