@@ -146,8 +146,13 @@ namespace Hyena.Data.Gui
             if (align_y) {
                 if (y_at_row < VadjustmentValue) {
                     ScrollToY (y_at_row);
-                } else if (vadjustment != null && (y_at_row + ChildSize.Height) > (vadjustment.Value + vadjustment.PageSize)) {
-                    ScrollToY (y_at_row + ChildSize.Height - (vadjustment.PageSize));
+                } else if (vadjustment != null) {
+                    var bottom_of_item = y_at_row + ChildSize.Height;
+                    var bottom_of_view = vadjustment.Value + vadjustment.PageSize;
+                    if (bottom_of_item > bottom_of_view) {
+                        // Scroll down just enough to put the item fully into view
+                        ScrollToY (bottom_of_item - (vadjustment.PageSize));
+                    }
                 }
             } else if (vadjustment != null) {
                 ScrollToY (vadjustment.Value + y_at_row - GetViewPointForModelRow (Selection.FocusedIndex).Y);
@@ -237,13 +242,13 @@ namespace Hyena.Data.Gui
                 case Gdk.Key.Home:
                 case Gdk.Key.KP_Home:
                     if (!HeaderFocused)
-                        handled = KeyboardScroll (press.State, -10000000, false);
+                        handled = KeyboardScroll (press.State, -10000000, true);
                     break;
 
                 case Gdk.Key.End:
                 case Gdk.Key.KP_End:
                     if (!HeaderFocused)
-                        handled = KeyboardScroll (press.State, 10000000, false);
+                        handled = KeyboardScroll (press.State, 10000000, true);
                     break;
 
                 case Gdk.Key.Return:
@@ -875,10 +880,12 @@ namespace Hyena.Data.Gui
         {
             // FIXME: hard-coded grid logic
             if (ViewLayout != null) {
-                var child = ViewLayout.FindChildAtModelRowIndex (row);
-                return child == null
-                    ? new Gdk.Point (0, 0)
-                    : new Gdk.Point ((int)child.Allocation.X, (int)child.Allocation.Y);
+                int cols = ((DataViewLayoutGrid)ViewLayout).Columns;
+                if (cols == 0 || row == 0) {
+                    return new Gdk.Point (0, 0);
+                } else {
+                    return new Gdk.Point ((row % cols) * ChildSize.Width, (int)(Math.Floor ((double)row / (double)cols) * ChildSize.Height));
+                }
             } else {
                 return new Gdk.Point (0, ChildSize.Height * row);
             }
