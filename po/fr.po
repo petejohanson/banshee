@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: banshee 0.11\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-03-09 22:58+0000\n"
+"POT-Creation-Date: 2010-03-11 16:57+0000\n"
 "PO-Revision-Date: 2010-03-08 14:44+0100\n"
 "Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -461,6 +461,58 @@ msgstr "YouTube"
 msgid "Show related YouTube videos in the context pane"
 msgstr "Afficher les vidéos de YouTube dans le volet contextuel"
 
+#: ../data/audio-profiles/aac-novell.xml.in.h:1
+msgid "3GPP"
+msgstr "3GPP"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:2
+msgid "AAC (Novell Encoder)"
+msgstr "AAC (Codeur Novell)"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:3
+#: ../data/audio-profiles/mp3-lame.xml.in.h:4
+#: ../data/audio-profiles/mp3-xing.xml.in.h:2
+#: ../data/audio-profiles/wavpack.xml.in.h:3
+#: ../data/audio-profiles/wma.xml.in.h:4
+msgid "Bitrate"
+msgstr "Débit"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:4
+msgid "Container"
+msgstr "Conteneur"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:5
+msgid ""
+"Designed to be the successor of the MP3 format, AAC generally achieves "
+"better sound quality than MP3 at many bit rates."
+msgstr ""
+"Conçu pour être le successeur du format MP3, AAC permet d'obtenir "
+"généralement un son de meilleur qualité que le MP3 pour de nombreux débits."
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:6
+msgid "Long Term Prediction"
+msgstr "Prédiction à long terme"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:7
+msgid "Low Complexity"
+msgstr "Faible complexité"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:8
+msgid "MPEG-4 ISO"
+msgstr "ISO MPEG-4"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:9
+msgid "MPEG-4 QuickTime"
+msgstr "QuickTime MPEG-4"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:10
+msgid "Output Format"
+msgstr "Format de sortie"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:11
+msgid "Profile"
+msgstr "Profil"
+
 #: ../data/audio-profiles/base.xml.in.h:1
 msgid "Channels"
 msgstr "Canaux"
@@ -496,13 +548,6 @@ msgstr "Débit moyen"
 #: ../data/audio-profiles/wma.xml.in.h:3
 msgid "Best"
 msgstr "Le meilleur"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:4
-#: ../data/audio-profiles/mp3-xing.xml.in.h:2
-#: ../data/audio-profiles/wavpack.xml.in.h:3
-#: ../data/audio-profiles/wma.xml.in.h:4
-msgid "Bitrate"
-msgstr "Débit"
 
 #: ../data/audio-profiles/mp3-lame.xml.in.h:5
 msgid "Constant Bitrate"
@@ -788,7 +833,7 @@ msgid "Could not create BPM detection driver."
 msgstr "Impossible de créer le pilote de détection du nombre de BPM."
 
 #: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:70
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:682
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:709
 msgid "Enable _gapless playback"
 msgstr "Activer la lecture _gapless (sans silence)"
 
@@ -800,20 +845,20 @@ msgstr ""
 "Élimine le silence qui se produit entre deux morceaux. Utile pour les "
 "concept albums et la musique classique."
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:136
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:173
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:137
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:174
 msgid "Could not initialize GStreamer library"
 msgstr "Impossible d'initialiser la bibliothèque GStreamer"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:363
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:390
 msgid "Unknown Error"
 msgstr "Erreur inconnue"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:676
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:703
 msgid "_Enable ReplayGain correction"
 msgstr "_Activer la correction de gain (ReplayGain)"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:677
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:704
 msgid ""
 "For tracks that have ReplayGain data, automatically scale (normalize) "
 "playback volume"
@@ -821,7 +866,7 @@ msgstr ""
 "Adapte automatiquement (normalise) le volume de lecture pour les morceaux "
 "intégrant des données ReplayGain."
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:683
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:710
 msgid ""
 "Eliminate the small playback gap on track change.  Useful for concept albums "
 "and classical music."
@@ -2609,11 +2654,11 @@ msgstr "Non activé"
 msgid "Search:"
 msgstr "Rechercher :"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:74
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:77
 msgid "Cannot Reorder While Sorted"
 msgstr "Impossible de réorganiser alors que c'est trié"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:75
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:78
 msgid ""
 "To put the playlist in manual sort mode, click the currently sorted column "
 "header until the sort arrow goes away."
@@ -6258,7 +6303,7 @@ msgstr "Jouer dans Banshee..."
 msgid "Play in Web Browser..."
 msgstr "Jouer dans le navigateur Web..."
 
-#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube/YouTubePane.cs:62
+#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube/YouTubePane.cs:61
 msgid "No videos found"
 msgstr "Aucune vidéo trouvée"
 
@@ -6274,7 +6319,7 @@ msgstr "clic"
 msgid "menu"
 msgstr "menu"
 
-#: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:611
+#: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:612
 #, csharp-format
 msgid "Hide <i>{0}</i>"
 msgstr "Masquer <i>{0}</i>"
@@ -6548,8 +6593,8 @@ msgid "Connected to Last.fm."
 msgstr "Connecté à Last.fm."
 
 #: ../src/Libraries/Migo/Migo.Syndication/Feed.cs:149
-#: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:94
 #: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:97
+#: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:100
 msgid "Unknown Podcast"
 msgstr "Podcast inconnu"
 
