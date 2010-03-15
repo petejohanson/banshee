@@ -35,6 +35,8 @@ namespace Daap {
         private string genre;
         private int trackNumber;
         private int trackCount;
+        private int discNumber;
+        private int discCount;
         private string fileName;
         private DateTime dateAdded = DateTime.Now;
         private DateTime dateModified = DateTime.Now;
@@ -122,6 +124,22 @@ namespace Daap {
             get { return trackCount; }
             set {
                 trackCount = value;
+                EmitUpdated ();
+            }
+        }
+
+        public int DiscNumber {
+            get { return discNumber; }
+            set {
+                discNumber = value;
+                EmitUpdated ();
+            }
+        }
+
+        public int DiscCount {
+            get { return discCount; }
+            set {
+                discCount = value;
                 EmitUpdated ();
             }
         }
@@ -235,10 +253,10 @@ namespace Daap {
                     val = dateModified;
                     break;
                 case "daap.songdisccount":
-                    val = (short) 0;
+                    val = (short) discCount;
                     break;
                 case "daap.songdiscnumber":
-                    val = (short) 0;
+                    val = (short) discNumber;
                     break;
                 case "daap.songdisabled":
                     val = (byte) 0;
@@ -350,6 +368,12 @@ namespace Daap {
                     break;
                 case "daap.songdatemodified":
                     track.dateModified = (DateTime) field.Value;
+                    break;
+                case "daap.songdiscnumber":
+                    track.discNumber = (short) field.Value;
+                    break;
+                case "daap.songdisccount":
+                    track.discCount = (short) field.Value;
                     break;
                 default:
                     break;

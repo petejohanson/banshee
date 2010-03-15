@@ -51,6 +51,8 @@ namespace Banshee.Daap
             FileSize = track.Size;
             TrackCount = track.TrackCount;
             TrackNumber = track.TrackNumber;
+            DiscNumber = track.DiscNumber;
+            DiscCount = track.DiscCount;
             Year = track.Year;
             Duration = track.Duration;
             MimeType = track.Format;
