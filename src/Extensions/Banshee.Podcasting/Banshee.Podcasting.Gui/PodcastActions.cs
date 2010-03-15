@@ -169,6 +169,7 @@ namespace Banshee.Podcasting.Gui
 
         public override void Dispose ()
         {
+            ServiceManager.SourceManager.ActiveSourceChanged -= HandleActiveSourceChanged;
             Actions.UIManager.RemoveUi (actions_id);
             Actions.RemoveActionGroup (this);
             base.Dispose ();
