@@ -42,7 +42,7 @@ using Banshee.Gui;
 
 namespace Banshee.Wikipedia
 {
-    public class WikipediaView : Gtk.ScrolledWindow
+    public class WikipediaView : Gtk.ScrolledWindow, IDisableKeybindings
     {
         // Translators: this is used for looking up artist pages on Wikipedia; change to your wikipedia language if you want
         private string url_format = Catalog.GetString ("http://en.wikipedia.org/wiki/{0}");
