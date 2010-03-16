@@ -53,6 +53,7 @@ namespace Banshee.PlayQueue
 
         public HeaderWidget (Shuffler shuffler, string shuffle_mode_id, string source_name) : base ()
         {
+            ThreadAssist.AssertInMainThread ();
             this.Spacing = 6;
 
             var fill_label = new Label (Catalog.GetString ("_Fill"));
@@ -65,17 +66,7 @@ namespace Banshee.PlayQueue
             }
 
             fill_label.MnemonicWidget = mode_combo;
-            mode_combo.Changed += delegate {
-                var random_by = mode_combo.ActiveValue;
-                foreach (var widget in sensitive_widgets) {
-                    widget.Sensitive = random_by.Id != "off";
-                }
-
-                var handler = ModeChanged;
-                if (handler != null) {
-                    handler (this, new EventArgs<RandomBy> (random_by));
-                }
-            };
+            mode_combo.Changed += OnModeComboChanged;
 
             var from_label = new Label (Catalog.GetString ("f_rom"));
             var source_combo_box = new QueueableSourceComboBox (source_name);
@@ -100,12 +91,25 @@ namespace Banshee.PlayQueue
             var default_randomby = shuffler.RandomModes.FirstOrDefault (r => r.Id == shuffle_mode_id);
             if (default_randomby != null) {
                 mode_combo.ActiveValue = default_randomby;
-            } else {
+            } else if (mode_combo.Default != null) {
                 mode_combo.ActiveValue = mode_combo.Default;
             }
 
             shuffler.RandomModeAdded   += (r) => mode_combo.Add (r.Adverb, r);
             shuffler.RandomModeRemoved += (r) => mode_combo.Remove (r);
+        }
+
+        private void OnModeComboChanged (object o, EventArgs args)
+        {
+            var random_by = mode_combo.ActiveValue;
+            foreach (var widget in sensitive_widgets) {
+                widget.Sensitive = random_by.Id != "off";
+            }
+
+            var handler = ModeChanged;
+            if (handler != null) {
+                handler (this, new EventArgs<RandomBy> (random_by));
+            }
         }
     }
 }

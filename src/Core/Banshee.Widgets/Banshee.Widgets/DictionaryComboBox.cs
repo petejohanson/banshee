@@ -122,7 +122,14 @@ namespace Banshee.Widgets
 
                 return default (T);
             }
-            set { SetActiveIter (IterFor (value)); }
+            set {
+                var iter = IterFor (value);
+                if (TreeIter.Zero.Equals (iter)) {
+                    Hyena.Log.WarningFormat ("Cannot set ActiveValue to {0}, its TreeIter is null", value);
+                } else {
+                    SetActiveIter (iter);
+                }
+            }
         }
     }
 }
