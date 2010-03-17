@@ -121,6 +121,7 @@ namespace Banshee.IO.Gio
                 if ((file.FileType & FileType.Regular) != 0) {
                     yield return dir.Uri.AbsoluteUri + "/" + Uri.EscapeDataString (file.Name);
                 }
+                file.Dispose ();
             }
         }
 
@@ -135,6 +136,7 @@ namespace Banshee.IO.Gio
                 if ((file.FileType & FileType.Directory) != 0) {
                     yield return dir.Uri.AbsoluteUri + "/" + Uri.EscapeDataString (file.Name);
                 }
+                file.Dispose ();
             }
         }
 

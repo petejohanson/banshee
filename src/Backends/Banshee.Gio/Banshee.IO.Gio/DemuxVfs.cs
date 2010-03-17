@@ -33,7 +33,7 @@ using Banshee.Base;
 
 namespace Banshee.IO.Gio
 {
-    public class DemuxVfs : IDemuxVfs
+    public class DemuxVfs : IDemuxVfs, IDisposable
     {
         private GLib.File file;
         private GLib.FileInfo file_info;
@@ -44,6 +44,14 @@ namespace Banshee.IO.Gio
 
             if (file.Exists) {
                 file_info = file.QueryInfo ("etag::value,access::can-read,access::can-write", FileQueryInfoFlags.None, null);
+            }
+        }
+
+        public void Dispose ()
+        {
+            if (file_info != null) {
+                file_info.Dispose ();
+                file_info = null;
             }
         }
 
