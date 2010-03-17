@@ -119,9 +119,12 @@ namespace Banshee.IO.Gio
         {
             foreach (FileInfo file in dir.EnumerateChildren ("standard::type,standard::name", followSymlinks ? FileQueryInfoFlags.None : FileQueryInfoFlags.NofollowSymlinks, null)) {
                 if ((file.FileType & FileType.Regular) != 0) {
-                    yield return dir.Uri.AbsoluteUri + "/" + Uri.EscapeDataString (file.Name);
+                    var ret = dir.Uri.AbsoluteUri + "/" + Uri.EscapeDataString (file.Name);
+                    file.Dispose ();
+                    yield return ret;
+                } else {
+                    file.Dispose ();
                 }
-                file.Dispose ();
             }
         }
 
@@ -134,9 +137,12 @@ namespace Banshee.IO.Gio
         {
             foreach (FileInfo file in dir.EnumerateChildren ("standard::type,standard::name", followSymlinks ? FileQueryInfoFlags.None : FileQueryInfoFlags.NofollowSymlinks, null)) {
                 if ((file.FileType & FileType.Directory) != 0) {
-                    yield return dir.Uri.AbsoluteUri + "/" + Uri.EscapeDataString (file.Name);
+                    var ret = dir.Uri.AbsoluteUri + "/" + Uri.EscapeDataString (file.Name);
+                    file.Dispose ();
+                    yield return ret;
+                } else {
+                    file.Dispose ();
                 }
-                file.Dispose ();
             }
         }
 
