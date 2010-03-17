@@ -33,25 +33,18 @@ using Banshee.Base;
 
 namespace Banshee.IO.Gio
 {
-    public class DemuxVfs : IDemuxVfs, IDisposable
+    public class DemuxVfs : IDemuxVfs
     {
         private GLib.File file;
-        private GLib.FileInfo file_info;
 
         public DemuxVfs (string path)
         {
             file = path.StartsWith ("/") ? FileFactory.NewForPath (path) : FileFactory.NewForUri (path);
-
             if (file.Exists) {
-                file_info = file.QueryInfo ("etag::value,access::can-read,access::can-write", FileQueryInfoFlags.None, null);
-            }
-        }
-
-        public void Dispose ()
-        {
-            if (file_info != null) {
-                file_info.Dispose ();
-                file_info = null;
+                using (var info = file.QueryInfo ("etag::value,access::can-read,access::can-write", FileQueryInfoFlags.None, null)) {
+                    IsReadable = info.GetAttributeBoolean ("access::can-read");
+                    IsWritable = info.GetAttributeBoolean ("access::can-write");
+                }
             }
         }
 
@@ -76,12 +69,7 @@ namespace Banshee.IO.Gio
             }
         }
 
-        public bool IsReadable {
-            get { return file_info == null ? true : file_info.GetAttributeBoolean ("access::can-read"); }
-        }
-
-        public bool IsWritable {
-            get { return file_info == null ? true : file_info.GetAttributeBoolean ("access::can-write"); }
-        }
+        public bool IsReadable { get; private set; }
+        public bool IsWritable { get; private set; }
     }
 }
