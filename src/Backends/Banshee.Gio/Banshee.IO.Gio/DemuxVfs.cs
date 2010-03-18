@@ -40,8 +40,9 @@ namespace Banshee.IO.Gio
         public DemuxVfs (string path)
         {
             file = path.StartsWith ("/") ? FileFactory.NewForPath (path) : FileFactory.NewForUri (path);
-            if (file.Exists) {
-                using (var info = file.QueryInfo ("etag::value,access::can-read,access::can-write", FileQueryInfoFlags.None, null)) {
+            var f = file.Exists ? file : file.Parent;
+            if (f.Exists) {
+                using (var info = f.QueryInfo ("etag::value,access::can-read,access::can-write", FileQueryInfoFlags.None, null)) {
                     IsReadable = info.GetAttributeBoolean ("access::can-read");
                     IsWritable = info.GetAttributeBoolean ("access::can-write");
                 }
