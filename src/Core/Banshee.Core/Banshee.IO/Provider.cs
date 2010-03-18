@@ -88,6 +88,8 @@ namespace Banshee.IO
         public static void SetProvider (IProvider customProvider)
         {
             provider = customProvider;
+            directory = (IDirectory)Activator.CreateInstance (provider.DirectoryProvider);
+            file = (IFile)Activator.CreateInstance (provider.FileProvider);
         }
 
         internal static IDirectory Directory {
