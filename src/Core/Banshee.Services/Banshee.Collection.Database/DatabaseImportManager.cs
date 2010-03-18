@@ -158,7 +158,7 @@ namespace Banshee.Collection.Database
 
         public DatabaseTrackInfo ImportTrack (SafeUri uri)
         {
-            if (!IsWhiteListedFile (uri.LocalPath)) {
+            if (!IsWhiteListedFile (uri.AbsoluteUri)) {
                 return null;
             }
 
