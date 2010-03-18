@@ -117,7 +117,8 @@ namespace Banshee.IO.Gio
 
         private IEnumerable<string> GetFiles (GLib.File dir, bool followSymlinks)
         {
-            foreach (FileInfo file in dir.EnumerateChildren ("standard::type,standard::name", followSymlinks ? FileQueryInfoFlags.None : FileQueryInfoFlags.NofollowSymlinks, null)) {
+            var enumerator = dir.EnumerateChildren ("standard::type,standard::name", followSymlinks ? FileQueryInfoFlags.None : FileQueryInfoFlags.NofollowSymlinks, null);
+            foreach (FileInfo file in enumerator) {
                 if ((file.FileType & FileType.Regular) != 0) {
                     var ret = dir.Uri.AbsoluteUri + "/" + Uri.EscapeDataString (file.Name);
                     file.Dispose ();
@@ -125,6 +126,10 @@ namespace Banshee.IO.Gio
                 } else {
                     file.Dispose ();
                 }
+            }
+            if (!enumerator.IsClosed) {
+                enumerator.Close (null);
+                enumerator.Dispose ();
             }
         }
 
@@ -135,7 +140,8 @@ namespace Banshee.IO.Gio
 
         private IEnumerable<string> GetDirectories (GLib.File dir, bool followSymlinks)
         {
-            foreach (FileInfo file in dir.EnumerateChildren ("standard::type,standard::name", followSymlinks ? FileQueryInfoFlags.None : FileQueryInfoFlags.NofollowSymlinks, null)) {
+            var enumerator = dir.EnumerateChildren ("standard::type,standard::name", followSymlinks ? FileQueryInfoFlags.None : FileQueryInfoFlags.NofollowSymlinks, null);
+            foreach (FileInfo file in enumerator) {
                 if ((file.FileType & FileType.Directory) != 0) {
                     var ret = dir.Uri.AbsoluteUri + "/" + Uri.EscapeDataString (file.Name);
                     file.Dispose ();
@@ -143,6 +149,10 @@ namespace Banshee.IO.Gio
                 } else {
                     file.Dispose ();
                 }
+            }
+            if (!enumerator.IsClosed) {
+                enumerator.Close (null);
+                enumerator.Dispose ();
             }
         }
 
