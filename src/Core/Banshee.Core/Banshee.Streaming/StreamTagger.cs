@@ -189,6 +189,7 @@ namespace Banshee.Streaming
                     track.Rating = Choose (file_rating, track.Rating, preferTrackInfo);
                     track.PlayCount = Choose (file_playcount, track.PlayCount, preferTrackInfo);
                 }
+                file.Mode = TagLib.File.AccessMode.Closed;
             } else {
                 track.MediaAttributes = TrackMediaAttributes.AudioStream;
                 if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.AbsoluteUri)) {
@@ -321,6 +322,7 @@ namespace Banshee.Streaming
             }
 
             file.Save ();
+            file.Mode = TagLib.File.AccessMode.Closed;
 
             track.FileSize = Banshee.IO.File.GetSize (track.Uri);
             track.FileModifiedStamp = Banshee.IO.File.GetModifiedTime (track.Uri);
