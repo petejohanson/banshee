@@ -103,12 +103,12 @@ namespace Banshee.Preferences.Gui
 
                 chooser = new FileChooserButton (Catalog.GetString ("Select library location"),
                     FileChooserAction.SelectFolder);
-                chooser.SetCurrentFolder (dir);
                 // Only set the LocalOnly property if false; setting it when true
                 // causes the "Other..." entry to be hidden in older Gtk+
                 if (!Banshee.IO.Provider.LocalOnly) {
                     chooser.LocalOnly = Banshee.IO.Provider.LocalOnly;
                 }
+                chooser.SetCurrentFolder (dir);
                 chooser.SelectionChanged += OnChooserChanged;
 
                 HBox box = new HBox ();
