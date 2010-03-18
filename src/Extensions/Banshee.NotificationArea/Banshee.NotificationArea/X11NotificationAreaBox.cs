@@ -149,7 +149,8 @@ namespace Banshee.NotificationArea
                 icon_size = 32;
             }
 
-            icon.IconName = Banshee.ServiceStack.Application.IconName;
+            icon.IconName = (IconThemeUtils.HasIcon ("banshee-panel")) ?
+                "banshee-panel" : Banshee.ServiceStack.Application.IconName;
             icon.PixelSize = icon_size;
         }
 
