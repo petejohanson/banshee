@@ -100,11 +100,40 @@ namespace Banshee.IO
             ForEachProvider (() => {
                 File.Move (foo, Uri ("fooz"));
                 Assert.IsTrue  (File.Exists (Uri ("fooz")));
-                Assert.IsFalse (File.Exists (foo));
+                Assert.IsFalse (File.Exists (foo), "Original file should not exist after being moved");
 
                 Directory.Move (new SafeUri (woo), Uri ("wooz"));
                 Assert.IsTrue  (Directory.Exists (Path ("wooz")));
                 Assert.IsFalse (Directory.Exists (woo));
+            });
+        }
+
+        [Test]
+        public void Copy ()
+        {
+            ForEachProvider (() => {
+                var fooz = Uri ("fooz");
+                Assert.IsFalse (File.Exists (fooz));
+
+                File.Copy (foo, fooz, false);
+                Assert.IsTrue (File.Exists (fooz));
+                Assert.IsTrue (File.Exists (foo), String.Format ("{0}: Original file should still exist after being copied", Provider.File));
+                Assert.AreEqual (File.GetSize (foo), File.GetSize (fooz));
+                Assert.AreEqual ("bar", GetContents (fooz));
+            });
+        }
+
+        [Test]
+        public void CopyWithOverwrite ()
+        {
+            ForEachProvider (() => {
+                Assert.IsTrue (File.Exists (baz));
+                Assert.AreEqual ("oof", GetContents (baz));
+
+                File.Copy (foo, baz, true);
+                Assert.IsTrue (File.Exists (baz));
+                Assert.IsTrue (File.Exists (foo), String.Format ("{0}: Original file should still exist after being copied", Provider.File));
+                Assert.AreEqual ("bar", GetContents (baz));
             });
         }
 
@@ -270,6 +299,15 @@ namespace Banshee.IO
                     Assert.AreEqual (new string [] { new SafeUri (woo).AbsoluteUri }, dirs);
                 }
             });
+        }
+
+        private string GetContents (SafeUri uri)
+        {
+            var demux = Provider.CreateDemuxVfs (uri.AbsoluteUri);
+            using (var stream = demux.ReadStream) {
+                var reader = new System.IO.StreamReader (stream);
+                return reader.ReadToEnd ();
+            }
         }
 
         private SafeUri Uri (string filename)

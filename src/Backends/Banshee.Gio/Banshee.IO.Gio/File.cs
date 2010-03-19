@@ -59,7 +59,7 @@ namespace Banshee.IO.Gio
 
         public void Copy (SafeUri from, SafeUri to, bool overwrite)
         {
-            FileFactory.NewForUri (from.AbsoluteUri).Move (FileFactory.NewForUri (to.AbsoluteUri), overwrite ? FileCopyFlags.Overwrite : FileCopyFlags.None, null, null);
+            FileFactory.NewForUri (from.AbsoluteUri).Copy (FileFactory.NewForUri (to.AbsoluteUri), overwrite ? FileCopyFlags.Overwrite : FileCopyFlags.None, null, null);
         }
 
         public System.IO.Stream OpenRead (SafeUri uri)
