@@ -112,7 +112,7 @@ namespace Banshee.IO
         internal static string GetPath (string uri)
         {
             if (LocalOnly && !String.IsNullOrEmpty (uri) && uri[0] != '/' && uri.StartsWith ("file://")) {
-                return uri.Substring (7, uri.Length - 7);
+                return new SafeUri (uri).LocalPath;
             }
 
             return uri;

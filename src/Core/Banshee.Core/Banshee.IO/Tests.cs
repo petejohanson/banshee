@@ -46,7 +46,8 @@ namespace Banshee.IO
     [TestFixture]
     public class Tests : TestBase
     {
-        private string tmp_dir = System.IO.Path.Combine (System.Environment.CurrentDirectory, "tmp-io-test-dir");
+        // Purposefully putting a space in this directory name, helps test uri encoding issues
+        private string tmp_dir = System.IO.Path.Combine (System.Environment.CurrentDirectory, "tmp-io test-dir");
         private SafeUri foo, baz, zoo;
         private string woo, yoo;
 
