@@ -92,10 +92,7 @@ namespace Banshee.Lastfm.Radio
             connection = LastfmCore.Radio;
             Network network = ServiceManager.Get<Network> ();
             connection.UpdateNetworkState (network.Connected);
-            network.StateChanged += delegate (object o, NetworkStateChangedArgs args) {
-                connection.UpdateNetworkState (args.Connected);
-            };
-
+            network.StateChanged += HandleNetworkStateChanged;
             Connection.StateChanged += HandleConnectionStateChanged;
             UpdateUI ();
 
@@ -126,6 +123,7 @@ namespace Banshee.Lastfm.Radio
         {
             ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
             Connection.StateChanged -= HandleConnectionStateChanged;
+            ServiceManager.Get<Network> ().StateChanged -= HandleNetworkStateChanged;
             Connection.Dispose ();
             UninstallPreferences ();
             actions.Dispose ();
@@ -215,6 +213,11 @@ namespace Banshee.Lastfm.Radio
 
         public override bool HasProperties {
             get { return false; }
+        }
+
+        private void HandleNetworkStateChanged (object o, NetworkStateChangedArgs args)
+        {
+            connection.UpdateNetworkState (args.Connected);
         }
 
         private void HandleConnectionStateChanged (object sender, ConnectionStateChangedArgs args)

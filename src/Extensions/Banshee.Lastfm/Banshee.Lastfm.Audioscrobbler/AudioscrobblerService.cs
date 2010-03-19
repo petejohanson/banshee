@@ -96,9 +96,7 @@ namespace Banshee.Lastfm.Audioscrobbler
 
             Network network = ServiceManager.Get<Network> ();
             connection.UpdateNetworkState (network.Connected);
-            network.StateChanged += delegate (object o, NetworkStateChangedArgs args) {
-                connection.UpdateNetworkState (args.Connected);
-            };
+            network.StateChanged += HandleNetworkStateChanged;
 
             // Update the Visit action menu item if we update our account info
             LastfmCore.Account.Updated += delegate (object o, EventArgs args) {
@@ -152,6 +150,8 @@ namespace Banshee.Lastfm.Audioscrobbler
 
             ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
 
+            ServiceManager.Get<Network> ().StateChanged -= HandleNetworkStateChanged;
+
             // When we stop the connection, queue ends up getting saved too, so the
             // track we queued earlier should stay until next session.
             connection.Stop ();
@@ -159,6 +159,11 @@ namespace Banshee.Lastfm.Audioscrobbler
             action_service.UIManager.RemoveUi (ui_manager_id);
             action_service.UIManager.RemoveActionGroup (actions);
             actions = null;
+        }
+
+        private void HandleNetworkStateChanged (object o, NetworkStateChangedArgs args)
+        {
+            connection.UpdateNetworkState (args.Connected);
         }
 
         // We need to time how long the song has played
