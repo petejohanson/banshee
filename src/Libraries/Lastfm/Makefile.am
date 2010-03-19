@@ -20,7 +20,7 @@ SOURCES =  \
 
 include $(top_srcdir)/build/build.mk
 
-test: Test.cs
+test-lastfm: Test.cs
 	gmcs -r:$(top_builddir)/bin/Lastfm.dll -out:TestLastfm.exe Test.cs && \
 	mv TestLastfm.exe $(top_builddir)/bin/
 	@pushd $(top_builddir)/bin/; mono --debug TestLastfm.exe; \

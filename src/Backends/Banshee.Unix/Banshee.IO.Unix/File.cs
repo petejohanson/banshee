@@ -99,7 +99,7 @@ namespace Banshee.IO.Unix
         {
             return overwrite
                 ? new UnixFileInfo (uri.LocalPath).Open (FileMode.Create, FileAccess.ReadWrite, FilePermissions.DEFFILEMODE)
-                : new UnixFileInfo (uri.LocalPath).OpenWrite ();
+                : new UnixFileInfo (uri.LocalPath).Create ();
         }
 
         public long GetSize (SafeUri uri)

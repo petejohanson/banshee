@@ -36,38 +36,38 @@ namespace Banshee.IO
     public static class Directory
     {
         public static bool Exists (string directory)
-    	{
-    	    return Provider.Directory.Exists (directory);
-    	}
+        {
+            return Provider.Directory.Exists (Provider.GetPath (directory));
+        }
 
-    	public static void Create (string directory)
-    	{
-    	    Provider.Directory.Create (directory);
-    	}
+        public static void Create (string directory)
+        {
+            Provider.Directory.Create (Provider.GetPath (directory));
+        }
 
-    	public static void Move (SafeUri from, SafeUri to)
-    	{
-    	    Provider.Directory.Move (from, to);
-    	}
+        public static void Move (SafeUri from, SafeUri to)
+        {
+            Provider.Directory.Move (from, to);
+        }
 
-    	public static void Delete (string directory)
-    	{
-    	    Provider.Directory.Delete (directory);
-    	}
+        public static void Delete (string directory)
+        {
+            Provider.Directory.Delete (Provider.GetPath (directory));
+        }
 
-    	public static void Delete (string directory, bool recursive)
-    	{
-    	    Provider.Directory.Delete (directory, recursive);
-    	}
+        public static void Delete (string directory, bool recursive)
+        {
+            Provider.Directory.Delete (Provider.GetPath (directory), recursive);
+        }
 
-    	public static IEnumerable<string> GetFiles (string directory)
-    	{
-    	    return Provider.Directory.GetFiles (directory);
-    	}
+        public static IEnumerable<string> GetFiles (string directory)
+        {
+            return Provider.Directory.GetFiles (Provider.GetPath (directory));
+        }
 
-    	public static IEnumerable<string> GetDirectories (string directory)
-    	{
-    	    return Provider.Directory.GetDirectories (directory);
-    	}
+        public static IEnumerable<string> GetDirectories (string directory)
+        {
+            return Provider.Directory.GetDirectories (Provider.GetPath (directory));
+        }
     }
 }
