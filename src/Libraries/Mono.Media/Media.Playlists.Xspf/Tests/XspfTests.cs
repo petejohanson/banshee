@@ -41,8 +41,8 @@ namespace Media.Playlists.Xspf.Tests
     [TestFixture]
     public class XspfTest
     {
-        private const string complete_path = "../tests/Mono.Media/xspf/complete.xml";
-        private const string xsd_path = "../tests/Mono.Media/xspf/xspf-1_0.2.xsd";
+        private const string complete_path = "../tests/data/xspf/complete.xml";
+        private const string xsd_path = "../tests/data/xspf/xspf-1_0.2.xsd";
 
         [Test]
         public void Load ()
