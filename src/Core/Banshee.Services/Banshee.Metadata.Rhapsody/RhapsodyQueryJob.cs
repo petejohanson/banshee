@@ -51,7 +51,7 @@ namespace Banshee.Metadata.Rhapsody
         private static Regex filter_regex = new Regex (@"[^A-Za-z0-9]*", RegexOptions.Compiled);
         private static string EscapeUrlPart (string part)
         {
-            return filter_regex.Replace (part, "").Replace (" ", "-").ToLower ();
+            return filter_regex.Replace (part, "").Replace (' ', '-').ToLower ();
         }
 
         private static string GetAlbumUrl (IBasicTrackInfo track)

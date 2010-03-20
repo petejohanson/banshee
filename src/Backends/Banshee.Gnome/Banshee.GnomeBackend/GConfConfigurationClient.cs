@@ -84,7 +84,7 @@ namespace Banshee.GnomeBackend
                     } else {
                         @namespace = @namespace.Replace ('/', '_');
                         key_table.Add (hash_key, String.Concat (BaseKey,
-                            StringUtil.CamelCaseToUnderCase (String.Concat (@namespace.Replace (".", "/"), "/", part))
+                            StringUtil.CamelCaseToUnderCase (String.Concat (@namespace.Replace ('.', '/'), "/", part))
                         ));
                     }
 

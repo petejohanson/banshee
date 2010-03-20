@@ -70,7 +70,7 @@ namespace Banshee.Database
         public event EventHandler Started;
         public event EventHandler Finished;
 
-        protected class DatabaseVersionAttribute : Attribute
+        protected sealed class DatabaseVersionAttribute : Attribute
         {
             private int version;
 
