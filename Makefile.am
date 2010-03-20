@@ -115,6 +115,14 @@ hg:
 	rm tester.*; \
 	popd; 
 
+update-docs:
+	make -C docs/Hyena update-docs; \
+	make -C docs/Banshee update-docs;
+
+merge-docs:
+	make -C docs/Hyena merge; \
+	make -C docs/Banshee merge;
+
 EXTRA_DIST = \
 	intltool-extract.in \
 	intltool-merge.in \
