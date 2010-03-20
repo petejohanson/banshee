@@ -159,7 +159,7 @@ namespace Nereid
 
             main_menu = new MainMenu ();
 
-            if (!PlatformDetection.IsMac) {
+            if (!PlatformDetection.IsMac && !PlatformDetection.IsMeeGo) {
                 main_menu.Show ();
                 header_table.Attach (main_menu, 0, 1, 0, 1,
                     AttachOptions.Expand | AttachOptions.Fill,
@@ -167,13 +167,17 @@ namespace Nereid
             }
 
             Alignment toolbar_alignment = new Alignment (0.0f, 0.0f, 1.0f, 1.0f);
-            toolbar_alignment.TopPadding = 3;
+            toolbar_alignment.TopPadding = PlatformDetection.IsMeeGo ? 0u : 3u;
             toolbar_alignment.BottomPadding = 3;
 
             header_toolbar = (Toolbar)ActionService.UIManager.GetWidget ("/HeaderToolbar");
             header_toolbar.ShowArrow = false;
             header_toolbar.ToolbarStyle = ToolbarStyle.BothHoriz;
             header_toolbar.Show ();
+
+            if (PlatformDetection.IsMeeGo) {
+                header_toolbar.Name = "moblin-toolbar";
+            }
 
             toolbar_alignment.Add (header_toolbar);
             toolbar_alignment.Show ();
@@ -196,7 +200,19 @@ namespace Nereid
             editable.Show ();
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/TrackInfoDisplay", editable, true);
 
-            if (!PlatformDetection.IsMoblin) {
+            if (PlatformDetection.IsMeeGo) {
+                var menu = (Menu)(ServiceManager.Get<InterfaceActionService> ().UIManager.GetWidget ("/ToolbarMenu"));
+                var menu_button = new Hyena.Widgets.MenuButton (new Image (Stock.Preferences, IconSize.LargeToolbar), menu, true);
+                menu_button.Show ();
+                ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/ToolbarMenuPlaceholder", menu_button);
+
+                var close_button = new ToolButton (Stock.Close);
+                close_button.Clicked += (o, e) => Hide ();
+                close_button.Show ();
+                ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/ClosePlaceholder", close_button);
+
+                ServiceManager.PlayerEngine.Volume = 100;
+            } else {
                 var volume_button = new ConnectedVolumeButton ();
                 volume_button.Show ();
                 ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/VolumeButton", volume_button);
@@ -342,7 +358,7 @@ namespace Nereid
                 }
             };
 
-            if (!PlatformDetection.IsMoblin) {
+            if (!PlatformDetection.IsMeeGo) {
                 header_toolbar.ExposeEvent += OnToolbarExposeEvent;
             }
         }

@@ -96,7 +96,16 @@ namespace Banshee.MeeGo
 
         private void Initialize ()
         {
-            ReflectionHackeryUpTheNereid ();
+            // regular metacity does not seem to like this at all, crashing
+            // and complaining "Window manager warning: Buggy client sent a
+            // _NET_ACTIVE_WINDOW message with a timestamp of 0 for 0x2e00020"
+            if (MeeGoPanel.Instance != null) {
+                elements_service.PrimaryWindow.Decorated = false;
+                elements_service.PrimaryWindow.Maximize ();
+            }
+
+            // Set the internal engine volume to 100%
+            ServiceManager.PlayerEngine.Volume = 100;
 
             if (MeeGoPanel.Instance == null) {
                 return;
@@ -128,59 +137,6 @@ namespace Banshee.MeeGo
 
             FindNowPlaying ();
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerStateChanged, PlayerEvent.StateChange | PlayerEvent.StartOfStream);
-        }
-
-        private void ReflectionHackeryUpTheNereid ()
-        {
-            // This is a horribly abusive method, but hey, this kind
-            // of stuff is what Firefox extensions are made of!
-
-            // First grab the type and instance of the primary window
-            // and make sure we're only hacking the Nereid UI
-            var pwin = elements_service.PrimaryWindow;
-            var pwin_type = pwin.GetType ();
-            if (pwin_type.FullName != "Nereid.PlayerInterface") {
-                return;
-            }
-
-            // regular metacity does not seem to like this at all, crashing
-            // and complaining "Window manager warning: Buggy client sent a
-            // _NET_ACTIVE_WINDOW message with a timestamp of 0 for 0x2e00020"
-            if (MeeGoPanel.Instance != null) {
-                pwin.Decorated = false;
-                pwin.Maximize ();
-            }
-
-            // Now we want to make the Toolbar work in the MeeGo GTK theme
-            var pwin_toolbar = (Toolbar)pwin_type.GetProperty ("HeaderToolbar").GetValue (pwin, null);
-            var pwin_toolbar_align = (Alignment)pwin_toolbar.Parent;
-            pwin_toolbar_align.TopPadding = 0;
-            pwin_toolbar_align.BottomPadding = 6;
-
-            // Incredibly ugly hack to pack in a close button in a separate
-            // toolbar so that it may be aligned at the top right of the
-            // window (appears to float in the menubar)
-            var pwin_header_table = (Table)pwin_type.GetProperty ("HeaderTable").GetValue (pwin, null);
-
-            var close_button = new Banshee.Widgets.HoverImageButton (IconSize.Menu, "window-close") { DrawFocus = false };
-            close_button.Image.Xpad = 1;
-            close_button.Image.Ypad = 1;
-            close_button.Clicked += (o, e) => Banshee.ServiceStack.Application.Shutdown ();
-
-            var close_toolbar = new Toolbar () {
-                ShowArrow = false,
-                ToolbarStyle = ToolbarStyle.Icons
-            };
-
-            close_toolbar.Add (close_button);
-            close_toolbar.ShowAll ();
-
-            pwin_header_table.Attach (close_toolbar, 1, 2, 0, 1,
-                AttachOptions.Shrink, AttachOptions.Fill | AttachOptions.Expand, 0, 0);
-
-            // Set the internal engine volume to 100%
-            // FIXME: We should have something like PlayerEngine.InternalVolumeEnabled = false
-            ServiceManager.PlayerEngine.Volume = 100;
         }
 
         private void OnPlayerStateChanged (PlayerEventArgs args)
