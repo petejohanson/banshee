@@ -1,0 +1,186 @@
+<Type Name="ICellAccessibleParent" FullName="Hyena.Data.Gui.Accessibility.ICellAccessibleParent">
+  <TypeSignature Language="C#" Value="public interface ICellAccessibleParent" />
+  <AssemblyInfo>
+    <AssemblyName>Hyena.Gui</AssemblyName>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="CellRedrawn">
+      <MemberSignature Language="C#" Value="public void CellRedrawn (int column, int row);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="column" Type="System.Int32" />
+        <Parameter Name="row" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="column">To be added.</param>
+        <param name="row">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClickColumnHeader">
+      <MemberSignature Language="C#" Value="public void ClickColumnHeader (Hyena.Data.Gui.Accessibility.ColumnCellAccessible column);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="column" Type="Hyena.Data.Gui.Accessibility.ColumnCellAccessible" />
+      </Parameters>
+      <Docs>
+        <param name="column">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCellExtents">
+      <MemberSignature Language="C#" Value="public Gdk.Rectangle GetCellExtents (Hyena.Data.Gui.Accessibility.ColumnCellAccessible cell, Atk.CoordType coord_type);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Gdk.Rectangle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Hyena.Data.Gui.Accessibility.ColumnCellAccessible" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="cell">To be added.</param>
+        <param name="coord_type">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCellIndex">
+      <MemberSignature Language="C#" Value="public int GetCellIndex (Hyena.Data.Gui.Accessibility.ColumnCellAccessible cell);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Hyena.Data.Gui.Accessibility.ColumnCellAccessible" />
+      </Parameters>
+      <Docs>
+        <param name="cell">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InvokeColumnHeaderMenu">
+      <MemberSignature Language="C#" Value="public void InvokeColumnHeaderMenu (Hyena.Data.Gui.Accessibility.ColumnCellAccessible column);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="column" Type="Hyena.Data.Gui.Accessibility.ColumnCellAccessible" />
+      </Parameters>
+      <Docs>
+        <param name="column">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsCellActive">
+      <MemberSignature Language="C#" Value="public bool IsCellActive (Hyena.Data.Gui.Accessibility.ColumnCellAccessible cell);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Hyena.Data.Gui.Accessibility.ColumnCellAccessible" />
+      </Parameters>
+      <Docs>
+        <param name="cell">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsCellFocused">
+      <MemberSignature Language="C#" Value="public bool IsCellFocused (Hyena.Data.Gui.Accessibility.ColumnCellAccessible cell);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Hyena.Data.Gui.Accessibility.ColumnCellAccessible" />
+      </Parameters>
+      <Docs>
+        <param name="cell">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsCellSelected">
+      <MemberSignature Language="C#" Value="public bool IsCellSelected (Hyena.Data.Gui.Accessibility.ColumnCellAccessible cell);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Hyena.Data.Gui.Accessibility.ColumnCellAccessible" />
+      </Parameters>
+      <Docs>
+        <param name="cell">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsCellShowing">
+      <MemberSignature Language="C#" Value="public bool IsCellShowing (Hyena.Data.Gui.Accessibility.ColumnCellAccessible cell);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Hyena.Data.Gui.Accessibility.ColumnCellAccessible" />
+      </Parameters>
+      <Docs>
+        <param name="cell">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

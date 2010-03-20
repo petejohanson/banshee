@@ -1,0 +1,70 @@
+<Type Name="MemorySampleStore" FullName="Hyena.Metrics.MemorySampleStore">
+  <TypeSignature Language="C#" Value="public class MemorySampleStore : System.Collections.Generic.Dictionary&lt;string,System.Collections.Generic.List&lt;Hyena.Metrics.Sample&gt;&gt;, Hyena.Metrics.ISampleStore" />
+  <AssemblyInfo>
+    <AssemblyName>Hyena</AssemblyName>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Collections.Generic.Dictionary&lt;System.String,System.Collections.Generic.List&lt;Hyena.Metrics.Sample&gt;&gt;</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Hyena.Metrics.ISampleStore</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MemorySampleStore ();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (Hyena.Metrics.Sample sample);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sample" Type="Hyena.Metrics.Sample" />
+      </Parameters>
+      <Docs>
+        <param name="sample">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetFor">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.IEnumerable&lt;Hyena.Metrics.Sample&gt; GetFor (Hyena.Metrics.Metric metric);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IEnumerable&lt;Hyena.Metrics.Sample&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="metric" Type="Hyena.Metrics.Metric" />
+      </Parameters>
+      <Docs>
+        <param name="metric">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

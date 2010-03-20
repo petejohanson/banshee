@@ -1,0 +1,61 @@
+<Type Name="StreamRatingTagger" FullName="Banshee.Streaming.StreamRatingTagger">
+  <TypeSignature Language="C#" Value="public static class StreamRatingTagger" />
+  <AssemblyInfo>
+    <AssemblyName>Banshee.Core</AssemblyName>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="GetRatingAndPlayCount">
+      <MemberSignature Language="C#" Value="public static void GetRatingAndPlayCount (TagLib.File from_file, ref int rating, ref int playcount);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="from_file" Type="TagLib.File" />
+        <Parameter Name="rating" Type="System.Int32&amp;" RefType="ref" />
+        <Parameter Name="playcount" Type="System.Int32&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="from_file">To be added.</param>
+        <param name="rating">To be added.</param>
+        <param name="playcount">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StoreRatingAndPlayCount">
+      <MemberSignature Language="C#" Value="public static void StoreRatingAndPlayCount (int rating, int playcount, TagLib.File to_file);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rating" Type="System.Int32" />
+        <Parameter Name="playcount" Type="System.Int32" />
+        <Parameter Name="to_file" Type="TagLib.File" />
+      </Parameters>
+      <Docs>
+        <param name="rating">To be added.</param>
+        <param name="playcount">To be added.</param>
+        <param name="to_file">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
