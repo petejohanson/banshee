@@ -58,6 +58,13 @@
 #define IS_BANSHEE_PLAYER(e) (e != NULL)
 #define SET_CALLBACK(cb_name) { if(player != NULL) { player->cb_name = cb; } }
 
+#define BANSHEE_CHECK_GST_VERSION(major,minor,micro) \
+    (GST_VERSION_MAJOR > (major) || \
+        (GST_VERSION_MAJOR == (major) && GST_VERSION_MINOR > (minor)) || \
+        (GST_VERSION_MAJOR == (major) && GST_VERSION_MINOR == (minor) && \
+            GST_VERSION_MICRO >= (micro)))
+
+
 #ifdef WIN32
 // TODO Windows doesn't like the ... varargs
 #define bp_debug(x)

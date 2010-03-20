@@ -31,7 +31,7 @@
 #include "banshee-player-cdda.h"
 #include "banshee-player-missing-elements.h"
 #include "banshee-player-replaygain.h"
-#if GST_CHECK_VERSION(0,10,25)
+#if BANSHEE_CHECK_GST_VERSION(0,10,25)
 #include <gst/interfaces/streamvolume.h>
 #endif
 
@@ -302,7 +302,7 @@ bp_set_volume (BansheePlayer *player, gdouble volume)
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     g_return_if_fail (GST_IS_ELEMENT (player->playbin));
 
-#if GST_CHECK_VERSION(0,10,25)
+#if BANSHEE_CHECK_GST_VERSION(0,10,25)
     if (gst_element_implements_interface (player->playbin, GST_TYPE_STREAM_VOLUME))
       gst_stream_volume_set_volume (GST_STREAM_VOLUME (player->playbin), GST_STREAM_VOLUME_FORMAT_CUBIC, volume);
     else
@@ -319,7 +319,7 @@ bp_get_volume (BansheePlayer *player)
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), 0.0);
     g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), 0.0);
     gdouble volume;
-#if GST_CHECK_VERSION(0,10,25)
+#if BANSHEE_CHECK_GST_VERSION(0,10,25)
     if (gst_element_implements_interface (player->playbin, GST_TYPE_STREAM_VOLUME))
       volume = gst_stream_volume_get_volume (GST_STREAM_VOLUME (player->playbin), GST_STREAM_VOLUME_FORMAT_CUBIC);
     else
