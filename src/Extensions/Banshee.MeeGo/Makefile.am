@@ -47,7 +47,7 @@ desktopfiles_DATA = $(desktopfiles_files)
 	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 clean-local:
-	rm org.moblin.UX.Shell.Panels.banshee.service \
+	rm -f org.moblin.UX.Shell.Panels.banshee.service \
 		meego-panel-banshee.desktop \
 		meego-panel-banshee.desktop.in
 
