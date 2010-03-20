@@ -73,6 +73,11 @@ test -f config.h.in && touch config.h.in
 run automake --gnu --add-missing --force --copy \
 	-Wno-portability -Wno-portability
 
+if [ ! -z "$NOCONFIGURE" ]; then
+	echo "Done. ./configure skipped."
+	exit $?
+fi
+
 if [ $# = 0 ]; then
 	echo "WARNING: I am going to run configure without any arguments."
 fi

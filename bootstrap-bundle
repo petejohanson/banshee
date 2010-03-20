@@ -35,17 +35,8 @@ popd &>/dev/null
 
 source "$envfile"
 
-CONFIGURE_ARGS="
-	--disable-mtp \
-	--disable-daap
-	--disable-ipod
-	--disable-boo
-	--disable-gnome
-	--disable-webkit
-	--disable-docs
-"
-
-./autogen.sh --prefix="$BUILD_PREFIX" $CONFIGURE_ARGS
+NOCONFIGURE=1 ./autogen.sh
+./profile-configure $profile_name --prefix="$BUILD_PREFIX"
 
 cat <<EOF
 
