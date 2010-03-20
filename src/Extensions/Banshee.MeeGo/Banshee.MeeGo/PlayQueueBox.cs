@@ -35,7 +35,7 @@ using Banshee.ServiceStack;
 using Banshee.Sources;
 using Banshee.PlayQueue;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
     public class PlayQueueBox : VBox
     {
@@ -61,7 +61,7 @@ namespace Banshee.Moblin
                 })
             }, true, true, 0);
 
-            PackStart (new MoblinTrackInfoDisplay () {
+            PackStart (new MeeGoTrackInfoDisplay () {
                 HeightRequest = 64
             }, false, false, 10);
 

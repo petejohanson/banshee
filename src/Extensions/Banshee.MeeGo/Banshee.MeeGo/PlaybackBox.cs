@@ -32,7 +32,7 @@ using Banshee.Gui.Widgets;
 
 using Banshee.ServiceStack;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
     public class PlaybackBox : HBox
     {

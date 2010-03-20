@@ -35,7 +35,7 @@ using Banshee.Collection;
 using Banshee.Collection.Gui;
 using Banshee.ServiceStack;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
     public class RecentAlbumsView : Table
     {
@@ -69,7 +69,7 @@ namespace Banshee.Moblin
                     source.FilterType = TrackFilterType.None;
                     source.FilterQuery = String.Format ("artist=\"{0}\" album=\"{1}\"", Album.ArtistName, Album.Title);
                     ServiceManager.SourceManager.SetActiveSource (source);
-                    ServiceManager.Get<MoblinService> ().PresentPrimaryInterface ();
+                    ServiceManager.Get<MeeGoService> ().PresentPrimaryInterface ();
 
                     var player = ServiceManager.PlayerEngine;
                     if (!player.IsPlaying () || player.CurrentState == Banshee.MediaEngine.PlayerState.Paused) {

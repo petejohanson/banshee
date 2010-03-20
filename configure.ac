@@ -153,8 +153,8 @@ BANSHEE_CHECK_REMOTE_AUDIO
 dnl MonoTorrent support (optional)
 BANSHEE_CHECK_TORRENT
 
-dnl Moblin integration (optional)
-BANSHEE_CHECK_MOBLIN
+dnl MeeGo integration (optional)
+BANSHEE_CHECK_MEEGO
 
 dnl Gapless, if we have a new-enough playbin2
 ENABLE_GAPLESS="no"
@@ -312,7 +312,7 @@ src/Extensions/Banshee.InternetRadio/Makefile
 src/Extensions/Banshee.Lastfm/Makefile
 src/Extensions/Banshee.LibraryWatcher/Makefile
 src/Extensions/Banshee.MiniMode/Makefile
-src/Extensions/Banshee.Moblin/Makefile
+src/Extensions/Banshee.MeeGo/Makefile
 src/Extensions/Banshee.MultimediaKeys/Makefile
 src/Extensions/Banshee.NotificationArea/Makefile
 src/Extensions/Banshee.NowPlaying/Makefile
@@ -350,7 +350,7 @@ ${PACKAGE}-${VERSION}
   Operating System/Desktop Environment:
     GNOME Support:     ${enable_gnome}
     OSX Support:       ${enable_osx}
-    Moblin Support:    ${enable_moblin}
+    MeeGo Support:     ${enable_meego}
 
   Digital Audio Player (DAP) Support:
     Mass Storage:      yes

@@ -1,5 +1,5 @@
 //
-// MoblinService.cs
+// MeeGoService.cs
 //
 // Authors:
 //   Aaron Bockover <abockover@novell.com>
@@ -40,9 +40,9 @@ using Banshee.Gui;
 
 using Mutter;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
-    public class MoblinService : IExtensionService
+    public class MeeGoService : IExtensionService
     {
         private GtkElementsService elements_service;
         private InterfaceActionService interface_action_service;
@@ -50,7 +50,7 @@ namespace Banshee.Moblin
         private PlayerEngineService player;
         private Banshee.Sources.Source now_playing;
 
-        public MoblinService ()
+        public MeeGoService ()
         {
         }
 
@@ -98,21 +98,21 @@ namespace Banshee.Moblin
         {
             ReflectionHackeryUpTheNereid ();
 
-            if (MoblinPanel.Instance == null) {
+            if (MeeGoPanel.Instance == null) {
                 return;
             }
 
-            var container = MoblinPanel.Instance.ParentContainer;
+            var container = MeeGoPanel.Instance.ParentContainer;
             foreach (var child in container.Children) {
                 container.Remove (child);
             }
             container.Add (new MediaPanelContents ());
             container.ShowAll ();
 
-            if (MoblinPanel.Instance.ToolbarPanel != null) {
+            if (MeeGoPanel.Instance.ToolbarPanel != null) {
                 container.SetSizeRequest (
-                    (int)MoblinPanel.Instance.ToolbarPanelWidth,
-                    (int)MoblinPanel.Instance.ToolbarPanelHeight);
+                    (int)MeeGoPanel.Instance.ToolbarPanelWidth,
+                    (int)MeeGoPanel.Instance.ToolbarPanelHeight);
             }
 
             elements_service.PrimaryWindowClose = () => {
@@ -146,12 +146,12 @@ namespace Banshee.Moblin
             // regular metacity does not seem to like this at all, crashing
             // and complaining "Window manager warning: Buggy client sent a
             // _NET_ACTIVE_WINDOW message with a timestamp of 0 for 0x2e00020"
-            if (MoblinPanel.Instance != null) {
+            if (MeeGoPanel.Instance != null) {
                 pwin.Decorated = false;
                 pwin.Maximize ();
             }
 
-            // Now we want to make the Toolbar work in the Moblin GTK theme
+            // Now we want to make the Toolbar work in the MeeGo GTK theme
             var pwin_toolbar = (Toolbar)pwin_type.GetProperty ("HeaderToolbar").GetValue (pwin, null);
             var pwin_toolbar_align = (Alignment)pwin_toolbar.Parent;
             pwin_toolbar_align.TopPadding = 0;
@@ -218,15 +218,15 @@ namespace Banshee.Moblin
         {
             elements_service.PrimaryWindow.Maximize ();
             elements_service.PrimaryWindow.Present ();
-            if (MoblinPanel.Instance != null && MoblinPanel.Instance.ToolbarPanel != null) {
-                MoblinPanel.Instance.ToolbarPanel.RequestHide ();
+            if (MeeGoPanel.Instance != null && MeeGoPanel.Instance.ToolbarPanel != null) {
+                MeeGoPanel.Instance.ToolbarPanel.RequestHide ();
             }
         }
 
         public void Dispose ()
         {
-            if (MoblinPanel.Instance != null) {
-                MoblinPanel.Instance.Dispose ();
+            if (MeeGoPanel.Instance != null) {
+                MeeGoPanel.Instance.Dispose ();
             }
 
             interface_action_service = null;
@@ -234,7 +234,7 @@ namespace Banshee.Moblin
         }
 
         string IService.ServiceName {
-            get { return "MoblinService"; }
+            get { return "MeeGoService"; }
         }
     }
 }

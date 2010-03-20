@@ -35,7 +35,7 @@ using Banshee.ServiceStack;
 using Banshee.Sources;
 using Banshee.PlayQueue;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
     public class MediaPanelContents : HBox
     {
@@ -62,7 +62,7 @@ namespace Banshee.Moblin
             var button = new Button (Catalog.GetString ("Music Library"));
             button.Clicked += (o, e) => {
                 ServiceManager.SourceManager.SetActiveSource (ServiceManager.SourceManager.MusicLibrary);
-                ServiceManager.Get<MoblinService> ().PresentPrimaryInterface ();
+                ServiceManager.Get<MeeGoService> ().PresentPrimaryInterface ();
             };
             var hbox = new HBox ();
             hbox.PackStart (button, false, false, 0);

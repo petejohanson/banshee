@@ -35,7 +35,7 @@ using Banshee.ServiceStack;
 using Banshee.Collection;
 using Banshee.Collection.Database;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
     public class RecentAlbumsList
     {

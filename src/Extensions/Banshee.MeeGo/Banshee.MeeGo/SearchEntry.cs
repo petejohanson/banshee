@@ -33,7 +33,7 @@ using Banshee.ServiceStack;
 using Banshee.Gui;
 using Banshee.Collection;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
     public class SearchEntry : Banshee.Widgets.SearchEntry
     {

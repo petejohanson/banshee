@@ -18,7 +18,7 @@ SUBDIRS = \
 	Banshee.NowPlaying \
 	Banshee.PlayerMigration \
 	Banshee.PlayQueue \
-	Banshee.Moblin \
+	Banshee.MeeGo \
 	Banshee.Podcasting \
 	Banshee.Sample \
 	Banshee.SqlDebugConsole \

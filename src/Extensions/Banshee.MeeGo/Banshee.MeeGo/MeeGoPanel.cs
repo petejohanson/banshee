@@ -1,5 +1,5 @@
 //
-// MoblinPanel.cs
+// MeeGoPanel.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -31,11 +31,11 @@ using Mutter;
 using Hyena;
 using Banshee.Base;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
-    public class MoblinPanel : IDisposable
+    public class MeeGoPanel : IDisposable
     {
-        public static MoblinPanel Instance { get; private set; }
+        public static MeeGoPanel Instance { get; private set; }
 
         public PanelGtk ToolbarPanel { get; private set; }
         public Container ParentContainer { get; private set; }
@@ -43,10 +43,10 @@ namespace Banshee.Moblin
         public uint ToolbarPanelWidth { get; private set; }
         public uint ToolbarPanelHeight { get; private set; }
 
-        public MoblinPanel ()
+        public MeeGoPanel ()
         {
             if (Instance != null) {
-                throw new ApplicationException ("Only one MoblinPanel instance can exist");
+                throw new ApplicationException ("Only one MeeGoPanel instance can exist");
             }
 
             if (ApplicationContext.CommandLine.Contains ("mutter-panel")) {
@@ -70,9 +70,9 @@ namespace Banshee.Moblin
                     ToolbarPanelHeight = e.Height;
                 };
             } catch (Exception e) {
-                Log.Exception ("Could not bind to Moblin panel", e);
+                Log.Exception ("Could not bind to MeeGo panel", e);
 
-                var window = new Gtk.Window ("Moblin Media Panel");
+                var window = new Gtk.Window ("MeeGo Media Panel");
                 window.SetDefaultSize (1000, 500);
                 window.WindowPosition = Gtk.WindowPosition.Center;
                 ParentContainer = window;

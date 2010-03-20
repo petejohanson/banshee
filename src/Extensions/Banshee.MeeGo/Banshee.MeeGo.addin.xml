@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Addin 
-    id="Banshee.Moblin"
+    id="Banshee.MeeGo"
     version="1.0"
     compatVersion="1.0"
-    copyright="© 2009 Novell Inc. Licensed under the MIT X11 license."
-    name="Moblin Support"
-    description="Provides Moblin integration, including a custom media panel."
+    copyright="© 2009-2010 Novell Inc. Licensed under the MIT X11 license."
+    name="MeeGo Support"
+    description="Provides MeeGo integration, including a custom media panel."
     author="Aaron Bockover"
     url="http://banshee-project.org/"
     defaultEnabled="true">
@@ -16,11 +16,11 @@
   </Dependencies>
   
   <Extension path="/Banshee/ServiceManager/Service">
-    <Service class="Banshee.Moblin.MoblinService"/>
+    <Service class="Banshee.MeeGo.MeeGoService"/>
   </Extension>
   
   <Extension path="/Banshee/ThickClient/GtkBaseClient/PostInitializeGtk">
-    <PostInitializeGtk class="Banshee.Moblin.MoblinPanel"/>
+    <PostInitializeGtk class="Banshee.MeeGo.MeeGoPanel"/>
   </Extension>
    
 </Addin>

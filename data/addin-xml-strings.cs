@@ -123,14 +123,14 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Automatically update music and video libraries");
         Catalog.GetString (@"Utilities");
 
+        // ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo.addin.xml
+        Catalog.GetString (@"MeeGo Support");
+        Catalog.GetString (@"Provides MeeGo integration, including a custom media panel.");
+
         // ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
         Catalog.GetString (@"Mini Mode");
         Catalog.GetString (@"Control Banshee through a small window with only playback controls and track information.");
         Catalog.GetString (@"Utilities");
-
-        // ../src/Extensions/Banshee.Moblin/Banshee.Moblin.addin.xml
-        Catalog.GetString (@"Moblin Support");
-        Catalog.GetString (@"Provides Moblin integration, including a custom media panel.");
 
         // ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
         Catalog.GetString (@"Multimedia Keys");

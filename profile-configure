@@ -11,7 +11,7 @@ profiles=(
 		--disable-docs
 	"
 	"meego
-		--enable-moblin
+		--enable-meego
 		--disable-gnome
 		--disable-daap
 		--disable-webkit
@@ -28,7 +28,6 @@ for ((i=0; i<${#profiles[@]}; i++)); do
 	profile=(${profiles[$i]})
 	if [ "${profile[0]}" = "$selected_profile" ]; then
 		configure="./configure"
-		echo ${#profile[@]}
 		for ((j=1; j<${#profile[@]}; j++)); do
 			configure="$configure ${profile[$j]}"
 		done

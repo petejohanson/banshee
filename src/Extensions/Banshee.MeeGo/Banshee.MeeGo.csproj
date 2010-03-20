@@ -7,14 +7,14 @@
     <ProjectGuid>{4FBB954A-5CA9-44DC-97DA-7D549AC3EADB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
-    <AssemblyName>Banshee.Moblin</AssemblyName>
+    <AssemblyName>Banshee.MeeGo</AssemblyName>
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\Administrator\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <Optimize>true</Optimize>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RootNamespace>Banshee.Moblin</RootNamespace>
+    <RootNamespace>Banshee.MeeGo</RootNamespace>
     <AssemblyOriginatorKeyFile>.</AssemblyOriginatorKeyFile>
     <ReleaseVersion>1.3</ReleaseVersion>
   </PropertyGroup>
@@ -59,8 +59,8 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Banshee.Moblin.addin.xml">
-      <LogicalName>Banshee.Moblin.addin.xml</LogicalName>
+    <EmbeddedResource Include="Banshee.MeeGo.addin.xml">
+      <LogicalName>Banshee.MeeGo.addin.xml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -80,18 +80,18 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <Compile Include="Banshee.Moblin\MoblinService.cs" />
-    <Compile Include="Banshee.Moblin\MediaPanelContents.cs" />
+    <Compile Include="Banshee.MeeGo\MeeGoService.cs" />
+    <Compile Include="Banshee.MeeGo\MediaPanelContents.cs" />
     <Compile Include="Mutter\PanelClient.cs" />
     <Compile Include="Mutter\PanelGtk.cs" />
-    <Compile Include="Banshee.Moblin\SearchEntry.cs" />
-    <Compile Include="Banshee.Moblin\SearchHeader.cs" />
-    <Compile Include="Banshee.Moblin\PlayQueueBox.cs" />
-    <Compile Include="Banshee.Moblin\PlaybackBox.cs" />
-    <Compile Include="Banshee.Moblin\MoblinTrackInfoDisplay.cs" />
-    <Compile Include="Banshee.Moblin\RecentAlbumsList.cs" />
-    <Compile Include="Banshee.Moblin\MoblinPanel.cs" />
+    <Compile Include="Banshee.MeeGo\SearchEntry.cs" />
+    <Compile Include="Banshee.MeeGo\SearchHeader.cs" />
+    <Compile Include="Banshee.MeeGo\PlayQueueBox.cs" />
+    <Compile Include="Banshee.MeeGo\PlaybackBox.cs" />
+    <Compile Include="Banshee.MeeGo\MeeGoTrackInfoDisplay.cs" />
+    <Compile Include="Banshee.MeeGo\RecentAlbumsList.cs" />
+    <Compile Include="Banshee.MeeGo\MeeGoPanel.cs" />
     <Compile Include="Mutter\SetSizeHandler.cs" />
-    <Compile Include="Banshee.Moblin\RecentAlbumsView.cs" />
+    <Compile Include="Banshee.MeeGo\RecentAlbumsView.cs" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 //
-// MoblinTrackDisplay.cs
+// MeeGoTrackDisplay.cs
 //
 // Authors:
 //   Aaron Bockover <abockover@novell.com>
@@ -31,13 +31,13 @@ using System.Text.RegularExpressions;
 
 using Banshee.ServiceStack;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
-    public class MoblinTrackInfoDisplay : Banshee.Gui.Widgets.ClassicTrackInfoDisplay
+    public class MeeGoTrackInfoDisplay : Banshee.Gui.Widgets.ClassicTrackInfoDisplay
     {
         private Regex line_three_split;
 
-        public MoblinTrackInfoDisplay () : base ()
+        public MeeGoTrackInfoDisplay () : base ()
         {
         }
 

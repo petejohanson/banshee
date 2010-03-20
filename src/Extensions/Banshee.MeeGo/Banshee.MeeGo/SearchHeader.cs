@@ -34,7 +34,7 @@ using Banshee.Collection;
 using Banshee.ServiceStack;
 using Banshee.Gui;
 
-namespace Banshee.Moblin
+namespace Banshee.MeeGo
 {
     public class SearchHeader : HBox
     {
@@ -53,7 +53,7 @@ namespace Banshee.Moblin
                     source.FilterQuery = search.Entry.Query;
                     ServiceManager.SourceManager.SetActiveSource (source);
                     search.Entry.Query = String.Empty;
-                    ServiceManager.Get<MoblinService> ().PresentPrimaryInterface ();
+                    ServiceManager.Get<MeeGoService> ().PresentPrimaryInterface ();
                 }
             };
             PackStart (search, true, true, 0);
