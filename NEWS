@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.5 - Released March 10, 2010
+WELCOME TO BANSHEE 1.5.6 - Released March 20, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,56 +10,45 @@ WELCOME TO BANSHEE 1.5.5 - Released March 10, 2010
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.5.5
+  * Learn More: http://banshee-project.org/download/archives/1.5.6
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.5.5 is mostly a bug fix release, with a few enhancements.  This
-    release marks the start of our string freeze in preparation for 1.6.
-
-    New Features:
-
-      * Gapless Playback / Playbin2
-
-          Banshee now uses the playbin2 GStreamer element.  With this comes
-          support for gapless playback, which is the default now for users
-          with GStreamer > 0.10.25.2.
-
-      * Grid View
-
-          We are debuting a new grid mode for our custom list widget, visible
-          in the modified Album browser.  It will be used for Videos,
-          Audiobooks, and more in future releases.
-
-      * YouTube Extension
-
-          This extension shows YouTube videos in the Context Pane related to
-          what you're playing, and lets you watch them within Banshee.  You
-          can enable it in the Extensions tab of the Preferences dialog.
-
-    Enhancements:
-
-      * Improve search responsiveness on large libraries
-      * Add icons for Nexus One and Audiobooks
-      * Play Queue item count, size, duration now ignores old tracks
-      * Muinshee fixes: disable Auto-DJ, allow reordering, hide previous song
+    Banshee 1.5.6 (1.6 RC2) is a bug fix release, preparing for the stable 1.6
+    release on March 31.
 
     Notable bug fixes:
 
-      * Fix a very common, SQL-related crash in 1.5.4
-      * Fix saving equalizer settings in culture-invariant way
-      * Jumping to a source's prefs via its context menu works again
-      * Usage data not submitted more than every 48 hours
-      * Fix repeatedly resyncing some files to a device b/c transcoded
-      * Clear the redo stack on shuffle mode change
-      * Accept feeds with empty title
-      * Uri encode file location queries, making them work properly
-      * Fixes to the OS X build
+      * Fix rendering and interaction bugs in the grid view
+      * Fix issue with volume getting reset on every song change
+      * Handle volume changes from outside Banshee (eg PulseAudio)
+      * Fix issue parsing some RSS feeds
+      * Fix library importing and rescanning on all IO backends
+      * Support coverart for albums without an artist (bgo#612626)
+      * Don't capture 's' presses if keybindings disabled
+      * Fix typing in the Wikipedia webkit view
+      * Fix equalizer settings migration (bgo#612669)
+      * Redraw the entire ListView when dragging columns
 
-      * 26 bugs were fixed since 1.5.4
+      * Fix bad startup crash in PlayQueue on old Mono
+      * Fix "Too many open files" bug with GIO backend
+      * [Banshee.Hardware] Handle exceptions (bgo#613173)
+      * [PodcastActions] Unsubscribe from an event on dispose
+      * [ContextPane] Fix crash if active removed (bgo#613277)
+      * [LastfmSource] Fix crash (bgo#612824)
+      * [Lastfm] Fix crash using auth Refresh button (bgo#610911)
+      * [Lastfm] Fix crash (bgo#613276)
+
+      * Fix compilation error with older Mono
+      * Fix compilation error with bundled notify-sharp
+      * Fix --disable-youtube flag
+      * Set YouTube install dir to Extensions/
+      * Fix building with older GStreamer (bgo#613339)
+
+      * 44 bugs were fixed since 1.5.5
 
 
 ===============================================================================
@@ -69,9 +58,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.5.5 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.tar.gz
+    * Banshee 1.5.6 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.5.6/banshee-1-1.5.6.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.5.6/banshee-1-1.5.6.tar.gz
 
 Packages
 --------
@@ -88,13 +77,13 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee-project.org/banshee/banshee-1-1.5.5.macosx.intel.dmg
+    * http://download.banshee-project.org/banshee/banshee-1-1.5.6.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.sha256sum
+    * http://download.banshee-project.org/banshee/stable/1.5.6/banshee-1-1.5.6.changes
+    * http://download.banshee-project.org/banshee/stable/1.5.6/banshee-1-1.5.6.sha256sum
 
 
 ===============================================================================
@@ -109,7 +98,7 @@ DEPENDENCIES
     * NDesk DBus (ndesk-dbus) 0.5
     * NDesk DBus GLib (ndesk-dbus-glib) 0.3
     * Mono.Addins (mono-addins) 0.3.1
-    * TagLib# (taglib-sharp) >= 2.0.3.5
+    * TagLib# (taglib-sharp) >= 2.0.3.7
 
     * Required to build default feature stack:
       * libmtp >= 0.2.0
@@ -162,7 +151,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.5
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.6
 
 
 ===============================================================================
