@@ -20,7 +20,7 @@
   <Docs>
     <typeparam name="TKey">To be added.</typeparam>
     <typeparam name="TValue">To be added.</typeparam>
-    <summary>To be added.</summary>
+    <summary>Least Recently Used (LRU) cache, capped in size, automatically removes the least-recently used object(s) as needed.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -204,7 +204,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The maximum number of items to hold in this cache.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -219,7 +219,7 @@
         <ReturnType>System.Nullable&lt;System.Double&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The cache will try to maintain this hit-to-miss ratio by growing the cache.  If null, will not grow the cache.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>

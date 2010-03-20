@@ -12,7 +12,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
+    <summary>Cryptography related utility functions.  Currently centers around MD5 hashing.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -26,8 +26,8 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="text">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="text">The text to test.</param>
+        <summary>Returns true if the string appears to be a MD5 hash - that is, of the correct length and allowed characters.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -48,7 +48,7 @@
       </Parameters>
       <Docs>
         <param name="text">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Returns the MD5 hash of the input string.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>

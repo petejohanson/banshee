@@ -16,7 +16,7 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>To be added.</summary>
+    <summary>Efficiently stores a set of selected ranges within some larger range.  Lookup to see if a given number in the range is selected is also efficient.  Can work fine for very small or large (eg [0, 1M]) ranges.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -41,7 +41,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>True if all indexes from 0 to MaxCount are selected.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -58,7 +58,7 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Raised when the selection is changed.  When methods such as SelectRange are called, this event is raised just once, not once per every index selected.</summary>
         <remarks>To be added.</remarks>
       </Docs>
       <AssemblyInfo>
@@ -75,7 +75,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Clear the selection, and raise the Changed event.</summary>
         <remarks>To be added.</remarks>
       </Docs>
       <AssemblyInfo>
@@ -95,7 +95,7 @@
       </Parameters>
       <Docs>
         <param name="raise">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Clear the selection, and raise the Changed event if raise is true.</summary>
         <remarks>To be added.</remarks>
       </Docs>
       <AssemblyInfo>
@@ -115,7 +115,7 @@
       </Parameters>
       <Docs>
         <param name="index">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Returns true if the given index is selected.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -132,7 +132,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The number of items selected.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -154,7 +154,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The first selected index, or -1 if none selected.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -220,7 +220,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The last (highest) selected index, or -1 if none selected.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -232,7 +232,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The highest possible index in this selection.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -442,7 +442,7 @@
       </Parameters>
       <Docs>
         <param name="index">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>If index is not selected, select it.  If it is selected, unselect it.</summary>
         <remarks>To be added.</remarks>
       </Docs>
       <AssemblyInfo>
