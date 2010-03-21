@@ -116,8 +116,8 @@ namespace Banshee.SmartPlaylist
                 Spacing = 2,
                 LayoutStyle = ButtonBoxStyle.Start
             };
-            button_box.PackStart (adv_add_button = new Button (Catalog.GetString ("Open in editor")), false, false, 0);
-            button_box.PackStart (adv_use_button = new Button (Catalog.GetString ("Create and save")), false, false, 0);
+            button_box.PackStart (adv_use_button = new Button (Catalog.GetString ("Open in editor")), false, false, 0);
+            button_box.PackStart (adv_add_button = new Button (Catalog.GetString ("Create and save")), false, false, 0);
 
             scrolled_window.Add (adv_tree_view = new TreeView () {
                 HeightRequest = 150,
