@@ -5,7 +5,7 @@
 //   Aaron Bockover <abockover@novell.com>
 //   Gabriel Burt <gburt@novell.com>
 //
-// Copyright (C) 2007-2008 Novell, Inc.
+// Copyright 2007-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -93,6 +93,9 @@ namespace Nereid
 
         public PlayerInterface () : base (Catalog.GetString ("Banshee Media Player"), "player_window", 1024, 700)
         {
+            // if (PlatformDetection.IsMeeGo) {
+            //     Gdk.Window.AddFilterForAll (OnGdkEventFilter);
+            // }
         }
 
         protected override void Initialize ()
@@ -629,6 +632,24 @@ namespace Nereid
             return base.OnKeyPressEvent (evnt);
         }
 
+#endregion
+
+#region Popup Status Bar
+#if false
+
+        private Gdk.FilterReturn OnGdkEventFilter (IntPtr xevent, Gdk.Event gdkevent)
+        {
+            if (!IsRealized || !IsMapped) {
+                return Gdk.FilterReturn.Continue;
+            }
+
+            Gdk.ModifierType mask;
+            int x, y;
+            GdkWindow.GetPointer (out x, out y, out mask);
+            return Gdk.FilterReturn.Continue;
+        }
+
+#endif
 #endregion
 
 #region Helper Functions
