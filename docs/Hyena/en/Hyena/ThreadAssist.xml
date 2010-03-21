@@ -9,8 +9,8 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>A utility to make it easier to spawn execution off from the main thread.</summary>
+    <remarks>Needs to be initialized with the <see cref="M:Hyena.ThreadAssist.InitializeMainThread" /> method and a <see cref="P:Hyena.ThreadAssist.ProxyToMainHandler" /> needs to be set before this can be used.</remarks>
   </Docs>
   <Members>
     <Member MemberName="AssertInMainThread">
@@ -72,8 +72,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Mark the <see cref="T:System.Threading.Thread" /> on which this method is invoked as the main thread.</summary>
+        <remarks>Calling this method is required before <see cref="T:Hyena.ThreadAssist" /> will work. A <see cref="P:Hyena.ThreadAssist.ProxyToMainHandler" /> needs to be set as well.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InMainThread">
@@ -134,7 +134,7 @@
         <ReturnType>System.Action&lt;Hyena.InvokeHandler&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The delegate that will be used to proxy commands to the main thread.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>

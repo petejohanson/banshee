@@ -77,11 +77,6 @@
       <Type Name="SelectionProxy" Kind="Class" />
       <Type Name="WriteLineElement`1" DisplayName="WriteLineElement&lt;T&gt;" Kind="Class" />
     </Namespace>
-    <Namespace Name="Hyena.Collections.Tests">
-      <Type Name="IntervalHeapTests" />
-      <Type Name="QueuePipelineTests" />
-      <Type Name="RangeCollectionTests" />
-    </Namespace>
     <Namespace Name="Hyena.CommandLine">
       <Type Name="CommandLineParser" Kind="Class" />
       <Type Name="Layout" Kind="Class" />
@@ -149,6 +144,7 @@
     <Namespace Name="Hyena.Data.Gui.Accessibility">
       <Type Name="ColumnCellAccessible" Kind="Class" />
       <Type Name="ICellAccessibleParent" Kind="Interface" />
+      <Type Name="ListViewAccessible`1" DisplayName="ListViewAccessible&lt;T&gt;" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Data.Query">
     </Namespace>
@@ -174,12 +170,9 @@
       <Type Name="SqliteUtils" Kind="Class" />
       <Type Name="VirtualDatabaseColumnAttribute" Kind="Class" />
     </Namespace>
-    <Namespace Name="Hyena.Data.Sqlite.Tests">
-      <Type Name="SqliteCommandTests" />
-      <Type Name="SqliteModelProviderTests" />
-    </Namespace>
     <Namespace Name="Hyena.Gui">
       <Type Name="ActionManager" Kind="Class" />
+      <Type Name="BaseWidgetAccessible" Kind="Class" />
       <Type Name="CairoCorners" Kind="Enumeration" />
       <Type Name="CairoDamageDebugger" Kind="Class" />
       <Type Name="CairoExtensions" Kind="Class" />
@@ -222,9 +215,6 @@
       <Type Name="Stage`1" DisplayName="Stage&lt;T&gt;" Kind="Class" />
       <Type Name="Stage`1+ActorStepHandler" DisplayName="Stage&lt;T&gt;+ActorStepHandler" Kind="Delegate" />
     </Namespace>
-    <Namespace Name="Hyena.Gui.Theatrics.Tests">
-      <Type Name="ChoreographerTests" />
-    </Namespace>
     <Namespace Name="Hyena.Gui.Theming">
       <Type Name="GtkColorClass" Kind="Enumeration" />
       <Type Name="GtkColors" Kind="Class" />
@@ -248,10 +238,6 @@
       <Type Name="JsonArray" Kind="Class" />
       <Type Name="JsonObject" Kind="Class" />
       <Type Name="Serializer" Kind="Class" />
-    </Namespace>
-    <Namespace Name="Hyena.Json.Tests">
-      <Type Name="DeserializerTests" />
-      <Type Name="TokenizerTests" />
     </Namespace>
     <Namespace Name="Hyena.Metrics">
       <Type Name="DbSampleStore" Kind="Class" />
@@ -312,9 +298,6 @@
       <Type Name="StringQueryValueEntry" Kind="Class" />
       <Type Name="TimeSpanQueryValueEntry" Kind="Class" />
     </Namespace>
-    <Namespace Name="Hyena.Query.Tests">
-      <Type Name="QueryTests" />
-    </Namespace>
     <Namespace Name="Hyena.SExpEngine">
       <Type Name="ArithmeticFunctionSet" Kind="Class" />
       <Type Name="ArithmeticFunctionSet+ArithmeticOperation" Kind="Enumeration" />
@@ -347,13 +330,6 @@
       <Type Name="UtilityFunctionSet" Kind="Class" />
       <Type Name="VoidLiteral" Kind="Class" />
     </Namespace>
-    <Namespace Name="Hyena.Tests">
-      <Type Name="CryptoUtilTests" />
-      <Type Name="StringUtilTests" />
-      <Type Name="TestBase" />
-      <Type Name="Transform`2" DisplayName="Transform&lt;F,To&gt;" />
-      <Type Name="TransformPair`2" DisplayName="TransformPair&lt;F,T&gt;" />
-    </Namespace>
     <Namespace Name="Hyena.Widgets">
       <Type Name="AnimatedBox" Kind="Class" />
       <Type Name="AnimatedHBox" Kind="Class" />
@@ -368,6 +344,7 @@
       <Type Name="MenuButton" Kind="Class" />
       <Type Name="MessageBar" Kind="Class" />
       <Type Name="PulsingButton" Kind="Class" />
+      <Type Name="RatingAccessible" Kind="Class" />
       <Type Name="RatingEntry" Kind="Class" />
       <Type Name="RatingMenuItem" Kind="Class" />
       <Type Name="RoundedFrame" Kind="Class" />

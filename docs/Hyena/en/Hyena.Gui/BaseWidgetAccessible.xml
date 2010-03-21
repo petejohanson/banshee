@@ -1,11 +1,11 @@
-<Type Name="ColumnCellAccessible" FullName="Hyena.Data.Gui.Accessibility.ColumnCellAccessible">
-  <TypeSignature Language="C#" Value="public class ColumnCellAccessible : Atk.Object, Atk.ComponentImplementor" />
+<Type Name="BaseWidgetAccessible" FullName="Hyena.Gui.BaseWidgetAccessible">
+  <TypeSignature Language="C#" Value="public class BaseWidgetAccessible : Gtk.Accessible, Atk.ComponentImplementor" />
   <AssemblyInfo>
     <AssemblyName>Hyena.Gui</AssemblyName>
     <AssemblyVersion>1.5.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
-    <BaseTypeName>Atk.Object</BaseTypeName>
+    <BaseTypeName>Gtk.Accessible</BaseTypeName>
   </Base>
   <Interfaces>
     <Interface>
@@ -18,20 +18,16 @@
   </Docs>
   <Members>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ColumnCellAccessible (object bound_object, Hyena.Data.Gui.ColumnCell cell, Hyena.Data.Gui.Accessibility.ICellAccessibleParent parent);" />
+      <MemberSignature Language="C#" Value="public BaseWidgetAccessible (Gtk.Widget widget);" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>1.5.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
-        <Parameter Name="bound_object" Type="System.Object" />
-        <Parameter Name="cell" Type="Hyena.Data.Gui.ColumnCell" />
-        <Parameter Name="parent" Type="Hyena.Data.Gui.Accessibility.ICellAccessibleParent" />
+        <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <param name="bound_object">To be added.</param>
-        <param name="cell">To be added.</param>
-        <param name="parent">To be added.</param>
+        <param name="widget">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -67,34 +63,6 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="bound_object">
-      <MemberSignature Language="C#" Value="protected object bound_object;" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>1.5.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="cell">
-      <MemberSignature Language="C#" Value="protected Hyena.Data.Gui.ColumnCell cell;" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>1.5.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>Hyena.Data.Gui.ColumnCell</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -205,19 +173,18 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="OnGetIndexInParent">
-      <MemberSignature Language="C#" Value="protected override int OnGetIndexInParent ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Layer">
+      <MemberSignature Language="C#" Value="public virtual Atk.Layer Layer { get; }" />
+      <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>1.5.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>Atk.Layer</ReturnType>
       </ReturnValue>
-      <Parameters />
       <Docs>
         <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -234,21 +201,6 @@
       <Docs>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Redrawn">
-      <MemberSignature Language="C#" Value="public virtual void Redrawn ();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>1.5.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
