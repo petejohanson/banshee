@@ -40,9 +40,6 @@ namespace Banshee.Gui.TrackEditor
 {
     public class EditorTrackInfo : TrackInfo
     {
-        private TagLib.File taglib_file;
-        private bool taglib_file_exists = true;
-
         public EditorTrackInfo (TrackInfo sourceTrack)
         {
             source_track = sourceTrack;
@@ -93,28 +90,19 @@ namespace Banshee.Gui.TrackEditor
             get { return source_track; }
         }
 
-        public TagLib.File TaglibFile {
-            get {
-                if (taglib_file != null) {
-                    return taglib_file;
-                } else if (!taglib_file_exists) {
-                    return null;
-                }
+        public TagLib.File GetTaglibFile ()
+        {
+            TagLib.File file = null;
 
-                try {
-                    taglib_file = StreamTagger.ProcessUri (Uri);
-                    if (taglib_file != null) {
-                        return taglib_file;
-                    }
-                } catch (Exception e) {
-                    if (Uri.Scheme == "file") {
-                        Hyena.Log.Exception ("Cannot load TagLib file", e);
-                    }
+            try {
+                file = StreamTagger.ProcessUri (Uri);
+            } catch (Exception e) {
+                if (Uri.Scheme == "file") {
+                    Hyena.Log.Exception ("Cannot load TagLib file", e);
                 }
-
-                taglib_file_exists = false;
-                return null;
             }
+
+            return file;
         }
     }
 }
