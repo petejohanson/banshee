@@ -211,7 +211,9 @@ namespace Banshee.AudioCd
             track.FileModifiedStamp = Banshee.IO.File.GetModifiedTime (track.Uri);
             track.LastSyncedStamp = DateTime.Now;
 
-            StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (track.Uri), true);
+            using (var file = StreamTagger.ProcessUri (track.Uri)) {
+                StreamTagger.TrackInfoMerge (track, file, true);
+            }
 
             track.Save ();
 

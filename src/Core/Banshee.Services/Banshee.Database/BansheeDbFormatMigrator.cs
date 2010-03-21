@@ -1378,8 +1378,9 @@ namespace Banshee.Database
 
                         if (track != null && track.Uri != null && track.Uri.IsFile) {
                             try {
-                                TagLib.File file = StreamTagger.ProcessUri (track.Uri);
-                                StreamTagger.TrackInfoMerge (track, file, true);
+                                using (var file = StreamTagger.ProcessUri (track.Uri)) {
+                                    StreamTagger.TrackInfoMerge (track, file, true);
+                                }
                             } catch (Exception e) {
                                 Log.Warning (String.Format ("Failed to update metadata for {0}", track),
                                     e.GetType ().ToString (), false);

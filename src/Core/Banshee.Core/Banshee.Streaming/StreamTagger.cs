@@ -124,11 +124,12 @@ namespace Banshee.Streaming
         public static void TrackInfoMerge (TrackInfo track, SafeUri uri)
         {
             track.Uri = uri;
-            TagLib.File file = StreamTagger.ProcessUri (uri);
-            TrackInfoMerge (track, file);
+            using (var file = StreamTagger.ProcessUri (uri)) {
+                TrackInfoMerge (track, file);
 
-            if (file == null) {
-                track.TrackTitle = uri.AbsoluteUri;
+                if (file == null) {
+                    track.TrackTitle = uri.AbsoluteUri;
+                }
             }
         }
 
@@ -189,7 +190,6 @@ namespace Banshee.Streaming
                     track.Rating = Choose (file_rating, track.Rating, preferTrackInfo);
                     track.PlayCount = Choose (file_playcount, track.PlayCount, preferTrackInfo);
                 }
-                file.Mode = TagLib.File.AccessMode.Closed;
             } else {
                 track.MediaAttributes = TrackMediaAttributes.AudioStream;
                 if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.AbsoluteUri)) {
@@ -322,7 +322,7 @@ namespace Banshee.Streaming
             }
 
             file.Save ();
-            file.Mode = TagLib.File.AccessMode.Closed;
+            file.Dispose ();
 
             track.FileSize = Banshee.IO.File.GetSize (track.Uri);
             track.FileModifiedStamp = Banshee.IO.File.GetModifiedTime (track.Uri);

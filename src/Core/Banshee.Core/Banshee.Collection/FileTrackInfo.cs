@@ -43,22 +43,22 @@ namespace Banshee.Collection
             LoadFromUri(uri);
             Uri = uri;
         }
-		
+
         private void LoadFromUri (SafeUri uri)
         {
             ParsePath (uri.LocalPath);
 
-            TagLib.File file = Banshee.IO.DemuxVfs.OpenFile (uri.LocalPath);
-
-            ArtistName = Choose (file.Tag.JoinedAlbumArtists, ArtistName);
-            AlbumTitle = Choose (file.Tag.Album, AlbumTitle);
-            TrackTitle = Choose (file.Tag.Title, TrackTitle);
-            Genre = Choose (file.Tag.FirstGenre, Genre);
-            DiscNumber = file.Tag.Disc == 0 ? (int)DiscNumber : (int)file.Tag.Disc;
-            TrackNumber = file.Tag.Track == 0 ? (int)TrackNumber : (int)file.Tag.Track;
-            TrackCount = file.Tag.TrackCount == 0 ? (int)TrackCount : (int)file.Tag.TrackCount;
-            Duration = file.Properties.Duration;
-            Year = (int)file.Tag.Year;
+            using (var file = Banshee.IO.DemuxVfs.OpenFile (uri.LocalPath)) {
+                ArtistName = Choose (file.Tag.JoinedAlbumArtists, ArtistName);
+                AlbumTitle = Choose (file.Tag.Album, AlbumTitle);
+                TrackTitle = Choose (file.Tag.Title, TrackTitle);
+                Genre = Choose (file.Tag.FirstGenre, Genre);
+                DiscNumber = file.Tag.Disc == 0 ? (int)DiscNumber : (int)file.Tag.Disc;
+                TrackNumber = file.Tag.Track == 0 ? (int)TrackNumber : (int)file.Tag.Track;
+                TrackCount = file.Tag.TrackCount == 0 ? (int)TrackCount : (int)file.Tag.TrackCount;
+                Duration = file.Properties.Duration;
+                Year = (int)file.Tag.Year;
+            }
 
             DateAdded = DateTime.Now;
         }

@@ -179,6 +179,7 @@ namespace Banshee.Metadata
             TagLib.File file = StreamTagger.ProcessUri (uri);
             TrackInfo track = new TrackInfo ();
             StreamTagger.TrackInfoMerge (track, file);
+            file.Dispose ();
 
             // Make changes
             change (track);
@@ -191,6 +192,7 @@ namespace Banshee.Metadata
             file = StreamTagger.ProcessUri (uri);
             track = new TrackInfo ();
             StreamTagger.TrackInfoMerge (track, file, false, true);
+            file.Dispose ();
 
             // Verify changes
             verify (track);

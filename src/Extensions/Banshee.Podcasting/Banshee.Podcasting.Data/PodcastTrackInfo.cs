@@ -207,8 +207,9 @@ namespace Banshee.Podcasting.Data
 
             if (!String.IsNullOrEmpty (Item.Enclosure.LocalPath)) {
                 try {
-                    TagLib.File file = Banshee.Streaming.StreamTagger.ProcessUri (track.Uri);
-                    Banshee.Streaming.StreamTagger.TrackInfoMerge (track, file, true);
+                    using (var file = Banshee.Streaming.StreamTagger.ProcessUri (track.Uri)) {
+                        Banshee.Streaming.StreamTagger.TrackInfoMerge (track, file, true);
+                    }
                 } catch {}
             }
 

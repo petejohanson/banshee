@@ -176,7 +176,9 @@ namespace Banshee.Collection.Database
             try {
                 track = new DatabaseTrackInfo ();
                 track.Uri = uri;
-                StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (uri), false, true);
+                using (var file = StreamTagger.ProcessUri (uri)) {
+                    StreamTagger.TrackInfoMerge (track, file, false, true);
+                }
 
                 track.PrimarySource = trackPrimarySourceChooser (track);
 
