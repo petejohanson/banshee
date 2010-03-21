@@ -186,7 +186,7 @@ namespace Nereid
                 AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Shrink, 0, 0);
 
-            Widget next_button = new NextButton (ActionService);
+            Widget next_button = new NextButton (ActionService, PlatformDetection.IsMeeGo);
             next_button.Show ();
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/NextArrowButton", next_button);
 
@@ -201,7 +201,7 @@ namespace Nereid
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/TrackInfoDisplay", editable, true);
 
             if (PlatformDetection.IsMeeGo) {
-                var menu = (Menu)(ServiceManager.Get<InterfaceActionService> ().UIManager.GetWidget ("/ToolbarMenu"));
+                var menu = (Menu)(ActionService.UIManager.GetWidget ("/ToolbarMenu"));
                 var menu_button = new Hyena.Widgets.MenuButton (new Image (Stock.Preferences, IconSize.LargeToolbar), menu, true);
                 menu_button.Show ();
                 ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/ToolbarMenuPlaceholder", menu_button);
@@ -212,6 +212,7 @@ namespace Nereid
                 ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/ClosePlaceholder", close_button);
 
                 ServiceManager.PlayerEngine.Volume = 100;
+
             } else {
                 var volume_button = new ConnectedVolumeButton ();
                 volume_button.Show ();
@@ -280,6 +281,10 @@ namespace Nereid
 
         private void BuildFooter ()
         {
+            if (PlatformDetection.IsMeeGo) {
+                return;
+            }
+
             footer_toolbar = new HBox () { BorderWidth = 2 };
 
             Widget task_status = new Banshee.Gui.Widgets.TaskStatusIcon ();
@@ -635,6 +640,10 @@ namespace Nereid
 
         private void UpdateSourceInformation ()
         {
+            if (status_label == null) {
+                return;
+            }
+
             Source source = ServiceManager.SourceManager.ActiveSource;
             if (source == null) {
                 status_label.Text = String.Empty;

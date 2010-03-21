@@ -39,12 +39,16 @@ namespace Banshee.Gui.Widgets
         PlaybackShuffleActions shuffle_actions;
         Widget button;
 
-        public NextButton (InterfaceActionService actionService)
+        public NextButton (InterfaceActionService actionService) : this (actionService, false)
+        {
+        }
+
+        public NextButton (InterfaceActionService actionService, bool withRepeatActions)
         {
             shuffle_actions = actionService.PlaybackActions.ShuffleActions;
 
             button = actionService.PlaybackActions["NextAction"].CreateToolItem ();
-            var menu = shuffle_actions.CreateMenu ();
+            var menu = shuffle_actions.CreateMenu (withRepeatActions);
             Construct (button, menu, true);
 
             TooltipText = actionService.PlaybackActions["NextAction"].Tooltip;
