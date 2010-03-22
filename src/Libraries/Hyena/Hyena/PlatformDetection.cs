@@ -90,7 +90,7 @@ namespace Hyena
 
             SystemName = PosixSystemName;
 
-            IsMeeGo = System.IO.File.Exists ("/etc/meego-release") || !String.IsNullOrEmpty ("MEEGO");
+            IsMeeGo = System.IO.File.Exists ("/etc/meego-release");
         }
     }
 }
