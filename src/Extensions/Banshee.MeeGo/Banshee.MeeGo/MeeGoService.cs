@@ -28,6 +28,7 @@
 
 using System;
 using Gtk;
+using MeeGo.Panel;
 
 using Hyena;
 
@@ -37,8 +38,6 @@ using Banshee.Sources;
 using Banshee.ServiceStack;
 using Banshee.MediaEngine;
 using Banshee.Gui;
-
-using Mutter;
 
 namespace Banshee.MeeGo
 {
@@ -175,7 +174,7 @@ namespace Banshee.MeeGo
             elements_service.PrimaryWindow.Maximize ();
             elements_service.PrimaryWindow.Present ();
             if (MeeGoPanel.Instance != null && MeeGoPanel.Instance.ToolbarPanel != null) {
-                MeeGoPanel.Instance.ToolbarPanel.RequestHide ();
+                MeeGoPanel.Instance.ToolbarPanel.Hide ();
             }
         }
 

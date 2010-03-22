@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright 2009 Novell, Inc.
+// Copyright 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,11 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Mutter
+namespace MeeGo.Panel
 {
     public class PanelClient : GLib.Object
     {
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
         private static extern IntPtr mpl_panel_client_get_type ();
 
         public static new GLib.GType GType {
@@ -47,34 +47,50 @@ namespace Mutter
         {
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
-        private static extern void mpl_panel_client_request_show (IntPtr panel);
+        [DllImport ("libmoblin-panel")]
+        private static extern void mpl_panel_client_unload (IntPtr panel);
 
-        public void RequestShow ()
+        public void Unload ()
         {
-            mpl_panel_client_request_show (Handle);
+            mpl_panel_client_unload (Handle);
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
-        private static extern void mpl_panel_client_request_hide (IntPtr panel);
+        [DllImport ("libmoblin-panel")]
+        private static extern void mpl_panel_client_ready (IntPtr panel);
 
-        public void RequestHide ()
+        public void Ready ()
         {
-            mpl_panel_client_request_hide (Handle);
+            mpl_panel_client_ready (Handle);
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
-        private static extern void mpl_panel_client_request_focus (IntPtr panel);
+        [DllImport ("libmoblin-panel")]
+        private static extern bool mpl_panel_client_set_delayed_ready (IntPtr panel, bool delayed);
 
-        public void RequestFocus ()
+        public bool SetDelayedReady (bool delayed)
         {
-            mpl_panel_client_request_focus (Handle);
+            return mpl_panel_client_set_delayed_ready (Handle, delayed);
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
+        private static extern void mpl_panel_client_show (IntPtr panel);
+
+        public void Show ()
+        {
+            mpl_panel_client_show (Handle);
+        }
+
+        [DllImport ("libmoblin-panel")]
+        private static extern void mpl_panel_client_hide (IntPtr panel);
+
+        public void Hide ()
+        {
+            mpl_panel_client_hide (Handle);
+        }
+
+        [DllImport ("libmoblin-panel")]
         private static extern void mpl_panel_client_set_height_request (IntPtr panel, uint height);
 
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
         private static extern uint mpl_panel_client_get_height_request (IntPtr panel);
 
         public uint HeightRequest {
@@ -82,31 +98,76 @@ namespace Mutter
             set { mpl_panel_client_set_height_request (Handle, value); }
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
+        private static extern void mpl_panel_client_request_focus (IntPtr panel);
+
+        public void RequestFocus ()
+        {
+            mpl_panel_client_request_focus (Handle);
+        }
+
+        [DllImport ("libmoblin-panel")]
         private static extern void mpl_panel_client_request_button_style (IntPtr panel, string style);
 
-        public string ButtonStyleRequest {
-            set { mpl_panel_client_request_button_style (Handle, value); }
+        public void RequestButtonStyle (string style)
+        {
+            mpl_panel_client_request_button_style (Handle, style);
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
         private static extern void mpl_panel_client_request_tooltip (IntPtr panel, string tooltip);
 
-        public string TooltipRequest {
-            set { mpl_panel_client_request_tooltip (Handle, value); }
+        public void RequestTooltip (string tooltip)
+        {
+            mpl_panel_client_request_tooltip (Handle, tooltip);
+        }
+        
+        [DllImport ("libmoblin-panel")]
+        private static extern void mpl_panel_client_request_button_state (IntPtr panel, PanelButtonState state);
+
+        public void RequestButtonState (PanelButtonState state)
+        {
+            mpl_panel_client_request_button_state (Handle, state);
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
+        private static extern void mpl_panel_client_request_modality (IntPtr panel, bool modal);
+
+        public void RequestModality (bool modal)
+        {
+            mpl_panel_client_request_modality (Handle, modal);
+        }
+
+        [DllImport ("libmoblin-panel")]
         private static extern uint mpl_panel_client_get_xid (IntPtr panel);
 
         public uint Xid {
             get { return mpl_panel_client_get_xid (Handle); }
         }
 
+        [DllImport ("libmoblin-panel")]
+        private static extern bool mpl_panel_client_is_windowless (IntPtr panel);
+
+        public bool IsWindowless {
+            get { return mpl_panel_client_is_windowless (Handle); }
+        }
+        
+        [GLib.Signal ("unload")]
+        public event SetSizeHandler UnloadEvent {
+            add { GLib.Signal.Lookup (this, "unload").AddDelegate (value); }
+            remove { GLib.Signal.Lookup (this, "unload").RemoveDelegate (value); }
+        }
+
         [GLib.Signal ("set-size")]
         public event SetSizeHandler SetSizeEvent {
             add { GLib.Signal.Lookup (this, "set-size", typeof (SetSizeArgs)).AddDelegate (value); }
             remove { GLib.Signal.Lookup (this, "set-size", typeof (SetSizeArgs)).RemoveDelegate (value); }
+        }
+
+        [GLib.Signal ("set-position")]
+        public event SetPositionHandler SetPositionEvent {
+            add { GLib.Signal.Lookup (this, "set-position", typeof (SetPositionArgs)).AddDelegate (value); }
+            remove { GLib.Signal.Lookup (this, "set-position", typeof (SetPositionArgs)).RemoveDelegate (value); }
         }
 
         [GLib.Signal ("show-begin")]
@@ -121,6 +182,12 @@ namespace Mutter
             remove { GLib.Signal.Lookup (this, "show-end").RemoveDelegate (value); }
         }
 
+        [GLib.Signal ("show")]
+        public event EventHandler ShowEvent {
+            add { GLib.Signal.Lookup (this, "show").AddDelegate (value); }
+            remove { GLib.Signal.Lookup (this, "show").RemoveDelegate (value); }
+        }
+
         [GLib.Signal ("hide-begin")]
         public event EventHandler HideBeginEvent {
             add { GLib.Signal.Lookup (this, "hide-begin").AddDelegate (value); }
@@ -133,36 +200,10 @@ namespace Mutter
             remove { GLib.Signal.Lookup (this, "hide-end").RemoveDelegate (value); }
         }
 
-        [GLib.Signal ("request-show")]
-        public event EventHandler RequestShowEvent {
-            add { GLib.Signal.Lookup (this, "request-show").AddDelegate (value); }
-            remove { GLib.Signal.Lookup (this, "request-show").RemoveDelegate (value); }
-        }
-
-        [GLib.Signal ("request-hide")]
-        public event EventHandler RequestHideEvent {
-            add { GLib.Signal.Lookup (this, "request-hide").AddDelegate (value); }
-            remove { GLib.Signal.Lookup (this, "request-hide").RemoveDelegate (value); }
-        }
-
-        [GLib.Signal ("request-focus")]
-        public event EventHandler RequestFocusEvent {
-            add { GLib.Signal.Lookup (this, "request-focus").AddDelegate (value); }
-            remove { GLib.Signal.Lookup (this, "request-focus").RemoveDelegate (value); }
-        }
-
-        // FIXME: need to define an delegate and args class
-
-        [GLib.Signal ("request-button-style")]
-        public event EventHandler RequestButtonStyleEvent {
-            add { GLib.Signal.Lookup (this, "request-button-style").AddDelegate (value); }
-            remove { GLib.Signal.Lookup (this, "request-button-style").RemoveDelegate (value); }
-        }
-
-        [GLib.Signal ("request-tooltip")]
-        public event EventHandler RequestTooltipEvent {
-            add { GLib.Signal.Lookup (this, "request-tooltip").AddDelegate (value); }
-            remove { GLib.Signal.Lookup (this, "request-tooltip").RemoveDelegate (value); }
+        [GLib.Signal ("hide")]
+        public event EventHandler HideEvent {
+            add { GLib.Signal.Lookup (this, "hide").AddDelegate (value); }
+            remove { GLib.Signal.Lookup (this, "hide").RemoveDelegate (value); }
         }
     }
 }

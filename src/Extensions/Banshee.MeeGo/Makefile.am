@@ -16,9 +16,11 @@ SOURCES =  \
 	Banshee.MeeGo/RecentAlbumsView.cs \
 	Banshee.MeeGo/SearchEntry.cs \
 	Banshee.MeeGo/SearchHeader.cs \
-	Mutter/PanelClient.cs \
-	Mutter/PanelGtk.cs \
-	Mutter/SetSizeHandler.cs
+	MeeGo.Panel/PanelClient.cs \
+	MeeGo.Panel/PanelGtk.cs \
+	MeeGo.Panel/SetSizeHandler.cs \
+	MeeGo.Panel/SetPositionHandler.cs \
+	MeeGo.Panel/PanelButtonState.cs
 
 RESOURCES = Banshee.MeeGo.addin.xml
 

@@ -1,10 +1,10 @@
 //
-// SetSizeHandler.cs
+// SetPositionHandler.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright 2009 Novell, Inc.
+// Copyright 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,17 +26,18 @@
 
 using System;
 
-namespace Mutter
+namespace MeeGo.Panel
 {
-    public delegate void SetSizeHandler (object o, SetSizeArgs args);
+    public delegate void SetPositionHandler (object o, SetPositionArgs args);
 
-    public class SetSizeArgs : GLib.SignalArgs {
-        public uint Width {
-            get { return (uint)Args[0]; }
+    public class SetPositionArgs : GLib.SignalArgs
+    {
+        public int X {
+            get { return (int)Args[0]; }
         }
 
-        public uint Height {
-            get { return (uint)Args[1]; }
+        public int Y {
+            get { return (int)Args[1]; }
         }
     }
 }

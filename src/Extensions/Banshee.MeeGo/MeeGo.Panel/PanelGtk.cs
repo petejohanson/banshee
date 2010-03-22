@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright 2009 Novell, Inc.
+// Copyright 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,18 +29,18 @@ using System.Runtime.InteropServices;
 
 using Gtk;
 
-namespace Mutter
+namespace MeeGo.Panel
 {
     public class PanelGtk : PanelClient
     {
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
         private static extern IntPtr mpl_panel_gtk_get_type ();
 
         public static new GLib.GType GType {
             get { return new GLib.GType (mpl_panel_gtk_get_type ()); }
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
         private static extern IntPtr mpl_panel_gtk_new (string name, string tooltip, string stylesheet,
             string button_style, bool with_toolbar_service);
 
@@ -54,7 +54,15 @@ namespace Mutter
         {
         }
 
-        [DllImport ("libmoblin-panel-gtk")]
+        [DllImport ("libmoblin-panel")]
+        private static extern void mpl_panel_gtk_set_child (IntPtr panel, IntPtr child);
+
+        public void SetChild (Widget child)
+        {
+            mpl_panel_gtk_set_child (Handle, child == null ? IntPtr.Zero : child.Handle);
+        }
+
+        [DllImport ("libmoblin-panel")]
         private static extern IntPtr mpl_panel_gtk_get_window (IntPtr panel);
 
         private Container container_window;

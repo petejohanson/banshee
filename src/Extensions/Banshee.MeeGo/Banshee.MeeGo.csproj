@@ -80,18 +80,20 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
+    <Compile Include="MeeGo.Panel\PanelClient.cs" />
+    <Compile Include="MeeGo.Panel\PanelGtk.cs" />
+    <Compile Include="MeeGo.Panel\SetSizeHandler.cs" /> 
+    <Compile Include="MeeGo.Panel\SetPositionHandler.cs" /> 
+    <Compile Include="MeeGo.Panel\PanelButtonState.cs" />
     <Compile Include="Banshee.MeeGo\MeeGoService.cs" />
     <Compile Include="Banshee.MeeGo\MediaPanelContents.cs" />
-    <Compile Include="Mutter\PanelClient.cs" />
-    <Compile Include="Mutter\PanelGtk.cs" />
-    <Compile Include="Banshee.MeeGo\SearchEntry.cs" />
+	<Compile Include="Banshee.MeeGo\SearchEntry.cs" />
     <Compile Include="Banshee.MeeGo\SearchHeader.cs" />
     <Compile Include="Banshee.MeeGo\PlayQueueBox.cs" />
     <Compile Include="Banshee.MeeGo\PlaybackBox.cs" />
     <Compile Include="Banshee.MeeGo\MeeGoTrackInfoDisplay.cs" />
     <Compile Include="Banshee.MeeGo\RecentAlbumsList.cs" />
     <Compile Include="Banshee.MeeGo\MeeGoPanel.cs" />
-    <Compile Include="Mutter\SetSizeHandler.cs" />
     <Compile Include="Banshee.MeeGo\RecentAlbumsView.cs" />
   </ItemGroup>
 </Project>

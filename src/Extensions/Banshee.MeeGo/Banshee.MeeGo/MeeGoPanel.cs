@@ -27,7 +27,8 @@
 using System;
 
 using Gtk;
-using Mutter;
+using MeeGo.Panel;
+
 using Hyena;
 using Banshee.Base;
 
