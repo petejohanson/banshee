@@ -73,44 +73,39 @@ namespace Banshee.IO
             try { System.IO.Directory.Delete (tmp_dir, true); } catch {}
         }
 
+#region File tests
+
         [Test]
-        public void Exists ()
+        public void FileExists ()
         {
             ForEachProvider (() => {
                 Assert.IsTrue (File.Exists (foo));
                 Assert.IsTrue (File.Exists (zoo));
                 Assert.IsTrue (File.Exists (baz));
-                Assert.IsTrue (Directory.Exists (woo));
-                Assert.IsTrue (Directory.Exists (yoo), String.Format ("Directory {0} should exist, but provider {1} says it doesn't", yoo, Provider.Directory));
             });
         }
 
         [Test]
-        public void DoesntExist ()
+        public void FileDoesntExist ()
         {
             ForEachProvider (() => {
-                Assert.IsFalse (Directory.Exists (Path ("foo")));
                 Assert.IsFalse (File.Exists (Uri ("woo")));
                 Assert.IsFalse (File.Exists (Uri ("asd")));
             });
         }
 
         [Test]
-        public void Move ()
+        public void FileMove ()
         {
             ForEachProvider (() => {
                 File.Move (foo, Uri ("fooz"));
                 Assert.IsTrue  (File.Exists (Uri ("fooz")));
                 Assert.IsFalse (File.Exists (foo), "Original file should not exist after being moved");
-
-                Directory.Move (new SafeUri (woo), Uri ("wooz"));
-                Assert.IsTrue  (Directory.Exists (Path ("wooz")));
-                Assert.IsFalse (Directory.Exists (woo));
             });
         }
 
         [Test]
-        public void Copy ()
+        public void FileCopy ()
         {
             ForEachProvider (() => {
                 var fooz = Uri ("fooz");
@@ -125,7 +120,7 @@ namespace Banshee.IO
         }
 
         [Test]
-        public void CopyWithOverwrite ()
+        public void FileCopyWithOverwrite ()
         {
             ForEachProvider (() => {
                 Assert.IsTrue (File.Exists (baz));
@@ -139,7 +134,7 @@ namespace Banshee.IO
         }
 
         [Test]
-        public void Create ()
+        public void FileCreate ()
         {
             ForEachProvider (() => {
                 var newf = Uri ("newfile");
@@ -157,13 +152,85 @@ namespace Banshee.IO
                 } catch {
                     Assert.Fail ("Should not have thrown an exception creating already-exists file w/ overwrite");
                 }
+            });
+        }
 
+        [Test]
+        public void FileRead ()
+        {
+            ForEachProvider (() => {
+                using (var stream = File.OpenRead (foo)) {
+                    var reader = new System.IO.StreamReader (stream);
+                    Assert.AreEqual ("bar", reader.ReadToEnd ());
+                }
+            });
+        }
+
+        [Test]
+        public void FileDelete ()
+        {
+            ForEachProvider (() => {
+                Assert.IsTrue (File.Exists (foo));
+                File.Delete (foo);
+                Assert.IsFalse (File.Exists (foo));
+            });
+        }
+
+        [Test]
+        public void FileProperties ()
+        {
+            ForEachProvider (() => {
+                Assert.AreEqual (3, File.GetSize (foo));
+                Assert.IsTrue (File.GetModifiedTime (foo) > 0);
+            });
+        }
+
+#endregion
+
+#region Directory tests
+
+        [Test]
+        public void DirectoryExists ()
+        {
+            ForEachProvider (() => {
+                Assert.IsTrue (Directory.Exists (woo));
+                Assert.IsTrue (Directory.Exists (yoo), String.Format ("Directory {0} should exist, but provider {1} says it doesn't", yoo, Provider.Directory));
+            });
+        }
+
+        [Test]
+        public void DirectoryDoesntExist ()
+        {
+            ForEachProvider (() => {
+                Assert.IsFalse (Directory.Exists (Path ("foo")));
+            });
+        }
+
+
+        [Test]
+        public void DirectoryMove ()
+        {
+            ForEachProvider (() => {
+                Directory.Move (new SafeUri (woo), Uri ("wooz"));
+                Assert.IsTrue  (Directory.Exists (Path ("wooz")));
+                Assert.IsFalse (Directory.Exists (woo));
+            });
+        }
+
+        [Test]
+        public void DirectoryCreate ()
+        {
+            ForEachProvider (() => {
                 var newd = Path ("newdir");
                 Assert.IsFalse (Directory.Exists (newd));
                 Directory.Create (newd);
                 Assert.IsTrue (Directory.Exists (newd));
             });
         }
+
+#endregion
+
+#region Demux tests
 
         [Test]
         public void DemuxCreateFile ()
@@ -246,22 +313,9 @@ namespace Banshee.IO
         }
 
         [Test]
-        public void GetFileProperties ()
+        public void DirectoryDelete ()
         {
             ForEachProvider (() => {
-                Assert.AreEqual (3, File.GetSize (foo));
-                Assert.IsTrue (File.GetModifiedTime (foo) > 0);
-            });
-        }
-
-        [Test]
-        public void Delete ()
-        {
-            ForEachProvider (() => {
-                Assert.IsTrue (File.Exists (foo));
-                File.Delete (foo);
-                Assert.IsFalse (File.Exists (foo));
-
                 Assert.IsTrue (Directory.Exists (woo));
                 Directory.Delete (woo);
                 Assert.IsFalse (Directory.Exists (woo));
@@ -269,7 +323,7 @@ namespace Banshee.IO
         }
 
         [Test]
-        public void DeleteRecursive ()
+        public void DirectoryDeleteRecursive ()
         {
             ForEachProvider (() => {
                 Directory.Delete (tmp_dir, true);
@@ -301,6 +355,8 @@ namespace Banshee.IO
                 }
             });
         }
+
+#endregion
 
         private string GetContents (SafeUri uri)
         {
