@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: 0.11.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-02-26 02:32+0000\n"
-"PO-Revision-Date: 2010-02-27 23:44+0100\n"
+"POT-Creation-Date: 2010-03-20 12:47+0000\n"
+"PO-Revision-Date: 2010-03-23 14:29+0100\n"
 "Last-Translator: Милош Поповић <gpopac@gmail.com>\n"
 "Language-Team: Serbian <gnome@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -173,12 +173,12 @@ msgstr "Обележивачи"
 #: ../data/addin-xml-strings.cs:73
 msgid "Save your position in tracks so you can resume playback later."
 msgstr ""
-"Памти докле сте стигли са песмом, како бо могли да наставите слушање одатле."
+"Памти докле сте стигли са песмом, како би могли да наставите слушање одатле."
 
 #: ../data/addin-xml-strings.cs:74 ../data/addin-xml-strings.cs:79
 #: ../data/addin-xml-strings.cs:84 ../data/addin-xml-strings.cs:89
 #: ../data/addin-xml-strings.cs:94 ../data/addin-xml-strings.cs:124
-#: ../data/addin-xml-strings.cs:129 ../data/addin-xml-strings.cs:138
+#: ../data/addin-xml-strings.cs:133 ../data/addin-xml-strings.cs:138
 #: ../data/addin-xml-strings.cs:143 ../data/addin-xml-strings.cs:152
 #: ../data/addin-xml-strings.cs:181
 msgid "Utilities"
@@ -283,26 +283,28 @@ msgstr "Надгледање збирке"
 msgid "Automatically update music and video libraries"
 msgstr "Аутоматски ажурира Аудиотеку и Видеотеку"
 
-#. ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
+#. ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo.addin.xml
 #: ../data/addin-xml-strings.cs:127
+#| msgid "Device Support"
+msgid "MeeGo Support"
+msgstr "Подршка за МееГо"
+
+#: ../data/addin-xml-strings.cs:128
+#| msgid "Provides Moblin integration, including a custom media panel."
+msgid "Provides MeeGo integration, including a custom media panel."
+msgstr "Обезбеђује подршку за МееГо, уз произвољну површ у програму."
+
+#. ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
+#: ../data/addin-xml-strings.cs:131
 msgid "Mini Mode"
 msgstr "Мали режим"
 
-#: ../data/addin-xml-strings.cs:128
+#: ../data/addin-xml-strings.cs:132
 msgid ""
 "Control Banshee through a small window with only playback controls and track "
 "information."
 msgstr ""
 "Управља Злослутницом кроз прозор који садржи основне податке и контроле."
-
-#. ../src/Extensions/Banshee.Moblin/Banshee.Moblin.addin.xml
-#: ../data/addin-xml-strings.cs:132
-msgid "Moblin Support"
-msgstr "Подршка за Моблин"
-
-#: ../data/addin-xml-strings.cs:133
-msgid "Provides Moblin integration, including a custom media panel."
-msgstr "Обезбеђује подршку за Моблин, уз површ за произвољне медије."
 
 #. ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
 #: ../data/addin-xml-strings.cs:136
@@ -347,7 +349,7 @@ msgstr "Увози вашу збирку из Амарока, Ритам маш�
 
 #. ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue.addin.xml
 #: ../data/addin-xml-strings.cs:155
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/PlayQueueBox.cs:52
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/PlayQueueBox.cs:52
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:79
 msgid "Play Queue"
 msgstr "Заказане"
@@ -424,9 +426,74 @@ msgstr "Википедија"
 msgid "View artist information from Wikipedia in the context pane."
 msgstr "Приказује податке о извођачу са Википедије у додатној површи."
 
-#: ../data/addin-xml-strings.cs:186
+#: ../data/addin-xml-strings.cs:186 ../data/addin-xml-strings.cs:191
 msgid "Context Pane"
 msgstr "Додатна површ"
+
+#. ../src/Extensions/Banshee.YouTube/Banshee.YouTube.addin.xml
+#: ../data/addin-xml-strings.cs:189
+#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube/ContextPage.cs:44
+msgid "YouTube"
+msgstr "YouTube"
+
+#: ../data/addin-xml-strings.cs:190
+msgid "Show related YouTube videos in the context pane"
+msgstr "Приказује YouTube видео снимке у додатној површи"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:1
+msgid "3GPP"
+msgstr "3ГПП"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:2
+msgid "AAC (Novell Encoder)"
+msgstr "ААЦ (Новелов кодер)"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:3
+#: ../data/audio-profiles/mp3-lame.xml.in.h:4
+#: ../data/audio-profiles/mp3-xing.xml.in.h:2
+#: ../data/audio-profiles/wavpack.xml.in.h:3
+#: ../data/audio-profiles/wma.xml.in.h:4
+msgid "Bitrate"
+msgstr "Битски проток"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:4
+#| msgid "Continue"
+msgid "Container"
+msgstr "Садржалац"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:5
+msgid ""
+"Designed to be the successor of the MP3 format, AAC generally achieves "
+"better sound quality than MP3 at many bit rates."
+msgstr ""
+"Направљен са циљем да наследи MP3 формат, ААЦ углавном пружа бољи квалитет "
+"звука него MP3 при већим битским протоком."
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:6
+msgid "Long Term Prediction"
+msgstr "Дугорочно предвиђање"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:7
+msgid "Low Complexity"
+msgstr "Некомплексно"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:8
+msgid "MPEG-4 ISO"
+msgstr "МПЕГ-4 ИСО"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:9
+msgid "MPEG-4 QuickTime"
+msgstr "МПЕГ-4 КвикТајм"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:10
+#| msgid "Format"
+msgid "Output Format"
+msgstr "Излазни формат"
+
+#: ../data/audio-profiles/aac-novell.xml.in.h:11
+#| msgid "file"
+msgid "Profile"
+msgstr "Профил"
 
 #: ../data/audio-profiles/base.xml.in.h:1
 msgid "Channels"
@@ -463,13 +530,6 @@ msgstr "Просечан битски проток"
 #: ../data/audio-profiles/wma.xml.in.h:3
 msgid "Best"
 msgstr "Најбоље"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:4
-#: ../data/audio-profiles/mp3-xing.xml.in.h:2
-#: ../data/audio-profiles/wavpack.xml.in.h:3
-#: ../data/audio-profiles/wma.xml.in.h:4
-msgid "Bitrate"
-msgstr "Битски проток"
 
 #: ../data/audio-profiles/mp3-lame.xml.in.h:5
 msgid "Constant Bitrate"
@@ -628,7 +688,7 @@ msgid "Windows Media Audio"
 msgstr "Windows Media Audio"
 
 #: ../data/desktop-files/common.desktop.in.h:1
-#: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:72
+#: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:76
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:94
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:201
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:60
@@ -641,7 +701,6 @@ msgid "Media Player"
 msgstr "Музичка и филмска кутија"
 
 #: ../data/desktop-files/common.desktop.in.h:3
-#| msgid "Learn advanced ways to search your media collection"
 msgid "Play and organize your media collection"
 msgstr "Разгледајте и уређујте вашу музичку и видео збирку"
 
@@ -754,11 +813,12 @@ msgstr "Нема покретачког програма за извлачење
 msgid "Could not create BPM detection driver."
 msgstr "Нема покретачког програма за откривање БПМ података."
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:67
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:71
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:707
 msgid "Enable _gapless playback"
 msgstr "Без паузе из_међу песмама"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:68
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:72
 msgid ""
 "Eliminate the small playback gap on track change.  Useful for concept albums "
 "and classical music"
@@ -766,25 +826,36 @@ msgstr ""
 "Потпуно уклања кратку паузу приликом промене песама.  Корисно за "
 "концептуалне албуме и класичну музику."
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:125
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:158
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:137
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:176
 msgid "Could not initialize GStreamer library"
 msgstr "Не могу да иницијализујем библиотеку Гстримера"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:272
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:388
 msgid "Unknown Error"
 msgstr "Непозната грешка"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:565
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:701
 msgid "_Enable ReplayGain correction"
 msgstr "_Омогући „Replay Gain“ побољшање"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:566
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:702
 msgid ""
 "For tracks that have ReplayGain data, automatically scale (normalize) "
 "playback volume"
 msgstr ""
 "Аутоматски подешава јачину звука за песме које садрже Replay Gain податке"
+
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:708
+#| msgid ""
+#| "Eliminate the small playback gap on track change.  Useful for concept "
+#| "albums and classical music"
+msgid ""
+"Eliminate the small playback gap on track change.  Useful for concept albums "
+"and classical music."
+msgstr ""
+"Потпуно уклања кратку паузу приликом промене песама.  Корисно за албуме са "
+"одређеном тематиком или класичну музику."
 
 #: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/Transcoder.cs:63
 msgid "Could not create transcoder"
@@ -887,7 +958,6 @@ msgstr ""
 "могу бити „true“ (да) или „false“ (не)."
 
 #: ../src/Clients/Booter/Booter/Entry.cs:168
-#| msgid "Set the playback volume (0-100)"
 msgid "Set the playback volume (0-100), prefix with +/- for relative values"
 msgstr "Поставите јачину звука (0-100), уз префикс +/- за релативне вредности"
 
@@ -937,19 +1007,19 @@ msgstr "Адреса"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:184
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:148
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:85
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:85
 msgid "Artist Name"
 msgstr "Име извођача"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:185
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:149
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:86
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:86
 msgid "Album Title"
 msgstr "Назив албума"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:186
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:147
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:84
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:84
 msgid "Track Title"
 msgstr "Наслов песме"
 
@@ -982,7 +1052,7 @@ msgstr "Број диска"
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:77
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:132
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:77
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:88
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:88
 msgid "Year"
 msgstr "Година"
 
@@ -1097,7 +1167,7 @@ msgstr "Пусти _албум"
 msgid "Add an album to the playlist"
 msgstr "Додаје цео албум у листу песама"
 
-#: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:252
+#: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:267
 #, csharp-format
 msgid "{0} remaining"
 msgstr "преостало је {0}"
@@ -1107,7 +1177,7 @@ msgid "Play Song"
 msgstr "Слушате песму"
 
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:146
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:83
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:83
 msgid "Artist, Album, or Title"
 msgstr "Извођача, албум или назив песме"
 
@@ -1115,7 +1185,7 @@ msgstr "Извођача, албум или назив песме"
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:98
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:185
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:364
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:87
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:87
 msgid "Genre"
 msgstr "Жанр"
 
@@ -1128,7 +1198,6 @@ msgstr "Коментар"
 #. Translators: this is a verb (command), not a noun (things)
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:173
 #, csharp-format
-#| msgid "Search:"
 msgid "Search"
 msgstr "Претрага"
 
@@ -1151,66 +1220,64 @@ msgstr "Непознат албум"
 msgid "Unknown Title"
 msgstr "Непознат наслов"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:180
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:185
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:92
 msgid "Various Artists"
 msgstr "Разни извођачи"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:340
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:345
 msgid "Stream location not found"
 msgstr "Није пронађена путања до тока"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:340
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:345
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:321
-#| msgid "notfound"
 msgid "File not found"
 msgstr "Није пронађена датотека"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:342
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:347
 msgid "Codec for playing this media type not available"
 msgstr "Није доступан потребни кодек"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:344
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:349
 msgid "File protected by Digital Rights Management (DRM)"
 msgstr "Датотека је заштићена правима на дигиталне формате (DRM)"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:346
-#| msgid "Unknown Error"
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:351
 msgid "Unknown error"
 msgstr "Непозната грешка"
 
 #. TODO turn this into a PrimarySource-owned delegate?
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:415
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:419
 msgid "_Restart Podcast"
 msgstr "Поново у_читај подемисију"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:416
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:420
 msgid "_Restart Video"
 msgstr "Поново пу_сти видео"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:417
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:421
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:86
 msgid "_Restart Song"
 msgstr "Поново пу_сти песму"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:418
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:422
 msgid "_Restart Item"
 msgstr "Поново пу_сти ставку"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:432
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:436
 msgid "_Jump to Playing Podcast"
 msgstr "_Иди на пуштену подемисију"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:433
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:437
 msgid "_Jump to Playing Video"
 msgstr "_Иди на пуштени видео"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:434
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:438
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:82
 msgid "_Jump to Playing Song"
 msgstr "_Иди на пуштену песму"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:435
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:439
 msgid "_Jump to Playing Item"
 msgstr "_Иди на пуштену ставку"
 
@@ -1302,30 +1369,30 @@ msgstr "по наслову"
 msgid "Play songs randomly from the playlist"
 msgstr "Пушта насумично песме из листе"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:137
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:132
 msgid "Scanning for media"
 msgstr "Претражујем медијум"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:187
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1275
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:182
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1359
 msgid "Scanning..."
 msgstr "Претражујем..."
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:203
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:198
 #, csharp-format
 msgid "Scanning ({0} files)..."
 msgstr "Претражујем ({0} датотека)..."
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:237
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:232
 msgid "Importing Media"
 msgstr "Увозим податке"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:244
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:239
 #: ../src/Core/Banshee.Services/Banshee.Library/ThreadPoolImportSource.cs:119
 msgid "The import process is currently running. Would you like to stop it?"
 msgstr "Увоз је у току. Да ли желите да га прекинете?"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:250
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:245
 #: ../src/Core/Banshee.Services/Banshee.Library/ThreadPoolImportSource.cs:81
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdRipper.cs:185
 #, csharp-format
@@ -1346,83 +1413,75 @@ msgid ""
 "Please wait while your old Banshee database is migrated to the new format."
 msgstr "Сачекајте док се стара Злослутницина база не преведе на нови формат."
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1272
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1356
 msgid "Refreshing Metadata"
 msgstr "Освежавам податке о песмама"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:261
-#| msgid "Classic Cartoons"
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:257
 msgid "Classical"
 msgstr "Класични"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:264
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:260
 msgid "Club"
 msgstr "Клубски"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:267
-#| msgid "Advanced"
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:263
 msgid "Dance"
 msgstr "Денс"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:270
-#| msgid "Full Path:"
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:266
 msgid "Full Bass"
 msgstr "Појачан бас"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:273
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:269
 msgid "Full Bass and Treble"
 msgstr "Појачан бас и високотонац"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:276
-#| msgid "_Fullscreen"
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:272
 msgid "Full Treble"
 msgstr "Појачан високотонац"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:279
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:275
 msgid "Laptop Speakers and Headphones"
 msgstr "Преносни рачунари и слушалице"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:282
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:278
 msgid "Large Hall"
 msgstr "Велика сала"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:285
-#| msgid "Drive"
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:281
 msgid "Live"
 msgstr "Уживо"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:288
-#| msgid "_Play"
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:284
 msgid "Party"
 msgstr "Журка"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:291
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:287
 msgid "Pop"
 msgstr "Поп"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:294
-#| msgid "Rename"
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:290
 msgid "Reggae"
 msgstr "Реге"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:297
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:293
 msgid "Rock"
 msgstr "Рок"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:300
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:296
 msgid "Ska"
 msgstr "Ска"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:303
-#| msgid "of"
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:299
 msgid "Soft"
 msgstr "Умекшан"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:306
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:302
 msgid "Soft Rock"
 msgstr "Умекшан рок"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:309
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:305
 msgid "Techno"
 msgstr "Техно"
 
@@ -1645,7 +1704,7 @@ msgstr ""
 "Није пронађен систем репродукције. Провери да ли је Злослутница "
 "исправноинсталирана."
 
-#: ../src/Core/Banshee.Services/Banshee.MediaEngine/PlayerEngineService.cs:304
+#: ../src/Core/Banshee.Services/Banshee.MediaEngine/PlayerEngineService.cs:347
 msgid "Problem with Player Engine"
 msgstr "Проблем са ситемом репродукције"
 
@@ -1714,7 +1773,7 @@ msgid "Import play _counts"
 msgstr "Увези _број слушања"
 
 #. disabled by default
-#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:295
+#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:302
 msgid "Improve Banshee by sending anonymous usage data"
 msgstr "Побољшајте Злослутницу слањем анонимног извештаја"
 
@@ -1952,13 +2011,11 @@ msgstr "kps"
 
 #. Translators: noun
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:152
-#| msgid "Audio Sample Rate:"
 msgid "Sample Rate"
 msgstr "Учестаност звука"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:154
-#| msgid "Sample"
 msgid "samplerate"
 msgstr "samplerate"
 
@@ -1973,7 +2030,6 @@ msgstr "Битова по узорку"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:163
-#| msgid "bitrate"
 msgid "bitspersample"
 msgstr "bitspersample"
 
@@ -1982,14 +2038,13 @@ msgid "bitdepth"
 msgstr "bitdepth"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:163
-#| msgid "Station"
 msgid "quantization"
 msgstr "quantization"
 
 #. Translators: noun
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:169
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:363
-#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:662
+#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:666
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:89
 msgid "Name"
 msgstr "име песме"
@@ -2302,7 +2357,7 @@ msgid "Least Often Played"
 msgstr "са најмање извођења"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:375
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/MediaPanelContents.cs:58
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:58
 msgid "Most Recently Played"
 msgstr "најскорије преслушана"
 
@@ -2503,15 +2558,15 @@ msgstr "Додајем {0} од {1} у {2}"
 msgid "Deleting {0} of {1} From {2}"
 msgstr "Бришем {0} од {1} из {2}"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:667
+#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:671
 msgid "Size Ascending"
 msgstr "Растуће по величини"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:672
+#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:676
 msgid "Size Descending"
 msgstr "Опадајуће по величини"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:761
+#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:765
 #, csharp-format
 msgid "{0} item"
 msgid_plural "{0} items"
@@ -2564,17 +2619,17 @@ msgstr "Омогућено"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:53
 msgid "Not Enabled"
-msgstr "Неомогућено"
+msgstr "Онемогућено"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:56
 msgid "Search:"
 msgstr "Нађи:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:74
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:77
 msgid "Cannot Reorder While Sorted"
 msgstr "Не могу да померам поређане ставке"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:75
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:78
 msgid ""
 "To put the playlist in manual sort mode, click the currently sorted column "
 "header until the sort arrow goes away."
@@ -2590,7 +2645,7 @@ msgstr ""
 #. Translators: this is {track number} of {track count}
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellDiscAndCount.cs:40
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellTrackAndCount.cs:40
-#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:173
+#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:172
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapPropertiesDialog.cs:148
 #, csharp-format
 msgid "{0} of {1}"
@@ -2639,15 +2694,11 @@ msgstr "{0} kbps"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:138
 #, csharp-format
-#| msgid "{0} day"
-#| msgid_plural "{0} days"
 msgid "{0} Hz"
 msgstr "{0} Hz"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:141
 #, csharp-format
-#| msgid "{0} item"
-#| msgid_plural "{0} items"
 msgid "{0} bits"
 msgstr "{0} битова"
 
@@ -2717,7 +2768,7 @@ msgstr "Веб страница програма"
 msgid "Important tasks are running"
 msgstr "Важни задаци су још у току"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:52
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:53
 msgid ""
 "Closing Banshee now will cancel any currently running tasks. They cannot be "
 "resumed automatically the next time Banshee is run."
@@ -2725,12 +2776,14 @@ msgstr ""
 "Ако сада затворите Злослутницу, то ће прекинути послове који се извршавају у "
 "позадини. Они неће наставити самостално када поново покренете Злослутницу."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:59
-msgid "Quit anyway"
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:60
+#| msgid "Quit anyway"
+msgid "Quit Anyway"
 msgstr "Ипак изађи"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:60
-msgid "Continue running"
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:61
+#| msgid "Continue running"
+msgid "Continue Running"
 msgstr "Настави са пословима"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/DefaultApplicationHelperDialog.cs:69
@@ -3176,7 +3229,7 @@ msgstr "Неповратно уклања изабрану песму(е) са �
 #. Translators: this is a verb (command), not a noun (things)
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:114
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:169
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchEntry.cs:108
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:108
 #, csharp-format
 msgid "_Search"
 msgstr "_Нађи нумере"
@@ -3207,7 +3260,6 @@ msgid "_Delete From \"{0}\""
 msgstr "_Обриши из „{0}“"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:437
-#| msgid "The preferences service could not be found."
 msgid "The folder could not be found."
 msgstr "Не могу да нађем фасциклу."
 
@@ -3243,6 +3295,11 @@ msgstr[0] "Да ли сигурно желите да уклоните {0} пе�
 msgstr[1] "Да ли сигурно желите да уклоните {0} изабране песме из ваше {1}?"
 msgstr[2] "Да ли сигурно желите да уклоните {0} изабраних песама из ваше {1}?"
 msgstr[3] "Да ли сигурно желите да уклоните ову песму из ваше {0}?"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:543
+#| msgid "_Edit Track Information"
+msgid "View Track Information"
+msgstr "Прикажи податке о песми"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/AlbumArtistEntry.cs:53
 msgid "Com_pilation Album Artist:"
@@ -3836,11 +3893,11 @@ msgstr "Изабери формат"
 msgid "Select library location"
 msgstr "Одаберите локацију Аудиотеке"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:112
+#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:117
 msgid "Reset"
 msgstr "Поништи"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:115
+#: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:120
 #, csharp-format
 msgid "Reset location to default ({0})"
 msgstr "Врати путању на подразумевану ({0})"
@@ -3865,7 +3922,6 @@ msgid "New Smart Playlist"
 msgstr "Нова паметна листа"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:96
-#| msgid "Playlist _Name: "
 msgid "Playlist _Name:"
 msgstr "_Назив листе:"
 
@@ -3914,15 +3970,15 @@ msgstr ""
 msgid "Seek"
 msgstr "Премотавам"
 
-#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:149
+#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:148
 msgid "Idle"
 msgstr "Ленчарим"
 
-#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:150
+#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:149
 msgid "Contacting..."
 msgstr "Ступам у везу..."
 
-#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:160
+#: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:159
 msgid "Buffering"
 msgstr "Смештам у спремиште"
 
@@ -3939,13 +3995,13 @@ msgstr "Затишано"
 msgid "Full Volume"
 msgstr "Најгласније"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:130
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:131
 #, csharp-format
 msgid "Sync {0}"
 msgstr "Синхронизуј {0}"
 
 #. Note to translators: {0}, {1} and {2} will be replaced with numbers.
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:246
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:256
 #, csharp-format
 msgid "{0} to add, {1} to remove, {2} to update"
 msgstr "{0} за додавање, {1} за уклањање, {2} за ажурирање"
@@ -3994,19 +4050,39 @@ msgstr "Превођење овог формата датотеке још ув�
 msgid "Error converting file"
 msgstr "Грешка прилико превођења датотеке"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:133
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:137
 msgid "Sync when first plugged in and when the libraries change"
 msgstr "Синхронизује уређај по прикључивању и измени Аудиотеке"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:134
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:138
 msgid ""
 "Begin synchronizing the device as soon as the device is plugged in or the "
 "libraries change."
 msgstr "Започиње синхронизацију уређаја по прикључивању или промени Аудиотеке."
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:137
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:141
 msgid "Sync Preferences"
 msgstr "Подешавање синхронизације"
+
+#. singular form unused b/c we know it's > 1, but we still need GetPlural
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:364
+#, csharp-format
+msgid "The sync operation will remove one track from your device."
+msgid_plural "The sync operation will remove {0} tracks from your device."
+msgstr[0] "Синхронизација ће уклонити {0} песму са вашег уређаја."
+msgstr[1] "Синхронизација ће уклонити {0} песме са вашег уређаја."
+msgstr[2] "Синхронизација ће уклонити {0} песама са вашег уређаја."
+msgstr[3] "Синхронизација ће уклонити песму са вашег уређаја."
+
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:368
+#| msgid "Are you sure you want to delete this {0}?"
+msgid "Are you sure you want to continue?"
+msgstr "Да ли сигурно желите да наставите?"
+
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:376
+#| msgid "Love Track"
+msgid "Remove tracks"
+msgstr "Уклони песме"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapActions.cs:52
 msgid "Sync"
@@ -4944,68 +5020,68 @@ msgstr "_Текст"
 msgid "Search..."
 msgstr "Тражи..."
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:108
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:109
 msgid "_Go"
 msgstr "_Иди"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:116
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:117
 msgid "Staff Picks"
 msgstr "Покупљено успут"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:117
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:580
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:118
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:587
 msgid "Creative Commons"
 msgstr "Creative Commons"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:118
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:119
 msgid "History"
 msgstr "Историја"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:119
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:120
 msgid "Classic Cartoons"
 msgstr "Класични цртани филмови"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:120
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:121
 msgid "Speeches"
 msgstr "Говор"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:121
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:122
 msgid "For Children"
 msgstr "Песме за децу"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:122
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:123
 msgid "Poetry"
 msgstr "Поезија"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:123
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:124
 msgid "Creator is United States"
 msgstr "Направљено у Америци"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:124
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:125
 msgid "Old Movies"
 msgstr "Стари филмови"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:125
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:126
 msgid "New From LibriVox"
 msgstr "Ново у ЛибриВоксу"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:126
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:127
 msgid "Old Texts"
 msgstr "Стари текстови"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:127
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:128
 msgid "Charlie Chaplin"
 msgstr "Чарли Чаплин"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:128
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:129
 msgid "NASA"
 msgstr "НАСА"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:129
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:130
 msgid "Library of Congress"
 msgstr "Скупштинска библиотека"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:145
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:146
 msgid ""
 "The Internet Archive, a 501(c)(3) non-profit, is building a digital library "
 "of Internet sites and other cultural artifacts in digital form. Like a paper "
@@ -5014,31 +5090,31 @@ msgid ""
 msgstr ""
 "Интернет Архива, непрофитна институција 501(c)(3), одржава дигиталну "
 "библиотеку Интернет сајтова и осталих делова људске културе у дигиталном "
-"облику. Лао и свака библиотека, она обезбеђује слободан приступ научницима, "
+"облику. Као и свака библиотека, она обезбеђује слободан приступ научницима, "
 "историчарима, ученицима и јавности."
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:148
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:149
 msgid "Visit the Internet Archive online at archive.org"
 msgstr "Посетите Интернет Архиву на archive.org"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:304
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:305
 msgid "Audiobooks"
 msgstr "Звучне књиге"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:305
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:306
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:78
 msgid "Movies"
 msgstr "Филмови"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:306
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:307
 msgid "Lectures"
 msgstr "Рецитације"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:307
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:308
 msgid "Concerts"
 msgstr "Концерти"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:308
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:309
 msgid "Books"
 msgstr "Књиге"
 
@@ -5213,7 +5289,7 @@ msgstr "Универзалне библиотеке"
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:92
 msgid "Project Gutenberg"
-msgstr "Пројекат Гутенберг"
+msgstr "Пројекта Гутенберг"
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:93
 msgid "Children's Library"
@@ -5363,27 +5439,27 @@ msgstr "Опис:"
 msgid "Rating:"
 msgstr "Оцени:"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:124
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:122
 msgid "_Last.fm"
 msgstr "_Ласт.фм"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:125
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:123
 msgid "Configure the Audioscrobbler plugin"
 msgstr "Подеси додатак за Audioscrobbler"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:128
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:126
 msgid "Visit _User Profile Page"
 msgstr "_Посети профил корисника"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:129
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:127
 msgid "Visit Your Last.fm Profile Page"
 msgstr "Иди на _мој Ласт.фм профил"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:134
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:132
 msgid "_Enable Song Reporting"
 msgstr "Омогући изв_ештавање о песама"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:135
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs:133
 msgid "Enable song reporting"
 msgstr "Омогућава извештавање о песама које слушате"
 
@@ -5547,41 +5623,41 @@ msgstr "Омиљени извођачи"
 msgid "{0} plays"
 msgstr "{0} слушање(а)"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:106
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:103
 msgid "Sort Stations by"
 msgstr "Поређај станице по"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:165
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:163
 msgid "Total Play Count"
 msgstr "Укупно преслушавања"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:267
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:270
 msgid "Account Settings"
 msgstr "Подешавање налога:"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:271
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:274
 msgid "Join Last.fm"
 msgstr "Прикључи се на Ласт.фм"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:291
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:294
 msgid "Account"
 msgstr "Налог"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:294
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:297
 msgid "_Username"
 msgstr "_Корисничко име"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:323
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:349
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:326
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:354
 msgid "Authorized!"
 msgstr "Овлашћено!"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:323
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:350
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:326
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:355
 msgid "Authorize..."
 msgstr "Овлашћујем..."
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:326
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:329
 msgid ""
 "Open Last.fm in a browser, giving you the option to authorize Banshee to "
 "work with your account"
@@ -5589,12 +5665,12 @@ msgstr ""
 "Отвара Ласт.фм у Интернет прегледнику ради овлашћивања Злослутнице за ваш "
 "налог"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:332
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:335
 #: ../src/Libraries/Lastfm.Gui/Lastfm.Gui/AccountLoginForm.cs:86
 msgid "Sign up for Last.fm"
 msgstr "Регистуј се на Ласт.фм"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:338
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmSource.cs:341
 msgid "Check if Banshee has been authorized"
 msgstr "Проверава да ли је Злослутница овлашћена"
 
@@ -5629,22 +5705,22 @@ msgstr "Прдешавам Ласт.фм на {0}."
 msgid "Failed to tune in station. {0}"
 msgstr "Не могу да подесим станицу. {0}"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:349
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:356
 #, csharp-format
 msgid "Getting new songs for {0}."
 msgstr "Прикупљам нове песме за {0}."
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:356
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:363
 #, csharp-format
 msgid "No new songs available for {0}."
 msgstr "Нема нових песама за {0}."
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:382
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:389
 #, csharp-format
 msgid "Failed to get new songs for {0}."
 msgstr "Не могу да нађем нове песме за {0}."
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:443
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:450
 #, csharp-format
 msgid "{0} song played"
 msgid_plural "{0} songs played"
@@ -5653,26 +5729,26 @@ msgstr[1] "{0} преслушане песме"
 msgstr[2] "{0} преслушаних песама"
 msgstr[3] "{0} преслушана песма"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:575
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:582
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationType.cs:84
 msgid "Recommended"
 msgstr "Препоручене"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:576
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:583
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationType.cs:93
 msgid "Personal"
 msgstr "Личне"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:577
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:584
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationType.cs:102
 msgid "Loved"
 msgstr "Омиљене"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:578
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:585
 msgid "Banshee Group"
 msgstr "Злослутницина група"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:579
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationSource.cs:586
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/StationType.cs:111
 msgid "Neighbors"
 msgstr "Комшијске"
@@ -5761,6 +5837,23 @@ msgstr "{0}% сличности"
 msgid "Unknown Similarity"
 msgstr "Непозната сличност"
 
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:62
+msgid "Music Library"
+msgstr "Аудиотека"
+
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchHeader.cs:46
+msgid "Media"
+msgstr "Медији"
+
+#: ../src/Extensions/Banshee.MeeGo/meego-panel-banshee.desktop.in.in.h:1
+msgid "Quick access panel for your media"
+msgstr "Површ за брзи приступ вашем садржају"
+
+#: ../src/Extensions/Banshee.MeeGo/meego-panel-banshee.desktop.in.in.h:2
+#| msgid "Media"
+msgid "media"
+msgstr "медији"
+
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeService.cs:25
 msgid "_Mini Mode"
 msgstr "_Мали режим"
@@ -5776,14 +5869,6 @@ msgstr "Врати се на пуни режим"
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:124
 msgid "Change repeat playback mode"
 msgstr "Измени режим понављања"
-
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/MediaPanelContents.cs:62
-msgid "Music Library"
-msgstr "Аудиотека"
-
-#: ../src/Extensions/Banshee.Moblin/Banshee.Moblin/SearchHeader.cs:46
-msgid "Media"
-msgstr "Медији"
 
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:135
 msgid "_Show Notifications"
@@ -5917,11 +6002,11 @@ msgstr "Музичка кутија"
 msgid "Import _playlists"
 msgstr "Увези _листу песама"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:54
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:59
 msgid "_Fill"
 msgstr "_Попуни"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:76
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:71
 msgid "f_rom"
 msgstr "_из"
 
@@ -5957,11 +6042,11 @@ msgstr "Чисти списак заказаних песама по излас�
 msgid "Remove From Play Queue"
 msgstr "Уклони из заказаних"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:791
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:821
 msgid "Number of _played songs to show"
 msgstr "_Број пуштаних песама за приказ"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:797
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:827
 msgid "Number of _upcoming songs to show"
 msgstr "Број _новопристиглих песама за приказ"
 
@@ -6093,11 +6178,11 @@ msgstr "Посети веб страницу"
 msgid "Subscribe to Podcast"
 msgstr "Пријави на подемисју"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:321
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:322
 msgid "Invalid URL"
 msgstr "Неисправна адреса"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:322
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:323
 msgid "Podcast URL is invalid."
 msgstr "Адреса подемисије је неисправна"
 
@@ -6178,6 +6263,27 @@ msgstr "Почни праћење SQL-а"
 msgid "Stop SQL Monitoring"
 msgstr "Прекини праћење SQL-а"
 
+#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube.Gui/VideoStreamTile.cs:136
+#| msgid "Recorded by:"
+msgid "Uploaded by"
+msgstr "Окачио"
+
+#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube.Gui/VideoStreamTile.cs:233
+#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube.Gui/VideoStreamTile.cs:234
+#| msgid "Quit Banshee"
+msgid "Play in Banshee..."
+msgstr "Пусти у Злослутници..."
+
+#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube.Gui/VideoStreamTile.cs:237
+#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube.Gui/VideoStreamTile.cs:238
+msgid "Play in Web Browser..."
+msgstr "Пусти у Интернет прегледнику..."
+
+#: ../src/Extensions/Banshee.YouTube/Banshee.YouTube/YouTubePane.cs:61
+#| msgid "File not found"
+msgid "No videos found"
+msgstr "Видео није нађен"
+
 #: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/Accessibility/ColumnHeaderCellTextAccessible.cs:36
 msgid "open context menu"
 msgstr "отвори додатну површ"
@@ -6190,7 +6296,7 @@ msgstr "клик"
 msgid "menu"
 msgstr "мени"
 
-#: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:611
+#: ../src/Libraries/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:612
 #, csharp-format
 msgid "Hide <i>{0}</i>"
 msgstr "Сакриј <i>{0}</i>"
@@ -6465,9 +6571,13 @@ msgid "Connected to Last.fm."
 msgstr "Повезани сте на Ласт.фм."
 
 #: ../src/Libraries/Migo/Migo.Syndication/Feed.cs:149
-#: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:94
+#: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:97
+#: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:100
 msgid "Unknown Podcast"
 msgstr "Непозната подемисија"
+
+#~ msgid "Moblin Support"
+#~ msgstr "Подршка за Моблин"
 
 #~ msgid "_Search:"
 #~ msgstr "Т_ражи:"
