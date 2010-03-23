@@ -59,6 +59,7 @@ SOURCES =  \
 	Banshee.Database/BansheeModelCache.cs \
 	Banshee.Database/BansheeModelProvider.cs \
 	Banshee.Database/SortKeyUpdater.cs \
+	Banshee.Database/Tests.cs \
 	Banshee.Equalizer/EqualizerManager.cs \
 	Banshee.Equalizer/EqualizerSetting.cs \
 	Banshee.Hardware/DeviceCommand.cs \

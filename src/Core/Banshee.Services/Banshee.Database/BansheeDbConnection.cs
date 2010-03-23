@@ -49,7 +49,11 @@ namespace Banshee.Database
             get { return configuration; }
         }
 
-        public BansheeDbConnection () : base (DatabaseFile)
+        public BansheeDbConnection () : this (DatabaseFile)
+        {
+        }
+
+        internal BansheeDbConnection (string db_path) : base (db_path)
         {
             // Each cache page is about 1.5K, so 32768 pages = 49152K = 48M
             int cache_size = (TableExists ("CoreTracks") && Query<long> ("SELECT COUNT(*) FROM CoreTracks") > 10000) ? 32768 : 16384;
@@ -61,7 +65,7 @@ namespace Banshee.Database
             // don't want this on because it breaks searching/smart playlists.  See BGO #526371
             //Execute ("PRAGMA case_sensitive_like=ON");
 
-            Log.DebugFormat ("Opened SQLite connection to {0}", DatabaseFile);
+            Log.DebugFormat ("Opened SQLite connection to {0}", db_path);
 
             migrator = new BansheeDbFormatMigrator (this);
             configuration = new DatabaseConfigurationClient (this);
