@@ -93,6 +93,8 @@ namespace Banshee.Gui
 
         protected virtual void InitializeGtk ()
         {
+            Log.Debug ("Initializing GTK");
+
             if (!GLib.Thread.Supported) {
                 GLib.Thread.Init ();
             }
@@ -176,6 +178,7 @@ namespace Banshee.Gui
         public virtual void Run ()
         {
             RunIdle (delegate { OnStarted (); return false; });
+            Log.Debug ("Starting GTK main loop");
             Gtk.Application.Run ();
         }
 

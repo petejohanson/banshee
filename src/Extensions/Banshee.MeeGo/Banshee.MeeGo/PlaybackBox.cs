@@ -42,7 +42,7 @@ namespace Banshee.MeeGo
 
             PackStart (action_service.PlaybackActions["PreviousAction"].CreateToolItem (), false, false, 0);
             PackStart (action_service.PlaybackActions["PlayPauseAction"].CreateToolItem (), false, false, 0);
-            PackStart (new NextButton (action_service), false, false, 0);
+            PackStart (new NextButton (action_service, true), false, false, 0);
 
             var seek_slider = new ConnectedSeekSlider ();
             seek_slider.Show ();

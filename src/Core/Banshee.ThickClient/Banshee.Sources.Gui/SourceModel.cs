@@ -71,6 +71,8 @@ namespace Banshee.Sources.Gui
         public event SourceRowEventHandler SourceRowInserted;
         public event SourceRowEventHandler SourceRowRemoved;
 
+        public Predicate<Source> Filter { get; set; }
+
         public SourceModel () : base (typeof (Source), typeof (int), typeof (bool))
         {
             SetSortColumnId (1, SortType.Ascending);
@@ -213,6 +215,10 @@ namespace Banshee.Sources.Gui
         public void AddSource (Source source, TreeIter parent)
         {
             lock (sync) {
+                if (Filter != null && !Filter (source)) {
+                    return;
+                }
+
                 // Don't add duplicates
                 if (!FindSource (source).Equals (TreeIter.Zero)) {
                     return;

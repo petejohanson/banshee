@@ -11,16 +11,12 @@ SOURCES =  \
 	Banshee.MeeGo/MeeGoService.cs \
 	Banshee.MeeGo/MeeGoTrackInfoDisplay.cs \
 	Banshee.MeeGo/PlaybackBox.cs \
-	Banshee.MeeGo/PlayQueueBox.cs \
-	Banshee.MeeGo/RecentAlbumsList.cs \
-	Banshee.MeeGo/RecentAlbumsView.cs \
 	Banshee.MeeGo/SearchEntry.cs \
-	Banshee.MeeGo/SearchHeader.cs \
+	MeeGo.Panel/PanelButtonState.cs \
 	MeeGo.Panel/PanelClient.cs \
 	MeeGo.Panel/PanelGtk.cs \
-	MeeGo.Panel/SetSizeHandler.cs \
 	MeeGo.Panel/SetPositionHandler.cs \
-	MeeGo.Panel/PanelButtonState.cs
+	MeeGo.Panel/SetSizeHandler.cs
 
 RESOURCES = Banshee.MeeGo.addin.xml
 
@@ -30,19 +26,18 @@ include $(top_srcdir)/build/build.mk
 
 module_SCRIPTS += Banshee.MeeGo.dll.config
 
-paneldir = $(libdir)/mutter-moblin
+paneldir = $(libexecdir)
 panel_SCRIPTS = meego-panel-banshee
 
 servicedir = $(datadir)/dbus-1/services
 service_DATA = org.moblin.UX.Shell.Panels.banshee.service
 
 org.moblin.UX.Shell.Panels.banshee.service: org.moblin.UX.Shell.Panels.banshee.service.in $(top_builddir)/config.log
-	sed -e "s|\@libexecdir\@|$(libdir)/mutter-moblin|" $< > $@
+	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
-desktopfiles_in_files=meego-panel-banshee.desktop.in
-desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
-
-desktopfilesdir=$(MEEGO_PANELS_DIR)/
+desktopfiles_in_files = meego-panel-banshee.desktop.in
+desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
+desktopfilesdir = $(datadir)/mutter-moblin/panels
 desktopfiles_DATA = $(desktopfiles_files)
 
 %.desktop.in: %.desktop.in.in Makefile

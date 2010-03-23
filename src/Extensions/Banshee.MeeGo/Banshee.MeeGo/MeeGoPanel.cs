@@ -39,10 +39,9 @@ namespace Banshee.MeeGo
         public static MeeGoPanel Instance { get; private set; }
 
         public PanelGtk ToolbarPanel { get; private set; }
-        public Container ParentContainer { get; private set; }
-
         public uint ToolbarPanelWidth { get; private set; }
         public uint ToolbarPanelHeight { get; private set; }
+        public MediaPanelContents Contents { get; private set; }
 
         public MeeGoPanel ()
         {
@@ -63,23 +62,24 @@ namespace Banshee.MeeGo
         private void BuildPanel ()
         {
             try {
-                ToolbarPanel = new PanelGtk ("media", "media", null, "media-button", true);
-                ParentContainer = ToolbarPanel.Window;
-                ParentContainer.ModifyBg (StateType.Normal, ParentContainer.Style.White);
-                ToolbarPanel.SetSizeEvent += (o, e) => {
-                    ToolbarPanelWidth = e.Width;
-                    ToolbarPanelHeight = e.Height;
+                ToolbarPanel = new PanelGtk ("banshee", "media", null, "media-button", true);
+                ToolbarPanel.ReadyEvent += (o, e) => {
+                    Contents = new MediaPanelContents ();
+                    Contents.ShowAll ();
+                    ToolbarPanel.SetChild (Contents);
                 };
             } catch (Exception e) {
                 Log.Exception ("Could not bind to MeeGo panel", e);
-
                 var window = new Gtk.Window ("MeeGo Media Panel");
                 window.SetDefaultSize (1000, 500);
                 window.WindowPosition = Gtk.WindowPosition.Center;
-                ParentContainer = window;
+                window.Add (Contents = new MediaPanelContents ());
+                window.ShowAll ();
+                GLib.Timeout.Add (1000, () => {
+                    window.Present ();
+                    return false;
+                });
             }
-
-            ParentContainer.ShowAll ();
         }
     }
 }

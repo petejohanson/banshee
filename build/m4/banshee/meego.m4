@@ -4,8 +4,6 @@ AC_DEFUN([BANSHEE_CHECK_MEEGO],
 
 	if test "x$enable_meego" = "xyes"; then
 		AM_CONDITIONAL(HAVE_MEEGO, true)
-		MEEGO_PANELS_DIR=`$PKG_CONFIG --variable=moblin_panel_panels_dir moblin-panel`
-		AC_SUBST(MEEGO_PANELS_DIR)
 	else
 		AM_CONDITIONAL(HAVE_MEEGO, false)
 	fi

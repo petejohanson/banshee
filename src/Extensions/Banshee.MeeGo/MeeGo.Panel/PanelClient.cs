@@ -153,9 +153,15 @@ namespace MeeGo.Panel
         }
         
         [GLib.Signal ("unload")]
-        public event SetSizeHandler UnloadEvent {
+        public event EventHandler UnloadEvent {
             add { GLib.Signal.Lookup (this, "unload").AddDelegate (value); }
             remove { GLib.Signal.Lookup (this, "unload").RemoveDelegate (value); }
+        }
+
+        [GLib.Signal ("ready")]
+        public event EventHandler ReadyEvent {
+            add { GLib.Signal.Lookup (this, "ready").AddDelegate (value); }
+            remove { GLib.Signal.Lookup (this, "ready").RemoveDelegate (value); }
         }
 
         [GLib.Signal ("set-size")]

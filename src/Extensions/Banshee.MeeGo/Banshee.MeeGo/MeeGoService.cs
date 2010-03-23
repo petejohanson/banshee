@@ -110,18 +110,7 @@ namespace Banshee.MeeGo
                 return;
             }
 
-            var container = MeeGoPanel.Instance.ParentContainer;
-            foreach (var child in container.Children) {
-                container.Remove (child);
-            }
-            container.Add (new MediaPanelContents ());
-            container.ShowAll ();
-
-            if (MeeGoPanel.Instance.ToolbarPanel != null) {
-                container.SetSizeRequest (
-                    (int)MeeGoPanel.Instance.ToolbarPanelWidth,
-                    (int)MeeGoPanel.Instance.ToolbarPanelHeight);
-            }
+            MeeGoPanel.Instance.Contents.BuildViews ();
 
             elements_service.PrimaryWindowClose = () => {
                 elements_service.PrimaryWindow.Hide ();
