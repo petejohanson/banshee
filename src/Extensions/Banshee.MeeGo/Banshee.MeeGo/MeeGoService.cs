@@ -110,7 +110,12 @@ namespace Banshee.MeeGo
                 return;
             }
 
-            MeeGoPanel.Instance.Contents.BuildViews ();
+            lock (MeeGoPanel.Instance) {
+                MeeGoPanel.Instance.BansheeIsInitialized = true;
+                if (MeeGoPanel.Instance.Contents != null) {
+                    MeeGoPanel.Instance.Contents.BuildViews ();
+                }
+            }
 
             elements_service.PrimaryWindowClose = () => {
                 elements_service.PrimaryWindow.Hide ();

@@ -42,6 +42,7 @@ namespace Banshee.MeeGo
         public uint ToolbarPanelWidth { get; private set; }
         public uint ToolbarPanelHeight { get; private set; }
         public MediaPanelContents Contents { get; private set; }
+        public bool BansheeIsInitialized { get; set; }
 
         public MeeGoPanel ()
         {
@@ -64,9 +65,14 @@ namespace Banshee.MeeGo
             try {
                 ToolbarPanel = new PanelGtk ("banshee", "media", null, "media-button", true);
                 ToolbarPanel.ReadyEvent += (o, e) => {
-                    Contents = new MediaPanelContents ();
-                    Contents.ShowAll ();
-                    ToolbarPanel.SetChild (Contents);
+                    lock (this) {
+                        Contents = new MediaPanelContents ();
+                        Contents.ShowAll ();
+                        ToolbarPanel.SetChild (Contents);
+                        if (BansheeIsInitialized) {
+                            Contents.BuildViews ();
+                        }
+                    }
                 };
             } catch (Exception e) {
                 Log.Exception ("Could not bind to MeeGo panel", e);
