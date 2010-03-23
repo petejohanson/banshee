@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.6 - Released March 20, 2010
+WELCOME TO BANSHEE 1.5.7 - Released March 22, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,47 +10,24 @@ WELCOME TO BANSHEE 1.5.6 - Released March 20, 2010
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.5.6
+  * Learn More: http://banshee-project.org/download/archives/1.5.7
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.5.6 (1.6 RC2) is a bug fix release, preparing for the stable 1.6
-    release on March 31.
+    Banshee 1.5.7 (1.6 RC3) is a release for testing MeeGo integration.
 
-    Notable bug fixes:
+    Banshee is a MeeGo-compatible media player, and the isolated extension
+    that provides this integration saw a huge amount of change shortly
+    after the 1.5.6 release. The 1.5.7 release was made primarily to reduce
+    the size and complexity of any patches that may be necessary for the
+    MeeGo integration extension.
 
-      * Fix rendering and interaction bugs in the grid view
-      * Fix issue with volume getting reset on every song change
-      * Handle volume changes from outside Banshee (eg PulseAudio)
-      * Fix issue parsing some RSS feeds
-      * Fix library importing and rescanning on all IO backends
-      * Support coverart for albums without an artist (bgo#612626)
-      * Don't capture 's' presses if keybindings disabled
-      * Fix typing in the Wikipedia webkit view
-      * Fix equalizer settings migration (bgo#612669)
-      * Redraw the entire ListView when dragging columns
-      * Increase podcast download timeout
-
-      * Fix bad startup crash in PlayQueue on old Mono
-      * Fix "Too many open files" bug with GIO backend
-      * [Banshee.Hardware] Handle exceptions (bgo#613173)
-      * [PodcastActions] Unsubscribe from an event on dispose
-      * [ContextPane] Fix crash if active removed (bgo#613277)
-      * [LastfmSource] Fix crash (bgo#612824)
-      * [Lastfm] Fix crash using auth Refresh button (bgo#610911)
-      * [Lastfm] Fix crash (bgo#613276)
-
-      * Fix compilation error with older Mono
-      * Fix compilation error with bundled notify-sharp
-      * Fix --disable-youtube flag
-      * Set YouTube install dir to Extensions/
-      * Fix building with older GStreamer (bgo#613339)
-
-      * 44 bugs were fixed since 1.5.5
-
+    No non-MeeGo related bug fixes or features were added since 1.5.6, as
+    such, distributions are encouraged /not/ to package this release since it
+    will be a waste of time :-)
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -59,9 +36,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.5.6 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.5.6/banshee-1-1.5.6.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.5.6/banshee-1-1.5.6.tar.gz
+    * Banshee 1.5.7 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.5.7/banshee-1-1.5.7.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.5.7/banshee-1-1.5.7.tar.gz
 
 Packages
 --------
@@ -78,13 +55,13 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee-project.org/banshee/banshee-1-1.5.6.macosx.intel.dmg
+    * http://download.banshee-project.org/banshee/banshee-1-1.5.7.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.5.6/banshee-1-1.5.6.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.6/banshee-1-1.5.6.sha256sum
+    * http://download.banshee-project.org/banshee/stable/1.5.7/banshee-1-1.5.7.changes
+    * http://download.banshee-project.org/banshee/stable/1.5.7/banshee-1-1.5.7.sha256sum
 
 
 ===============================================================================
@@ -152,7 +129,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.6
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.7
 
 
 ===============================================================================
