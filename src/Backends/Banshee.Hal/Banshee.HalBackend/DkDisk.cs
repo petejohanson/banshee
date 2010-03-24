@@ -39,13 +39,17 @@ namespace Banshee.HalBackend
             if (device_path == null)
                 return null;
 
-            if (disks == null)
+            if (udisks_finder == null && dk_finder == null)
                 return null;
 
 
             string disk_path = null;
             try {
-                disk_path = disks.FindDeviceByDeviceFile (device_path);
+                if (udisks_finder != null) {
+                    disk_path = udisks_finder.FindDeviceByDeviceFile (device_path);
+                } else {
+                    disk_path = dk_finder.FindDeviceByDeviceFile (device_path);
+                }
             } catch {}
 
             if (disk_path == null)
@@ -58,71 +62,107 @@ namespace Banshee.HalBackend
             return null;
         }
 
-        private IDkDisk disk;
+        private UDisksDisk udisks_disk;
+        private IDkDisk dk_disk;
         private org.freedesktop.DBus.Properties props;
+
+        const string dk_bus_name = "org.freedesktop.DeviceKit.Disks";
+        const string udisks_bus_name = "org.freedesktop.UDisks";
 
         private DkDisk (string obj_path)
         {
-            disk = Bus.System.GetObject<IDkDisk>("org.freedesktop.DeviceKit.Disks",
-                new ObjectPath(obj_path));
-
-            props = Bus.System.GetObject<org.freedesktop.DBus.Properties>("org.freedesktop.DeviceKit.Disks",
-                new ObjectPath(obj_path));
+            if (udisks_finder != null) {
+                udisks_disk = Bus.System.GetObject<UDisksDisk> (udisks_bus_name, new ObjectPath (obj_path));
+                props = Bus.System.GetObject<org.freedesktop.DBus.Properties> (udisks_bus_name, new ObjectPath (obj_path));
+            } else {
+                dk_disk = Bus.System.GetObject<IDkDisk> (dk_bus_name, new ObjectPath(obj_path));
+                props = Bus.System.GetObject<org.freedesktop.DBus.Properties> (dk_bus_name, new ObjectPath(obj_path));
+            }
         }
 
         public bool IsMounted {
             get {
-                return (bool) props.Get ("org.freedesktop.DeviceKit.Disks.Device", "DeviceIsMounted");
+                return (bool) props.Get (props_iface, "DeviceIsMounted");
             }
         }
 
         public bool IsReadOnly {
             get {
-                return (bool) props.Get ("org.freedesktop.DeviceKit.Disks.Device", "DeviceIsReadOnly");
+                return (bool) props.Get (props_iface, "DeviceIsReadOnly");
             }
         }
 
         public string MountPoint {
             get {
-                var ary = (string[])props.Get ("org.freedesktop.DeviceKit.Disks.Device", "DeviceMountPaths");
+                var ary = (string[])props.Get (props_iface, "DeviceMountPaths");
                 return ary != null && ary.Length > 0 ? ary[0] : null;
             }
         }
 
         public void Eject ()
         {
-            disk.DriveEject (new string [0]);
+            if (udisks_disk != null) {
+                udisks_disk.DriveEject (new string [0]);
+            } else {
+                dk_disk.DriveEject (new string [0]);
+            }
         }
 
         public void Unmount ()
         {
-            disk.FilesystemUnmount (new string [0]);
+            if (udisks_disk != null) {
+                udisks_disk.FilesystemUnmount (new string [0]);
+            } else {
+                dk_disk.FilesystemUnmount (new string [0]);
+            }
         }
 
-        private static IDkDisks disks;
+        private static UDisksFinder udisks_finder;
+        private static DkFinder dk_finder;
+        private static string props_iface;
 
         static DkDisk ()
         {
             try {
-                disks = Bus.System.GetObject<IDkDisks>("org.freedesktop.DeviceKit.Disks",
-                    new ObjectPath("/org/freedesktop/DeviceKit/Disks"));
-            } catch {}
+                udisks_finder = Bus.System.GetObject<UDisksFinder>(udisks_bus_name, new ObjectPath("/org/freedesktop/UDisks"));
+                props_iface = "org.freedesktop.UDisks.Device";
+            } catch {
+                try {
+                    dk_finder = Bus.System.GetObject<DkFinder>(dk_bus_name,
+                        new ObjectPath("/org/freedesktop/DeviceKit/Disks"));
+                    props_iface = "org.freedesktop.DeviceKit.Disks.Device";
+                } catch {}
+            }
         }
 
-        [Interface("org.freedesktop.DeviceKit.Disks")]
-        internal interface IDkDisks
+        [Interface("org.freedesktop.UDisks")]
+        internal interface UDisksFinder
         {
             string FindDeviceByDeviceFile (string deviceFile);
         }
 
-    }
+        [Interface("org.freedesktop.DeviceKit.Disks")]
+        internal interface DkFinder
+        {
+            string FindDeviceByDeviceFile (string deviceFile);
+        }
 
-    [Interface("org.freedesktop.DeviceKit.Disks.Device")]
-    public interface IDkDisk
-    {
-        bool DeviceIsMounted { get; }
-        string [] DeviceMountPaths { get; }
-        void DriveEject (string [] options);
-        void FilesystemUnmount (string [] options);
+        [Interface("org.freedesktop.UDisks.Device")]
+        internal interface UDisksDisk
+        {
+            bool DeviceIsMounted { get; }
+            string [] DeviceMountPaths { get; }
+            void DriveEject (string [] options);
+            void FilesystemUnmount (string [] options);
+        }
+
+        [Interface("org.freedesktop.DeviceKit.Disks.Device")]
+        internal interface IDkDisk
+        {
+            bool DeviceIsMounted { get; }
+            string [] DeviceMountPaths { get; }
+            void DriveEject (string [] options);
+            void FilesystemUnmount (string [] options);
+        }
     }
 }
