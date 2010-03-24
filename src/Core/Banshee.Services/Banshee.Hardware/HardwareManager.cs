@@ -56,7 +56,7 @@ namespace Banshee.Hardware
 
                     manager = (IHardwareManager)node.CreateInstance (typeof (IHardwareManager));
                 } catch (Exception e) {
-                    Log.Warning ("Hardware manager extension failed to load", e.Message);
+                    Log.Exception ("Hardware manager extension failed to load", e);
                 }
             }
 
