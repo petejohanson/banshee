@@ -124,14 +124,24 @@ namespace Banshee.HalBackend
         static DkDisk ()
         {
             try {
-                udisks_finder = Bus.System.GetObject<UDisksFinder>(udisks_bus_name, new ObjectPath("/org/freedesktop/UDisks"));
-                props_iface = "org.freedesktop.UDisks.Device";
+                if (Bus.System.NameHasOwner (udisks_bus_name)) {
+                    udisks_finder = Bus.System.GetObject<UDisksFinder>(udisks_bus_name, new ObjectPath("/org/freedesktop/UDisks"));
+                    props_iface = "org.freedesktop.UDisks.Device";
+                }
             } catch {
+                udisks_finder = null;
+            }
+
+            if (udisks_finder == null) {
                 try {
-                    dk_finder = Bus.System.GetObject<DkFinder>(dk_bus_name,
-                        new ObjectPath("/org/freedesktop/DeviceKit/Disks"));
-                    props_iface = "org.freedesktop.DeviceKit.Disks.Device";
-                } catch {}
+                    if (Bus.System.NameHasOwner (dk_bus_name)) {
+                        dk_finder = Bus.System.GetObject<DkFinder>(dk_bus_name,
+                            new ObjectPath("/org/freedesktop/DeviceKit/Disks"));
+                        props_iface = "org.freedesktop.DeviceKit.Disks.Device";
+                    }
+                } catch {
+                    dk_finder = null;
+                }
             }
         }
 
