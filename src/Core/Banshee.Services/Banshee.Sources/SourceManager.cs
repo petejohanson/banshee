@@ -154,13 +154,10 @@ namespace Banshee.Sources
             source.ChildSourceAdded += OnChildSourceAdded;
             source.ChildSourceRemoved += OnChildSourceRemoved;
 
-            SourceAddedHandler handler = SourceAdded;
-            if(handler != null) {
-                SourceAddedArgs args = new SourceAddedArgs();
-                args.Position = position;
-                args.Source = source;
-                handler(args);
-            }
+            SourceAdded.SafeInvoke (new SourceAddedArgs () {
+                Position = position,
+                Source = source
+            });
 
             if (source is MusicLibrarySource) {
                 music_library = source as MusicLibrarySource;
