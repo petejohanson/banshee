@@ -30,6 +30,8 @@
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Runtime.InteropServices;
 using Mono.Unix;
 
 using Hyena;
@@ -78,9 +80,23 @@ namespace Banshee.ServiceStack
             ServiceManager.DefaultInitialize ();
         }
 
+#if WIN32
+        [DllImport("msvcrt.dll") /* willfully unmapped */]
+        public static extern int _putenv (string varName);
+#endif
+
         public static void Run ()
         {
             Banshee.Base.PlatformHacks.TrapMonoJitSegv ();
+
+#if WIN32
+            // There are two sets of environement variables we need to impact with our LANG.
+            // refer to : http://article.gmane.org/gmane.comp.gnu.mingw.user/8272
+            CultureInfo current_ci = CultureInfo.CurrentUICulture;
+            string env = String.Concat ("LANG=", current_ci.TwoLetterISOLanguageName);
+            Environment.SetEnvironmentVariable ("LANG", current_ci.TwoLetterISOLanguageName);
+            _putenv (env);
+#endif
 
             Catalog.Init (Application.InternalName, System.IO.Path.Combine (
                 Banshee.Base.Paths.InstalledApplicationDataRoot, "locale"));
