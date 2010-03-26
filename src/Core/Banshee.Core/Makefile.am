@@ -13,7 +13,6 @@ SOURCES =  \
 	Banshee.Base/Resource.cs \
 	Banshee.Base/SafeUri.cs \
 	Banshee.Base/Tests/CoverArtSpecTests.cs \
-	Banshee.Base/UriList.cs \
 	Banshee.Collection/AlbumInfo.cs \
 	Banshee.Collection/ArtistInfo.cs \
 	Banshee.Collection/CacheableItem.cs \
