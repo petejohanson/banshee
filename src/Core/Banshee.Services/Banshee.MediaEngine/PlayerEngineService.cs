@@ -390,16 +390,19 @@ namespace Banshee.MediaEngine
             }
         }
 
-        private bool incremented_last_played = true;
         public void IncrementLastPlayed ()
         {
+            // If Length <= 0 assume 100% completion.
+            IncrementLastPlayed (active_engine.Length <= 0
+                ? 1.0
+                : (double)active_engine.Position / active_engine.Length);
+        }
+
+        private bool incremented_last_played = true;
+        public void IncrementLastPlayed (double completed)
+        {
             if (!incremented_last_played && CurrentTrack != null && CurrentTrack.PlaybackError == StreamPlaybackError.None) {
-                //if Length <= 0 assume 100% completion:
-                if (active_engine.Length <= 0) {
-                    CurrentTrack.OnPlaybackFinished (1);
-                } else {
-                    CurrentTrack.OnPlaybackFinished ((double)active_engine.Position / (double)active_engine.Length);
-                }
+                CurrentTrack.OnPlaybackFinished (completed);
                 incremented_last_played = true;
             }
         }

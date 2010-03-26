@@ -304,6 +304,9 @@ namespace Banshee.GStreamer
         private void OnNextTrackStarting (IntPtr player)
         {
             if (GaplessEnabled) {
+                // Must do it here because the next track is already playing.
+                ServiceManager.PlayerEngine.IncrementLastPlayed (1.0);
+
                 OnEventChanged (PlayerEvent.EndOfStream);
                 OnEventChanged (PlayerEvent.StartOfStream);
             }
