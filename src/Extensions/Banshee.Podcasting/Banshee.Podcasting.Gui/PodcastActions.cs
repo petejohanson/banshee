@@ -298,33 +298,35 @@ namespace Banshee.Podcasting.Gui
         {
             Uri feedUri = null;
             FeedAutoDownload syncPreference;
+            string url = null;
 
             PodcastSubscribeDialog subscribeDialog = new PodcastSubscribeDialog ();
 
             ResponseType response = (ResponseType) subscribeDialog.Run ();
+
             syncPreference = subscribeDialog.SyncPreference;
+
+            if (response == ResponseType.Ok) {
+                url = subscribeDialog.Url.Trim ().Trim ('/');
+            }
 
             subscribeDialog.Destroy ();
 
-            if (response == ResponseType.Ok) {
-                string url = subscribeDialog.Url.Trim ().Trim ('/');
+            if (String.IsNullOrEmpty (url)) {
+                return;
+            }
 
-                if (String.IsNullOrEmpty (subscribeDialog.Url)) {
-                    return;
-                }
-
-				if (!TryParseUrl (url, out feedUri)) {
-                    HigMessageDialog.RunHigMessageDialog (
-                        null,
-                        DialogFlags.Modal,
-                        MessageType.Warning,
-                        ButtonsType.Ok,
-                        Catalog.GetString ("Invalid URL"),
-                        Catalog.GetString ("Podcast URL is invalid.")
-                    );
-				} else {
-				    SubscribeToPodcast (feedUri, syncPreference);
-				}
+            if (!TryParseUrl (url, out feedUri)) {
+                HigMessageDialog.RunHigMessageDialog (
+                    null,
+                    DialogFlags.Modal,
+                    MessageType.Warning,
+                    ButtonsType.Ok,
+                    Catalog.GetString ("Invalid URL"),
+                    Catalog.GetString ("Podcast URL is invalid.")
+                );
+            } else {
+                SubscribeToPodcast (feedUri, syncPreference);
             }
         }
 
