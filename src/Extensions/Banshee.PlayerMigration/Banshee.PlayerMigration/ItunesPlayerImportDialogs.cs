@@ -165,8 +165,8 @@ namespace Banshee.PlayerMigration
         public ItunesMusicDirectoryDialog (string itunes_music_directory) : base ()
         {
             Title = Catalog.GetString ("Locate iTunes Music Directory");
-            HeightRequest = 650;
-            WidthRequest = 814;
+            DefaultHeight = 650;
+            DefaultWidth = 814;
 
             Button cancel_button = new Button (Stock.Cancel);
             cancel_button.Clicked += delegate { Respond (ResponseType.Cancel); };
@@ -207,7 +207,7 @@ namespace Banshee.PlayerMigration
             chooser.ShowAll ();
             vbox.PackStart (chooser, true, true, 0);
 
-            VBox.PackStart (vbox, false, false, 0);
+            VBox.PackStart (vbox, true, true, 0);
 
             DefaultResponse = ResponseType.Cancel;
 
