@@ -307,7 +307,11 @@ namespace Banshee.Dap.MassStorage
             }
 
             foreach (string file_name in PlaylistFiles) {
-                Banshee.IO.File.Delete (new SafeUri (file_name));
+                try {
+                    Banshee.IO.File.Delete (new SafeUri (file_name));
+                } catch (Exception e) {
+                    Log.Exception (e);
+                }
             }
 
             // Add playlists from Banshee to the device
@@ -325,10 +329,16 @@ namespace Banshee.Dap.MassStorage
                     SafeUri playlist_path = new SafeUri (System.IO.Path.Combine (
                         PlaylistsPath, String.Format ("{0}.{1}", escaped_name, PlaylistTypes[0].FileExtension)));
 
-                    System.IO.Stream stream = Banshee.IO.File.OpenWrite (playlist_path, true);
-                    playlist_format.BaseUri = new Uri (BaseDirectory);
-                    playlist_format.Save (stream, from);
-                    stream.Close ();
+                    System.IO.Stream stream = null;
+                    try {
+                        stream = Banshee.IO.File.OpenWrite (playlist_path, true);
+                        playlist_format.BaseUri = new Uri (BaseDirectory);
+                        playlist_format.Save (stream, from);
+                    } catch (Exception e) {
+                        Log.Exception (e);
+                    } finally {
+                        stream.Close ();
+                    }
                 }
             }
         }
