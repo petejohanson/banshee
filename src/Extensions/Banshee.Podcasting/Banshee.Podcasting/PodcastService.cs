@@ -52,7 +52,7 @@ using Banshee.Configuration;
 
 namespace Banshee.Podcasting
 {
-    public partial class PodcastService : IExtensionService, IDisposable, IInitializeService
+    public partial class PodcastService : IExtensionService, IDisposable, IDelayedInitializeService
     {
         private readonly string tmp_download_path = Paths.Combine (Paths.ExtensionCacheRoot, "podcasting", "partial-downloads");
         private uint refresh_timeout_id = 0;
@@ -210,6 +210,10 @@ namespace Banshee.Podcasting
         }
 
         public void Initialize ()
+        {
+        }
+
+        public void DelayedInitialize ()
         {
             download_manager = new DownloadManager (2, tmp_download_path);
             download_manager_iface = new DownloadManagerInterface (download_manager);
