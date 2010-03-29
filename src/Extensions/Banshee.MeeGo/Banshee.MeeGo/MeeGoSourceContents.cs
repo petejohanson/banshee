@@ -32,10 +32,12 @@ using Gtk;
 using Hyena.Data;
 using Hyena.Data.Gui;
 
+using Banshee.ServiceStack;
 using Banshee.Sources;
 using Banshee.Sources.Gui;
 using Banshee.Collection;
 using Banshee.Collection.Gui;
+using Banshee.MediaEngine;
 
 namespace Banshee.MeeGo
 {
@@ -44,6 +46,8 @@ namespace Banshee.MeeGo
         private ArtistListView artist_view;
         private AlbumListView album_view;
         private TerseTrackListView track_view;
+
+        private MeeGoTrackInfoDisplay track_info_display;
 
         private ISource source;
         private Dictionary<object, double> model_positions = new Dictionary<object, double> ();
@@ -62,15 +66,22 @@ namespace Banshee.MeeGo
             side_box.PackStart (SetupView (track_view = new TerseTrackListView ()), true, true, 0);
             track_view.ColumnController.Insert (new Column (null, "indicator",
                 new ColumnCellStatusIndicator (null), 0.05, true, 20, 20), 0);
-            side_box.PackStart (new MeeGoTrackInfoDisplay () { HeightRequest = 64 }, false, false, 0);
+            side_box.PackStart (track_info_display = new MeeGoTrackInfoDisplay (), false, false, 0);
+
+            track_info_display.HeightRequest = 64;
+            track_info_display.NoShowAll = true;
 
             artist_view.WidthRequest = 150;
-            track_view.WidthRequest = 240;
+            track_view.WidthRequest = 220;
             artist_view.DoNotRenderNullModel = true;
             album_view.DoNotRenderNullModel = true;
 
             artist_view.SelectionProxy.Changed += OnBrowserViewSelectionChanged;
             album_view.SelectionProxy.Changed += OnBrowserViewSelectionChanged;
+
+            ServiceManager.PlayerEngine.ConnectEvent ((args) => track_info_display.Visible =
+                ServiceManager.PlayerEngine.CurrentState != PlayerState.Idle,
+                PlayerEvent.StateChange | PlayerEvent.StartOfStream);
         }
 
         private ScrolledWindow SetupView (Widget view)
