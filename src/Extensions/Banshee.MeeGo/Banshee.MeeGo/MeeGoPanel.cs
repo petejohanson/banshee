@@ -36,6 +36,8 @@ namespace Banshee.MeeGo
 {
     public class MeeGoPanel : IDisposable
     {
+        public static MeeGoPanel Instance { get; private set; }
+
         private bool waiting_for_embedded;
         private PanelGtk embedded_panel;
         private Window window_panel;
@@ -44,13 +46,21 @@ namespace Banshee.MeeGo
 
         public MeeGoPanel ()
         {
+            if (Instance != null) {
+                throw new InvalidOperationException ("Only one MeeGoPanel instance should exist");
+            }
+
+            Instance = this;
+
             var timer = Log.DebugTimerStart ();
 
             try {
+                Log.Debug ("Attempting to create MeeGo toolbar panel");
                 waiting_for_embedded = true;
                 embedded_panel = new PanelGtk ("banshee", "media", null, "media-button", true);
                 embedded_panel.ReadyEvent += (o, e) => {
                     lock (this) {
+                        Log.Debug ("MeeGo toolbar panel ready");
                         waiting_for_embedded = false;
                         BuildContents ();
                     }
