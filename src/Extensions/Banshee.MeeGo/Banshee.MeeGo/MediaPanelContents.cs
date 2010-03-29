@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright 2009 Novell, Inc.
+// Copyright 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -43,85 +43,51 @@ using Banshee.Collection.Database;
 
 namespace Banshee.MeeGo
 {
-    public class MediaPanelContents : Table
+    public class MediaPanelContents : VBox
     {
         private SourceComboBox source_combo_box;
         private HBox header_box;
         private SearchEntry search_entry;
-        private AlbumListView album_view;
-        private TerseTrackListView track_view;
+        private MeeGoSourceContents source_contents;
 
-        public MediaPanelContents () : base (1, 2, false)
+        public MediaPanelContents ()
         {
             BorderWidth = 12;
-            RowSpacing = 15;
-            ColumnSpacing = 15;
-        }
+            Spacing = 12;
 
-        public void BuildViews ()
-        {
             header_box = new HBox () {
                 Spacing = 5,
                 BorderWidth = 5
             };
+
             header_box.PackStart (source_combo_box = new SourceComboBox (), false, false, 0);
+
             var button = new Button (new Image () {
                 IconSize = (int)IconSize.LargeToolbar,
                 IconName = "media-player-banshee"
             }) {
                 TooltipText = Catalog.GetString ("Launch the Banshee Media Player")
             };
+
             button.Clicked += (o, e) => {
                 ServiceManager.SourceManager.SetActiveSource (ServiceManager.SourceManager.MusicLibrary);
                 ServiceManager.Get<MeeGoService> ().PresentPrimaryInterface ();
             };
+
             header_box.PackStart (button, false, false, 0);
-            header_box.PackStart (search_entry = new SearchEntry () { Ready = true }, true, true, 0);
-            Attach (header_box, 0, 1, 0, 1,
-                AttachOptions.Fill | AttachOptions.Expand,
-                AttachOptions.Shrink,
-                0, 0);
+            header_box.PackStart (search_entry = new SearchEntry (), true, true, 0);
+            header_box.PackStart (new PlaybackBox (), false, false, 0);
 
-            var scroll = new ScrolledWindow () {
-                VscrollbarPolicy = PolicyType.Always,
-                HscrollbarPolicy = PolicyType.Never,
-                ShadowType = ShadowType.None
-            };
-            scroll.Add (album_view = new AlbumListView ());
-            Attach (scroll, 0, 1, 1, 2,
-                AttachOptions.Fill | AttachOptions.Expand,
-                AttachOptions.Fill | AttachOptions.Expand,
-                0, 0);
-
-            var side_box = new VBox () { Spacing = 15 };
-
-            side_box.PackStart (new PlaybackBox (), false, false, 0);
-
-            scroll = new ScrolledWindow () {
-                VscrollbarPolicy = PolicyType.Always,
-                HscrollbarPolicy = PolicyType.Never,
-                ShadowType = ShadowType.None
-            };
-            track_view = new TerseTrackListView () {
-                IsReorderable = true
-            };
-            track_view.ColumnController.Insert (new Column (null, "indicator",
-                new ColumnCellStatusIndicator (null), 0.05, true, 20, 20), 0);
-            track_view.ColumnController.Add (new Column ("Rating", new ColumnCellRating ("Rating", false), 0.15));
-            scroll.Add (track_view);
-
-            side_box.PackStart (scroll, true, true, 0);
-
-            side_box.PackStart (new MeeGoTrackInfoDisplay () { HeightRequest = 64 }, false, false, 0);
-            Attach (side_box, 1, 2, 0, 2,
-                AttachOptions.Shrink,
-                AttachOptions.Fill | AttachOptions.Expand,
-                0, 0);
+            PackStart (header_box, false, false, 0);
+            PackStart (source_contents = new MeeGoSourceContents (), true, true, 0);
 
             ShowAll ();
 
             source_combo_box.UpdateActiveSource ();
-            source_combo_box.Model.Filter = (source) => source is ITrackModelSource;
+            source_combo_box.Model.Filter = (source) =>
+                source == ServiceManager.SourceManager.MusicLibrary ||
+                source.Parent == ServiceManager.SourceManager.MusicLibrary ||
+                source.GetType ().FullName == "Banshee.PlayQueue.PlayQueueSource";
             search_entry.Changed += OnSearchEntryChanged;
             ServiceManager.SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
         }
@@ -141,30 +107,20 @@ namespace Banshee.MeeGo
         {
             ThreadAssist.ProxyToMain (delegate {
                 var source = ServiceManager.SourceManager.ActiveSource;
-                var track_source = source as ITrackModelSource;
-                var filter_source = source as IFilterableSource;
 
-                if (track_source == null) {
-                    return;
+                search_entry.Ready = false;
+                search_entry.CancelSearch ();
+                search_entry.SearchSensitive = source != null && source.CanSearch;
+
+                if (source != null && source.FilterQuery != null) {
+                    search_entry.Query = source.FilterQuery;
+                    search_entry.ActivateFilter ((int)source.FilterType);
                 }
 
-                track_view.SetModel (track_source.TrackModel);
+                source_contents.ResetSource ();
+                source_contents.SetSource (source);
 
-                if (filter_source == null) {
-                    album_view.Parent.Hide ();
-                    return;
-                }
-
-                foreach (var filter in filter_source.CurrentFilters) {
-                    var album_filter = filter as DatabaseAlbumListModel;
-                    if (album_filter != null) {
-                        album_view.Parent.Show ();
-                        album_view.SetModel (album_filter);
-                        return;
-                    }
-                }
-
-                album_view.Parent.Hide ();
+                search_entry.Ready = true;
             });
         }
 

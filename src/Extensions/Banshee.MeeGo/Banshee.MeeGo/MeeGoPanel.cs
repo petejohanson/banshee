@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright 2009 Novell, Inc.
+// Copyright 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,55 +36,71 @@ namespace Banshee.MeeGo
 {
     public class MeeGoPanel : IDisposable
     {
-        public static MeeGoPanel Instance { get; private set; }
+        private bool waiting_for_embedded;
+        private PanelGtk embedded_panel;
+        private Window window_panel;
 
-        public PanelGtk ToolbarPanel { get; private set; }
-        public uint ToolbarPanelWidth { get; private set; }
-        public uint ToolbarPanelHeight { get; private set; }
         public MediaPanelContents Contents { get; private set; }
-        public bool BansheeIsInitialized { get; set; }
 
         public MeeGoPanel ()
         {
-            if (Instance != null) {
-                throw new ApplicationException ("Only one MeeGoPanel instance can exist");
+            var timer = Log.DebugTimerStart ();
+
+            try {
+                waiting_for_embedded = true;
+                embedded_panel = new PanelGtk ("banshee", "media", null, "media-button", true);
+                embedded_panel.ReadyEvent += (o, e) => {
+                    lock (this) {
+                        waiting_for_embedded = false;
+                        BuildContents ();
+                    }
+                };
+            } catch (Exception e) {
+                if (!(e is DllNotFoundException)) {
+                    Log.Exception ("Could not bind to MeeGo panel", e);
+                }
+                waiting_for_embedded = false;
+                window_panel = new Gtk.Window ("MeeGo Media Panel");
             }
 
-            if (ApplicationContext.CommandLine.Contains ("mutter-panel")) {
-                BuildPanel ();
-                Instance = this;
-            }
+            Log.DebugTimerPrint (timer, "MeeGo panel created: {0}");
         }
 
         public void Dispose ()
         {
         }
 
-        private void BuildPanel ()
+        public void BuildContents ()
         {
-            try {
-                ToolbarPanel = new PanelGtk ("banshee", "media", null, "media-button", true);
-                ToolbarPanel.ReadyEvent += (o, e) => {
-                    lock (this) {
-                        Contents = new MediaPanelContents ();
-                        Contents.ShowAll ();
-                        ToolbarPanel.SetChild (Contents);
-                        if (BansheeIsInitialized) {
-                            Contents.BuildViews ();
-                        }
-                    }
-                };
-            } catch (Exception e) {
-                Log.Exception ("Could not bind to MeeGo panel", e);
-                var window = new Gtk.Window ("MeeGo Media Panel");
-                window.SetDefaultSize (1000, 500);
-                window.WindowPosition = Gtk.WindowPosition.Center;
-                window.Add (Contents = new MediaPanelContents ());
-                window.ShowAll ();
-                GLib.Timeout.Add (1000, () => {
-                    window.Present ();
-                    return false;
-                });
+            lock (this) {
+                if (waiting_for_embedded) {
+                    return;
+                }
+
+                var timer = Log.DebugTimerStart ();
+                Contents = new MediaPanelContents ();
+                Contents.ShowAll ();
+                Log.DebugTimerPrint (timer, "MeeGo panel contents created: {0}");
+
+                if (embedded_panel != null) {
+                    embedded_panel.SetChild (Contents);
+                } else if (window_panel != null) {
+                    window_panel.Add (Contents);
+                    window_panel.SetDefaultSize (1000, 500);
+                    window_panel.WindowPosition = WindowPosition.Center;
+                    window_panel.Show ();
+                    GLib.Timeout.Add (1000, () => {
+                        window_panel.Present ();
+                        return false;
+                    });
+                }
+            }
+        }
+
+        public void Hide ()
+        {
+            if (embedded_panel != null) {
+                embedded_panel.Hide ();
             }
         }
     }

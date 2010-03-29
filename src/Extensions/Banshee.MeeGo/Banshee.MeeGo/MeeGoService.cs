@@ -4,7 +4,7 @@
 // Authors:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright 2009 Novell, Inc.
+// Copyright 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -47,14 +47,19 @@ namespace Banshee.MeeGo
         private InterfaceActionService interface_action_service;
         private SourceManager source_manager;
         private PlayerEngineService player;
-        private Banshee.Sources.Source now_playing;
+        private Source now_playing;
 
-        public MeeGoService ()
-        {
-        }
+        private MeeGoPanel panel;
 
         void IExtensionService.Initialize ()
         {
+            // We need to create the MeeGo panel connection as soon as possible
+            // to keep mutter-moblin's toolbar from thinking we crashed (timing out).
+            // The contents of the panel will be constructed later on.
+            if (ApplicationContext.CommandLine.Contains ("mutter-panel")) {
+                panel = new MeeGoPanel ();
+            }
+
             elements_service = ServiceManager.Get<GtkElementsService> ();
             interface_action_service = ServiceManager.Get<InterfaceActionService> ();
             source_manager = ServiceManager.SourceManager;
@@ -82,7 +87,8 @@ namespace Banshee.MeeGo
 
         private bool ServiceStartup ()
         {
-            if (elements_service == null || interface_action_service == null || source_manager == null || player == null) {
+            if (elements_service == null || interface_action_service == null ||
+                source_manager == null || player == null) {
                 return false;
             }
 
@@ -98,7 +104,7 @@ namespace Banshee.MeeGo
             // regular metacity does not seem to like this at all, crashing
             // and complaining "Window manager warning: Buggy client sent a
             // _NET_ACTIVE_WINDOW message with a timestamp of 0 for 0x2e00020"
-            if (MeeGoPanel.Instance != null) {
+            if (panel != null) {
                 elements_service.PrimaryWindow.Decorated = false;
                 elements_service.PrimaryWindow.Maximize ();
             }
@@ -106,16 +112,11 @@ namespace Banshee.MeeGo
             // Set the internal engine volume to 100%
             ServiceManager.PlayerEngine.Volume = 100;
 
-            if (MeeGoPanel.Instance == null) {
+            if (panel == null) {
                 return;
             }
 
-            lock (MeeGoPanel.Instance) {
-                MeeGoPanel.Instance.BansheeIsInitialized = true;
-                if (MeeGoPanel.Instance.Contents != null) {
-                    MeeGoPanel.Instance.Contents.BuildViews ();
-                }
-            }
+            panel.BuildContents ();
 
             elements_service.PrimaryWindowClose = () => {
                 elements_service.PrimaryWindow.Hide ();
@@ -129,13 +130,15 @@ namespace Banshee.MeeGo
             };
 
             FindNowPlaying ();
-            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerStateChanged, PlayerEvent.StateChange | PlayerEvent.StartOfStream);
+            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerStateChanged,
+                PlayerEvent.StateChange | PlayerEvent.StartOfStream);
         }
 
         private void OnPlayerStateChanged (PlayerEventArgs args)
         {
             var player = ServiceManager.PlayerEngine;
-            if (player.CurrentState == PlayerState.Playing && player.CurrentTrack.HasAttribute (TrackMediaAttributes.VideoStream)) {
+            if (player.CurrentState == PlayerState.Playing &&
+                player.CurrentTrack.HasAttribute (TrackMediaAttributes.VideoStream)) {
                 if (now_playing != null) {
                     ServiceManager.SourceManager.SetActiveSource (now_playing);
                 }
@@ -153,8 +156,9 @@ namespace Banshee.MeeGo
                 }
             }
 
-            if (now_playing != null)
+            if (now_playing != null) {
                 return;
+            }
 
             Banshee.ServiceStack.ServiceManager.SourceManager.SourceAdded += (args) => {
                 if (now_playing == null && args.Source.UniqueId.Contains ("now-playing")) {
@@ -167,15 +171,15 @@ namespace Banshee.MeeGo
         {
             elements_service.PrimaryWindow.Maximize ();
             elements_service.PrimaryWindow.Present ();
-            if (MeeGoPanel.Instance != null && MeeGoPanel.Instance.ToolbarPanel != null) {
-                MeeGoPanel.Instance.ToolbarPanel.Hide ();
+            if (panel != null) {
+                panel.Hide ();
             }
         }
 
         public void Dispose ()
         {
-            if (MeeGoPanel.Instance != null) {
-                MeeGoPanel.Instance.Dispose ();
+            if (panel != null) {
+                panel.Dispose ();
             }
 
             interface_action_service = null;

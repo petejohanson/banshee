@@ -9,6 +9,7 @@ SOURCES =  \
 	Banshee.MeeGo/MediaPanelContents.cs \
 	Banshee.MeeGo/MeeGoPanel.cs \
 	Banshee.MeeGo/MeeGoService.cs \
+	Banshee.MeeGo/MeeGoSourceContents.cs \
 	Banshee.MeeGo/MeeGoTrackInfoDisplay.cs \
 	Banshee.MeeGo/PlaybackBox.cs \
 	Banshee.MeeGo/SearchEntry.cs \
