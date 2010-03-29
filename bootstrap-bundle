@@ -17,7 +17,7 @@ fi
 
 profile="profile.$profile_name.py"
 
-if ! test -f "build/bundle/$profile"; then
+if ! test -f "../bockbuild/profiles/banshee/$profile"; then
 	echo "Profile does not exist: build/bundle/$profile"
 	exit 1
 fi
@@ -25,13 +25,13 @@ fi
 selfdir="$(pwd)/$(dirname "$0")"
 envfile="$selfdir/$profile_name.env"
 
-pushd build/bundle &>/dev/null
+pushd ../bockbuild/profiles/banshee &>/dev/null
 ./$profile -bv
 ./$profile -e > "$envfile"
 popd &>/dev/null
 
 [ $profile_name = darwin ] && \
-	echo "export GTK2_RC_FILES=\"$selfdir/build/bundle/skeleton.darwin/Contents/Resources/etc/gtk-2.0/gtkrc\"" >> "$envfile"
+	echo "export GTK2_RC_FILES=\"$selfdir/../../bockbuild/profiles/banshee/skeleton.darwin/Contents/Resources/etc/gtk-2.0/gtkrc\"" >> "$envfile"
 
 source "$envfile"
 
