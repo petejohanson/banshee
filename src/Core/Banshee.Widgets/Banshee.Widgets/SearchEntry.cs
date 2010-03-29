@@ -202,6 +202,7 @@ namespace Banshee.Widgets
             Gdk.Color color = entry.Style.Base (entry.State);
             filter_button.ModifyBg (entry.State, color);
             clear_button.ModifyBg (entry.State, color);
+            ModifyBg (entry.State, color);
 
             box.BorderWidth = (uint)entry.Style.XThickness;
         }
