@@ -54,6 +54,8 @@ namespace Hyena.Data.Gui
             get { return theme; }
         }
 
+        public bool DoNotRenderNullModel { get; set; }
+
         private bool changing_style = false;
 
         protected override void OnStyleSet (Style old_style)
@@ -92,6 +94,10 @@ namespace Hyena.Data.Gui
 
         protected override bool OnExposeEvent (EventExpose evnt)
         {
+            if (DoNotRenderNullModel && Model == null) {
+                return true;
+            }
+
             var damage = new Rectangle ();
             foreach (Rectangle rect in evnt.Region.GetRectangles ()) {
                 damage = damage.Union (rect);
