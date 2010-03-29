@@ -202,7 +202,6 @@ namespace Banshee.Widgets
             Gdk.Color color = entry.Style.Base (entry.State);
             filter_button.ModifyBg (entry.State, color);
             clear_button.ModifyBg (entry.State, color);
-            ModifyBg (entry.State, color);
 
             box.BorderWidth = (uint)entry.Style.XThickness;
         }
@@ -253,6 +252,8 @@ namespace Banshee.Widgets
 
         protected override bool OnExposeEvent(Gdk.EventExpose evnt)
         {
+            Style.PaintFlatBox (entry.Style, GdkWindow, State, ShadowType.None, evnt.Area, this,
+                "entry_bg", 0, 0, Allocation.Width, Allocation.Height);
             PropagateExpose(Child, evnt);
             Style.PaintShadow(entry.Style, GdkWindow, StateType.Normal,
                 ShadowType.In, evnt.Area, entry, "entry",
