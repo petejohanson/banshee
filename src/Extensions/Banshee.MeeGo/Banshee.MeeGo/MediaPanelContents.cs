@@ -83,12 +83,16 @@ namespace Banshee.MeeGo
 
             ShowAll ();
 
-            source_combo_box.UpdateActiveSource ();
             source_combo_box.Model.Filter = (source) =>
                 source == ServiceManager.SourceManager.MusicLibrary ||
                 source.Parent == ServiceManager.SourceManager.MusicLibrary ||
                 source.GetType ().FullName == "Banshee.PlayQueue.PlayQueueSource";
+            source_combo_box.Model.Refresh ();
+            source_combo_box.UpdateActiveSource ();
+
             search_entry.Changed += OnSearchEntryChanged;
+
+            source_contents.SetSource (ServiceManager.SourceManager.ActiveSource);
             ServiceManager.SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
         }
 
