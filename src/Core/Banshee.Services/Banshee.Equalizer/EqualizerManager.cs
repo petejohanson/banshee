@@ -243,13 +243,8 @@ namespace Banshee.Equalizer
 
             Log.DebugTimerPrint (timer, "Loaded equalizer presets: {0}");
 
-            bool any_user_defined = equalizers.Count > 0;
             equalizers.AddRange (GetDefaultEqualizers ());
-            if (!any_user_defined) {
-                Select ("Pop");
-            } else {
-                Select ();
-            }
+            Select ();
         }
 
         private IEnumerable<EqualizerSetting> GetDefaultEqualizers ()
@@ -394,7 +389,7 @@ namespace Banshee.Equalizer
 
         public static readonly SchemaEntry<string> PresetSchema = new SchemaEntry<string> (
             "player_engine", "equalizer_preset",
-            "",
+            "Rock",
             "Equalizer preset",
             "Default preset to load into equalizer."
         );
