@@ -102,8 +102,8 @@ namespace Banshee.YouTube.Gui
 
         private static string GetPlaybackUri (Video yt_video)
         {
-            int flv = YouTubeQuery.VideoFormat.Embeddable.value__;
-            int mobile = YouTubeQuery.VideoFormat.Mobile.value__;
+            int flv = (int)YouTubeQuery.VideoFormat.Embeddable;
+            int mobile = (int)YouTubeQuery.VideoFormat.Mobile;
             const string format_param = "&fmt=18"; // Assumes user has broadband connection
             string video_id = yt_video.VideoId;
             string playback_uri = String.Empty;
