@@ -56,7 +56,7 @@ namespace Banshee.MeeGo
             // We need to create the MeeGo panel connection as soon as possible
             // to keep mutter-moblin's toolbar from thinking we crashed (timing out).
             // The contents of the panel will be constructed later on.
-            if (ApplicationContext.CommandLine.Contains ("mutter-panel")) {
+            if (MeeGoPanel.Instance.Enabled) {
                 panel = MeeGoPanel.Instance;
             }
 
