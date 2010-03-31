@@ -171,6 +171,21 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
       * Add mnemonics to track editor fields and import dialog
       * Make previous button go back if less than 4 seconds into a song
 
+    Notable Bugs Fixed (since 1.5.6):
+
+      * Fix device support on upcoming distros with DeviceKit rename
+      * Restore equalizer preset correctly (bgo#614313)
+      * Handle broken symlinks correctly (bgo#614065)
+      * Allow overriding Android, Maeomo, WebOS default settings (bgo#611991)
+      * Fix crash deleting playlist on mass storage device (bgo#613734)
+      * Fix issue with iTunes importer dialog sizing (bgo#613607)
+      * Fix play count calculation with gapless enabled (bgo#613418)
+      * Handle exceptions thrown by old plugins (Mirage, etc)
+      * Use panel-specific (eg monochrome) icon in notification area
+      * OS X build/bundle improvements
+      * Fix Windows compilation issues
+      * Fix gettext locale selection on Windows
+
 ===============================================================================
 SOURCES / PACKAGES
 ===============================================================================
