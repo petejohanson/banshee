@@ -19,44 +19,27 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
 
     Banshee 1.6 is a stable release, the culmination of a year's work.  There
     are so many new features, bug fixes, and polish in this release, we won't
-    be able to do it all justice in these notes, but we'll try.
+    be able to do it all justice in these notes, but we'll try.  These notes
+    aggregate the highlights from the 1.5 series releases.
 
-    New Features Since 1.4.3:
+    New Features Since 1.4:
 
-      1.5.5
-      * Gapless Playback / Playbin2
+      * Play Queue Auto DJ keeps the tunes coming
 
-          Banshee now uses the playbin2 GStreamer element.  With this comes
-          support for gapless playback, which is the default now for users
-          with GStreamer > 0.10.25.2.
+          Keep your Play Queue filled with endless music, selected randomly
+          by artist, album, song, rating, or score mode.
+
+      * Sync device from playlist option
+
+          Either manually manage what files are added/removed to your device,
+          or choose a playlist to sync from.  You can make a size-limited smart
+          playlist to sync just the right amount to your device.
 
       * Grid View
 
           We are debuting a new grid mode for our custom list widget, visible
           in the modified Album browser.  It will be used for Videos,
           Audiobooks, and more in future releases.
-
-      * YouTube Extension
-
-          This extension shows YouTube videos in the Context Pane related to
-          what you're playing, and lets you watch them within Banshee.  You
-          can enable it in the Extensions tab of the Preferences dialog.
-
-      1.5.4
-      * Opt-In Usage Data Collection
-
-          Under Preferences, you can choose to "Improve Banshee by sending
-          anonymous usage data" back to the Banshee developers.  This collects
-          information on what version you're running, what OS, library size,
-          slow SQL queries, and a whitelisted subset of your preferences. This
-          information will help us choose better defaults and see what parts of
-          Banshee are used most and can be improved. All collected data is
-          anonymous!
-
-      * Default Equalizer Presets
-
-          Banshee now ships with several equalizer presets, and the core of
-          the equalizer management has seen much internal improvement.
 
       * Banshee Community Extensions
 
@@ -68,19 +51,6 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
 
             http://banshee-project.org/download/extensions/
 
-      * Extensible Shuffle Modes
-
-          Extensions can now add new shuffle modes and PlayQueue fill-by
-          modes.  The Mirage extension is the first to take advantage of this,
-          adding a Shuffle/Fill-by Similar mode based on acoustical analysis.
-
-      1.5.3
-      * Sync device from playlist option
-
-          Either manually manage what files are added/removed to your device,
-          or choose a playlist to sync from.  You can make a size-limited smart
-          playlist to sync just the right amount to your device.
-
       * Type-ahead find in track, artist, and album lists
 
           An alternative to filtering, type-ahead find jumps you to the first
@@ -88,14 +58,19 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
           and jump to next match with F3.  In track list it matches against
           artist, album, or title.
 
-      * Optional cover art in lower-left corner
+      * Automatic Scoring
 
-          Turn on via View > Show Cover Art
+          Songs now have scores, updated as you play and skip.  The score
+          can be used in searches and smart playlists, and serve as a basis
+          for ratings.
 
-      * Cover art editable via drag-and-drop and right-click
+      * New Shuffle Modes
 
-          Can edit via the cover art in the track editor, lower-left corner,
-          and beside the seek-slider.
+          Shuffle by artist or album let you listen to everything by an artist
+          or on an album before jumping to a new random artist or album.
+
+          Shuffle by rating or score lets you shuffle through your songs, with
+          higher rated or scored tracks being more likely to play.
 
       * Audiobooks library extension
 
@@ -122,45 +97,46 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
           This backend uses the GIO library to support importing local files
           and network-share files alike.  Requires glib >= 2.22 and Gio#.
 
-      * Return of the Mac OS X release
+      * Internet Archive extension
 
-          OS X 10.5 and 10.6 is now supported again (but still considered
-          beta quality). Additionally, Mono and GTK are now bundled with the
-          binary release, so there are no dependencies for OS X users.
+          Search and stream content from the Internet Archive's vast store of
+          media, including 70,000 concerts and 200,000 videos.  Enable it in
+          the Extensions tab of the Preferences dialog.
 
-      1.5.2
-      * The Internet Archive extension
-      * Metadata ratings and playcount import and export
+      * YouTube Extension
 
-      1.5.1
-      * Play Queue Auto DJ keeps the tunes coming
-      * Shuffle by album and artist
-      * Shuffle by weighted rating and score mode
-      * Add tooltips for ellipsized ListView text
-      * Keep the playing song visible in the track list
+          This extension shows YouTube videos in the Context Pane related to
+          what you're playing, and lets you watch them within Banshee.  You
+          can enable it in the Extensions tab of the Preferences dialog.
 
-      1.5.0
-      * Powerful unicode-aware case-insensitive search; i.e. n matches Ñ and vice-versa
-      * Locale-specific, case-insensitive, unicode-aware sorting
-      * Artist/album/track sort fields support; i.e. can set artist sort to "Beatles, The"
+      * Improved Metadata Handling
+      
+          Banshee is now able to read and write rating and playcount
+          information contained in your media files. Enable this option
+          in Preferences.
+
+          Searching and smart playlists use unicode-aware case-insensitive
+          search; i.e. n matches Ñ and vice-versa, and similarly smart sorting.
+
+          Artist/album/track sort fields are now supported, the License URI
+          field is now exposed and Creative Commons aware, and the BPM field
+          is exposed with an option to calculate it for all songs.
+
+      * Gapless Playback
+      * Optional cover art in lower-left corner
+      * Cover art editable via drag-and-drop and right-click
+      * Playing song kept visible in the track list
       * Separate library locations for Music, Video, and Podcast
-      * Creative Commons-aware license column/field
-      * Score column/field, automatically updated when played/skipped
-      * Beats per minute (BPM) support: column/field, preference to autodetect library-wide
       * iTunes and Rhythmbox library/metadata importers
 
     Enhancements:
 
       * More devices supported:
-        * Android: Nexus One, Desire, Galaxy, Droid, Pulse
-        * Other: Palm Pre, Nokia N900
-
-      1.5.5
+        - Android: Nexus One, Desire, Galaxy, Droid, Pulse
+        - Other: Palm Pre, Nokia N900
       * Improve search responsiveness on large libraries
       * Play Queue item count, size, duration now ignores old tracks
       * Muinshee fixes: disable Auto-DJ, allow reordering, hide previous song
-
-      1.5.4
       * Wikipedia context pane extension enabled by default
       * Add tooltip to playback error column
       * Enable 'Delete From Drive' action in File System Queue
@@ -168,17 +144,10 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
       * Dropped glade-sharp dep; GNOME 3.0 ready
       * Add columns showing track sample rate and bits per sample
       * Option to sort an artist's albums by year, not title
-
-      1.5.3
-      * Improved sqlite performance
-
-      1.5.2
       * Allow seeking in DAAP streams
       * Additional tokens for file system organization (bgo#489861)
       * Cleaner track change notification popup (bgo#565453)
       * Move Last.fm settings to the preferences dialog
-
-      1.5.1
       * Keyboard shortcut (ESC) to clear the search box (BGO #558938)
       * Expose LAME's "preset" option (BGO #563303)
       * Better support for devices running Rockbox
@@ -187,8 +156,6 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
       * Added the 'comment' search filter (BGO #380524)
       * Selectable song properties (BGO #586106)
       * Show a tooltip in track editor when the property is truncated (BGO #589782)
-
-      1.5.0
       * Support importing/exporting XSPF playlists
       * Support loading ASF playlists (BGO #545646)
       * Whitelist .spx, 669, it, med, mod, mol, mtm, nst, s3m, stm, ult, wow, xm, and xnm (BGO #580014)
