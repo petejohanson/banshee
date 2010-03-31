@@ -78,7 +78,6 @@ namespace Banshee.Dap.MassStorage
         };
 
         private static string [] audio_folders = new string [] {
-            ".sounds/",
             ".videos/",
             "Music/"
         };
