@@ -45,8 +45,8 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
 
           A new sub-project named Banshee Community Extensions has been
           created.  Its code is hosted on Gitorious, and its bugs tracked
-          in bugzilla.gnome.org.  It already contains 9 extensions, including
-          AlarmClock, Lyrics, and Mirage, and has 15 maintainers.  Its releases
+          in bugzilla.gnome.org.  It already contains 15 extensions, including
+          Lyrics, Telepathy and Mirage, and has 19 maintainers.  Its releases
           track Banshee's; for more information, see
 
             http://banshee-project.org/download/extensions/
@@ -140,7 +140,7 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
       * Wikipedia context pane extension enabled by default
       * Add tooltip to playback error column
       * Enable 'Delete From Drive' action in File System Queue
-      * Coverart for unicode artist/albums now supported
+      * Cover art for unicode artist/albums now supported
       * Dropped glade-sharp dep; GNOME 3.0 ready
       * Add columns showing track sample rate and bits per sample
       * Option to sort an artist's albums by year, not title
@@ -176,7 +176,7 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
       * Fix device support on upcoming distros with DeviceKit rename
       * Restore equalizer preset correctly (bgo#614313)
       * Handle broken symlinks correctly (bgo#614065)
-      * Allow overriding Android, Maeomo, WebOS default settings (bgo#611991)
+      * Allow overriding Android, Maemo, WebOS default settings (bgo#611991)
       * Fix crash deleting playlist on mass storage device (bgo#613734)
       * Fix issue with iTunes importer dialog sizing (bgo#613607)
       * Fix play count calculation with gapless enabled (bgo#613418)
@@ -236,7 +236,6 @@ DEPENDENCIES
     * TagLib# (taglib-sharp) >= 2.0.3.7
 
     * Required to build default feature stack:
-      * HAL
       * libmtp >= 0.2.0
         * Note to packagers: since libmtp has different .so files for
           different versions, you need to require in your package the same
@@ -252,6 +251,7 @@ DEPENDENCIES
         gdata-sharp-youtube >= 1.4
 
     * Run-time requirements for default feature stack:
+      * HAL
       * PodSleuth >= 0.6.6
       * Brasero >= 0.8.1
       * Avahi
