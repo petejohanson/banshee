@@ -38,7 +38,6 @@ namespace Banshee.MeeGo
     {
         public static MeeGoPanel Instance { get; private set; }
 
-        private bool waiting_for_embedded;
         private PanelGtk embedded_panel;
         private Window window_panel;
 
@@ -56,20 +55,14 @@ namespace Banshee.MeeGo
 
             try {
                 Log.Debug ("Attempting to create MeeGo toolbar panel");
-                waiting_for_embedded = true;
                 embedded_panel = new PanelGtk ("banshee", "media", null, "media-button", true);
-                embedded_panel.ReadyEvent += (o, e) => {
-                    lock (this) {
-                        Log.Debug ("MeeGo toolbar panel ready");
-                        waiting_for_embedded = false;
-                        BuildContents ();
-                    }
-                };
+                while (Application.EventsPending ()) {
+                    Application.RunIteration ();
+                }
             } catch (Exception e) {
                 if (!(e is DllNotFoundException)) {
                     Log.Exception ("Could not bind to MeeGo panel", e);
                 }
-                waiting_for_embedded = false;
                 window_panel = new Gtk.Window ("MeeGo Media Panel");
             }
 
@@ -82,28 +75,22 @@ namespace Banshee.MeeGo
 
         public void BuildContents ()
         {
-            lock (this) {
-                if (waiting_for_embedded) {
-                    return;
-                }
+            var timer = Log.DebugTimerStart ();
+            Contents = new MediaPanelContents ();
+            Contents.ShowAll ();
+            Log.DebugTimerPrint (timer, "MeeGo panel contents created: {0}");
 
-                var timer = Log.DebugTimerStart ();
-                Contents = new MediaPanelContents ();
-                Contents.ShowAll ();
-                Log.DebugTimerPrint (timer, "MeeGo panel contents created: {0}");
-
-                if (embedded_panel != null) {
-                    embedded_panel.SetChild (Contents);
-                } else if (window_panel != null) {
-                    window_panel.Add (Contents);
-                    window_panel.SetDefaultSize (1000, 500);
-                    window_panel.WindowPosition = WindowPosition.Center;
-                    window_panel.Show ();
-                    GLib.Timeout.Add (1000, () => {
-                        window_panel.Present ();
-                        return false;
-                    });
-                }
+            if (embedded_panel != null) {
+                embedded_panel.SetChild (Contents);
+            } else if (window_panel != null) {
+                window_panel.Add (Contents);
+                window_panel.SetDefaultSize (1000, 500);
+                window_panel.WindowPosition = WindowPosition.Center;
+                window_panel.Show ();
+                GLib.Timeout.Add (1000, () => {
+                    window_panel.Present ();
+                    return false;
+                });
             }
         }
 
