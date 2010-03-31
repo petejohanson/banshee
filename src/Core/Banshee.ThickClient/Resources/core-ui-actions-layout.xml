@@ -29,6 +29,10 @@
     <separator/>
     <placeholder name="BelowOpenLocation"/>
     <separator/>
+    <menu name="ToolsMenu" action="ToolsMenuAction">
+      <menuitem name="Rescan" action="RescanAction"/>
+      <menuitem name="ShowEqualizer" action="ShowEqualizerAction"/>
+    </menu>
     <menuitem name="Preferences" action="PreferencesAction"/>
     <menuitem name="About" action="AboutAction"/>
   </popup>
