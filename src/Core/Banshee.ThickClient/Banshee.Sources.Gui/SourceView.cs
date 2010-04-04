@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Gtk;
@@ -75,6 +76,7 @@ namespace Banshee.Sources.Gui
             store.SourceRowRemoved += OnSourceRowRemoved;
             store.RowChanged += OnRowChanged;
             Model = store;
+            EnableSearch = false;
 
             ConfigureDragAndDrop ();
             store.Refresh ();
@@ -139,6 +141,10 @@ namespace Banshee.Sources.Gui
                     QueueDrawArea (rect.X, rect.Y, rect.Width, rect.Height);
                 }
                 return true;
+            };
+
+            ServiceManager.Get<InterfaceActionService> ().SourceActions["OpenSourceSwitcher"].Activated += delegate {
+                OpenSourceSwitcher ();
             };
         }
 
@@ -225,6 +231,93 @@ namespace Banshee.Sources.Gui
 
             return base.OnButtonPressEvent (press);
         }
+
+        private void OpenSourceSwitcher ()
+        {
+            var popup = new Hyena.Widgets.EntryPopup ();
+
+            // FIXME not sure if it's possible to do auto-complete w/o a Model
+            /*var completion = new EntryCompletion () {
+                InlineSelection = true,
+                InlineCompletion = true,
+                PopupCompletion = true,
+                PopupSingleMatch = true,
+                MinimumKeyLength = 2
+            };
+
+            popup.Entry.Completion = completion;
+            completion.ActionActivated += (o2, a) => {
+                try {
+                    var src = SourceSwitcherMatches (popup.Text).Skip (a.Index).FirstOrDefault ();
+                    if (src != null) {
+                        ServiceManager.SourceManager.SetActiveSource (src);
+                    }
+                } catch {}
+            };
+
+            popup.Changed += delegate {
+                completion.Clear ();
+                completion.Complete ();
+
+                int i = 0;
+                foreach (var src in SourceSwitcherMatches (popup.Text)) {
+                    completion.InsertActionText (i++, src.Name);
+                }
+            };*/
+
+            popup.Entry.Activated += delegate {
+                try {
+                    var src = SourceSwitcherMatches (popup.Text).FirstOrDefault ();
+                    if (src != null) {
+                        ServiceManager.SourceManager.SetActiveSource (src);
+                    }
+                } catch {}
+            };
+
+            /*var label = new Label (Catalog.GetString ("Switch to source:")) { Visible = true };
+            popup.Box.PackStart (label, false, false, 0);
+            popup.Box.ReorderChild (label, 0);*/
+
+            popup.Position (GdkWindow);
+            popup.HasFocus = true;
+            popup.Show ();
+        }
+
+        private IEnumerable<Source> SourceSwitcherMatches (string query)
+        {
+            query = StringUtil.SearchKey (query);
+            if (String.IsNullOrEmpty (query)) {
+                return Enumerable.Empty<Source> ();
+            }
+
+            return ServiceManager.SourceManager.Sources
+                                               .Select  (s => new { Source = s, Priority = SourceSwitcherPriority (s, query) })
+                                               .Where   (s => s.Priority > 0)
+                                               .OrderBy (s => s.Priority)
+                                               .Select  (s => s.Source);
+        }
+
+        private int SourceSwitcherPriority (Source s, string query)
+        {
+            int priority = 0;
+            var name = StringUtil.SearchKey (s.Name);
+            if (name != null) {
+                if (name.StartsWith (query)) {
+                    priority = 1;
+                } else {
+                    var split_name = name.Split (' ');
+                    if (split_name.Length == query.Length &&
+                        Enumerable.Range (0, query.Length).All (i => split_name[i][0] == query[i])) {
+                        priority = 2;
+                    } else if (name.Contains (query)) {
+                        priority = 3;
+                    }
+                }
+            }
+
+            return priority;
+        }
+
 
         protected override bool OnPopupMenu ()
         {
