@@ -44,20 +44,22 @@ namespace Banshee.Daap
 
         public OpenRemoteServer () : base (Catalog.GetString ("Open remote DAAP server"), null)
         {
-            Label label = new Label (Catalog.GetString ("Enter server name or ip:"));
-            VBox.PackStart (label, true, true, 0);
+            VBox.Spacing = 6;
+            VBox.PackStart (new Label () {
+                Xalign = 0.0f,
+                Text = Catalog.GetString ("Enter server name and ip address:")
+            }, true, true, 0);
 
             HBox box = new HBox ();
-            box.BorderWidth = 10;
-            box.Spacing = 10;
+            box.Spacing = 12;
             VBox.PackStart (box, false, false, 0);
 
             address_entry = new Entry ();
             address_entry.Activated += OnEntryActivated;
-            address_entry.WidthChars = 50;
+            address_entry.WidthChars = 30;
             address_entry.Show ();
 
-            port_entry = new SpinButton (1f, 65535f, 1.0f);
+            port_entry = new SpinButton (1d, 65535d, 1d);
             port_entry.Value = 3689;
             port_entry.Show ();
 
