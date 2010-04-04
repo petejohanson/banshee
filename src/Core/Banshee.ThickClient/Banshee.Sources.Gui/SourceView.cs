@@ -235,6 +235,7 @@ namespace Banshee.Sources.Gui
         private void OpenSourceSwitcher ()
         {
             var popup = new Hyena.Widgets.EntryPopup ();
+            popup.HideAfterTimeout = false;
 
             // FIXME not sure if it's possible to do auto-complete w/o a Model
             /*var completion = new EntryCompletion () {
@@ -253,30 +254,40 @@ namespace Banshee.Sources.Gui
                         ServiceManager.SourceManager.SetActiveSource (src);
                     }
                 } catch {}
-            };
+            };*/
 
             popup.Changed += delegate {
-                completion.Clear ();
+                if (popup.Text.Length > 0) {
+                    // If there is only one source that matches, switch to it
+                    var list = SourceSwitcherMatches (popup.Text).ToList ();
+                    if (list.Count == 1) {
+                        if (list[0].Parent != null) {
+                            Expand (list[0].Parent);
+                        }
+                        ServiceManager.SourceManager.SetActiveSource (list[0]);
+                        popup.Hide ();
+                    }
+                }
+                /*completion.Clear ();
                 completion.Complete ();
 
                 int i = 0;
                 foreach (var src in SourceSwitcherMatches (popup.Text)) {
                     completion.InsertActionText (i++, src.Name);
-                }
-            };*/
+                }*/
+            };
 
             popup.Entry.Activated += delegate {
                 try {
                     var src = SourceSwitcherMatches (popup.Text).FirstOrDefault ();
                     if (src != null) {
+                        if (src.Parent != null) {
+                            Expand (src.Parent);
+                        }
                         ServiceManager.SourceManager.SetActiveSource (src);
                     }
                 } catch {}
             };
-
-            /*var label = new Label (Catalog.GetString ("Switch to source:")) { Visible = true };
-            popup.Box.PackStart (label, false, false, 0);
-            popup.Box.ReorderChild (label, 0);*/
 
             popup.Position (GdkWindow);
             popup.HasFocus = true;
@@ -290,6 +301,7 @@ namespace Banshee.Sources.Gui
                 return Enumerable.Empty<Source> ();
             }
 
+            Console.WriteLine ("\nGetting matches for {0}", query);
             return ServiceManager.SourceManager.Sources
                                                .Select  (s => new { Source = s, Priority = SourceSwitcherPriority (s, query) })
                                                .Where   (s => s.Priority > 0)
@@ -302,22 +314,34 @@ namespace Banshee.Sources.Gui
             int priority = 0;
             var name = StringUtil.SearchKey (s.Name);
             if (name != null) {
-                if (name.StartsWith (query)) {
-                    priority = 1;
+                if (name == query) {
+                    Console.WriteLine ("{0} equals {1}", s.Name, query);
+                    priority = 10;
+                } else if (name.StartsWith (query)) {
+                    Console.WriteLine ("{0} starts with {1}", s.Name, query);
+                    priority = 20;
                 } else {
                     var split_name = name.Split (' ');
                     if (split_name.Length == query.Length &&
                         Enumerable.Range (0, query.Length).All (i => split_name[i][0] == query[i])) {
-                        priority = 2;
+                        Console.WriteLine ("{0} initials are {1}", s.Name, query);
+                        priority = 30;
                     } else if (name.Contains (query)) {
-                        priority = 3;
+                        Console.WriteLine ("{0} contains {1}", s.Name, query);
+                        priority = 40;
                     }
+                }
+
+                // Give sources under (or siblings of) the currently active source a priority bump
+                var asrc = ServiceManager.SourceManager.ActiveSource;
+                if (s.Parent != null && (s.Parent == asrc || s.Parent == asrc.Parent)) {
+                    Console.WriteLine ("{0} is child of active, giving bump", s.Name);
+                    priority--;
                 }
             }
 
             return priority;
         }
-
 
         protected override bool OnPopupMenu ()
         {
@@ -430,6 +454,12 @@ namespace Banshee.Sources.Gui
         private void OnRowChanged (object o, RowChangedArgs args)
         {
             QueueDraw ();
+        }
+
+        private void Expand (Source src)
+        {
+            Expand (store.FindSource (src));
+            src.Expanded = true;
         }
 
         private void Expand (TreeIter iter)
