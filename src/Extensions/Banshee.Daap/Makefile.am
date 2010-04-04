@@ -9,9 +9,11 @@ SOURCES =  \
 	Banshee.Daap/DaapLoginDialog.cs \
 	Banshee.Daap/DaapPlaylistSource.cs \
 	Banshee.Daap/DaapProxyWebServer.cs \
+	Banshee.Daap/DaapResolverJob.cs \
 	Banshee.Daap/DaapService.cs \
 	Banshee.Daap/DaapSource.cs \
 	Banshee.Daap/DaapTrackInfo.cs \
+	Banshee.Daap/OpenRemoteServer.cs \
 	Daap/AuthenticationException.cs \
 	Daap/BrokenMD5.cs \
 	Daap/Client.cs \
@@ -31,7 +33,8 @@ SOURCES =  \
 
 RESOURCES =  \
 	Banshee.Daap.addin.xml \
-	Daap/content-codes
+	Daap/content-codes \
+	Resources/GlobalUI.xml
 
 if DAAP_ENABLED
 include $(top_srcdir)/build/build.mk

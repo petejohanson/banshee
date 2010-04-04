@@ -28,12 +28,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
 using Mono.Unix;
+using NativeDaap = Daap;
 using Daap;
+using Gtk;
 
 using Hyena;
 
 using Banshee.Collection;
+using Banshee.Gui;
 using Banshee.Sources;
 using Banshee.ServiceStack;
 
@@ -90,9 +95,14 @@ namespace Banshee.Daap
 
         private void OnServiceFound (object o, ServiceArgs args)
         {
+            AddDaapServer (args.Service);
+        }
+
+        private void AddDaapServer (Service service)
+        {
             ThreadAssist.ProxyToMain (delegate {
-                DaapSource source = new DaapSource (args.Service);
-                string key = String.Format ("{0}:{1}", args.Service.Name, args.Service.Port);
+                DaapSource source = new DaapSource (service);
+                string key = String.Format ("{0}:{1}", service.Name, service.Port);
 
                 if (source_map.Count == 0) {
                     ServiceManager.SourceManager.AddSource (container);
@@ -159,8 +169,67 @@ namespace Banshee.Daap
                 proxy_server = new DaapProxyWebServer ();
                 proxy_server.Start ();
             } catch (Exception e) {
-                Hyena.Log.Exception ("Failed to start DAAP client", e);
+                Log.Exception ("Failed to start DAAP client", e);
             }
+
+            var uia_service = ServiceManager.Get<InterfaceActionService> ();
+            uia_service.GlobalActions.Add (
+                new ActionEntry ("AddRemoteDaapServerAction", Stock.Add,
+                    Catalog.GetString ("Add remote DAAP server"), null,
+                    Catalog.GetString ("Add a new remote DAAP server"),
+                    OnAddRemoteServer)
+            );
+            uia_service.UIManager.AddUiFromResource ("GlobalUI.xml");
+        }
+
+        private void OnAddRemoteServer (object o, EventArgs args)
+        {
+            ResponseType response;
+            string s_address;
+            ushort port;
+
+            using (OpenRemoteServer dialog = new OpenRemoteServer ()) {
+                response = (ResponseType) dialog.Run ();
+                s_address = dialog.Address;
+                port = (ushort) dialog.Port;
+                dialog.Destroy ();
+            }
+
+            if (response != ResponseType.Ok)
+                return;
+
+            Log.DebugFormat ("Trying to add DAAP server on {0}:{1}", s_address, port);
+            IPHostEntry hostEntry = null;
+            try {
+                hostEntry = Dns.GetHostEntry (s_address);
+            } catch (SocketException) {
+                Log.Warning ("Unable to resolve host " + s_address);
+                return;
+            }
+
+            IPAddress address = hostEntry.AddressList[0];
+            foreach (IPAddress curAdd in hostEntry.AddressList) {
+                if (curAdd.AddressFamily == AddressFamily.InterNetwork) {
+                    address = curAdd;
+                }
+            }
+            Log.DebugFormat (String.Format("Resolved {0} to {1}", s_address, address));
+            Log.Debug ("Spawning daap resolving thread");
+
+            DaapResolverJob job = new DaapResolverJob(s_address, address, port);
+
+            job.Finished += delegate {
+                Service service = job.DaapService;
+
+                if (service != null) {
+                    AddDaapServer (service);
+                    Log.DebugFormat ("Created server {0}", service.Name);
+                } else {
+                    Log.DebugFormat ("Unable to create service for {0}", s_address);
+                }
+            };
+
+            ServiceManager.JobScheduler.Add (job);
         }
 
         string IService.ServiceName {

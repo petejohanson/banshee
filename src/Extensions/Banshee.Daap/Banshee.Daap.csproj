@@ -99,6 +99,8 @@
     <Compile Include="Banshee.Daap\DaapPlaylistSource.cs" />
     <Compile Include="Banshee.Daap\DaapProxyWebServer.cs" />
     <Compile Include="Banshee.Daap\DaapErrorView.cs" />
+    <Compile Include="Banshee.Daap\DaapResolverJob.cs" />
+    <Compile Include="Banshee.Daap\OpenRemoteServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Daap\content-codes">
@@ -106,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Banshee.Daap.addin.xml">
       <LogicalName>Banshee.Daap.addin.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GlobalUI.xml">
+      <LogicalName>GlobalUI.xml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
