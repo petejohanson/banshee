@@ -152,46 +152,6 @@ namespace Banshee.Collection.Gui
             InvalidateList ();
         }
 
-        private void PositionPopup (EntryPopup popup)
-        {
-            if (popup == null) {
-                return;
-            }
-
-            int x, y;
-            int widget_x, widget_y;
-            int widget_height, widget_width;
-
-            popup.Realize ();
-
-            Gdk.Window widget_window = EventWindow;
-            Gdk.Screen widget_screen = widget_window.Screen;
-
-            Gtk.Requisition popup_req;
-
-            widget_window.GetOrigin (out widget_x, out widget_y);
-            widget_window.GetSize (out widget_width, out widget_height);
-
-            popup_req = popup.Requisition;
-
-            if (widget_x + widget_width > widget_screen.Width) {
-                x = widget_screen.Width - popup_req.Width;
-            } else if (widget_x + widget_width - popup_req.Width < 0) {
-                x = 0;
-            } else {
-                x = widget_x + widget_width - popup_req.Width;
-            }
-
-            if (widget_y + widget_height + popup_req.Height > widget_screen.Height) {
-                y = widget_screen.Height - popup_req.Height;
-            } else if (widget_y + widget_height < 0) {
-                y = 0;
-            } else {
-                y = widget_y + widget_height;
-            }
-
-            popup.Move (x, y);
-        }
 
         /*private bool IsCharValid (char c)
         {
@@ -224,7 +184,7 @@ namespace Banshee.Collection.Gui
                 search_popup.KeyPressed += OnPopupKeyPressed;
             }
 
-            PositionPopup (search_popup);
+            search_popup.Position (EventWindow);
             search_popup.HasFocus = true;
             search_popup.Show ();
             search_popup.Text = String.Format ("{0}{1}", search_popup.Text, "");//input);
