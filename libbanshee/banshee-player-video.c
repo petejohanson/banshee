@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -32,7 +34,7 @@
 // Private Functions
 // ---------------------------------------------------------------------------
 
-#ifdef GDK_WINDOWING_X11
+#if defined(GDK_WINDOWING_X11) || defined(GDK_WINDOWING_WIN32)
 
 static gboolean
 bp_video_find_xoverlay (BansheePlayer *player)
@@ -64,10 +66,12 @@ bp_video_find_xoverlay (BansheePlayer *player)
         gst_object_unref (previous_xoverlay);
     }
         
+#if !defined(GDK_WINDOWING_WIN32) // We can't rely on aspect ratio from dshowvideosink
     if (player->xoverlay != NULL && g_object_class_find_property (
         G_OBJECT_GET_CLASS (player->xoverlay), "force-aspect-ratio")) {
         g_object_set (G_OBJECT (player->xoverlay), "force-aspect-ratio", TRUE, NULL);
     }
+#endif
     
     if (player->xoverlay != NULL && g_object_class_find_property (
         G_OBJECT_GET_CLASS (player->xoverlay), "handle-events")) {
@@ -79,14 +83,14 @@ bp_video_find_xoverlay (BansheePlayer *player)
     return player->xoverlay != NULL;
 }
 
-#endif /* GDK_WINDOWING_X11 */
+#endif /* GDK_WINDOWING_X11 || GDK_WINDOWING_WIN32 */
 
 static void
 bp_video_sink_element_added (GstBin *videosink, GstElement *element, BansheePlayer *player)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
 
-    #ifdef GDK_WINDOWING_X11
+    #if defined(GDK_WINDOWING_X11) || defined(GDK_WINDOWING_WIN32)
     g_mutex_lock (player->mutex);
     bp_video_find_xoverlay (player);
     g_mutex_unlock (player->mutex);    
@@ -100,7 +104,7 @@ bp_video_bus_element_sync_message (GstBus *bus, GstMessage *message, BansheePlay
     
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
 
-    #ifdef GDK_WINDOWING_X11
+    #if defined(GDK_WINDOWING_X11) || defined(GDK_WINDOWING_WIN32)
 
     if (message->structure == NULL || !gst_structure_has_name (message->structure, "prepare-xwindow-id")) {
         return;
@@ -121,6 +125,75 @@ bp_video_bus_element_sync_message (GstBus *bus, GstMessage *message, BansheePlay
 // Internal Functions
 // ---------------------------------------------------------------------------
 
+static void
+cb_caps_set (GObject *obj, GParamSpec *pspec, BansheePlayer *p)
+{
+    GstStructure * s = NULL;
+    GstCaps * caps = gst_pad_get_negotiated_caps (GST_PAD (obj));
+
+    if (G_UNLIKELY (!caps)) {
+        return;
+    }
+
+    /* Get video decoder caps */
+    s = gst_caps_get_structure (caps, 0);
+    if (s) {
+        const GValue *par;
+
+        /* We need at least width/height and framerate */
+        if (!(gst_structure_get_fraction (s, "framerate", &p->fps_n, &p->fps_d) &&
+            gst_structure_get_int (s, "width", &p->width) && gst_structure_get_int (s, "height", &p->height))) {
+            return;
+        }
+
+        /* Get the PAR if available */
+        par = gst_structure_get_value (s, "pixel-aspect-ratio");
+        if (par) {
+            p->par_n = gst_value_get_fraction_numerator (par);
+            p->par_d = gst_value_get_fraction_denominator (par);
+        }
+        else { /* Square pixels */
+            p->par_n = 1;
+            p->par_d = 1;
+        }
+
+        /* Notify PlayerEngine if a callback was set */
+        if (p->video_geometry_notify_cb != NULL) {
+            p->video_geometry_notify_cb (p, p->width, p->height, p->fps_n, p->fps_d, p->par_n, p->par_d);
+        }
+    }
+
+    gst_caps_unref (caps);
+}
+
+void
+_bp_parse_stream_info (BansheePlayer *player)
+{
+    gint audios_streams, video_streams, text_streams;
+    GstPad *vpad = NULL;
+
+    g_object_get (G_OBJECT (player->playbin), "n-audio", &audios_streams,
+        "n-video", &video_streams, "n-text", &text_streams, NULL);
+
+    if (video_streams) {
+        gint i;
+        /* Try to obtain a video pad */
+        for (i = 0; i < video_streams && vpad == NULL; i++) {
+            g_signal_emit_by_name (player->playbin, "get-video-pad", i, &vpad);
+        }
+    }
+
+    if (G_LIKELY (vpad)) {
+        GstCaps *caps = gst_pad_get_negotiated_caps (vpad);
+        if (G_LIKELY (caps)) {
+            cb_caps_set (G_OBJECT (vpad), NULL, player);
+            gst_caps_unref (caps);
+        }
+        g_signal_connect (vpad, "notify::caps", G_CALLBACK (cb_caps_set), player);
+        gst_object_unref (vpad);
+    }
+}
+
 void
 _bp_video_pipeline_setup (BansheePlayer *player, GstBus *bus)
 {
@@ -128,7 +201,7 @@ _bp_video_pipeline_setup (BansheePlayer *player, GstBus *bus)
     
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     
-     if (player->video_pipeline_setup_cb != NULL) {
+    if (player->video_pipeline_setup_cb != NULL) {
         videosink = player->video_pipeline_setup_cb (player, bus);
         if (videosink != NULL && GST_IS_ELEMENT (videosink)) {
             g_object_set (G_OBJECT (player->playbin), "video-sink", videosink, NULL);
@@ -137,13 +210,13 @@ _bp_video_pipeline_setup (BansheePlayer *player, GstBus *bus)
         }
     }
     
-    #ifdef GDK_WINDOWING_X11
+    #if defined(GDK_WINDOWING_X11) || defined(GDK_WINDOWING_WIN32)
 
     player->video_display_context_type = BP_VIDEO_DISPLAY_CONTEXT_GDK_WINDOW;
     
     videosink = gst_element_factory_make ("gconfvideosink", "videosink");
     if (videosink == NULL) {
-        videosink = gst_element_factory_make ("ximagesink", "videosink");
+        videosink = gst_element_factory_make ("autovideosink", "videosink");
         if (videosink == NULL) {
             player->video_display_context_type = BP_VIDEO_DISPLAY_CONTEXT_UNSUPPORTED;
             videosink = gst_element_factory_make ("fakesink", "videosink");
@@ -186,11 +259,17 @@ bp_set_video_pipeline_setup_callback (BansheePlayer *player, BansheePlayerVideoP
     SET_CALLBACK (video_pipeline_setup_cb);
 }
 
+P_INVOKE void
+bp_set_video_geometry_notify_callback (BansheePlayer *player, BansheePlayerVideoGeometryNotifyCallback cb)
+{
+    SET_CALLBACK (video_geometry_notify_cb);
+}
+
 // ---------------------------------------------------------------------------
 // Public Functions
 // ---------------------------------------------------------------------------
 
-#ifdef GDK_WINDOWING_X11
+#if defined(GDK_WINDOWING_X11) || defined(GDK_WINDOWING_WIN32)
 
 P_INVOKE BpVideoDisplayContextType
 bp_video_get_display_context_type (BansheePlayer *player)
@@ -263,10 +342,14 @@ bp_video_window_realize (BansheePlayer *player, GdkWindow *window)
 //    }
 //#endif
 
+#if defined(GDK_WINDOWING_X11)
     player->video_window_xid = GDK_WINDOW_XID (window);
+#elif defined (GDK_WINDOWING_WIN32)
+    player->video_window_xid = GDK_WINDOW_HWND (window);
+#endif
 }
 
-#else /* GDK_WINDOWING_X11 */
+#else /* GDK_WINDOWING_X11 || GDK_WINDOWING_WIN32 */
 
 P_INVOKE BpVideoDisplayContextType
 bp_video_get_display_context_type (BansheePlayer *player)
@@ -290,4 +373,4 @@ bp_video_window_expose (BansheePlayer *player, GdkWindow *window, gboolean direc
 {
 }
 
-#endif /* GDK_WINDOWING_X11 */
+#endif /* GDK_WINDOWING_X11 || GDK_WINDOWING_WIN32 */

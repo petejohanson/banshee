@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -39,56 +41,14 @@
 // Private Functions
 // ---------------------------------------------------------------------------
 
-static gboolean
-bp_iterate_timeout_handler (BansheePlayer *player)
-{
-    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
-    
-    if(player->iterate_cb != NULL) {
-        player->iterate_cb (player);
-    }
-    
-    return TRUE;
-}
-
-static void
-bp_iterate_timeout_start (BansheePlayer *player)
-{
-    g_return_if_fail (IS_BANSHEE_PLAYER(player));
-
-    if (player->iterate_timeout_id == 0) {
-        player->iterate_timeout_id = g_timeout_add (200, 
-            (GSourceFunc)bp_iterate_timeout_handler, player);
-    }
-}
-
-static void
-bp_iterate_timeout_stop (BansheePlayer *player)
-{
-    g_return_if_fail (IS_BANSHEE_PLAYER (player));
-    
-    if (player->iterate_timeout_id != 0) {
-        g_source_remove (player->iterate_timeout_id);
-        player->iterate_timeout_id = 0;
-    }
-}
-
 static void
 bp_pipeline_set_state (BansheePlayer *player, GstState state)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     
-    if (state == GST_STATE_NULL || state == GST_STATE_PAUSED) {
-        bp_iterate_timeout_stop (player);
-    }
-    
     if (GST_IS_ELEMENT (player->playbin)) {
         player->target_state = state;
         gst_element_set_state (player->playbin, state);
-    }
-    
-    if (state == GST_STATE_PLAYING) {
-        bp_iterate_timeout_start (player);
     }
 }
 
@@ -183,7 +143,7 @@ bp_stop (BansheePlayer *player, gboolean nullstate)
         state = GST_STATE_NULL;
     }
     
-    bp_debug ("bp_stop: setting state to %s",
+    bp_debug2 ("bp_stop: setting state to %s",
         state == GST_STATE_NULL ? "GST_STATE_NULL" : "GST_STATE_PAUSED");
     
     player->in_gapless_transition = FALSE;
@@ -316,9 +276,9 @@ bp_set_volume (BansheePlayer *player, gdouble volume)
 P_INVOKE gdouble
 bp_get_volume (BansheePlayer *player)
 {
+	gdouble volume;
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), 0.0);
     g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), 0.0);
-    gdouble volume;
 #if BANSHEE_CHECK_GST_VERSION(0,10,25)
     if (gst_element_implements_interface (player->playbin, GST_TYPE_STREAM_VOLUME))
       volume = gst_stream_volume_get_volume (GST_STREAM_VOLUME (player->playbin), GST_STREAM_VOLUME_FORMAT_CUBIC);
@@ -370,12 +330,6 @@ P_INVOKE void
 bp_set_state_changed_callback (BansheePlayer *player, BansheePlayerStateChangedCallback cb)
 {
     SET_CALLBACK (state_changed_cb);
-}
-
-P_INVOKE void
-bp_set_iterate_callback (BansheePlayer *player, BansheePlayerIterateCallback cb)
-{
-    SET_CALLBACK (iterate_cb);
 }
 
 P_INVOKE void

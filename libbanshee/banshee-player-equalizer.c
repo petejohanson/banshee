@@ -5,8 +5,10 @@
 //   Alexander Hixon <hixon.alexander@mediati.org>
 //   Aaron Bockover <abockover@novell.com>
 //   Sebastian Dröge  <slomo@circular-chaos.org>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -67,19 +69,18 @@ _bp_equalizer_new (BansheePlayer *player)
         player->equalizer_status == BP_EQ_STATUS_USE_SYSTEM) {
         equalizer = gst_element_factory_make ("equalizer-10bands", "equalizer-10bands");
         if (equalizer != NULL) {
+            GstElementFactory *efactory = NULL;
+
             if (player->equalizer_status == BP_EQ_STATUS_USE_SYSTEM) {
                 return equalizer;
             }
             
-// TODO Windows compiler doesn't like this, I'm unsure why
-#ifndef WIN32
-            GstElementFactory *efactory = gst_element_get_factory (equalizer);
+            efactory = gst_element_get_factory (equalizer);
             if (gst_plugin_feature_check_version (GST_PLUGIN_FEATURE (efactory), 0, 10, 9)) {
                 bp_debug ("Using system (gst-plugins-good) equalizer element");
                 player->equalizer_status = BP_EQ_STATUS_USE_SYSTEM;
                 return equalizer;
             }
-#endif
             
             bp_debug ("Buggy system equalizer found. gst-plugins-good 0.10.9 or better "
                 "required, or build Banshee with the built-in equalizer.");
@@ -150,8 +151,8 @@ bp_equalizer_get_bandrange (BansheePlayer *player, gint *min, gint *max)
 
     if (pspec != NULL && G_IS_PARAM_SPEC_DOUBLE (pspec)) {
         dpspec = (GParamSpecDouble *) pspec;
-        *min = dpspec->minimum;
-        *max = dpspec->maximum;
+        *min = (gint) dpspec->minimum;
+        *max = (gint) dpspec->maximum;
         return;
     } else {
        g_warning ("Could not find valid gain range for equalizer element");
