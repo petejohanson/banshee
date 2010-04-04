@@ -68,7 +68,7 @@ namespace Banshee.Dap.MassStorage
 
             ms_device = DeviceMapper.Map (this);
             try {
-                if (!ms_device.LoadDeviceConfiguration ()) {
+                if (ms_device.ShouldIgnoreDevice () || !ms_device.LoadDeviceConfiguration ()) {
                     ms_device = null;
                 }
             } catch {

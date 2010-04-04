@@ -68,6 +68,11 @@ namespace Banshee.Dap.MassStorage
             return true;
         }
 
+        public virtual bool ShouldIgnoreDevice ()
+        {
+            return File.Exists (IsNotAudioPlayerPath);
+        }
+
         public virtual bool LoadDeviceConfiguration ()
         {
             string path = IsAudioPlayerPath;
@@ -165,6 +170,10 @@ namespace Banshee.Dap.MassStorage
 
         private string IsAudioPlayerPath {
             get { return System.IO.Path.Combine (source.Volume.MountPoint, ".is_audio_player"); }
+        }
+
+        private string IsNotAudioPlayerPath {
+            get { return System.IO.Path.Combine (source.Volume.MountPoint, ".is_not_audio_player"); }
         }
 
         protected virtual string DefaultName {
