@@ -145,7 +145,7 @@ namespace Banshee.Base
         public bool IsLocalPath {
             get {
                 if (local_path_check == LocalPathCheck.NotPerformed) {
-                    if (Scheme == "file") {
+                    if (IsFile) {
                         local_path_check = LocalPathCheck.Yes;
                         return true;
                     } else {
