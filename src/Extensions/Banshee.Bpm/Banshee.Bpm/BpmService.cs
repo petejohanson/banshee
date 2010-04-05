@@ -146,7 +146,7 @@ namespace Banshee.Bpm
             enabled_pref = ServiceManager.SourceManager.MusicLibrary.PreferencesPage["misc"].Add (
                 new SchemaPreference<bool> (EnabledSchema,
                     Catalog.GetString ("_Automatically detect BPM for all songs"),
-                    Catalog.GetString ("Detect BPM for all songs that don't already have a value set"),
+                    Catalog.GetString ("Detect beats per minute (BPM) for all songs that don't already have a value set"),
                     delegate { Enabled = EnabledSchema.Get (); })
             );
         }
