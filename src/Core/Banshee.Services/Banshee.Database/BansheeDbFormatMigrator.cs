@@ -135,7 +135,9 @@ namespace Banshee.Database
         {
             try {
 
-                if (DatabaseVersion < CURRENT_VERSION) {
+                if (DatabaseVersion > CURRENT_VERSION) {
+                    throw new DatabaseVersionTooHigh (CURRENT_VERSION, DatabaseVersion);
+                } else if (DatabaseVersion < CURRENT_VERSION) {
                     Execute ("BEGIN");
                     InnerMigrate ();
                     Execute ("COMMIT");
@@ -148,6 +150,8 @@ namespace Banshee.Database
                 if (DatabaseVersion == CURRENT_VERSION && metadata_version < CURRENT_METADATA_VERSION) {
                     ServiceManager.ServiceStarted += OnServiceStarted;
                 }
+            } catch (DatabaseVersionTooHigh) {
+                throw;
             } catch (Exception) {
                 Log.Warning ("Rolling back database migration");
                 Execute ("ROLLBACK");
@@ -1411,6 +1415,20 @@ namespace Banshee.Database
         }
 
 #endregion
+
+        class DatabaseVersionTooHigh : ApplicationException
+        {
+            internal DatabaseVersionTooHigh (int currentVersion, int databaseVersion)
+                : base (String.Format (
+                "This version of Banshee was prepared to work with older database versions (=< {0}) thus it is too old to support the current version of the database ({1}).",
+                currentVersion, databaseVersion))
+            {
+            }
+
+            private DatabaseVersionTooHigh ()
+            {
+            }
+        }
 
     }
 
