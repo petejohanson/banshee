@@ -77,8 +77,6 @@ namespace Banshee.Gui
 
         private void OnActiveSourceChanged (SourceEventArgs args)
         {
-            // FIXME: Can't use an anonymous delegate here because of compiler
-            // bug in Mono 1.2.6
             ThreadAssist.ProxyToMain (OnActiveSourceChangedGui);
         }
 
