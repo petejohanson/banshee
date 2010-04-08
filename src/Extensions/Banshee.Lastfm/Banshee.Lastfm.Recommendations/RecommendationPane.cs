@@ -30,6 +30,7 @@
 //
 
 using System;
+using System.Linq;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -278,13 +279,20 @@ namespace Banshee.Lastfm.Recommendations
                 ClearBox (track_list);
 
                 // Similar Artists
-                for (int i = 0; i < Math.Min (20, similar_artists.Count); i++) {
-                    SimilarArtistTile tile = new SimilarArtistTile (similar_artists[i]);
-                    tile.ShowAll ();
-                    similar_artists_view.AddWidget (tile);
-                }
+                var artists = similar_artists.Take (20);
 
-                if (similar_artists.Count > 0) {
+                if (artists.Count () > 0) {
+                    int artist_name_max_len = 2 * (int) artists.Select (a => a.Name.Length).Average ();
+                    foreach (var similar_artist in artists) {
+                        SimilarArtistTile tile = new SimilarArtistTile (similar_artist);
+
+                        tile.PrimaryLabel.WidthChars = artist_name_max_len;
+                        tile.PrimaryLabel.Ellipsize = Pango.EllipsizeMode.End;
+
+                        tile.ShowAll ();
+                        similar_artists_view.AddWidget (tile);
+                    }
+
                     no_artists_pane.Hide ();
                     similar_artists_view_sw.ShowAll ();
                 } else {
