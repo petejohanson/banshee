@@ -38,10 +38,26 @@ namespace metrics
         public static void Main (string [] args)
         {
             try {
-            using (var db = new Database (db_path)) {
-                db.Import ();
-                new MetaMetrics (db);
-            }
+                using (var db = new Database (db_path)) {
+                    if (args != null && args.Length > 0 && args[0] == "--timeline") {
+                        var metric = db.GetMetric ("Banshee/StartedAt");
+                        var usage_samples = new SampleModel (String.Format ("WHERE MetricId = {0}", metric.Id), db, "1");
+                        usage_samples.Reload ();
+
+                        for (long i = 0; i < usage_samples.Cache.Count; i++) {
+                            var sample = usage_samples.Cache.GetValue (i);
+                            Console.WriteLine (
+                                "{1} {0} {2} {0} {3} {0} {4}",
+                                "<TUFTE>", DateTimeUtil.FromDateTime (sample.Stamp), sample.UserId, sample.CacheEntryId, sample.CacheEntryId
+                            );
+                        }
+
+                        return;
+                    }
+
+                    db.Import ();
+                    new MetaMetrics (db);
+                }
             } catch (Exception e) {
                 Console.WriteLine ("Going down, got exception {0}", e);
                 throw;
