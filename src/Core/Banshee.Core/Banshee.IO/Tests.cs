@@ -336,11 +336,26 @@ namespace Banshee.IO
             ForEachProvider (() => {
                 var files = Directory.GetFiles (tmp_dir).ToArray ();
                 if (Provider.LocalOnly) {
-                    Assert.AreEqual (new string [] { baz.LocalPath, foo.LocalPath }, files);
+                    AssertContainsSameElements (new string [] { baz.LocalPath, foo.LocalPath }, files);
                 } else {
-                    Assert.AreEqual (new string [] { foo.AbsoluteUri, baz.AbsoluteUri }, files);
+                    AssertContainsSameElements (new string [] { foo.AbsoluteUri, baz.AbsoluteUri }, files);
                 }
             });
+        }
+
+        private void AssertContainsSameElements (string [] expected, string [] actual)
+        {
+            if (expected.Length != actual.Length) {
+                throw new Exception (string.Format ("Expected {0} elements, but found {1} elements",
+                                                        expected.Count (), actual.Count ()));
+            }
+
+            foreach (var item in expected) {
+                if (!actual.Contains (item)) {
+                    throw new Exception (string.Format ("Expected element {0} not found in actual array",
+                                                            item));
+                }
+            }
         }
 
         [Test]
