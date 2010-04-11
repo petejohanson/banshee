@@ -45,7 +45,7 @@ using Banshee.Streaming;
 using Banshee.Networking;
 using Banshee.ServiceStack;
 
-using Lastfm;
+using Lastfm.Data;
 
 namespace Banshee.Metadata.LastFM
 {
@@ -73,10 +73,10 @@ namespace Banshee.Metadata.LastFM
             string lastfmArtist = HttpUtility.UrlEncode (HttpUtility.UrlEncode (Track.AlbumArtist));
             string lastfmAlbum = HttpUtility.UrlEncode (HttpUtility.UrlEncode (Track.AlbumTitle));
 
-            Lastfm.Data.LastfmAlbumData album = null;
+            LastfmAlbumData album = null;
 
             try {
-                album = new Lastfm.Data.LastfmAlbumData (lastfmArtist, lastfmAlbum);
+                album = new LastfmAlbumData (lastfmArtist, lastfmAlbum);
             } catch {
                 return;
             }
