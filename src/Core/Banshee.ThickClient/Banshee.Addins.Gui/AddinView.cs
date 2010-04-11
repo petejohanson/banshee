@@ -89,21 +89,6 @@ namespace Banshee.Addins.Gui
                 Model = model
             };
 
-            var txt_cell = new CellRendererText () { WrapMode = Pango.WrapMode.Word };
-            tree_view.AppendColumn ("Name", txt_cell , "markup", Columns.Name);
-
-            var check_cell = new CellRendererToggle () { Activatable = true };
-            tree_view.AppendColumn ("Enable", check_cell, "visible", Columns.IsAddin, "active", Columns.IsEnabled);
-            check_cell.Toggled += (o, a) => {
-                TreeIter iter;
-                if (model.GetIter (out iter, new TreePath (a.Path))) {
-                    var addin = model.GetValue (iter, 3) as Addin;
-                    bool enabled = (bool) model.GetValue (iter, 1);
-                    addin.Enabled = !enabled;
-                    model.SetValue (iter, 1, addin.Enabled);
-                }
-            };
-
             var update_model = new System.Action (() => {
                 string search = search_entry.Query;
                 bool? enabled = filter_combo.Active > 0 ? (bool?) (filter_combo.Active == 1 ? true : false) : null;
@@ -131,6 +116,22 @@ namespace Banshee.Addins.Gui
                 }
                 tree_view.ExpandAll ();
             });
+
+            var txt_cell = new CellRendererText () { WrapMode = Pango.WrapMode.Word };
+            tree_view.AppendColumn ("Name", txt_cell , "markup", Columns.Name);
+
+            var check_cell = new CellRendererToggle () { Activatable = true };
+            tree_view.AppendColumn ("Enable", check_cell, "visible", Columns.IsAddin, "active", Columns.IsEnabled);
+            check_cell.Toggled += (o, a) => {
+                TreeIter iter;
+                if (model.GetIter (out iter, new TreePath (a.Path))) {
+                    var addin = model.GetValue (iter, 3) as Addin;
+                    bool enabled = (bool) model.GetValue (iter, 1);
+                    addin.Enabled = !enabled;
+                    model.SetValue (iter, 1, addin.Enabled);
+                    update_model ();
+                }
+            };
 
             update_model ();
             search_entry.Changed += (o, a) => update_model ();
