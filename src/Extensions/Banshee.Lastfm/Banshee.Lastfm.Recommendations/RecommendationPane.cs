@@ -60,8 +60,6 @@ using Banshee.Widgets;
 
 using Browser = Lastfm.Browser;
 
-using Banshee.Lastfm.Radio;
-
 namespace Banshee.Lastfm.Recommendations
 {
     public class RecommendationPane : HBox

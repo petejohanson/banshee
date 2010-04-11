@@ -38,7 +38,6 @@ using Lastfm.Data;
 
 using Banshee.Base;
 using Banshee.Collection;
-using Banshee.Lastfm.Radio;
 using Media.Playlists.Xspf;
 
 namespace Banshee.LastfmStreaming.Radio
