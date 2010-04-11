@@ -4,12 +4,12 @@ LINK = $(REF_EXTENSION_LASTFM_STREAMING)
 INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
-	Banshee.LastfmStreaming.Radio/LastfmStreamingActions.cs \
-	Banshee.LastfmStreaming.Radio/LastfmStreamingService.cs \
-	Banshee.LastfmStreaming.Radio/LastfmTrackInfo.cs \
-	Banshee.LastfmStreaming.Radio/StationEditor.cs \
-	Banshee.LastfmStreaming.Radio/StationSource.cs \
-	Banshee.LastfmStreaming.Radio/StationType.cs
+	Banshee.LastfmStreaming/LastfmStreamingActions.cs \
+	Banshee.LastfmStreaming/LastfmStreamingService.cs \
+	Banshee.LastfmStreaming/LastfmTrackInfo.cs \
+	Banshee.LastfmStreaming/StationEditor.cs \
+	Banshee.LastfmStreaming/StationSource.cs \
+	Banshee.LastfmStreaming/StationType.cs
 
 RESOURCES =  \
 	Banshee.LastfmStreaming.addin.xml \
