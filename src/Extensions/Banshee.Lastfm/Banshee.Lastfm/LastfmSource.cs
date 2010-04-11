@@ -48,7 +48,7 @@ using Banshee.Sources.Gui;
 
 using Browser = Lastfm.Browser;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.Lastfm
 {
     public class LastfmSource : Source, IDisposable
     {

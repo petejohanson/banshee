@@ -6,13 +6,13 @@ INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 SOURCES =  \
 	Banshee.Lastfm.Audioscrobbler/AudioscrobblerService.cs \
 	Banshee.Lastfm.Audioscrobbler/Queue.cs \
-	Banshee.Lastfm.Radio/LastfmActions.cs \
-	Banshee.Lastfm.Radio/LastfmColumnController.cs \
-	Banshee.Lastfm.Radio/LastfmSource.cs \
-	Banshee.Lastfm.Radio/LastfmSourceContents.cs \
 	Banshee.Lastfm.Recommendations/ContextPage.cs \
 	Banshee.Lastfm.Recommendations/RecommendationPane.cs \
-	Banshee.Lastfm.Recommendations/SimilarArtistTile.cs
+	Banshee.Lastfm.Recommendations/SimilarArtistTile.cs \
+	Banshee.Lastfm/LastfmActions.cs \
+	Banshee.Lastfm/LastfmColumnController.cs \
+	Banshee.Lastfm/LastfmSource.cs \
+	Banshee.Lastfm/LastfmSourceContents.cs
 
 
 RESOURCES =  \

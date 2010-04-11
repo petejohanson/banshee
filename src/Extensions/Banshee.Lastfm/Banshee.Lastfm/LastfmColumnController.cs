@@ -30,7 +30,7 @@ using System;
 
 using Banshee.Collection.Gui;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.Lastfm
 {
     public class LastfmColumnController : DefaultColumnController
     {

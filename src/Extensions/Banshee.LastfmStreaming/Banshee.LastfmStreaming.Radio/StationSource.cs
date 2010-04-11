@@ -49,7 +49,7 @@ using Banshee.MediaEngine;
 using Banshee.Collection;
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
-using Banshee.Lastfm.Radio;
+using Banshee.Lastfm;
 
 namespace Banshee.LastfmStreaming.Radio
 {

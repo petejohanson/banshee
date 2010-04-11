@@ -6,7 +6,7 @@ using Mono.Unix;
 
 using Banshee.Collection;
 using Banshee.Gui;
-using Banshee.Lastfm.Radio;
+using Banshee.Lastfm;
 using Banshee.MediaEngine;
 using Banshee.ServiceStack;
 using Banshee.Sources;

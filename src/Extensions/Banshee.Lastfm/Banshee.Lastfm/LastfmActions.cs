@@ -49,7 +49,7 @@ using Banshee.PlaybackController;
 
 using Browser = Banshee.Web.Browser;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.Lastfm
 {
     public class LastfmActions : BansheeActionGroup
     {

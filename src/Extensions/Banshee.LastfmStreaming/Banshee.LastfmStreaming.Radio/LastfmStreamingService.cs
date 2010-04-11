@@ -6,7 +6,7 @@ using Mono.Unix;
 
 using Hyena.Data;
 
-using Banshee.Lastfm.Radio;
+using Banshee.Lastfm;
 using Banshee.ServiceStack;
 using Banshee.Sources;
 

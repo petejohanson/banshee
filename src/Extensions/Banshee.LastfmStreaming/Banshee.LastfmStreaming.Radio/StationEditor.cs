@@ -39,7 +39,7 @@ using Banshee.Database;
 
 using Banshee.Widgets;
 using Banshee.Gui.Dialogs;
-using Banshee.Lastfm.Radio;
+using Banshee.Lastfm;
 
 namespace Banshee.LastfmStreaming.Radio
 {
