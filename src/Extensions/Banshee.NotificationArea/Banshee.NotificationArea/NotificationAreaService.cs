@@ -43,6 +43,9 @@ using Banshee.Gui;
 using Banshee.Collection.Gui;
 using Banshee.MediaEngine;
 
+using Banshee.IO;
+using Banshee.Base;
+
 using Hyena.Gui;
 using Hyena.Widgets;
 
@@ -439,19 +442,20 @@ namespace Banshee.NotificationArea
                 current_track.ArtistName, current_track.DisplayArtistName,
                 current_track.AlbumTitle, current_track.DisplayAlbumTitle);
 
-            Gdk.Pixbuf image = null;
+            String image = null;
 
-            if (artwork_manager_service != null) {
-                image = is_notification_daemon
-                    ? artwork_manager_service.LookupScalePixbuf (current_track.ArtworkId, icon_size)
-                    : artwork_manager_service.LookupPixbuf (current_track.ArtworkId);
-            }
+            image = is_notification_daemon
+                ? CoverArtSpec.GetPathForSize (current_track.ArtworkId, icon_size)
+                : CoverArtSpec.GetPath (current_track.ArtworkId);
 
-            if (image == null) {
-                image = IconThemeUtils.LoadIcon (48, "audio-x-generic");
-                if (image != null) {
-                    image.ScaleSimple (icon_size, icon_size, Gdk.InterpType.Bilinear);
-                }
+            if (!File.Exists (new SafeUri(image))) {
+                // artwork does not exist, try looking up the pixbuf to trigger scaling or conversion
+                if (artwork_manager_service == null ||
+                    (is_notification_daemon &&
+                     artwork_manager_service.LookupScalePixbuf (current_track.ArtworkId, icon_size) == null) ||
+                    (!is_notification_daemon &&
+                     artwork_manager_service.LookupPixbuf (current_track.ArtworkId) == null))
+                    image = "audio-x-generic";
             }
 
             try {
@@ -461,7 +465,7 @@ namespace Banshee.NotificationArea
                 } else {
                     current_nf.Summary = current_track.DisplayTrackTitle;
                     current_nf.Body = message;
-                    current_nf.Icon = image;
+                    current_nf.IconName = image;
                     current_nf.AttachToWidget (notif_area.Widget);
                 }
                 current_nf.Urgency = Urgency.Low;
