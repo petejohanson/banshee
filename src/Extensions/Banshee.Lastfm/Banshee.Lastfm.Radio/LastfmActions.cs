@@ -139,12 +139,6 @@ namespace Banshee.Lastfm.Radio
 
 #region Action Handlers
 
-        private void OnAddStation (object sender, EventArgs args)
-        {
-            StationEditor ed = new StationEditor (lastfm);
-            ed.RunDialog ();
-        }
-
         private void OnConnect (object sender, EventArgs args)
         {
             lastfm.Connection.Connect ();
