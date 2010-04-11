@@ -1,7 +1,7 @@
 
 using System;
 
-namespace Banshee.Lastfm.Radio
+namespace Lastfm.Data
 {
     public interface ILastfmInfo
     {

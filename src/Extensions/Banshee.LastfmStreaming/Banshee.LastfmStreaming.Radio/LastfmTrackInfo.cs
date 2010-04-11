@@ -34,6 +34,7 @@ using System.Web;
 using Gdk;
 
 using Hyena;
+using Lastfm.Data;
 
 using Banshee.Base;
 using Banshee.Collection;

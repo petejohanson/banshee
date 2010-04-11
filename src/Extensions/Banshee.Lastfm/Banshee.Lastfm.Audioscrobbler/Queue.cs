@@ -44,7 +44,7 @@ using Banshee.ServiceStack;
 using Banshee.Sources;
 
 using Lastfm;
-using Banshee.Lastfm.Radio;
+using Lastfm.Data;
 
 namespace Banshee.Lastfm.Audioscrobbler
 {

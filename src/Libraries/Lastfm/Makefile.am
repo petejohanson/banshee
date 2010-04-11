@@ -6,6 +6,7 @@ SOURCES =  \
 	Lastfm.Data/DataCore.cs \
 	Lastfm.Data/DataEntry.cs \
 	Lastfm.Data/DataEntryCollection.cs \
+	Lastfm.Data/ILastfmInfo.cs \
 	Lastfm.Data/LastfmAlbumData.cs \
 	Lastfm.Data/LastfmArtistData.cs \
 	Lastfm.Data/LastfmData.cs \
