@@ -442,20 +442,25 @@ namespace Banshee.NotificationArea
                 current_track.ArtistName, current_track.DisplayArtistName,
                 current_track.AlbumTitle, current_track.DisplayAlbumTitle);
 
-            String image = null;
+            string image = null;
 
             image = is_notification_daemon
                 ? CoverArtSpec.GetPathForSize (current_track.ArtworkId, icon_size)
                 : CoverArtSpec.GetPath (current_track.ArtworkId);
 
             if (!File.Exists (new SafeUri(image))) {
-                // artwork does not exist, try looking up the pixbuf to trigger scaling or conversion
-                if (artwork_manager_service == null ||
-                    (is_notification_daemon &&
-                     artwork_manager_service.LookupScalePixbuf (current_track.ArtworkId, icon_size) == null) ||
-                    (!is_notification_daemon &&
-                     artwork_manager_service.LookupPixbuf (current_track.ArtworkId) == null))
-                    image = "audio-x-generic";
+                if (artwork_manager_service != null) {
+                    // artwork does not exist, try looking up the pixbuf to trigger scaling or conversion
+                    Gdk.Pixbuf tmp_pixbuf = is_notification_daemon
+                        ? artwork_manager_service.LookupScalePixbuf (current_track.ArtworkId, icon_size)
+                        : artwork_manager_service.LookupPixbuf (current_track.ArtworkId);
+
+                    if (tmp_pixbuf == null) {
+                        image = "audio-x-generic";
+                    } else {
+                        tmp_pixbuf.Dispose ();
+                    }
+                }
             }
 
             try {
