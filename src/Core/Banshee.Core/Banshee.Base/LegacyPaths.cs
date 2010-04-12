@@ -1,10 +1,11 @@
 //
-// BansheeIconFactory.cs
+// LegacyPaths.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Ruben Vermeersch <ruben@savanne.be>
 //
-// Copyright (C) 2007 Novell, Inc.
+// Copyright (C) 2005-2008 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -26,42 +27,20 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Hyena;
+
 using System;
 using System.IO;
-using System.Reflection;
 
-using Gtk;
-
-namespace Banshee.Gui
+namespace Banshee.Base
 {
-    public class BansheeIconFactory : IconFactory
+    public class LegacyPaths
     {
-        private IconTheme theme;
-        public IconTheme Theme {
-            get { return theme; }
-        }
+        private static string application_data = Path.Combine (Environment.GetFolderPath (
+            Environment.SpecialFolder.ApplicationData), Paths.ApplicationName);
 
-        public BansheeIconFactory ()
-        {
-            theme = IconTheme.Default;
-
-            string icon_theme_path = Hyena.Paths.GetInstalledDataDirectory ("icons");
-            if (Directory.Exists (icon_theme_path)) {
-                Hyena.Log.DebugFormat ("Adding icon theme search path: {0}", icon_theme_path);
-                Theme.AppendSearchPath (icon_theme_path);
-            }
-
-            AddDefault ();
-        }
-
-        public void Add (string name)
-        {
-            IconSet icon_set = new IconSet ();
-            IconSource source = new IconSource ();
-            source.IconName = name;
-            icon_set.AddSource (source);
-
-            Add (name, icon_set);
+        public static string ApplicationData {
+            get { return application_data; }
         }
     }
 }

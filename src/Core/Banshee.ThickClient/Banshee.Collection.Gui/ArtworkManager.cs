@@ -282,7 +282,7 @@ namespace Banshee.Collection.Gui
             var legacy_root_path = CoverArtSpec.LegacyRootPath;
 
             if (version < 1) {
-                string legacy_artwork_path = Paths.Combine (Paths.LegacyApplicationData, "covers");
+                string legacy_artwork_path = Paths.Combine (LegacyPaths.ApplicationData, "covers");
 
                 if (!Directory.Exists (legacy_root_path)) {
                     Directory.Create (legacy_root_path);

@@ -32,6 +32,8 @@ using System.Timers;
 using System.Xml;
 using System.Xml.Serialization;
 
+using Hyena;
+
 using Banshee.Base;
 
 namespace Banshee.Configuration

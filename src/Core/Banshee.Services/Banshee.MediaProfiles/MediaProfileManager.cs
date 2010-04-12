@@ -88,7 +88,7 @@ namespace Banshee.MediaProfiles
             profiles = new List<Profile> ();
             preset_variables = new Dictionary<string, PipelineVariable> ();
 
-            string path = Banshee.Base.Paths.GetInstalledDataDirectory ("audio-profiles");
+            string path = Hyena.Paths.GetInstalledDataDirectory ("audio-profiles");
             if(File.Exists(path)) {
                 LoadFromFile(path);
             } else if(Directory.Exists(path)) {

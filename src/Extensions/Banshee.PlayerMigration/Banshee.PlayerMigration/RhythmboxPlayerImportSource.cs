@@ -47,11 +47,11 @@ namespace Banshee.PlayerMigration
 {
     public sealed class RhythmboxPlayerImportSource : ThreadPoolImportSource
     {
-        private static readonly SafeUri rhythmbox_db_uri = new SafeUri (Banshee.Base.Paths.Combine (
+        private static readonly SafeUri rhythmbox_db_uri = new SafeUri (Hyena.Paths.Combine (
             Environment.GetFolderPath (Environment.SpecialFolder.Personal), ".local", "share", "rhythmbox", "rhythmdb.xml"
         ));
 
-        private static readonly SafeUri rhythmbox_db_uri_old = new SafeUri (Banshee.Base.Paths.Combine (
+        private static readonly SafeUri rhythmbox_db_uri_old = new SafeUri (Hyena.Paths.Combine (
             Environment.GetFolderPath (Environment.SpecialFolder.Personal), ".gnome2", "rhythmbox", "rhythmdb.xml"
         ));
 
@@ -88,7 +88,7 @@ namespace Banshee.PlayerMigration
             processed = 0;
 
             // Import Rhythmbox playlists if playlist file is available
-            SafeUri rhythmbox_playlists_uri = new SafeUri (Banshee.Base.Paths.Combine (
+            SafeUri rhythmbox_playlists_uri = new SafeUri (Hyena.Paths.Combine (
                 Environment.GetFolderPath (Environment.SpecialFolder.Personal),
                 ".local", "share", "rhythmbox", "playlists.xml"
             ));
@@ -97,7 +97,7 @@ namespace Banshee.PlayerMigration
 
             // Look at the old location too
             if (!playlists_available) {
-                rhythmbox_playlists_uri = new SafeUri (Banshee.Base.Paths.Combine (
+                rhythmbox_playlists_uri = new SafeUri (Hyena.Paths.Combine (
                     Environment.GetFolderPath (Environment.SpecialFolder.Personal),
                     ".gnome2", "rhythmbox", "playlists.xml"
                 ));

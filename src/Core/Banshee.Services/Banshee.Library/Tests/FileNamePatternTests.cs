@@ -31,6 +31,7 @@
 using System;
 using NUnit.Framework;
 
+using Hyena;
 using Banshee.Base;
 using Banshee.Collection;
 

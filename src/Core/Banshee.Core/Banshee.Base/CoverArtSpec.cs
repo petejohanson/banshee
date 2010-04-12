@@ -26,6 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Hyena;
+
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -33,8 +35,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Mono.Unix;
-
-using Hyena;
 
 namespace Banshee.Base
 {

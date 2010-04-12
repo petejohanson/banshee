@@ -105,7 +105,7 @@ namespace Banshee.Lastfm.Radio
 
             // Initialize DataCore's UserAgent and CachePath
             DataCore.UserAgent = Banshee.Web.Browser.UserAgent;
-            DataCore.CachePath = System.IO.Path.Combine (Banshee.Base.Paths.ExtensionCacheRoot, "lastfm");
+            DataCore.CachePath = System.IO.Path.Combine (Hyena.Paths.ExtensionCacheRoot, "lastfm");
 
             // FIXME this is temporary until we split the GUI part from the non-GUI part
             Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<LastfmSourceContents> ());

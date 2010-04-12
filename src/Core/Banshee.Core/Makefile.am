@@ -4,10 +4,10 @@ LINK = $(REF_BANSHEE_CORE)
 SOURCES =  \
 	Banshee.Base/CoverArtSpec.cs \
 	Banshee.Base/FileNamePattern.cs \
+	Banshee.Base/LegacyPaths.cs \
 	Banshee.Base/Localization.cs \
 	Banshee.Base/NamingUtil.cs \
 	Banshee.Base/PathPattern.cs \
-	Banshee.Base/Paths.cs \
 	Banshee.Base/PlatformHacks.cs \
 	Banshee.Base/ProductInformation.cs \
 	Banshee.Base/Resource.cs \

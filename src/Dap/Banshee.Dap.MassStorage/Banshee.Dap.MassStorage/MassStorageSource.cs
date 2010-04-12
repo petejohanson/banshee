@@ -372,7 +372,7 @@ namespace Banshee.Dap.MassStorage
                     // According to the HAL spec, the first folder listed in the audio_folders property
                     // is the folder to write files to.
                     if (AudioFolders.Length > 0) {
-                        write_path = Banshee.Base.Paths.Combine (write_path, AudioFolders[0]);
+                        write_path = Hyena.Paths.Combine (write_path, AudioFolders[0]);
                     }
                 }
                 return write_path;
@@ -388,10 +388,10 @@ namespace Banshee.Dap.MassStorage
                     write_path_video = BaseDirectory;
                     // Some Devices May Have a Separate Video Directory
                     if (VideoFolders.Length > 0) {
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, VideoFolders[0]);
+                        write_path_video = Hyena.Paths.Combine (write_path_video, VideoFolders[0]);
                     } else if (AudioFolders.Length > 0) {
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, AudioFolders[0]);
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, "Videos");
+                        write_path_video = Hyena.Paths.Combine (write_path_video, AudioFolders[0]);
+                        write_path_video = Hyena.Paths.Combine (write_path_video, "Videos");
                     }
                 }
                 return write_path_video;

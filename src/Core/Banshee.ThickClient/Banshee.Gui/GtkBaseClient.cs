@@ -43,9 +43,14 @@ namespace Banshee.Gui
 {
     public abstract class GtkBaseClient : Client
     {
+        static GtkBaseClient () {
+            Paths.ApplicationName = Application.InternalName;
+            user_gtkrc = Path.Combine (Paths.ApplicationData, "gtkrc");
+        }
+
         private static Type client_type;
 
-        private static string user_gtkrc = Path.Combine (Paths.ApplicationData, "gtkrc");
+        private static string user_gtkrc;
 
         public static void Startup<T> (string [] args) where T : GtkBaseClient
         {
