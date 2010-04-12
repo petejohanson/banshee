@@ -1,22 +1,19 @@
 # Czech translation of banshee.
 # Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010 the author(s) of banshee.
 # This file is distributed under the same license as the banshee package.
-#
 # Lukáš Novotný <lukasnov@cvs.gnome.org>, 2005, 2006.
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 # Jiří Eischmann <jiri@eischmann.cz>, 2009.
 # Marek Černocký <marek@manet.cz>, 2010.
-#
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:122
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:125
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:128
 msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=banshee&component=general\n"
-"POT-Creation-Date: 2010-03-26 22:33+0000\n"
-"PO-Revision-Date: 2010-03-23 07:53+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-12 23:05+0200\n"
+"PO-Revision-Date: 2010-04-07 15:20+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -331,6 +328,7 @@ msgstr ""
 
 #. ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying.addin.xml
 #: ../data/addin-xml-strings.cs:146
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:164
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:50
 msgid "Now Playing"
 msgstr "Nyní se přehrává"
@@ -708,7 +706,7 @@ msgstr "Multimediální přehrávač"
 msgid "Play and organize your media collection"
 msgstr "Přehrávat a organizovat své multimediální sbírky"
 
-#: ../libbanshee/banshee-bpmdetector.c:202 ../libbanshee/banshee-ripper.c:268
+#: ../libbanshee/banshee-bpmdetector.c:202 ../libbanshee/banshee-ripper.c:270
 msgid "Could not create pipeline"
 msgstr "Nelze vytvořit rouru"
 
@@ -733,23 +731,23 @@ msgid "Could not create fakesink plugin"
 msgstr "Nelze vytvořit zásuvný modul fakesink"
 
 #: ../libbanshee/banshee-bpmdetector.c:241
-#: ../libbanshee/banshee-bpmdetector.c:250 ../libbanshee/banshee-ripper.c:309
+#: ../libbanshee/banshee-bpmdetector.c:250 ../libbanshee/banshee-ripper.c:311
 msgid "Could not link pipeline elements"
 msgstr "Nelze odkazovat na prvky roury"
 
-#: ../libbanshee/banshee-ripper.c:274
+#: ../libbanshee/banshee-ripper.c:276
 msgid "Could not initialize element from cdda URI"
 msgstr "Nelze inicializovat prvek z URI cdda"
 
-#: ../libbanshee/banshee-ripper.c:288
+#: ../libbanshee/banshee-ripper.c:290
 msgid "Could not create encoder pipeline"
 msgstr "Nelze vytvořit rouru kodéru"
 
-#: ../libbanshee/banshee-ripper.c:294
+#: ../libbanshee/banshee-ripper.c:296
 msgid "Could not create queue plugin"
 msgstr "Nelze vytvořit zásuvný modul queque"
 
-#: ../libbanshee/banshee-ripper.c:302
+#: ../libbanshee/banshee-ripper.c:304
 msgid "Could not create filesink plugin"
 msgstr "Nelze vytvořit zásuvný modul filesink"
 
@@ -817,12 +815,12 @@ msgstr "Nelze vytvořit ovladač na extrahování CD."
 msgid "Could not create BPM detection driver."
 msgstr "Nelze vytvořit ovladač na zjišťování BPM."
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:71
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:710
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:80
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:738
 msgid "Enable _gapless playback"
 msgstr "Zapnout přehrávání bez _mezer"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:72
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:81
 msgid ""
 "Eliminate the small playback gap on track change.  Useful for concept albums "
 "and classical music"
@@ -830,20 +828,20 @@ msgstr ""
 "Zamezuje malé pauze v přehrávání při přechodu na jinou stopu. Vhodné pro "
 "koncepční alba a klasickou hudbu"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:137
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:176
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:146
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:181
 msgid "Could not initialize GStreamer library"
 msgstr "Nelze inicializovat knihovnu GStreamer"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:391
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:419
 msgid "Unknown Error"
 msgstr "Neznámá chyba"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:704
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:732
 msgid "_Enable ReplayGain correction"
 msgstr "_Zapnout korekci hlasitosti ReplayGain"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:705
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:733
 msgid ""
 "For tracks that have ReplayGain data, automatically scale (normalize) "
 "playback volume"
@@ -851,7 +849,7 @@ msgstr ""
 "Pro stopy, které mají data ReplayGain, automaticky změnit (normalizovat) "
 "hlasitost přehrávání."
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:711
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:739
 msgid ""
 "Eliminate the small playback gap on track change.  Useful for concept albums "
 "and classical music."
@@ -864,12 +862,12 @@ msgid "Could not create transcoder"
 msgstr "Nelze vytvořit transkodér"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:91
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:128
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:131
 msgid "_Close"
 msgstr "_Zavřít"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:92
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:129
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:132
 msgid "Close"
 msgstr "Zavřít"
 
@@ -1017,19 +1015,19 @@ msgstr "URI"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:184
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:148
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:85
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:89
 msgid "Artist Name"
 msgstr "Jméno umělce"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:185
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:149
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:86
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:90
 msgid "Album Title"
 msgstr "Název alba"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:186
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:147
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:84
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:88
 msgid "Track Title"
 msgstr "Název skladby"
 
@@ -1062,7 +1060,7 @@ msgstr "Číslo disku"
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:77
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:132
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:77
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:88
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:92
 msgid "Year"
 msgstr "Rok"
 
@@ -1101,31 +1099,47 @@ msgstr "Skrýt uživatelské rozhraní"
 msgid "Do not present the user interface, regardless of any other options"
 msgstr "Nezobrazovat uživatelské rozhraní, bez ohledu na jakékoliv další volby"
 
+#: ../src/Clients/Booter/Booter/Entry.cs:201
+msgid "Present the import media dialog box"
+msgstr "Zobrazit dialogové okno importu médií"
+
+#: ../src/Clients/Booter/Booter/Entry.cs:202
+msgid "Present the about dialog"
+msgstr "Zobrazit dialogové okno o aplikaci"
+
 #: ../src/Clients/Booter/Booter/Entry.cs:203
+msgid "Present the open location dialog"
+msgstr "Zobrazit dialogové okno otevření umístění"
+
+#: ../src/Clients/Booter/Booter/Entry.cs:204
+msgid "Present the preferences dialog"
+msgstr "Zobrazit dialogové okno předvoleb"
+
+#: ../src/Clients/Booter/Booter/Entry.cs:207
 msgid "Debugging and Development Options"
 msgstr "Volby ladění a vývoje"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:204
+#: ../src/Clients/Booter/Booter/Entry.cs:208
 msgid "Enable general debugging features"
 msgstr "Zapnout obecné ladicí funkce"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:205
+#: ../src/Clients/Booter/Booter/Entry.cs:209
 msgid "Enable debugging output of SQL queries"
 msgstr "Zapnout ladicí výstup SQL dotazů"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:206
+#: ../src/Clients/Booter/Booter/Entry.cs:210
 msgid "Enable debugging output of Mono.Addins"
 msgstr "Zapnout ladicí výstup Mono.Addins"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:207
+#: ../src/Clients/Booter/Booter/Entry.cs:211
 msgid "Specify an alternate database to use"
 msgstr "Určit alternativní databázi, která se má použít"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:208
+#: ../src/Clients/Booter/Booter/Entry.cs:212
 msgid "Specify an alternate key, default is /apps/banshee-1/"
 msgstr "Určit alternativní klíč, výchozí je /apps/banshee-1/"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:209
+#: ../src/Clients/Booter/Booter/Entry.cs:213
 msgid ""
 "Optimize instance for running uninstalled; most notably, this will create an "
 "alternate Mono.Addins database in the working directory"
@@ -1133,16 +1147,16 @@ msgstr ""
 "Přizpůsobit instanci pro běh bez instalace; tímto se především vytvoří "
 "alternativní databáze Mono.Addins v pracovním adresáři"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:211
+#: ../src/Clients/Booter/Booter/Entry.cs:215
 msgid "Disable DBus support completely"
 msgstr "Úplně zakázat podporu DBus"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:213
+#: ../src/Clients/Booter/Booter/Entry.cs:217
 #, csharp-format
 msgid "Skip loading a custom gtkrc file ({0}) if it exists"
 msgstr "Přeskočit načítání souboru gtkrc ({0}), pokud existuje"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:244
+#: ../src/Clients/Booter/Booter/Entry.cs:248
 #, csharp-format
 msgid "The following help arguments are invalid: {0}"
 msgstr "Následující pomocné argumenty jsou neplatné: {0}"
@@ -1187,7 +1201,7 @@ msgid "Play Song"
 msgstr "Přehrát skladbu"
 
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:146
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:83
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:87
 msgid "Artist, Album, or Title"
 msgstr "Umělec, album nebo název"
 
@@ -1195,7 +1209,7 @@ msgstr "Umělec, album nebo název"
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:98
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:185
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:364
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:87
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:91
 msgid "Genre"
 msgstr "Žánr"
 
@@ -1215,7 +1229,7 @@ msgstr "Hledat"
 #: ../src/Core/Banshee.Core/Banshee.Collection/ArtistInfo.cs:37
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdDiscModel.cs:100
 #: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtJob.cs:137
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:91
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:92
 msgid "Unknown Artist"
 msgstr "Neznámý umělec"
 
@@ -1231,7 +1245,7 @@ msgid "Unknown Title"
 msgstr "Neznámý název"
 
 #: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:185
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:92
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:93
 msgid "Various Artists"
 msgstr "Různí umělci"
 
@@ -1387,7 +1401,7 @@ msgid "Scanning for media"
 msgstr "Vyhledávají se média"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:182
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1359
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1363
 msgid "Scanning..."
 msgstr "Prohledává se…"
 
@@ -1417,86 +1431,86 @@ msgstr "Importuje se {0} z {1}"
 msgid "Rescanning {0} of {1}"
 msgstr "Opětovné prohledávání {0} z {1}"
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:230
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:234
 msgid "Upgrading your Banshee Database"
 msgstr "Vaše databáze Banshee se převádí na novější verzi"
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:231
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:235
 msgid ""
 "Please wait while your old Banshee database is migrated to the new format."
 msgstr ""
 "Vyčkejte prosím, dokud nebude vaše stará databáze Banshee převedena do "
 "nového formátu."
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1356
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1360
 msgid "Refreshing Metadata"
 msgstr "Obnovování metadat"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:257
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:252
 msgid "Classical"
 msgstr "Klasická hudba"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:260
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:255
 msgid "Club"
 msgstr "Klubová hudba"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:263
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:258
 msgid "Dance"
 msgstr "Taneční hudba"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:266
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:261
 msgid "Full Bass"
 msgstr "Plné basy"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:269
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:264
 msgid "Full Bass and Treble"
 msgstr "Plné basy a výšky"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:272
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:267
 msgid "Full Treble"
 msgstr "Plné výšky"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:275
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:270
 msgid "Laptop Speakers and Headphones"
 msgstr "Reproduktory notebooku a sluchátka"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:278
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:273
 msgid "Large Hall"
 msgstr "Rozlehlý sál"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:281
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:276
 msgid "Live"
 msgstr "Živé představení"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:284
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:279
 msgid "Party"
 msgstr "Párty"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:287
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:282
 msgid "Pop"
 msgstr "Pop"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:290
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:285
 msgid "Reggae"
 msgstr "Reggae"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:293
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:288
 msgid "Rock"
 msgstr "Rock"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:296
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:291
 msgid "Ska"
 msgstr "Ska"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:299
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:294
 msgid "Soft"
 msgstr "Měkké podání"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:302
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:297
 msgid "Soft Rock"
 msgstr "Měkký Rock"
 
-#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:305
+#: ../src/Core/Banshee.Services/Banshee.Equalizer/EqualizerManager.cs:300
 msgid "Techno"
 msgstr "Techno"
 
@@ -1722,16 +1736,16 @@ msgstr ""
 msgid "Problem with Player Engine"
 msgstr "Problém s přehrávacím jádrem"
 
-#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:134
+#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:135
 #, csharp-format
 msgid "Converting {0} of {1}"
 msgstr "Převádí se {0} z {1}"
 
-#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:134
+#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:135
 msgid "Initializing"
 msgstr "Inicializuje se"
 
-#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:137
+#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:138
 msgid ""
 "Files are currently being converted to another format. Would you like to "
 "stop this?"
@@ -1837,10 +1851,10 @@ msgstr "Vymazat seznam skladeb"
 #. TODO generate name based on the track selection, or begin editing it
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:390
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:396
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:169
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:176
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:90
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:367
-#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:475
+#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:487
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView_DragAndDrop.cs:213
 msgid "New Playlist"
 msgstr "Nový seznam skladeb"
@@ -2795,7 +2809,7 @@ msgstr ""
 "Chcete, aby byl výchozím Banshee?"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/DefaultApplicationHelperDialog.cs:72
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:427
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:434
 #, csharp-format
 msgid "Do not ask me this again"
 msgstr "Příště se již neptat"
@@ -2960,11 +2974,11 @@ msgid "View detailed version and configuration information"
 msgstr "Zobrazit podrobné informace o verzi a nastavení"
 
 #. Prompt user for location of the playlist.
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:160
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:180
 msgid "Import Playlist"
 msgstr "Importovat seznam skladeb"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:161
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:181
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:559
 msgid "Playlists"
 msgstr "Seznamy skladeb"
@@ -3059,87 +3073,95 @@ msgstr "Zopakovat právě přehrávanou skladbu"
 msgid "Shuffle"
 msgstr "Náhodné pořadí"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:73
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:75
 msgid "_New Playlist"
 msgstr "_Nový seznam skladeb"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:74
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:76
 msgid "Create a new empty playlist"
 msgstr "Vytvořit nový prázdný seznam skladeb"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:77
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:79
 msgid "New _Smart Playlist..."
 msgstr "Nový chytrý _seznam skladeb…"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:78
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:80
 msgid "Create a new smart playlist"
 msgstr "Vytvořit nový chytrý seznam skladeb"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:88
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:90
 msgid "Import to Library"
 msgstr "Importovat do knihovny"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:89
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:91
 msgid "Import source to library"
 msgstr "Importovat zdroje do knihovny"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:92
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:94
 msgid "Rename"
 msgstr "Přejmenovat"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:95
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:97
 msgid "Export Playlist..."
 msgstr "Exportovat seznam skladeb…"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:96
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:98
 msgid "Export a playlist"
 msgstr "Exportovat seznam skladeb"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:99
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:101
 msgid "Unmap"
 msgstr "Nemapovat"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:102
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:104
 msgid "Source Properties"
 msgstr "Vlastnosti zdroje"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:105
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:107
 msgid "Sort Children by"
 msgstr "Seřadit potomky podle"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:108
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:111
+msgid "Switch Source"
+msgstr "Přepnout zdroj"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:112
+msgid "Switch to a source by typing its name"
+msgstr "Přepnout na zdroj psaním jeho názvu"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:115
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/PreferenceDialog.cs:50
 msgid "Preferences"
 msgstr "Předvolby"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:109
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:116
 msgid "Edit preferences related to this source"
 msgstr "Upravit předvolby vztahující se k tomuto zdroji"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:113
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:120
 msgid "New _Smart Playlist"
 msgstr "Nový chytrý _seznam skladeb"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:122
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:129
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Radio/LastfmActions.cs:74
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:57
 msgid "Refresh"
 msgstr "Obnovit"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:123
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:130
 msgid "Refresh this randomly sorted smart playlist"
 msgstr "Obnovit tento náhodně seřazený chytrý seznam skladeb"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:290
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:297
 msgid "Could not export playlist"
 msgstr "Nelze exportovat seznam skladeb"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:418
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:425
 #, csharp-format
 msgid "Are you sure you want to delete this {0}?"
 msgstr "Opravdu chcete smazat tento {0}?"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:461
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:468
 msgid "Separate by Type"
 msgstr "Oddělit podle typu"
 
@@ -3227,7 +3249,7 @@ msgstr "Trvale odstranit vybrané položky z média"
 #. Translators: this is a verb (command), not a noun (things)
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:114
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:169
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:108
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:112
 #, csharp-format
 msgid "_Search"
 msgstr "_Hledat"
@@ -3721,7 +3743,7 @@ msgstr "{0}od{1} {2} {0}z{1} {3}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Album Title;
 #. e.g. 'from Killing with a Smile'
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:555
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:512
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:521
 #, csharp-format
 msgid "{0}from{1} {2}"
 msgstr "{0}z{1} {2}"
@@ -3729,7 +3751,7 @@ msgstr "{0}z{1} {2}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Artist Name;
 #. e.g. 'by Parkway Drive'
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:559
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:516
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:525
 #, csharp-format
 msgid "{0}by{1} {2}"
 msgstr "{0}od{1}  {2}"
@@ -3849,7 +3871,7 @@ msgstr "Toto dialogové okno příště nezobrazovat"
 msgid "_Import"
 msgstr "_Importovat"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/PhotoFolderImportSource.cs:67
+#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/PhotoFolderImportSource.cs:69
 msgid "Videos From Photos Folder"
 msgstr "Videa ze složky fotografií"
 
@@ -4179,72 +4201,72 @@ msgstr "Ukládá se nová databáze…"
 msgid "Error rebuilding iPod database"
 msgstr "Chyba při přestavbě databáze iPodu"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:98
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:101
 msgid "Device"
 msgstr "Zařízení"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:99
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
 msgid "Color"
 msgstr "Barva"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:100
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:103
 msgid "Generation"
 msgstr "Generace"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:101
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:104
 msgid "Capacity"
 msgstr "Kapacita"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:105
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:148
 msgid "Serial number"
 msgstr "Sériové číslo"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:103
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:106
 msgid "Produced on"
 msgstr "Vyrobeno v"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:104
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:107
 msgid "Firmware"
 msgstr "Firmware"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:108
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:111
 msgid "Capabilities"
 msgstr "Schopnosti"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:109
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:112
 msgid "Supports cover art"
 msgstr "Podporuje přebaly alb"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:110
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:113
 msgid "Supports photos"
 msgstr "Podporuje fotografie"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:465
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:468
 msgid "Track duration is zero"
 msgstr "Délka stopy je nulová"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:627
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:630
 msgid "Out of space on device"
 msgstr "Nedostatek místa na zařízení"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:627
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:630
 msgid "Please manually remove some songs"
 msgstr "Odstraňte prosím ručně některé skladby"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:643
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:646
 msgid "Syncing iPod"
 msgstr "Synchronizace s iPodem"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:644
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:647
 msgid "Preparing to synchronize..."
 msgstr "Připravuje se synchronizace…"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:665
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:668
 msgid "Updating..."
 msgstr "Aktualizuje se…"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:669
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:672
 msgid "Flushing to disk..."
 msgstr "Nahrává se na disk…"
 
@@ -4320,7 +4342,7 @@ msgstr "Znovu se sestavuje databáze iPodu…"
 msgid "Purchased Music"
 msgstr "Koupená hudba"
 
-#: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/MassStorageDevice.cs:82
+#: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/MassStorageDevice.cs:87
 msgid "Rockbox Device"
 msgstr "Zařízení Rockbox"
 
@@ -4348,7 +4370,7 @@ msgstr "Požadované zanoření složky"
 msgid "Supports Playlists"
 msgstr "Podporuje seznamy skladeb"
 
-#: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/WebOSDevice.cs:188
+#: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/WebOSDevice.cs:189
 msgid "Ringtones"
 msgstr "Vyzváněcí tóny"
 
@@ -4610,9 +4632,12 @@ msgid "_Automatically detect BPM for all songs"
 msgstr "_Automaticky rozpoznat tempo BPM všech skladeb"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmService.cs:149
-msgid "Detect BPM for all songs that don't already have a value set"
+msgid ""
+"Detect beats per minute (BPM) for all songs that don't already have a value "
+"set"
 msgstr ""
-"Rozpoznat tempo BPM všech skladeb, které tuto hodnotu ještě nemají nastavenou"
+"Rozpoznat tempo úderů za minutu (BPM) všech skladeb, které tuto hodnotu "
+"ještě nemají nastavenou"
 
 #: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtJob.cs:58
 msgid "Downloading Cover Art"
@@ -4721,14 +4746,23 @@ msgstr "Heslo:"
 msgid "Login"
 msgstr "Přihlášení"
 
-#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:60
-msgid "Music Share"
-msgstr "Sdílení hudby"
-
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapResolverJob.cs:50
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:106
 #, csharp-format
 msgid "Connecting to {0}"
 msgstr "Připojování k {0}"
+
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:178
+msgid "Add remote DAAP server"
+msgstr "Přidat vzdálený server DAAP"
+
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:179
+msgid "Add a new remote DAAP server"
+msgstr "Přidat nový vzdálený server DAAP"
+
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:60
+msgid "Music Share"
+msgstr "Sdílení hudby"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:202
 #, csharp-format
@@ -4746,6 +4780,14 @@ msgstr[2] "Načítá se {0} stop"
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:270
 msgid "Loading playlists"
 msgstr "Načítají se seznamy skladeb"
+
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/OpenRemoteServer.cs:45
+msgid "Open remote DAAP server"
+msgstr "Otevřít vzdálený server DAAP"
+
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/OpenRemoteServer.cs:50
+msgid "Enter server name and ip address:"
+msgstr "Zadejte název serveru a adresu IP:"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/DownloadManager/DownloadUserJob.cs:46
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:133
@@ -5788,21 +5830,21 @@ msgstr "lastfm://"
 msgid "Last.fm Recommendations"
 msgstr "Doporučení Last.fm"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:81
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:82
 #, csharp-format
 msgid "Top Albums by {0}"
 msgstr "Nejlepší alba od {0}"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:82
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:83
 #, csharp-format
 msgid "Top Tracks by {0}"
 msgstr "Nejlepší stopy od {0}"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:179
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:180
 msgid "Recommended Artists"
 msgstr "Doporučení umělci"
 
-#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:207
+#: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:208
 msgid "No similar artists found"
 msgstr "Nebyli nalezeni podobní umělci"
 
@@ -5815,7 +5857,15 @@ msgstr "{0}% podobnost"
 msgid "Unknown Similarity"
 msgstr "Neznámá podobnost"
 
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:72
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:109
+msgid "Media"
+msgstr "Média"
+
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:119
+msgid "Library"
+msgstr "Knihovna"
+
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:131
 msgid "Launch the Banshee Media Player"
 msgstr "Spustit multimediální přehrávač Banshee"
 
@@ -5843,19 +5893,19 @@ msgstr "Přepnout zpět do plného režimu"
 msgid "Change repeat playback mode"
 msgstr "Změna režimu opakování při přehrávání"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:135
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:138
 msgid "_Show Notifications"
 msgstr "_Zobrazovat oznámení"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:136
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:139
 msgid "Show notifications when item changes"
 msgstr "Zobrazovat oznámení při změně položky"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:340
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:343
 msgid "Still Running"
 msgstr "Stále běží"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:341
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:344
 msgid ""
 "Banshee was closed to the notification area. Use the <i>Quit</i> option to "
 "end your session."
@@ -5863,18 +5913,18 @@ msgstr ""
 "Banshee bylo zavřeno do oznamovací oblasti. Pro ukončení sezení použijte "
 "volbu <i>Ukončit</i>."
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:470
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:479
 msgid "Skip this item"
 msgstr "Přeskočit tuto položku"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:474
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:483
 msgid "Cannot show notification"
 msgstr "Nelze zobrazit oznámení"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Artist Name and Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:508
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:517
 #, csharp-format
 msgid ""
 "{0}by{1} {2}\n"
@@ -5887,16 +5937,16 @@ msgstr ""
 msgid "Banshee"
 msgstr "Banshee"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:143
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:144
 #, csharp-format
 msgid "Unable to import track: {0}"
 msgstr "Nelze importovat stopu: {0}"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:177
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:178
 msgid "Importing from Amarok failed"
 msgstr "Import z programu Amarok selhal"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:188
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:189
 msgid "Amarok"
 msgstr "Amarok"
 
@@ -6542,4 +6592,3 @@ msgstr "Připojeno k Last.fm."
 #: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:100
 msgid "Unknown Podcast"
 msgstr "Neznámý podcast"
-
