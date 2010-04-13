@@ -53,10 +53,14 @@ namespace Banshee.Audiobook
     {
         private AudiobookLibrarySource library;
         private AudiobookGrid grid;
+        private ScrolledWindow sw;
 
         public AudiobookContent ()
         {
+            sw = new ScrolledWindow ();
             grid = new AudiobookGrid ();
+            sw.Child = grid;
+            sw.ShowAll ();
         }
 
         public bool SetSource (ISource src)
@@ -88,7 +92,7 @@ namespace Banshee.Audiobook
         }
 
         public Widget Widget {
-            get { return grid; }
+            get { return sw; }
         }
     }
 }

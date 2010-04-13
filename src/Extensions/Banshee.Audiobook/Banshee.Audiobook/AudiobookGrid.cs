@@ -51,25 +51,18 @@ namespace Banshee.Audiobook
 {
     public class AudiobookGrid : SearchableListView<AlbumInfo>
     {
-        private ColumnCellAlbum renderer;
         private AudiobookLibrarySource library;
 
         public AudiobookGrid ()
         {
-            ViewLayout = new DataViewLayoutGrid ();
-
-            renderer = new ColumnCellAlbum () {
-                ImageSize = 150,
-                ViewLayout = ViewLayout
+            var layout = new DataViewLayoutGrid () {
+                ChildAllocator = () => new DataViewChildAlbum () {
+                    ImageSize = 180
+                },
+                View = this
             };
 
-            ViewLayout.ChildSize = renderer.Measure (ViewLayout.View);
-
-            var column_controller = new ColumnController ();
-            column_controller.Add (new Column ("Album", renderer, 1.0));
-
-            ColumnController = column_controller;
-            //RowActivated += OnRowActivated;
+            ViewLayout = layout;
         }
 
         public void SetLibrary (AudiobookLibrarySource library)
@@ -84,7 +77,7 @@ namespace Banshee.Audiobook
 
         protected override Gdk.Size OnMeasureChild ()
         {
-            return renderer.Measure (this);
+            return base.OnMeasureChild ();
         }
 
         protected override bool OnPopupMenu ()
