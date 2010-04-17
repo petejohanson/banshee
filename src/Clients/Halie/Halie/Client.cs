@@ -51,6 +51,7 @@ namespace Halie
         {
             void Present ();
             void Hide ();
+            void Fullscreen ();
         }
 
         [Interface ("org.bansheeproject.Banshee.GlobalUIActions")]
@@ -101,6 +102,7 @@ namespace Halie
                 switch (arg.Key) {
                     case "show":
                     case "present": present = true; break;
+                    case "fullscreen": window.Fullscreen (); break;
                     case "hide":
                         present = false;
                         window.Hide ();

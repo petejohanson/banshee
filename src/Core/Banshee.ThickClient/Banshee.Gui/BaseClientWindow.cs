@@ -97,19 +97,24 @@ namespace Banshee.Gui
             }
         }
 
-		protected void InitialShowPresent ()
-		{
-			bool hide = ApplicationContext.CommandLine.Contains ("hide");
-			bool present = !hide && !ApplicationContext.CommandLine.Contains ("no-present");
+        protected void InitialShowPresent ()
+        {
+            bool hide = ApplicationContext.CommandLine.Contains ("hide");
+            bool present = !hide && !ApplicationContext.CommandLine.Contains ("no-present");
+            bool fullscreen = !hide && ApplicationContext.CommandLine.Contains ("fullscreen");
 
-			if (!hide) {
-				Show ();
-			}
+            if (!hide) {
+                Show ();
+            }
 
-			if (present) {
-				Present ();
-			}
-		}
+            if (present) {
+                Present ();
+            }
+
+            if (fullscreen) {
+                Fullscreen ();
+            }
+        }
 
         public virtual Box ViewContainer { get { return null; } }
 
