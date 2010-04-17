@@ -190,7 +190,7 @@ namespace Banshee.Collection.Gui
                     if (ratio > max_ratio) {
                         width = (int)Math.Round (size / ratio);
                     }else if (ratio < 1d / max_ratio) {
-                        height = (int)Math.Round (size / ratio);
+                        height = (int)Math.Round (size * ratio);
                     }
 
                     Pixbuf scaled_pixbuf = pixbuf.ScaleSimple (width, height, Gdk.InterpType.Bilinear);
