@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&component=general\n"
-"POT-Creation-Date: 2010-04-11 00:42+0000\n"
-"PO-Revision-Date: 2010-04-11 10:39+0100\n"
+"POT-Creation-Date: 2010-04-17 05:00+0000\n"
+"PO-Revision-Date: 2010-04-18 07:53+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -636,7 +636,7 @@ msgstr "Windows zvočna datoteka"
 #: ../data/desktop-files/common.desktop.in.h:1
 #: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:76
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:94
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:201
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:206
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:60
 msgid "Banshee Media Player"
 msgstr "Banshee predvajalnik večpredstavnostnih datotek"
@@ -796,12 +796,12 @@ msgid "Could not create transcoder"
 msgstr "Prekodirnika ni mogoče ustvariti"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:91
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:128
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:131
 msgid "_Close"
 msgstr "_Zapri"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:92
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:129
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:132
 msgid "Close"
 msgstr "Zapri"
 
@@ -1008,67 +1008,71 @@ msgid "Present the user interface on the active workspace"
 msgstr "Uporabniški vmesnik naj bo prednastavljeno na dejavni delovni površini "
 
 #: ../src/Clients/Booter/Booter/Entry.cs:199
+msgid "Enter the full-screen mode"
+msgstr "Vstopi v celozaslonski način"
+
+#: ../src/Clients/Booter/Booter/Entry.cs:200
 msgid "Hide the user interface"
 msgstr "Skrij uporabniški vmesnik"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:200
+#: ../src/Clients/Booter/Booter/Entry.cs:201
 msgid "Do not present the user interface, regardless of any other options"
 msgstr "Ne predstavi uporabniškega vmesnika, ne glede na ostale možnosti"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:201
+#: ../src/Clients/Booter/Booter/Entry.cs:202
 msgid "Present the import media dialog box"
 msgstr "Predstavi pogovorno okno uvažanja večpredstavnosti"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:202
+#: ../src/Clients/Booter/Booter/Entry.cs:203
 msgid "Present the about dialog"
 msgstr "Predstavi pogovorno okno o programu"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:203
+#: ../src/Clients/Booter/Booter/Entry.cs:204
 msgid "Present the open location dialog"
 msgstr "Predstavi pogovorno okno odpri"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:204
+#: ../src/Clients/Booter/Booter/Entry.cs:205
 msgid "Present the preferences dialog"
 msgstr "Predstavi pogovorno okno možnosti"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:207
+#: ../src/Clients/Booter/Booter/Entry.cs:208
 msgid "Debugging and Development Options"
 msgstr "Možnosti razhroščevalnika in razvoja"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:208
+#: ../src/Clients/Booter/Booter/Entry.cs:209
 msgid "Enable general debugging features"
 msgstr "Omogoči splošne zmožnosti razhroščevanja"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:209
+#: ../src/Clients/Booter/Booter/Entry.cs:210
 msgid "Enable debugging output of SQL queries"
 msgstr "Omogoči razhroščevalni odvod SQL poizvedb"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:210
+#: ../src/Clients/Booter/Booter/Entry.cs:211
 msgid "Enable debugging output of Mono.Addins"
 msgstr "Omogoči odvod razhroščevanja Mono vstavkov"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:211
+#: ../src/Clients/Booter/Booter/Entry.cs:212
 msgid "Specify an alternate database to use"
 msgstr "Določitev alternativne zbirke podatkov za uporabo"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:212
+#: ../src/Clients/Booter/Booter/Entry.cs:213
 msgid "Specify an alternate key, default is /apps/banshee-1/"
 msgstr "Določitev drugega ključa, privzet je /apps/banshee-1/"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:213
+#: ../src/Clients/Booter/Booter/Entry.cs:214
 msgid "Optimize instance for running uninstalled; most notably, this will create an alternate Mono.Addins database in the working directory"
 msgstr "Prilagodi program za nenameščeno delovanje; možnost ustvari dodatno podatkovno zbirko Mono vstavka v delovni mapi"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:215
+#: ../src/Clients/Booter/Booter/Entry.cs:216
 msgid "Disable DBus support completely"
 msgstr "Popolno onemogočenje DBus podpore"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:217
+#: ../src/Clients/Booter/Booter/Entry.cs:218
 #, csharp-format
 msgid "Skip loading a custom gtkrc file ({0}) if it exists"
 msgstr "Preskoči nalaganje datoteke gtkrc po meri ({0}), če obstaja"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:248
+#: ../src/Clients/Booter/Booter/Entry.cs:249
 #, csharp-format
 msgid "The following help arguments are invalid: {0}"
 msgstr "Sledeči argumenti pomoči so neveljavni: {0}"
@@ -1637,16 +1641,16 @@ msgstr "Orodij predvajalnika ni mogoče najti. Prepričajte se, da je bil Banshe
 msgid "Problem with Player Engine"
 msgstr "Težave s predvajalnikom"
 
-#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:134
+#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:135
 #, csharp-format
 msgid "Converting {0} of {1}"
 msgstr "Pretvarjanje {0} od {1}"
 
-#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:134
+#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:135
 msgid "Initializing"
 msgstr "Začenjanje"
 
-#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:137
+#: ../src/Core/Banshee.Services/Banshee.MediaEngine/TranscoderService.cs:138
 msgid "Files are currently being converted to another format. Would you like to stop this?"
 msgstr "Datoteke se trenutno pretvarjajo v drugo obliko. Ali želite to zaustavili ?"
 
@@ -2541,7 +2545,7 @@ msgstr "Ni mogoče preurediti, medtem ko je razvrščeno"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:78
 msgid "To put the playlist in manual sort mode, click the currently sorted column header until the sort arrow goes away."
-msgstr "Za predstavitev seznama predvajanj v ročni način razvrščanja je potrebno klikniti glavo trenutno razvrščenega stolpca dokler puščica razvrščanja ne izgine."
+msgstr "Za predstavitev seznama predvajanj v ročni način razvrščanja je treba klikniti glavo trenutno razvrščenega stolpca dokler puščica razvrščanja ne izgine."
 
 #. Translators: this is {disc number} of {disc count}
 #. Translators: this is {track number} of {track count}
@@ -2630,7 +2634,7 @@ msgstr "Novo nastavljeno "
 
 #. Translators: this is the window title when a track is playing
 #. {0} is the track title, {1} is the artist name
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:198
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:203
 #, csharp-format
 msgid "{0} by {1}"
 msgstr "{0} od {1}"
@@ -3611,7 +3615,7 @@ msgstr "{0}od{1} {2} {0}od{1} {3}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Album Title;
 #. e.g. 'from Killing with a Smile'
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:555
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:512
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:521
 #, csharp-format
 msgid "{0}from{1} {2}"
 msgstr "{0}od{1} {2}"
@@ -3619,7 +3623,7 @@ msgstr "{0}od{1} {2}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Artist Name;
 #. e.g. 'by Parkway Drive'
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:559
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:516
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:525
 #, csharp-format
 msgid "{0}by{1} {2}"
 msgstr "{0}od{1} {2}"
@@ -3734,7 +3738,7 @@ msgstr "Tega okna ne prikaži več"
 msgid "_Import"
 msgstr "_Uvozi"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/PhotoFolderImportSource.cs:67
+#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/PhotoFolderImportSource.cs:69
 msgid "Videos From Photos Folder"
 msgstr "Videi iz mape fotografij"
 
@@ -5699,34 +5703,34 @@ msgstr "Preklop nazaj na polni način"
 msgid "Change repeat playback mode"
 msgstr "Spremeni način ponavljanja predvajanja"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:135
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:138
 msgid "_Show Notifications"
 msgstr "_Prikaži obvestila"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:136
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:139
 msgid "Show notifications when item changes"
 msgstr "Prikaz obvestil ob spremembi predmeta"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:340
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:343
 msgid "Still Running"
 msgstr "Še vedno teče"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:341
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:344
 msgid "Banshee was closed to the notification area. Use the <i>Quit</i> option to end your session."
 msgstr "Program Banshee je skrit v obvestilnem področju. Uporabite možnost <i>Končaj</i> za končanje seje."
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:470
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:479
 msgid "Skip this item"
 msgstr "Preskoči predmet"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:474
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:483
 msgid "Cannot show notification"
 msgstr "Obvestil ni mogoče prikazati"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Artist Name and Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:508
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:517
 #, csharp-format
 msgid ""
 "{0}by{1} {2}\n"
@@ -5739,16 +5743,16 @@ msgstr ""
 msgid "Banshee"
 msgstr "Banshee"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:143
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:144
 #, csharp-format
 msgid "Unable to import track: {0}"
 msgstr "Skladbe: {0} ni mogoče uvoziti"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:177
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:178
 msgid "Importing from Amarok failed"
 msgstr "Uvoz iz Amaroka je spodletel"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:188
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:189
 msgid "Amarok"
 msgstr "Amarok"
 
@@ -6353,7 +6357,7 @@ msgstr "Ni povezave z Last.fm"
 
 #: ../src/Libraries/Lastfm/Lastfm/RadioConnection.cs:315
 msgid "Account details are needed before you can connect to Last.fm"
-msgstr "Pred povezavo z Last.fm so potrebne podrobnosti o računu"
+msgstr "Pred povezavo z Last.fm je treba vnesti podrobnosti računa"
 
 #: ../src/Libraries/Lastfm/Lastfm/RadioConnection.cs:317
 msgid "No network connection detected."
