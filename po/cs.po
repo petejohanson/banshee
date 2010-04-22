@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-12 23:05+0200\n"
+"POT-Creation-Date: 2010-04-22 23:49+0200\n"
 "PO-Revision-Date: 2010-04-07 15:20+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -692,7 +692,7 @@ msgstr "Windows Media Audio"
 #: ../data/desktop-files/common.desktop.in.h:1
 #: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:76
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:94
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:201
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:206
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:60
 msgid "Banshee Media Player"
 msgstr "Multimediální přehrávač Banshee"
@@ -1020,7 +1020,7 @@ msgid "Artist Name"
 msgstr "Jméno umělce"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:185
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:149
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:150
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:90
 msgid "Album Title"
 msgstr "Název alba"
@@ -1054,7 +1054,7 @@ msgid "Disc Number"
 msgstr "Číslo disku"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:191
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:151
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:152
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:113
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:177
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:77
@@ -1092,54 +1092,58 @@ msgid "Present the user interface on the active workspace"
 msgstr "Zobrazit uživatelské rozhraní na aktivní pracovní ploše"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:199
+msgid "Enter the full-screen mode"
+msgstr "Vstoupit do režimu celé obrazovky"
+
+#: ../src/Clients/Booter/Booter/Entry.cs:200
 msgid "Hide the user interface"
 msgstr "Skrýt uživatelské rozhraní"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:200
+#: ../src/Clients/Booter/Booter/Entry.cs:201
 msgid "Do not present the user interface, regardless of any other options"
 msgstr "Nezobrazovat uživatelské rozhraní, bez ohledu na jakékoliv další volby"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:201
+#: ../src/Clients/Booter/Booter/Entry.cs:202
 msgid "Present the import media dialog box"
 msgstr "Zobrazit dialogové okno importu médií"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:202
+#: ../src/Clients/Booter/Booter/Entry.cs:203
 msgid "Present the about dialog"
 msgstr "Zobrazit dialogové okno o aplikaci"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:203
+#: ../src/Clients/Booter/Booter/Entry.cs:204
 msgid "Present the open location dialog"
 msgstr "Zobrazit dialogové okno otevření umístění"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:204
+#: ../src/Clients/Booter/Booter/Entry.cs:205
 msgid "Present the preferences dialog"
 msgstr "Zobrazit dialogové okno předvoleb"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:207
+#: ../src/Clients/Booter/Booter/Entry.cs:208
 msgid "Debugging and Development Options"
 msgstr "Volby ladění a vývoje"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:208
+#: ../src/Clients/Booter/Booter/Entry.cs:209
 msgid "Enable general debugging features"
 msgstr "Zapnout obecné ladicí funkce"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:209
+#: ../src/Clients/Booter/Booter/Entry.cs:210
 msgid "Enable debugging output of SQL queries"
 msgstr "Zapnout ladicí výstup SQL dotazů"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:210
+#: ../src/Clients/Booter/Booter/Entry.cs:211
 msgid "Enable debugging output of Mono.Addins"
 msgstr "Zapnout ladicí výstup Mono.Addins"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:211
+#: ../src/Clients/Booter/Booter/Entry.cs:212
 msgid "Specify an alternate database to use"
 msgstr "Určit alternativní databázi, která se má použít"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:212
+#: ../src/Clients/Booter/Booter/Entry.cs:213
 msgid "Specify an alternate key, default is /apps/banshee-1/"
 msgstr "Určit alternativní klíč, výchozí je /apps/banshee-1/"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:213
+#: ../src/Clients/Booter/Booter/Entry.cs:214
 msgid ""
 "Optimize instance for running uninstalled; most notably, this will create an "
 "alternate Mono.Addins database in the working directory"
@@ -1147,16 +1151,16 @@ msgstr ""
 "Přizpůsobit instanci pro běh bez instalace; tímto se především vytvoří "
 "alternativní databáze Mono.Addins v pracovním adresáři"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:215
+#: ../src/Clients/Booter/Booter/Entry.cs:216
 msgid "Disable DBus support completely"
 msgstr "Úplně zakázat podporu DBus"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:217
+#: ../src/Clients/Booter/Booter/Entry.cs:218
 #, csharp-format
 msgid "Skip loading a custom gtkrc file ({0}) if it exists"
 msgstr "Přeskočit načítání souboru gtkrc ({0}), pokud existuje"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:248
+#: ../src/Clients/Booter/Booter/Entry.cs:249
 #, csharp-format
 msgid "The following help arguments are invalid: {0}"
 msgstr "Následující pomocné argumenty jsou neplatné: {0}"
@@ -1205,7 +1209,15 @@ msgstr "Přehrát skladbu"
 msgid "Artist, Album, or Title"
 msgstr "Umělec, album nebo název"
 
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:150
+#. Alias for %album_artist%
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:149
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:72
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:78
+#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:82
+msgid "Album Artist"
+msgstr "Umělec alba"
+
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:151
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:98
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:185
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:364
@@ -1214,13 +1226,13 @@ msgid "Genre"
 msgstr "Žánr"
 
 #. Translators: noun
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:152
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:153
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:214
 msgid "Comment"
 msgstr "Poznámka"
 
 #. Translators: this is a verb (command), not a noun (things)
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:173
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:174
 #, csharp-format
 msgid "Search"
 msgstr "Hledat"
@@ -1531,13 +1543,6 @@ msgstr "Složka {0}"
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:67
 msgid "Track Artist"
 msgstr "Umělec stopy"
-
-#. Alias for %album_artist%
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:72
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:78
-#: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:82
-msgid "Album Artist"
-msgstr "Umělec alba"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:83
 msgid "Album Artist Initial"
@@ -2744,7 +2749,7 @@ msgstr "Nová předvolba"
 
 #. Translators: this is the window title when a track is playing
 #. {0} is the track title, {1} is the artist name
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:198
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:203
 #, csharp-format
 msgid "{0} by {1}"
 msgstr "{0} od {1}"
@@ -4246,27 +4251,27 @@ msgstr "Podporuje fotografie"
 msgid "Track duration is zero"
 msgstr "Délka stopy je nulová"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:630
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:634
 msgid "Out of space on device"
 msgstr "Nedostatek místa na zařízení"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:630
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:634
 msgid "Please manually remove some songs"
 msgstr "Odstraňte prosím ručně některé skladby"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:646
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:650
 msgid "Syncing iPod"
 msgstr "Synchronizace s iPodem"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:647
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:651
 msgid "Preparing to synchronize..."
 msgstr "Připravuje se synchronizace…"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:668
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:672
 msgid "Updating..."
 msgstr "Aktualizuje se…"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:672
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:676
 msgid "Flushing to disk..."
 msgstr "Nahrává se na disk…"
 
