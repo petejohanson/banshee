@@ -164,7 +164,7 @@ namespace Banshee.Dap.MassStorage
                     "INSERT INTO CorePlaylistEntries (PlaylistID, TrackID) VALUES (?, ?)");
                 int [] psources = new int [] {DbId};
                 foreach (string playlist_path in PlaylistFiles) {
-                    IPlaylistFormat loaded_playlist = PlaylistFileUtil.Load (playlist_path, new Uri (BaseDirectory));
+                    IPlaylistFormat loaded_playlist = PlaylistFileUtil.Load (playlist_path, new Uri (PlaylistsPath));
                     if (loaded_playlist == null)
                         continue;
 
@@ -332,7 +332,8 @@ namespace Banshee.Dap.MassStorage
                     System.IO.Stream stream = null;
                     try {
                         stream = Banshee.IO.File.OpenWrite (playlist_path, true);
-                        playlist_format.BaseUri = new Uri (BaseDirectory);
+                        playlist_format.BaseUri = new Uri (PlaylistsPath);
+
                         playlist_format.Save (stream, from);
                     } catch (Exception e) {
                         Log.Exception (e);

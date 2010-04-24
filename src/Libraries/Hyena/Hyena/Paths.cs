@@ -27,9 +27,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.IO;
-using Mono.Unix;
+using System;
+using System.Text;
 
 namespace Hyena
 {
@@ -113,6 +113,12 @@ namespace Hyena
                 return null;
             }
 
+            if (Path.IsPathRooted (path) ^ Path.IsPathRooted (to))
+            {
+                // one path is absolute, one path is relative, impossible to compare
+                return null;
+            }
+
             if (path == to) {
                 return String.Empty;
             }
@@ -121,13 +127,37 @@ namespace Hyena
                 to = to + Path.DirectorySeparatorChar;
             }
 
-            if (path.Length < to.Length) {
-                return null;
+            if (path.StartsWith (to))
+            {
+                return path.Substring (to.Length);
             }
 
-            return path.StartsWith (to)
-                ? path.Substring (to.Length)
-                : null;
+            return BuildRelativePath (path, to);
+        }
+
+        private static string BuildRelativePath (string path, string to)
+        {
+            var toParts = to.Split (Path.DirectorySeparatorChar);
+            var pathParts = path.Split (Path.DirectorySeparatorChar);
+
+            var i = 0;
+            while (i < toParts.Length && i < pathParts.Length && toParts [i] == pathParts [i]) {
+                i++;
+            }
+
+            var relativePath = new StringBuilder ();
+            for (int j = 0; j < toParts.Length - i - 1; j++) {
+                relativePath.Append ("..");
+                relativePath.Append (Path.DirectorySeparatorChar);
+            }
+
+            var required = new string [pathParts.Length - i];
+            for (int j = i; j < pathParts.Length; j++) {
+                required [j - i] = pathParts [j];
+            }
+            relativePath.Append (String.Join (Path.DirectorySeparatorChar.ToString (), required));
+
+            return relativePath.ToString ();
         }
 
         public static string ApplicationData {
