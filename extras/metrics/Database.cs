@@ -58,6 +58,7 @@ namespace metrics
             Execute ("PRAGMA synchronous = OFF");
             Execute ("PRAGMA temp_store = MEMORY");
             Execute ("PRAGMA count_changes = OFF");
+            Execute ("PRAGMA journal_mode = TRUNCATE");
 
             Config = new SqliteModelProvider<Config> (this, "Config", true);
             SampleProvider = new SqliteModelProvider<MultiUserSample> (this, "Samples", true);
