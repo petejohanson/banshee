@@ -5,7 +5,7 @@
 //   Aaron Bockover <abockover@novell.com>
 //   Larry Ewing <lewing@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2008-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -80,6 +80,8 @@ namespace Banshee.NowPlaying
             AppPaintable = composited;
 
             base.OnRealized ();
+
+            GdkWindow.OverrideRedirect = true;
 
             ShapeWindow ();
             Relocate ();

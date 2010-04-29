@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2008-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -33,6 +33,7 @@ namespace Banshee.NowPlaying
 {
     public interface IFullscreenAdapter : IDisposable
     {
+        event EventHandler SuggestUnfullscreen;
         void Fullscreen (Gtk.Window window, bool fullscreen);
     }
 }
