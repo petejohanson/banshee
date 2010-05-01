@@ -69,6 +69,8 @@ namespace Banshee.GStreamer
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate IntPtr VideoPipelineSetupHandler (IntPtr player, IntPtr bus);
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate void VideoPrepareWindowHandler (IntPtr player);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void BansheePlayerVolumeChangedCallback (IntPtr player, double newVolume);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -93,6 +95,7 @@ namespace Banshee.GStreamer
         private BansheePlayerBufferingCallback buffering_callback;
         private BansheePlayerVisDataCallback vis_data_callback;
         private VideoPipelineSetupHandler video_pipeline_setup_callback;
+        private VideoPrepareWindowHandler video_prepare_window_callback;
         private GstTaggerTagFoundCallback tag_found_callback;
         private BansheePlayerNextTrackStartingCallback next_track_starting_callback;
         private BansheePlayerAboutToFinishCallback about_to_finish_callback;
@@ -157,6 +160,7 @@ namespace Banshee.GStreamer
             buffering_callback = new BansheePlayerBufferingCallback (OnBuffering);
             vis_data_callback = new BansheePlayerVisDataCallback (OnVisualizationData);
             video_pipeline_setup_callback = new VideoPipelineSetupHandler (OnVideoPipelineSetup);
+            video_prepare_window_callback = new VideoPrepareWindowHandler (OnVideoPrepareWindow);
             tag_found_callback = new GstTaggerTagFoundCallback (OnTagFound);
             next_track_starting_callback = new BansheePlayerNextTrackStartingCallback (OnNextTrackStarting);
             about_to_finish_callback = new BansheePlayerAboutToFinishCallback (OnAboutToFinish);
@@ -168,6 +172,7 @@ namespace Banshee.GStreamer
             bp_set_tag_found_callback (handle, tag_found_callback);
             bp_set_next_track_starting_callback (handle, next_track_starting_callback);
             bp_set_video_pipeline_setup_callback (handle, video_pipeline_setup_callback);
+            bp_set_video_prepare_window_callback (handle, video_prepare_window_callback);
             bp_set_volume_changed_callback (handle, volume_changed_callback);
 
             next_track_set = new EventWaitHandle (false, EventResetMode.ManualReset);
@@ -714,6 +719,11 @@ namespace Banshee.GStreamer
             return clutter_video_sink;
         }
 
+        private void OnVideoPrepareWindow (IntPtr player)
+        {
+            OnEventChanged (PlayerEvent.PrepareVideoWindow);
+        }
+
 #endregion
 
 #region Preferences
@@ -807,6 +817,10 @@ namespace Banshee.GStreamer
         [DllImport ("libbanshee.dll")]
         private static extern void bp_set_tag_found_callback (HandleRef player,
             GstTaggerTagFoundCallback cb);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern void bp_set_video_prepare_window_callback (HandleRef player,
+           VideoPrepareWindowHandler cb);
 
         [DllImport ("libbanshee.dll")]
         private static extern void bp_set_next_track_starting_callback (HandleRef player,
