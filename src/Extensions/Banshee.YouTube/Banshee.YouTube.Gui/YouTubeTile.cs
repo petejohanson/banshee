@@ -146,7 +146,7 @@ namespace Banshee.YouTube.Gui
                 return null;
             }
 
-            Regex regex = new Regex ("'SWF_ARGS'.*\"t\": \"([^\"]+)\"");
+            Regex regex = new Regex ("swfHTML = .*&t=([^&]+)&");
             Match match = regex.Match (watch_page_contents);
 
             if (!match.Success) {
