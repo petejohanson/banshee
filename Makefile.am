@@ -126,8 +126,10 @@ merge-docs:
 	make -C docs/Hyena merge; \
 	make -C docs/Banshee merge;
 
-package-patch:
+check-since:
 	@if [ -z '$(SINCE)' ]; then echo 'Specify a SINCE (e.g. make package-patch SINCE=1.6.0)'; exit 1; fi;
+
+package-patch: check-since
 	@if [ -f 'since-$(SINCE).patch' ]; then echo 'since-$(SINCE).patch already exists'; exit 1; fi;
 	@git diff-tree -p "$(SINCE).." | filterdiff \
 		-x 'a/Makefile.am' \
@@ -138,6 +140,16 @@ package-patch:
 		-x \*.sln \
 		-x \*extras/\* &> 'since-$(SINCE).patch'
 	@echo 'since-$(SINCE).patch is ready'
+
+package-po: check-since
+	@if [ -f 'po-since-$(SINCE).tar.bz2' ]; then echo 'po-since-$(SINCE).tar.bz2 already exists'; exit 1; fi;
+	@git diff-tree -p '$(SINCE)..' po \
+		| awk -F / '{if ($$0 ~ /^+++ b\/po\/.+\.po$$/) print $$2 "/" $$3}' \
+		| xargs tar cfj po-since-$(SINCE).tar.bz2 2>/dev/null; \
+	if [ $$? -eq 123 ]; then \
+		echo 'No po changes since $(SINCE)'; \
+		exit 0; \
+	fi
 
 EXTRA_DIST = \
 	intltool-extract.in \
