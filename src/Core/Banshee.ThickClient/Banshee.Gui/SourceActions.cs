@@ -379,6 +379,7 @@ namespace Banshee.Gui
                 UpdateAction ("SourcePropertiesAction", source.HasProperties, true, source);
                 UpdateAction ("SourcePreferencesAction", source.PreferencesPageId != null, true, source);
                 UpdateAction ("RefreshSmartPlaylistAction", smart_playlist != null && smart_playlist.CanRefresh, true, source);
+                this["OpenSourceSwitcher"].Visible = false;
 
                 bool playlists_writable = primary_source != null && primary_source.SupportsPlaylists && !primary_source.PlaylistsReadOnly;
                 UpdateAction ("NewPlaylistAction", playlists_writable, true, source);
