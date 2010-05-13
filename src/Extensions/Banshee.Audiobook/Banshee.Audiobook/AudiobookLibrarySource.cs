@@ -49,8 +49,7 @@ namespace Banshee.Audiobook
     {
         private AudiobookModel books_model;
 
-        private Actions actions;
-        public Actions Actions { get { return actions; } }
+        public Actions Actions { get; private set; }
 
         public AudiobookLibrarySource () : base (Catalog.GetString ("Audiobooks, etc"), "AudiobookLibrary", 49)
         {
@@ -87,14 +86,36 @@ namespace Banshee.Audiobook
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
 
-            actions = new Actions ();
+            Actions = new Actions (this);
+
+            TracksAdded += (o, a) => {
+                if (!IsAdding) {
+                    MergeBooksAddedSince (DateTime.Now - TimeSpan.FromHours (2));
+                }
+            };
+            TrackModel.Reloaded += delegate { Console.WriteLine ("Audiobooks track model reloaded"); };
+        }
+
+        private void MergeBooksAddedSince (DateTime since)
+        {
+            // TODO after import of files or move to audiobook:
+            // If for a given author, there are a set of 'albums' (books)
+            // whose names stripped of numbers are equal, merge them
+            // into one book:
+            //    1) If they already have sequential disc info, good to go
+            //    2) If they do not, need to extract that from album title
+            //        -- or just generate it by incrementing a counter, assuming
+            //           that as-is they sort lexically
+
+            //foreach (var book in BookModel.FetchMatching ("DateAdded > ? ORDER BY Title", since)) {
+            //}
         }
 
         public override void Dispose ()
         {
-            if (actions != null) {
-                actions.Dispose ();
-                actions = null;
+            if (Actions != null) {
+                Actions.Dispose ();
+                Actions = null;
             }
 
             base.Dispose ();
