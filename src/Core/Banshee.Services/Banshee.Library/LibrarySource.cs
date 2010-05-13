@@ -138,7 +138,7 @@ namespace Banshee.Library
 
                 // TODO optimize, remove this?  I think it makes moving items
                 // between local libraries very slow.
-                source.NotifyTracksChanged ();
+                //source.NotifyTracksChanged ();
             } else {
                 // Figure out where we should put it if were to copy it
                 var pattern = this.PathPattern ?? MusicLibrarySource.MusicFileNamePattern;
