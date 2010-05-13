@@ -4,7 +4,7 @@
 // Authors:
 //   Gabriel Burt <gburt@novell.com>
 //
-// Copyright (C) 2009 Novell, Inc.
+// Copyright (C) 2009-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -34,8 +34,11 @@ using Mono.Unix;
 using Gtk;
 
 using Hyena;
+using Hyena.Widgets;
 
 using Banshee.ServiceStack;
+using Banshee.Collection.Database;
+using Banshee.Gui;
 
 namespace Banshee.Audiobook
 {
@@ -50,6 +53,7 @@ namespace Banshee.Audiobook
             Add (
                 new ActionEntry ("AudiobookBookPopup", null, null, null, null, (o, a) => ShowContextMenu ("/AudiobookBookPopup")),
                 new ActionEntry ("AudiobookOpen", null, Catalog.GetString ("Open Book"), null, null, OnOpen),
+                new ActionEntry ("AudiobookMerge", null, Catalog.GetString ("Merge Discs..."), null, null, OnMerge),
                 new ActionEntry ("AudiobookEdit", Stock.Edit,
                     Catalog.GetString ("_Edit Track Information"), "E", null, OnEdit)
             );
@@ -76,9 +80,9 @@ namespace Banshee.Audiobook
         {
             var selection = library.BooksModel.Selection;
             bool has_selection = selection.Count > 0;
-            //bool has_single_selection = selection.Count == 1;
+            bool has_single_selection = selection.Count == 1;
 
-            //UpdateAction ("AudiobookMerge", !has_single_selection, true);
+            UpdateAction ("AudiobookMerge", !has_single_selection, true);
             UpdateAction ("AudiobookEdit", true, has_selection);
         }
 
@@ -96,6 +100,76 @@ namespace Banshee.Audiobook
             //var books = library.BooksModel.SelectedItems;
             library.TrackModel.Selection.SelectAll ();
             Actions.TrackActions["TrackEditorAction"].Activate ();
+        }
+
+        private void OnMerge (object o, EventArgs a)
+        {
+            var discs = library.BooksModel.SelectedItems.OrderBy (d => d.Title).ToList ();
+            var author = DatabaseArtistInfo.Provider.FetchSingle ((discs[0] as DatabaseAlbumInfo).ArtistId);
+
+            var dialog = new HigMessageDialog (
+                ServiceManager.Get<GtkElementsService> ().PrimaryWindow,
+                DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.OkCancel,
+
+                String.Format (Catalog.GetPluralString (
+                    "Merge the {0} selected discs into one book?",
+                    "Merge the {0} selected discs into one book?",
+                    discs.Count), discs.Count),
+
+                Catalog.GetString (
+                    "This will ensure the disc numbers are all " + 
+                    "set properly, and then set the author and book title for all tracks " +
+                    "on all these discs to the values below")
+            );
+
+            var table = new SimpleTable<int> ();
+
+            var author_entry = new Entry () { Text = discs[0].ArtistName };
+            table.AddRow (0,
+                new Label (Catalog.GetString ("Author:")) { Xalign = 0 },
+                author_entry
+            );
+
+            var trimmings = new char [] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '-' };
+            var title_entry  = new Entry () { Text = discs[0].Title.Trim (trimmings) };
+            table.AddRow (1,
+                new Label (Catalog.GetString ("Book Title:")) { Xalign = 0 },
+                title_entry
+            );
+
+            dialog.LabelVBox.PackStart (table, false, false, 0);
+
+            dialog.ShowAll ();
+            var response = dialog.Run ();
+            string title = title_entry.Text;
+            string author_name = author_entry.Text;
+            dialog.Destroy ();
+
+            if (response == (int)Gtk.ResponseType.Ok && !String.IsNullOrEmpty (title)) {
+                if (author_name != author.Name) {
+                    author = DatabaseArtistInfo.FindOrCreate (author_name, null);
+                }
+                var book = DatabaseAlbumInfo.FindOrCreate (author, title, null, false);
+
+                int disc_num = 1;
+                foreach (DatabaseAlbumInfo disc in discs) {
+                    // Update the disc num/count field for all tracks on this 'book' (actually just one disc of a book)
+                    ServiceManager.DbConnection.Execute (
+                        @"UPDATE CoreTracks SET AlbumID = ?, Disc = ?, DiscCount = ?, DateUpdatedStamp = ?
+                            WHERE PrimarySourceID = ? AND AlbumID = ?",
+                        book.DbId, disc_num++, discs.Count, DateTime.Now,
+                        library.DbId, disc.DbId
+                    );
+                }
+
+                // Update the MetadataHash for all those tracks
+                DatabaseTrackInfo.UpdateMetadataHash (
+                    book.Title, author.Name,
+                    String.Format ("PrimarySourceId = {0} AND AlbumID = {1}", library.DbId, book.DbId)
+                );
+
+                library.NotifyTracksChanged ();
+            }
         }
     }
 }
