@@ -41,6 +41,8 @@ namespace Banshee.Gui.Dialogs
             get { return accel_group; }
         }
 
+        private VBox inner_vbox;
+
         public BansheeDialog () : this (null, null)
         {
         }
@@ -52,7 +54,23 @@ namespace Banshee.Gui.Dialogs
         public BansheeDialog (string title, Window parent) : base ()
         {
             Title = title ?? String.Empty;
-            BorderWidth = 12;
+
+            // Below is the widget hierarchy.  The ActionArea has a BorderWidth
+            // of 5, set in Gtk.Dialog apparently.  So we set the overall
+            // dialog's BorderWidth to 7 to total 12, and create an inner_vbox
+            // with a BorderWidth of 5 as well, so that the ActionArea and the
+            // VBox (actually inner_vbox) are aligned.
+            //
+            // Dialog
+            //   VBox
+            //     inner_vbox
+            //     ActionArea
+            BorderWidth = 7;
+            base.VBox.BorderWidth = 0;
+
+            inner_vbox = new VBox () { Spacing = 12, BorderWidth = 5, Visible = true };
+            base.VBox.PackStart (inner_vbox, false, false, 0);
+
             Visible = false;
             HasSeparator = false;
 
@@ -73,6 +91,8 @@ namespace Banshee.Gui.Dialogs
             accel_group = new AccelGroup ();
             AddAccelGroup (accel_group);
         }
+
+        public new VBox VBox { get { return inner_vbox; } }
 
         public new ResponseType Run ()
         {
