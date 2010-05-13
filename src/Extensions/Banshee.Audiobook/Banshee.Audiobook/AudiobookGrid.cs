@@ -63,6 +63,7 @@ namespace Banshee.Audiobook
             };
 
             ViewLayout = layout;
+            RowActivated += (o, a) => library.Actions["AudiobookOpen"].Activate ();
         }
 
         public void SetLibrary (AudiobookLibrarySource library)
