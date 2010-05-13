@@ -55,21 +55,24 @@ namespace Banshee.Gui.Dialogs
         {
             Title = title ?? String.Empty;
 
-            // Below is the widget hierarchy.  The ActionArea has a BorderWidth
-            // of 5, set in Gtk.Dialog apparently.  So we set the overall
-            // dialog's BorderWidth to 7 to total 12, and create an inner_vbox
-            // with a BorderWidth of 5 as well, so that the ActionArea and the
-            // VBox (actually inner_vbox) are aligned.
+            // The BorderWidth situation here is a bit nuts b/c the
+            // ActionArea's is set to 5.  So we work everything else out
+            // so it all totals to 12.
             //
-            // Dialog
-            //   VBox
-            //     inner_vbox
-            //     ActionArea
-            BorderWidth = 7;
+            // WIDGET           BorderWidth
+            // Dialog           5
+            //   VBox           2
+            //     inner_vbox   5 => total = 12
+            //     ActionArea   5 => total = 12
+            BorderWidth = 5;
             base.VBox.BorderWidth = 0;
 
+            // This spacing is 2 b/c the inner_vbox and ActionArea should be
+            // 12 apart, and they already have BorderWidth 5 each
+            base.VBox.Spacing = 2;
+
             inner_vbox = new VBox () { Spacing = 12, BorderWidth = 5, Visible = true };
-            base.VBox.PackStart (inner_vbox, false, false, 0);
+            base.VBox.PackStart (inner_vbox, true, true, 0);
 
             Visible = false;
             HasSeparator = false;
