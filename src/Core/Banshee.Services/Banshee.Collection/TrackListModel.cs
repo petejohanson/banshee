@@ -41,12 +41,12 @@ namespace Banshee.Collection
     {
         public TrackListModel() : base ()
         {
-            selection = new Selection ();
+            Selection = new Selection ();
         }
 
         public TrackListModel(IDBusExportable parent) : base(parent)
         {
-            selection = new Selection ();
+            Selection = new Selection ();
         }
 
         public abstract int IndexOf (TrackInfo track);

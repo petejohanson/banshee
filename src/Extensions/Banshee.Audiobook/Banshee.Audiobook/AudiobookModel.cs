@@ -47,7 +47,7 @@ namespace Banshee.Audiobook
     {
         public AudiobookModel (DatabaseSource source, DatabaseTrackListModel trackModel, BansheeDbConnection connection, string uuid) : base (source, trackModel, connection, uuid)
         {
-            selection = new Hyena.Collections.Selection ();
+            Selection = new Hyena.Collections.Selection ();
             //CalculateUnfilteredCount = true;
             HasSelectAllItem = false;
         }

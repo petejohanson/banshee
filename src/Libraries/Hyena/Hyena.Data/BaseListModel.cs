@@ -35,7 +35,7 @@ namespace Hyena.Data
 {
     public abstract class BaseListModel<T> : IListModel<T>
     {
-        protected Selection selection;
+        private Selection selection;
 
         public event EventHandler Cleared;
         public event EventHandler Reloaded;
@@ -46,6 +46,8 @@ namespace Hyena.Data
 
         protected virtual void OnCleared ()
         {
+            Selection.MaxIndex = Count - 1;
+
             EventHandler handler = Cleared;
             if(handler != null) {
                 handler(this, EventArgs.Empty);
@@ -54,6 +56,8 @@ namespace Hyena.Data
 
         protected virtual void OnReloaded ()
         {
+            Selection.MaxIndex = Count - 1;
+
             EventHandler handler = Reloaded;
             if(handler != null) {
                 handler(this, EventArgs.Empty);
@@ -80,6 +84,7 @@ namespace Hyena.Data
 
         public virtual Selection Selection {
             get { return selection; }
+            protected set { selection = value; }
         }
 
         protected ModelSelection<T> model_selection;

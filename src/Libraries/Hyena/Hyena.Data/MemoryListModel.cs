@@ -40,7 +40,7 @@ namespace Hyena.Data
         public MemoryListModel ()
         {
             list = new List<T> ();
-            selection = new Selection ();
+            Selection = new Selection ();
         }
 
         public override void Clear ()

@@ -112,10 +112,6 @@ namespace Hyena.Data.Gui
                 ScrollToY (vadjustment.Value);
             }
 
-            if (Model != null && Selection != null) {
-                Selection.MaxIndex = Model.Count - 1;
-            }
-
             if (Parent is ScrolledWindow) {
                 Parent.QueueDraw ();
             }

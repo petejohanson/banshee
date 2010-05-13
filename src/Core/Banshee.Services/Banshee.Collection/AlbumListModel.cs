@@ -38,14 +38,14 @@ namespace Banshee.Collection
     {
         public AlbumListModel() : base ()
         {
-            selection = new SelectAllSelection ();
-            selection.SelectAll ();
+            Selection = new SelectAllSelection ();
+            Selection.SelectAll ();
         }
 
         public AlbumListModel(IDBusExportable parent) : base(parent)
         {
-            selection = new SelectAllSelection ();
-            selection.SelectAll ();
+            Selection = new SelectAllSelection ();
+            Selection.SelectAll ();
         }
 
         public override void Clear ()
