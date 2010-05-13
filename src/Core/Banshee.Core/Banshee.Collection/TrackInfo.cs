@@ -386,6 +386,7 @@ namespace Banshee.Collection
         public virtual string MetadataHash {
             get {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+                // Keep this field set/order in sync with UpdateMetadataHash in DatabaseTrackInfo.cs
                 sb.Append (AlbumTitle);
                 sb.Append (ArtistName);
                 sb.Append (Genre);

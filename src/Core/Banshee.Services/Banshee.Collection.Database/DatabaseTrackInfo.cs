@@ -726,6 +726,16 @@ namespace Banshee.Collection.Database
         {
             return GetTrackIdForUri (uri, primary_sources) > 0;
         }
+
+        public static void UpdateMetadataHash (string albumTitle, string artistName, string condition)
+        {
+            // Keep this field set/order in sync with MetadataHash in TrackInfo.cs
+            ServiceManager.DbConnection.Execute (String.Format (
+                @"UPDATE CoreTracks SET MetadataHash = HYENA_MD5 (6, ?, ?, Genre, Title, TrackNumber, Year)
+                    WHERE {0}",
+                condition), albumTitle, artistName
+            );
+        }
     }
 }
 
