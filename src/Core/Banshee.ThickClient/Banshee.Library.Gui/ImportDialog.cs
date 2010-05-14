@@ -274,9 +274,9 @@ namespace Banshee.Library.Gui
             set { do_not_show_check_button.Visible = value; }
         }
 
-        private bool DoNotShowAgain {
+        /*private bool DoNotShowAgain {
             get { return do_not_show_check_button.Active; }
-        }
+        }*/
 
         public IImportSource ActiveSource {
             get {
