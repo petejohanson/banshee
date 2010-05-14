@@ -88,7 +88,7 @@ namespace Banshee.Base
         public static string CreateArtistAlbumId (string artist, string album)
         {
             if (album == unknown_album || album == unknown_album_tr) {
-		// do not attempt to group unknown album tracks together
+                // do not attempt to group unknown album tracks together
                 return null;
             }
 
