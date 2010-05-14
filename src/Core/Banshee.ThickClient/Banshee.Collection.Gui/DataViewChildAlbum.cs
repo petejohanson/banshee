@@ -277,7 +277,8 @@ namespace Banshee.Collection.Gui
                 throw new InvalidCastException ("ColumnCellAlbum can only bind to AlbumInfo objects");
             }
 
-            lines = new [] { album.DisplayTitle, ModelRowIndex == 0 ? "" : album.DisplayArtistName };
+            bool hide_artist = ModelRowIndex == 0 && String.IsNullOrEmpty (album.ArtistName);
+            lines = new [] { album.DisplayTitle, hide_artist ? "" : album.DisplayArtistName };
             image = artwork_manager != null
                 ? artwork_manager.LookupScaleSurface (album.ArtworkId, (int)ImageSize, true)
                 : null;
