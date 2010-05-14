@@ -58,12 +58,6 @@ namespace Banshee.Audiobook
                     Catalog.GetString ("_Edit Track Information"), "E", null, OnEdit)
             );
 
-            /*AddImportant (
-                new ActionEntry ("VisitInternetArchive", Stock.JumpTo, Catalog.GetString ("Visit Archive.org"), null, null, (o, a) => {
-                    Banshee.Web.Browser.Open ("http://archive.org");
-                })
-            );*/
-
             AddUiFromFile ("GlobalUI.xml");
 
             Register ();
@@ -97,7 +91,6 @@ namespace Banshee.Audiobook
 
         private void OnEdit (object o, EventArgs a)
         {
-            //var books = library.BooksModel.SelectedItems;
             library.TrackModel.Selection.SelectAll ();
             Actions.TrackActions["TrackEditorAction"].Activate ();
         }
