@@ -329,10 +329,10 @@ namespace Banshee.Gui.Widgets
 
         protected virtual bool IsWithinCoverart (int x, int y)
         {
-            return x >= Allocation.X &&
-                y >= Allocation.Y + ArtworkOffset &&
-                x <= (Allocation.X + ArtworkSizeRequest) &&
-                y <= (Allocation.Y + ArtworkOffset + ArtworkSizeRequest);
+            return x >= 0 &&
+                y >= ArtworkOffset &&
+                x <= ArtworkSizeRequest &&
+                y <= (ArtworkOffset + ArtworkSizeRequest);
         }
 
         protected bool IsMissingImage (ImageSurface pb)
