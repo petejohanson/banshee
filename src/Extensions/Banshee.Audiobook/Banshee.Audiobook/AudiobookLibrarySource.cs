@@ -47,7 +47,9 @@ namespace Banshee.Audiobook
 {
     public class AudiobookLibrarySource : LibrarySource
     {
-        private AudiobookModel books_model;
+        AudiobookModel books_model;
+        LazyLoadSourceContents<AudiobookContent> grid_view;
+        LazyLoadSourceContents<BookView> book_view;
 
         public Actions Actions { get; private set; }
 
@@ -81,10 +83,15 @@ namespace Banshee.Audiobook
             pattern.FileSchema   = CreateSchema<string> ("file_pattern",   pattern.DefaultFile, "", "");
             SetFileNamePattern (pattern);
 
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<AudiobookContent> ());
+            grid_view = new LazyLoadSourceContents<AudiobookContent> ();
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view);
+
+            book_view = new LazyLoadSourceContents<BookView> ();
+
             //Properties.SetString ("GtkActionPath", "/LastfmStationSourcePopup");
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
+            Properties.Set<System.Action> ("ActivationAction", delegate { Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view); });
 
             Actions = new Actions (this);
 
@@ -94,6 +101,13 @@ namespace Banshee.Audiobook
                 }
             };
             TrackModel.Reloaded += delegate { Console.WriteLine ("Audiobooks track model reloaded"); };
+        }
+
+        public void SwitchToBookView (DatabaseAlbumInfo book)
+        {
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", book_view);
+            book_view.SetSource (null);
+            book_view.Contents.SetBook (book);
         }
 
         private void MergeBooksAddedSince (DateTime since)

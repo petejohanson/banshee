@@ -9,7 +9,9 @@ SOURCES =  \
 	Banshee.Audiobook/AudiobookFileNamePattern.cs \
 	Banshee.Audiobook/AudiobookGrid.cs \
 	Banshee.Audiobook/AudiobookLibrarySource.cs \
-	Banshee.Audiobook/AudiobookModel.cs
+	Banshee.Audiobook/AudiobookModel.cs \
+	Banshee.Audiobook/BookCover.cs \
+	Banshee.Audiobook/BookView.cs
 
 RESOURCES =  \
 	Banshee.Audiobook.addin.xml \

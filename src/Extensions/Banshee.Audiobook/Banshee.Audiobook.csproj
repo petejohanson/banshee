@@ -65,15 +65,24 @@
     <Reference Include="taglib-sharp, Version=2.0.3.6, Culture=neutral, PublicKeyToken=db62eba44689b5b0">
       <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cairo" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Audiobook.addin.xml">
       <LogicalName>Banshee.Audiobook.addin.xml</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ActiveSourceUI.xml" />
+    <EmbeddedResource Include="Resources\GlobalUI.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Banshee.Audiobook\AudiobookLibrarySource.cs" />
+    <Compile Include="Banshee.Audiobook\Actions.cs" />
+    <Compile Include="Banshee.Audiobook\AudiobookContent.cs" />
     <Compile Include="Banshee.Audiobook\AudiobookFileNamePattern.cs" />
+    <Compile Include="Banshee.Audiobook\AudiobookGrid.cs" />
+    <Compile Include="Banshee.Audiobook\AudiobookLibrarySource.cs" />
+    <Compile Include="Banshee.Audiobook\AudiobookModel.cs" />
+    <Compile Include="Banshee.Audiobook\BookView.cs" />
+    <Compile Include="Banshee.Audiobook\BookCover.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
