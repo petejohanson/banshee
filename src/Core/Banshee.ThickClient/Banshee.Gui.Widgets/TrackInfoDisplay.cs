@@ -112,7 +112,7 @@ namespace Banshee.Gui.Widgets
         public TrackInfoDisplay ()
         {
             MissingAudioIconName = "audio-x-generic";
-            MissingAudioIconName = "video-x-generic";
+            MissingVideoIconName = "video-x-generic";
             stage.Iteration += OnStageIteration;
 
             if (ServiceManager.Contains<ArtworkManager> ()) {
