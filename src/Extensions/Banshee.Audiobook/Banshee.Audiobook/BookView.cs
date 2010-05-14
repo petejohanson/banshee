@@ -72,8 +72,6 @@ namespace Banshee.Audiobook
         public BookView ()
         {
             BuildInfoBox ();
-            //BuildFilesBox ();
-
             ShowAll ();
         }
 

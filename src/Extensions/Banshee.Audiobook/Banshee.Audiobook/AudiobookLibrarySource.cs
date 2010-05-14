@@ -57,6 +57,7 @@ namespace Banshee.Audiobook
         {
             MediaTypes = TrackMediaAttributes.AudioBook;
             NotMediaTypes = TrackMediaAttributes.Podcast | TrackMediaAttributes.VideoStream | TrackMediaAttributes.Music;
+            SupportsPlaylists = false;
 
             Properties.SetStringList ("Icon.Name", "audiobook", "source-library");
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
