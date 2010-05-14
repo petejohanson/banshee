@@ -380,7 +380,10 @@ namespace Nereid
 
             source_view.RowActivated += delegate {
                 Source source = ServiceManager.SourceManager.ActiveSource;
-                if (source is ITrackModelSource) {
+                var handler = source.Properties.Get<System.Action> ("ActivationAction");
+                if (handler != null) {
+                    handler ();
+                } else if (source is ITrackModelSource) {
                     ServiceManager.PlaybackController.NextSource = (ITrackModelSource)source;
                     // Allow changing the play source without stopping the current song by
                     // holding ctrl when activating a source. After the song is done, playback will
