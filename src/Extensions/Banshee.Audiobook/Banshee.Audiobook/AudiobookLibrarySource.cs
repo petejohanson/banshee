@@ -88,7 +88,6 @@ namespace Banshee.Audiobook
 
             book_view = new LazyLoadSourceContents<BookView> ();
 
-            //Properties.SetString ("GtkActionPath", "/LastfmStationSourcePopup");
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
             Properties.Set<System.Action> ("ActivationAction", delegate { Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view); });
@@ -100,7 +99,6 @@ namespace Banshee.Audiobook
                     MergeBooksAddedSince (DateTime.Now - TimeSpan.FromHours (2));
                 }
             };
-            TrackModel.Reloaded += delegate { Console.WriteLine ("Audiobooks track model reloaded"); };
         }
 
         public void SwitchToBookView (DatabaseAlbumInfo book)

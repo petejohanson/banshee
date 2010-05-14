@@ -91,8 +91,6 @@ namespace Banshee.Audiobook
             var index = library.BooksModel.Selection.FocusedIndex;
             if (index > -1) {
                 var book = library.BooksModel[index];
-                Console.WriteLine ("Asked to open {0}", book);
-
                 library.SwitchToBookView (book as DatabaseAlbumInfo);
             }
         }
