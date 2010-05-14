@@ -253,7 +253,7 @@ namespace Nereid
                 };
                 source_scroll.Add (source_view);
 
-                var color = new Gdk.Color ((byte)0xdd, (byte)0xdd, (byte)0xdd);
+                var color = new Gdk.Color ((byte)0xe6, (byte)0xe6, (byte)0xe6);
                 Gdk.Colormap.System.AllocColor (ref color, true, true);
                 source_view.ModifyBase (StateType.Normal, color);
             } else {
