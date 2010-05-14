@@ -88,6 +88,7 @@ namespace Banshee.GStreamer
         private uint GST_STREAM_ERROR = 0;
 
         private HandleRef handle;
+        private bool is_initialized;
 
         private BansheePlayerEosCallback eos_callback;
         private BansheePlayerErrorCallback error_callback;
@@ -188,11 +189,15 @@ namespace Banshee.GStreamer
 
             OnStateChanged (PlayerState.Ready);
 
-            Volume = (ushort)PlayerEngineService.VolumeSchema.Get ();
-
             InstallPreferences ();
             ReplayGainEnabled = ReplayGainEnabledSchema.Get ();
             GaplessEnabled = GaplessEnabledSchema.Get ();
+
+            is_initialized = true;
+
+            if (!bp_supports_stream_volume (handle)) {
+                Volume = (ushort)PlayerEngineService.VolumeSchema.Get ();
+            }
         }
 
         public override void Dispose ()
@@ -201,6 +206,7 @@ namespace Banshee.GStreamer
             base.Dispose ();
             bp_destroy (handle);
             handle = new HandleRef (this, IntPtr.Zero);
+            is_initialized = false;
         }
 
         public override void Close (bool fullShutdown)
@@ -546,9 +552,21 @@ namespace Banshee.GStreamer
         }
 
         public override ushort Volume {
-            get { return (ushort)Math.Round (bp_get_volume (handle) * 100.0); }
+            get {
+                return is_initialized
+                    ? (ushort)Math.Round (bp_get_volume (handle) * 100.0)
+                    : (ushort)0;
+            }
             set {
+                if (!is_initialized) {
+                    return;
+                }
+
                 bp_set_volume (handle, value / 100.0);
+                if (!bp_supports_stream_volume (handle)) {
+                    PlayerEngineService.VolumeSchema.Set ((int)value);
+                }
+
                 OnEventChanged (PlayerEvent.Volume);
             }
         }
@@ -860,6 +878,9 @@ namespace Banshee.GStreamer
 
         [DllImport ("libbanshee.dll")]
         private static extern bool bp_can_seek (HandleRef player);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern bool bp_supports_stream_volume (HandleRef player);
 
         [DllImport ("libbanshee.dll")]
         private static extern bool bp_set_position (HandleRef player, ulong time_ms);

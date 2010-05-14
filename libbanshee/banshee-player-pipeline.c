@@ -292,6 +292,15 @@ _bp_pipeline_construct (BansheePlayer *player)
     // source and decoder elements) based on source URI and stream content
     player->playbin = gst_element_factory_make ("playbin2", "playbin");
 
+    player->supports_stream_volume = FALSE;
+#if BANSHEE_CHECK_GST_VERSION(0,10,25)
+    player->supports_stream_volume = gst_element_implements_interface (
+        player->playbin, GST_TYPE_STREAM_VOLUME);
+#endif
+
+    bp_debug ("Stream volume supported: %s",
+        player->supports_stream_volume ? "YES" : "NO");
+
 #ifdef ENABLE_GAPLESS
     // Connect a proxy about-to-finish callback that will generate a next-track-starting callback.
     // This can be removed once playbin2 generates its own next-track signal.
