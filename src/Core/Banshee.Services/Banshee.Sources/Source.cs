@@ -302,9 +302,9 @@ namespace Banshee.Sources
             SortChildSources ();
         }
 
-        public T GetProperty<T> (string name, bool propagate)
+        public T GetProperty<T> (string name, bool inherited)
         {
-            return propagate ? GetInheritedProperty<T> (name) : Properties.Get<T> (name);
+            return inherited ? GetInheritedProperty<T> (name) : Properties.Get<T> (name);
         }
 
         public T GetInheritedProperty<T> (string name)
