@@ -39,10 +39,9 @@ using Banshee.Base;
 using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.MediaEngine;
-using Banshee.Gui;
 using Banshee.ServiceStack;
 
-namespace Banshee.Bookmarks
+namespace Banshee.Gui
 {
     public class BookmarkUI
     {
@@ -173,6 +172,7 @@ namespace Banshee.Bookmarks
             rem.Image = new Image (Stock.Remove, IconSize.Menu);
             rem.Activated += delegate {
                 bookmark.Remove ();
+                RemoveBookmark (bookmark);
             };
             remove_menu.Append (rem);
             remove_items[bookmark] = rem;
@@ -181,7 +181,7 @@ namespace Banshee.Bookmarks
             bookmark_menu.ShowAll ();
         }
 
-        public void RemoveBookmark (Bookmark bookmark)
+        private void RemoveBookmark (Bookmark bookmark)
         {
             if (!remove_items.ContainsKey (bookmark))
                 return;

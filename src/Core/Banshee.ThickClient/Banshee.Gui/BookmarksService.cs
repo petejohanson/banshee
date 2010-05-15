@@ -39,10 +39,9 @@ using Banshee.Base;
 using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.MediaEngine;
-using Banshee.Gui;
 using Banshee.ServiceStack;
 
-namespace Banshee.Bookmarks
+namespace Banshee.Gui
 {
     public class BookmarksService : IExtensionService, IDisposable
     {

@@ -31,7 +31,6 @@ using System.Data;
 using System.Linq;
 using System.Collections.Generic;
 
-using Gtk;
 using Mono.Unix;
 
 using Hyena;
@@ -39,12 +38,10 @@ using Hyena.Data.Sqlite;
 
 using Banshee.Base;
 using Banshee.Collection;
-using Banshee.Collection.Database;
 using Banshee.MediaEngine;
-using Banshee.Gui;
 using Banshee.ServiceStack;
 
-namespace Banshee.Bookmarks
+namespace Banshee.Collection.Database
 {
     public class Bookmark
     {
@@ -143,15 +140,7 @@ namespace Banshee.Bookmarks
 
         public void Remove ()
         {
-            try {
-                Provider.Delete (this);
-
-                if (BookmarkUI.Instantiated) {
-                    BookmarkUI.Instance.RemoveBookmark (this);
-                }
-            } catch (Exception e) {
-                Log.Exception ("Error Removing Bookmark", e);
-            }
+            Provider.Delete (this);
         }
 
         // Translators: This is used to generate bookmark names. {0} is track title, {1} is minutes
