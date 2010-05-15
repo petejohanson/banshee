@@ -254,6 +254,7 @@ namespace Nereid
             }
 
             if (widget != null) {
+                widget.HeightRequest = search_entry.Allocation.Height;
                 widget.Show ();
                 custom_title_box.PackStart (widget, false, false, 0);
             }
