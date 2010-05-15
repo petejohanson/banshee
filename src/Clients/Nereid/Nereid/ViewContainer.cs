@@ -41,14 +41,16 @@ using Banshee.ServiceStack;
 
 namespace Nereid
 {
-
     public class ViewContainer : VBox
     {
         private SearchEntry search_entry;
         private HBox header;
         private Alignment header_align;
         private EventBox header_box;
+
+        private EventBox default_title_box;
         private Label title_label;
+        private HBox custom_title_box;
         private Banshee.ContextPane.ContextPane context_pane;
         private VBox footer;
 
@@ -73,19 +75,19 @@ namespace Nereid
             header = new HBox ();
             footer = new VBox ();
 
-            EventBox title_box = new EventBox ();
+            default_title_box = new EventBox ();
             title_label = new Label ();
             title_label.Xalign = 0.0f;
             title_label.Ellipsize = Pango.EllipsizeMode.End;
 
-            title_box.Add (title_label);
+            default_title_box.Add (title_label);
 
             // Show the source context menu when the title is right clicked
-            title_box.PopupMenu += delegate {
+            default_title_box.PopupMenu += delegate {
                 ServiceManager.Get<InterfaceActionService> ().SourceActions ["SourceContextMenuAction"].Activate ();
             };
 
-            title_box.ButtonPressEvent += delegate (object o, ButtonPressEventArgs press) {
+            default_title_box.ButtonPressEvent += delegate (object o, ButtonPressEventArgs press) {
                 if (press.Event.Button == 3) {
                     ServiceManager.Get<InterfaceActionService> ().SourceActions ["SourceContextMenuAction"].Activate ();
                 }
@@ -93,9 +95,12 @@ namespace Nereid
 
             header_box = new EventBox ();
 
+            custom_title_box = new HBox () { Visible = false };
+
             BuildSearchEntry ();
 
-            header.PackStart (title_box, true, true, 0);
+            header.PackStart (default_title_box, true, true, 0);
+            header.PackStart (custom_title_box, true, true, 0);
             header.PackStart (header_box, false, false, 0);
             header.PackStart (search_entry, false, false, 0);
 
@@ -235,6 +240,26 @@ namespace Nereid
 
         public SearchEntry SearchEntry {
             get { return search_entry; }
+        }
+
+        public void SetTitleWidget (Widget widget)
+        {
+            var child = custom_title_box.Children.Length == 0 ? null : custom_title_box.Children[0];
+            if (widget == child) {
+                return;
+            }
+
+            if (child != null) {
+                custom_title_box.Remove (child);
+            }
+
+            if (widget != null) {
+                widget.Show ();
+                custom_title_box.PackStart (widget, false, false, 0);
+            }
+
+            custom_title_box.Visible = widget != null;
+            default_title_box.Visible = widget == null;
         }
 
         public ISourceContents Content {

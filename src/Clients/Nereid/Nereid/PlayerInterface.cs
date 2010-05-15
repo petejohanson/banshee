@@ -525,6 +525,8 @@ namespace Nereid
             view_container.Header.Visible = source.Properties.Contains ("Nereid.SourceContents.HeaderVisible") ?
                 source.Properties.Get<bool> ("Nereid.SourceContents.HeaderVisible") : true;
 
+            view_container.SetTitleWidget (source.Properties.Get<Widget> ("Nereid.SourceContents.TitleWidget"));
+
             Widget header_widget = null;
             if (source.Properties.Contains ("Nereid.SourceContents.HeaderWidget")) {
                 header_widget = source.Properties.Get<Widget> ("Nereid.SourceContents.HeaderWidget");
