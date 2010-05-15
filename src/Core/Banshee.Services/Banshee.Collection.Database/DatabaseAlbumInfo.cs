@@ -74,10 +74,16 @@ namespace Banshee.Collection.Database
 
         public static DatabaseAlbumInfo FindOrCreate (DatabaseArtistInfo artist, string title, string title_sort, bool isCompilation)
         {
+            return FindOrCreate (artist, title, title_sort, isCompilation, null);
+        }
+
+        public static DatabaseAlbumInfo FindOrCreate (DatabaseArtistInfo artist, string title, string title_sort, bool isCompilation, string album_musicrainz_id)
+        {
             DatabaseAlbumInfo album = new DatabaseAlbumInfo ();
             album.Title = title;
             album.TitleSort = title_sort;
             album.IsCompilation = isCompilation;
+            album.MusicBrainzId = album_musicrainz_id;
             return FindOrCreate (artist, album);
         }
 
@@ -129,6 +135,12 @@ namespace Banshee.Collection.Database
                         save = true;
                     }
 
+                    // If the album MusicBrainzId has changed, but is not null
+                    if (last_album.MusicBrainzId != album.MusicBrainzId && !String.IsNullOrEmpty (album.MusicBrainzId)) {
+                        last_album.MusicBrainzId = album.MusicBrainzId;
+                        save = true;
+                    }
+
                     if (save) {
                         last_album.Save ();
                     }
@@ -156,6 +168,7 @@ namespace Banshee.Collection.Database
                 album.ArtistName = found.ArtistName;
                 album.ArtistNameSort = found.ArtistNameSort;
                 album.IsCompilation = found.IsCompilation;
+                album.MusicBrainzId = found.MusicBrainzId;
                 album.dbid = found.DbId;
                 album.ArtistId = found.ArtistId;
                 album.Save ();

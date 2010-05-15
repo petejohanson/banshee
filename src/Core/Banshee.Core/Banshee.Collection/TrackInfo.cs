@@ -209,14 +209,10 @@ namespace Banshee.Collection
         public virtual string MusicBrainzId { get; set; }
 
         [Exportable]
-        public virtual string ArtistMusicBrainzId {
-            get { return null; }
-        }
+        public virtual string ArtistMusicBrainzId { get; set; }
 
         [Exportable]
-        public virtual string AlbumMusicBrainzId {
-            get { return null; }
-        }
+        public virtual string AlbumMusicBrainzId { get; set; }
 
         public virtual DateTime ReleaseDate { get; set; }
 

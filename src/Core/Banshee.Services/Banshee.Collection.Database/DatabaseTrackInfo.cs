@@ -139,11 +139,13 @@ namespace Banshee.Collection.Database
         }
 
         public DatabaseArtistInfo Artist {
-            get { return DatabaseArtistInfo.FindOrCreate (ArtistName, ArtistNameSort); }
+            get { return DatabaseArtistInfo.FindOrCreate (ArtistName, ArtistNameSort, ArtistMusicBrainzId); }
         }
 
         public DatabaseAlbumInfo Album {
-            get { return DatabaseAlbumInfo.FindOrCreate (DatabaseArtistInfo.FindOrCreate (AlbumArtist, AlbumArtistSort), AlbumTitle, AlbumTitleSort, IsCompilation); }
+            get { return DatabaseAlbumInfo.FindOrCreate (
+                DatabaseArtistInfo.FindOrCreate (AlbumArtist, AlbumArtistSort, ArtistMusicBrainzId),
+                AlbumTitle, AlbumTitleSort, IsCompilation, AlbumMusicBrainzId); }
         }
 
         private static bool notify_saved = true;
@@ -392,6 +394,42 @@ namespace Banshee.Collection.Database
         public override string MusicBrainzId {
             get { return base.MusicBrainzId; }
             set { base.MusicBrainzId = value; }
+        }
+
+        [VirtualDatabaseColumn ("MusicBrainzID", "CoreAlbums", "AlbumID", "AlbumID")]
+        protected string AlbumMusicBrainzIdField {
+            get { return base.AlbumMusicBrainzId; }
+            set { base.AlbumMusicBrainzId = value; }
+        }
+
+        public override string AlbumMusicBrainzId {
+            get { return base.AlbumMusicBrainzId; }
+            set {
+                value = CleanseString (value, AlbumMusicBrainzId);
+                if (value == null)
+                    return;
+
+                base.AlbumMusicBrainzId = value;
+                album_changed = true;
+            }
+        }
+
+       [VirtualDatabaseColumn ("MusicBrainzID", "CoreArtists", "ArtistID", "ArtistID")]
+        protected string ArtistMusicBrainzIdField {
+            get { return base.ArtistMusicBrainzId; }
+            set { base.ArtistMusicBrainzId = value; }
+        }
+
+        public override string ArtistMusicBrainzId {
+            get { return base.ArtistMusicBrainzId; }
+            set {
+                value = CleanseString (value, ArtistMusicBrainzId);
+                if (value == null)
+                    return;
+
+                base.ArtistMusicBrainzId = value;
+                artist_changed = true;
+            }
         }
 
         [DatabaseColumn ("Uri")]

@@ -72,9 +72,15 @@ namespace Banshee.Collection.Database
 
         public static DatabaseArtistInfo FindOrCreate (string artistName, string artistNameSort)
         {
+            return FindOrCreate (artistName, artistNameSort, null);
+        }
+
+        public static DatabaseArtistInfo FindOrCreate (string artistName, string artistNameSort, string artistMusicBrainzId)
+        {
             DatabaseArtistInfo artist = new DatabaseArtistInfo ();
             artist.Name = artistName;
             artist.NameSort = artistNameSort;
+            artist.MusicBrainzId = artistMusicBrainzId;
             return FindOrCreate (artist);
         }
 
@@ -100,8 +106,16 @@ namespace Banshee.Collection.Database
             using (IDataReader reader = FindExistingArtists (artist.Name)) {
                 if (reader.Read ()) {
                     last_artist = provider.Load (reader);
+                    bool save = false;
                     if (last_artist.NameSort != artist.NameSort) {
                         last_artist.NameSort = artist.NameSort;
+                        save = true;
+                    }
+                    if (last_artist.MusicBrainzId != artist.MusicBrainzId && !String.IsNullOrEmpty (artist.MusicBrainzId)) {
+                        last_artist.MusicBrainzId = artist.MusicBrainzId;
+                        save = true;
+                    }
+                    if (save) {
                         last_artist.Save ();
                     }
                 } else {
@@ -121,6 +135,7 @@ namespace Banshee.Collection.Database
                 // Overwrite the found artist
                 artist.Name = found.Name;
                 artist.NameSort = found.NameSort;
+                artist.MusicBrainzId = found.MusicBrainzId;
                 artist.dbid = found.DbId;
                 artist.Save ();
             }
