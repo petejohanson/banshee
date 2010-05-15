@@ -72,6 +72,9 @@ namespace Banshee.Bookmarks
         [DatabaseColumn]
         public DateTime CreatedAt { get; private set; }
 
+        [DatabaseColumn]
+        public string Type { get; private set; }
+
         public string Name {
             get {
                 int position_seconds = (int)Position.TotalSeconds;
@@ -85,11 +88,14 @@ namespace Banshee.Bookmarks
 
         public Bookmark () {}
 
-        public Bookmark (DatabaseTrackInfo track, int position_ms)
+        public Bookmark (DatabaseTrackInfo track, int position_ms) : this (track, position_ms, null) {}
+
+        public Bookmark (DatabaseTrackInfo track, int position_ms, string type)
         {
             Track = track;
             Position = TimeSpan.FromMilliseconds (position_ms);
             CreatedAt = DateTime.Now;
+            Type = type;
 
             Provider.Save (this);
         }
@@ -146,11 +152,6 @@ namespace Banshee.Bookmarks
             } catch (Exception e) {
                 Log.Exception ("Error Removing Bookmark", e);
             }
-        }
-
-        public static List<Bookmark> LoadAll ()
-        {
-            return Provider.FetchAll ().ToList ();
         }
 
         // Translators: This is used to generate bookmark names. {0} is track title, {1} is minutes

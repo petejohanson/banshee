@@ -62,6 +62,7 @@ namespace Banshee.Bookmarks
         private InterfaceActionService action_service;
         private ActionGroup actions;
         private uint ui_manager_id;
+        private bool loaded;
 
         private static BookmarkUI instance = null;
         public static BookmarkUI Instance {
@@ -107,7 +108,12 @@ namespace Banshee.Bookmarks
             remove_item.Submenu = remove_menu = new Menu ();
             bookmark_menu.Append (remove_item);
 
-            LoadBookmarks ();
+            actions["BookmarksAction"].Activated += (o, a) => {
+                if (!loaded) {
+                    LoadBookmarks ();
+                    loaded = true;
+                }
+            };
         }
 
         private void HandleMenuShown (object sender, EventArgs args)
@@ -120,7 +126,10 @@ namespace Banshee.Bookmarks
             var track = ServiceManager.PlayerEngine.CurrentTrack as DatabaseTrackInfo;
             if (track != null) {
                 try {
-                    AddBookmark (new Bookmark (track, (int)ServiceManager.PlayerEngine.Position));
+                    var bookmark = new Bookmark (track, (int)ServiceManager.PlayerEngine.Position);
+                    if (loaded) {
+                        AddBookmark (bookmark);
+                    }
                 } catch (Exception e) {
                     Log.Exception ("Unable to Add New Bookmark", e);
                 }
@@ -131,7 +140,7 @@ namespace Banshee.Bookmarks
         {
             separator = new SeparatorMenuItem ();
 
-            foreach (Bookmark bookmark in Bookmark.LoadAll ()) {
+            foreach (var bookmark in Bookmark.Provider.FetchAllMatching ("Type IS NULL")) {
                 AddBookmark (bookmark);
             }
 
