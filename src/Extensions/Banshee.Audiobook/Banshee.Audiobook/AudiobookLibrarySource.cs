@@ -51,8 +51,12 @@ namespace Banshee.Audiobook
         internal const string LAST_PLAYED_BOOKMARK = "audiobook-lastplayed";
 
         AudiobookModel books_model;
+
         LazyLoadSourceContents<AudiobookContent> grid_view;
         LazyLoadSourceContents<BookView> book_view;
+
+        Gtk.HBox title_switcher;
+        Gtk.Label book_label;
 
         public Actions Actions { get; private set; }
 
@@ -87,13 +91,23 @@ namespace Banshee.Audiobook
             SetFileNamePattern (pattern);
 
             grid_view = new LazyLoadSourceContents<AudiobookContent> ();
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view);
-
             book_view = new LazyLoadSourceContents<BookView> ();
+
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view);
 
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
-            Properties.Set<System.Action> ("ActivationAction", delegate { Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view); });
+            Properties.Set<System.Action> ("ActivationAction", delegate { SwitchToGrid (); });
+
+            title_switcher = new Gtk.HBox () { Spacing = 0 };
+            var b = new Gtk.Button () { Label = this.Name, Relief = Gtk.ReliefStyle.None };
+            b.Clicked += delegate { SwitchToGrid (); };
+            title_switcher.PackStart (b);
+
+            title_switcher.ShowAll ();
+            book_label = new Gtk.Label () { Visible = false };
+            title_switcher.PackStart (book_label);
+            Properties.Set<Gtk.Widget> ("Nereid.SourceContents.TitleWidget", title_switcher);
 
             Actions = new Actions (this);
 
@@ -109,11 +123,23 @@ namespace Banshee.Audiobook
                 true);
         }
 
+        private void SwitchToGrid ()
+        {
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view);
+            book_label.Visible = false;
+        }
+
+        public DatabaseAlbumInfo CurrentBook { get; private set; }
         public void SwitchToBookView (DatabaseAlbumInfo book)
         {
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", book_view);
-            book_view.SetSource (this);
-            book_view.Contents.SetBook (book);
+            if (!book_label.Visible) {
+                CurrentBook = book;
+                book_label.Text = String.Format (" »  {0}", book.DisplayTitle);
+                book_label.Visible = true;
+                book_view.SetSource (this);
+                book_view.Contents.SetBook (book);
+                Properties.Set<ISourceContents> ("Nereid.SourceContents", book_view);
+            }
         }
 
         private void MergeBooksAddedSince (DateTime since)
