@@ -199,7 +199,7 @@ namespace Hyena.Data.Sqlite
             IDictionary<string, string> schema = connection.GetSchema (TableName);
             if (schema.Count > 0) {
                 foreach (DatabaseColumn column in columns) {
-                    if (!schema.ContainsKey (column.Name)) {
+                    if (!schema.ContainsKey (column.Name.ToLower ())) {
                         AddColumnToTable (column.Schema);
                     }
                     if (column.Index != null && !connection.IndexExists (column.Index)) {
