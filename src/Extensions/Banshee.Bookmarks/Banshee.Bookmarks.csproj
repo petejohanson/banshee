@@ -82,7 +82,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banshee.Bookmarks\Bookmark.cs" />
     <Compile Include="Banshee.Bookmarks\BookmarksService.cs" />
+    <Compile Include="Banshee.Bookmarks\BookmarkUI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
