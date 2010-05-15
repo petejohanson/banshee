@@ -65,8 +65,10 @@ namespace Banshee.Audiobook
         AudiobookLibrarySource library;
 
         Alignment align;
-        Label title;
+        Label title_label;
+        Label bookmarks_label;
         BookCover cover;
+        RatingEntry rating_entry;
         BaseTrackListView track_list;
 
         public BookView ()
@@ -79,7 +81,7 @@ namespace Banshee.Audiobook
         {
             ThreadAssist.AssertInMainThread ();
 
-            title.Markup = String.Format (
+            title_label.Markup = String.Format (
                 "<span size=\"x-large\" weight=\"bold\">{0}</span>\n" +
                 "{1}",
                 GLib.Markup.EscapeText (book.Title),
@@ -90,6 +92,20 @@ namespace Banshee.Audiobook
                 TrackMediaAttributes.AudioStream | TrackMediaAttributes.AudioBook,
                 CoverArtSpec.CreateArtistAlbumId (book.ArtistName, book.Title)
             );
+
+            var bookmarks = Bookmark.Provider.FetchAllMatching (
+                "TrackID IN (SELECT TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?)",
+                library.DbId, book.DbId
+            );
+
+            bookmarks_label.Text = "";
+            foreach (var bookmark in bookmarks) {
+                bookmarks_label.Text += String.Format ("{0}{1}\n", bookmark.Type == AudiobookLibrarySource.LAST_PLAYED_BOOKMARK ? "* " : "", bookmark.Name);
+            }
+
+            rating_entry.Value = (int) Math.Round (ServiceManager.DbConnection.Query<double> (
+                "SELECT AVG(RATING) FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?", library.DbId, book.DbId
+            ));
         }
 
         public override void Dispose ()
@@ -143,14 +159,23 @@ namespace Banshee.Audiobook
             var editable_cover = TrackInfoDisplay.GetEditable (cover);
 
             // Title
-            title = new Label () {
+            title_label = new Label () {
                 Xalign = 0,
                 Yalign = 0
             };
 
+            // FIXME the left padding on this is not right
+            rating_entry = new RatingEntry () {
+                AlwaysShowEmptyStars = true,
+                HasFrame = false
+            };
+            var rating = new HBox ();
+            rating.PackStart (rating_entry, false, false, 0);
+
             // Packing
             left_box.PackStart (editable_cover, false, false,  0);
-            left_box.PackStart (title, true, true,  0);
+            left_box.PackStart (title_label, false, false,  0);
+            //left_box.PackStart (rating, false, false,  0);
 
             hbox.PackStart (left_box, false, false, 0);
 
@@ -159,7 +184,8 @@ namespace Banshee.Audiobook
 
             var notebook = new Notebook () { WidthRequest = 450, HeightRequest = 600 };
             notebook.ShowBorder = false;
-            notebook.AppendPage (new Label ("Bookmark support coming soon!"), new Label (Catalog.GetString ("Bookmarks")));
+            bookmarks_label = new Label ();
+            notebook.AppendPage (bookmarks_label, new Label (Catalog.GetString ("Bookmarks")));
 
             // Tracks
 

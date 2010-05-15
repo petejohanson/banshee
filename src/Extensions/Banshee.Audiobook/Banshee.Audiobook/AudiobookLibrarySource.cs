@@ -37,6 +37,7 @@ using Banshee.Library;
 using Banshee.Collection;
 using Banshee.SmartPlaylist;
 using Banshee.Collection.Database;
+using Banshee.MediaEngine;
 using Banshee.Sources;
 using Banshee.Database;
 using Banshee.ServiceStack;
@@ -47,6 +48,8 @@ namespace Banshee.Audiobook
 {
     public class AudiobookLibrarySource : LibrarySource
     {
+        internal const string LAST_PLAYED_BOOKMARK = "audiobook-lastplayed";
+
         AudiobookModel books_model;
         LazyLoadSourceContents<AudiobookContent> grid_view;
         LazyLoadSourceContents<BookView> book_view;
@@ -99,12 +102,17 @@ namespace Banshee.Audiobook
                     MergeBooksAddedSince (DateTime.Now - TimeSpan.FromHours (2));
                 }
             };
+
+            // Listen for playback changes and auto-set the last-played bookmark
+            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
+                PlayerEvent.StartOfStream | PlayerEvent.EndOfStream | PlayerEvent.Seek,
+                true);
         }
 
         public void SwitchToBookView (DatabaseAlbumInfo book)
         {
             Properties.Set<ISourceContents> ("Nereid.SourceContents", book_view);
-            book_view.SetSource (null);
+            book_view.SetSource (this);
             book_view.Contents.SetBook (book);
         }
 
@@ -123,12 +131,74 @@ namespace Banshee.Audiobook
             //}
         }
 
+        private DatabaseTrackInfo book_track;
+        private void OnPlayerEvent (PlayerEventArgs args)
+        {
+            book_track = ServiceManager.PlayerEngine.CurrentTrack as DatabaseTrackInfo;
+            if (book_track == null || book_track.PrimarySourceId != this.DbId) {
+                book_track = null;
+            }
+
+            switch (args.Event) {
+                case PlayerEvent.StartOfStream:
+                    if (book_track != null) {
+                        StartTimeout ();
+                    }
+                    break;
+                case PlayerEvent.EndOfStream:
+                    StopTimeout ();
+                    break;
+                case PlayerEvent.Seek:
+                    UpdateLastPlayed ();
+                    break;
+            }
+        }
+
+        private uint timeout_id;
+        private void StartTimeout ()
+        {
+            if (timeout_id == 0) {
+                timeout_id = Application.RunTimeout (5000, delegate { UpdateLastPlayed (); return true; });
+            }
+        }
+
+        private void StopTimeout ()
+        {
+            if (timeout_id != 0) {
+                Application.IdleTimeoutRemove (timeout_id);
+                timeout_id = 0;
+            }
+        }
+
+        private Bookmark bookmark;
+        private void UpdateLastPlayed ()
+        {
+            if (book_track != null) {
+                // Find and remove the last bookmark for this book
+                if (bookmark == null) {
+                    bookmark = Bookmark.Provider.FetchFirstMatching (
+                        "Type = ? AND TrackID IN (SELECT TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?)",
+                        LAST_PLAYED_BOOKMARK, this.DbId, book_track.AlbumId
+                    );
+                }
+
+                if (bookmark != null) {
+                    bookmark.Remove ();
+                }
+
+                // Insert the new one
+                bookmark = new Bookmark (book_track, (int)ServiceManager.PlayerEngine.Position, LAST_PLAYED_BOOKMARK);
+            }
+        }
+
         public override void Dispose ()
         {
             if (Actions != null) {
                 Actions.Dispose ();
                 Actions = null;
             }
+
+            ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
 
             base.Dispose ();
         }
