@@ -28,7 +28,9 @@
 
 using System;
 using System.Data;
+using System.Linq;
 using System.Collections.Generic;
+
 using Gtk;
 using Mono.Unix;
 
@@ -46,73 +48,70 @@ namespace Banshee.Bookmarks
 {
     public class Bookmark
     {
-        private int id;
-        private int track_id;
-        private uint position;
-        private DateTime created_at;
+        private static SqliteModelProvider<Bookmark> provider;
+        public static SqliteModelProvider<Bookmark> Provider {
+            get {
+                return provider ?? (provider = new SqliteModelProvider<Bookmark> (ServiceManager.DbConnection, "Bookmarks", true));
+            }
+        }
 
-        // Translators: This is used to generate bookmark names. {0} is track title, {1} is minutes
-        // (possibly more than two digits) and {2} is seconds (between 00 and 60).
-        private readonly string bookmark_format = Catalog.GetString("{0} ({1}:{2:00})");
+        [DatabaseColumn (Constraints = DatabaseColumnConstraints.PrimaryKey)]
+        public long BookmarkId { get; private set; }
 
-        private string name;
+        [DatabaseColumn]
+        protected int TrackId {
+            get { return Track.TrackId; }
+            set {
+                Track = DatabaseTrackInfo.Provider.FetchSingle (value);
+            }
+        }
+
+        [DatabaseColumn]
+        public TimeSpan Position { get; private set; }
+
+        [DatabaseColumn]
+        public DateTime CreatedAt { get; private set; }
+
         public string Name {
-            get { return name; }
-            set { name = value; }
+            get {
+                int position_seconds = (int)Position.TotalSeconds;
+                return String.Format (NAME_FMT,
+                    Track.DisplayTrackTitle, position_seconds / 60, position_seconds % 60
+                );
+            }
         }
 
-        public DateTime CreatedAt {
-            get { return created_at; }
-        }
+        public DatabaseTrackInfo Track { get; private set; }
 
-        public TrackInfo Track {
-            get { return DatabaseTrackInfo.Provider.FetchSingle(track_id); }
-        }
+        public Bookmark () {}
 
-        private Bookmark(int id, int track_id, uint position, DateTime created_at)
+        public Bookmark (DatabaseTrackInfo track, int position_ms)
         {
-            this.id = id;
-            this.track_id = track_id;
-            this.position = position;
-            this.created_at = created_at;
-            uint position_seconds = position/1000;
-            Name = String.Format(bookmark_format, Track.DisplayTrackTitle, position_seconds/60, position_seconds%60);
+            Track = track;
+            Position = TimeSpan.FromMilliseconds (position_ms);
+            CreatedAt = DateTime.Now;
+
+            Provider.Save (this);
         }
 
-        public Bookmark(int track_id, uint position)
+        public void JumpTo ()
         {
-            Console.WriteLine ("Bookmark, main thread? {0}", ThreadAssist.InMainThread);
-            this.track_id = track_id;
-            this.position = position;
-            this.created_at = DateTime.Now;
-            uint position_seconds = position/1000;
-            Name = String.Format(bookmark_format, Track.DisplayTrackTitle, position_seconds/60, position_seconds%60);
-
-            this.id = ServiceManager.DbConnection.Execute (new HyenaSqliteCommand (@"
-                    INSERT INTO Bookmarks
-                    (TrackID, Position, CreatedAt)
-                    VALUES (?, ?, ?)",
-                    track_id, position, DateTimeUtil.FromDateTime(created_at) ));
-        }
-
-        public void JumpTo()
-        {
-            DatabaseTrackInfo track = Track as DatabaseTrackInfo;
-            DatabaseTrackInfo current_track = ServiceManager.PlayerEngine.CurrentTrack as DatabaseTrackInfo;
+            var track = Track;
+            var current_track = ServiceManager.PlayerEngine.CurrentTrack as DatabaseTrackInfo;
             if (track != null) {
                 if (current_track == null || current_track.TrackId != track.TrackId) {
                     ServiceManager.PlayerEngine.ConnectEvent (HandleStateChanged, PlayerEvent.StateChange);
                     ServiceManager.PlayerEngine.OpenPlay (track);
                 } else {
                     if (ServiceManager.PlayerEngine.CanSeek) {
-                        ServiceManager.PlayerEngine.Position = position;
+                        ServiceManager.PlayerEngine.Position = (uint)Position.TotalMilliseconds;
                     } else {
                         ServiceManager.PlayerEngine.ConnectEvent (HandleStateChanged, PlayerEvent.StateChange);
                         ServiceManager.PlayerEngine.Play ();
                     }
                 }
             } else {
-                Remove();
+                Remove ();
             }
         }
 
@@ -131,64 +130,31 @@ namespace Banshee.Bookmarks
                 }
 
                 if (ServiceManager.PlayerEngine.CanSeek) {
-                    ServiceManager.PlayerEngine.Position = position;
+                    ServiceManager.PlayerEngine.Position = (uint)Position.TotalMilliseconds;
                 }
             }
         }
 
-        public void Remove()
+        public void Remove ()
         {
             try {
-                ServiceManager.DbConnection.Execute(String.Format(
-                    "DELETE FROM Bookmarks WHERE BookmarkID = {0}", id
-                ));
+                Provider.Delete (this);
 
-                if (BookmarkUI.Instantiated)
-                    BookmarkUI.Instance.RemoveBookmark(this);
-            } catch (Exception e) {
-                Log.Warning("Error Removing Bookmark", e.ToString(), false);
-            }
-        }
-
-        public static List<Bookmark> LoadAll()
-        {
-            List<Bookmark> bookmarks = new List<Bookmark>();
-
-            IDataReader reader = ServiceManager.DbConnection.Query(
-                "SELECT BookmarkID, TrackID, Position, CreatedAt FROM Bookmarks"
-            );
-
-            while (reader.Read()) {
-                try {
-                    bookmarks.Add(new Bookmark(
-                        reader.GetInt32 (0), reader.GetInt32 (1), Convert.ToUInt32 (reader[2]),
-                        DateTimeUtil.ToDateTime(Convert.ToInt64(reader[3]))
-                    ));
-                } catch (Exception e) {
-                    ServiceManager.DbConnection.Execute(String.Format(
-                        "DELETE FROM Bookmarks WHERE BookmarkID = {0}", reader.GetInt32 (0)
-                    ));
-
-                    Log.Warning("Error Loading Bookmark", e.ToString(), false);
+                if (BookmarkUI.Instantiated) {
+                    BookmarkUI.Instance.RemoveBookmark (this);
                 }
+            } catch (Exception e) {
+                Log.Exception ("Error Removing Bookmark", e);
             }
-            reader.Dispose();
-
-            return bookmarks;
         }
 
-        public static void Initialize()
+        public static List<Bookmark> LoadAll ()
         {
-            if (!ServiceManager.DbConnection.TableExists("Bookmarks")) {
-                ServiceManager.DbConnection.Execute(@"
-                    CREATE TABLE Bookmarks (
-                        BookmarkID          INTEGER PRIMARY KEY,
-                        TrackID             INTEGER NOT NULL,
-                        Position            INTEGER NOT NULL,
-                        CreatedAt           INTEGER NOT NULL
-                    )
-                ");
-            }
+            return Provider.FetchAll ().ToList ();
         }
+
+        // Translators: This is used to generate bookmark names. {0} is track title, {1} is minutes
+        // (possibly more than two digits) and {2} is seconds (between 00 and 60).
+        private static readonly string NAME_FMT = Catalog.GetString ("{0} ({1}:{2:00})");
     }
 }

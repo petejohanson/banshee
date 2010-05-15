@@ -54,10 +54,10 @@ namespace Banshee.Bookmarks
         private ImageMenuItem remove_item;
         private SeparatorMenuItem separator;
 
-        private List<Bookmark> bookmarks = new List<Bookmark>();
-        private Dictionary<Bookmark, MenuItem> select_items = new Dictionary<Bookmark, MenuItem>();
-        private Dictionary<Bookmark, MenuItem> remove_items = new Dictionary<Bookmark, MenuItem>();
-        private Dictionary<MenuItem, Bookmark> bookmark_map = new Dictionary<MenuItem, Bookmark>();
+        private List<Bookmark> bookmarks = new List<Bookmark> ();
+        private Dictionary<Bookmark, MenuItem> select_items = new Dictionary<Bookmark, MenuItem> ();
+        private Dictionary<Bookmark, MenuItem> remove_items = new Dictionary<Bookmark, MenuItem> ();
+        private Dictionary<MenuItem, Bookmark> bookmark_map = new Dictionary<MenuItem, Bookmark> ();
 
         private InterfaceActionService action_service;
         private ActionGroup actions;
@@ -67,7 +67,7 @@ namespace Banshee.Bookmarks
         public static BookmarkUI Instance {
             get {
                 if (instance == null)
-                    instance = new BookmarkUI();
+                    instance = new BookmarkUI ();
                 return instance;
             }
         }
@@ -76,125 +76,124 @@ namespace Banshee.Bookmarks
             get { return instance != null; }
         }
 
-        private BookmarkUI()
+        private BookmarkUI ()
         {
             action_service = ServiceManager.Get<InterfaceActionService> ("InterfaceActionService");
 
-            actions = new ActionGroup("Bookmarks");
+            actions = new ActionGroup ("Bookmarks");
 
-            actions.Add(new ActionEntry [] {
-                new ActionEntry("BookmarksAction", null,
-                                  Catalog.GetString("_Bookmarks"), null,
+            actions.Add (new ActionEntry [] {
+                new ActionEntry ("BookmarksAction", null,
+                                  Catalog.GetString ("_Bookmarks"), null,
                                   null, null),
-                new ActionEntry("BookmarksAddAction", Stock.Add,
-                                  Catalog.GetString("_Add Bookmark"), "<control>D",
-                                  Catalog.GetString("Bookmark the Position in the Current Track"),
+                new ActionEntry ("BookmarksAddAction", Stock.Add,
+                                  Catalog.GetString ("_Add Bookmark"), "<control>D",
+                                  Catalog.GetString ("Bookmark the Position in the Current Track"),
                                   HandleNewBookmark)
             });
 
-            action_service.UIManager.InsertActionGroup(actions, 0);
-            ui_manager_id = action_service.UIManager.AddUiFromResource("BookmarksMenu.xml");
-            bookmark_item = action_service.UIManager.GetWidget("/MainMenu/ToolsMenu/Bookmarks") as ImageMenuItem;
-            new_item = action_service.UIManager.GetWidget("/MainMenu/ToolsMenu/Bookmarks/Add") as ImageMenuItem;
+            action_service.UIManager.InsertActionGroup (actions, 0);
+            ui_manager_id = action_service.UIManager.AddUiFromResource ("BookmarksMenu.xml");
+            bookmark_item = action_service.UIManager.GetWidget ("/MainMenu/ToolsMenu/Bookmarks") as ImageMenuItem;
+            new_item = action_service.UIManager.GetWidget ("/MainMenu/ToolsMenu/Bookmarks/Add") as ImageMenuItem;
 
             bookmark_menu = bookmark_item.Submenu as Menu;
             bookmark_item.Selected += HandleMenuShown;
 
-            remove_item = new ImageMenuItem(Catalog.GetString("_Remove Bookmark"));
+            remove_item = new ImageMenuItem (Catalog.GetString ("_Remove Bookmark"));
             remove_item.Sensitive = false;
-            remove_item.Image = new Image(Stock.Remove, IconSize.Menu);
+            remove_item.Image = new Image (Stock.Remove, IconSize.Menu);
 
-            remove_item.Submenu = remove_menu = new Menu();
-            bookmark_menu.Append(remove_item);
+            remove_item.Submenu = remove_menu = new Menu ();
+            bookmark_menu.Append (remove_item);
 
             LoadBookmarks ();
         }
 
-        private void HandleMenuShown(object sender, EventArgs args)
+        private void HandleMenuShown (object sender, EventArgs args)
         {
             new_item.Sensitive = (ServiceManager.PlayerEngine.CurrentTrack != null);
         }
 
-        private void HandleNewBookmark(object sender, EventArgs args)
+        private void HandleNewBookmark (object sender, EventArgs args)
         {
-            DatabaseTrackInfo track = ServiceManager.PlayerEngine.CurrentTrack as DatabaseTrackInfo;
+            var track = ServiceManager.PlayerEngine.CurrentTrack as DatabaseTrackInfo;
             if (track != null) {
                 try {
-                    Bookmark bookmark = new Bookmark(track.TrackId, ServiceManager.PlayerEngine.Position);
-                    AddBookmark(bookmark);
+                    AddBookmark (new Bookmark (track, (int)ServiceManager.PlayerEngine.Position));
                 } catch (Exception e) {
-                    Log.Warning("Unable to Add New Bookmark", e.ToString(), false);
+                    Log.Exception ("Unable to Add New Bookmark", e);
                 }
             }
         }
 
         private void LoadBookmarks ()
         {
-            separator = new SeparatorMenuItem();
+            separator = new SeparatorMenuItem ();
 
-            foreach (Bookmark bookmark in Bookmark.LoadAll()) {
-                AddBookmark(bookmark);
+            foreach (Bookmark bookmark in Bookmark.LoadAll ()) {
+                AddBookmark (bookmark);
             }
 
-            bookmark_item.ShowAll();
+            bookmark_item.ShowAll ();
         }
 
-        public void AddBookmark(Bookmark bookmark)
+        public void AddBookmark (Bookmark bookmark)
         {
-            if (select_items.ContainsKey(bookmark))
+            if (select_items.ContainsKey (bookmark))
                 return;
 
-            bookmarks.Add(bookmark);
+            bookmarks.Add (bookmark);
             if (bookmarks.Count == 1) {
-                bookmark_menu.Append(separator);
+                bookmark_menu.Append (separator);
                 remove_item.Sensitive = true;
             }
 
             // Add menu item to jump to this bookmark
-            ImageMenuItem select_item = new ImageMenuItem(bookmark.Name.Replace("_", "__"));
-            select_item.Image = new Image(Stock.JumpTo, IconSize.Menu);
+            ImageMenuItem select_item = new ImageMenuItem (bookmark.Name.Replace ("_", "__"));
+            select_item.Image = new Image (Stock.JumpTo, IconSize.Menu);
             select_item.Activated += delegate {
                 Console.WriteLine ("item delegate, main thread? {0}", ThreadAssist.InMainThread);
-                bookmark.JumpTo();
+                bookmark.JumpTo ();
             };
-            bookmark_menu.Append(select_item);
+            bookmark_menu.Append (select_item);
             select_items[bookmark] = select_item;
 
             // Add menu item to remove this bookmark
-            ImageMenuItem rem = new ImageMenuItem(bookmark.Name.Replace("_", "__"));
-            rem.Image = new Image(Stock.Remove, IconSize.Menu);
+            ImageMenuItem rem = new ImageMenuItem (bookmark.Name.Replace ("_", "__"));
+            rem.Image = new Image (Stock.Remove, IconSize.Menu);
             rem.Activated += delegate {
-                bookmark.Remove();
+                bookmark.Remove ();
             };
-            remove_menu.Append(rem);
+            remove_menu.Append (rem);
             remove_items[bookmark] = rem;
             bookmark_map[rem] = bookmark;
 
-            bookmark_menu.ShowAll();
+            bookmark_menu.ShowAll ();
         }
 
-        public void RemoveBookmark(Bookmark bookmark)
+        public void RemoveBookmark (Bookmark bookmark)
         {
-            if (!remove_items.ContainsKey(bookmark))
+            if (!remove_items.ContainsKey (bookmark))
                 return;
 
-            bookmark_menu.Remove(select_items[bookmark]);
-            remove_menu.Remove(remove_items[bookmark]);
-            bookmarks.Remove(bookmark);
-            select_items.Remove(bookmark);
-            bookmark_map.Remove(remove_items[bookmark]);
-            remove_items.Remove(bookmark);
+            bookmark_menu.Remove (select_items[bookmark]);
+            remove_menu.Remove (remove_items[bookmark]);
+            bookmarks.Remove (bookmark);
+            select_items.Remove (bookmark);
+            bookmark_map.Remove (remove_items[bookmark]);
+            remove_items.Remove (bookmark);
 
             if (bookmarks.Count == 0) {
-                bookmark_menu.Remove(separator);
+                bookmark_menu.Remove (separator);
                 remove_item.Sensitive = false;
            }
         }
 
-        public void Dispose()
+        public void Dispose ()
         {
-            action_service.UIManager.RemoveUi(ui_manager_id);
-            action_service.UIManager.RemoveActionGroup(actions);
+            action_service.UIManager.RemoveUi (ui_manager_id);
+            action_service.UIManager.RemoveActionGroup (actions);
             actions = null;
 
             instance = null;

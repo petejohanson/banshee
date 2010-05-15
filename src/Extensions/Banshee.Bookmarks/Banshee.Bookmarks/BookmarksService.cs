@@ -54,7 +54,6 @@ namespace Banshee.Bookmarks
 
         void IExtensionService.Initialize ()
         {
-            Bookmark.Initialize();
             ui = BookmarkUI.Instance;
         }
 
