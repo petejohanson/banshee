@@ -28,33 +28,30 @@ using System;
 
 using Gtk;
 
+using Hyena.Gui.Theming;
+
 using Banshee.Gui.Widgets;
 using Banshee.Collection;
-using Hyena.Gui.Theming;
+using Banshee.ServiceStack;
+using Banshee.Collection.Gui;
+using Banshee.Gui;
 
 namespace Banshee.Audiobook
 {
-    public class BookCover : CoverArtDisplay
+    public class BookCover : Gtk.Image
     {
-        Widget parent;
-
         public BookCover (Widget parent)
         {
-            this.parent = parent;
-            MissingVideoIconName = MissingAudioIconName = "audiobook";
-        }
-
-        protected override void OnThemeChanged ()
-        {
-            base.OnThemeChanged ();
-
-            var theme = Hyena.Gui.Theming.ThemeEngine.CreateTheme (parent);
-            BackgroundColor = theme.Colors.GetWidgetColor (GtkColorClass.Base, StateType.Normal);
         }
 
         public void LoadImage (TrackMediaAttributes attr, string artwork_id)
         {
-             LoadImage (attr, artwork_id, true);
+            if (Pixbuf != null) {
+                Pixbuf.Dispose ();
+            }
+
+            Pixbuf = ServiceManager.Get<ArtworkManager> ().LookupScalePixbuf (artwork_id, HeightRequest)
+                ?? IconThemeUtils.LoadIcon ("audiobook", HeightRequest);
         }
     }
 }

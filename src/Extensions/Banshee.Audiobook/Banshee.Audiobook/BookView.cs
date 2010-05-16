@@ -77,9 +77,12 @@ namespace Banshee.Audiobook
             ShowAll ();
         }
 
+        private DatabaseAlbumInfo Book { get; set; }
+
         public void SetBook (DatabaseAlbumInfo book)
         {
             ThreadAssist.AssertInMainThread ();
+            Book = book;
 
             title_label.Markup = String.Format (
                 "<span size=\"x-large\" weight=\"bold\">{0}</span>\n" +
@@ -88,10 +91,7 @@ namespace Banshee.Audiobook
                 GLib.Markup.EscapeText (book.ArtistName)
             );
 
-            cover.LoadImage (
-                TrackMediaAttributes.AudioStream | TrackMediaAttributes.AudioBook,
-                CoverArtSpec.CreateArtistAlbumId (book.ArtistName, book.Title)
-            );
+            UpdateCover ();
 
             var bookmarks = Bookmark.Provider.FetchAllMatching (
                 "TrackID IN (SELECT TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?)",
@@ -106,6 +106,14 @@ namespace Banshee.Audiobook
             rating_entry.Value = (int) Math.Round (ServiceManager.DbConnection.Query<double> (
                 "SELECT AVG(RATING) FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?", library.DbId, book.DbId
             ));
+        }
+
+        private void UpdateCover ()
+        {
+            cover.LoadImage (
+                TrackMediaAttributes.AudioStream | TrackMediaAttributes.AudioBook,
+                CoverArtSpec.CreateArtistAlbumId (Book.ArtistName, Book.Title)
+            );
         }
 
         public override void Dispose ()
@@ -156,7 +164,12 @@ namespace Banshee.Audiobook
                 WidthRequest = 300,
                 HeightRequest = 300
             };
-            var editable_cover = TrackInfoDisplay.GetEditable (cover);
+
+            var editable_cover = CoverArtEditor.For (
+                cover, (x, y) => true,
+                () => library.TrackModel[0],
+                UpdateCover
+            );
 
             // Title
             title_label = new Label () {
