@@ -415,6 +415,7 @@ namespace Banshee.Collection
 
         // TODO turn this into a PrimarySource-owned delegate?
         private static readonly string restart_podcast = Catalog.GetString ("_Restart Podcast");
+        private static readonly string restart_audiobook = Catalog.GetString ("_Restart Audiobook");
         private static readonly string restart_video = Catalog.GetString ("_Restart Video");
         private static readonly string restart_song = Catalog.GetString ("_Restart Song");
         private static readonly string restart_item = Catalog.GetString ("_Restart Item");
@@ -423,6 +424,8 @@ namespace Banshee.Collection
             get {
                 if (HasAttribute (TrackMediaAttributes.Podcast))
                     return restart_podcast;
+                if (HasAttribute (TrackMediaAttributes.AudioBook))
+                    return restart_audiobook;
                 if (HasAttribute (TrackMediaAttributes.VideoStream))
                     return restart_video;
                 if (HasAttribute (TrackMediaAttributes.Music))
@@ -432,6 +435,7 @@ namespace Banshee.Collection
         }
 
         private static readonly string jump_to_podcast = Catalog.GetString ("_Jump to Playing Podcast");
+        private static readonly string jump_to_audiobook = Catalog.GetString ("_Jump to Playing Audiobook");
         private static readonly string jump_to_video = Catalog.GetString ("_Jump to Playing Video");
         private static readonly string jump_to_song = Catalog.GetString ("_Jump to Playing Song");
         private static readonly string jump_to_item = Catalog.GetString ("_Jump to Playing Item");
@@ -440,6 +444,8 @@ namespace Banshee.Collection
             get {
                 if (HasAttribute (TrackMediaAttributes.Podcast))
                     return jump_to_podcast;
+                if (HasAttribute (TrackMediaAttributes.AudioBook))
+                    return jump_to_audiobook;
                 if (HasAttribute (TrackMediaAttributes.VideoStream))
                     return jump_to_video;
                 if (HasAttribute (TrackMediaAttributes.Music))
