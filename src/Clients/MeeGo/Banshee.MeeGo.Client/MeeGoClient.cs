@@ -60,7 +60,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-using Banshee.Base;
+using Hyena;
 
 namespace Banshee.MeeGo.Client
 {
