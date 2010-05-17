@@ -65,7 +65,6 @@ namespace Banshee.Audiobook
     {
         AudiobookLibrarySource library;
 
-        Alignment align;
         Label title_label;
         BookCover cover;
         RatingEntry rating_entry;
@@ -146,13 +145,10 @@ namespace Banshee.Audiobook
 
         private void BuildWidgets ()
         {
-            align = new Alignment (0.5f, 0.0f, 0.0f, 0.0f) { BorderWidth = 6 };
-            align.TopPadding = 6;
-
             var hbox = new HBox () { Spacing = 12 };
 
             // Left box - cover art, title, etc
-            var left_box = new VBox () { Spacing = 12 };
+            var left_box = new VBox () { BorderWidth = 12, Spacing = 12 };
 
             // Cover art
             cover = new BookCover (this) {
@@ -194,9 +190,6 @@ namespace Banshee.Audiobook
             hbox.PackStart (left_box, false, false, 0);
 
             // Right box - track list
-            var right_box = new VBox () { Spacing = 12 };
-
-            // Tracks
             track_list = new BaseTrackListView () {
                 HeaderVisible = true,
                 IsEverReorderable = false
@@ -215,24 +208,20 @@ namespace Banshee.Audiobook
             );
             file_columns.SortColumn = columns.DiscNumberAndCountColumn;
 
-            var track_sw = new Gtk.ScrolledWindow () {
-                Child = track_list,
-                ShadowType = ShadowType.None,
-                WidthRequest = 450,
-                HeightRequest = 600
-            };
-
             foreach (var col in file_columns) {
                 col.Visible = true;
             }
 
+            var track_sw = new Gtk.ScrolledWindow () {
+                Child = track_list,
+                ShadowType = ShadowType.None
+            };
+
             track_list.ColumnController = file_columns;
 
-            right_box.PackStart (track_sw, false, false, 0);
-            hbox.PackStart (right_box, false, false, 0);
+            hbox.PackEnd (track_sw, true, true, 0);
 
-            align.Child = hbox;
-            Child = align;
+            Child = hbox;
         }
     }
 }
