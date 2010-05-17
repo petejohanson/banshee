@@ -55,22 +55,24 @@ namespace Banshee.Audiobook
                 new ActionEntry ("AudiobookOpen", null, Catalog.GetString ("Open Book"), null, null, OnOpen),
                 new ActionEntry ("AudiobookMerge", null, Catalog.GetString ("Merge Discs..."), null, null, OnMerge),
                 new ActionEntry ("AudiobookEdit", Stock.Edit,
-                    Catalog.GetString ("_Edit Track Information"), "E", null, OnEdit)
+                    Catalog.GetString ("_Edit Track Information"), "E", null, OnEdit),
+                new ActionEntry ("AudiobookResumeSelected", Stock.MediaPlay,
+                    Catalog.GetString ("Resume"), null, Catalog.GetString ("Resume playback of this audiobook"), OnResume)
             );
+
+            AddImportant (new ActionEntry ("AudiobookResume", Stock.MediaPlay,
+                Catalog.GetString ("Resume"), null, Catalog.GetString ("Resume playback of this audiobook"), OnResume));
 
             AddUiFromFile ("GlobalUI.xml");
 
             Register ();
 
-            library.BooksModel.Selection.Changed += HandleSelectionChanged;
+            UpdateActions ();
+            library.BooksModel.Selection.Changed += (o, a) => UpdateActions ();
+            library.BooksModel.Selection.FocusChanged += (o, a) => UpdateActions ();
         }
 
-        private void HandleSelectionChanged (object sender, EventArgs args)
-        {
-            ThreadAssist.ProxyToMain (UpdateActions);
-        }
-
-        private void UpdateActions ()
+        internal void UpdateActions ()
         {
             var selection = library.BooksModel.Selection;
             bool has_selection = selection.Count > 0;
@@ -78,6 +80,31 @@ namespace Banshee.Audiobook
 
             UpdateAction ("AudiobookMerge", !has_single_selection, true);
             UpdateAction ("AudiobookEdit", true, has_selection);
+
+            bool can_resume = false;
+            if (has_single_selection) {
+                var book = library.ActiveBook;
+                if (book != null && library.GetLastPlayedBookmark (book.DbId) != null) {
+                    var playback_book = library.PlaybackSource.Book;
+                    if (playback_book == null || book.DbId != playback_book.DbId) {
+                        can_resume = true;
+                    }
+                }
+            }
+            UpdateAction ("AudiobookResume", library.CurrentViewBook != null && can_resume, true);
+            UpdateAction ("AudiobookResumeSelected", can_resume, true);
+        }
+
+        private void OnResume (object to, EventArgs a)
+        {
+            var book = library.ActiveBook;
+            var bookmark = library.GetLastPlayedBookmark (book.DbId);
+            if (bookmark != null) {
+                Log.DebugFormat ("Audiobook Library jumpting to last-played position in active book: {0}", bookmark.Name);
+                library.PlaybackSource.Book = book;
+                ServiceManager.PlaybackController.Source = library;
+                bookmark.JumpTo ();
+            }
         }
 
         private void OnOpen (object o, EventArgs a)

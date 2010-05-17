@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Mono.Unix;
@@ -43,10 +44,12 @@ using Banshee.Database;
 using Banshee.ServiceStack;
 
 using Banshee.Sources.Gui;
+using Banshee.PlaybackController;
+using Banshee.Query;
 
 namespace Banshee.Audiobook
 {
-    public class AudiobookLibrarySource : LibrarySource
+    public class AudiobookLibrarySource : LibrarySource, IBasicPlaybackController
     {
         internal const string LAST_PLAYED_BOOKMARK = "audiobook-lastplayed";
 
@@ -54,6 +57,8 @@ namespace Banshee.Audiobook
 
         LazyLoadSourceContents<AudiobookContent> grid_view;
         LazyLoadSourceContents<BookView> book_view;
+
+        public BookPlaylist PlaybackSource { get; private set; }
 
         Gtk.HBox title_switcher;
         Gtk.Label book_label;
@@ -114,8 +119,19 @@ namespace Banshee.Audiobook
             TracksAdded += (o, a) => {
                 if (!IsAdding) {
                     MergeBooksAddedSince (DateTime.Now - TimeSpan.FromHours (2));
+
+                    ServiceManager.DbConnection.Execute (
+                        "UPDATE CoreTracks SET Attributes = Attributes | ? WHERE PrimarySourceID = ?",
+                        TrackMediaAttributes.AudioBook, this.DbId);
                 }
             };
+
+            TrackIsPlayingHandler = ServiceManager.PlayerEngine.IsPlaying;
+
+            PlaybackSource = new BookPlaylist ("audiobook-playback-source", this);
+            PlaybackSource.DatabaseTrackModel.ForcedSortQuery = BansheeQuery.GetSort ("track", true);
+
+            ServiceManager.PlaybackController.SourceChanged += OnPlaybackSourceChanged;
 
             // Listen for playback changes and auto-set the last-played bookmark
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
@@ -123,22 +139,71 @@ namespace Banshee.Audiobook
                 true);
         }
 
-        private void SwitchToGrid ()
+        private void OnPlaybackSourceChanged (object o, EventArgs args)
         {
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view);
-            book_label.Visible = false;
+            if (ServiceManager.PlaybackController.Source == this) {
+                PlaybackSource.Book = PlaybackSource.Book ?? ActiveBook;
+            }
+
+            Actions.UpdateActions ();
         }
 
-        public DatabaseAlbumInfo CurrentBook { get; private set; }
+        public override bool CanSearch {
+            get { return false; }
+        }
+
+        private void SwitchToGrid ()
+        {
+            var last_book = CurrentViewBook;
+            if (last_book != null) {
+                CurrentViewBook = null;
+                book_label.Visible = false;
+                Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view);
+                Actions.UpdateActions ();
+            }
+        }
+
         public void SwitchToBookView (DatabaseAlbumInfo book)
         {
             if (!book_label.Visible) {
-                CurrentBook = book;
+                CurrentViewBook = book;
                 book_label.Text = String.Format (" »  {0}", book.DisplayTitle);
                 book_label.Visible = true;
                 book_view.SetSource (this);
                 book_view.Contents.SetBook (book);
                 Properties.Set<ISourceContents> ("Nereid.SourceContents", book_view);
+
+                if (BooksModel.Selection.Count != 1) {
+                    var index = BooksModel.Selection.FocusedIndex;
+                    BooksModel.Selection.Clear (false);
+                    BooksModel.Selection.Select (index);
+                }
+
+                Actions.UpdateActions ();
+            }
+        }
+
+        public DatabaseAlbumInfo CurrentViewBook { get; private set; }
+
+        public DatabaseAlbumInfo ActiveBook {
+            get {
+                if (CurrentViewBook != null) {
+                    return CurrentViewBook;
+                }
+
+                if (BooksModel.Selection.FocusedIndex != -1) {
+                    return BooksModel [BooksModel.Selection.FocusedIndex] as DatabaseAlbumInfo;
+                }
+
+                if (BooksModel.Selection.Count > 0) {
+                    return BooksModel.SelectedItems.First () as DatabaseAlbumInfo;
+                }
+
+                if (BooksModel.Count > 0) {
+                    return BooksModel[0] as DatabaseAlbumInfo;
+                }
+
+                return null;
             }
         }
 
@@ -169,6 +234,19 @@ namespace Banshee.Audiobook
                 case PlayerEvent.StartOfStream:
                     if (book_track != null) {
                         StartTimeout ();
+
+                        if (PlaybackSource.Book == null || PlaybackSource.Book.DbId != book_track.AlbumId) {
+                            PlaybackSource.Book = DatabaseAlbumInfo.Provider.FetchSingle (book_track.AlbumId);
+                        }
+
+                        if (book_track.CacheModelId != PlaybackSource.DatabaseTrackModel.CacheId) {
+                            var index = PlaybackSource.DatabaseTrackModel.IndexOfFirst (book_track);
+                            if (index >= 0) {
+                                ServiceManager.PlaybackController.PriorTrack = PlaybackSource.TrackModel [index];
+                            } else {
+                                Log.Error ("Audiobook track started, but couldn't find in the Audiobook.PlaybackSource");
+                            }
+                        }
                     }
                     break;
                 case PlayerEvent.EndOfStream:
@@ -200,21 +278,22 @@ namespace Banshee.Audiobook
         private void UpdateLastPlayed ()
         {
             if (book_track != null) {
-                // Find and remove the last bookmark for this book
-                if (bookmark == null) {
-                    bookmark = Bookmark.Provider.FetchFirstMatching (
-                        "Type = ? AND TrackID IN (SELECT TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?)",
-                        LAST_PLAYED_BOOKMARK, this.DbId, book_track.AlbumId
-                    );
-                }
+                bookmark = GetLastPlayedBookmark (book_track.AlbumId) ?? new Bookmark ();
 
-                if (bookmark != null) {
-                    bookmark.Remove ();
-                }
-
-                // Insert the new one
-                bookmark = new Bookmark (book_track, (int)ServiceManager.PlayerEngine.Position, LAST_PLAYED_BOOKMARK);
+                bookmark.Type = LAST_PLAYED_BOOKMARK;
+                bookmark.CreatedAt = DateTime.Now;
+                bookmark.Track = book_track;
+                bookmark.Position = TimeSpan.FromMilliseconds ((int)ServiceManager.PlayerEngine.Position);
+                bookmark.Save ();
             }
+        }
+
+        public Bookmark GetLastPlayedBookmark (int book_id)
+        {
+            return Bookmark.Provider.FetchFirstMatching (
+                "Type = ? AND TrackID IN (SELECT TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?)",
+                LAST_PLAYED_BOOKMARK, this.DbId, book_id
+            );
         }
 
         public override void Dispose ()
@@ -239,11 +318,40 @@ namespace Banshee.Audiobook
             yield return books_model;
         }
 
+        #region IBasicPlaybackController implementation
+
+        public bool First ()
+        {
+            return DoPlaybackAction ();
+        }
+
+
+        public bool Next (bool restart, bool changeImmediately)
+        {
+            return DoPlaybackAction ();
+        }
+
+        public bool Previous (bool restart)
+        {
+            return DoPlaybackAction ();
+        }
+
+        #endregion
+
+        private bool DoPlaybackAction ()
+        {
+            PlaybackSource.Book = PlaybackSource.Book ?? ActiveBook;
+            ServiceManager.PlaybackController.Source = PlaybackSource;
+            ServiceManager.PlaybackController.NextSource = this;
+            return false;
+        }
+
         public DatabaseAlbumListModel BooksModel {
             get { return books_model; }
         }
 
         public override string DefaultBaseDirectory {
+            // FIXME should probably translate this fallback directory
             get { return XdgBaseDirectorySpec.GetXdgDirectoryUnderHome ("XDG_AUDIOBOOKS_DIR", "Audiobooks"); }
         }
 

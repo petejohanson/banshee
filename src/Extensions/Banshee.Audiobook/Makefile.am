@@ -11,6 +11,7 @@ SOURCES =  \
 	Banshee.Audiobook/AudiobookLibrarySource.cs \
 	Banshee.Audiobook/AudiobookModel.cs \
 	Banshee.Audiobook/BookCover.cs \
+	Banshee.Audiobook/BookPlaylist.cs \
 	Banshee.Audiobook/BookView.cs
 
 RESOURCES =  \

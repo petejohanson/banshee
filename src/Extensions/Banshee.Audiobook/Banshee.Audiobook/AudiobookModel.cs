@@ -45,10 +45,15 @@ namespace Banshee.Audiobook
 {
     public class AudiobookModel : DatabaseAlbumListModel
     {
-        public AudiobookModel (DatabaseSource source, DatabaseTrackListModel trackModel, BansheeDbConnection connection, string uuid) : base (source, trackModel, connection, uuid)
+        public AudiobookModel (AudiobookLibrarySource source, DatabaseTrackListModel trackModel, BansheeDbConnection connection, string uuid) : base (source, trackModel, connection, uuid)
         {
             Selection = new Hyena.Collections.Selection ();
             HasSelectAllItem = false;
+
+            ReloadFragmentFormat = String.Format (@"
+                FROM CoreAlbums WHERE CoreAlbums.AlbumID IN (SELECT AlbumID FROM CoreTracks WHERE PrimarySourceID = {0})
+                ORDER BY CoreAlbums.TitleSortKey, CoreAlbums.ArtistNameSortKey",
+                source.DbId);
         }
     }
 }

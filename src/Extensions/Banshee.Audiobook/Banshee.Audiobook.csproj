@@ -66,6 +66,7 @@
       <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cairo" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Audiobook.addin.xml">
@@ -87,6 +88,7 @@
     <Compile Include="Banshee.Audiobook\AudiobookModel.cs" />
     <Compile Include="Banshee.Audiobook\BookView.cs" />
     <Compile Include="Banshee.Audiobook\BookCover.cs" />
+    <Compile Include="Banshee.Audiobook\BookPlaylist.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

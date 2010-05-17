@@ -57,6 +57,7 @@ using Banshee.Preferences;
 using Banshee.ServiceStack;
 using Banshee.Sources;
 using Hyena.Gui.Theming;
+using Banshee.Query;
 
 namespace Banshee.Audiobook
 {
@@ -66,7 +67,6 @@ namespace Banshee.Audiobook
 
         Alignment align;
         Label title_label;
-        Label bookmarks_label;
         BookCover cover;
         RatingEntry rating_entry;
         BaseTrackListView track_list;
@@ -93,15 +93,10 @@ namespace Banshee.Audiobook
 
             UpdateCover ();
 
-            var bookmarks = Bookmark.Provider.FetchAllMatching (
+            /*var bookmarks = Bookmark.Provider.FetchAllMatching (
                 "TrackID IN (SELECT TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?)",
                 library.DbId, book.DbId
-            );
-
-            bookmarks_label.Text = "";
-            foreach (var bookmark in bookmarks) {
-                bookmarks_label.Text += String.Format ("{0}{1}\n", bookmark.Type == AudiobookLibrarySource.LAST_PLAYED_BOOKMARK ? "* " : "", bookmark.Name);
-            }
+            );*/
 
             rating_entry.Value = (int) Math.Round (ServiceManager.DbConnection.Query<double> (
                 "SELECT AVG(RATING) FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?", library.DbId, book.DbId
@@ -177,6 +172,11 @@ namespace Banshee.Audiobook
                 Yalign = 0
             };
 
+            var continue_button = new ImageButton ("<b>Continue Playback</b>\n<small>Disc 3 - Track 3b (2:53)</small>", null, IconSize.Button);
+            continue_button.ImageWidget.Stock = Stock.MediaPlay;
+            continue_button.LabelWidget.Xalign = 0;
+            continue_button.Spacing = 6;
+
             // FIXME the left padding on this is not right
             rating_entry = new RatingEntry () {
                 AlwaysShowEmptyStars = true,
@@ -188,20 +188,15 @@ namespace Banshee.Audiobook
             // Packing
             left_box.PackStart (editable_cover, false, false,  0);
             left_box.PackStart (title_label, false, false,  0);
+            //left_box.PackStart (continue_button, false, false,  0);
             //left_box.PackStart (rating, false, false,  0);
 
             hbox.PackStart (left_box, false, false, 0);
 
-            // Right box - bookmarks, track list
+            // Right box - track list
             var right_box = new VBox () { Spacing = 12 };
 
-            var notebook = new Notebook () { WidthRequest = 450, HeightRequest = 600 };
-            notebook.ShowBorder = false;
-            bookmarks_label = new Label ();
-            notebook.AppendPage (bookmarks_label, new Label (Catalog.GetString ("Bookmarks")));
-
             // Tracks
-
             track_list = new BaseTrackListView () {
                 HeaderVisible = true,
                 IsEverReorderable = false
@@ -209,16 +204,23 @@ namespace Banshee.Audiobook
 
             var columns = new DefaultColumnController ();
             var file_columns = new ColumnController ();
+            var disc_column = DefaultColumnController.Create (
+                    BansheeQuery.DiscNumberField, 0.02, false, new ColumnCellPositiveInt (null, false, 2, 2));
+
             file_columns.AddRange (
                 columns.IndicatorColumn,
-                columns.DiscNumberAndCountColumn,
+                disc_column,
                 columns.TitleColumn,
                 columns.DurationColumn
             );
             file_columns.SortColumn = columns.DiscNumberAndCountColumn;
 
-            var track_sw = new Gtk.ScrolledWindow ();
-            track_sw.Child = track_list;
+            var track_sw = new Gtk.ScrolledWindow () {
+                Child = track_list,
+                ShadowType = ShadowType.None,
+                WidthRequest = 450,
+                HeightRequest = 600
+            };
 
             foreach (var col in file_columns) {
                 col.Visible = true;
@@ -226,11 +228,7 @@ namespace Banshee.Audiobook
 
             track_list.ColumnController = file_columns;
 
-            notebook.AppendPage (track_sw, new Label (Catalog.GetString ("Tracks")));
-
-
-            right_box.PackStart (notebook, false, false, 0);
-
+            right_box.PackStart (track_sw, false, false, 0);
             hbox.PackStart (right_box, false, false, 0);
 
             align.Child = hbox;
