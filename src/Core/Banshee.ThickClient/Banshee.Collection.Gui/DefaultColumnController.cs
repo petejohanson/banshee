@@ -173,7 +173,7 @@ namespace Banshee.Collection.Gui
             return Create (field, width, visible, new ColumnCellText (field.PropertyName, true));
         }
 
-        private SortableColumn Create (QueryField field, double width, bool visible, ColumnCell cell)
+        public static SortableColumn Create (QueryField field, double width, bool visible, ColumnCell cell)
         {
             cell.Property = field.PropertyName;
             SortableColumn col = new SortableColumn (
