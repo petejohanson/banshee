@@ -64,13 +64,13 @@ namespace Banshee.Collection.Database
         }
 
         [DatabaseColumn]
-        public TimeSpan Position { get; private set; }
+        public TimeSpan Position { get; set; }
 
         [DatabaseColumn]
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; set; }
 
         [DatabaseColumn]
-        public string Type { get; private set; }
+        public string Type { get; set; }
 
         public string Name {
             get {
@@ -81,7 +81,7 @@ namespace Banshee.Collection.Database
             }
         }
 
-        public DatabaseTrackInfo Track { get; private set; }
+        public DatabaseTrackInfo Track { get; set; }
 
         public Bookmark () {}
 
@@ -94,6 +94,11 @@ namespace Banshee.Collection.Database
             CreatedAt = DateTime.Now;
             Type = type;
 
+            Save ();
+        }
+
+        public void Save ()
+        {
             Provider.Save (this);
         }
 
@@ -114,6 +119,7 @@ namespace Banshee.Collection.Database
                     }
                 }
             } else {
+                Log.ErrorFormat ("Tried to jump to bookmark {0}, but track is null", BookmarkId);
                 Remove ();
             }
         }
