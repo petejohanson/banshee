@@ -54,6 +54,7 @@ namespace Banshee.Audiobook
                 new ActionEntry ("AudiobookBookPopup", null, null, null, null, (o, a) => ShowContextMenu ("/AudiobookBookPopup")),
                 new ActionEntry ("AudiobookOpen", null, Catalog.GetString ("Open Book"), null, null, OnOpen),
                 new ActionEntry ("AudiobookMerge", null, Catalog.GetString ("Merge Discs..."), null, null, OnMerge),
+                new ActionEntry ("AudiobookSwitchToGrid", null, "", "Escape", null, (o, a) => library.SwitchToGridView ()),
                 new ActionEntry ("AudiobookEdit", Stock.Edit,
                     Catalog.GetString ("_Edit Track Information"), "E", null, OnEdit),
                 new ActionEntry ("AudiobookResumeSelected", Stock.MediaPlay,
@@ -70,6 +71,8 @@ namespace Banshee.Audiobook
             UpdateActions ();
             library.BooksModel.Selection.Changed += (o, a) => UpdateActions ();
             library.BooksModel.Selection.FocusChanged += (o, a) => UpdateActions ();
+
+            this["AudiobookSwitchToGrid"].Visible = false;
         }
 
         internal void UpdateActions ()
