@@ -133,6 +133,15 @@ namespace Banshee.Collection.Database
             }
         }
 
+        public override bool IsPlaying {
+            get {
+                if (PrimarySource != null && PrimarySource.TrackIsPlayingHandler != null) {
+                    return PrimarySource.TrackIsPlayingHandler (this);
+                }
+                return base.IsPlaying;
+            }
+        }
+
         public static bool TrackEqual (DatabaseTrackInfo a, DatabaseTrackInfo b)
         {
             return a != null && b != null && a.TrackId == b.TrackId;

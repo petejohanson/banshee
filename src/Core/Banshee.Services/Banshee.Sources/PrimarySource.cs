@@ -81,23 +81,10 @@ namespace Banshee.Sources
     {
         #region Functions that let us override some behavior of our DatabaseTrackInfos
 
-        private TrackEqualHandler track_equal_handler;
-        public TrackEqualHandler TrackEqualHandler {
-            get { return track_equal_handler; }
-            protected set { track_equal_handler = value; }
-        }
-
-        private TrackExternalObjectHandler track_external_object_handler;
-        public TrackExternalObjectHandler TrackExternalObjectHandler {
-            get { return track_external_object_handler; }
-            protected set { track_external_object_handler = value; }
-        }
-
-        private TrackArtworkIdHandler track_artwork_id_handler;
-        public TrackArtworkIdHandler TrackArtworkIdHandler {
-            get { return track_artwork_id_handler; }
-            protected set { track_artwork_id_handler = value; }
-        }
+        public TrackEqualHandler TrackEqualHandler { get; protected set; }
+        public TrackInfo.IsPlayingHandler TrackIsPlayingHandler { get; protected set; }
+        public TrackExternalObjectHandler TrackExternalObjectHandler { get; protected set; }
+        public TrackArtworkIdHandler TrackArtworkIdHandler { get; protected set; }
 
         #endregion
 
