@@ -73,7 +73,7 @@ namespace Banshee.Audiobook
 
         public BookView ()
         {
-            BuildInfoBox ();
+            BuildWidgets ();
             ShowAll ();
         }
 
@@ -144,7 +144,7 @@ namespace Banshee.Audiobook
 
 #endregion
 
-        private void BuildInfoBox ()
+        private void BuildWidgets ()
         {
             align = new Alignment (0.5f, 0.0f, 0.0f, 0.0f) { BorderWidth = 6 };
             align.TopPadding = 6;
@@ -233,7 +233,6 @@ namespace Banshee.Audiobook
 
             align.Child = hbox;
             Child = align;
-            ShowAll ();
         }
     }
 }

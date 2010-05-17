@@ -102,11 +102,11 @@ namespace Banshee.Audiobook
 
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
-            Properties.Set<System.Action> ("ActivationAction", delegate { SwitchToGrid (); });
+            Properties.Set<System.Action> ("ActivationAction", delegate { SwitchToGridView (); });
 
             title_switcher = new Gtk.HBox () { Spacing = 0 };
             var b = new Gtk.Button () { Label = this.Name, Relief = Gtk.ReliefStyle.None };
-            b.Clicked += delegate { SwitchToGrid (); };
+            b.Clicked += delegate { SwitchToGridView (); };
             title_switcher.PackStart (b);
 
             title_switcher.ShowAll ();
@@ -152,7 +152,7 @@ namespace Banshee.Audiobook
             get { return false; }
         }
 
-        private void SwitchToGrid ()
+        internal void SwitchToGridView ()
         {
             var last_book = CurrentViewBook;
             if (last_book != null) {
