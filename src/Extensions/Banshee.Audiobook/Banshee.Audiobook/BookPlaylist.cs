@@ -48,8 +48,10 @@ namespace Banshee.Audiobook
         public DatabaseAlbumInfo Book {
             get { return book; }
             set {
-                if (value == null)
+                if (value == null) {
+                    book = null;
                     return;
+                }
 
                 if (book != null && value.DbId == book.DbId) {
                     Reload ();

@@ -95,9 +95,10 @@ namespace Banshee.Audiobook
             pattern.FileSchema   = CreateSchema<string> ("file_pattern",   pattern.DefaultFile, "", "");
             SetFileNamePattern (pattern);
 
+            Actions = new Actions (this);
+
             grid_view = new LazyLoadSourceContents<AudiobookContent> ();
             book_view = new LazyLoadSourceContents<BookView> ();
-
             Properties.Set<ISourceContents> ("Nereid.SourceContents", grid_view);
 
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
@@ -113,8 +114,6 @@ namespace Banshee.Audiobook
             book_label = new Gtk.Label () { Visible = false };
             title_switcher.PackStart (book_label);
             Properties.Set<Gtk.Widget> ("Nereid.SourceContents.TitleWidget", title_switcher);
-
-            Actions = new Actions (this);
 
             TracksAdded += (o, a) => {
                 if (!IsAdding) {
@@ -143,6 +142,8 @@ namespace Banshee.Audiobook
         {
             if (ServiceManager.PlaybackController.Source == this) {
                 PlaybackSource.Book = PlaybackSource.Book ?? ActiveBook;
+            } else {
+                PlaybackSource.Book = null;
             }
 
             Actions.UpdateActions ();
@@ -262,7 +263,7 @@ namespace Banshee.Audiobook
         private void StartTimeout ()
         {
             if (timeout_id == 0) {
-                timeout_id = Application.RunTimeout (5000, delegate { UpdateLastPlayed (); return true; });
+                timeout_id = Application.RunTimeout (3000, delegate { UpdateLastPlayed (); return true; });
             }
         }
 
@@ -277,7 +278,9 @@ namespace Banshee.Audiobook
         private Bookmark bookmark;
         private void UpdateLastPlayed ()
         {
-            if (book_track != null) {
+            if (book_track != null && book_track.IsPlaying &&
+                ServiceManager.PlayerEngine.CurrentState == PlayerState.Playing)
+            {
                 bookmark = GetLastPlayedBookmark (book_track.AlbumId) ?? new Bookmark ();
 
                 bookmark.Type = LAST_PLAYED_BOOKMARK;
@@ -285,6 +288,10 @@ namespace Banshee.Audiobook
                 bookmark.Track = book_track;
                 bookmark.Position = TimeSpan.FromMilliseconds ((int)ServiceManager.PlayerEngine.Position);
                 bookmark.Save ();
+
+                if (CurrentViewBook != null && book_track.AlbumId == CurrentViewBook.DbId) {
+                    book_view.Contents.UpdateResumeButton (bookmark);
+                }
             }
         }
 

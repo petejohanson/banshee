@@ -67,6 +67,7 @@ namespace Banshee.Audiobook
 
         Label title_label;
         BookCover cover;
+        ImageButton resume_button;
         RatingEntry rating_entry;
         BaseTrackListView track_list;
 
@@ -90,6 +91,9 @@ namespace Banshee.Audiobook
                 GLib.Markup.EscapeText (book.ArtistName)
             );
 
+            var bookmark = library.GetLastPlayedBookmark (book.DbId);
+            UpdateResumeButton (bookmark);
+
             UpdateCover ();
 
             /*var bookmarks = Bookmark.Provider.FetchAllMatching (
@@ -100,6 +104,21 @@ namespace Banshee.Audiobook
             rating_entry.Value = (int) Math.Round (ServiceManager.DbConnection.Query<double> (
                 "SELECT AVG(RATING) FROM CoreTracks WHERE PrimarySourceID = ? AND AlbumID = ?", library.DbId, book.DbId
             ));
+        }
+
+        internal void UpdateResumeButton (Bookmark bookmark)
+        {
+            if (bookmark != null) {
+                resume_button.LabelWidget.Markup = String.Format (
+                    "<b>{0}</b>\n<small>{1}</small>",
+                    GLib.Markup.EscapeText (Catalog.GetString ("Resume Playback")),
+                    GLib.Markup.EscapeText (bookmark.Name)
+                );
+            } else {
+                resume_button.LabelWidget.Markup = String.Format (
+                    "<b>{0}</b>\n<small>{1}</small>",
+                    GLib.Markup.EscapeText (Catalog.GetString ("No Bookmark Set")), "");
+            }
         }
 
         private void UpdateCover ()
@@ -124,10 +143,13 @@ namespace Banshee.Audiobook
 
         public bool SetSource (ISource source)
         {
-            library = source as AudiobookLibrarySource;
+            if (library != null)
+                return true;
 
+            library = source as AudiobookLibrarySource;
             if (library != null) {
                 track_list.SetModel (library.TrackModel);
+                library.Actions["AudiobookResume"].ConnectProxy (resume_button);
             }
 
             return library != null;
@@ -168,10 +190,10 @@ namespace Banshee.Audiobook
                 Yalign = 0
             };
 
-            var continue_button = new ImageButton ("<b>Continue Playback</b>\n<small>Disc 3 - Track 3b (2:53)</small>", null, IconSize.Button);
-            continue_button.ImageWidget.Stock = Stock.MediaPlay;
-            continue_button.LabelWidget.Xalign = 0;
-            continue_button.Spacing = 6;
+            resume_button = new ImageButton ("", null, IconSize.LargeToolbar);
+            resume_button.ImageWidget.Stock = Stock.MediaPlay;
+            resume_button.LabelWidget.Xalign = 0;
+            resume_button.Spacing = 6;
 
             // FIXME the left padding on this is not right
             rating_entry = new RatingEntry () {
@@ -184,7 +206,7 @@ namespace Banshee.Audiobook
             // Packing
             left_box.PackStart (editable_cover, false, false,  0);
             left_box.PackStart (title_label, false, false,  0);
-            //left_box.PackStart (continue_button, false, false,  0);
+            left_box.PackStart (resume_button, false, false,  0);
             //left_box.PackStart (rating, false, false,  0);
 
             hbox.PackStart (left_box, false, false, 0);

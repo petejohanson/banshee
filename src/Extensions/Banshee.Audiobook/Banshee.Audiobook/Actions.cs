@@ -61,7 +61,7 @@ namespace Banshee.Audiobook
                     Catalog.GetString ("Resume"), null, Catalog.GetString ("Resume playback of this audiobook"), OnResume)
             );
 
-            AddImportant (new ActionEntry ("AudiobookResume", Stock.MediaPlay,
+            Add (new ActionEntry ("AudiobookResume", Stock.MediaPlay,
                 Catalog.GetString ("Resume"), null, Catalog.GetString ("Resume playback of this audiobook"), OnResume));
 
             AddUiFromFile ("GlobalUI.xml");
@@ -94,7 +94,7 @@ namespace Banshee.Audiobook
                     }
                 }
             }
-            UpdateAction ("AudiobookResume", library.CurrentViewBook != null && can_resume, true);
+            UpdateAction ("AudiobookResume", library.CurrentViewBook != null, can_resume);
             UpdateAction ("AudiobookResumeSelected", can_resume, true);
         }
 
@@ -103,7 +103,7 @@ namespace Banshee.Audiobook
             var book = library.ActiveBook;
             var bookmark = library.GetLastPlayedBookmark (book.DbId);
             if (bookmark != null) {
-                Log.DebugFormat ("Audiobook Library jumpting to last-played position in active book: {0}", bookmark.Name);
+                Log.DebugFormat ("Audiobook Library jumping to last-played position in active book: {0}", bookmark.Name);
                 library.PlaybackSource.Book = book;
                 ServiceManager.PlaybackController.Source = library;
                 bookmark.JumpTo ();
