@@ -106,41 +106,60 @@ namespace Banshee.Collection.Database
         {
             var track = Track;
             var current_track = ServiceManager.PlayerEngine.CurrentTrack as DatabaseTrackInfo;
-            if (track != null) {
-                if (current_track == null || current_track.TrackId != track.TrackId) {
-                    ServiceManager.PlayerEngine.ConnectEvent (HandleStateChanged, PlayerEvent.StateChange);
-                    ServiceManager.PlayerEngine.OpenPlay (track);
-                } else {
-                    if (ServiceManager.PlayerEngine.CanSeek) {
-                        ServiceManager.PlayerEngine.Position = (uint)Position.TotalMilliseconds;
-                    } else {
-                        ServiceManager.PlayerEngine.ConnectEvent (HandleStateChanged, PlayerEvent.StateChange);
-                        ServiceManager.PlayerEngine.Play ();
-                    }
-                }
-            } else {
+
+            if (track == null) {
                 Log.ErrorFormat ("Tried to jump to bookmark {0}, but track is null", BookmarkId);
                 Remove ();
+            }
+
+            if (current_track == null || current_track.TrackId != track.TrackId) {
+                // Not already playing this track, so load it up
+                //Console.WriteLine ("JumpTo: not already playing, loading it up");
+                ServiceManager.PlayerEngine.ConnectEvent (HandleStateChanged, PlayerEvent.StateChange);
+                ServiceManager.PlayerEngine.Open (track);
+            } else {
+                // Already playing this track, so just seek to the right position
+                if (ServiceManager.PlayerEngine.CanSeek) {
+                    //Console.WriteLine ("JumpTo: already playing, can seek; setting Position");
+                    ServiceManager.PlayerEngine.Position = (uint)Position.TotalMilliseconds;
+                } else {
+                    //Console.WriteLine ("JumpTo: already playing, cannot seek");
+                    ServiceManager.PlayerEngine.ConnectEvent (HandleStateChanged, PlayerEvent.StateChange);
+                    ServiceManager.PlayerEngine.Play ();
+                }
             }
         }
 
         private void HandleStateChanged (PlayerEventArgs args)
         {
-            if (((PlayerEventStateChangeArgs)args).Current == PlayerState.Playing) {
-                ServiceManager.PlayerEngine.DisconnectEvent (HandleStateChanged);
+            var state = ((PlayerEventStateChangeArgs)args).Current;
+            /*Console.WriteLine ("JumpTo: HandleStateChanged, state is {0} Can seek? {1}  Position {2}",
+                state, ServiceManager.PlayerEngine.CanSeek, ServiceManager.PlayerEngine.Position
+            );*/
 
+            bool jumped = false;
+            if (state == PlayerState.Loaded || state == PlayerState.Playing) {
                 if (!ServiceManager.PlayerEngine.CurrentTrack.IsLive) {
                     // Sleep in 5ms increments for at most 250ms waiting for CanSeek to be true
                     int count = 0;
                     while (count < 50 && !ServiceManager.PlayerEngine.CanSeek) {
+                        //Console.WriteLine ("JumpTo: HandleStateChanged, can't seek yet, waiting 5 ms");
                         System.Threading.Thread.Sleep (5);
                         count++;
                     }
                 }
 
                 if (ServiceManager.PlayerEngine.CanSeek) {
+                    //Console.WriteLine ("JumpTo: HandleStateChanged, can seek - jumping!");
                     ServiceManager.PlayerEngine.Position = (uint)Position.TotalMilliseconds;
+                    jumped = true;
+                } else {
+                    //Console.WriteLine ("JumpTo: HandleStateChanged, can't seek - bailing :(");
                 }
+            }
+
+            if (jumped || state == PlayerState.Playing) {
+                ServiceManager.PlayerEngine.DisconnectEvent (HandleStateChanged);
             }
         }
 
