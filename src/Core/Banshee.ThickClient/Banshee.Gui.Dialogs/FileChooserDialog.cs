@@ -31,6 +31,7 @@ using Gtk;
 
 using Banshee.Configuration;
 using Banshee.ServiceStack;
+using Hyena;
 
 namespace Banshee.Gui.Dialogs
 {
@@ -51,9 +52,12 @@ namespace Banshee.Gui.Dialogs
             // Translators: verb
             chooser.AddButton (Mono.Unix.Catalog.GetString("I_mport"), ResponseType.Ok);
 
+            // FIXME: this dialog should be library-specific, and so these shortcuts should be
+            // library-specific too
             Hyena.Gui.GtkUtilities.SetChooserShortcuts (chooser,
                 ServiceManager.SourceManager.MusicLibrary.BaseDirectory,
-                ServiceManager.SourceManager.VideoLibrary.BaseDirectory
+                ServiceManager.SourceManager.VideoLibrary.BaseDirectory,
+                GetPhotosFolder ()
             );
 
             return chooser;
@@ -69,6 +73,33 @@ namespace Banshee.Gui.Dialogs
             LocalOnly = Banshee.IO.Provider.LocalOnly;
             SetCurrentFolderUri (LastFileChooserUri.Get (Environment.GetFolderPath (Environment.SpecialFolder.Personal)));
             WindowPosition = WindowPosition.Center;
+        }
+
+        public static string GetPhotosFolder ()
+        {
+            string personal = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+            string desktop = Environment.GetFolderPath (Environment.SpecialFolder.Desktop);
+
+            var photo_folders = new string [] {
+                Environment.GetFolderPath (Environment.SpecialFolder.MyPictures),
+                Paths.Combine (desktop, "Photos"), Paths.Combine (desktop, "photos"),
+                Paths.Combine (personal, "Photos"), Paths.Combine (personal, "photos")
+            };
+
+            // Make sure we don't accidentally scan the entire home or desktop directory
+            for (int i = 0; i < photo_folders.Length; i++) {
+                if (photo_folders[i] == personal || photo_folders[i] == desktop) {
+                    photo_folders[i] = null;
+                }
+            }
+
+            foreach (string folder in photo_folders) {
+                if (folder != null && folder != personal && folder != desktop && Banshee.IO.Directory.Exists (folder)) {
+                    return folder;
+                }
+            }
+
+            return null;
         }
 
         protected override void OnResponse (ResponseType response)
