@@ -37,8 +37,6 @@ namespace Banshee.Library
 {
     public class ImportSourceManager : IRegisterOnDemandService, IEnumerable<IImportSource>
     {
-        private HomeDirectoryImportSource home_source = new HomeDirectoryImportSource ();
-
         public ImportSourceManager ()
         {
         }
@@ -46,7 +44,6 @@ namespace Banshee.Library
         public IEnumerator<IImportSource> GetEnumerator ()
         {
             List<IImportSource> import_sources = new List<IImportSource> ();
-            import_sources.Add (home_source);
 
             foreach (IImportSource source in AddinManager.GetExtensionObjects ("/Banshee/Library/ImportSource")) {
                 if (source.CanImport) {

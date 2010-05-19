@@ -80,7 +80,6 @@ SOURCES =  \
 	Banshee.Hardware/UsbPortInfo.cs \
 	Banshee.Hardware/VendorProductDeviceNode.cs \
 	Banshee.Hardware/VendorProductInfo.cs \
-	Banshee.Library/HomeDirectoryImportSource.cs \
 	Banshee.Library/IImportSource.cs \
 	Banshee.Library/ImportSourceManager.cs \
 	Banshee.Library/LibraryImportManager.cs \
