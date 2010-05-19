@@ -65,7 +65,7 @@ namespace Banshee.Audiobook
 
         public Actions Actions { get; private set; }
 
-        public AudiobookLibrarySource () : base (Catalog.GetString ("Audiobooks, etc"), "AudiobookLibrary", 49)
+        public AudiobookLibrarySource () : base (Catalog.GetString ("Audiobooks"), "AudiobookLibrary", 49)
         {
             MediaTypes = TrackMediaAttributes.AudioBook;
             NotMediaTypes = TrackMediaAttributes.Podcast | TrackMediaAttributes.VideoStream | TrackMediaAttributes.Music;
