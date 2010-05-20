@@ -73,6 +73,8 @@ namespace Booter
     {
         public static void Main ()
         {
+            Paths.ApplicationName = Application.InternalName;
+
             if (CheckHelpVersion ()) {
                 return;
             }
