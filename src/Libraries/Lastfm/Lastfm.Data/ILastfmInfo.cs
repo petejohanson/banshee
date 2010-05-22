@@ -1,10 +1,10 @@
 //
-// LastfmColumnController.cs
+// ILastfmInfo.cs
 //
-// Author:
-//   Aaron Bockover <abockover@novell.com>
+// Authors:
+//   Bertrand Lorentz <bertrand.lorentz@gmail.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2010 Bertrand Lorentz
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,24 +28,10 @@
 
 using System;
 
-using Banshee.Collection.Gui;
-
-namespace Banshee.Lastfm.Radio
+namespace Lastfm.Data
 {
-    public class LastfmColumnController : DefaultColumnController
+    public interface ILastfmInfo
     {
-        public LastfmColumnController () : base (false)
-        {
-            AddRange (
-                IndicatorColumn,
-                TitleColumn,
-                ArtistColumn,
-                AlbumColumn,
-                DurationColumn
-            );
-
-            DefaultSortColumn = ArtistColumn;
-            Load ();
-        }
+        string TrackAuth { get; }
     }
 }

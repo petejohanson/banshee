@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{66617494-94CB-43E8-877C-A586F5A6F4EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Banshee.LastfmStreaming</RootNamespace>
+    <ReleaseVersion>1.3</ReleaseVersion>
+    <AssemblyName>Banshee.LastfmStreaming</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Build" command="make" workingdir="${SolutionDir}" />
+        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Banshee.LastfmStreaming\LastfmStreamingActions.cs" />
+    <Compile Include="Banshee.LastfmStreaming\LastfmStreamingService.cs" />
+    <Compile Include="Banshee.LastfmStreaming\LastfmTrackInfo.cs" />
+    <Compile Include="Banshee.LastfmStreaming\StationEditor.cs" />
+    <Compile Include="Banshee.LastfmStreaming\StationSource.cs" />
+    <Compile Include="Banshee.LastfmStreaming\StationType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Banshee.LastfmStreaming.addin.xml">
+      <LogicalName>Banshee.LastfmStreaming.addin.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ActiveSourceUI.xml">
+      <LogicalName>ActiveSourceUI.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GlobalUI.xml">
+      <LogicalName>GlobalUI.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\LastfmTrackActions.xml">
+      <LogicalName>LastfmTrackActions.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" IsAutotoolsProject="true" RelativeConfigureInPath="../../..">
+          <BuildFilesVar Sync="true" Name="SOURCES" />
+          <DeployFilesVar />
+          <ResourcesVar Sync="true" Name="RESOURCES" />
+          <OthersVar />
+          <GacRefVar Name="LINK" Prefix="-r:" />
+          <AsmRefVar Name="LINK" Prefix="-r:" />
+          <ProjectRefVar Name="LINK" Prefix="-r:" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\Banshee.Lastfm\Banshee.Lastfm.csproj">
+      <Project>{02FD8195-9796-4AF5-A9D2-D310721963F4}</Project>
+      <Name>Banshee.Lastfm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Banshee.Services\Banshee.Services.csproj">
+      <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
+      <Name>Banshee.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Lastfm\Lastfm.csproj">
+      <Project>{C1F63FC5-4B96-48B2-B7F7-5B33FCC4F2A2}</Project>
+      <Name>Lastfm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
+      <Project>{2ADB831A-A050-47D0-B6B9-9C19D60233BB}</Project>
+      <Name>Banshee.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Posix" />
+  </ItemGroup>
+</Project>

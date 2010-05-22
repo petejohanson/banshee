@@ -20,7 +20,7 @@ using Banshee.Web;
 using Lastfm;
 using Lastfm.Data;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.Lastfm
 {
     public class LastfmSourceContents : Hyena.Widgets.ScrolledWindow, ISourceContents
     {

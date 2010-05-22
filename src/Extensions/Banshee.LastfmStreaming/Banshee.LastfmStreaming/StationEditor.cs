@@ -39,8 +39,9 @@ using Banshee.Database;
 
 using Banshee.Widgets;
 using Banshee.Gui.Dialogs;
+using Banshee.Lastfm;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.LastfmStreaming.Radio
 {
     public class StationEditor : BansheeDialog
     {

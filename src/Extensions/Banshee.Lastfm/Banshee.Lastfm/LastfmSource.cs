@@ -29,13 +29,13 @@
 using System;
 using System.IO;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using Mono.Unix;
+using Mono.Addins;
 
 using Lastfm;
 using Lastfm.Gui;
 using Lastfm.Data;
-using Hyena.Data;
 
 using Banshee.Base;
 using Banshee.Collection;
@@ -50,7 +50,7 @@ using Banshee.Sources.Gui;
 
 using Browser = Lastfm.Browser;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.Lastfm
 {
     public class LastfmSource : Source, IDisposable
     {
@@ -78,7 +78,7 @@ namespace Banshee.Lastfm.Radio
             account = LastfmCore.Account;
 
             // We don't automatically connect to Last.fm, but load the last Last.fm
-            // username we used so we can load the user's stations.
+            // account information
             if (account.UserName != null) {
                 account.UserName = LastUserSchema.Get ();
                 account.SessionKey = LastSessionKeySchema.Get ();
@@ -98,11 +98,8 @@ namespace Banshee.Lastfm.Radio
             Connection.StateChanged += HandleConnectionStateChanged;
             UpdateUI ();
 
-            Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
-            Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
             Properties.SetString ("GtkActionPath", "/LastfmSourcePopup");
             Properties.SetString ("Icon.Name", "lastfm-audioscrobbler");
-            Properties.SetString ("SortChildrenActionLabel", Catalog.GetString ("Sort Stations by"));
             Properties.Set<LastfmColumnController> ("TrackView.ColumnController", new LastfmColumnController ());
 
             // Initialize DataCore's UserAgent and CachePath
@@ -118,12 +115,18 @@ namespace Banshee.Lastfm.Radio
 
             ServiceManager.SourceManager.AddSource (this);
 
-            ServiceManager.Get<DBusCommandService> ().ArgumentPushed += OnCommandLineArgument;
+            if (FirstRunSchema.Get ()) {
+                var streaming_addin = AddinManager.Registry.GetAddins ()
+                    .Single (a => a.LocalId.Equals ("Banshee.LastfmStreaming"));
+                if (streaming_addin != null) {
+                    streaming_addin.Enabled = Account.Subscriber;
+                }
+                FirstRunSchema.Set (false);
+            }
         }
 
         public void Dispose ()
         {
-            ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
             Connection.StateChanged -= HandleConnectionStateChanged;
             ServiceManager.Get<Network> ().StateChanged -= HandleNetworkStateChanged;
             Connection.Dispose ();
@@ -136,37 +139,11 @@ namespace Banshee.Lastfm.Radio
             account = null;
         }
 
-        private void OnCommandLineArgument (string uri, object value, bool isFile)
-        {
-            if (!isFile || String.IsNullOrEmpty (uri)) {
-                return;
-            }
-
-            // Handle lastfm:// URIs
-            if (uri.StartsWith ("lastfm://")) {
-                StationSource.CreateFromUrl (this, uri);
-            }
+        private SourceSortType[] sort_types = new SourceSortType[] {};
+        public void SetChildSortTypes (SourceSortType[] child_sort_types) {
+            sort_types = child_sort_types;
         }
-
-        // Order by the playCount of a station, then by inverted name
-        public class PlayCountComparer : IComparer<Source>
-        {
-            public int Compare (Source sa, Source sb)
-            {
-                StationSource a = sa as StationSource;
-                StationSource b = sb as StationSource;
-                return a.PlayCount.CompareTo (b.PlayCount);
-            }
-        }
-
-        private static SourceSortType[] sort_types = new SourceSortType[] {
-            SortNameAscending,
-            new SourceSortType (
-                "LastfmTotalPlayCount",
-                Catalog.GetString ("Total Play Count"),
-                SortType.Descending, new PlayCountComparer ())
-        };
-
+        
         public override SourceSortType[] ChildSortTypes {
             get { return sort_types; }
         }
@@ -183,13 +160,6 @@ namespace Banshee.Lastfm.Radio
                 last_username = username;
                 last_was_subscriber = Account.Subscriber;
                 LastfmSource.LastUserSchema.Set (last_username);
-                ClearChildSources ();
-                PauseSorting ();
-                foreach (StationSource child in StationSource.LoadAll (this, Account.UserName)) {
-                    AddChildSource (child);
-                }
-                ResumeSorting ();
-                SortChildSources ();
             }
         }
 
@@ -303,6 +273,10 @@ namespace Banshee.Lastfm.Radio
 
         public static readonly SchemaEntry<bool> ExpandedSchema = new SchemaEntry<bool> (
             "plugins.lastfm", "expanded", false, "Last.fm expanded", "Last.fm expanded"
+        );
+
+        public static readonly SchemaEntry<bool> FirstRunSchema = new SchemaEntry<bool> (
+            "plugins.lastfm", "first_run", true, "First run", "First run of the Last.fm extension"
         );
     }
 }
