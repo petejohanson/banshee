@@ -25,8 +25,10 @@
 // THE SOFTWARE.
 
 using System;
+using System.Linq;
 using Gtk;
 using Mono.Unix;
+using Mono.Addins;
 
 using Lastfm.Gui;
 
@@ -213,6 +215,13 @@ namespace Banshee.Lastfm
                 LastfmSource.LastSessionKeySchema.Set (source.Account.SessionKey);
                 source.Account.UserName = LastfmSource.LastUserSchema.Get ();
                 source.Account.Save ();
+                var streaming_addin = AddinManager.Registry.GetAddins ()
+                    .Single (a => a.LocalId.Equals("Banshee.LastFmStreaming"));
+                if (source.Account.Subscriber &&
+                    streaming_addin != null &&
+                    !streaming_addin.Enabled) {
+                    streaming_addin.Enabled = true;
+                }
                 GetSignInState ();
             } else {
                 SignOut ();
