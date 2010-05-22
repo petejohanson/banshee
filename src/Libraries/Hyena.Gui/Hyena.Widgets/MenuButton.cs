@@ -41,6 +41,8 @@ namespace Hyena.Widgets
         private Menu menu;
         private Widget size_widget;
 
+        protected MenuButton (IntPtr ptr) : base (ptr) {}
+
         public MenuButton ()
         {
         }

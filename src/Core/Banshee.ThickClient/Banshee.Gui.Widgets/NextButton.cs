@@ -40,6 +40,8 @@ namespace Banshee.Gui.Widgets
         Widget button;
         bool with_repeat_actions;
 
+        protected NextButton (IntPtr ptr) : base (ptr) {}
+
         public NextButton (InterfaceActionService actionService) : this (actionService, false)
         {
         }

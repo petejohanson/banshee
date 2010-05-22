@@ -40,6 +40,8 @@ namespace Banshee.MiniMode
 {
     public class SourceModel : Gtk.TreeStore
     {
+        protected SourceModel (IntPtr ptr) : base (ptr) {}
+
         internal SourceModel() : base(typeof(Gdk.Pixbuf), typeof(string), typeof(Source))
         {
             Clear();

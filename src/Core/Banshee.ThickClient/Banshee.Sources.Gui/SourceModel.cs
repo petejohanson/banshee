@@ -73,6 +73,8 @@ namespace Banshee.Sources.Gui
 
         public Predicate<Source> Filter { get; set; }
 
+        protected SourceModel (IntPtr ptr) : base (ptr) {}
+
         public SourceModel () : base (typeof (Source), typeof (int), typeof (bool))
         {
             SetSortColumnId (1, SortType.Ascending);
