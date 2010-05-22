@@ -11,6 +11,7 @@ SOURCES =  \
 	Banshee.Lastfm.Recommendations/SimilarArtistTile.cs \
 	Banshee.Lastfm/LastfmActions.cs \
 	Banshee.Lastfm/LastfmColumnController.cs \
+	Banshee.Lastfm/LastfmPreferences.cs \
 	Banshee.Lastfm/LastfmSource.cs \
 	Banshee.Lastfm/LastfmSourceContents.cs
 

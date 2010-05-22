@@ -38,7 +38,7 @@ using Banshee.Lastfm.Audioscrobbler;
 using StationError = Lastfm.StationError;
 using RadioConnection = Lastfm.RadioConnection;
 
-namespace Banshee.Lastfm.Radio
+namespace Banshee.Lastfm
 {
     public class LastfmPreferences : IDisposable
     {
