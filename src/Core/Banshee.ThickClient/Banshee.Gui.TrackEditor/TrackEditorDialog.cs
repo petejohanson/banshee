@@ -88,8 +88,6 @@ namespace Banshee.Gui.TrackEditor
 
             LoadTrackModel (model);
 
-            BorderWidth = 6;
-
             if (mode == EditorMode.Edit) {
                 WidthRequest = 525;
                 AddStockButton (Stock.Cancel, ResponseType.Cancel);
@@ -104,8 +102,8 @@ namespace Banshee.Gui.TrackEditor
             AddNavigationButtons ();
 
             main_vbox = new VBox ();
-            main_vbox.Spacing = 10;
-            main_vbox.BorderWidth = 6;
+            main_vbox.Spacing = 12;
+            main_vbox.BorderWidth = 0;
             main_vbox.Show ();
             VBox.PackStart (main_vbox, true, true, 0);
 
@@ -229,7 +227,7 @@ namespace Banshee.Gui.TrackEditor
 
         private void BuildFooter ()
         {
-            if (mode == EditorMode.View) {
+            if (mode == EditorMode.View || TrackCount < 2) {
                 return;
             }
 
@@ -676,7 +674,8 @@ namespace Banshee.Gui.TrackEditor
                 track_editor.Destroy ();
             };
 
-            track_editor.Run ();
+            //track_editor.Run ();
+            track_editor.Show ();
         }
 
         private static bool UpdateCancelMessage (TrackEditorDialog trackEditor, HigMessageDialog messageDialog)

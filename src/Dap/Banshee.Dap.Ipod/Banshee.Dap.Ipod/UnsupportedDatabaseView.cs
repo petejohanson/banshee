@@ -32,9 +32,9 @@ using Mono.Unix;
 using Gtk;
 using IPod;
 
+using Hyena;
 using Hyena.Widgets;
 
-using Banshee.Base;
 using Banshee.Gui;
 using Banshee.Widgets;
 

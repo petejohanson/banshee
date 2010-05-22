@@ -182,6 +182,10 @@ namespace Banshee.SmartPlaylist
         }
 
         // FIXME scan ConditionTree for date fields
+        // FIXME even better, scan for date fields and see how fine-grained they are;
+        //       eg if set to Last Added < 2 weeks ago, don't need a timer going off
+        //       every 1 minute - every hour or two would suffice.  Just change this
+        //       property to a TimeSpan, rename it TimeDependentResolution or something
         public bool TimeDependent {
             get { return false; }
         }

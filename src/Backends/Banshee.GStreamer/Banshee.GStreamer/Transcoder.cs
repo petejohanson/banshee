@@ -95,8 +95,8 @@ namespace Banshee.GStreamer
             Log.DebugFormat ("Transcoding {0} to {1}", track.Uri, outputUri);
             SafeUri inputUri = track.Uri;
             managed_output_uri = outputUri;
-            IntPtr input_uri = GLib.Marshaller.StringToPtrGStrdup(inputUri.LocalPath);
-            IntPtr output_uri = GLib.Marshaller.StringToPtrGStrdup(outputUri.LocalPath);
+            IntPtr input_uri = GLib.Marshaller.StringToPtrGStrdup(inputUri.AbsoluteUri);
+            IntPtr output_uri = GLib.Marshaller.StringToPtrGStrdup(outputUri.AbsoluteUri);
 
             error_message = null;
 

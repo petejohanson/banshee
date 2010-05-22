@@ -33,7 +33,7 @@ namespace metrics
 {
     public class MainEntry
     {
-        const string db_path = "metrics.db";
+        const string db_path = "data/metrics.db";
 
         public static void Main (string [] args)
         {

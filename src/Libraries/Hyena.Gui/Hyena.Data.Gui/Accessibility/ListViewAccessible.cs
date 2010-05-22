@@ -54,10 +54,10 @@ namespace Hyena.Data.Gui.Accessibility
             cell_cache = new Dictionary<int, ColumnCellAccessible> ();
 
             list_view.ModelChanged += (o, a) => OnModelChanged ();
-            list_view.Model.Reloaded += (o, a) => OnModelChanged ();
+            list_view.ModelReloaded += (o, a) => OnModelChanged ();
             OnModelChanged ();
 
-            list_view.Selection.FocusChanged += OnSelectionFocusChanged;
+            list_view.SelectionProxy.FocusChanged += OnSelectionFocusChanged;
             list_view.ActiveColumnChanged += OnSelectionFocusChanged;
 
             ListViewAccessible_Selection ();
@@ -95,6 +95,10 @@ namespace Hyena.Data.Gui.Accessibility
             if (cell_cache.ContainsKey (index)) {
                 return cell_cache[index];
             }
+
+            // FIXME workaround to prevent crashing on Grid ListViews
+            if (list_view.ColumnController == null)
+                return null;
 
             var columns = list_view.ColumnController.Where (c => c.Visible);
 
@@ -134,7 +138,10 @@ namespace Hyena.Data.Gui.Accessibility
 
         private void OnSelectionFocusChanged (object o, EventArgs a)
         {
-            GLib.Signal.Emit (this, "active-descendant-changed", ActiveCell.Handle);
+            var cell = ActiveCell;
+            if (cell != null) {
+                GLib.Signal.Emit (this, "active-descendant-changed", cell.Handle);
+            }
         }
 
         private Atk.Object ActiveCell {
@@ -147,7 +154,11 @@ namespace Hyena.Data.Gui.Accessibility
         }
 
         private int n_columns {
-            get { return list_view.ColumnController.Count (c => c.Visible); }
+            get {
+                return list_view.ColumnController != null
+                    ? list_view.ColumnController.Count (c => c.Visible)
+                    : 1;
+            }
         }
 
         private int n_rows {

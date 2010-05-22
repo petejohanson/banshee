@@ -738,7 +738,7 @@ namespace Banshee.Database
                         WHERE UriType = 1
                           AND PrimarySourceID != ?", library_path, podcast_src_id);
 
-                    string podcast_path = Banshee.Base.Paths.Combine (library_path, "Podcasts");
+                    string podcast_path = Paths.Combine (library_path, "Podcasts");
                     connection.Execute (@"
                         UPDATE CoreTracks SET Uri = BANSHEE_MIGRATE_PARTIAL(?, Uri)
                         WHERE UriType = 1
@@ -1439,7 +1439,7 @@ namespace Banshee.Database
         {
             string library_path = (string)args[0];
             string filename_fragment = (string)args[1];
-            string full_path = Banshee.Base.Paths.Combine (library_path, filename_fragment);
+            string full_path = Paths.Combine (library_path, filename_fragment);
             return Banshee.Base.SafeUri.FilenameToUri (full_path);
         }
     }

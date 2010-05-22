@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2008-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -44,6 +44,7 @@ namespace Banshee.NowPlaying
         private NowPlayingSource source;
         private Hyena.Widgets.RoundedFrame frame;
         private Gtk.Window video_window;
+        private Gtk.Window primary_window;
         private FullscreenAdapter fullscreen_adapter;
         private ScreensaverManager screensaver;
         
@@ -52,6 +53,7 @@ namespace Banshee.NowPlaying
         public NowPlayingInterface ()
         {
             GtkElementsService service = ServiceManager.Get<GtkElementsService> ();
+            primary_window = service.PrimaryWindow;
 
             Contents = new NowPlayingContents ();
             Contents.ButtonPressEvent += (o, a) => {
@@ -82,12 +84,15 @@ namespace Banshee.NowPlaying
             PackStart (frame, true, true, 0);
 
             fullscreen_adapter = new FullscreenAdapter ();
+            fullscreen_adapter.SuggestUnfullscreen += OnAdapterSuggestUnfullscreen;
             screensaver = new ScreensaverManager ();
         }
 
         public override void Dispose ()
         {
             base.Dispose ();
+            fullscreen_adapter.SuggestUnfullscreen -= OnAdapterSuggestUnfullscreen;
+            fullscreen_adapter.Dispose ();
             screensaver.Dispose ();
         }
 
@@ -122,6 +127,7 @@ namespace Banshee.NowPlaying
 #region Video Fullscreen Override
 
         private ViewActions.FullscreenHandler previous_fullscreen_handler;
+        private bool primary_window_is_fullscreen;
 
         private void DisableFullscreenAction ()
         {
@@ -142,6 +148,7 @@ namespace Banshee.NowPlaying
             }
 
             previous_fullscreen_handler = service.ViewActions.Fullscreen;
+            primary_window_is_fullscreen = (primary_window.GdkWindow.State & Gdk.WindowState.Fullscreen) != 0;
             service.ViewActions.Fullscreen = FullscreenHandler;
             DisableFullscreenAction ();
         }
@@ -164,9 +171,21 @@ namespace Banshee.NowPlaying
             DisableFullscreenAction ();
         }
 
+        private bool is_fullscreen;
+
         private void FullscreenHandler (bool fullscreen)
         {
+            // Note: Since the video window is override-redirect, we
+            // need to fullscreen the main window, so the window manager
+            // actually knows we are actually doing stuff in fullscreen
+            // here. The original primary window fullscreen state is
+            // stored, so when we can restore it appropriately
+
+            is_fullscreen = fullscreen;
+
             if (fullscreen) {
+                primary_window.Fullscreen ();
+
                 MoveVideoExternal (true);
                 video_window.Show ();
                 fullscreen_adapter.Fullscreen (video_window, true);
@@ -176,6 +195,18 @@ namespace Banshee.NowPlaying
                 screensaver.UnInhibit ();
                 fullscreen_adapter.Fullscreen (video_window, false);
                 video_window.Hide ();
+
+                if (!primary_window_is_fullscreen) {
+                    primary_window.Unfullscreen ();
+                }
+            }
+        }
+
+        private void OnAdapterSuggestUnfullscreen (object o, EventArgs args)
+        {
+            if (is_fullscreen) {
+                Hyena.Log.Debug ("Closing fullscreen at request of the FullscreenAdapter");
+                FullscreenHandler (false);
             }
         }
 

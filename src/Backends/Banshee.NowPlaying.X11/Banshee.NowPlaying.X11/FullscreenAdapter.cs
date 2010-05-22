@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2008-2010  Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -91,9 +91,33 @@ namespace Banshee.NowPlaying.X11
         }
 
         private BaconResize resize;
+        private bool is_fullscreen;
+
+        public event EventHandler SuggestUnfullscreen;
+
+        public FullscreenAdapter ()
+        {
+            try {
+                WnckActiveWorkspaceMonitor.Changed += () => {
+                    if (!is_fullscreen) {
+                        return;
+                    }
+
+                    Hyena.Log.Debug ("WnckScreen::ActiveWorkspaceChanged - raising SuggestUnfullscreen");
+                    var handler = SuggestUnfullscreen;
+                    if (handler != null) {
+                        handler (this, EventArgs.Empty);
+                    }
+                };
+            } catch (Exception e) {
+                Hyena.Log.Exception ("Could not configure libwnck support", e);
+            }
+        }
 
         public void Fullscreen (Window window, bool fullscreen)
         {
+            is_fullscreen = fullscreen;
+
             // Create the Bacon X11 Resizer if we haven't before or the window changes
             if (resize == null || resize.Window != window) {
                 if (resize != null) {
@@ -130,5 +154,68 @@ namespace Banshee.NowPlaying.X11
                 resize = null;
             }
         }
+
+#region WNCK
+
+        public delegate void WnckActiveWorkspaceChangedHandler (object o, WnckActiveWorkspaceChangedArgs args);
+
+        public class WnckActiveWorkspaceChangedArgs : GLib.SignalArgs
+        {
+            public IntPtr PreviousWorkspace {
+                get { return (IntPtr)Args[0]; }
+            }
+        }
+
+        private static class WnckActiveWorkspaceMonitor
+        {
+            private const string WNCK_LIB = "libwnck-1.so.22";
+            private const string GOBJECT_LIB = "libgobject-2.0.so";
+
+            [DllImport (WNCK_LIB)]
+            private static extern IntPtr wnck_screen_get_default ();
+
+            [DllImport (WNCK_LIB)]
+            private static extern void wnck_screen_force_update (IntPtr screen);
+
+            [DllImport (WNCK_LIB)]
+            private static extern IntPtr wnck_screen_get_active_workspace (IntPtr screen);
+
+            private delegate void WnckActiveWorkspaceChangedHandler (IntPtr screen,
+                IntPtr previouslyActiveWorkspace, IntPtr user);
+
+            [DllImport (GOBJECT_LIB)]
+            private static extern ulong g_signal_connect_data (IntPtr instance, string detailed_signal,
+                WnckActiveWorkspaceChangedHandler c_handler, IntPtr user, IntPtr notify_closure, uint connect_flags);
+
+            private static WnckActiveWorkspaceChangedHandler active_workspace_changed_handler;
+
+            static WnckActiveWorkspaceMonitor ()
+            {
+                active_workspace_changed_handler = new WnckActiveWorkspaceChangedHandler (OnActiveWorkspaceChanged);
+                var screen = wnck_screen_get_default ();
+                wnck_screen_force_update (screen);
+                g_signal_connect_data (screen, "active-workspace-changed",
+                    active_workspace_changed_handler, IntPtr.Zero, IntPtr.Zero, 0);
+            }
+
+            public static event System.Action Changed;
+
+            private static void OnActiveWorkspaceChanged (IntPtr screen, IntPtr previouslyActiveWorkspace, IntPtr user)
+            {
+                if (wnck_screen_get_active_workspace (screen) == IntPtr.Zero) {
+                    Hyena.Log.Debug ("wnck_screen_get_active_workspace returned NULL, " +
+                        "wnck_screen_force_update might have failed, " +
+                        "so not raising workspace changed event.");
+                } else {
+                    var handler = Changed;
+                    if (handler != null) {
+                        handler ();
+                    }
+                }
+            }
+        }
+
+#endregion
+
     }
 }

@@ -63,9 +63,10 @@ namespace Banshee.Library.Gui
 
             uint row = 0;
 
-            var table = new Table (4, 2, false) {
+            var table = new Table (doNotShowAgainVisible ? (uint)4 : (uint)3, 2, false) {
                 RowSpacing = 12,
-                ColumnSpacing = 16
+                ColumnSpacing = 16,
+                Homogeneous = false
             };
 
             table.Attach (new Label () {
@@ -93,9 +94,11 @@ namespace Banshee.Library.Gui
             vbox.PackStart (source_combo_box, false, false, 0);
             table.Attach (vbox, 1, 2, row, ++row);
 
-            table.Attach (do_not_show_check_button = new CheckButton (
-                Catalog.GetString ("Do not show this dialog again")),
-                1, 2, row, ++row);
+            if (doNotShowAgainVisible) {
+                table.Attach (do_not_show_check_button = new CheckButton (
+                    Catalog.GetString ("Do not show this dialog again")),
+                    1, 2, row, ++row);
+            }
 
             table.Attach (new Image () {
                     IconName = "drive-harddisk",
@@ -106,7 +109,9 @@ namespace Banshee.Library.Gui
             VBox.PackStart (table, true, true, 0);
             VBox.ShowAll ();
 
-            DoNotShowAgainVisible = doNotShowAgainVisible;
+            if (doNotShowAgainVisible) {
+                DoNotShowAgainVisible = doNotShowAgainVisible;
+            }
 
             ServiceManager.SourceManager.SourceAdded += OnSourceAdded;
             ServiceManager.SourceManager.SourceRemoved += OnSourceRemoved;
@@ -264,14 +269,14 @@ namespace Banshee.Library.Gui
             return false;
         }
 
-        public bool DoNotShowAgainVisible {
+        private bool DoNotShowAgainVisible {
             get { return do_not_show_check_button.Visible; }
             set { do_not_show_check_button.Visible = value; }
         }
 
-        public bool DoNotShowAgain {
+        /*private bool DoNotShowAgain {
             get { return do_not_show_check_button.Active; }
-        }
+        }*/
 
         public IImportSource ActiveSource {
             get {

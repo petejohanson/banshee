@@ -79,18 +79,13 @@ namespace Banshee.Playlists.Formats
                 return uri.IsLocalPath ? uri.LocalPath : uri.AbsoluteUri;
             }
 
-            // TODO replace with call to Paths.MakeRelativeTo
-            string base_uri = uri.IsLocalPath ? BaseUri.LocalPath : BaseUri.AbsoluteUri;
-            string relative_uri = uri.IsLocalPath ? uri.LocalPath : uri.AbsoluteUri;
-
-            if(relative_uri.StartsWith(base_uri)) {
-                relative_uri = relative_uri.Substring(base_uri.Length);
-                if(relative_uri[0] == Path.DirectorySeparatorChar) {
-                    relative_uri = relative_uri.Substring(1);
-                }
+            if (!uri.IsLocalPath) {
+                return uri.AbsoluteUri;
             }
 
-            return relative_uri;
+            var result = Paths.MakePathRelative (uri.LocalPath, new DirectoryInfo (BaseUri.LocalPath).FullName);
+
+            return result ?? uri.AbsoluteUri;
         }
 
         protected virtual TimeSpan SecondsStringToTimeSpan(string seconds)

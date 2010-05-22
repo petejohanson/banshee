@@ -43,9 +43,14 @@ namespace Banshee.Gui
 {
     public abstract class GtkBaseClient : Client
     {
+        static GtkBaseClient () {
+            Paths.ApplicationName = Application.InternalName;
+            user_gtkrc = Path.Combine (Paths.ApplicationData, "gtkrc");
+        }
+
         private static Type client_type;
 
-        private static string user_gtkrc = Path.Combine (Paths.ApplicationData, "gtkrc");
+        private static string user_gtkrc;
 
         public static void Startup<T> (string [] args) where T : GtkBaseClient
         {
@@ -91,6 +96,10 @@ namespace Banshee.Gui
             }
         }
 
+        protected virtual void PreInitializeGtk ()
+        {
+        }
+
         protected virtual void InitializeGtk ()
         {
             Log.Debug ("Initializing GTK");
@@ -100,6 +109,21 @@ namespace Banshee.Gui
             }
             Gtk.Application.Init ();
 
+            if (ApplicationContext.CommandLine.Contains ("debug-gtkrc")) {
+                Log.Information ("Note: gtkrc files will be checked for reload every 5 seconds!");
+                GLib.Timeout.Add (5000, delegate {
+                    if (Gtk.Rc.ReparseAll ()) {
+                        Gtk.Rc.ResetStyles (Gtk.Settings.Default);
+                        Log.Information ("gtkrc has been reloaded");
+                    }
+                    return true;
+                });
+            }
+        }
+
+        protected virtual void PostInitializeGtk ()
+        {
+            Log.Debug ("Post-Initializing GTK");
             foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes
                 ("/Banshee/ThickClient/GtkBaseClient/PostInitializeGtk")) {
                 try {
@@ -115,9 +139,10 @@ namespace Banshee.Gui
             // Set the process name so system process listings and commands are pretty
             ApplicationContext.TrySetProcessName (Application.InternalName);
 
-            Application.Initialize ();
-
+            PreInitializeGtk ();
             InitializeGtk ();
+            Application.Initialize ();
+            PostInitializeGtk ();
 
             Gtk.Window.DefaultIconName = default_icon_name;
 

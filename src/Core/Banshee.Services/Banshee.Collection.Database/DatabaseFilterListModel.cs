@@ -71,16 +71,52 @@ namespace Banshee.Collection.Database
 
             this.connection = connection;
             cache = new BansheeModelCache <T> (connection, uuid, this, provider);
-            cache.HasSelectAllItem = true;
+            HasSelectAllItem = true;
+        }
+
+        private int select_all_offset;
+        protected bool HasSelectAllItem {
+            get { return cache.HasSelectAllItem; }
+            set {
+                cache.HasSelectAllItem = value;
+                select_all_offset = value ? 1 : 0;
+            }
         }
 
         public override void Clear ()
         {
+            UnfilteredCount = 0;
+            count = 0;
+        }
+
+        protected bool CalculateUnfilteredCount { get; set; }
+
+        private HyenaSqliteCommand unfiltered_count_command;
+        private HyenaSqliteCommand UnfilteredCountCommand {
+            get {
+                return unfiltered_count_command ?? (unfiltered_count_command =
+                    new HyenaSqliteCommand (String.Format (
+                        "SELECT COUNT(*) {0}", GenerateReloadFragment (false)
+                    ))
+                );
+            }
+        }
+
+        private void UpdateUnfilteredAggregates ()
+        {
+            using (var reader = new HyenaDataReader (connection.Query (UnfilteredCountCommand))) {
+                UnfilteredCount = reader.Get<int> (0);
+            }
         }
 
         protected virtual void GenerateReloadFragment ()
         {
-            ReloadFragment = String.Format (
+            ReloadFragment = GenerateReloadFragment (true);
+        }
+
+        private string GenerateReloadFragment (bool filtered)
+        {
+            return String.Format (
                 ReloadFragmentFormat,
                 FilteredModel.CachesJoinTableEntries ? FilteredModel.JoinFragment : null,
                 FilteredModel.CacheId,
@@ -89,7 +125,7 @@ namespace Banshee.Collection.Database
                         "{0}.{1} AND CoreTracks.TrackID = {0}.{2}",
                         FilteredModel.JoinTable, FilteredModel.JoinPrimaryKey, FilteredModel.JoinColumn)
                     : "CoreTracks.TrackID",
-                GetFilterFragment ()
+                filtered ? GetFilterFragment () : ""
             );
         }
 
@@ -128,7 +164,7 @@ namespace Banshee.Collection.Database
             string filter = null;
 
             // If the only item is the "All" item, then we shouldn't allow any matches, so insert an always-false condition
-            if (Count == 1) {
+            if (HasSelectAllItem && Count == 1) {
                 return "0=1";
             } else {
                 ModelHelper.BuildIdFilter<object> (GetSelectedObjects (), FilterColumn, null,
@@ -152,6 +188,10 @@ namespace Banshee.Collection.Database
             GenerateReloadFragment ();
 
             lock (cache) {
+                if (CalculateUnfilteredCount) {
+                    UpdateUnfilteredAggregates ();
+                }
+
                 connection.BeginTransaction ();
                 cache.SaveSelection ();
                 cache.Reload ();
@@ -159,10 +199,10 @@ namespace Banshee.Collection.Database
                 cache.RestoreSelection ();
                 connection.CommitTransaction ();
 
-                count = cache.Count + 1;
+                count = cache.Count + select_all_offset;
             }
 
-            UpdateSelectAllItem (count - 1);
+            UpdateSelectAllItem (count - select_all_offset);
 
             if (notify)
                 OnReloaded ();
@@ -170,11 +210,11 @@ namespace Banshee.Collection.Database
 
         public override U this[int index] {
             get {
-                if (index == 0)
+                if (HasSelectAllItem && index == 0)
                     return select_all_item;
 
                 lock (cache) {
-                    return cache.GetValue (index - 1);
+                    return cache.GetValue (index - select_all_offset);
                 }
             }
         }
@@ -182,6 +222,8 @@ namespace Banshee.Collection.Database
         public override int Count {
             get { return (int) count; }
         }
+
+        public int UnfilteredCount { get; private set; }
 
         // Implement ICacheableModel
         public virtual int FetchCount {
@@ -234,7 +276,7 @@ namespace Banshee.Collection.Database
                 }
 
                 int index = (int) cache.IndexOf (query.ToSql (QueryFields), offset);
-                return index >= 0 ? index + 1 : index;
+                return index >= 0 ? index + select_all_offset : index;
             }
         }
 

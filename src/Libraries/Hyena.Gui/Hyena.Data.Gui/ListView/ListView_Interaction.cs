@@ -82,7 +82,7 @@ namespace Hyena.Data.Gui
         }
 
         public Selection Selection {
-            get { return model.Selection; }
+            get { return model == null ? null : model.Selection; }
         }
 
         private int HadjustmentValue {
@@ -172,14 +172,14 @@ namespace Hyena.Data.Gui
 
             switch (press.Key) {
                 case Gdk.Key.a:
-                    if ((press.State & Gdk.ModifierType.ControlMask) != 0) {
+                    if ((press.State & Gdk.ModifierType.ControlMask) != 0 && Model.Count > 0) {
                         SelectionProxy.Selection.SelectAll ();
                         handled = true;
                     }
                     break;
 
                 case Gdk.Key.A:
-                    if ((press.State & Gdk.ModifierType.ControlMask) != 0) {
+                    if ((press.State & Gdk.ModifierType.ControlMask) != 0 && Selection.Count > 0) {
                         SelectionProxy.Selection.Clear ();
                         handled = true;
                     }

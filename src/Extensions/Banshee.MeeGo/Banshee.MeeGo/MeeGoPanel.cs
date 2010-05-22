@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 using System;
+using Mono.Unix;
 
 using Gtk;
 using MeeGo.Panel;
@@ -43,7 +44,6 @@ namespace Banshee.MeeGo
         private Window window_panel;
 
         public MediaPanelContents Contents { get; private set; }
-        public bool Enabled { get; private set; }
 
         public MeeGoPanel ()
         {
@@ -52,17 +52,19 @@ namespace Banshee.MeeGo
             }
 
             Instance = this;
-            Enabled = true;
-
-            Hyena.Gui.Theming.ThemeEngine.SetCurrentTheme<MeeGoTheme> ();
 
             var timer = Log.DebugTimerStart ();
 
             try {
                 Log.Debug ("Attempting to create MeeGo toolbar panel");
-                embedded_panel = new PanelGtk ("banshee", "media", null, "media-button", true);
-                embedded_panel.ShowBeginEvent += (o, e) =>
+                embedded_panel = new PanelGtk ("banshee", Catalog.GetString ("media"),
+                    null, "media-button", true);
+                embedded_panel.ShowBeginEvent += (o, e) => {
                     ServiceManager.SourceManager.SetActiveSource (ServiceManager.SourceManager.MusicLibrary);
+                    if (Contents != null) {
+                        Contents.SyncSearchEntry ();
+                    }
+                };
                 while (Gtk.Application.EventsPending ()) {
                     Gtk.Application.RunIteration ();
                 }
@@ -82,10 +84,6 @@ namespace Banshee.MeeGo
 
         public void BuildContents ()
         {
-            if (!Enabled) {
-                return;
-            }
-
             var timer = Log.DebugTimerStart ();
             Contents = new MediaPanelContents ();
             Contents.ShowAll ();

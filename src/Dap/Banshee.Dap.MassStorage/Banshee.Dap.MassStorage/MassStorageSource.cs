@@ -164,7 +164,7 @@ namespace Banshee.Dap.MassStorage
                     "INSERT INTO CorePlaylistEntries (PlaylistID, TrackID) VALUES (?, ?)");
                 int [] psources = new int [] {DbId};
                 foreach (string playlist_path in PlaylistFiles) {
-                    IPlaylistFormat loaded_playlist = PlaylistFileUtil.Load (playlist_path, new Uri (BaseDirectory));
+                    IPlaylistFormat loaded_playlist = PlaylistFileUtil.Load (playlist_path, new Uri (PlaylistsPath));
                     if (loaded_playlist == null)
                         continue;
 
@@ -332,7 +332,8 @@ namespace Banshee.Dap.MassStorage
                     System.IO.Stream stream = null;
                     try {
                         stream = Banshee.IO.File.OpenWrite (playlist_path, true);
-                        playlist_format.BaseUri = new Uri (BaseDirectory);
+                        playlist_format.BaseUri = new Uri (PlaylistsPath);
+
                         playlist_format.Save (stream, from);
                     } catch (Exception e) {
                         Log.Exception (e);
@@ -372,7 +373,7 @@ namespace Banshee.Dap.MassStorage
                     // According to the HAL spec, the first folder listed in the audio_folders property
                     // is the folder to write files to.
                     if (AudioFolders.Length > 0) {
-                        write_path = Banshee.Base.Paths.Combine (write_path, AudioFolders[0]);
+                        write_path = Hyena.Paths.Combine (write_path, AudioFolders[0]);
                     }
                 }
                 return write_path;
@@ -388,10 +389,10 @@ namespace Banshee.Dap.MassStorage
                     write_path_video = BaseDirectory;
                     // Some Devices May Have a Separate Video Directory
                     if (VideoFolders.Length > 0) {
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, VideoFolders[0]);
+                        write_path_video = Hyena.Paths.Combine (write_path_video, VideoFolders[0]);
                     } else if (AudioFolders.Length > 0) {
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, AudioFolders[0]);
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, "Videos");
+                        write_path_video = Hyena.Paths.Combine (write_path_video, AudioFolders[0]);
+                        write_path_video = Hyena.Paths.Combine (write_path_video, "Videos");
                     }
                 }
                 return write_path_video;

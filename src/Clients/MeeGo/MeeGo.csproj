@@ -4,94 +4,65 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
-    <ProjectGuid>{0130499B-8A93-4CD9-8F3C-593B231609C7}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{FC44E7C6-D625-4FF1-BA85-F074871423EF}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
-    <AssemblyName>Banshee.Bookmarks</AssemblyName>
+    <AssemblyName>MeeGo</AssemblyName>
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\Administrator\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <Optimize>true</Optimize>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ReleaseVersion>1.3</ReleaseVersion>
-    <RootNamespace>Banshee.Bookmarks</RootNamespace>
+    <RootNamespace>MeeGo</RootNamespace>
     <AssemblyOriginatorKeyFile>.</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
+    <OutputPath>..\..\..\bin</OutputPath>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
+    <ConsolePause>false</ConsolePause>
+    <Commandlineparameters>--debug --uninstalled</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>true</Externalconsole>
+    <OutputPath>..\..\..\bin</OutputPath>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
-      <Project>{2ADB831A-A050-47D0-B6B9-9C19D60233BB}</Project>
-      <Name>Banshee.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Banshee.Services\Banshee.Services.csproj">
-      <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
-      <Name>Banshee.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Banshee.ThickClient\Banshee.ThickClient.csproj">
       <Project>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</Project>
       <Name>Banshee.ThickClient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Nereid\Nereid.csproj">
+      <Project>{4F66A4DE-5204-4150-8D0B-CE21CA52E309}</Project>
+      <Name>Nereid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\Banshee.MeeGo\Banshee.MeeGo.csproj">
+      <Project>{4FBB954A-5CA9-44DC-97DA-7D549AC3EADB}</Project>
+      <Name>Banshee.MeeGo</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Hyena\Hyena.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
       <Name>Hyena</Name>
     </ProjectReference>
-    <Reference Include="atk-sharp">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="gdk-sharp">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="glib-sharp">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="gtk-sharp">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="System.Data" />
-    <ProjectReference Include="..\..\Libraries\Hyena.Gui\Hyena.Gui.csproj">
-      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
-      <Name>Hyena.Gui</Name>
-    </ProjectReference>
-    <Reference Include="Mono.Posix">
-      <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Banshee.Bookmarks.addin.xml">
-      <LogicalName>Banshee.Bookmarks.addin.xml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\BookmarksMenu.xml">
-      <LogicalName>BookmarksMenu.xml</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Banshee.Bookmarks\BookmarksService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="./Makefile.am">
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am">
           <BuildFilesVar Sync="true" Name="SOURCES" />
           <DeployFilesVar />
-          <ResourcesVar Sync="true" Name="RESOURCES" />
+          <ResourcesVar />
           <OthersVar />
           <GacRefVar />
           <AsmRefVar />
@@ -100,4 +71,10 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Banshee.MeeGo.Client\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Banshee.MeeGo.Client\MeeGoClient.cs" />
+  </ItemGroup>
 </Project>

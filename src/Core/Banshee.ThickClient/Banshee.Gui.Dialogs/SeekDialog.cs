@@ -40,7 +40,10 @@ namespace Banshee.Gui.Dialogs
     {
         public SeekDialog () : base (Catalog.GetString ("Seek to Position"))
         {
-            var seek_slider = new ConnectedSeekSlider ();
+            var seek_slider = new ConnectedSeekSlider () {
+                RightPadding = 0,
+                LeftPadding = 0
+            };
             seek_slider.StreamPositionLabel.FormatString = "<big>{0}</big>";
             seek_slider.ShowAll ();
 

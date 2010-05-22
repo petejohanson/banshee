@@ -133,17 +133,28 @@ namespace Banshee.Collection.Database
             }
         }
 
+        public override bool IsPlaying {
+            get {
+                if (PrimarySource != null && PrimarySource.TrackIsPlayingHandler != null) {
+                    return PrimarySource.TrackIsPlayingHandler (this);
+                }
+                return base.IsPlaying;
+            }
+        }
+
         public static bool TrackEqual (DatabaseTrackInfo a, DatabaseTrackInfo b)
         {
             return a != null && b != null && a.TrackId == b.TrackId;
         }
 
         public DatabaseArtistInfo Artist {
-            get { return DatabaseArtistInfo.FindOrCreate (ArtistName, ArtistNameSort); }
+            get { return DatabaseArtistInfo.FindOrCreate (ArtistName, ArtistNameSort, ArtistMusicBrainzId); }
         }
 
         public DatabaseAlbumInfo Album {
-            get { return DatabaseAlbumInfo.FindOrCreate (DatabaseArtistInfo.FindOrCreate (AlbumArtist, AlbumArtistSort), AlbumTitle, AlbumTitleSort, IsCompilation); }
+            get { return DatabaseAlbumInfo.FindOrCreate (
+                DatabaseArtistInfo.FindOrCreate (AlbumArtist, AlbumArtistSort, ArtistMusicBrainzId),
+                AlbumTitle, AlbumTitleSort, IsCompilation, AlbumMusicBrainzId); }
         }
 
         private static bool notify_saved = true;
@@ -159,6 +170,7 @@ namespace Banshee.Collection.Database
 
         public override void UpdateLastPlayed ()
         {
+            Refresh ();
             base.UpdateLastPlayed ();
             Save (NotifySaved, BansheeQuery.LastPlayedField);
         }
@@ -391,6 +403,42 @@ namespace Banshee.Collection.Database
         public override string MusicBrainzId {
             get { return base.MusicBrainzId; }
             set { base.MusicBrainzId = value; }
+        }
+
+        [VirtualDatabaseColumn ("MusicBrainzID", "CoreAlbums", "AlbumID", "AlbumID")]
+        protected string AlbumMusicBrainzIdField {
+            get { return base.AlbumMusicBrainzId; }
+            set { base.AlbumMusicBrainzId = value; }
+        }
+
+        public override string AlbumMusicBrainzId {
+            get { return base.AlbumMusicBrainzId; }
+            set {
+                value = CleanseString (value, AlbumMusicBrainzId);
+                if (value == null)
+                    return;
+
+                base.AlbumMusicBrainzId = value;
+                album_changed = true;
+            }
+        }
+
+       [VirtualDatabaseColumn ("MusicBrainzID", "CoreArtists", "ArtistID", "ArtistID")]
+        protected string ArtistMusicBrainzIdField {
+            get { return base.ArtistMusicBrainzId; }
+            set { base.ArtistMusicBrainzId = value; }
+        }
+
+        public override string ArtistMusicBrainzId {
+            get { return base.ArtistMusicBrainzId; }
+            set {
+                value = CleanseString (value, ArtistMusicBrainzId);
+                if (value == null)
+                    return;
+
+                base.ArtistMusicBrainzId = value;
+                artist_changed = true;
+            }
         }
 
         [DatabaseColumn ("Uri")]
@@ -724,6 +772,16 @@ namespace Banshee.Collection.Database
         public static bool ContainsUri (SafeUri uri, int [] primary_sources)
         {
             return GetTrackIdForUri (uri, primary_sources) > 0;
+        }
+
+        public static void UpdateMetadataHash (string albumTitle, string artistName, string condition)
+        {
+            // Keep this field set/order in sync with MetadataHash in TrackInfo.cs
+            ServiceManager.DbConnection.Execute (String.Format (
+                @"UPDATE CoreTracks SET MetadataHash = HYENA_MD5 (6, ?, ?, Genre, Title, TrackNumber, Year)
+                    WHERE {0}",
+                condition), albumTitle, artistName
+            );
         }
     }
 }

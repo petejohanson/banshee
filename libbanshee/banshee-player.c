@@ -33,9 +33,6 @@
 #include "banshee-player-cdda.h"
 #include "banshee-player-missing-elements.h"
 #include "banshee-player-replaygain.h"
-#if BANSHEE_CHECK_GST_VERSION(0,10,25)
-#include <gst/interfaces/streamvolume.h>
-#endif
 
 // ---------------------------------------------------------------------------
 // Private Functions
@@ -256,37 +253,48 @@ bp_supports_gapless (BansheePlayer *player)
 #endif //ENABLE_GAPLESS
 }
 
+P_INVOKE gboolean
+bp_supports_stream_volume (BansheePlayer *player)
+{
+    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
+    return player->supports_stream_volume;
+}
+
 P_INVOKE void
 bp_set_volume (BansheePlayer *player, gdouble volume)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     g_return_if_fail (GST_IS_ELEMENT (player->playbin));
 
-#if BANSHEE_CHECK_GST_VERSION(0,10,25)
-    if (gst_element_implements_interface (player->playbin, GST_TYPE_STREAM_VOLUME))
-      gst_stream_volume_set_volume (GST_STREAM_VOLUME (player->playbin), GST_STREAM_VOLUME_FORMAT_CUBIC, volume);
-    else
-      g_object_set (player->playbin, "volume", CLAMP (volume, 0.0, 1.0), NULL);
-#else
-    g_object_set (player->playbin, "volume", CLAMP (volume, 0.0, 1.0), NULL);
-#endif
+    if (bp_supports_stream_volume (player)) {
+        #if BANSHEE_CHECK_GST_VERSION(0,10,25)
+        gst_stream_volume_set_volume (GST_STREAM_VOLUME (player->playbin),
+            GST_STREAM_VOLUME_FORMAT_CUBIC, volume);
+        #endif
+    } else {
+        g_object_set (player->playbin, "volume", CLAMP (volume, 0.0, 1.0), NULL);
+    }
+
     _bp_rgvolume_print_volume (player);
 }
 
 P_INVOKE gdouble
 bp_get_volume (BansheePlayer *player)
 {
-	gdouble volume;
+    gdouble volume;
+
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), 0.0);
     g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), 0.0);
-#if BANSHEE_CHECK_GST_VERSION(0,10,25)
-    if (gst_element_implements_interface (player->playbin, GST_TYPE_STREAM_VOLUME))
-      volume = gst_stream_volume_get_volume (GST_STREAM_VOLUME (player->playbin), GST_STREAM_VOLUME_FORMAT_CUBIC);
-    else
-      g_object_get (player->playbin, "volume", &volume, NULL);
-#else
-    g_object_get (player->playbin, "volume", &volume, NULL);
-#endif
+
+    if (bp_supports_stream_volume (player)) {
+        #if BANSHEE_CHECK_GST_VERSION(0,10,25)
+        volume = gst_stream_volume_get_volume (GST_STREAM_VOLUME (player->playbin),
+            GST_STREAM_VOLUME_FORMAT_CUBIC);
+        #endif
+    } else {
+        g_object_get (player->playbin, "volume", &volume, NULL);
+    }
+
     return volume;
 }
 

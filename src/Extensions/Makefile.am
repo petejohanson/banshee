@@ -1,7 +1,6 @@
 SUBDIRS = \
 	Banshee.Audiobook \
 	Banshee.AudioCd \
-	Banshee.Bookmarks \
 	Banshee.BooScript \
 	Banshee.Bpm \
 	Banshee.CoverArt \

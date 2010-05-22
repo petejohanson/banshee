@@ -47,19 +47,10 @@ namespace Banshee.MeeGo
         private InterfaceActionService interface_action_service;
         private SourceManager source_manager;
         private PlayerEngineService player;
-        private Source now_playing;
-
         private MeeGoPanel panel;
 
         void IExtensionService.Initialize ()
         {
-            // We need to create the MeeGo panel connection as soon as possible
-            // to keep mutter-moblin's toolbar from thinking we crashed (timing out).
-            // The contents of the panel will be constructed later on.
-            if (MeeGoPanel.Instance.Enabled) {
-                panel = MeeGoPanel.Instance;
-            }
-
             elements_service = ServiceManager.Get<GtkElementsService> ();
             interface_action_service = ServiceManager.Get<InterfaceActionService> ();
             source_manager = ServiceManager.SourceManager;
@@ -101,13 +92,12 @@ namespace Banshee.MeeGo
 
         private void Initialize ()
         {
-            // regular metacity does not seem to like this at all, crashing
-            // and complaining "Window manager warning: Buggy client sent a
-            // _NET_ACTIVE_WINDOW message with a timestamp of 0 for 0x2e00020"
-            if (panel != null) {
-                elements_service.PrimaryWindow.Decorated = false;
-                elements_service.PrimaryWindow.Maximize ();
-            }
+            // If Banshee is running from the MeeGo client entry assembly,
+            // the MeeGoPanel will have already been created. If not, we
+            // assume we're probably not really running in a MeeGo environment,
+            // so we just create the panel here (which is likely to just be
+            // a separate top-level window for testing).
+            panel = MeeGoPanel.Instance ?? new MeeGoPanel ();
 
             if (panel == null) {
                 Log.Warning ("MeeGo extension initialized without a panel");
@@ -126,43 +116,6 @@ namespace Banshee.MeeGo
                 elements_service.PrimaryWindow.Hide ();
                 return false;
             };
-
-            FindNowPlaying ();
-            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerStateChanged,
-                PlayerEvent.StateChange | PlayerEvent.StartOfStream);
-        }
-
-        private void OnPlayerStateChanged (PlayerEventArgs args)
-        {
-            var player = ServiceManager.PlayerEngine;
-            if (player.CurrentState == PlayerState.Playing &&
-                player.CurrentTrack.HasAttribute (TrackMediaAttributes.VideoStream)) {
-                if (now_playing != null) {
-                    ServiceManager.SourceManager.SetActiveSource (now_playing);
-                }
-
-                PresentPrimaryInterface ();
-            }
-        }
-
-        private void FindNowPlaying ()
-        {
-            foreach (var src in ServiceManager.SourceManager.Sources) {
-                if (src.UniqueId.Contains ("now-playing")) {
-                    now_playing = src;
-                    break;
-                }
-            }
-
-            if (now_playing != null) {
-                return;
-            }
-
-            Banshee.ServiceStack.ServiceManager.SourceManager.SourceAdded += (args) => {
-                if (now_playing == null && args.Source.UniqueId.Contains ("now-playing")) {
-                    now_playing = args.Source;
-                }
-            };
         }
 
         public void PresentPrimaryInterface ()
@@ -178,6 +131,7 @@ namespace Banshee.MeeGo
         {
             if (panel != null) {
                 panel.Dispose ();
+                panel = null;
             }
 
             interface_action_service = null;

@@ -3,6 +3,7 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Ruben Vermeersch <ruben@savanne.be>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
 //
@@ -26,15 +27,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.IO;
-using Mono.Unix;
+using System;
+using System.Text;
 
-using Hyena;
-
-using Banshee.Configuration.Schema;
-
-namespace Banshee.Base
+namespace Hyena
 {
     public class Paths
     {
@@ -116,6 +113,12 @@ namespace Banshee.Base
                 return null;
             }
 
+            if (Path.IsPathRooted (path) ^ Path.IsPathRooted (to))
+            {
+                // one path is absolute, one path is relative, impossible to compare
+                return null;
+            }
+
             if (path == to) {
                 return String.Empty;
             }
@@ -124,41 +127,72 @@ namespace Banshee.Base
                 to = to + Path.DirectorySeparatorChar;
             }
 
-            if (path.Length < to.Length) {
-                return null;
+            if (path.StartsWith (to))
+            {
+                return path.Substring (to.Length);
             }
 
-            return path.StartsWith (to)
-                ? path.Substring (to.Length)
-                : null;
+            return BuildRelativePath (path, to);
         }
 
-        private static string legacy_application_data = Path.Combine (Environment.GetFolderPath (
-            Environment.SpecialFolder.ApplicationData), "banshee");
+        private static string BuildRelativePath (string path, string to)
+        {
+            var toParts = to.Split (Path.DirectorySeparatorChar);
+            var pathParts = path.Split (Path.DirectorySeparatorChar);
 
-        public static string LegacyApplicationData {
-            get { return legacy_application_data; }
+            var i = 0;
+            while (i < toParts.Length && i < pathParts.Length && toParts [i] == pathParts [i]) {
+                i++;
+            }
+
+            var relativePath = new StringBuilder ();
+            for (int j = 0; j < toParts.Length - i - 1; j++) {
+                relativePath.Append ("..");
+                relativePath.Append (Path.DirectorySeparatorChar);
+            }
+
+            var required = new string [pathParts.Length - i];
+            for (int j = i; j < pathParts.Length; j++) {
+                required [j - i] = pathParts [j];
+            }
+            relativePath.Append (String.Join (Path.DirectorySeparatorChar.ToString (), required));
+
+            return relativePath.ToString ();
         }
-
-        private static string application_data = Path.Combine (Environment.GetFolderPath (
-            Environment.SpecialFolder.ApplicationData), "banshee-1");
 
         public static string ApplicationData {
-            get {
-                if (!Directory.Exists (application_data)) {
-                    Directory.CreateDirectory (application_data);
-                }
+            get; private set;
+        }
 
-                return application_data;
+        public static string ApplicationCache {
+            get; private set;
+        }
+
+        private static string application_name = null;
+
+        public static string ApplicationName {
+            get {
+                if (application_name == null) {
+                    throw new ApplicationException ("Paths.ApplicationName must be set first");
+                }
+                return application_name;
+            }
+            set { application_name = value; InitializePaths (); }
+        }
+
+        // This can only happen after ApplicationName is set.
+        private static void InitializePaths ()
+        {
+            ApplicationCache = Path.Combine (XdgBaseDirectorySpec.GetUserDirectory (
+                "XDG_CACHE_HOME", ".cache"), ApplicationName);
+
+            ApplicationData = Path.Combine (Environment.GetFolderPath (
+                Environment.SpecialFolder.ApplicationData), ApplicationName);
+            if (!Directory.Exists (ApplicationData)) {
+                Directory.CreateDirectory (ApplicationData);
             }
         }
 
-        private static string application_cache = Path.Combine (XdgBaseDirectorySpec.GetUserDirectory (
-            "XDG_CACHE_HOME", ".cache"), "banshee-1");
-
-        public static string ApplicationCache {
-            get { return application_cache; }
-        }
 
         public static string ExtensionCacheRoot {
             get { return Path.Combine (ApplicationCache, "extensions"); }
@@ -188,7 +222,7 @@ namespace Banshee.Base
                     installed_application_prefix = Path.GetDirectoryName (
                         System.Reflection.Assembly.GetExecutingAssembly ().Location);
 
-                    if (Directory.Exists (Paths.Combine (installed_application_prefix, "share", "banshee-1"))) {
+                    if (Directory.Exists (Paths.Combine (installed_application_prefix, "share", ApplicationName))) {
                         return installed_application_prefix;
                     }
 
@@ -208,7 +242,7 @@ namespace Banshee.Base
         }
 
         public static string InstalledApplicationData {
-            get { return Path.Combine (InstalledApplicationDataRoot, "banshee-1"); }
+            get { return Path.Combine (InstalledApplicationDataRoot, ApplicationName); }
         }
 
         public static string GetInstalledDataDirectory (string path)

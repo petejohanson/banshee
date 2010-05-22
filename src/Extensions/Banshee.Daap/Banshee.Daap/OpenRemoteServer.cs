@@ -47,7 +47,7 @@ namespace Banshee.Daap
             VBox.Spacing = 6;
             VBox.PackStart (new Label () {
                 Xalign = 0.0f,
-                Text = Catalog.GetString ("Enter server name and ip address:")
+                Text = Catalog.GetString ("Enter server IP address and port:")
             }, true, true, 0);
 
             HBox box = new HBox ();

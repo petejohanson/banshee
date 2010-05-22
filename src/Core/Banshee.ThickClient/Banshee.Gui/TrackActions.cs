@@ -207,50 +207,49 @@ namespace Banshee.Gui
         private void UpdateActions ()
         {
             Source source = ServiceManager.SourceManager.ActiveSource;
+            if (source == null) {
+                Sensitive = Visible = false;
+                return;
+            }
+
             bool in_database = source is DatabaseSource;
             PrimarySource primary_source = (source as PrimarySource) ?? (source.Parent as PrimarySource);
 
-            Hyena.Collections.Selection selection = (source is ITrackModelSource) ? (source as ITrackModelSource).TrackModel.Selection : null;
-
-            if (selection != null) {
+            var track_source = source as ITrackModelSource;
+            if (track_source != null) {
+                var selection = track_source.TrackModel.Selection;
                 Sensitive = Visible = true;
                 bool has_selection = selection.Count > 0;
+                bool has_single_selection = selection.Count == 1;
+
                 foreach (string action in require_selection_actions) {
                     this[action].Sensitive = has_selection;
                 }
 
-                bool has_single_selection = selection.Count == 1;
+                UpdateActions (source.CanSearch, has_single_selection,
+                   "SearchMenuAction", "SearchForSameArtistAction", "SearchForSameAlbumAction"
+                );
 
-                this["SelectAllAction"].Sensitive = !selection.AllSelected;
+                this["SelectAllAction"].Sensitive = track_source.Count > 0 && !selection.AllSelected;
+                UpdateAction ("RemoveTracksAction", track_source.CanRemoveTracks, has_selection, source);
+                UpdateAction ("DeleteTracksFromDriveAction", track_source.CanDeleteTracks, has_selection, source);
 
-                if (source != null) {
-                    ITrackModelSource track_source = source as ITrackModelSource;
-                    bool is_track_source = track_source != null;
+                //if it can delete tracks, most likely it can open their folder
+                UpdateAction ("OpenContainingFolderAction", track_source.CanDeleteTracks, has_single_selection, source);
 
-                    UpdateActions (is_track_source && source.CanSearch, has_single_selection,
-                       "SearchMenuAction", "SearchForSameArtistAction", "SearchForSameAlbumAction"
-                    );
+                UpdateAction ("RemoveTracksFromLibraryAction", source.Parent is LibrarySource, has_selection, null);
 
-                    UpdateAction ("RemoveTracksAction", is_track_source && track_source.CanRemoveTracks, has_selection, source);
-                    UpdateAction ("DeleteTracksFromDriveAction", is_track_source && track_source.CanDeleteTracks, has_selection, source);
+                UpdateAction ("TrackPropertiesAction", source.HasViewableTrackProperties, has_selection, source);
+                UpdateAction ("TrackEditorAction", source.HasEditableTrackProperties, has_selection, source);
+                UpdateAction ("RateTracksAction", in_database, has_selection, null);
+                UpdateAction ("AddToPlaylistAction", in_database && primary_source != null &&
+                        primary_source.SupportsPlaylists && !primary_source.PlaylistsReadOnly, has_selection, null);
 
-                    //if it can delete tracks, most likely it can open their folder
-                    UpdateAction ("OpenContainingFolderAction", is_track_source && track_source.CanDeleteTracks, has_single_selection, source);
-
-                    UpdateAction ("RemoveTracksFromLibraryAction", source.Parent is LibrarySource, has_selection, null);
-
-                    UpdateAction ("TrackPropertiesAction", source.HasViewableTrackProperties, has_selection, source);
-                    UpdateAction ("TrackEditorAction", source.HasEditableTrackProperties, has_selection, source);
-                    UpdateAction ("RateTracksAction", in_database, has_selection, null);
-                    UpdateAction ("AddToPlaylistAction", in_database && primary_source != null &&
-                            primary_source.SupportsPlaylists && !primary_source.PlaylistsReadOnly, has_selection, null);
-
-                    if (primary_source != null &&
-                        !(primary_source is LibrarySource) &&
-                        primary_source.StorageName != null) {
-                        this["DeleteTracksFromDriveAction"].Label = String.Format (
-                            Catalog.GetString ("_Delete From \"{0}\""), primary_source.StorageName);
-                    }
+                if (primary_source != null &&
+                    !(primary_source is LibrarySource) &&
+                    primary_source.StorageName != null) {
+                    this["DeleteTracksFromDriveAction"].Label = String.Format (
+                        Catalog.GetString ("_Delete From \"{0}\""), primary_source.StorageName);
                 }
             } else {
                 Sensitive = Visible = false;
@@ -329,6 +328,11 @@ namespace Banshee.Gui
         {
             Source active_source = ServiceManager.SourceManager.ActiveSource;
 
+            List<Source> children;
+            lock (ActivePrimarySource.Children) {
+                children = new List<Source> (ActivePrimarySource.Children);
+            }
+
             // TODO find just the menu that was activated instead of modifying all proxies
             foreach (Widget proxy_widget in (o as Gtk.Action).Proxies) {
                 MenuItem menu = proxy_widget as MenuItem;
@@ -341,7 +345,7 @@ namespace Banshee.Gui
                 submenu.Append (this ["AddToNewPlaylistAction"].CreateMenuItem ());
                 bool separator_added = false;
 
-                foreach (Source child in ActivePrimarySource.Children) {
+                foreach (Source child in children) {
                     PlaylistSource playlist = child as PlaylistSource;
                     if (playlist != null) {
                         if (!separator_added) {

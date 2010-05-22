@@ -73,6 +73,8 @@ namespace Booter
     {
         public static void Main ()
         {
+            Paths.ApplicationName = Application.InternalName;
+
             if (CheckHelpVersion ()) {
                 return;
             }
@@ -196,6 +198,7 @@ namespace Booter
 
                 new LayoutGroup ("ui", Catalog.GetString ("User Interface Options"),
                     new LayoutOption ("show|--present", Catalog.GetString ("Present the user interface on the active workspace")),
+                    new LayoutOption ("fullscreen", Catalog.GetString ("Enter the full-screen mode")),
                     new LayoutOption ("hide", Catalog.GetString ("Hide the user interface")),
                     new LayoutOption ("no-present", Catalog.GetString ("Do not present the user interface, regardless of any other options")),
                     new LayoutOption ("show-import-media", Catalog.GetString ("Present the import media dialog box")),

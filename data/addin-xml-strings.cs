@@ -68,11 +68,6 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Listen to and rip Audio CDs.");
         Catalog.GetString (@"Core");
 
-        // ../src/Extensions/Banshee.Bookmarks/Banshee.Bookmarks.addin.xml
-        Catalog.GetString (@"Bookmarks");
-        Catalog.GetString (@"Save your position in tracks so you can resume playback later.");
-        Catalog.GetString (@"Utilities");
-
         // ../src/Extensions/Banshee.BooScript/Banshee.BooScript.addin.xml
         Catalog.GetString (@"Boo Scripting");
         Catalog.GetString (@"Customize and extend Banshee with Boo-language scripts.");

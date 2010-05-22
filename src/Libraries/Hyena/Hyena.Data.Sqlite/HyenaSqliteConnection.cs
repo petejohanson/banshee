@@ -352,7 +352,7 @@ namespace Hyena.Data.Sqlite
         {
             Dictionary<string, string> schema = new Dictionary<string,string> ();
             SchemaClosure (table_name, delegate (string column) {
-                schema.Add (column, null);
+                schema.Add (column.ToLower (), null);
             });
             return schema;
         }

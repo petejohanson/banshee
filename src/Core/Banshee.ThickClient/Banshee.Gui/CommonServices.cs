@@ -39,6 +39,7 @@ namespace Banshee.Gui
             ServiceManager.RegisterService <Banshee.Gui.GtkElementsService> ();
             ServiceManager.RegisterService <Banshee.Gui.InterfaceActionService> ();
             ServiceManager.RegisterService <Banshee.Collection.Gui.ArtworkManager> ();
+            ServiceManager.RegisterService <Banshee.Gui.BookmarksService> ();
         }
     }
 }

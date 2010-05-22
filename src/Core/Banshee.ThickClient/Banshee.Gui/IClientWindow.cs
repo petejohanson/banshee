@@ -38,5 +38,6 @@ namespace Banshee.Gui
     {
         void Present ();
         void Hide ();
+        void Fullscreen ();
     }
 }

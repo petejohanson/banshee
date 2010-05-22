@@ -43,7 +43,7 @@ namespace Banshee.YouTube.Data
     {
         private const int CACHE_VERSION = 2;
         public static string UserAgent = Banshee.Web.Browser.UserAgent;
-        public static string CachePath = Path.Combine (Banshee.Base.Paths.ExtensionCacheRoot, "youtube");
+        public static string CachePath = Path.Combine (Paths.ExtensionCacheRoot, "youtube");
         public static TimeSpan NormalCacheTime = TimeSpan.FromHours (2);
 
         private static bool initialized = false;
