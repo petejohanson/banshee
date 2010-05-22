@@ -110,12 +110,12 @@ internal static class AddinXmlStringCatalog
 
         // ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.addin.xml
         Catalog.GetString (@"Last.fm Scrobbling");
-        Catalog.GetString (@"Last.fm scrobbling, and context pane recommendations.");
+        Catalog.GetString (@"Last.fm scrobbling and context pane recommendations.");
         Catalog.GetString (@"Online Sources");
 
         // ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming.addin.xml
         Catalog.GetString (@"Last.fm Radio");
-        Catalog.GetString (@"Last.fm streaming radio.");
+        Catalog.GetString (@"Last.fm streaming radio for paid subscribers.");
         Catalog.GetString (@"Online Sources");
 
         // ../src/Extensions/Banshee.LibraryWatcher/Banshee.LibraryWatcher.addin.xml
