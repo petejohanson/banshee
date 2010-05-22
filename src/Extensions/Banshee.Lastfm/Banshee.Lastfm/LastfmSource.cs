@@ -29,7 +29,9 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Linq;
 using Mono.Unix;
+using Mono.Addins;
 
 using Lastfm;
 using Lastfm.Gui;
@@ -112,6 +114,14 @@ namespace Banshee.Lastfm
             preferences = new LastfmPreferences (this);
 
             ServiceManager.SourceManager.AddSource (this);
+
+            if (FirstRunSchema.Get ()) {
+                var streaming_addin = AddinManager.Registry.GetAddins ().Single (a => a.LocalId.Equals("Banshee.LastFmStreaming"));
+                if (streaming_addin != null) {
+                    streaming_addin.Enabled = Account.Subscriber;
+                }
+                FirstRunSchema.Set (false);
+            }
         }
 
         public void Dispose ()
@@ -262,6 +272,10 @@ namespace Banshee.Lastfm
 
         public static readonly SchemaEntry<bool> ExpandedSchema = new SchemaEntry<bool> (
             "plugins.lastfm", "expanded", false, "Last.fm expanded", "Last.fm expanded"
+        );
+
+        public static readonly SchemaEntry<bool> FirstRunSchema = new SchemaEntry<bool> (
+            "plugins.lastfm", "first_run", true, "First run", "First run of the Last.fm extension"
         );
     }
 }
