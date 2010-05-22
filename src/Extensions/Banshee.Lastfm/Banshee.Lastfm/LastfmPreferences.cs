@@ -216,7 +216,7 @@ namespace Banshee.Lastfm
                 source.Account.UserName = LastfmSource.LastUserSchema.Get ();
                 source.Account.Save ();
                 var streaming_addin = AddinManager.Registry.GetAddins ()
-                    .Single (a => a.LocalId.Equals("Banshee.LastFmStreaming"));
+                    .Single (a => a.LocalId.Equals ("Banshee.LastfmStreaming"));
                 if (source.Account.Subscriber &&
                     streaming_addin != null &&
                     !streaming_addin.Enabled) {
