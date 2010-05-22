@@ -445,7 +445,7 @@ namespace Lastfm
                 Log.Warning ("Audioscrobbler sign-on failed", "Player is banned", false);
 
             } else if (line.StartsWith ("BADAUTH")) {
-                Log.Warning ("Audioscrobbler sign-on failed", Catalog.GetString ("Last.fm username is invalid or Banshee is not authorized to access you account."));
+                Log.Warning ("Audioscrobbler sign-on failed", Catalog.GetString ("Last.fm username is invalid or Banshee is not authorized to access your account."));
                 LastfmCore.Account.SessionKey = null;
             } else if (line.StartsWith ("BADTIME")) {
                 Log.Warning ("Audioscrobbler sign-on failed",
