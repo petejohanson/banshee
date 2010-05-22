@@ -77,6 +77,15 @@ namespace Banshee.GnomeBackend
             }
         }
 
+        public void AddCallback (string @namespace, NotifyEventHandler callback)
+        {
+            if (DisableGConf || @namespace == null) {
+                return;
+            }
+
+            client.AddNotify(@namespace, callback);
+        }
+
         private string CreateKey (string @namespace, string part)
         {
             string hash_key = String.Concat (@namespace, part);

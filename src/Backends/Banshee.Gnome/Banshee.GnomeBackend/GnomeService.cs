@@ -49,6 +49,9 @@ namespace Banshee.GnomeBackend
             try {
                 brasero = new Brasero ();
                 brasero.Initialize ();
+
+                new GConfProxy ();
+
             } catch {
                 brasero = null;
             }
