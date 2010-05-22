@@ -202,7 +202,7 @@ namespace Banshee.Sources
 
         protected PrimarySource (string generic_name, string name, string id, int order) : base (generic_name, name, id, order)
         {
-            Properties.SetString ("SortChildrenActionLabel", Catalog.GetString ("Sort Playlists by"));
+            Properties.SetString ("SortChildrenActionLabel", Catalog.GetString ("Sort Playlists By"));
             PrimarySourceInitialize ();
         }
 
