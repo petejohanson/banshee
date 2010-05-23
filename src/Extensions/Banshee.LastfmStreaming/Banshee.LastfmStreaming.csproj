@@ -7,6 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{66617494-94CB-43E8-877C-A586F5A6F4EC}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
     <RootNamespace>Banshee.LastfmStreaming</RootNamespace>
     <ReleaseVersion>1.3</ReleaseVersion>
     <AssemblyName>Banshee.LastfmStreaming</AssemblyName>
@@ -20,19 +21,14 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Banshee.LastfmStreaming\LastfmStreamingActions.cs" />
