@@ -45,7 +45,9 @@
       <Name>Lastfm</Name>
       <Private>False</Private>
     </ProjectReference>
-    <Reference Include="glib-sharp" />
+    <Reference Include="glib-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-16.png">
@@ -74,10 +76,12 @@
     </None>
     <Reference Include="System.Core">
     </Reference>
-    <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+    <Reference Include="Mono.Addins">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
     </Reference>
-    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
+    <Reference Include="NDesk.DBus">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
     </Reference>
     <Reference Include="taglib-sharp">
@@ -86,7 +90,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Mono.Posix" />
+    <Reference Include="Mono.Posix">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..bin\Mono.Posix.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.Kernel\IInstanceCriticalJob.cs" />

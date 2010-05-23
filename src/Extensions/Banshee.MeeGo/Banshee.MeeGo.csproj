@@ -50,11 +50,22 @@
       <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
       <Name>Hyena</Name>
     </ProjectReference>
-    <Reference Include="glib-sharp" />
-    <Reference Include="Mono.Posix" />
-    <Reference Include="NDesk.DBus" />
-    <Reference Include="NDesk.DBus.GLib" />
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..bin\Mono.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="NDesk.DBus">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="NDesk.DBus.GLib">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
