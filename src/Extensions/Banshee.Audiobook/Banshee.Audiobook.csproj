@@ -55,11 +55,16 @@
       <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
       <Name>Hyena.Gui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Banshee.Widgets\Banshee.Widgets.csproj">
+      <Project>{A3701765-E571-413D-808C-9788A22791AF}</Project>
+      <Name>Banshee.Widgets</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+    </Reference>
     <Reference Include="gtk-sharp">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -76,13 +81,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..bin\Mono.Posix.dll</HintPath>
     </Reference>
-    <Reference Include="taglib-sharp">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Cairo">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..bin\Mono.Cairo.dll</HintPath>
+    </Reference>
+    <Reference Include="taglib-sharp, Version=2.0.3.7, Culture=neutral, PublicKeyToken=db62eba44689b5b0">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
