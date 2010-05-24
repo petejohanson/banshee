@@ -38,13 +38,13 @@ namespace Banshee.Gui.TrackEditor
 
         public event EventHandler Changed;
 
-        private SpinButton from_entry;
-        public SpinButton From {
+        private SpinButtonEntry from_entry;
+        public SpinButtonEntry From {
             get { return from_entry; }
         }
 
-        private SpinButton to_entry;
-        public SpinButton To {
+        private SpinButtonEntry to_entry;
+        public SpinButtonEntry To {
             get { return to_entry; }
         }
 
@@ -74,6 +74,12 @@ namespace Banshee.Gui.TrackEditor
 
             from_entry.ValueChanged += OnChanged;
             to_entry.ValueChanged += OnChanged;
+        }
+
+        public void SetAsReadOnly ()
+        {
+            from_entry.IsEditable = false;
+            to_entry.IsEditable = false;
         }
 
         protected override bool OnMnemonicActivated (bool group_cycling) {

@@ -308,10 +308,6 @@ namespace Banshee.Sources
             get { return true; }
         }
 
-        public override bool HasEditableTrackProperties {
-            get { return true; }
-        }
-
 #endregion
 
 #region Filters (aka Browsers)

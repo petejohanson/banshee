@@ -82,6 +82,11 @@ namespace Banshee.Gui.TrackEditor
             undo_adapter.ConnectUndo (entry, track);
         }
 
+        public void SetAsReadOnly ()
+        {
+            entry.IsEditable = false;
+        }
+
         protected override bool OnMnemonicActivated (bool group_cycling) {
             return entry.MnemonicActivate(group_cycling);
         }

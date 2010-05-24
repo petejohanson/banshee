@@ -117,5 +117,10 @@ namespace Banshee.Gui.TrackEditor
             get { return entry.Text; }
             set { entry.Text = value; }
         }
+
+        public void SetAsReadOnly ()
+        {
+            entry.IsEditable = false;
+        }
     }
 }

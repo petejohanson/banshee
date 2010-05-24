@@ -93,6 +93,10 @@ namespace Banshee.Library
             get { return UniqueId; }
         }
 
+        public override bool HasEditableTrackProperties {
+            get { return true; }
+        }
+
         public override string BaseDirectory {
             get {
                 string dir = base_dir_schema.Get ();

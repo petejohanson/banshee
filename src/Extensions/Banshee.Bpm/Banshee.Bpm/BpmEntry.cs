@@ -71,6 +71,11 @@ namespace Banshee.Bpm
             };
         }
 
+        public void SetAsReadOnly ()
+        {
+            Sensitive = false;
+        }
+
         private void BuildWidgets ()
         {
             Spacing = 6;

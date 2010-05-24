@@ -42,6 +42,10 @@ namespace Banshee.Gui.TrackEditor
             get { return Catalog.GetString ("Sorting"); }
         }
 
+        public override PageType PageType {
+            get { return PageType.EditOnly; }
+        }
+
         protected override void AddFields ()
         {
             AddField (this, new TextEntry (),

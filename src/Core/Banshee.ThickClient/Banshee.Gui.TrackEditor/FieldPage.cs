@@ -134,6 +134,12 @@ namespace Banshee.Gui.TrackEditor
         public FieldSlot AddField (Box parent, Widget label, Widget field, string syncTooltip, FieldLabelClosure labelClosure,
             FieldValueClosure readClosure, FieldValueClosure writeClosure, FieldValueClosure syncClosure, FieldOptions options)
         {
+            var editor_field = field as IEditorField;
+
+            if (editor_field != null && dialog.Mode == EditorMode.View) {
+                editor_field.SetAsReadOnly ();
+            }
+
             FieldSlot slot = new FieldSlot ();
 
             slot.Parent = parent;
@@ -168,7 +174,6 @@ namespace Banshee.Gui.TrackEditor
                 AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Fill, 0, 0);
 
-            IEditorField editor_field = field as IEditorField;
             if (editor_field != null) {
                 editor_field.Changed += delegate {
                     if (CurrentTrack != null) {

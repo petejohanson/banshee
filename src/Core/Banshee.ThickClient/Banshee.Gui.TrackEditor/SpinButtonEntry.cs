@@ -42,6 +42,22 @@ namespace Banshee.Gui.TrackEditor
         {
         }
 
+        public void SetAsReadOnly ()
+        {
+            IsEditable = false;
+        }
+
+        //FIXME: workaround for BGO#611825, remove it when it's fixed:
+        public new double Value {
+            set {
+                base.Value = value;
+                if (!IsEditable) {
+                    Adjustment = new Adjustment (value, value, value, 0, 0, 0);
+                }
+            }
+            get { return base.Value; }
+        }
+
         // Make sure the value is updated every time the text is changed, not just when the focus leaves
         // this SpinButton, since that may be too late
         protected override void OnChanged ()

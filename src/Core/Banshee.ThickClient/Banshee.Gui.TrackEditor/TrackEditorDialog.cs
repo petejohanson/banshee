@@ -76,25 +76,41 @@ namespace Banshee.Gui.TrackEditor
         private PulsingButton sync_all_button;
 
         private EditorMode mode;
+        internal EditorMode Mode {
+            get { return mode; }
+        }
+
+        private bool readonly_tabs = false;
 
         private List<ITrackEditorPage> pages = new List<ITrackEditorPage> ();
 
         public event EventHandler Navigated;
 
-        private TrackEditorDialog (TrackListModel model, EditorMode mode) : base (
+        private TrackEditorDialog (TrackListModel model, EditorMode mode)
+            : this (model, mode, false)
+        {
+        }
+
+        private TrackEditorDialog (TrackListModel model, EditorMode mode, bool readonlyTabs) : base (
             mode == EditorMode.Edit ? Catalog.GetString ("Track Editor") : Catalog.GetString ("Track Properties"))
         {
+            readonly_tabs = readonlyTabs;
             this.mode = mode;
 
             LoadTrackModel (model);
 
-            if (mode == EditorMode.Edit) {
+            if (mode == EditorMode.Edit || readonly_tabs) {
                 WidthRequest = 525;
-                AddStockButton (Stock.Cancel, ResponseType.Cancel);
-                AddStockButton (Stock.Save, ResponseType.Ok);
+                if (mode == EditorMode.Edit) {
+                    AddStockButton (Stock.Cancel, ResponseType.Cancel);
+                    AddStockButton (Stock.Save, ResponseType.Ok);
+                }
             } else {
-                AddStockButton (Stock.Close, ResponseType.Close, true);
                 SetSizeRequest (400, 500);
+            }
+
+            if (mode == EditorMode.View) {
+                AddStockButton (Stock.Close, ResponseType.Close, true);
             }
 
             tooltip_host = TooltipSetter.CreateHost ();
@@ -196,11 +212,24 @@ namespace Banshee.Gui.TrackEditor
             notebook = new Notebook ();
             notebook.Show ();
 
+            Gtk.Widget page_to_focus = null;
             foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes ("/Banshee/Gui/TrackEditor/NotebookPage")) {
                 try {
                     ITrackEditorPage page = (ITrackEditorPage)node.CreateInstance ();
-                    if ((mode == EditorMode.Edit && (page.PageType == PageType.Edit || page.PageType == PageType.View)) ||
-                        (mode == EditorMode.View && (page.PageType == PageType.View || page.PageType == PageType.ViewOnly))) {
+                    bool show = false;
+                    if (mode == EditorMode.Edit && (page.PageType != PageType.ViewOnly)) {
+                        show = true;
+                    } else if (mode == EditorMode.View) {
+                        if (readonly_tabs) {
+                            show = page.PageType != PageType.EditOnly;
+                        } else {
+                            show = page.PageType == PageType.View || page.PageType == PageType.ViewOnly;
+                        }
+                    }
+                    if (show) {
+                        if (page is StatisticsPage && mode == EditorMode.View) {
+                            page_to_focus = (StatisticsPage)page;
+                        }
                         pages.Add (page);
                         page.Initialize (this);
                         page.Widget.Show ();
@@ -223,6 +252,9 @@ namespace Banshee.Gui.TrackEditor
             }
 
             main_vbox.PackStart (notebook, true, true, 0);
+            if (page_to_focus != null) {
+                notebook.CurrentPage = notebook.PageNum (page_to_focus);
+            }
         }
 
         private void BuildFooter ()
@@ -599,14 +631,23 @@ namespace Banshee.Gui.TrackEditor
             Run (model, EditorMode.Edit);
         }
 
-        public static void RunView (TrackListModel model)
+        public static void RunView (TrackListModel model, bool readonlyTabs)
         {
-            Run (model, EditorMode.View);
+            Run (model, EditorMode.View, readonlyTabs);
         }
 
         public static void Run (TrackListModel model, EditorMode mode)
         {
-            TrackEditorDialog track_editor = new TrackEditorDialog (model, mode);
+            Run (new TrackEditorDialog (model, mode));
+        }
+
+        private static void Run (TrackListModel model, EditorMode mode, bool readonlyTabs)
+        {
+            Run (new TrackEditorDialog (model, mode, readonlyTabs));
+        }
+
+        private static void Run (TrackEditorDialog track_editor)
+        {
             track_editor.Response += delegate (object o, ResponseArgs args) {
                 if (args.ResponseId == ResponseType.Ok) {
                     track_editor.Save ();

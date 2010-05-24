@@ -42,6 +42,7 @@ using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.ServiceStack;
 using Banshee.Widgets;
+using Banshee.Gui;
 using Banshee.Gui.Dialogs;
 using Banshee.Gui.Widgets;
 
@@ -241,7 +242,7 @@ namespace Banshee.Gui
 
                 UpdateAction ("TrackPropertiesAction", source.HasViewableTrackProperties, has_selection, source);
                 UpdateAction ("TrackEditorAction", source.HasEditableTrackProperties, has_selection, source);
-                UpdateAction ("RateTracksAction", in_database, has_selection, null);
+                UpdateAction ("RateTracksAction", source.HasEditableTrackProperties, has_selection, null);
                 UpdateAction ("AddToPlaylistAction", in_database && primary_source != null &&
                         primary_source.SupportsPlaylists && !primary_source.PlaylistsReadOnly, has_selection, null);
 
@@ -311,14 +312,17 @@ namespace Banshee.Gui
         private void OnTrackProperties (object o, EventArgs args)
         {
             if (current_source != null && !RunSourceOverrideHandler ("TrackPropertiesActionHandler")) {
-                Banshee.Gui.TrackEditor.TrackEditorDialog.RunView (current_source.TrackModel);
+                var s = current_source as Source;
+                var readonly_tabs = s != null && !s.HasEditableTrackProperties;
+                TrackEditor.TrackEditorDialog.RunView (current_source.TrackModel,
+                                                       readonly_tabs);
             }
         }
 
         private void OnTrackEditor (object o, EventArgs args)
         {
             if (current_source != null && !RunSourceOverrideHandler ("TrackEditorActionHandler")) {
-                Banshee.Gui.TrackEditor.TrackEditorDialog.RunEdit (current_source.TrackModel);
+                TrackEditor.TrackEditorDialog.RunEdit (current_source.TrackModel);
             }
         }
 
@@ -539,12 +543,6 @@ namespace Banshee.Gui
                 md.Destroy ();
             }
             return ret;
-        }
-
-        // Reserve strings in preparation for the 1.5.5 string freeze (BGO#611923)
-        public void ReservedStrings ()
-        {
-            Catalog.GetString ("View Track Information");
         }
     }
 }

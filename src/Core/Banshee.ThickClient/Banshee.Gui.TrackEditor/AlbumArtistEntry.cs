@@ -84,6 +84,12 @@ namespace Banshee.Gui.TrackEditor
             set { entry.Text = value ?? String.Empty; }
         }
 
+        public void SetAsReadOnly ()
+        {
+            entry.IsEditable = false;
+            enable_compilation.Sensitive = false;
+        }
+
         private void OnChanged (object o, EventArgs args)
         {
             UpdateSensitivities ();
