@@ -40,6 +40,7 @@ EXTRA_DIST = \
 	TranslatorExtractor.cs \
 	DllMapVerifier.cs \
 	AddinXmlStringExtractor.cs \
+	GObjectIntPtrCtorVerifier.cs \
 	dll-map-makefile-verifier \
 	gconf-schema-rules
 
