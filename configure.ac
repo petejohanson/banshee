@@ -259,6 +259,17 @@ libbanshee/Makefile
 gstreamer/Makefile
 gstreamer/equalizer/Makefile
 
+hyena/Makefile
+hyena/build/Makefile
+hyena/build/m4/Makefile
+hyena/src/Mono.Data.Sqlite/Makefile
+hyena/src/Hyena/hyena.pc
+hyena/src/Hyena/Makefile
+hyena/src/Hyena.Data.Sqlite/hyena.data.sqlite.pc
+hyena/src/Hyena.Data.Sqlite/Makefile
+hyena/src/Hyena.Gui/hyena.gui.pc
+hyena/src/Hyena.Gui/Makefile
+
 src/Makefile
 src/AssemblyInfo.cs
 
@@ -290,12 +301,9 @@ src/Backends/Banshee.NowPlaying.X11/Makefile
 src/Backends/Banshee.NowPlaying.X11/libbnpx11/Makefile
 
 src/Libraries/Makefile
-src/Libraries/Hyena/Makefile
-src/Libraries/Hyena.Gui/Makefile
 src/Libraries/Lastfm/Makefile
 src/Libraries/Lastfm.Gui/Makefile
 src/Libraries/Migo/Makefile
-src/Libraries/Mono.Data.Sqlite/Makefile
 src/Libraries/Mono.Media/Makefile
 src/Libraries/Mtp/Makefile
 src/Libraries/Mtp/Mtp.dll.config

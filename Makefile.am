@@ -3,6 +3,7 @@ SUBDIRS = \
 	data \
 	libbanshee \
 	gstreamer \
+	hyena \
 	src \
 	docs \
 	tests \

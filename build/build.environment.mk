@@ -37,7 +37,7 @@ LINK_SQLITE = -r:System.Data -r:$(DIR_BIN)/Mono.Data.Sqlite.dll
 
 # Hyena
 REF_HYENA = $(LINK_SYSTEM) $(LINK_SQLITE) $(LINK_MONO_POSIX)
-LINK_HYENA = -r:$(DIR_BIN)/Hyena.dll
+LINK_HYENA = -r:$(DIR_BIN)/Hyena.dll -r:$(DIR_BIN)/Hyena.Data.Sqlite.dll
 LINK_HYENA_DEPS = $(REF_HYENA) $(LINK_HYENA)
 
 # Hyena.Gui
