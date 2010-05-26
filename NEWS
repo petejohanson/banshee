@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.7.0 - Released May 5, 2010
+WELCOME TO BANSHEE 1.7.1 - Released May 26, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,46 +10,36 @@ WELCOME TO BANSHEE 1.7.0 - Released May 5, 2010
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.7.0
+  * Learn More: http://banshee-project.org/download/archives/1.7.1
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.7.0 is the first of the unstable 1.7 series, leading up to a 
-    stable 1.8 release in the fall.  It contains many bug fixes for 1.6.0, as
+    Banshee 1.7.1 is part of the unstable 1.7 series, leading up to a
+    stable 1.8 release in the fall.  It contains many bug fixes for 1.7.0, as
     well as new features and enhancements.
 
-    New Features Since 1.6.0:
+    New Features Since 1.7.0:
 
-      * Add Keybinding for Switching Sources
+      * 
 
-          Typing 'g' activates the source switcher, where you can type the name
-          of a source to switch to it.  You can type its acronym or a substring
-          as well. As soon as only one source matches, it will be activated.
-          For example, you can type 'g' and then 'np' to switch to Now Playing.
-
-      * Connect to Remote DAAP Servers
-
-          Connect to remote DAAP server by entering its IP address.
+                    
 
     Enhancements:
 
-      * Improved Last.fm authentication experience
-      * Improved Maemo device support
-      * DBus API additions for showing various dialogs
-      * DEXT/CLIQ and Galaxy Portal device support
-      * Many MeeGo specific improvements and fixes
+      * New preference to have the classic album layout instead of the grid view
+      * Support for reading and writing MusicBrainz IDs
+      * Show the TrackEditor fields as read-only mode when they are not editable
 
-    Notable Bugs Fixed (41 fixed since 1.6.0):
+    Notable Bugs Fixed (18 fixed since 1.7.0):
 
-      * Fix for fullscreen video under Mutter
-      * Fix videos playing back in a new window
-      * Fix crashes related to Gtk.Widget subclassing
-      * Fix crashes related to a11y
-      * NotificationArea fixes
-      * Cover art aspect ratio/scaling fixes
+      * Fix Youtube playback
+      * Fix deletion of Podcast metadata during modification
+      * Fix a crash related to the notification deamon
+      * Fix fetching cover for albums with several discs
+      * Several fixes for the N800 device
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -58,9 +48,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.7.0 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.7.0/banshee-1-1.7.0.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.7.0/banshee-1-1.7.0.tar.gz
+    * Banshee 1.7.1 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.7.1/banshee-1-1.7.1.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.7.1/banshee-1-1.7.1.tar.gz
 
 Packages
 --------
@@ -77,13 +67,13 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee-project.org/banshee/banshee-1-1.7.0.macosx.intel.dmg
+    * http://download.banshee-project.org/banshee/banshee-1-1.7.1.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.7.0/banshee-1-1.7.0.changes
-    * http://download.banshee-project.org/banshee/stable/1.7.0/banshee-1-1.7.0.sha256sum
+    * http://download.banshee-project.org/banshee/stable/1.7.1/banshee-1-1.7.1.changes
+    * http://download.banshee-project.org/banshee/stable/1.7.1/banshee-1-1.7.1.sha256sum
 
 
 ===============================================================================
@@ -117,7 +107,7 @@ DEPENDENCIES
 
     * Run-time requirements for default feature stack:
       * HAL
-      * PodSleuth >= 0.6.6
+      * PodSleuth >= 0.6.7
       * Brasero >= 0.8.1
       * Avahi
       * gst-plugins-bad (providing the bpmdetect GStreamer plugin)
@@ -152,7 +142,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.7.0
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.7.1
 
 
 ===============================================================================
