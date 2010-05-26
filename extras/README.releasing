@@ -1,9 +1,10 @@
 To make a release:
 
 Pre-release:
+* Update src/Core/Banshee.Core/Resources/contributors.xml
+* Update AUTHORS (using the `extras/create-authors` script)
 * Update NEWS
 * Bump version in configure.ac (don't forget the display version)
-* Update AUTHORS
 * Update banshee.doap
 * Run `make distcheck`
 * Commit everything
@@ -17,7 +18,7 @@ Release:
 Post-release:
 * Update the website
   + Copy the last release notes, update and copy from NEWS
-    - Set sort order, parent, and slug
+    - Set sort order, parent, and permalink
   + Update Downloads/Archives page, adding entry for this release
   + Add a new blog post, uncategorized, tag 'news'
 * For stable releases, ssh bansheeweb@bpo, update download.banshee-project.org/release-info/banshee
