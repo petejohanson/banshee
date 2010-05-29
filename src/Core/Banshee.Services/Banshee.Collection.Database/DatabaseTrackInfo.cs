@@ -189,14 +189,14 @@ namespace Banshee.Collection.Database
             }
 
             // If PlayCountField is not transient we still want to update the file only if it's from the music library
-            var transient = transient_fields;
-            if (!transient.Contains (BansheeQuery.PlayCountField) &&
-                !ServiceManager.SourceManager.MusicLibrary.Equals (PrimarySource)) {
-                transient = new HashSet<QueryField> (transient_fields);
-                transient.Add (BansheeQuery.PlayCountField);
+            var transient = transient_fields;
+            if (!transient.Contains (BansheeQuery.PlayCountField) &&
+                !ServiceManager.SourceManager.MusicLibrary.Equals (PrimarySource)) {
+                transient = new HashSet<QueryField> (transient_fields);
+                transient.Add (BansheeQuery.PlayCountField);
             }
 
-            if (fields_changed.Length == 0 || !transient.IsSupersetOf (fields_changed)) {
+            if (fields_changed.Length == 0 || !transient.IsSupersetOf (fields_changed)) {
                 DateUpdated = DateTime.Now;
             }
 
