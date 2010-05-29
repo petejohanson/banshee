@@ -194,7 +194,7 @@ namespace Banshee.Collection.Database
                 !ServiceManager.SourceManager.MusicLibrary.Equals (PrimarySource)) {
                 transient = new HashSet<QueryField> (transient_fields);
                 transient.Add (BansheeQuery.PlayCountField);
-            }
+            }
 
             if (fields_changed.Length == 0 || !transient.IsSupersetOf (fields_changed)) {
                 DateUpdated = DateTime.Now;
