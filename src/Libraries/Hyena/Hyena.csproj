@@ -27,7 +27,7 @@
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin</OutputPath>
-    <DefineConstants>ENABLE_TESTS</DefineConstants>
+    <DefineConstants>ENABLE_TESTS NET_2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -187,6 +187,10 @@
     <Reference Include="nunit.core">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Posix">
       <SpecificVersion>False</SpecificVersion>
