@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: banshee 1.6.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-05-24 06:54+0000\n"
-"PO-Revision-Date: 2010-05-28 15:51+0300\n"
+"POT-Creation-Date: 2010-05-28 12:54+0000\n"
+"PO-Revision-Date: 2010-06-01 20:44+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -258,19 +258,15 @@ msgstr "Internet-Radiostationen hören und verwalten."
 
 #. ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.addin.xml
 #: ../data/addin-xml-strings.cs:112
-#| msgid "Last.fm Radio and Scrobbling"
 msgid "Last.fm Scrobbling"
 msgstr "Last.fm-Scrobbling"
 
 #: ../data/addin-xml-strings.cs:113
-#| msgid ""
-#| "Last.fm streaming radio, scrobbling, and context pane recommendations."
 msgid "Last.fm scrobbling and context pane recommendations."
 msgstr "Last.fm-Scrobbling und Empfehlungen zur Kontext-Leiste."
 
 #. ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming.addin.xml
 #: ../data/addin-xml-strings.cs:117
-#| msgid "Last.fm Station"
 msgid "Last.fm Radio"
 msgstr "Last.fm-Radio"
 
@@ -2596,7 +2592,6 @@ msgid "Errors"
 msgstr "Fehler"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:205
-#| msgid "Sort Playlists by"
 msgid "Sort Playlists By"
 msgstr "Wiedergabelisten sortieren nach"
 
@@ -2691,6 +2686,15 @@ msgstr "Deaktiviert"
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:56
 msgid "Search:"
 msgstr "Suche:"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/AlbumListView.cs:76
+msgid "Disable album grid"
+msgstr "Alben-Übersicht deaktivieren"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/AlbumListView.cs:77
+msgid "Disable album grid and show the classic layout instead"
+msgstr ""
+"Alben-Übersicht deaktivieren und stattdessen die klassische Anordnung zeigen"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/BaseTrackListView.cs:77
 msgid "Cannot Reorder While Sorted"
@@ -4570,12 +4574,10 @@ msgid "Audiobooks, etc"
 msgstr "Audiobooks usw."
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/BookView.cs:114
-#| msgid "Pause playback"
 msgid "Resume Playback"
 msgstr "Wiedergabe fortsetzen"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/BookView.cs:120
-#| msgid "Bookmarks"
 msgid "No Bookmark Set"
 msgstr "Keine Lesezeichen gesetzt"
 
@@ -6629,9 +6631,6 @@ msgid "Authorize for Last.fm"
 msgstr "Für Last.fm legitimieren"
 
 #: ../src/Libraries/Lastfm/Lastfm/AudioscrobblerConnection.cs:447
-#| msgid ""
-#| "Last.fm username is invalid or Banshee is not authorized to access you "
-#| "account."
 msgid ""
 "Last.fm username is invalid or Banshee is not authorized to access your "
 "account."
