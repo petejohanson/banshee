@@ -1,71 +1,73 @@
 <page xmlns="http://projectmallard.org/1.0/"
-      xmlns:e="http://projectmallard.org/experimental/"
-      type="topic" style="task"
+      type="guide" style="task"
       id="import">
 
   <info>
     <link type="guide" xref="index#media"/>
     <link type="seealso" xref="remove-media"/>
-    <desc>Add and import your music and videos into Banshee.</desc>
-    <revision pkgversion="1.8" version="0.1" date="2010-05-08" status="draft"/>
+    <desc>Add music and videos from your computer to your Banshee library.</desc>
+    <revision pkgversion="1.6" version="1.6" date="2010-05-31" status="review"/>
     <credit type="author">
       <name>Paul Cutler</name>
       <email>pcutler@gnome.org</email>
-    </credit>    
-<!--
-    <copyright>
-      <year>2010</year>
-      <name>GNOME Documentation Project</name>
-    </copyright>
--->
+    </credit>
+    <credit type="editor">
+      <name>Shaun McCance</name>
+      <email>shaunm@gnome.org</email>
+    </credit>
     <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
   </info>
 
-  <title>Import media</title>  
-  
-  <p>You can import music, videos, or playlists into Banshee's library.</p>
-  
-  <section id="importmedia">
-  <title>Import Media from your Hard Drive</title>  
-  
-  <p>You can import music or videos stored on your hard drive 
-  into Banshee using the mouse or keyboard.
-  </p>
-  
-  <p>To import files using the mouse, from the menu, choose <guiseq><gui>Media
-  </gui><gui>Import Media</gui></guiseq>.  To import using your keyboard,
-  press and hold <keyseq><key>Control</key>+<key>I</key></keyseq>.
-  </p>
-  
-  <p>A dialog box will appear with a dropdown menu, and you can choose to import
-  from:</p>
-  <list>
-    <item><p>Folders</p></item>
-    <item><p>Files</p></item>
-    <item><p>Home Folder</p></item>
-  </list>
-  
-  <p>Choosing <gui>Folders</gui> or <gui>Home Folder</gui> will import all media
-  from that folder and all folders in that directory.  Select the folder which
-  you wish to import from and press <gui>Import</gui> or <key>Enter</key>. 
-  Banshee will scan the directory and import all
-  available music and videos.
-  </p>
-  
-  <p>If you want to import only a specific file or files, choose <gui>Files</gui>
-  and locate the directory which contains the files you wish to import.  
-  Select the file with your mouse or press and hold <key>Control</key>, choose
-  multiple files, and press <gui>Import</gui> or <key>Enter</key> to import
-  the file or files into Banshee.
-  </p>
-  
-  </section>
-  
-  <section id="importplaylist">
-  <title>Import a Playlist</title>
-    
-<!-- To-Do: Test Importing a Playlist -->
+  <title>Import music &amp; videos</title>
 
+  <p>You can import music and videos stored on your computer into Banshee. Imported
+  files appear in your sources and can be edited and managed like any other media in
+  Banshee.</p>
+
+  <p>To import music or video files on your computer, choose <guiseq><gui>Media</gui>
+  <gui>Import Media</gui></guiseq>. A dialog will appear with a number of choices.</p>
+
+  <note>
+    <p>Plugins may add additional import choices. See <link xref="#plugins"/>
+    below.</p>
+  </note>
+
+  <terms>
+    <item>
+      <title><gui>Local Folders</gui></title>
+      <p>Choose this option to import all music and video files within
+      a specified folder, including all subfolders. You will be prompted
+      with a dialog to choose a folder to import from.</p>
+    </item>
+    <item>
+      <title><gui>Local Files</gui></title>
+      <p>Choose this option to import only the specific file or files
+      you select. You will be prompted with a dialog to choose the
+      file or files to import.</p>
+    </item>
+    <item>
+      <title><gui>Home Folder</gui></title>
+      <p>Choose this option to import all music and video files in your
+      entire home folder, including files in any subfolders.</p>
+    </item>
+    <item>
+      <title><gui>Videos From Photos Folder</gui></title>
+      <p>Many digital cameras can take short vidoes, and photo-management
+      applications often download these videos directly into your Photos
+      folder. Choose this option to import any videos that have been
+      stored in your Photos folder.</p>
+    </item>
+  </terms>
+
+  <note>
+    <p>You can safely import from a folder you have already imported
+    from without worrying about duplicate entries in your library.</p>
+  </note>
+  
+  <section id="plugins">
+    <title>Additional Import Sources</title>
+    <p>Plugins may add additional import choices. The following additional
+    sources will be available if the appropriate plugins are enabled:</p>
   </section>
   	
 </page>
