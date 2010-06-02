@@ -118,6 +118,9 @@ namespace Banshee.Streaming
             if (!track.HasAttribute (TrackMediaAttributes.VideoStream) &&
                 !track.HasAttribute (TrackMediaAttributes.Podcast)) {
                 track.MediaAttributes |= TrackMediaAttributes.Music;
+            } else {
+                // If it was already set, unset it
+                track.MediaAttributes &= ~TrackMediaAttributes.Music;
             }
         }
 
@@ -196,7 +199,7 @@ namespace Banshee.Streaming
             } else {
                 track.MediaAttributes = TrackMediaAttributes.AudioStream;
                 if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.AbsoluteUri)) {
-                    track.MediaAttributes = TrackMediaAttributes.VideoStream;
+                    track.MediaAttributes |= TrackMediaAttributes.VideoStream;
                 }
             }
 
