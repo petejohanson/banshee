@@ -305,12 +305,13 @@ namespace Banshee.Audiobook
 
         public override void Dispose ()
         {
+            ServiceManager.PlaybackController.SourceChanged -= OnPlaybackSourceChanged;
+            ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
+
             if (Actions != null) {
                 Actions.Dispose ();
                 Actions = null;
             }
-
-            ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
 
             base.Dispose ();
         }
