@@ -142,7 +142,7 @@ namespace Banshee.Sources.Gui
         {
             int priority = 0;
             var name = StringUtil.SearchKey (s.Name);
-            if (name != null) {
+            if (name != null && !String.IsNullOrEmpty (query)) {
                 if (name == query) {
                     //Console.WriteLine ("{0} equals {1}", s.Name, query);
                     priority = 10;
@@ -150,7 +150,7 @@ namespace Banshee.Sources.Gui
                     //Console.WriteLine ("{0} starts with {1}", s.Name, query);
                     priority = 20;
                 } else {
-                    var split_name = name.Split (' ');
+                    var split_name = name.Split (new char [] {' '}, StringSplitOptions.RemoveEmptyEntries);
                     if (split_name.Length == query.Length &&
                         Enumerable.Range (0, query.Length).All (i => split_name[i][0] == query[i])) {
                         //Console.WriteLine ("{0} initials are {1}", s.Name, query);
