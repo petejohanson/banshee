@@ -216,6 +216,11 @@ namespace Banshee.Gui
 
         public Menu CreateMenu ()
         {
+            return CreateMenu (false);
+        }
+
+        public Menu CreateMenu (bool withRepeatActions)
+        {
             Menu menu = new Gtk.Menu ();
             bool separator = false;
             foreach (RadioAction action in this) {
@@ -225,6 +230,12 @@ namespace Banshee.Gui
                     menu.Append (new SeparatorMenuItem ());
                 }
             }
+
+            if (withRepeatActions) {
+                menu.Append (new SeparatorMenuItem ());
+                menu.Append (ServiceManager.Get<InterfaceActionService> ().PlaybackActions.RepeatActions.CreateSubmenu ());
+            }
+
             menu.ShowAll ();
             return menu;
         }

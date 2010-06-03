@@ -43,6 +43,11 @@ run:
 	make run; \
 	popd;
 
+test:
+	@pushd $(top_builddir)/tests; \
+	make $(ASSEMBLY); \
+	popd;
+
 build-debug:
 	@echo $(DEP_LINK)
 

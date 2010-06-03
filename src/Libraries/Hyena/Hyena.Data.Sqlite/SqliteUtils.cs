@@ -43,8 +43,15 @@ namespace Hyena.Data.Sqlite
             } else if (type == typeof (int) || type == typeof (long) || type == typeof (bool)
                 || type == typeof (DateTime) || type == typeof (TimeSpan) || type.IsEnum) {
                 return "INTEGER";
+            } else if (type == typeof (int?) || type == typeof (long?) || type == typeof (bool?)
+                || type == typeof (uint?)) {
+                return "INTEGER NULL";
             } else if (type == typeof (byte[])) {
                 return "BLOB";
+            } else if (type == typeof (double)) {
+                return "REAL";
+             } else if (type == typeof (double?)) {
+                return "REAL NULL";
             } else {
                 throw new Exception (String.Format (
                     "The type {0} cannot be bound to a database column.", type.Name));
@@ -98,6 +105,12 @@ namespace Hyena.Data.Sqlite
                 return Enum.ToObject (type, value);
             } else if (type == typeof (bool)) {
                 return ((long)value == 1);
+            } else if (type == typeof (double?)) {
+                if (value == null)
+                    return null;
+
+                double double_value = ((Single?) value).Value;
+                return (double?) double_value;
             } else {
                 return Convert.ChangeType (value, type);
             }
@@ -179,6 +192,20 @@ namespace Hyena.Data.Sqlite
         public override object Invoke (object[] args)
         {
             return Hyena.StringUtil.SearchKey (args[0] as string);
+        }
+    }
+
+    [SqliteFunction (Name = "HYENA_MD5", FuncType = FunctionType.Scalar, Arguments = -1)]
+    internal class Md5Function : SqliteFunction
+    {
+        public override object Invoke (object[] args)
+        {
+            int n_args = (int)(long) args[0];
+            var sb = new StringBuilder ();
+            for (int i = 1; i <= n_args; i++) {
+                sb.Append (args[i]);
+            }
+            return Hyena.CryptoUtil.Md5Encode (sb.ToString (), System.Text.Encoding.UTF8);
         }
     }
 }

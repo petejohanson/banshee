@@ -1,0 +1,201 @@
+<Type Name="ThreadAssist" FullName="Hyena.ThreadAssist">
+  <TypeSignature Language="C#" Value="public static class ThreadAssist" />
+  <AssemblyInfo>
+    <AssemblyName>Hyena</AssemblyName>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>A utility to make it easier to spawn execution off from the main thread.</summary>
+    <remarks>Needs to be initialized with the <see cref="M:Hyena.ThreadAssist.InitializeMainThread" /> method and a <see cref="P:Hyena.ThreadAssist.ProxyToMainHandler" /> needs to be set before this can be used.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="AssertInMainThread">
+      <MemberSignature Language="C#" Value="public static void AssertInMainThread ();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AssertNotInMainThread">
+      <MemberSignature Language="C#" Value="public static void AssertNotInMainThread ();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BlockingProxyToMain">
+      <MemberSignature Language="C#" Value="public static void BlockingProxyToMain (Hyena.InvokeHandler handler);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="Hyena.InvokeHandler" />
+      </Parameters>
+      <Docs>
+        <param name="handler">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeMainThread">
+      <MemberSignature Language="C#" Value="public static void InitializeMainThread ();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Mark the <see cref="T:System.Threading.Thread" /> on which this method is invoked as the main thread.</summary>
+        <remarks>Calling this method is required before <see cref="T:Hyena.ThreadAssist" /> will work. A <see cref="P:Hyena.ThreadAssist.ProxyToMainHandler" /> needs to be set as well.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InMainThread">
+      <MemberSignature Language="C#" Value="public static bool InMainThread { get; }" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MainThread">
+      <MemberSignature Language="C#" Value="public static System.Threading.Thread MainThread { get; }" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Thread</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ProxyToMain">
+      <MemberSignature Language="C#" Value="public static void ProxyToMain (Hyena.InvokeHandler handler);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="Hyena.InvokeHandler" />
+      </Parameters>
+      <Docs>
+        <param name="handler">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ProxyToMainHandler">
+      <MemberSignature Language="C#" Value="public static Action&lt;Hyena.InvokeHandler&gt; ProxyToMainHandler { set; get; }" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Action&lt;Hyena.InvokeHandler&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The delegate that will be used to proxy commands to the main thread.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Spawn">
+      <MemberSignature Language="C#" Value="public static System.Threading.Thread Spawn (System.Threading.ThreadStart threadedMethod);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Thread</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="threadedMethod" Type="System.Threading.ThreadStart" />
+      </Parameters>
+      <Docs>
+        <param name="threadedMethod">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Spawn">
+      <MemberSignature Language="C#" Value="public static System.Threading.Thread Spawn (System.Threading.ThreadStart threadedMethod, bool autoStart);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Thread</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="threadedMethod" Type="System.Threading.ThreadStart" />
+        <Parameter Name="autoStart" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="threadedMethod">To be added.</param>
+        <param name="autoStart">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SpawnFromMain">
+      <MemberSignature Language="C#" Value="public static void SpawnFromMain (System.Threading.ThreadStart threadedMethod);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="threadedMethod" Type="System.Threading.ThreadStart" />
+      </Parameters>
+      <Docs>
+        <param name="threadedMethod">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

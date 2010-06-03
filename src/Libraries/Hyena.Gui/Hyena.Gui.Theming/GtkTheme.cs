@@ -141,21 +141,52 @@ namespace Hyena.Gui.Theming
 
         public override void DrawFrameBorder (Cairo.Context cr, Gdk.Rectangle alloc)
         {
-            cr.LineWidth = BorderWidth;
-            cr.Color = border_color;
-            double offset = (double)cr.LineWidth / 2.0;
-            CairoExtensions.RoundedRectangle (cr, alloc.X + offset, alloc.Y + offset,
-                alloc.Width - cr.LineWidth, alloc.Height - cr.LineWidth, Context.Radius, CairoCorners.All);
-            cr.Stroke ();
-        }
+            var corners = CairoCorners.All;
+            double top_extend = 0;
+            double bottom_extend = 0;
+            double left_extend = 0;
+            double right_extend = 0;
 
-        public override void DrawFrameBorderFocused (Cairo.Context cr, Gdk.Rectangle alloc)
-        {
-            cr.LineWidth = BorderWidth * 1.5;
-            cr.Color = CairoExtensions.ColorShade (border_color, 0.8);
+            if (Context.ToplevelBorderCollapse) {
+                if (Widget.Allocation.Top <= Widget.Toplevel.Allocation.Top) {
+                    corners &= ~(CairoCorners.TopLeft | CairoCorners.TopRight);
+                    top_extend = cr.LineWidth;
+                }
+
+                if (Widget.Allocation.Bottom >= Widget.Toplevel.Allocation.Bottom) {
+                    corners &= ~(CairoCorners.BottomLeft | CairoCorners.BottomRight);
+                    bottom_extend = cr.LineWidth;
+                }
+
+                if (Widget.Allocation.Left <= Widget.Toplevel.Allocation.Left) {
+                    corners &= ~(CairoCorners.BottomLeft | CairoCorners.TopLeft);
+                    left_extend = cr.LineWidth;
+                }
+
+                if (Widget.Allocation.Right >= Widget.Toplevel.Allocation.Right) {
+                    corners &= ~(CairoCorners.BottomRight | CairoCorners.TopRight);
+                    right_extend = cr.LineWidth;
+                }
+            }
+
+            if (Widget.HasFocus) {
+                cr.LineWidth = BorderWidth * 1.5;
+                cr.Color = CairoExtensions.ColorShade (border_color, 0.8);
+            } else {
+                cr.LineWidth = BorderWidth;
+                cr.Color = border_color;
+            }
+
             double offset = (double)cr.LineWidth / 2.0;
-            CairoExtensions.RoundedRectangle (cr, alloc.X + offset, alloc.Y + offset,
-                alloc.Width - cr.LineWidth, alloc.Height - cr.LineWidth, Context.Radius, CairoCorners.All);
+
+            CairoExtensions.RoundedRectangle (cr,
+                alloc.X + offset - left_extend,
+                alloc.Y + offset - top_extend,
+                alloc.Width - cr.LineWidth + left_extend + right_extend,
+                alloc.Height - cr.LineWidth - top_extend + bottom_extend,
+                Context.Radius,
+                corners);
+
             cr.Stroke ();
         }
 
@@ -278,28 +309,43 @@ namespace Hyena.Gui.Theming
         public override void DrawRowSelection (Cairo.Context cr, int x, int y, int width, int height,
             bool filled, bool stroked, Cairo.Color color, CairoCorners corners)
         {
+            DrawRowSelection (cr, x, y, width, height, filled, stroked, color, corners, false);
+        }
+
+        public void DrawRowSelection (Cairo.Context cr, int x, int y, int width, int height,
+            bool filled, bool stroked, Cairo.Color color, CairoCorners corners, bool flat_fill)
+        {
             Cairo.Color selection_color = color;
             Cairo.Color selection_highlight = CairoExtensions.ColorShade (selection_color, 1.24);
             Cairo.Color selection_stroke = CairoExtensions.ColorShade (selection_color, 0.85);
             selection_highlight.A = 0.5;
             selection_stroke.A = color.A;
+            LinearGradient grad = null;
 
             if (filled) {
-                Cairo.Color selection_fill_light = CairoExtensions.ColorShade (selection_color, 1.12);
-                Cairo.Color selection_fill_dark = selection_color;
+                if (flat_fill) {
+                    cr.Color = selection_color;
+                } else {
+                    Cairo.Color selection_fill_light = CairoExtensions.ColorShade (selection_color, 1.12);
+                    Cairo.Color selection_fill_dark = selection_color;
 
-                selection_fill_light.A = color.A;
-                selection_fill_dark.A = color.A;
+                    selection_fill_light.A = color.A;
+                    selection_fill_dark.A = color.A;
 
-                LinearGradient grad = new LinearGradient (x, y, x, y + height);
-                grad.AddColorStop (0, selection_fill_light);
-                grad.AddColorStop (0.4, selection_fill_dark);
-                grad.AddColorStop (1, selection_fill_light);
+                    grad = new LinearGradient (x, y, x, y + height);
+                    grad.AddColorStop (0, selection_fill_light);
+                    grad.AddColorStop (0.4, selection_fill_dark);
+                    grad.AddColorStop (1, selection_fill_light);
 
-                cr.Pattern = grad;
+                    cr.Pattern = grad;
+                }
+
                 CairoExtensions.RoundedRectangle (cr, x, y, width, height, Context.Radius, corners, true);
                 cr.Fill ();
-                grad.Destroy ();
+
+                if (grad != null) {
+                    grad.Destroy ();
+                }
             }
 
             if (filled && stroked) {

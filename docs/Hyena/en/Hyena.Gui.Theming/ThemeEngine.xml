@@ -1,0 +1,59 @@
+<Type Name="ThemeEngine" FullName="Hyena.Gui.Theming.ThemeEngine">
+  <TypeSignature Language="C#" Value="public static class ThemeEngine" />
+  <AssemblyInfo>
+    <AssemblyName>Hyena.Gui</AssemblyName>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="CreateTheme">
+      <MemberSignature Language="C#" Value="public static Hyena.Gui.Theming.Theme CreateTheme (Gtk.Widget widget);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Hyena.Gui.Theming.Theme</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCurrentTheme&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static void SetCurrentTheme&lt;T&gt; () where T : Hyena.Gui.Theming.Theme;" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <BaseTypeName>Hyena.Gui.Theming.Theme</BaseTypeName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters />
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

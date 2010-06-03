@@ -40,6 +40,7 @@ namespace Banshee.GStreamer
 {
     public class Service : IExtensionService
     {
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void BansheeLogHandler (LogEntryType type, IntPtr component, IntPtr message);
 
         private BansheeLogHandler native_log_handler = null;

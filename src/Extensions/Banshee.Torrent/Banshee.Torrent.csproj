@@ -37,9 +37,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Migo.dll</HintPath>
     </Reference>
-    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099" />
+    <Reference Include="NDesk.DBus">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..bin\NDesk.DBus.dll</HintPath>
+    </Reference>
     <Reference Include="Hyena, Version=1.3.3.0, Culture=neutral" />
-    <Reference Include="monotorrent-dbus, Version=1.0.3235.2456, Culture=neutral" />
+    <Reference Include="monotorrent-dbus">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..bin\monotorrent-dbus.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Torrent.addin.xml" />

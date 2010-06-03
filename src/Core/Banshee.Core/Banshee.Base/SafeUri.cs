@@ -124,6 +124,11 @@ namespace Banshee.Base
             return AbsoluteUri;
         }
 
+        public static implicit operator string (SafeUri s)
+        {
+            return s.ToString ();
+        }
+
         public override bool Equals (object o)
         {
             if (!(o is SafeUri)) {
@@ -145,7 +150,7 @@ namespace Banshee.Base
         public bool IsLocalPath {
             get {
                 if (local_path_check == LocalPathCheck.NotPerformed) {
-                    if (Scheme == "file") {
+                    if (IsFile) {
                         local_path_check = LocalPathCheck.Yes;
                         return true;
                     } else {

@@ -213,8 +213,6 @@ namespace Banshee.Podcasting.Gui
 
         private void OnResponse (object sender, ResponseArgs args)
         {
-            Destroy ();
-
             if (args.ResponseId == Gtk.ResponseType.Ok) {
                 FeedAutoDownload new_sync_pref = new_episode_option_combo.ActiveSyncPreference;
 

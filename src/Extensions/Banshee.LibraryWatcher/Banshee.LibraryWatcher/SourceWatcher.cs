@@ -193,8 +193,9 @@ namespace Banshee.LibraryWatcher
                 if (reader.Read ()) {
                     var track_info = DatabaseTrackInfo.Provider.Load (reader);
                     if (Banshee.IO.File.GetModifiedTime (track_info.Uri) > track_info.FileModifiedStamp) {
-                        var file = StreamTagger.ProcessUri (track_info.Uri);
-                        StreamTagger.TrackInfoMerge (track_info, file, false);
+                        using (var file = StreamTagger.ProcessUri (track_info.Uri)) {
+                            StreamTagger.TrackInfoMerge (track_info, file, false);
+                        }
                         track_info.LastSyncedStamp = DateTime.Now;
                         track_info.Save (false);
                     }
@@ -284,7 +285,9 @@ namespace Banshee.LibraryWatcher
                 var uri = new SafeUri (item.FullPath);
                 if (DatabaseImportManager.IsWhiteListedFile (item.FullPath) && Banshee.IO.File.Exists (uri)) {
                     var track = new TrackInfo ();
-                    StreamTagger.TrackInfoMerge (track, StreamTagger.ProcessUri (uri));
+                    using (var file = StreamTagger.ProcessUri (uri)) {
+                        StreamTagger.TrackInfoMerge (track, file);
+                    }
                     item.MetadataHash = track.MetadataHash;
                 }
             }

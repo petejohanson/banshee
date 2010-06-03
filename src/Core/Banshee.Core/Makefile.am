@@ -4,16 +4,15 @@ LINK = $(REF_BANSHEE_CORE)
 SOURCES =  \
 	Banshee.Base/CoverArtSpec.cs \
 	Banshee.Base/FileNamePattern.cs \
+	Banshee.Base/LegacyPaths.cs \
 	Banshee.Base/Localization.cs \
 	Banshee.Base/NamingUtil.cs \
 	Banshee.Base/PathPattern.cs \
-	Banshee.Base/Paths.cs \
 	Banshee.Base/PlatformHacks.cs \
 	Banshee.Base/ProductInformation.cs \
 	Banshee.Base/Resource.cs \
 	Banshee.Base/SafeUri.cs \
 	Banshee.Base/Tests/CoverArtSpecTests.cs \
-	Banshee.Base/UriList.cs \
 	Banshee.Collection/AlbumInfo.cs \
 	Banshee.Collection/ArtistInfo.cs \
 	Banshee.Collection/CacheableItem.cs \
@@ -50,6 +49,7 @@ SOURCES =  \
 	Banshee.IO/IProvider.cs \
 	Banshee.IO/Provider.cs \
 	Banshee.IO/StreamAssist.cs \
+	Banshee.IO/Tests.cs \
 	Banshee.IO/Utilities.cs \
 	Banshee.Kernel/DelegateJob.cs \
 	Banshee.Kernel/IInstanceCriticalJob.cs \

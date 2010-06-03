@@ -136,7 +136,9 @@ namespace Banshee.IO.Gio
         {
             var newf = Uri ("newfile");
             var newp = Path ("newfile");
-            Assert.IsFalse (file.Exists (newf));
+
+            file.OpenWrite (newf, false).Close ();
+            Assert.IsTrue (file.Exists (newf));
 
             var demux = new DemuxVfs (newp);
             Assert.IsTrue (demux.IsWritable);

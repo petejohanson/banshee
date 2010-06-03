@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -127,12 +129,12 @@ _bp_missing_elements_process_message (BansheePlayer *player, GstMessage *message
         // Only save the error if we've never encounted it before
         for (; node != NULL; node = node->next) {
             if (g_ascii_strcasecmp (node->data, detail) == 0) {
-                bp_debug ("Ignoring missing element details, already prompted ('%s')", detail);
+                bp_debug2 ("Ignoring missing element details, already prompted ('%s')", detail);
                 return;
             }
         }
         
-        bp_debug ("Saving missing element details ('%s')", detail);
+        bp_debug2 ("Saving missing element details ('%s')", detail);
         player->missing_element_details = g_slist_append (player->missing_element_details, detail);  
     }
 }

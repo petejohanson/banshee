@@ -55,7 +55,6 @@ namespace Banshee.Gui.Widgets
 
         public override void Dispose ()
         {
-            Console.WriteLine ("Disposing idle artwork");
             var disposable = idle_album as IDisposable;
             if (disposable != null) {
                 disposable.Dispose ();
@@ -63,7 +62,6 @@ namespace Banshee.Gui.Widgets
 
             base.Dispose ();
         }
-
 
         protected override int ArtworkSizeRequest {
             get { return Allocation.Width; }
@@ -80,7 +78,7 @@ namespace Banshee.Gui.Widgets
         protected override void RenderIdle (Cairo.Context cr)
         {
             idle_album = idle_album ?? PixbufImageSurface.Create (Banshee.Gui.IconThemeUtils.LoadIcon (
-                ArtworkSizeRequest, "media-optical"), true);
+                ArtworkSizeRequest, MissingAudioIconName), true);
 
             ArtworkRenderer.RenderThumbnail (cr, idle_album, false, Allocation.X, Allocation.Y,
                 ArtworkSizeRequest, ArtworkSizeRequest,

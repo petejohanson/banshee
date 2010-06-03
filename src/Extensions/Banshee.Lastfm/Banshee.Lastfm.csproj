@@ -32,18 +32,36 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="atk-sharp" />
-    <Reference Include="gdk-sharp" />
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="pango-sharp" />
     <Reference Include="System" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="Mono.Posix" />
-    <Reference Include="Banshee.Base, Version=0.13.2.36411, Culture=neutral" />
     <Reference Include="System.Xml" />
+    <Reference Include="atk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Security">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Addins">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -86,35 +104,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Banshee.Lastfm.Radio\LastfmActions.cs" />
-    <Compile Include="Banshee.Lastfm.Radio\LastfmSource.cs" />
-    <Compile Include="Banshee.Lastfm.Radio\LastfmSourceContents.cs" />
-    <Compile Include="Banshee.Lastfm.Radio\LastfmTrackInfo.cs" />
-    <Compile Include="Banshee.Lastfm.Radio\StationEditor.cs" />
-    <Compile Include="Banshee.Lastfm.Radio\StationSource.cs" />
-    <Compile Include="Banshee.Lastfm.Radio\StationType.cs" />
     <Compile Include="Banshee.Lastfm.Audioscrobbler\AudioscrobblerService.cs" />
     <Compile Include="Banshee.Lastfm.Audioscrobbler\Queue.cs" />
-    <Compile Include="Banshee.Lastfm.Radio\LastfmColumnController.cs" />
     <Compile Include="Banshee.Lastfm.Recommendations\ContextPage.cs" />
     <Compile Include="Banshee.Lastfm.Recommendations\RecommendationPane.cs" />
     <Compile Include="Banshee.Lastfm.Recommendations\SimilarArtistTile.cs" />
+    <Compile Include="Banshee.Lastfm\LastfmActions.cs" />
+    <Compile Include="Banshee.Lastfm\LastfmColumnController.cs" />
+    <Compile Include="Banshee.Lastfm\LastfmSource.cs" />
+    <Compile Include="Banshee.Lastfm\LastfmSourceContents.cs" />
+    <Compile Include="Banshee.Lastfm\LastfmPreferences.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Lastfm.addin.xml">
       <LogicalName>Banshee.Lastfm.addin.xml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ActiveSourceUI.xml">
-      <LogicalName>ActiveSourceUI.xml</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\GlobalUI.xml">
       <LogicalName>GlobalUI.xml</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\AudioscrobblerMenu.xml">
       <LogicalName>AudioscrobblerMenu.xml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\LastfmTrackActions.xml">
-      <LogicalName>LastfmTrackActions.xml</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\RecommendationMenu.xml">
       <LogicalName>RecommendationMenu.xml</LogicalName>

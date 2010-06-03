@@ -31,40 +31,132 @@ using System;
 using Hyena.Data;
 using Hyena.Data.Gui;
 
+using Banshee.Preferences;
+using Banshee.Configuration;
+using Banshee.Library;
 using Banshee.Collection;
 using Banshee.ServiceStack;
 using Banshee.MediaEngine;
 using Banshee.Gui;
+
+using Mono.Unix;
 
 namespace Banshee.Collection.Gui
 {
     public class AlbumListView : TrackFilterListView<AlbumInfo>
     {
         private ColumnCellAlbum renderer;
+        private Column classic_layout_column;
+        private DataViewLayoutGrid grid_layout;
+        private bool? album_grid_rendered = null;
 
         public AlbumListView () : base ()
         {
-            if (!String.IsNullOrEmpty (Environment.GetEnvironmentVariable ("BANSHEE_DISABLE_GRID"))) {
-                column_controller.Add (new Column ("Album", renderer = new ColumnCellAlbum (), 1.0));
-                ColumnController = column_controller;
-            } else {
-                var layout = new DataViewLayoutGrid () {
-                    ChildAllocator = () => new DataViewChildAlbum (),
-                    View = this
-                };
+            renderer = new ColumnCellAlbum ();
+            grid_layout = new DataViewLayoutGrid () {
+                ChildAllocator = () => new DataViewChildAlbum (),
+                View = this
+            };
+            grid_layout.ChildCountChanged += (o, e) => {
+                var artwork_manager = ServiceManager.Get<ArtworkManager> ();
+                if (artwork_manager != null && e.Value > 0) {
+                    int size = (int)((DataViewChildAlbum)grid_layout[0]).ImageSize;
+                    artwork_manager.ChangeCacheSize (size, e.Value);
+                }
+            };
+            ViewLayout = grid_layout;
 
-                layout.ChildCountChanged += (o, e) => {
-                    var artwork_manager = ServiceManager.Get<ArtworkManager> ();
-                    if (artwork_manager != null && e.Value > 0) {
-                        int size = (int)((DataViewChildAlbum)layout[0]).ImageSize;
-                        artwork_manager.ChangeCacheSize (size, e.Value);
-                    }
-                };
-
-                ViewLayout = layout;
+            ServiceManager.SourceManager.SourceRemoved += UninstallPreferences;
+            ServiceManager.SourceManager.SourceAdded += InstallPreferences;
+            if (ServiceManager.SourceManager.MusicLibrary != null) {
+                InstallPreferences ();
             }
 
+            DisableAlbumGridPref =  new SchemaPreference<bool> (DisableAlbumGrid,
+                    Catalog.GetString ("Disable album grid"),
+                    Catalog.GetString ("Disable album grid and show the classic layout instead"),
+                    ToggleAlbumGrid);
+
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.TrackInfoUpdated);
+        }
+
+        private void ToggleAlbumGrid ()
+        {
+            if (album_grid_rendered.HasValue &&
+                !DisableAlbumGrid.Get ().Equals (album_grid_rendered.Value)) {
+                return;
+            }
+
+            DisabledAlbumGrid = DisableAlbumGrid.Get ();
+        }
+
+        private PreferenceBase disable_album_grid;
+        private MusicLibrarySource music_lib = null;
+
+        private void InstallPreferences (Sources.SourceAddedArgs args)
+        {
+            if (!args.Source.Equals (ServiceManager.SourceManager.MusicLibrary)) {
+                return;
+            }
+
+            InstallPreferences ();
+        }
+
+        private void InstallPreferences ()
+        {
+            music_lib = ServiceManager.SourceManager.MusicLibrary;
+            disable_album_grid = music_lib.PreferencesPage["misc"].Add (DisableAlbumGridPref);
+
+            ServiceManager.SourceManager.SourceAdded -= InstallPreferences;
+        }
+
+        private void UninstallPreferences (Sources.SourceEventArgs args)
+        {
+            if (args.Source.Equals (music_lib)) {
+                return;
+            }
+
+            music_lib.PreferencesPage["misc"].Remove (disable_album_grid);
+            music_lib = null;
+
+            ServiceManager.SourceManager.SourceRemoved -= UninstallPreferences;
+        }
+
+        private bool DisabledAlbumGrid {
+            get { return DisableAlbumGrid.Get (); }
+            set {
+                DisableAlbumGrid.Set (value);
+                if (value) {
+                    ViewLayout = null;
+                    if (classic_layout_column == null)
+                        classic_layout_column = new Column ("Album", renderer, 1.0);
+                    column_controller.Add (classic_layout_column);
+                    ColumnController = column_controller;
+                } else {
+                    if (classic_layout_column != null)
+                        column_controller.Remove (classic_layout_column);
+                    ColumnController = null;
+                    ViewLayout = grid_layout;
+                }
+                album_grid_rendered = !value;
+            }
+        }
+
+        private static SchemaPreference<bool> DisableAlbumGridPref = null;
+
+        private static readonly SchemaEntry<bool> DisableAlbumGrid = new SchemaEntry<bool> (
+            "player_window", "disable_album_grid",
+            false,
+            "Disable album grid",
+            "Disable album grid and show the classic layout instead"
+        );
+
+        protected override bool OnWidgetEvent (Gdk.Event evnt)
+        {
+            if (album_grid_rendered == null && evnt.Type == Gdk.EventType.Expose) {
+                ToggleAlbumGrid ();
+            }
+            return base.OnWidgetEvent (evnt);
         }
 
         protected override Gdk.Size OnMeasureChild ()

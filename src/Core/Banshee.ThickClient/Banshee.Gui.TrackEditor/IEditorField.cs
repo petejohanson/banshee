@@ -33,5 +33,7 @@ namespace Banshee.Gui.TrackEditor
     public interface IEditorField
     {
         event EventHandler Changed;
+
+        void SetAsReadOnly ();
     }
 }

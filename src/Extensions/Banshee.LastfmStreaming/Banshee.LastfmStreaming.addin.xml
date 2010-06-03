@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Addin 
+    id="Banshee.LastfmStreaming"
+    version="1.0"
+    compatVersion="1.0"
+    copyright="© 2010 Novell Inc. Licensed under the MIT X11 license."
+    name="Last.fm Radio"
+    category="Online Sources"
+    description="Last.fm streaming radio for paid subscribers."
+    author="Gabriel Burt, Alexander Hixon, Chris Toshok, Fredrik Hedberg, Aaron Bockover, Lukas Lipka, Bertrand Lorentz"
+    url="http://banshee-project.org/"
+    defaultEnabled="true">
+
+  <Dependencies>
+    <Addin id="Banshee.Services" version="1.0"/>
+    <Addin id="Banshee.ThickClient" version="1.0"/>
+    <Addin id="Banshee.Lastfm" version="1.0"/>
+  </Dependencies>
+
+  <Extension path="/Banshee/ServiceManager/Service">
+    <Service class="Banshee.LastfmStreaming.Radio.LastfmStreamingService"/>
+  </Extension>
+  
+</Addin>

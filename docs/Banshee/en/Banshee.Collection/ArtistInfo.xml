@@ -5,6 +5,7 @@
     <AssemblyVersion>0.90.1.25775</AssemblyVersion>
     <AssemblyVersion>1.3.1.0</AssemblyVersion>
     <AssemblyVersion>1.4.0.0</AssemblyVersion>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>Banshee.Collection.CacheableItem</BaseTypeName>
@@ -15,17 +16,130 @@
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
-    
-    <Member MemberName=".ctor"><MemberSignature Language="C#" Value="public ArtistInfo ();" /><MemberType>Constructor</MemberType><AssemblyInfo><AssemblyVersion>1.3.1.0</AssemblyVersion><AssemblyVersion>1.4.0.0</AssemblyVersion></AssemblyInfo><Parameters /><Docs><summary>To be added.</summary><remarks>To be added.</remarks></Docs></Member><Member MemberName=".ctor">
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ArtistInfo ();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.3.1.0</AssemblyVersion>
+        <AssemblyVersion>1.4.0.0</AssemblyVersion>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ArtistInfo (string name);" />
       <MemberType>Constructor</MemberType>
-      <Parameters><Parameter Name="name" Type="System.String" /></Parameters>
-      <Docs><param name="name">To be added.</param><summary>To be added.</summary><remarks>To be added.</remarks></Docs>
-    <AssemblyInfo><AssemblyVersion>1.3.1.0</AssemblyVersion><AssemblyVersion>1.4.0.0</AssemblyVersion></AssemblyInfo></Member><Member MemberName="MusicBrainzId"><MemberSignature Language="C#" Value="public virtual string MusicBrainzId { set; get; }" /><MemberType>Property</MemberType><AssemblyInfo><AssemblyVersion>1.3.1.0</AssemblyVersion><AssemblyVersion>1.4.0.0</AssemblyVersion></AssemblyInfo><ReturnValue><ReturnType>System.String</ReturnType></ReturnValue><Docs><summary>To be added.</summary><value>To be added.</value><remarks>To be added.</remarks></Docs></Member><Member MemberName="Name">
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+      <AssemblyInfo>
+        <AssemblyVersion>1.3.1.0</AssemblyVersion>
+        <AssemblyVersion>1.4.0.0</AssemblyVersion>
+      </AssemblyInfo>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ArtistInfo (string name, string name_sort);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="name_sort" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <param name="name_sort">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisplayName">
+      <MemberSignature Language="C#" Value="public string DisplayName { get; }" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MusicBrainzId">
+      <MemberSignature Language="C#" Value="public virtual string MusicBrainzId { set; get; }" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.3.1.0</AssemblyVersion>
+        <AssemblyVersion>1.4.0.0</AssemblyVersion>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
       <MemberSignature Language="C#" Value="public virtual string Name { set; get; }" />
       <MemberType>Property</MemberType>
-      <ReturnValue><ReturnType>System.String</ReturnType></ReturnValue>
-      <Docs><summary>To be added.</summary><value>To be added.</value><remarks>To be added.</remarks></Docs>
-    <AssemblyInfo><AssemblyVersion>1.3.1.0</AssemblyVersion><AssemblyVersion>1.4.0.0</AssemblyVersion></AssemblyInfo></Member>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+      <AssemblyInfo>
+        <AssemblyVersion>1.3.1.0</AssemblyVersion>
+        <AssemblyVersion>1.4.0.0</AssemblyVersion>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+    </Member>
+    <Member MemberName="NameSort">
+      <MemberSignature Language="C#" Value="public virtual string NameSort { set; get; }" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnknownArtistName">
+      <MemberSignature Language="C#" Value="public static readonly string UnknownArtistName;" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
   </Members>
 </Type>

@@ -48,8 +48,14 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099" />
-    <Reference Include="NDesk.DBus.GLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099" />
+    <Reference Include="NDesk.DBus">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
+    </Reference>
+    <Reference Include="NDesk.DBus.GLib">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\NDesk.DBus.GLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.HalBackend\DkDisk.cs" />

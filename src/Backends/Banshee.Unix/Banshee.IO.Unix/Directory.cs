@@ -124,6 +124,9 @@ namespace Banshee.IO.Unix
                     if (info.FullName.StartsWith (target.FullName)) {
                         return null;
                     }
+                    if (!target.Exists) {
+                        return null;
+                    }
                     info = target;
                 }
 

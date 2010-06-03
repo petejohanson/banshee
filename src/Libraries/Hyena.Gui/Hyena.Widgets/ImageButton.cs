@@ -45,6 +45,11 @@ namespace Hyena.Widgets
             set { hbox.BorderWidth = value; }
         }
 
+        public int Spacing {
+            get { return hbox.Spacing; }
+            set { hbox.Spacing = value; }
+        }
+
         public ImageButton (string text, string iconName) : this (text, iconName, Gtk.IconSize.Button)
         {
         }

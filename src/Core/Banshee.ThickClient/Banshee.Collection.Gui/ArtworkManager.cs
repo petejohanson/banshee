@@ -182,7 +182,18 @@ namespace Banshee.Collection.Gui
             if (orig_exists && size >= 10) {
                 try {
                     Pixbuf pixbuf = new Pixbuf (orig_path);
-                    Pixbuf scaled_pixbuf = pixbuf.ScaleSimple (size, size, Gdk.InterpType.Bilinear);
+
+                    // Make it square if width and height difference is within 20%
+                    const double max_ratio = 1.2;
+                    double ratio = (double)pixbuf.Height / pixbuf.Width;
+                    int width = size, height = size;
+                    if (ratio > max_ratio) {
+                        width = (int)Math.Round (size / ratio);
+                    }else if (ratio < 1d / max_ratio) {
+                        height = (int)Math.Round (size * ratio);
+                    }
+
+                    Pixbuf scaled_pixbuf = pixbuf.ScaleSimple (width, height, Gdk.InterpType.Bilinear);
 
                     if (IsCachedSize (size)) {
                         Directory.Create (System.IO.Path.GetDirectoryName (path));
@@ -282,7 +293,7 @@ namespace Banshee.Collection.Gui
             var legacy_root_path = CoverArtSpec.LegacyRootPath;
 
             if (version < 1) {
-                string legacy_artwork_path = Paths.Combine (Paths.LegacyApplicationData, "covers");
+                string legacy_artwork_path = Paths.Combine (LegacyPaths.ApplicationData, "covers");
 
                 if (!Directory.Exists (legacy_root_path)) {
                     Directory.Create (legacy_root_path);

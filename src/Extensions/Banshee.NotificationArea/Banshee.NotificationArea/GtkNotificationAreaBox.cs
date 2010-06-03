@@ -59,7 +59,8 @@ namespace Banshee.NotificationArea
         public GtkNotificationAreaBox (BaseClientWindow window)
         {
             Visible = false;
-            IconName = Banshee.ServiceStack.Application.IconName;
+            IconName = (IconThemeUtils.HasIcon ("banshee-panel")) ?
+                "banshee-panel" : Banshee.ServiceStack.Application.IconName;
 
             Tooltip = window.Title;
             window.TitleChanged += delegate { Tooltip = window.Title; };

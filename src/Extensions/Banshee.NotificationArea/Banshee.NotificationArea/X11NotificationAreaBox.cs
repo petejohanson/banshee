@@ -149,7 +149,8 @@ namespace Banshee.NotificationArea
                 icon_size = 32;
             }
 
-            icon.IconName = Banshee.ServiceStack.Application.IconName;
+            icon.IconName = (IconThemeUtils.HasIcon ("banshee-panel")) ?
+                "banshee-panel" : Banshee.ServiceStack.Application.IconName;
             icon.PixelSize = icon_size;
         }
 
@@ -214,6 +215,9 @@ namespace Banshee.NotificationArea
             }
 
             popup.Hide ();
+            popup.EnterNotifyEvent -= OnPopupEnterNotify;
+            popup.LeaveNotifyEvent -= OnPopupLeaveNotify;
+            popup.Destroy ();
             popup.Dispose ();
             popup = null;
         }
@@ -225,19 +229,25 @@ namespace Banshee.NotificationArea
             }
 
             popup = new TrackInfoPopup ();
-            popup.EnterNotifyEvent += delegate {
-                hide_delay_started = false;
-            };
-            popup.LeaveNotifyEvent += delegate(object o, LeaveNotifyEventArgs args) {
-                Gdk.Rectangle rect;
-                if (!popup.Intersect (new Gdk.Rectangle ((int)args.Event.X, (int)args.Event.Y, 1, 1), out rect)) {
-                    OnLeaveNotifyEvent (o, args);
-                }
-            };
+            popup.EnterNotifyEvent += OnPopupEnterNotify;
+            popup.LeaveNotifyEvent += OnPopupLeaveNotify;
 
             PositionPopup ();
 
             popup.Show ();
+        }
+
+        private void OnPopupEnterNotify (object o, EnterNotifyEventArgs args)
+        {
+            hide_delay_started = false;
+        }
+
+        private void OnPopupLeaveNotify (object o, LeaveNotifyEventArgs args)
+        {
+            Gdk.Rectangle rect;
+            if (!popup.Intersect (new Gdk.Rectangle ((int)args.Event.X, (int)args.Event.Y, 1, 1), out rect)) {
+                OnLeaveNotifyEvent (o, args);
+            }
         }
 
         private void PositionPopup ()

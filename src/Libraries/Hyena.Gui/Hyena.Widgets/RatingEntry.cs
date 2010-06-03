@@ -496,6 +496,7 @@ namespace Hyena.Widgets
             Pango.FontDescription fd = entry3.PangoContext.FontDescription.Copy ();
             fd.Size = (int)(fd.Size * Pango.Scale.XXLarge);
             entry3.ModifyFont (fd);
+            fd.Dispose ();
             box.PackStart (entry3, true, true, 0);
 
             pbox.ShowAll ();

@@ -37,6 +37,7 @@ namespace Hyena.Data.Gui
     {
         #pragma warning disable 0067
         public event EventHandler ModelChanged;
+        public event EventHandler ModelReloaded;
         #pragma warning restore 0067
 
         public void SetModel (IListModel<T> model)
@@ -91,6 +92,8 @@ namespace Hyena.Data.Gui
         private void RefreshViewForModel (double? vpos)
         {
             if (Model == null) {
+                UpdateAdjustments ();
+                QueueDraw ();
                 return;
             }
 
@@ -109,10 +112,6 @@ namespace Hyena.Data.Gui
                 ScrollToY (vadjustment.Value);
             }
 
-            if (Model != null && Selection != null) {
-                Selection.MaxIndex = Model.Count - 1;
-            }
-
             if (Parent is ScrolledWindow) {
                 Parent.QueueDraw ();
             }
@@ -126,6 +125,11 @@ namespace Hyena.Data.Gui
         private void OnModelReloadedHandler (object o, EventArgs args)
         {
             OnModelReloaded ();
+
+            var handler = ModelReloaded;
+            if (handler != null) {
+                handler (this, EventArgs.Empty);
+            }
         }
 
         private void OnColumnControllerUpdatedHandler (object o, EventArgs args)

@@ -103,6 +103,10 @@ namespace Banshee.Playlist
             set { primary_source_id = value.DbId; }
         }
 
+        public override bool HasEditableTrackProperties {
+            get { return PrimarySource == null || PrimarySource.HasEditableTrackProperties; }
+        }
+
         private HyenaSqliteCommand count_updated_command;
         protected HyenaSqliteCommand CountUpdatedCommand {
             get {

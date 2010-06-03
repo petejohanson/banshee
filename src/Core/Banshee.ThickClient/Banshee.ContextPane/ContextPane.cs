@@ -173,6 +173,10 @@ namespace Banshee.ContextPane
 
         private void OnActivePageStateChanged (ContextState state)
         {
+            if (active_page == null || !pane_pages.ContainsKey (active_page)) {
+                return;
+            }
+
             if (state == ContextState.NotLoaded)
                 notebook.CurrentPage = notebook.PageNum (no_active);
             else if (state == ContextState.Loading)

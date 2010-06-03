@@ -68,7 +68,7 @@ namespace Banshee.Dap.MassStorage
 
             ms_device = DeviceMapper.Map (this);
             try {
-                if (!ms_device.LoadDeviceConfiguration ()) {
+                if (ms_device.ShouldIgnoreDevice () || !ms_device.LoadDeviceConfiguration ()) {
                     ms_device = null;
                 }
             } catch {
@@ -164,7 +164,7 @@ namespace Banshee.Dap.MassStorage
                     "INSERT INTO CorePlaylistEntries (PlaylistID, TrackID) VALUES (?, ?)");
                 int [] psources = new int [] {DbId};
                 foreach (string playlist_path in PlaylistFiles) {
-                    IPlaylistFormat loaded_playlist = PlaylistFileUtil.Load (playlist_path, new Uri (BaseDirectory));
+                    IPlaylistFormat loaded_playlist = PlaylistFileUtil.Load (playlist_path, new Uri (PlaylistsPath));
                     if (loaded_playlist == null)
                         continue;
 
@@ -307,7 +307,11 @@ namespace Banshee.Dap.MassStorage
             }
 
             foreach (string file_name in PlaylistFiles) {
-                Banshee.IO.File.Delete (new SafeUri (file_name));
+                try {
+                    Banshee.IO.File.Delete (new SafeUri (file_name));
+                } catch (Exception e) {
+                    Log.Exception (e);
+                }
             }
 
             // Add playlists from Banshee to the device
@@ -325,10 +329,17 @@ namespace Banshee.Dap.MassStorage
                     SafeUri playlist_path = new SafeUri (System.IO.Path.Combine (
                         PlaylistsPath, String.Format ("{0}.{1}", escaped_name, PlaylistTypes[0].FileExtension)));
 
-                    System.IO.Stream stream = Banshee.IO.File.OpenWrite (playlist_path, true);
-                    playlist_format.BaseUri = new Uri (BaseDirectory);
-                    playlist_format.Save (stream, from);
-                    stream.Close ();
+                    System.IO.Stream stream = null;
+                    try {
+                        stream = Banshee.IO.File.OpenWrite (playlist_path, true);
+                        playlist_format.BaseUri = new Uri (PlaylistsPath);
+
+                        playlist_format.Save (stream, from);
+                    } catch (Exception e) {
+                        Log.Exception (e);
+                    } finally {
+                        stream.Close ();
+                    }
                 }
             }
         }
@@ -362,7 +373,7 @@ namespace Banshee.Dap.MassStorage
                     // According to the HAL spec, the first folder listed in the audio_folders property
                     // is the folder to write files to.
                     if (AudioFolders.Length > 0) {
-                        write_path = Banshee.Base.Paths.Combine (write_path, AudioFolders[0]);
+                        write_path = Hyena.Paths.Combine (write_path, AudioFolders[0]);
                     }
                 }
                 return write_path;
@@ -378,10 +389,10 @@ namespace Banshee.Dap.MassStorage
                     write_path_video = BaseDirectory;
                     // Some Devices May Have a Separate Video Directory
                     if (VideoFolders.Length > 0) {
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, VideoFolders[0]);
+                        write_path_video = Hyena.Paths.Combine (write_path_video, VideoFolders[0]);
                     } else if (AudioFolders.Length > 0) {
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, AudioFolders[0]);
-                        write_path_video = Banshee.Base.Paths.Combine (write_path_video, "Videos");
+                        write_path_video = Hyena.Paths.Combine (write_path_video, AudioFolders[0]);
+                        write_path_video = Hyena.Paths.Combine (write_path_video, "Videos");
                     }
                 }
                 return write_path_video;

@@ -182,6 +182,10 @@ namespace Banshee.SmartPlaylist
         }
 
         // FIXME scan ConditionTree for date fields
+        // FIXME even better, scan for date fields and see how fine-grained they are;
+        //       eg if set to Last Added < 2 weeks ago, don't need a timer going off
+        //       every 1 minute - every hour or two would suffice.  Just change this
+        //       property to a TimeSpan, rename it TimeDependentResolution or something
         public bool TimeDependent {
             get { return false; }
         }
@@ -509,18 +513,14 @@ namespace Banshee.SmartPlaylist
             }
         }
 
-        private static bool temps_cleared = false;
         private static void ClearTemporary ()
         {
-            if (!temps_cleared) {
-                temps_cleared = true;
-                ServiceManager.DbConnection.Execute (@"
-                    BEGIN TRANSACTION;
-                        DELETE FROM CoreSmartPlaylistEntries WHERE SmartPlaylistID IN (SELECT SmartPlaylistID FROM CoreSmartPlaylists WHERE IsTemporary = 1);
-                        DELETE FROM CoreSmartPlaylists WHERE IsTemporary = 1;
-                    COMMIT TRANSACTION"
-                );
-            }
+            ServiceManager.DbConnection.Execute (@"
+                BEGIN TRANSACTION;
+                    DELETE FROM CoreSmartPlaylistEntries WHERE SmartPlaylistID IN (SELECT SmartPlaylistID FROM CoreSmartPlaylists WHERE IsTemporary = 1);
+                    DELETE FROM CoreSmartPlaylists WHERE IsTemporary = 1;
+                COMMIT TRANSACTION"
+            );
         }
 
         private static void HandleSourceAdded (SourceEventArgs args)

@@ -88,6 +88,8 @@ namespace Banshee.IO
         public static void SetProvider (IProvider customProvider)
         {
             provider = customProvider;
+            directory = (IDirectory)Activator.CreateInstance (provider.DirectoryProvider);
+            file = (IFile)Activator.CreateInstance (provider.FileProvider);
         }
 
         internal static IDirectory Directory {
@@ -104,7 +106,16 @@ namespace Banshee.IO
 
         internal static IDemuxVfs CreateDemuxVfs (string file)
         {
-            return (IDemuxVfs)Activator.CreateInstance (provider.DemuxVfsProvider, new object [] { file });
+            return (IDemuxVfs)Activator.CreateInstance (provider.DemuxVfsProvider, new object [] { GetPath (file) });
+        }
+
+        internal static string GetPath (string uri)
+        {
+            if (LocalOnly && !String.IsNullOrEmpty (uri) && uri[0] != '/' && uri.StartsWith ("file://")) {
+                return new SafeUri (uri).LocalPath;
+            }
+
+            return uri;
         }
 
         private static string [] builtin_backend_preference = new string [] {

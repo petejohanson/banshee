@@ -76,6 +76,7 @@ namespace Banshee.InternetArchive
             Properties.SetString ("ActiveSourceUIResource", "DetailsSourceActiveUI.xml");
             Properties.SetString ("GtkActionPath", "/IaDetailsSourcePopup");
             Properties.SetString ("UnmapSourceActionLabel", Catalog.GetString ("Close Item"));
+            Properties.SetString ("UnmapSourceActionIconName", "gtk-close");
 
             SetIcon ();
 

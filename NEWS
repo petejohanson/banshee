@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.5.5 - Released March 10, 2010
+WELCOME TO BANSHEE 1.7.1 - Released May 26, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,57 +10,40 @@ WELCOME TO BANSHEE 1.5.5 - Released March 10, 2010
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee-project.org/download/archives/1.5.5
+  * Learn More: http://banshee-project.org/download/archives/1.7.1
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.5.5 is mostly a bug fix release, with a few enhancements.  This
-    release marks the start of our string freeze in preparation for 1.6.
+    Banshee 1.7.1 is part of the unstable 1.7 series, leading up to a
+    stable 1.8 release in the fall.  It contains many bug fixes for 1.7.0, as
+    well as new features and enhancements.
 
-    New Features:
+    New Features Since 1.7.0:
 
-      * Gapless Playback / Playbin2
+      * Improvements for Audiobooks support
 
-          Banshee now uses the playbin2 GStreamer element.  With this comes
-          support for gapless playback, which is the default now for users
-          with GStreamer > 0.10.25.2.
-
-      * Grid View
-
-          We are debuting a new grid mode for our custom list widget, visible
-          in the modified Album browser.  It will be used for Videos,
-          Audiobooks, and more in future releases.
-
-      * YouTube Extension
-
-          This extension shows YouTube videos in the Context Pane related to
-          what you're playing, and lets you watch them within Banshee.  You
-          can enable it in the Extensions tab of the Preferences dialog.
+          Audiobooks tracks are now organized in books, which can be merged
+          together. The last position in each book is automatically saved, so
+          you can resume playing a book right from where you stopped.
 
     Enhancements:
 
-      * Improve search responsiveness on large libraries
-      * Add icons for Nexus One and Audiobooks
-      * Play Queue item count, size, duration now ignores old tracks
-      * Muinshee fixes: disable Auto-DJ, allow reordering, hide previous song
+      * New preference to have the classic album layout instead of the grid view
+      * Last.fm streaming can be disabled separately from the other Last.fm
+        features.
+      * Support for reading and writing MusicBrainz IDs
+      * Show the TrackEditor fields as read-only mode when they are not editable
 
-    Notable bug fixes:
+    Notable Bugs Fixed (18 fixed since 1.7.0):
 
-      * Fix a very common, SQL-related crash in 1.5.4
-      * Fix saving equalizer settings in culture-invariant way
-      * Jumping to a source's prefs via its context menu works again
-      * Usage data not submitted more than every 48 hours
-      * Fix repeatedly resyncing some files to a device b/c transcoded
-      * Clear the redo stack on shuffle mode change
-      * Accept feeds with empty title
-      * Uri encode file location queries, making them work properly
-      * Fixes to the OS X build
-
-      * 26 bugs were fixed since 1.5.4
-
+      * Fix Youtube playback
+      * Fix deletion of Podcast metadata during modification
+      * Fix a crash related to the notification deamon
+      * Fix fetching cover for albums with several discs
+      * Several fixes for the N800 device
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -69,9 +52,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.5.5 Tarballs:
-      http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.tar.bz2
-      http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.tar.gz
+    * Banshee 1.7.1 Tarballs:
+      http://download.banshee-project.org/banshee/stable/1.7.1/banshee-1-1.7.1.tar.bz2
+      http://download.banshee-project.org/banshee/stable/1.7.1/banshee-1-1.7.1.tar.gz
 
 Packages
 --------
@@ -88,13 +71,13 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee-project.org/banshee/banshee-1-1.5.5.macosx.intel.dmg
+    * http://download.banshee-project.org/banshee/banshee-1-1.7.1.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.changes
-    * http://download.banshee-project.org/banshee/stable/1.5.5/banshee-1-1.5.5.sha256sum
+    * http://download.banshee-project.org/banshee/stable/1.7.1/banshee-1-1.7.1.changes
+    * http://download.banshee-project.org/banshee/stable/1.7.1/banshee-1-1.7.1.sha256sum
 
 
 ===============================================================================
@@ -109,7 +92,7 @@ DEPENDENCIES
     * NDesk DBus (ndesk-dbus) 0.5
     * NDesk DBus GLib (ndesk-dbus-glib) 0.3
     * Mono.Addins (mono-addins) 0.3.1
-    * TagLib# (taglib-sharp) >= 2.0.3.5
+    * TagLib# (taglib-sharp) >= 2.0.3.7
 
     * Required to build default feature stack:
       * libmtp >= 0.2.0
@@ -127,7 +110,8 @@ DEPENDENCIES
         gdata-sharp-youtube >= 1.4
 
     * Run-time requirements for default feature stack:
-      * PodSleuth >= 0.6.6
+      * HAL
+      * PodSleuth >= 0.6.7
       * Brasero >= 0.8.1
       * Avahi
       * gst-plugins-bad (providing the bpmdetect GStreamer plugin)
@@ -162,7 +146,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee-project.org/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.5.5
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.7.1
 
 
 ===============================================================================
@@ -175,18 +159,14 @@ Contributors For This Release
     The following people directly contributed to the release of this version
     of Banshee. Without their help, there would be no release!
 
-      Aaron Bockover, Alan McGovern, Alex Launi, Alexander Kojevnikov,
-      Andreas Nilsson, Andrés G. Aragoneses, Bertrand Lorentz,
-      Christian Hergert, Christopher James Halse Rogers, Fernando Casanova,
-      Gabriel Burt, Jakub Steiner, Ján Sokoly, Kevin Duffus, Ruben Vermeersch,
-      Travis Reitter
+      Aaron Bockover, Alexander Kojevnikov, Andrés G. Aragoneses, Aurélien Mino,
+      Bertrand Lorentz, Gabriel Burt, Kevin Duffus, Michał Sawicz
 
     The following people contributed updated translations to this release.
     Without them, our project's reach would be much more limited.
 
-      Andrej Žnidaršič, Benjamin Valero Espinosa, Bruno Brouard,
-      Laurent Coudeur, Marek Černocký, Mario Blättermann, Miloš Popović,
-      Petr Kovar
+      Andrej Žnidaršič, Benjamín Valero, Bruce Cowan, Christian Kirbach,
+      Fran Diéguez, Mario Blättermann, Michel Recondo, Petr Kovar
 
 Contributors In Past Releases
 -----------------------------
@@ -195,31 +175,32 @@ Contributors In Past Releases
     Alexander Hixon, Alexander Kojevnikov, Alexandros Frantzis, Alp Toker,
     Anders Petersson, Andrea Cimitan, Andreas Neustifter, Andreas Nilsson,
     Andrew Conkling, Andrés G. Aragoneses, Andy Midgette, Arthur Carli,
-    Aydemir Ulaş Şahin, Ben Maurer, Benjamín Valero Espinosa,
-    Bertrand Lorentz, Bertrand Lorentz, Bill Dawson, Bob Copeland,
-    Bojan Rajkovic, Brad Taylor, Brandon Perry, Brian Lucas, Brian Nickel,
-    Brian Teague, Chow Loong Jin, Chris Howie, Chris Jones, Chris Lahey,
-    Chris Toshok, Chris Turchin, Christian Hergert, Christian Krause,
-    Christoph Burgdorf, Christopher James Halse Rogers, Cody Russell,
-    Cosmin Banu, Dan Wilson, Dan Winship, Daniel Munkton, Daniel Siegel,
-    David Spreen, David Stone, Diego E. Pettenò, Eitan Isaacson, Elena Grassi,
-    Eoin Hennessy, Eric Butler, Erik Schmidt, Fabian Jost,
-    Felipe Almeida Lessa, Fernando Casanova, Florent Thoumie, Fredrik Hedberg,
-    Félix Velasco, Gabriel Burt, Garrett LeSage, Götz Waschk, Haitao Feng,
-    Hans Petter Jansson, Iain Lane, Igor Guerrero Fonseca, Ilya Konstantinov,
-    Ivan N. Zlatev, Jack Deslippe, Jakub Steiner, James Willcox,
-    Jan Arne Petersen, Jason Conti, Jason Taylor, Jeff Tickle, Jeff Wheeler,
-    Jensen Somers, Jo Shields, Johannes Kuhn, John Millikin, Jorge Castro,
+    Arun Raghavan, Aurélien Mino, Aydemir Ulaş Şahin, Ben Maurer,
+    Benjamín Valero Espinosa, Bertrand Lorentz, Bertrand Lorentz, Bill Dawson,
+    Bob Copeland, Bojan Rajkovic, Brad Taylor, Brandon Perry, Brian Lucas,
+    Brian Nickel, Brian Teague, Chow Loong Jin, Chris Howie, Chris Jones,
+    Chris Lahey, Chris Toshok, Chris Turchin, Christian Hergert,
+    Christian Krause, Christoph Burgdorf, Christopher James Halse Rogers,
+    Cody Russell, Cosmin Banu, Dan Wilson, Dan Winship, Daniel Munkton,
+    Daniel Siegel, David Spreen, David Stone, Diego E. Pettenò,
+    Eitan Isaacson, Elena Grassi, Eoin Hennessy, Eric Butler, Erik Schmidt,
+    Fabian Jost, Felipe Almeida Lessa, Fernando Casanova, Florent Thoumie,
+    Fredrik Hedberg, Félix Velasco, Gabriel Burt, Garrett LeSage,
+    Götz Waschk, Haitao Feng, Hans Petter Jansson, Iain Lane,
+    Igor Guerrero Fonseca, Ilya Konstantinov, Ivan N. Zlatev, Jack Deslippe,
+    Jakub Steiner, James Willcox, Jan Arne Petersen, Jason Conti, Jason Taylor,
+    Jeff Tickle, Jeff Wheeler, Jensen Somers, Jeroen Budts, Jo Shields,
+    Johannes Kuhn, John Millikin, Jordi Mas, Jorge Castro, Julien Moutte,
     Juri Pakaste, Ján Sokoly, Jérémie Laval, K. Vishnoo Charan Reddy,
-    Ken Vandine, Kevin Duffus, Larry Ewing, Lauri Kotilainen, Lukas Lipka,
-    Matt Enright, Michael Kaiser, Michael Martin-Smucker, Michael Monreal,
-    Michael Monreal, Miguel de Icaza, Mike Urbanski, Moritz Schallaböck,
-    Nathan Palmer, Neil Loknath, Nicholas Doyle, Nicholas Parker,
-    Nicolò Chieffo, Nils Naumann, Oben Sonne, Olivier Duff, Oscar Forero,
-    Pacho Ramos, Patrick van Staveren, Paul Lange, Pavel Antonov,
-    Pepijn van de Geer, Peter de Kraker, Pratik Patel, Przemysław Grzegorczyk,
-    Roderich Schupp, Romain Tartière, Ruben Vermeersch, Ryan Collier,
-    Sandy Armstrong, Scott Peterson, Sebastian Dröge, Tim Yamin,
-    Tobias Mueller, Todd Berman, Travis Glenn Hansen, Travis Reitter,
-    Trey Ethridge, Valentin Sawadski, Will Farrington, William Pettersson,
-    Wouter Bolsterlee
+    Ken Vandine, Kevin Duffus, Konstantin Oshiyko, Larry Ewing,
+    Lauri Kotilainen, Lukas Lipka, Marijn Ros, Matt Enright, Michael Kaiser,
+    Michael Martin-Smucker, Michael Monreal, Michael Monreal, Michał Sawicz,
+    Miguel de Icaza, Mike Urbanski, Moritz Schallaböck, Nathan Palmer,
+    Neil Loknath, Nicholas Doyle, Nicholas Parker, Nicolò Chieffo,
+    Nils Naumann, Oben Sonne, Olivier Duff, Oscar Forero, Pacho Ramos,
+    Patrick van Staveren, Paul Lange, Pavel Antonov, Pepijn van de Geer,
+    Peter de Kraker, Pratik Patel, Przemysław Grzegorczyk, Roderich Schupp,
+    Romain Tartière, Ruben Vermeersch, Ryan Collier, Sandy Armstrong,
+    Scott Peterson, Sebastian Dröge, Tim Yamin, Tobias Mueller, Todd Berman,
+    Travis Glenn Hansen, Travis Reitter, Trey Ethridge, Valentin Sawadski,
+    Will Farrington, William Pettersson, Wouter Bolsterlee

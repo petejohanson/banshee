@@ -42,6 +42,7 @@ using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.ServiceStack;
 using Banshee.Widgets;
+using Banshee.Gui;
 using Banshee.Gui.Dialogs;
 using Banshee.Gui.Widgets;
 
@@ -207,50 +208,49 @@ namespace Banshee.Gui
         private void UpdateActions ()
         {
             Source source = ServiceManager.SourceManager.ActiveSource;
+            if (source == null) {
+                Sensitive = Visible = false;
+                return;
+            }
+
             bool in_database = source is DatabaseSource;
             PrimarySource primary_source = (source as PrimarySource) ?? (source.Parent as PrimarySource);
 
-            Hyena.Collections.Selection selection = (source is ITrackModelSource) ? (source as ITrackModelSource).TrackModel.Selection : null;
-
-            if (selection != null) {
+            var track_source = source as ITrackModelSource;
+            if (track_source != null) {
+                var selection = track_source.TrackModel.Selection;
                 Sensitive = Visible = true;
                 bool has_selection = selection.Count > 0;
+                bool has_single_selection = selection.Count == 1;
+
                 foreach (string action in require_selection_actions) {
                     this[action].Sensitive = has_selection;
                 }
 
-                bool has_single_selection = selection.Count == 1;
+                UpdateActions (source.CanSearch, has_single_selection,
+                   "SearchMenuAction", "SearchForSameArtistAction", "SearchForSameAlbumAction"
+                );
 
-                this["SelectAllAction"].Sensitive = !selection.AllSelected;
+                this["SelectAllAction"].Sensitive = track_source.Count > 0 && !selection.AllSelected;
+                UpdateAction ("RemoveTracksAction", track_source.CanRemoveTracks, has_selection, source);
+                UpdateAction ("DeleteTracksFromDriveAction", track_source.CanDeleteTracks, has_selection, source);
 
-                if (source != null) {
-                    ITrackModelSource track_source = source as ITrackModelSource;
-                    bool is_track_source = track_source != null;
+                //if it can delete tracks, most likely it can open their folder
+                UpdateAction ("OpenContainingFolderAction", track_source.CanDeleteTracks, has_single_selection, source);
 
-                    UpdateActions (is_track_source && source.CanSearch, has_single_selection,
-                       "SearchMenuAction", "SearchForSameArtistAction", "SearchForSameAlbumAction"
-                    );
+                UpdateAction ("RemoveTracksFromLibraryAction", source.Parent is LibrarySource, has_selection, null);
 
-                    UpdateAction ("RemoveTracksAction", is_track_source && track_source.CanRemoveTracks, has_selection, source);
-                    UpdateAction ("DeleteTracksFromDriveAction", is_track_source && track_source.CanDeleteTracks, has_selection, source);
+                UpdateAction ("TrackPropertiesAction", source.HasViewableTrackProperties, has_selection, source);
+                UpdateAction ("TrackEditorAction", source.HasEditableTrackProperties, has_selection, source);
+                UpdateAction ("RateTracksAction", source.HasEditableTrackProperties, has_selection, null);
+                UpdateAction ("AddToPlaylistAction", in_database && primary_source != null &&
+                        primary_source.SupportsPlaylists && !primary_source.PlaylistsReadOnly, has_selection, null);
 
-                    //if it can delete tracks, most likely it can open their folder
-                    UpdateAction ("OpenContainingFolderAction", is_track_source && track_source.CanDeleteTracks, has_single_selection, source);
-
-                    UpdateAction ("RemoveTracksFromLibraryAction", source.Parent is LibrarySource, has_selection, null);
-
-                    UpdateAction ("TrackPropertiesAction", source.HasViewableTrackProperties, has_selection, source);
-                    UpdateAction ("TrackEditorAction", source.HasEditableTrackProperties, has_selection, source);
-                    UpdateAction ("RateTracksAction", in_database, has_selection, null);
-                    UpdateAction ("AddToPlaylistAction", in_database && primary_source != null &&
-                            primary_source.SupportsPlaylists && !primary_source.PlaylistsReadOnly, has_selection, null);
-
-                    if (primary_source != null &&
-                        !(primary_source is LibrarySource) &&
-                        primary_source.StorageName != null) {
-                        this["DeleteTracksFromDriveAction"].Label = String.Format (
-                            Catalog.GetString ("_Delete From \"{0}\""), primary_source.StorageName);
-                    }
+                if (primary_source != null &&
+                    !(primary_source is LibrarySource) &&
+                    primary_source.StorageName != null) {
+                    this["DeleteTracksFromDriveAction"].Label = String.Format (
+                        Catalog.GetString ("_Delete From \"{0}\""), primary_source.StorageName);
                 }
             } else {
                 Sensitive = Visible = false;
@@ -312,14 +312,17 @@ namespace Banshee.Gui
         private void OnTrackProperties (object o, EventArgs args)
         {
             if (current_source != null && !RunSourceOverrideHandler ("TrackPropertiesActionHandler")) {
-                Banshee.Gui.TrackEditor.TrackEditorDialog.RunView (current_source.TrackModel);
+                var s = current_source as Source;
+                var readonly_tabs = s != null && !s.HasEditableTrackProperties;
+                TrackEditor.TrackEditorDialog.RunView (current_source.TrackModel,
+                                                       readonly_tabs);
             }
         }
 
         private void OnTrackEditor (object o, EventArgs args)
         {
             if (current_source != null && !RunSourceOverrideHandler ("TrackEditorActionHandler")) {
-                Banshee.Gui.TrackEditor.TrackEditorDialog.RunEdit (current_source.TrackModel);
+                TrackEditor.TrackEditorDialog.RunEdit (current_source.TrackModel);
             }
         }
 
@@ -328,6 +331,11 @@ namespace Banshee.Gui
         private void OnAddToPlaylistMenu (object o, EventArgs args)
         {
             Source active_source = ServiceManager.SourceManager.ActiveSource;
+
+            List<Source> children;
+            lock (ActivePrimarySource.Children) {
+                children = new List<Source> (ActivePrimarySource.Children);
+            }
 
             // TODO find just the menu that was activated instead of modifying all proxies
             foreach (Widget proxy_widget in (o as Gtk.Action).Proxies) {
@@ -341,7 +349,7 @@ namespace Banshee.Gui
                 submenu.Append (this ["AddToNewPlaylistAction"].CreateMenuItem ());
                 bool separator_added = false;
 
-                foreach (Source child in ActivePrimarySource.Children) {
+                foreach (Source child in children) {
                     PlaylistSource playlist = child as PlaylistSource;
                     if (playlist != null) {
                         if (!separator_added) {
@@ -535,12 +543,6 @@ namespace Banshee.Gui
                 md.Destroy ();
             }
             return ret;
-        }
-
-        // Reserve strings in preparation for the 1.5.5 string freeze (BGO#611923)
-        public void ReservedStrings ()
-        {
-            Catalog.GetString ("View Track Information");
         }
     }
 }

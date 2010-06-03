@@ -26,6 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Hyena;
+
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -33,8 +35,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Mono.Unix;
-
-using Hyena;
 
 namespace Banshee.Base
 {
@@ -87,8 +87,13 @@ namespace Banshee.Base
 
         public static string CreateArtistAlbumId (string artist, string album)
         {
-            if (artist == unknown_artist || artist == unknown_artist_tr || album == unknown_album || album == unknown_album_tr) {
+            if (album == unknown_album || album == unknown_album_tr) {
+                // do not attempt to group unknown album tracks together
                 return null;
+            }
+
+            if (artist == unknown_artist || artist == unknown_artist_tr) {
+                artist = null;
             }
 
             string digestible = String.Format ("{0}\t{1}", artist ?? "", album ?? "");

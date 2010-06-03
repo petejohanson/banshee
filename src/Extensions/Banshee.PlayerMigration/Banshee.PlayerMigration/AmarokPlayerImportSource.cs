@@ -33,6 +33,7 @@ using System.IO;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Data.Sqlite;
 
 using Banshee.Base;

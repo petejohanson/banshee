@@ -41,6 +41,10 @@
       <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
       <Name>Banshee.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Banshee.ThickClient\Banshee.ThickClient.csproj">
+      <Project>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</Project>
+      <Name>Banshee.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Hyena\Hyena.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
       <Name>Hyena</Name>
@@ -48,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="gtk-sharp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.SqlDebugConsole.addin.xml">

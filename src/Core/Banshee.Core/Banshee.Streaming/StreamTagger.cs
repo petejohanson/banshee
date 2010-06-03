@@ -118,17 +118,21 @@ namespace Banshee.Streaming
             if (!track.HasAttribute (TrackMediaAttributes.VideoStream) &&
                 !track.HasAttribute (TrackMediaAttributes.Podcast)) {
                 track.MediaAttributes |= TrackMediaAttributes.Music;
+            } else {
+                // If it was already set, unset it
+                track.MediaAttributes &= ~TrackMediaAttributes.Music;
             }
         }
 
         public static void TrackInfoMerge (TrackInfo track, SafeUri uri)
         {
             track.Uri = uri;
-            TagLib.File file = StreamTagger.ProcessUri (uri);
-            TrackInfoMerge (track, file);
+            using (var file = StreamTagger.ProcessUri (uri)) {
+                TrackInfoMerge (track, file);
 
-            if (file == null) {
-                track.TrackTitle = uri.AbsoluteUri;
+                if (file == null) {
+                    track.TrackTitle = uri.AbsoluteUri;
+                }
             }
         }
 
@@ -161,14 +165,17 @@ namespace Banshee.Streaming
 
                 track.ArtistName = Choose (file.Tag.JoinedPerformers, track.ArtistName, preferTrackInfo);
                 track.ArtistNameSort = Choose (file.Tag.JoinedPerformersSort, track.ArtistNameSort, preferTrackInfo);
+                track.ArtistMusicBrainzId = Choose (file.Tag.MusicBrainzArtistId, track.ArtistMusicBrainzId, preferTrackInfo);
                 track.AlbumTitle = Choose (file.Tag.Album, track.AlbumTitle, preferTrackInfo);
                 track.AlbumTitleSort = Choose (file.Tag.AlbumSort, track.AlbumTitleSort, preferTrackInfo);
+                track.AlbumMusicBrainzId = Choose (file.Tag.MusicBrainzReleaseId, track.AlbumMusicBrainzId, preferTrackInfo);
                 track.AlbumArtist = Choose (file.Tag.FirstAlbumArtist, track.AlbumArtist, preferTrackInfo);
                 track.AlbumArtistSort = Choose (file.Tag.FirstAlbumArtistSort, track.AlbumArtistSort, preferTrackInfo);
                 track.IsCompilation = preferTrackInfo ? track.IsCompilation : IsCompilation (file);
 
                 track.TrackTitle = Choose (file.Tag.Title, track.TrackTitle, preferTrackInfo);
                 track.TrackTitleSort = Choose (file.Tag.TitleSort, track.TrackTitleSort, preferTrackInfo);
+                track.MusicBrainzId = Choose (file.Tag.MusicBrainzTrackId, track.MusicBrainzId, preferTrackInfo);
                 track.Genre = Choose (file.Tag.FirstGenre, track.Genre, preferTrackInfo);
                 track.Composer = Choose (file.Tag.FirstComposer, track.Composer, preferTrackInfo);
                 track.Conductor = Choose (file.Tag.Conductor, track.Conductor, preferTrackInfo);
@@ -192,7 +199,7 @@ namespace Banshee.Streaming
             } else {
                 track.MediaAttributes = TrackMediaAttributes.AudioStream;
                 if (track.Uri != null && VideoExtensions.IsMatchingFile (track.Uri.AbsoluteUri)) {
-                    track.MediaAttributes = TrackMediaAttributes.VideoStream;
+                    track.MediaAttributes |= TrackMediaAttributes.VideoStream;
                 }
             }
 
@@ -292,14 +299,17 @@ namespace Banshee.Streaming
                 file.Tag.PerformersSort = new string [] { track.ArtistNameSort };
                 file.Tag.Album = track.AlbumTitle;
                 file.Tag.AlbumSort = track.AlbumTitleSort;
+                file.Tag.MusicBrainzReleaseId = track.AlbumMusicBrainzId;
                 file.Tag.AlbumArtists = track.AlbumArtist == null ? new string [0] : new string [] {track.AlbumArtist};
                 file.Tag.AlbumArtistsSort = (track.AlbumArtistSort == null ? new string [0] : new string [] {track.AlbumArtistSort});
+                file.Tag.MusicBrainzArtistId = track.ArtistMusicBrainzId;
                 // Bug in taglib-sharp-2.0.3.0: Crash if you send it a genre of "{ null }"
                 // on a song with both ID3v1 and ID3v2 metadata. It's happy with "{}", though.
                 // (see http://forum.taglib-sharp.com/viewtopic.php?f=5&t=239 )
                 file.Tag.Genres = (track.Genre == null) ? new string[] {} : new string [] { track.Genre };
                 file.Tag.Title = track.TrackTitle;
                 file.Tag.TitleSort = track.TrackTitleSort;
+                file.Tag.MusicBrainzTrackId = track.MusicBrainzId;
                 file.Tag.Track = (uint)track.TrackNumber;
                 file.Tag.TrackCount = (uint)track.TrackCount;
                 file.Tag.Composers = new string [] { track.Composer };
@@ -321,6 +331,7 @@ namespace Banshee.Streaming
             }
 
             file.Save ();
+            file.Dispose ();
 
             track.FileSize = Banshee.IO.File.GetSize (track.Uri);
             track.FileModifiedStamp = Banshee.IO.File.GetModifiedTime (track.Uri);

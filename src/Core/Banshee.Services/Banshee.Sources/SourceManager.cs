@@ -154,19 +154,16 @@ namespace Banshee.Sources
             source.ChildSourceAdded += OnChildSourceAdded;
             source.ChildSourceRemoved += OnChildSourceRemoved;
 
-            SourceAddedHandler handler = SourceAdded;
-            if(handler != null) {
-                SourceAddedArgs args = new SourceAddedArgs();
-                args.Position = position;
-                args.Source = source;
-                handler(args);
-            }
-
             if (source is MusicLibrarySource) {
                 music_library = source as MusicLibrarySource;
             } else if (source is VideoLibrarySource) {
                 video_library = source as VideoLibrarySource;
             }
+
+            SourceAdded.SafeInvoke (new SourceAddedArgs () {
+                Position = position,
+                Source = source
+            });
 
             IDBusExportable exportable = source as IDBusExportable;
             if (exportable != null) {

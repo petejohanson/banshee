@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -31,6 +33,7 @@
 
 #include "banshee-player-private.h"
 
-void  _bp_video_pipeline_setup  (BansheePlayer *player, GstBus *bus);
+void _bp_video_pipeline_setup  (BansheePlayer *player, GstBus *bus);
+void _bp_parse_stream_info (BansheePlayer *player);
 
 #endif /* _BANSHEE_PLAYER_VIDEO_H */

@@ -29,7 +29,9 @@
 #if ENABLE_TESTS
 
 using System;
+using System.Linq;
 using NUnit.Framework;
+using ICSharpCode.SharpZipLib.GZip;
 
 using Migo.Syndication;
 
@@ -83,6 +85,31 @@ namespace Migo.Syndication.Tests
                 Assert.AreEqual (pair.To, RssParser.GetITunesDuration (pair.From));
             });
         }
+
+        [Test]
+        public void TestParseRss ()
+        {
+            foreach (string file in System.IO.Directory.GetFiles (rss_directory)) {
+                if (file.EndsWith (".rss.gz")) {
+                    using (var stream = System.IO.File.OpenRead (file)) {
+                        using (var gzip_stream = new GZipInputStream (stream)) {
+                            using (var txt_stream = new System.IO.StreamReader (gzip_stream)) {
+                                try {
+                                    var parser = new RssParser ("http://foo.com/", txt_stream.ReadToEnd ());
+                                    var feed = parser.CreateFeed ();
+                                    var items = parser.GetFeedItems (feed).ToList ();
+                                    Assert.IsTrue (items.Count > 0);
+                                } catch (Exception e) {
+                                    Assert.Fail (String.Format ("Failed to parse {0}, exception:\n{1}", file, e.ToString ()));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private const string rss_directory = "../tests/data/";
     }
 }
 

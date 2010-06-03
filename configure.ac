@@ -1,8 +1,8 @@
 dnl Granularly define the version components
 dnl Remember to also update the Display Version
 m4_define([banshee_version_major], [1])
-m4_define([banshee_version_minor], [5])
-m4_define([banshee_version_micro], [5])
+m4_define([banshee_version_minor], [7])
+m4_define([banshee_version_micro], [1])
 
 dnl set to 0 when doing an official release
 m4_define([banshee_version_pre_release], [0])
@@ -23,7 +23,7 @@ m4_define([banshee_version],
 
 dnl this can sometimes differ manually
 m4_define([banshee_display_version],
-	["1.6 RC1"])
+	["1.7.1"])
 
 m4_define([banshee_api_version],
 	[banshee_version_major.banshee_version_minor])
@@ -82,8 +82,18 @@ dnl Check for mono >= 2.4.3 for LibraryWatcher extension, with fix for bnc#32233
 PKG_CHECK_MODULES(MONO_2_4_3, mono >= 2.4.3, HAVE_MONO_2_4_3=yes, HAVE_MONO_2_4_3=no)
 AM_CONDITIONAL(ENABLE_LIBRARY_WATCHER, test "x$HAVE_MONO_2_4_3" = "xyes")
 
-dnl Check for GNOME >= 2.28 to see if we should remove 'Media Player' from the app Name, bgo#596242
-PKG_CHECK_MODULES(GNOME_LT_2_28, gnome-desktop-2.0 < 2.28, BANSHEE_DESKTOP_NAME="_Name=Banshee Media Player", BANSHEE_DESKTOP_NAME="_Name=Banshee")
+dnl Check for GNOME >= 2.28 to see if we should remove
+dnl 'Media Player' from the app Name, bgo#596242, except
+dnl in MeeGo where GNOME >= 2.28, but we want the full name
+PKG_CHECK_MODULES(GNOME_2_28, gnome-desktop-2.0 >= 2.28,
+	HAVE_GNOME_2_28=yes, HAVE_GNOME_2_28=no)
+PKG_CHECK_MODULES(MEEGO_PANEL, moblin-panel,
+	HAVE_MEEGO_PANEL=yes, HAVE_MEEGO_PANEL=no)
+if test "x$HAVE_GNOME_2_28" = "xno" -o "x$HAVE_MEEGO_PANEL" = "xyes"; then
+	BANSHEE_DESKTOP_NAME="_Name=Banshee Media Player"
+else
+	BANSHEE_DESKTOP_NAME="_Name=Banshee"
+fi
 AC_SUBST(BANSHEE_DESKTOP_NAME)
 
 dnl NDesk DBus libraries
@@ -156,8 +166,8 @@ BANSHEE_CHECK_REMOTE_AUDIO
 dnl MonoTorrent support (optional)
 BANSHEE_CHECK_TORRENT
 
-dnl Moblin integration (optional)
-BANSHEE_CHECK_MOBLIN
+dnl MeeGo integration (optional)
+BANSHEE_CHECK_MEEGO
 
 dnl Gapless, if we have a new-enough playbin2
 ENABLE_GAPLESS="no"
@@ -263,6 +273,7 @@ src/Clients/Booter/banshee-1.darwin
 src/Clients/Halie/Makefile
 src/Clients/Muinshee/Makefile
 src/Clients/Nereid/Makefile
+src/Clients/MeeGo/Makefile
 
 src/Core/Makefile
 src/Core/Banshee.CollectionIndexer/Makefile
@@ -304,7 +315,6 @@ src/Dap/Banshee.Dap.Karma/Makefile
 src/Extensions/Makefile
 src/Extensions/Banshee.Audiobook/Makefile
 src/Extensions/Banshee.AudioCd/Makefile
-src/Extensions/Banshee.Bookmarks/Makefile
 src/Extensions/Banshee.BooScript/Makefile
 src/Extensions/Banshee.Bpm/Makefile
 src/Extensions/Banshee.CoverArt/Makefile
@@ -314,9 +324,10 @@ src/Extensions/Banshee.FileSystemQueue/Makefile
 src/Extensions/Banshee.InternetArchive/Makefile
 src/Extensions/Banshee.InternetRadio/Makefile
 src/Extensions/Banshee.Lastfm/Makefile
+src/Extensions/Banshee.LastfmStreaming/Makefile
 src/Extensions/Banshee.LibraryWatcher/Makefile
 src/Extensions/Banshee.MiniMode/Makefile
-src/Extensions/Banshee.Moblin/Makefile
+src/Extensions/Banshee.MeeGo/Makefile
 src/Extensions/Banshee.MultimediaKeys/Makefile
 src/Extensions/Banshee.NotificationArea/Makefile
 src/Extensions/Banshee.NowPlaying/Makefile
@@ -354,7 +365,7 @@ ${PACKAGE}-${VERSION}
   Operating System/Desktop Environment:
     GNOME Support:     ${enable_gnome}
     OSX Support:       ${enable_osx}
-    Moblin Support:    ${enable_moblin}
+    MeeGo Support:     ${enable_meego}
 
   Digital Audio Player (DAP) Support:
     Mass Storage:      yes
@@ -375,6 +386,7 @@ ${PACKAGE}-${VERSION}
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
+    API Docs:          ${enable_docs} (requires monodocer and mdassembler)
     Custom a11y:       ${gtksharp_with_a11y} (requires gtk-sharp >= 2.12.10)
     Release Build:     ${enable_release}
     Vendor Build ID:   ${vendor_build_id}

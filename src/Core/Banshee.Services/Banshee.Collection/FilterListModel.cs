@@ -50,16 +50,16 @@ namespace Banshee.Collection
         {
             browsing_model = trackModel;
 
-            selection = new SelectAllSelection ();
+            var selection = new SelectAllSelection ();
             selection.SelectAll ();
-
-            Selection.Changed += HandleSelectionChanged;
+            Selection = selection;
         }
 
         public FilterListModel (IDBusExportable parent) : base (parent)
         {
-            selection = new SelectAllSelection ();
+            var selection = new SelectAllSelection ();
             selection.SelectAll ();
+            Selection = selection;
         }
 
         public override void Reload ()
@@ -77,6 +77,17 @@ namespace Banshee.Collection
         private void ReloadBrowsingModel ()
         {
             browsing_model.Reload (this);
+        }
+
+        public override Hyena.Collections.Selection Selection {
+            protected set {
+                if (Selection != null) {
+                    Selection.Changed -= HandleSelectionChanged;
+                }
+
+                base.Selection = value;
+                Selection.Changed += HandleSelectionChanged;
+            }
         }
 
 #region IFilterModel Implementation

@@ -106,6 +106,8 @@ SOURCES =  \
 	Banshee.Gui/BansheeDbFormatMigratorMonitor.cs \
 	Banshee.Gui/BansheeIconFactory.cs \
 	Banshee.Gui/BaseClientWindow.cs \
+	Banshee.Gui/BookmarksService.cs \
+	Banshee.Gui/BookmarkUI.cs \
 	Banshee.Gui/CommonServices.cs \
 	Banshee.Gui/GlobalActions.cs \
 	Banshee.Gui/GtkBaseClient.cs \
@@ -113,6 +115,7 @@ SOURCES =  \
 	Banshee.Gui/IClientWindow.cs \
 	Banshee.Gui/IconThemeUtils.cs \
 	Banshee.Gui/IDisableKeybindings.cs \
+	Banshee.Gui/IGlobalUIActions.cs \
 	Banshee.Gui/IHasSourceView.cs \
 	Banshee.Gui/InterfaceActionService.cs \
 	Banshee.Gui/PersistentPaneController.cs \
@@ -156,6 +159,7 @@ SOURCES =  \
 	Banshee.Sources.Gui/SourceIconResolver.cs \
 	Banshee.Sources.Gui/SourceModel.cs \
 	Banshee.Sources.Gui/SourceRowRenderer.cs \
+	Banshee.Sources.Gui/SourceSwitcherEntry.cs \
 	Banshee.Sources.Gui/SourceView.cs \
 	Banshee.Sources.Gui/SourceView_DragAndDrop.cs
 

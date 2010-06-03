@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#
+# This is a really lame script, most of it needs to be fixed properly in
+# the bockbuild darwin profile for bundling (mainly the skeleton overlay
+# fixing and the .dmg creation part)
+#
+
+function bail {
+	echo "Error: $@" 1>&2
+	exit 1
+}
+
+RELEASE_WORKER_DIR="$HOME/banshee-release"
+
+[ -d "$RELEASE_WORKER_DIR" ] && \
+	bail "$RELEASE_WORKER_DIR already exists. Please remove it."
+
+mkdir -p "$RELEASE_WORKER_DIR" || bail "Could not create $RELEASE_WORKER_DIR"
+pushd "$RELEASE_WORKER_DIR" || bail "Could not change to $RELEASE_WORKER_DIR"
+
+git clone --depth 1 git://git.gnome.org/banshee || bail "Failed to clone Banshee from git"
+
+pushd banshee
+pushd build/bundle || bail "Could not change to banshee git clone"
+./profile.darwin.py -bvr || bail "Build failed."
+cp -a build-root/_install build-root/_install_clean
+pushd solitary
+make || bail "Failed to build Solitary"
+popd
+./profile.darwin.py -z || bail "Failed to create .app bundle"
+rm -rf build-root/_install
+# shutil.copytree is not working as expected for importing the 
+# skeleton into the .app structure, so here we fix that up...
+# this needs to be fixed in bockbuild/darwinprofile.py
+cp skeleton.darwin/Contents/Resources/{Banshee.icns,first-run} \
+	bundle.darwin/Banshee.app/Contents/Resources
+cp skeleton.darwin/Contents/Resources/bin/gmcs \
+	bundle.darwin/Banshee.app/Contents/Resources/bin
+cp skeleton.darwin/Contents/Resources/etc/gtk-2.0/{gtkrc,gtkrc.key.mac} \
+	bundle.darwin/Banshee.app/Contents/Resources/etc/gtk-2.0
+cp -a bundle.darwin/Banshee.app bundle.darwin/Banshee.app.orig
+BANSHEE_VERSION="$(ls build-root/banshee-1*.success | sed -E 's,.+banshee-1-(.+).success$,\1,')"
+sed "s,%version%,$BANSHEE_VERSION,g" \
+	< skeleton.darwin/Contents/Info.plist \
+	> bundle.darwin/Banshee.app/Contents/Info.plist
+# We now have a functional .app, let's create the .dmg
+popd
+cp -a build/bundle/bundle.darwin/Banshee.app build/osx
+pushd build/osx
+./make-dmg-bundle.sh
+DMG_FILE=banshee-1-$BANSHEE_VERSION.macosx.intel.dmg
+mv Banshee.dmg $DMG_FILE
+shasum -a 256 $DMG_FILE
+cp -a $DMG_FILE $HOME/Desktop
+echo "$HOME/Desktop/$DMG_FILE is now ready"

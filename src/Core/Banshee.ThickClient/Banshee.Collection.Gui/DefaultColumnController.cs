@@ -41,6 +41,7 @@ using Banshee.ServiceStack;
 using Banshee.MediaEngine;
 using Banshee.Collection;
 using Banshee.Query;
+using Banshee.Sources;
 
 namespace Banshee.Collection.Gui
 {
@@ -141,7 +142,8 @@ namespace Banshee.Collection.Gui
             bps_cell.TextFormat = Catalog.GetString ("{0} bits");
             bitspersample_column= Create (BansheeQuery.BitsPerSampleField, 0.10, false, bps_cell);
 
-            rating_column       = Create (BansheeQuery.RatingField, 0.15, false, new ColumnCellRating (null, true));
+            column_cell_rating  = new ColumnCellRating (null, true);
+            rating_column       = Create (BansheeQuery.RatingField, 0.15, false, column_cell_rating);
             score_column        = Create (BansheeQuery.ScoreField, 0.15, false, new ColumnCellPositiveInt (null, true, 2, 5));
             composer_column     = CreateText (BansheeQuery.ComposerField, 0.25);
             conductor_column    = CreateText (BansheeQuery.ConductorField, 0.25);
@@ -161,6 +163,13 @@ namespace Banshee.Collection.Gui
             last_played_column  = Create (BansheeQuery.LastPlayedField, 0.15, false, new ColumnCellDateTime (null, true));
             last_skipped_column = Create (BansheeQuery.LastSkippedField, 0.15, false, new ColumnCellDateTime (null, true));
             date_added_column   = Create (BansheeQuery.DateAddedField, 0.15, false, new ColumnCellDateTime (null, true));
+
+            ServiceStack.ServiceManager.SourceManager.ActiveSourceChanged += HandleActiveSourceChanged;
+        }
+
+        void HandleActiveSourceChanged (SourceEventArgs args)
+        {
+            column_cell_rating.ReadOnly = !args.Source.HasEditableTrackProperties;
         }
 
         private SortableColumn CreateText (QueryField field, double width)
@@ -173,7 +182,7 @@ namespace Banshee.Collection.Gui
             return Create (field, width, visible, new ColumnCellText (field.PropertyName, true));
         }
 
-        private SortableColumn Create (QueryField field, double width, bool visible, ColumnCell cell)
+        public static SortableColumn Create (QueryField field, double width, bool visible, ColumnCell cell)
         {
             cell.Property = field.PropertyName;
             SortableColumn col = new SortableColumn (
@@ -186,6 +195,8 @@ namespace Banshee.Collection.Gui
 
             return col;
         }
+
+        private ColumnCellRating column_cell_rating;
 
 #region Column Properties
 

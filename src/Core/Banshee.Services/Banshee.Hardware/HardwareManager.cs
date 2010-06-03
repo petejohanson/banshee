@@ -56,7 +56,7 @@ namespace Banshee.Hardware
 
                     manager = (IHardwareManager)node.CreateInstance (typeof (IHardwareManager));
                 } catch (Exception e) {
-                    Log.Warning ("Hardware manager extension failed to load", e.Message);
+                    Log.Exception ("Hardware manager extension failed to load", e);
                 }
             }
 
@@ -198,9 +198,13 @@ namespace Banshee.Hardware
         private T CastToCustomDevice<T> (T device) where T : class, IDevice
         {
             foreach (ICustomDeviceProvider provider in custom_device_providers.Values) {
-                T new_device = provider.GetCustomDevice (device);
-                if (new_device != device) {
-                    return new_device;
+                try {
+                    T new_device = provider.GetCustomDevice (device);
+                    if (new_device != device) {
+                        return new_device;
+                    }
+                } catch (Exception e) {
+                    Log.Exception ("Exception casting device", e);
                 }
             }
 

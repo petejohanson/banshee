@@ -344,7 +344,7 @@ namespace Migo.DownloadCore
                 //Console.WriteLine ("Adding Range:  {0}", wc.Range);
             }
 
-	        wc.Timeout = (60 * 1000);
+	        wc.Timeout = (5 * 60 * 1000);
 	        wc.DownloadFileCompleted += OnDownloadFileCompletedHandler;
 	        wc.DownloadProgressChanged += OnDownloadProgressChangedHandler;
 	        wc.ResponseReceived += OnResponseReceivedHandler;	

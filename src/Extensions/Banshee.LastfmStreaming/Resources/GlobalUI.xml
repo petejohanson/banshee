@@ -1,0 +1,51 @@
+<ui>
+    <popup name="LastfmSourcePopup" action="LastfmSourcePopupAction">
+        <placeholder name="LastfmAddPlaceholder">
+            <menuitem name="LastfmAdd" action="LastfmAddAction" />
+        </placeholder>
+    </popup>
+
+    <popup name="LastfmStationSourcePopup" action="LastfmStationSourcePopupAction">
+        <menuitem name="RefreshSource" action="RefreshSourceAction" />
+        <separator />
+        <menuitem name="RenameSource" action="RenameSourceAction" />
+        <menuitem name="UnmapSource" action="UnmapSourceAction" />
+        <separator />
+        <menuitem name="SourceProperties" action="SourcePropertiesAction" />
+    </popup>
+
+    <!--<popup name="TrackContextMenu" action="TrackContextMenuAction">
+        <placeholder name="BelowAddToPlaylist">
+            <menuitem name="LastfmLove" action="LastfmLoveAction"/>
+            <menuitem name="LastfmHate" action="LastfmHateAction"/>
+        </placeholder>
+    </popup>-->
+    
+    <toolbar name="HeaderToolbar">
+        <placeholder name="SourceActions">
+            <toolitem name="LastfmLove" action="LastfmLoveAction"/>
+            <toolitem name="LastfmHate" action="LastfmHateAction"/>
+        </placeholder>
+    </toolbar>
+
+    <popup name="LastfmArtistPopup" action="LastfmArtistPopup">
+        <placeholder name="LastfmArtistPlayPlaceholder">
+            <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
+            <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        </placeholder>
+    </popup>
+
+    <popup name="LastfmAlbumPopup" action="LastfmAlbumPopup">
+        <placeholder name="LastfmAlbumPlayPlaceholder">
+            <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
+            <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        </placeholder>
+    </popup>
+
+    <popup name="LastfmTrackPopup" action="LastfmTrackPopup">
+        <placeholder name="LastfmTrackPlayPlaceholder">
+            <menuitem name="LastfmArtistPlayFanRadio" action="LastfmArtistPlayFanRadioAction" />
+            <menuitem name="LastfmArtistPlaySimilarRadio" action="LastfmArtistPlaySimilarRadioAction" />
+        </placeholder>
+    </popup>
+</ui>

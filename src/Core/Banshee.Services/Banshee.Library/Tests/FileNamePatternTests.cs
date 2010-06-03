@@ -31,6 +31,7 @@
 using System;
 using NUnit.Framework;
 
+using Hyena;
 using Banshee.Base;
 using Banshee.Collection;
 
@@ -54,7 +55,16 @@ namespace Banshee.Library.Tests
             Assert.AreEqual ("baz", Paths.MakePathRelative ("/foo/bar/baz", "/foo/bar/"));
             Assert.AreEqual ("",    Paths.MakePathRelative ("/foo/bar/baz", "/foo/bar/baz"));
             Assert.AreEqual (null,  Paths.MakePathRelative ("/foo/bar/baz", "foo"));
-            Assert.AreEqual (null,  Paths.MakePathRelative ("/fo", "/foo"));
+            Assert.AreEqual (null,  Paths.MakePathRelative ("foo/bar/baz", "/foo"));
+            Assert.AreEqual ("../foo",  Paths.MakePathRelative ("/foo", "/bar"));
+            Assert.AreEqual ("../foo/song.ogg",  Paths.MakePathRelative ("/foo/song.ogg", "/bar"));
+            Assert.AreEqual ("../../foo/song.ogg",  Paths.MakePathRelative ("/foo/song.ogg", "/bar/verylongdirectoryname"));
+            Assert.AreEqual ("",    Paths.MakePathRelative ("bar/foo/", "bar/foo/"));
+            Assert.AreEqual ("foo/song.ogg",    Paths.MakePathRelative ("bar/foo/song.ogg", "bar"));
+            Assert.AreEqual ("../song.ogg",     Paths.MakePathRelative ("bar/song.ogg", "bar/foo"));
+            Assert.AreEqual ("../foo/song.ogg", Paths.MakePathRelative ("bar/foo/song.ogg", "bar/other"));
+            Assert.AreEqual ("../../flap/foo/song.ogg", Paths.MakePathRelative ("bar/flap/foo/song.ogg", "bar/flop/other"));
+            Assert.AreEqual ("../../flap/foo/song.ogg", Paths.MakePathRelative ("/root/bar/flap/foo/song.ogg", "/root/bar/flop/other"));
         }
 
         [Test]

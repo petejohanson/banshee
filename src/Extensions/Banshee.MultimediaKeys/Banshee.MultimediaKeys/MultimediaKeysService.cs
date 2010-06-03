@@ -67,8 +67,14 @@ namespace Banshee.MultimediaKeys
         private ISettingsDaemon222 settings_daemon_222;
         private ISettingsDaemon220 settings_daemon_220;
 
+        private readonly string app_name;
+
         public MultimediaKeysService ()
         {
+            app_name = Application.InternalName;
+            if (ApplicationContext.Debugging) {
+                app_name += "-debug";
+            }
         }
 
         void IExtensionService.Initialize ()
@@ -98,7 +104,7 @@ namespace Banshee.MultimediaKeys
             try {
                 settings_daemon_222 = Bus.Session.GetObject<ISettingsDaemon222> (BusName,
                     new ObjectPath (ObjectPath + "/MediaKeys"));
-                settings_daemon_222.GrabMediaPlayerKeys (Application.InternalName, 0);
+                settings_daemon_222.GrabMediaPlayerKeys (app_name, 0);
                 settings_daemon_222.MediaPlayerKeyPressed += OnMediaPlayerKeyPressed;
 
                 Log.Debug ("Using GNOME 2.22 API for Multimedia Keys");
@@ -108,7 +114,7 @@ namespace Banshee.MultimediaKeys
                 try {
                     settings_daemon_220 = Bus.Session.GetObject<ISettingsDaemon220> (BusName,
                         new ObjectPath (ObjectPath));
-                    settings_daemon_220.GrabMediaPlayerKeys (Application.InternalName, 0);
+                    settings_daemon_220.GrabMediaPlayerKeys (app_name, 0);
                     settings_daemon_220.MediaPlayerKeyPressed += OnMediaPlayerKeyPressed;
 
                     Log.Debug ("Using GNOME 2.20 API for Multimedia keys");
@@ -123,20 +129,20 @@ namespace Banshee.MultimediaKeys
         {
             if (settings_daemon_222 != null) {
                 settings_daemon_222.MediaPlayerKeyPressed -= OnMediaPlayerKeyPressed;
-                settings_daemon_222.ReleaseMediaPlayerKeys (Application.InternalName);
+                settings_daemon_222.ReleaseMediaPlayerKeys (app_name);
                 settings_daemon_222 = null;
             }
 
             if (settings_daemon_220 != null) {
                 settings_daemon_220.MediaPlayerKeyPressed -= OnMediaPlayerKeyPressed;
-                settings_daemon_220.ReleaseMediaPlayerKeys (Application.InternalName);
+                settings_daemon_220.ReleaseMediaPlayerKeys (app_name);
                 settings_daemon_220 = null;
             }
         }
 
         private void OnMediaPlayerKeyPressed (string application, string key)
         {
-            if (application != Application.InternalName) {
+            if (application != app_name) {
                 return;
             }
 

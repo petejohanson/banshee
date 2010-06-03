@@ -39,6 +39,10 @@ namespace Banshee.Sources.Gui
     public class SourceComboBox : ComboBox
     {
         private SourceModel store;
+        public new SourceModel Model {
+            get { return store; }
+            private set { base.Model = value; }
+        }
 
         public SourceComboBox ()
         {

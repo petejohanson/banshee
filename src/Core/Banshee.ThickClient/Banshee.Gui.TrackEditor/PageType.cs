@@ -33,6 +33,7 @@ namespace Banshee.Gui.TrackEditor
     public enum PageType
     {
         Edit,
+        EditOnly,
         View,
         ViewOnly
     }

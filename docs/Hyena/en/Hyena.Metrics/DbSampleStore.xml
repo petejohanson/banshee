@@ -1,0 +1,93 @@
+<Type Name="DbSampleStore" FullName="Hyena.Metrics.DbSampleStore">
+  <TypeSignature Language="C#" Value="public class DbSampleStore : Hyena.Data.Sqlite.SqliteModelProvider&lt;Hyena.Metrics.Sample&gt;, Hyena.Metrics.ISampleStore" />
+  <AssemblyInfo>
+    <AssemblyName>Hyena</AssemblyName>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Hyena.Data.Sqlite.SqliteModelProvider&lt;Hyena.Metrics.Sample&gt;</BaseTypeName>
+    <BaseTypeArguments>
+      <BaseTypeArgument TypeParamName="T">Hyena.Metrics.Sample</BaseTypeArgument>
+    </BaseTypeArguments>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Hyena.Metrics.ISampleStore</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DbSampleStore (Hyena.Data.Sqlite.HyenaSqliteConnection conn, string tableName);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="conn" Type="Hyena.Data.Sqlite.HyenaSqliteConnection" />
+        <Parameter Name="tableName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="conn">To be added.</param>
+        <param name="tableName">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (Hyena.Metrics.Sample sample);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sample" Type="Hyena.Metrics.Sample" />
+      </Parameters>
+      <Docs>
+        <param name="sample">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Clear">
+      <MemberSignature Language="C#" Value="public void Clear ();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetFor">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.IEnumerable&lt;Hyena.Metrics.Sample&gt; GetFor (Hyena.Metrics.Metric metric);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IEnumerable&lt;Hyena.Metrics.Sample&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="metric" Type="Hyena.Metrics.Metric" />
+      </Parameters>
+      <Docs>
+        <param name="metric">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

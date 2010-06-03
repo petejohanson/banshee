@@ -44,6 +44,7 @@ namespace Banshee.Collection
     public class TrackInfo : CacheableItem, ITrackInfo
     {
         public const string ExportVersion = "1.0";
+        public static readonly double PlaybackSkippedThreshold = 0.5;
 
         public static readonly string UnknownTitle = Catalog.GetString ("Unknown Title");
 
@@ -86,7 +87,7 @@ namespace Banshee.Collection
                 Score = (int) Math.Round ((((double)Score * total_plays) + (percentCompleted * 100)) / (total_plays + 1));
             }
 
-            if (percentCompleted <= 0.5) {
+            if (percentCompleted <= PlaybackSkippedThreshold) {
                 LastSkipped = DateTime.Now;
                 SkipCount++;
             } else {
@@ -137,7 +138,7 @@ namespace Banshee.Collection
             LastPlayed = DateTime.Now;
         }
 
-        public bool IsPlaying {
+        public virtual bool IsPlaying {
             get { return (IsPlayingMethod != null) ? IsPlayingMethod (this) : false; }
         }
 
@@ -208,14 +209,10 @@ namespace Banshee.Collection
         public virtual string MusicBrainzId { get; set; }
 
         [Exportable]
-        public virtual string ArtistMusicBrainzId {
-            get { return null; }
-        }
+        public virtual string ArtistMusicBrainzId { get; set; }
 
         [Exportable]
-        public virtual string AlbumMusicBrainzId {
-            get { return null; }
-        }
+        public virtual string AlbumMusicBrainzId { get; set; }
 
         public virtual DateTime ReleaseDate { get; set; }
 
@@ -385,6 +382,7 @@ namespace Banshee.Collection
         public virtual string MetadataHash {
             get {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+                // Keep this field set/order in sync with UpdateMetadataHash in DatabaseTrackInfo.cs
                 sb.Append (AlbumTitle);
                 sb.Append (ArtistName);
                 sb.Append (Genre);
@@ -417,6 +415,7 @@ namespace Banshee.Collection
 
         // TODO turn this into a PrimarySource-owned delegate?
         private static readonly string restart_podcast = Catalog.GetString ("_Restart Podcast");
+        private static readonly string restart_audiobook = Catalog.GetString ("_Restart Audiobook");
         private static readonly string restart_video = Catalog.GetString ("_Restart Video");
         private static readonly string restart_song = Catalog.GetString ("_Restart Song");
         private static readonly string restart_item = Catalog.GetString ("_Restart Item");
@@ -425,6 +424,8 @@ namespace Banshee.Collection
             get {
                 if (HasAttribute (TrackMediaAttributes.Podcast))
                     return restart_podcast;
+                if (HasAttribute (TrackMediaAttributes.AudioBook))
+                    return restart_audiobook;
                 if (HasAttribute (TrackMediaAttributes.VideoStream))
                     return restart_video;
                 if (HasAttribute (TrackMediaAttributes.Music))
@@ -434,6 +435,7 @@ namespace Banshee.Collection
         }
 
         private static readonly string jump_to_podcast = Catalog.GetString ("_Jump to Playing Podcast");
+        private static readonly string jump_to_audiobook = Catalog.GetString ("_Jump to Playing Audiobook");
         private static readonly string jump_to_video = Catalog.GetString ("_Jump to Playing Video");
         private static readonly string jump_to_song = Catalog.GetString ("_Jump to Playing Song");
         private static readonly string jump_to_item = Catalog.GetString ("_Jump to Playing Item");
@@ -442,6 +444,8 @@ namespace Banshee.Collection
             get {
                 if (HasAttribute (TrackMediaAttributes.Podcast))
                     return jump_to_podcast;
+                if (HasAttribute (TrackMediaAttributes.AudioBook))
+                    return jump_to_audiobook;
                 if (HasAttribute (TrackMediaAttributes.VideoStream))
                     return jump_to_video;
                 if (HasAttribute (TrackMediaAttributes.Music))
@@ -517,7 +521,7 @@ namespace Banshee.Collection
                     value = ((TimeSpan)value).TotalSeconds;
                 } else if (value is DateTime) {
                     DateTime date = (DateTime)value;
-                    value = date == DateTime.MinValue ? 0l : DateTimeUtil.ToTimeT (date);
+                    value = date == DateTime.MinValue ? 0L : DateTimeUtil.ToTimeT (date);
                 } else if (value is SafeUri) {
                     value = ((SafeUri)value).AbsoluteUri;
                 } else if (value is TrackMediaAttributes) {

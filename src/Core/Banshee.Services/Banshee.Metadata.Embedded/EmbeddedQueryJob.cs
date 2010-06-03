@@ -88,8 +88,9 @@ namespace Banshee.Metadata.Embedded
 
         protected IPicture [] GetEmbeddedPictures(SafeUri uri)
         {
-            TagLib.File file = StreamTagger.ProcessUri(uri);
-            return file == null ? null : file.Tag.Pictures;
+            using (var file = StreamTagger.ProcessUri (uri)) {
+                return file == null ? null : file.Tag.Pictures;
+            }
         }
 
         protected int GetPictureIndexToUse(IPicture [] pictures)

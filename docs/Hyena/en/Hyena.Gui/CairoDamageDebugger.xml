@@ -1,0 +1,83 @@
+<Type Name="CairoDamageDebugger" FullName="Hyena.Gui.CairoDamageDebugger">
+  <TypeSignature Language="C#" Value="public static class CairoDamageDebugger" />
+  <AssemblyInfo>
+    <AssemblyName>Hyena.Gui</AssemblyName>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>To be added.</summary>
+    <remarks>To be added.</remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="RenderDamage">
+      <MemberSignature Language="C#" Value="public static void RenderDamage (this Cairo.Context cr, Cairo.Rectangle damage);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cr" Type="Cairo.Context" RefType="this" />
+        <Parameter Name="damage" Type="Cairo.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="cr">To be added.</param>
+        <param name="damage">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RenderDamage">
+      <MemberSignature Language="C#" Value="public static void RenderDamage (this Cairo.Context cr, Gdk.Rectangle damage);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cr" Type="Cairo.Context" RefType="this" />
+        <Parameter Name="damage" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="cr">To be added.</param>
+        <param name="damage">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RenderDamage">
+      <MemberSignature Language="C#" Value="public static void RenderDamage (this Cairo.Context cr, double x, double y, double w, double h);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>1.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cr" Type="Cairo.Context" RefType="this" />
+        <Parameter Name="x" Type="System.Double" />
+        <Parameter Name="y" Type="System.Double" />
+        <Parameter Name="w" Type="System.Double" />
+        <Parameter Name="h" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="cr">To be added.</param>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <param name="w">To be added.</param>
+        <param name="h">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

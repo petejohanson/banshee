@@ -58,6 +58,7 @@ namespace metrics
             Execute ("PRAGMA synchronous = OFF");
             Execute ("PRAGMA temp_store = MEMORY");
             Execute ("PRAGMA count_changes = OFF");
+            Execute ("PRAGMA journal_mode = TRUNCATE");
 
             Config = new SqliteModelProvider<Config> (this, "Config", true);
             SampleProvider = new SqliteModelProvider<MultiUserSample> (this, "Samples", true);
@@ -129,6 +130,8 @@ namespace metrics
             var last_config = LastReportNumber;
             long last_report_number = Int64.Parse (last_config.Value);
 
+            var max_report_size = 150 * 1024;
+
             db.BeginTransaction ();
             foreach (var file in System.IO.Directory.GetFiles ("data")) {
                 var match = report_number_regex.Match (file);
@@ -138,6 +141,12 @@ namespace metrics
 
                 long num = Int64.Parse (match.Groups[1].Captures[0].Value);
                 if (num <= last_report_number) {
+                    continue;
+                }
+
+                var file_size = new System.IO.FileInfo (file).Length;
+                if (file_size > max_report_size) {
+                    Log.InformationFormat ("Skipping {0} because too large ({1:N0} KB compressed)", file, file_size/1024.0);
                     continue;
                 }
 
@@ -166,6 +175,10 @@ namespace metrics
 
                     var metrics = o["Metrics"] as JsonObject;
                     foreach (string metric_name in metrics.Keys) {
+                        // Skip these; they are a ton of data, and really more for debug purposes
+                        if (metric_name == "Banshee/LongSqliteCommand")
+                            continue;
+
                         var samples = metrics[metric_name] as JsonArray;
 
                         string name = metric_name;
@@ -179,9 +192,16 @@ namespace metrics
                             sample_provider.Save (MultiUserSample.Import (db, user_id, name, (string)sample[0], (object)sample[1]));
                         }
                     }
+                    db.CommitTransaction ();
                 } catch (Exception e) {
                     Log.Exception (String.Format ("Failed to read {0}", file), e);
+                    db.RollbackTransaction ();
                 }
+
+                last_config.Value = last_report_number.ToString ();
+                Config.Save (last_config);
+
+                db.BeginTransaction ();
             }
             db.CommitTransaction ();
 

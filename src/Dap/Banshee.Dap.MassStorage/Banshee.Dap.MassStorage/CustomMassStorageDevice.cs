@@ -40,7 +40,7 @@ namespace Banshee.Dap.MassStorage
             set { vendor_product_info = value; }
         }
 
-        public override string Name {
+        protected override string DefaultName {
             get { return vendor_product_info.ProductName; }
         }
     }

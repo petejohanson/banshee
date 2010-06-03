@@ -59,13 +59,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="atk-sharp" />
-    <Reference Include="gdk-sharp" />
-    <Reference Include="glib-sharp" />
-    <Reference Include="gtk-sharp" />
+    <Reference Include="atk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gtk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="Mono.Posix">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
     </Reference>
   </ItemGroup>

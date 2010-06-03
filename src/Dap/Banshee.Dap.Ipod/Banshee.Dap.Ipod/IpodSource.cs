@@ -63,6 +63,8 @@ namespace Banshee.Dap.Ipod
             get { return name_path; }
         }
 
+        private string music_path;
+
         private bool database_supported;
         internal bool DatabaseSupported {
             get { return database_supported; }
@@ -82,6 +84,7 @@ namespace Banshee.Dap.Ipod
             }
 
             name_path = Path.Combine (Path.GetDirectoryName (ipod_device.TrackDatabasePath), "BansheeIPodName");
+            music_path = Path.Combine (ipod_device.ControlPath, "Music");
             Name = GetDeviceName ();
 
             SupportsPlaylists = ipod_device.ModelInfo.DeviceClass != "shuffle";
@@ -199,7 +202,7 @@ namespace Banshee.Dap.Ipod
             try {
                 int file_count = 0;
 
-                DirectoryInfo m_dir = new DirectoryInfo (Path.Combine (ipod_device.ControlPath, "Music"));
+                DirectoryInfo m_dir = new DirectoryInfo (music_path);
                 foreach (DirectoryInfo f_dir in m_dir.GetDirectories ()) {
                     file_count += f_dir.GetFiles().Length;
                 }
@@ -430,7 +433,7 @@ namespace Banshee.Dap.Ipod
 
         public override void Import ()
         {
-            Banshee.ServiceStack.ServiceManager.Get<LibraryImportManager> ().Enqueue (Path.Combine (ipod_device.ControlPath, "Music"));
+            Banshee.ServiceStack.ServiceManager.Get<LibraryImportManager> ().Enqueue (music_path);
         }
 
         /*public override void CopyTrackTo (DatabaseTrackInfo track, SafeUri uri, BatchUserJob job)
@@ -602,7 +605,11 @@ namespace Banshee.Dap.Ipod
 
             if (SupportsPlaylists) {
                 // Add playlists from Banshee to the device
-                foreach (Source child in Children) {
+                List<Source> children = null;
+                lock (Children) {
+                    children = new List<Source> (Children);
+                }
+                foreach (Source child in children) {
                     PlaylistSource from = child as PlaylistSource;
                     if (from != null && from.Count > 0) {
                         IPod.Playlist playlist = ipod_device.TrackDatabase.CreatePlaylist (from.Name);

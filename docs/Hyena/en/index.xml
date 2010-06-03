@@ -1,40 +1,40 @@
 <Overview>
   <Assemblies>
-    <Assembly Name="Hyena" Version="1.4.0.0">
+    <Assembly Name="Hyena" Version="1.5.0.0">
       <Attributes>
-        <Attribute>
-          <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
-        </Attribute>
         <Attribute>
           <AttributeName>System.Reflection.AssemblyCompany("Novell, Inc.")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.Reflection.AssemblyCopyright("Copyright (C) 2005-2008 Novell, 2005 Aaron Bockover")</AttributeName>
+          <AttributeName>System.Reflection.AssemblyCopyright("Copyright (C) 2005-2010 Novell Inc. and others")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>System.Reflection.AssemblyDescription("Banshee Media Player")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>System.Reflection.AssemblyTitle("Banshee")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
         </Attribute>
       </Attributes>
     </Assembly>
-    <Assembly Name="Hyena.Gui" Version="1.4.0.0">
+    <Assembly Name="Hyena.Gui" Version="1.5.0.0">
       <Attributes>
-        <Attribute>
-          <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
-        </Attribute>
         <Attribute>
           <AttributeName>System.Reflection.AssemblyCompany("Novell, Inc.")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.Reflection.AssemblyCopyright("Copyright (C) 2005-2008 Novell, 2005 Aaron Bockover")</AttributeName>
+          <AttributeName>System.Reflection.AssemblyCopyright("Copyright (C) 2005-2010 Novell Inc. and others")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>System.Reflection.AssemblyDescription("Banshee Media Player")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>System.Reflection.AssemblyTitle("Banshee")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.RuntimeCompatibility(WrapNonExceptionThrows=true)</AttributeName>
         </Attribute>
       </Attributes>
     </Assembly>
@@ -43,284 +43,499 @@
   <Copyright>To be added.</Copyright>
   <Types>
     <Namespace Name="Hyena">
-      <Type Name="Action" />
-      <Type Name="ConsoleCrayon" />
-      <Type Name="CryptoUtil" />
-      <Type Name="DateTimeUtil" />
-      <Type Name="IUndoAction" />
-      <Type Name="Log" />
-      <Type Name="LogEntry" />
-      <Type Name="LogEntryType" />
-      <Type Name="LogNotifyArgs" />
-      <Type Name="LogNotifyHandler" />
-      <Type Name="StringUtil" />
-      <Type Name="Timer" />
-      <Type Name="UndoManager" />
+      <Type Name="Action" Kind="Delegate" />
+      <Type Name="ApplicationContext" Kind="Class" />
+      <Type Name="ConsoleCrayon" Kind="Class" />
+      <Type Name="CryptoUtil" Kind="Class" />
+      <Type Name="DateTimeUtil" Kind="Class" />
+      <Type Name="EventArgs`1" DisplayName="EventArgs&lt;T&gt;" Kind="Class" />
+      <Type Name="InvokeHandler" Kind="Delegate" />
+      <Type Name="IUndoAction" Kind="Interface" />
+      <Type Name="Log" Kind="Class" />
+      <Type Name="LogEntry" Kind="Class" />
+      <Type Name="LogEntryType" Kind="Enumeration" />
+      <Type Name="LogNotifyArgs" Kind="Class" />
+      <Type Name="LogNotifyHandler" Kind="Delegate" />
+      <Type Name="PlatformDetection" Kind="Class" />
+      <Type Name="StringUtil" Kind="Class" />
+      <Type Name="ThreadAssist" Kind="Class" />
+      <Type Name="Timer" Kind="Class" />
+      <Type Name="UndoManager" Kind="Class" />
+      <Type Name="XdgBaseDirectorySpec" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Collections">
-      <Type Name="CacheEntry`2" DisplayName="CacheEntry&lt;TKey,TValue&gt;" />
-      <Type Name="CollectionExtensions" />
-      <Type Name="IntervalHeap`1" DisplayName="IntervalHeap&lt;T&gt;" />
-      <Type Name="IStackProvider`1" DisplayName="IStackProvider&lt;T&gt;" />
-      <Type Name="LruCache`2" DisplayName="LruCache&lt;TKey,TValue&gt;" />
-      <Type Name="QueuePipeline`1" DisplayName="QueuePipeline&lt;T&gt;" />
-      <Type Name="QueuePipelineElement`1" DisplayName="QueuePipelineElement&lt;T&gt;" />
-      <Type Name="RangeCollection" />
-      <Type Name="RangeCollection+Range" />
-      <Type Name="Selection" />
-      <Type Name="SelectionProxy" />
-      <Type Name="WriteLineElement`1" DisplayName="WriteLineElement&lt;T&gt;" />
-    </Namespace>
-    <Namespace Name="Hyena.Collections.Tests">
-      <Type Name="IntervalHeapTests" />
-      <Type Name="QueuePipelineTests" />
-      <Type Name="RangeCollectionTests" />
+      <Type Name="CacheEntry`2" DisplayName="CacheEntry&lt;TKey,TValue&gt;" Kind="Structure" />
+      <Type Name="CollectionExtensions" Kind="Class" />
+      <Type Name="IntervalHeap`1" DisplayName="IntervalHeap&lt;T&gt;" Kind="Class" />
+      <Type Name="IStackProvider`1" DisplayName="IStackProvider&lt;T&gt;" Kind="Interface" />
+      <Type Name="LruCache`2" DisplayName="LruCache&lt;TKey,TValue&gt;" Kind="Class" />
+      <Type Name="QueuePipeline`1" DisplayName="QueuePipeline&lt;T&gt;" Kind="Class" />
+      <Type Name="QueuePipelineElement`1" DisplayName="QueuePipelineElement&lt;T&gt;" Kind="Class" />
+      <Type Name="RangeCollection" Kind="Class" />
+      <Type Name="RangeCollection+Range" Kind="Structure" />
+      <Type Name="Selection" Kind="Class" />
+      <Type Name="SelectionProxy" Kind="Class" />
+      <Type Name="WriteLineElement`1" DisplayName="WriteLineElement&lt;T&gt;" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.CommandLine">
-      <Type Name="CommandLineParser" />
-      <Type Name="Layout" />
-      <Type Name="LayoutGroup" />
-      <Type Name="LayoutOption" />
+      <Type Name="CommandLineParser" Kind="Class" />
+      <Type Name="Layout" Kind="Class" />
+      <Type Name="LayoutGroup" Kind="Class" />
+      <Type Name="LayoutOption" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Data">
-      <Type Name="ArrayModelCache`1" DisplayName="ArrayModelCache&lt;T&gt;" />
-      <Type Name="ColumnDescription" />
-      <Type Name="DictionaryModelCache`1" DisplayName="DictionaryModelCache&lt;T&gt;" />
-      <Type Name="ICacheableItem" />
-      <Type Name="ICacheableModel" />
-      <Type Name="ICareAboutView" />
-      <Type Name="IFilterable" />
-      <Type Name="IListModel" />
-      <Type Name="IListModel`1" DisplayName="IListModel&lt;T&gt;" />
-      <Type Name="IObjectListModel" />
-      <Type Name="IPropertyStoreExpose" />
-      <Type Name="ISelectable" />
-      <Type Name="ISortable" />
-      <Type Name="ISortableColumn" />
-      <Type Name="ModelCache`1" DisplayName="ModelCache&lt;T&gt;" />
-      <Type Name="ModelSelection`1" DisplayName="ModelSelection&lt;T&gt;" />
-      <Type Name="PropertyChangeEventArgs" />
-      <Type Name="PropertyChangeEventHandler" />
-      <Type Name="PropertyStore" />
-      <Type Name="SortType" />
+      <Type Name="ArrayModelCache`1" DisplayName="ArrayModelCache&lt;T&gt;" Kind="Class" />
+      <Type Name="BaseListModel`1" DisplayName="BaseListModel&lt;T&gt;" Kind="Class" />
+      <Type Name="ColumnDescription" Kind="Class" />
+      <Type Name="DictionaryModelCache`1" DisplayName="DictionaryModelCache&lt;T&gt;" Kind="Class" />
+      <Type Name="ICacheableItem" Kind="Interface" />
+      <Type Name="ICacheableModel" Kind="Interface" />
+      <Type Name="ICareAboutView" Kind="Interface" />
+      <Type Name="IFilterable" Kind="Interface" />
+      <Type Name="IListModel" Kind="Interface" />
+      <Type Name="IListModel`1" DisplayName="IListModel&lt;T&gt;" Kind="Interface" />
+      <Type Name="IObjectListModel" Kind="Interface" />
+      <Type Name="IPropertyStoreExpose" Kind="Interface" />
+      <Type Name="ISelectable" Kind="Interface" />
+      <Type Name="ISortable" Kind="Interface" />
+      <Type Name="ISortableColumn" Kind="Interface" />
+      <Type Name="MemoryListModel`1" DisplayName="MemoryListModel&lt;T&gt;" Kind="Class" />
+      <Type Name="ModelCache`1" DisplayName="ModelCache&lt;T&gt;" Kind="Class" />
+      <Type Name="ModelSelection`1" DisplayName="ModelSelection&lt;T&gt;" Kind="Class" />
+      <Type Name="PropertyChangeEventArgs" Kind="Class" />
+      <Type Name="PropertyChangeEventHandler" Kind="Delegate" />
+      <Type Name="PropertyStore" Kind="Class" />
+      <Type Name="SortType" Kind="Enumeration" />
     </Namespace>
     <Namespace Name="Hyena.Data.Gui">
       <Type Name="CairoHelper" />
-      <Type Name="CellContext" />
-      <Type Name="Column" />
-      <Type Name="ColumnCell" />
-      <Type Name="ColumnCellCheckBox" />
-      <Type Name="ColumnCellRating" />
-      <Type Name="ColumnCellText" />
-      <Type Name="ColumnCellText+DataHandler" />
-      <Type Name="ColumnController" />
-      <Type Name="ColumnHeaderCellText" />
-      <Type Name="ColumnHeaderCellText+DataHandler" />
-      <Type Name="IHeaderCell" />
-      <Type Name="IInteractiveCell" />
-      <Type Name="IListView" />
-      <Type Name="IListView`1" DisplayName="IListView&lt;T&gt;" />
-      <Type Name="ISizeRequestCell" />
-      <Type Name="ITextCell" />
-      <Type Name="ListView`1" DisplayName="ListView&lt;T&gt;" />
-      <Type Name="ListViewBase" />
-      <Type Name="ListViewDragDropTarget" />
-      <Type Name="ListViewDragDropTarget+TargetType" />
-      <Type Name="ListViewRowHeightHandler" />
-      <Type Name="ListViewTestModule" />
-      <Type Name="ObjectListView" />
-      <Type Name="RowActivatedArgs`1" DisplayName="RowActivatedArgs&lt;T&gt;" />
-      <Type Name="RowActivatedHandler`1" DisplayName="RowActivatedHandler&lt;T&gt;" />
-      <Type Name="SortableColumn" />
+      <Type Name="CanvasItem" Kind="Class" />
+      <Type Name="CellContext" Kind="Class" />
+      <Type Name="Column" Kind="Class" />
+      <Type Name="ColumnCell" Kind="Class" />
+      <Type Name="ColumnCellCheckBox" Kind="Class" />
+      <Type Name="ColumnCellRating" Kind="Class" />
+      <Type Name="ColumnCellText" Kind="Class" />
+      <Type Name="ColumnCellText+DataHandler" Kind="Delegate" />
+      <Type Name="ColumnController" Kind="Class" />
+      <Type Name="ColumnHeaderCellText" Kind="Class" />
+      <Type Name="ColumnHeaderCellText+DataHandler" Kind="Delegate" />
+      <Type Name="DataViewChild" Kind="Class" />
+      <Type Name="DataViewLayout" Kind="Class" />
+      <Type Name="DataViewLayoutGrid" Kind="Class" />
+      <Type Name="IHeaderCell" Kind="Interface" />
+      <Type Name="IInteractiveCell" Kind="Interface" />
+      <Type Name="IListView" Kind="Interface" />
+      <Type Name="IListView`1" DisplayName="IListView&lt;T&gt;" Kind="Interface" />
+      <Type Name="ISizeRequestCell" Kind="Interface" />
+      <Type Name="ITextCell" Kind="Interface" />
+      <Type Name="ITooltipCell" Kind="Interface" />
+      <Type Name="ListView`1" DisplayName="ListView&lt;T&gt;" Kind="Class" />
+      <Type Name="ListViewBase" Kind="Class" />
+      <Type Name="ListViewDragDropTarget" Kind="Class" />
+      <Type Name="ListViewDragDropTarget+TargetType" Kind="Enumeration" />
+      <Type Name="ListViewRowHeightHandler" Kind="Delegate" />
+      <Type Name="ListViewTestModule" Kind="Class" />
+      <Type Name="ObjectListView" Kind="Class" />
+      <Type Name="RowActivatedArgs`1" DisplayName="RowActivatedArgs&lt;T&gt;" Kind="Class" />
+      <Type Name="RowActivatedHandler`1" DisplayName="RowActivatedHandler&lt;T&gt;" Kind="Delegate" />
+      <Type Name="SortableColumn" Kind="Class" />
+    </Namespace>
+    <Namespace Name="Hyena.Data.Gui.Accessibility">
+      <Type Name="ColumnCellAccessible" Kind="Class" />
+      <Type Name="ICellAccessibleParent" Kind="Interface" />
+      <Type Name="ListViewAccessible`1" DisplayName="ListViewAccessible&lt;T&gt;" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Data.Query">
     </Namespace>
     <Namespace Name="Hyena.Data.Sqlite">
-      <Type Name="AbstractDatabaseColumn" />
-      <Type Name="AbstractDatabaseColumnAttribute" />
-      <Type Name="CommandExecutedArgs" />
-      <Type Name="DatabaseColumn" />
-      <Type Name="DatabaseColumnAttribute" />
-      <Type Name="DatabaseColumnConstraints" />
-      <Type Name="DbColumn" />
-      <Type Name="ExecutingEventArgs" />
-      <Type Name="HyenaCommandType" />
-      <Type Name="HyenaDataReader" />
-      <Type Name="HyenaSqliteCommand" />
-      <Type Name="HyenaSqliteCommand+CommandExecutedHandler" />
-      <Type Name="HyenaSqliteConnection" />
-      <Type Name="ICacheableDatabaseModel" />
-      <Type Name="SqliteModelCache`1" DisplayName="SqliteModelCache&lt;T&gt;" />
+      <Type Name="AbstractDatabaseColumn" Kind="Class" />
+      <Type Name="AbstractDatabaseColumnAttribute" Kind="Class" />
+      <Type Name="BinaryFunction" Kind="Class" />
+      <Type Name="CommandExecutedArgs" Kind="Class" />
+      <Type Name="DatabaseColumn" Kind="Class" />
+      <Type Name="DatabaseColumnAttribute" Kind="Class" />
+      <Type Name="DatabaseColumnConstraints" Kind="Enumeration" />
+      <Type Name="DbColumn" Kind="Structure" />
+      <Type Name="ExecutingEventArgs" Kind="Class" />
+      <Type Name="HyenaCommandType" Kind="Enumeration" />
+      <Type Name="HyenaDataReader" Kind="Class" />
+      <Type Name="HyenaSqliteCommand" Kind="Class" />
+      <Type Name="HyenaSqliteCommand+CommandExecutedHandler" Kind="Delegate" />
+      <Type Name="HyenaSqliteConnection" Kind="Class" />
+      <Type Name="ICacheableDatabaseModel" Kind="Interface" />
+      <Type Name="SqliteModelCache`1" DisplayName="SqliteModelCache&lt;T&gt;" Kind="Class" />
       <Type Name="SqliteModelCache`1+AggregatesUpdatedEventHandler" DisplayName="SqliteModelCache&lt;T&gt;+AggregatesUpdatedEventHandler" />
-      <Type Name="SqliteModelProvider`1" DisplayName="SqliteModelProvider&lt;T&gt;" />
-      <Type Name="VirtualDatabaseColumnAttribute" />
-    </Namespace>
-    <Namespace Name="Hyena.Data.Sqlite.Tests">
-      <Type Name="SqliteCommandTests" />
-      <Type Name="SqliteModelProviderTests" />
+      <Type Name="SqliteModelProvider`1" DisplayName="SqliteModelProvider&lt;T&gt;" Kind="Class" />
+      <Type Name="SqliteUtils" Kind="Class" />
+      <Type Name="VirtualDatabaseColumnAttribute" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Gui">
-      <Type Name="CairoCorners" />
-      <Type Name="CairoExtensions" />
-      <Type Name="CleanRoomStartup" />
-      <Type Name="CleanRoomStartup+StartupInvocationHandler" />
-      <Type Name="CompositeUtils" />
-      <Type Name="Contrast" />
-      <Type Name="ContrastPaletteColor" />
-      <Type Name="EditableUndoAdapter`1" DisplayName="EditableUndoAdapter&lt;T&gt;" />
+      <Type Name="ActionManager" Kind="Class" />
+      <Type Name="BaseWidgetAccessible" Kind="Class" />
+      <Type Name="CairoCorners" Kind="Enumeration" />
+      <Type Name="CairoDamageDebugger" Kind="Class" />
+      <Type Name="CairoExtensions" Kind="Class" />
+      <Type Name="CleanRoomStartup" Kind="Class" />
+      <Type Name="CleanRoomStartup+StartupInvocationHandler" Kind="Delegate" />
+      <Type Name="CompositeUtils" Kind="Class" />
+      <Type Name="Contrast" Kind="Class" />
+      <Type Name="ContrastPaletteColor" Kind="Enumeration" />
+      <Type Name="DragDropList`1" DisplayName="DragDropList&lt;T&gt;" Kind="Class" />
+      <Type Name="EditableUndoAdapter`1" DisplayName="EditableUndoAdapter&lt;T&gt;" Kind="Class" />
       <Type Name="EntryUndoAdapter" />
-      <Type Name="GtkUtilities" />
-      <Type Name="GtkWorkarounds" />
-      <Type Name="PangoCairoHelper" />
-      <Type Name="PixbufImageSurface" />
-      <Type Name="RatingRenderer" />
-      <Type Name="ShadingTestWindow" />
-      <Type Name="TestModuleRunner" />
-      <Type Name="TooltipSetter" />
+      <Type Name="GtkUtilities" Kind="Class" />
+      <Type Name="GtkWorkarounds" Kind="Class" />
+      <Type Name="HyenaActionGroup" Kind="Class" />
+      <Type Name="PangoCairoHelper" Kind="Class" />
+      <Type Name="PangoExtensions" Kind="Class" />
+      <Type Name="PixbufImageSurface" Kind="Class" />
+      <Type Name="RatingRenderer" Kind="Class" />
+      <Type Name="ShadingTestWindow" Kind="Class" />
+      <Type Name="TestModuleRunner" Kind="Class" />
+      <Type Name="TooltipSetter" Kind="Class" />
+      <Type Name="WidgetAction`1" DisplayName="WidgetAction&lt;T&gt;" Kind="Delegate" />
+    </Namespace>
+    <Namespace Name="Hyena.Gui.Canvas">
+      <Type Name="Point" Kind="Structure" />
+      <Type Name="Rect" Kind="Structure" />
+      <Type Name="Size" Kind="Structure" />
+      <Type Name="Thickness" Kind="Structure" />
     </Namespace>
     <Namespace Name="Hyena.Gui.Dialogs">
-      <Type Name="ExceptionDialog" />
-      <Type Name="VersionInformationDialog" />
+      <Type Name="ExceptionDialog" Kind="Class" />
+      <Type Name="VersionInformationDialog" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Gui.Theatrics">
-      <Type Name="Actor`1" DisplayName="Actor&lt;T&gt;" />
-      <Type Name="Choreographer" />
-      <Type Name="Easing" />
-      <Type Name="Pulsator`1" DisplayName="Pulsator&lt;T&gt;" />
-      <Type Name="SingleActorStage" />
-      <Type Name="Stage`1" DisplayName="Stage&lt;T&gt;" />
-      <Type Name="Stage`1+ActorStepHandler" DisplayName="Stage&lt;T&gt;+ActorStepHandler" />
-    </Namespace>
-    <Namespace Name="Hyena.Gui.Theatrics.Tests">
-      <Type Name="ChoreographerTests" />
+      <Type Name="Actor`1" DisplayName="Actor&lt;T&gt;" Kind="Class" />
+      <Type Name="Choreographer" Kind="Class" />
+      <Type Name="Easing" Kind="Enumeration" />
+      <Type Name="Pulsator`1" DisplayName="Pulsator&lt;T&gt;" Kind="Class" />
+      <Type Name="SingleActorStage" Kind="Class" />
+      <Type Name="Stage`1" DisplayName="Stage&lt;T&gt;" Kind="Class" />
+      <Type Name="Stage`1+ActorStepHandler" DisplayName="Stage&lt;T&gt;+ActorStepHandler" Kind="Delegate" />
     </Namespace>
     <Namespace Name="Hyena.Gui.Theming">
-      <Type Name="GtkColorClass" />
-      <Type Name="GtkColors" />
-      <Type Name="GtkTheme" />
-      <Type Name="Theme" />
-      <Type Name="ThemeContext" />
+      <Type Name="GtkColorClass" Kind="Enumeration" />
+      <Type Name="GtkColors" Kind="Class" />
+      <Type Name="GtkTheme" Kind="Class" />
+      <Type Name="Theme" Kind="Class" />
+      <Type Name="ThemeContext" Kind="Class" />
+      <Type Name="ThemeEngine" Kind="Class" />
+    </Namespace>
+    <Namespace Name="Hyena.Jobs">
+      <Type Name="Job" Kind="Class" />
+      <Type Name="JobExtensions" Kind="Class" />
+      <Type Name="JobState" Kind="Enumeration" />
+      <Type Name="PriorityHints" Kind="Enumeration" />
+      <Type Name="Resource" Kind="Class" />
+      <Type Name="Scheduler" Kind="Class" />
+      <Type Name="SimpleAsyncJob" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Json">
-      <Type Name="Deserializer" />
-      <Type Name="IJsonCollection" />
-      <Type Name="JsonArray" />
-      <Type Name="JsonObject" />
+      <Type Name="Deserializer" Kind="Class" />
+      <Type Name="IJsonCollection" Kind="Interface" />
+      <Type Name="JsonArray" Kind="Class" />
+      <Type Name="JsonObject" Kind="Class" />
+      <Type Name="Serializer" Kind="Class" />
     </Namespace>
-    <Namespace Name="Hyena.Json.Tests">
-      <Type Name="DeserializerTests" />
-      <Type Name="TokenizerTests" />
+    <Namespace Name="Hyena.Metrics">
+      <Type Name="DbSampleStore" Kind="Class" />
+      <Type Name="HttpPoster" Kind="Class" />
+      <Type Name="ISampleStore" Kind="Interface" />
+      <Type Name="MemorySampleStore" Kind="Class" />
+      <Type Name="Metric" Kind="Class" />
+      <Type Name="MetricsCollection" Kind="Class" />
+      <Type Name="Sample" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Query">
-      <Type Name="AliasedObjectSet`1" DisplayName="AliasedObjectSet&lt;T&gt;" />
-      <Type Name="DateQueryValue" />
-      <Type Name="FileSizeFactor" />
-      <Type Name="FileSizeQueryValue" />
-      <Type Name="IAliasedObject" />
-      <Type Name="IntegerKeyedObjectQueryValue`1" DisplayName="IntegerKeyedObjectQueryValue&lt;T&gt;" />
-      <Type Name="IntegerQueryValue" />
-      <Type Name="Keyword" />
-      <Type Name="NullQueryValue" />
-      <Type Name="Operator" />
-      <Type Name="QueryField" />
-      <Type Name="QueryFieldSet" />
-      <Type Name="QueryLimit" />
-      <Type Name="QueryListNode" />
-      <Type Name="QueryNode" />
-      <Type Name="QueryNodeSearchMethod" />
-      <Type Name="QueryOrder" />
-      <Type Name="QueryParser" />
-      <Type Name="QueryTermNode" />
-      <Type Name="QueryToken" />
-      <Type Name="QueryValue" />
+      <Type Name="AliasedObjectSet`1" DisplayName="AliasedObjectSet&lt;T&gt;" Kind="Class" />
+      <Type Name="DateQueryValue" Kind="Class" />
+      <Type Name="EnumQueryValue" Kind="Class" />
+      <Type Name="EnumQueryValueItem" Kind="Class" />
+      <Type Name="ExactStringQueryValue" Kind="Class" />
+      <Type Name="ExactUriStringQueryValue" Kind="Class" />
+      <Type Name="FileSizeFactor" Kind="Enumeration" />
+      <Type Name="FileSizeQueryValue" Kind="Class" />
+      <Type Name="IAliasedObject" Kind="Interface" />
+      <Type Name="IntegerKeyedObjectQueryValue`1" DisplayName="IntegerKeyedObjectQueryValue&lt;T&gt;" Kind="Class" />
+      <Type Name="IntegerQueryValue" Kind="Class" />
+      <Type Name="Keyword" Kind="Enumeration" />
+      <Type Name="NullQueryValue" Kind="Class" />
+      <Type Name="Operator" Kind="Class" />
+      <Type Name="QueryField" Kind="Class" />
+      <Type Name="QueryFieldSet" Kind="Class" />
+      <Type Name="QueryLimit" Kind="Class" />
+      <Type Name="QueryListNode" Kind="Class" />
+      <Type Name="QueryNode" Kind="Class" />
+      <Type Name="QueryNodeSearchMethod" Kind="Enumeration" />
+      <Type Name="QueryOrder" Kind="Class" />
+      <Type Name="QueryParser" Kind="Class" />
+      <Type Name="QueryTermNode" Kind="Class" />
+      <Type Name="QueryToken" Kind="Class" />
+      <Type Name="QueryValue" Kind="Class" />
       <Type Name="RelativeDateFactor" />
-      <Type Name="RelativeTimeSpanQueryValue" />
-      <Type Name="StringQueryValue" />
-      <Type Name="TimeFactor" />
-      <Type Name="TimeSpanQueryValue" />
-      <Type Name="TokenID" />
-      <Type Name="UserQueryParser" />
-      <Type Name="XmlQueryParser" />
+      <Type Name="RelativeTimeSpanQueryValue" Kind="Class" />
+      <Type Name="StringQueryValue" Kind="Class" />
+      <Type Name="TimeFactor" Kind="Enumeration" />
+      <Type Name="TimeSpanQueryValue" Kind="Class" />
+      <Type Name="TokenID" Kind="Enumeration" />
+      <Type Name="UserQueryParser" Kind="Class" />
+      <Type Name="XmlQueryParser" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Query.Gui">
-      <Type Name="DateQueryValueEntry" />
-      <Type Name="FileSizeQueryValueEntry" />
-      <Type Name="IntegerQueryValueEntry" />
-      <Type Name="NullQueryValueEntry" />
-      <Type Name="QueryBox" />
-      <Type Name="QueryDebugger" />
-      <Type Name="QueryLimitBox" />
-      <Type Name="QueryTermBox" />
-      <Type Name="QueryTermsBox" />
-      <Type Name="QueryValueEntry" />
-      <Type Name="RelativeTimeSpanQueryValueEntry" />
-      <Type Name="StringQueryValueEntry" />
-      <Type Name="TimeSpanQueryValueEntry" />
-    </Namespace>
-    <Namespace Name="Hyena.Query.Tests">
-      <Type Name="QueryTests" />
+      <Type Name="DateQueryValueEntry" Kind="Class" />
+      <Type Name="FileSizeQueryValueEntry" Kind="Class" />
+      <Type Name="IntegerQueryValueEntry" Kind="Class" />
+      <Type Name="NullQueryValueEntry" Kind="Class" />
+      <Type Name="QueryBox" Kind="Class" />
+      <Type Name="QueryDebugger" Kind="Class" />
+      <Type Name="QueryLimitBox" Kind="Class" />
+      <Type Name="QueryTermBox" Kind="Class" />
+      <Type Name="QueryTermsBox" Kind="Class" />
+      <Type Name="QueryValueEntry" Kind="Class" />
+      <Type Name="RelativeTimeSpanQueryValueEntry" Kind="Class" />
+      <Type Name="StringQueryValueEntry" Kind="Class" />
+      <Type Name="TimeSpanQueryValueEntry" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.SExpEngine">
-      <Type Name="ArithmeticFunctionSet" />
-      <Type Name="ArithmeticFunctionSet+ArithmeticOperation" />
-      <Type Name="BooleanLiteral" />
-      <Type Name="CastFunctionSet" />
-      <Type Name="CompareFunctionSet" />
-      <Type Name="ControlFunctionSet" />
-      <Type Name="DoubleLiteral" />
-      <Type Name="EvaluationException" />
-      <Type Name="Evaluator" />
-      <Type Name="EvaluatorBase" />
-      <Type Name="FunctionAttribute" />
-      <Type Name="FunctionFunctionSet" />
-      <Type Name="FunctionNode" />
-      <Type Name="FunctionSet" />
-      <Type Name="IntLiteral" />
-      <Type Name="InvalidFunctionException" />
-      <Type Name="ListFunctionSet" />
-      <Type Name="LiteralNode`1" DisplayName="LiteralNode&lt;T&gt;" />
-      <Type Name="LiteralNodeBase" />
-      <Type Name="LogicFunctionSet" />
-      <Type Name="Parser" />
-      <Type Name="ParserException" />
-      <Type Name="SExpFunctionHandler" />
-      <Type Name="SExpVariableResolutionHandler" />
-      <Type Name="StringFunctionSet" />
-      <Type Name="StringLiteral" />
-      <Type Name="TreeNode" />
-      <Type Name="UnknownVariableException" />
-      <Type Name="UtilityFunctionSet" />
-      <Type Name="VoidLiteral" />
-    </Namespace>
-    <Namespace Name="Hyena.Tests">
-      <Type Name="CryptoUtilTests" />
-      <Type Name="StringUtilTests" />
-      <Type Name="TestBase" />
-      <Type Name="Transform`2" DisplayName="Transform&lt;F,To&gt;" />
-      <Type Name="TransformPair`2" DisplayName="TransformPair&lt;F,T&gt;" />
+      <Type Name="ArithmeticFunctionSet" Kind="Class" />
+      <Type Name="ArithmeticFunctionSet+ArithmeticOperation" Kind="Enumeration" />
+      <Type Name="BooleanLiteral" Kind="Class" />
+      <Type Name="CastFunctionSet" Kind="Class" />
+      <Type Name="CompareFunctionSet" Kind="Class" />
+      <Type Name="ControlFunctionSet" Kind="Class" />
+      <Type Name="DoubleLiteral" Kind="Class" />
+      <Type Name="EvaluationException" Kind="Class" />
+      <Type Name="Evaluator" Kind="Class" />
+      <Type Name="EvaluatorBase" Kind="Class" />
+      <Type Name="FunctionAttribute" Kind="Class" />
+      <Type Name="FunctionFunctionSet" Kind="Class" />
+      <Type Name="FunctionNode" Kind="Class" />
+      <Type Name="FunctionSet" Kind="Class" />
+      <Type Name="IntLiteral" Kind="Class" />
+      <Type Name="InvalidFunctionException" Kind="Class" />
+      <Type Name="ListFunctionSet" Kind="Class" />
+      <Type Name="LiteralNode`1" DisplayName="LiteralNode&lt;T&gt;" Kind="Class" />
+      <Type Name="LiteralNodeBase" Kind="Class" />
+      <Type Name="LogicFunctionSet" Kind="Class" />
+      <Type Name="Parser" Kind="Class" />
+      <Type Name="ParserException" Kind="Class" />
+      <Type Name="SExpFunctionHandler" Kind="Delegate" />
+      <Type Name="SExpVariableResolutionHandler" Kind="Delegate" />
+      <Type Name="StringFunctionSet" Kind="Class" />
+      <Type Name="StringLiteral" Kind="Class" />
+      <Type Name="TreeNode" Kind="Class" />
+      <Type Name="UnknownVariableException" Kind="Class" />
+      <Type Name="UtilityFunctionSet" Kind="Class" />
+      <Type Name="VoidLiteral" Kind="Class" />
     </Namespace>
     <Namespace Name="Hyena.Widgets">
-      <Type Name="AnimatedBox" />
-      <Type Name="AnimatedHBox" />
-      <Type Name="AnimatedImage" />
-      <Type Name="AnimatedVBox" />
-      <Type Name="Blocking" />
-      <Type Name="ComplexMenuItem" />
-      <Type Name="ImageButton" />
-      <Type Name="MenuButton" />
-      <Type Name="MessageBar" />
-      <Type Name="PulsingButton" />
-      <Type Name="RatingEntry" />
-      <Type Name="RatingMenuItem" />
-      <Type Name="RoundedFrame" />
-      <Type Name="ScrolledWindow" />
-      <Type Name="SegmentedBar" />
-      <Type Name="SegmentedBar+BarValueFormatHandler" />
-      <Type Name="SegmentedBar+Segment" />
-      <Type Name="SmoothScrolledWindow" />
-      <Type Name="TextViewEditable" />
-      <Type Name="WrapLabel" />
+      <Type Name="AnimatedBox" Kind="Class" />
+      <Type Name="AnimatedHBox" Kind="Class" />
+      <Type Name="AnimatedImage" Kind="Class" />
+      <Type Name="AnimatedVBox" Kind="Class" />
+      <Type Name="Blocking" Kind="Enumeration" />
+      <Type Name="ComplexMenuItem" Kind="Class" />
+      <Type Name="EntryPopup" Kind="Class" />
+      <Type Name="GenericToolItem`1" DisplayName="GenericToolItem&lt;T&gt;" Kind="Class" />
+      <Type Name="HigMessageDialog" Kind="Class" />
+      <Type Name="ImageButton" Kind="Class" />
+      <Type Name="MenuButton" Kind="Class" />
+      <Type Name="MessageBar" Kind="Class" />
+      <Type Name="PulsingButton" Kind="Class" />
+      <Type Name="RatingAccessible" Kind="Class" />
+      <Type Name="RatingEntry" Kind="Class" />
+      <Type Name="RatingMenuItem" Kind="Class" />
+      <Type Name="RoundedFrame" Kind="Class" />
+      <Type Name="ScrolledWindow" Kind="Class" />
+      <Type Name="SegmentedBar" Kind="Class" />
+      <Type Name="SegmentedBar+BarValueFormatHandler" Kind="Delegate" />
+      <Type Name="SegmentedBar+Segment" Kind="Class" />
+      <Type Name="SimpleTable`1" DisplayName="SimpleTable&lt;T&gt;" Kind="Class" />
+      <Type Name="SmoothScrolledWindow" Kind="Class" />
+      <Type Name="TextViewEditable" Kind="Class" />
+      <Type Name="WrapLabel" Kind="Class" />
+    </Namespace>
+    <Namespace Name="System.Web">
+      <Type Name="HttpUtility" Kind="Class" />
     </Namespace>
   </Types>
   <Title>Untitled</Title>
+  <ExtensionMethods>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:Cairo.Context" />
+      </Targets>
+      <Member MemberName="RenderDamage">
+        <MemberSignature Language="C#" Value="public static void RenderDamage (this Cairo.Context cr, Cairo.Rectangle damage);" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Void</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="cr" Type="Cairo.Context" RefType="this" />
+          <Parameter Name="damage" Type="Cairo.Rectangle" />
+        </Parameters>
+        <Docs>
+          <param name="cr">To be added.</param>
+          <param name="damage">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="Hyena.Gui.CairoDamageDebugger" Member="M:Hyena.Gui.CairoDamageDebugger.RenderDamage(Cairo.Context,Cairo.Rectangle)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:Cairo.Context" />
+      </Targets>
+      <Member MemberName="RenderDamage">
+        <MemberSignature Language="C#" Value="public static void RenderDamage (this Cairo.Context cr, Gdk.Rectangle damage);" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Void</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="cr" Type="Cairo.Context" RefType="this" />
+          <Parameter Name="damage" Type="Gdk.Rectangle" />
+        </Parameters>
+        <Docs>
+          <param name="cr">To be added.</param>
+          <param name="damage">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="Hyena.Gui.CairoDamageDebugger" Member="M:Hyena.Gui.CairoDamageDebugger.RenderDamage(Cairo.Context,Gdk.Rectangle)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:Cairo.Context" />
+      </Targets>
+      <Member MemberName="RenderDamage">
+        <MemberSignature Language="C#" Value="public static void RenderDamage (this Cairo.Context cr, double x, double y, double w, double h);" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Void</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="cr" Type="Cairo.Context" RefType="this" />
+          <Parameter Name="x" Type="System.Double" />
+          <Parameter Name="y" Type="System.Double" />
+          <Parameter Name="w" Type="System.Double" />
+          <Parameter Name="h" Type="System.Double" />
+        </Parameters>
+        <Docs>
+          <param name="cr">To be added.</param>
+          <param name="x">To be added.</param>
+          <param name="y">To be added.</param>
+          <param name="w">To be added.</param>
+          <param name="h">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="Hyena.Gui.CairoDamageDebugger" Member="M:Hyena.Gui.CairoDamageDebugger.RenderDamage(Cairo.Context,System.Double,System.Double,System.Double,System.Double)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:Pango.FontDescription" />
+      </Targets>
+      <Member MemberName="MeasureTextHeight">
+        <MemberSignature Language="C#" Value="public static int MeasureTextHeight (this Pango.FontDescription description, Pango.Context context);" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Int32</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="description" Type="Pango.FontDescription" RefType="this" />
+          <Parameter Name="context" Type="Pango.Context" />
+        </Parameters>
+        <Docs>
+          <param name="description">To be added.</param>
+          <param name="context">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="Hyena.Gui.PangoExtensions" Member="M:Hyena.Gui.PangoExtensions.MeasureTextHeight(Pango.FontDescription,Pango.Context)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:Pango.FontDescription" />
+      </Targets>
+      <Member MemberName="MeasureTextHeight">
+        <MemberSignature Language="C#" Value="public static int MeasureTextHeight (this Pango.FontDescription description, Pango.Context context, Pango.Language language);" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Int32</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="description" Type="Pango.FontDescription" RefType="this" />
+          <Parameter Name="context" Type="Pango.Context" />
+          <Parameter Name="language" Type="Pango.Language" />
+        </Parameters>
+        <Docs>
+          <param name="description">To be added.</param>
+          <param name="context">To be added.</param>
+          <param name="language">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="Hyena.Gui.PangoExtensions" Member="M:Hyena.Gui.PangoExtensions.MeasureTextHeight(Pango.FontDescription,Pango.Context,Pango.Language)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:System.Collections.Generic.IEnumerable`1" />
+      </Targets>
+      <Member MemberName="ForEach&lt;T&gt;">
+        <MemberSignature Language="C#" Value="public static void ForEach&lt;T&gt; (this System.Collections.Generic.IEnumerable&lt;T&gt; source, Action&lt;T&gt; func);" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Void</ReturnType>
+        </ReturnValue>
+        <TypeParameters>
+          <TypeParameter Name="T" />
+        </TypeParameters>
+        <Parameters>
+          <Parameter Name="source" Type="System.Collections.Generic.IEnumerable&lt;T&gt;" RefType="this" />
+          <Parameter Name="func" Type="System.Action&lt;T&gt;" />
+        </Parameters>
+        <Docs>
+          <typeparam name="T">To be added.</typeparam>
+          <param name="source">To be added.</param>
+          <param name="func">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="Hyena.Jobs.JobExtensions" Member="M:Hyena.Jobs.JobExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:Hyena.Jobs.Job" />
+      </Targets>
+      <Member MemberName="Has&lt;T&gt;">
+        <MemberSignature Language="C#" Value="public static bool Has&lt;T&gt; (this T job, Hyena.Jobs.PriorityHints hints) where T : Hyena.Jobs.Job;" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Boolean</ReturnType>
+        </ReturnValue>
+        <TypeParameters>
+          <TypeParameter Name="T">
+            <Constraints>
+              <BaseTypeName>Hyena.Jobs.Job</BaseTypeName>
+            </Constraints>
+          </TypeParameter>
+        </TypeParameters>
+        <Parameters>
+          <Parameter Name="job" Type="T" RefType="this" />
+          <Parameter Name="hints" Type="Hyena.Jobs.PriorityHints" />
+        </Parameters>
+        <Docs>
+          <typeparam name="T">To be added.</typeparam>
+          <param name="job">To be added.</param>
+          <param name="hints">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="Hyena.Jobs.JobExtensions" Member="M:Hyena.Jobs.JobExtensions.Has``1(``0,Hyena.Jobs.PriorityHints)" />
+      </Member>
+    </ExtensionMethod>
+  </ExtensionMethods>
 </Overview>

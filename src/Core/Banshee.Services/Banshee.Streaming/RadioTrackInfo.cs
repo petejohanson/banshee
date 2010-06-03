@@ -215,8 +215,9 @@ namespace Banshee.Streaming
                     Log.Debug("Playing Radio Stream", Uri.AbsoluteUri);
                     if (Uri.IsFile) {
                         try {
-                            TagLib.File file = StreamTagger.ProcessUri (Uri);
-                            StreamTagger.TrackInfoMerge (this, file, true);
+                            using (var file = StreamTagger.ProcessUri (Uri)) {
+                                StreamTagger.TrackInfoMerge (this, file, true);
+                            }
                         } catch (Exception e) {
                             Log.Warning (String.Format ("Failed to update metadata for {0}", this),
                                 e.GetType ().ToString (), false);

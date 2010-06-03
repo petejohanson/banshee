@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -40,8 +42,11 @@
 #include <gst/fft/gstfftf32.h>
 #include <gst/pbutils/pbutils.h>
 
-#ifdef GDK_WINDOWING_X11
+#if defined(GDK_WINDOWING_X11)
 #  include <gdk/gdkx.h>
+#  include <gst/interfaces/xoverlay.h>
+#elif defined(GDK_WINDOWING_WIN32)
+#  include <gdk/gdkwin32.h>
 #  include <gst/interfaces/xoverlay.h>
 #endif
 
@@ -58,11 +63,28 @@
 #define IS_BANSHEE_PLAYER(e) (e != NULL)
 #define SET_CALLBACK(cb_name) { if(player != NULL) { player->cb_name = cb; } }
 
+#define BANSHEE_CHECK_GST_VERSION(major,minor,micro) \
+    (GST_VERSION_MAJOR > (major) || \
+        (GST_VERSION_MAJOR == (major) && GST_VERSION_MINOR > (minor)) || \
+        (GST_VERSION_MAJOR == (major) && GST_VERSION_MINOR == (minor) && \
+            GST_VERSION_MICRO >= (micro)))
+
+#if BANSHEE_CHECK_GST_VERSION(0,10,25)
+#include <gst/interfaces/streamvolume.h>
+#endif
+
 #ifdef WIN32
-// TODO Windows doesn't like the ... varargs
-#define bp_debug(x)
+#define bp_debug(x) banshee_log_debug ("player", x)
+#define bp_debug2(x, a2) banshee_log_debug ("player", x, a2)
+#define bp_debug3(x, a2, a3) banshee_log_debug ("player", x, a2, a3)
+#define bp_debug4(x, a2, a3, a4) banshee_log_debug ("player", x, a2, a3, a4)
+#define bp_debug5(x, a2, a3, a4, a5) banshee_log_debug ("player", x, a2, a3, a4, a5)
 #else
 #define bp_debug(x...) banshee_log_debug ("player", x)
+#define bp_debug2(x...) banshee_log_debug ("player", x)
+#define bp_debug3(x...) banshee_log_debug ("player", x)
+#define bp_debug4(x...) banshee_log_debug ("player", x)
+#define bp_debug5(x...) banshee_log_debug ("player", x)
 #endif
 
 typedef struct BansheePlayer BansheePlayer;
@@ -79,6 +101,9 @@ typedef void (* BansheePlayerVisDataCallback)      (BansheePlayer *player, gint 
 typedef void (* BansheePlayerNextTrackStartingCallback)     (BansheePlayer *player);
 typedef void (* BansheePlayerAboutToFinishCallback)         (BansheePlayer *player);
 typedef GstElement * (* BansheePlayerVideoPipelineSetupCallback) (BansheePlayer *player, GstBus *bus);
+typedef void (* BansheePlayerVideoPrepareWindowCallback) (BansheePlayer *player);
+typedef void (* BansheePlayerVolumeChangedCallback) (BansheePlayer *player, gdouble new_volume);
+typedef void (* BansheePlayerVideoGeometryNotifyCallback) (BansheePlayer *player, gint width, gint height, gint fps_n, gint fps_d, gint par_n, gint par_d);
 
 typedef enum {
     BP_VIDEO_DISPLAY_CONTEXT_UNSUPPORTED = 0,
@@ -98,6 +123,9 @@ struct BansheePlayer {
     BansheePlayerNextTrackStartingCallback next_track_starting_cb;
     BansheePlayerAboutToFinishCallback about_to_finish_cb;
     BansheePlayerVideoPipelineSetupCallback video_pipeline_setup_cb;
+    BansheePlayerVideoPrepareWindowCallback video_prepare_window_cb;
+    BansheePlayerVolumeChangedCallback volume_changed_cb;
+    BansheePlayerVideoGeometryNotifyCallback video_geometry_notify_cb;
 
     // Pipeline Elements
     GstElement *playbin;
@@ -113,23 +141,33 @@ struct BansheePlayer {
     gboolean   rgvolume_in_pipeline;
 
     gint equalizer_status;
-    gdouble current_volume;
     
     // Pipeline/Playback State
     GMutex *mutex;
     GstState target_state;
-    guint iterate_timeout_id;
     gboolean buffering;
     gchar *cdda_device;
     gboolean in_gapless_transition;
+    gboolean supports_stream_volume;
     
     // Video State
     BpVideoDisplayContextType video_display_context_type;
-    #ifdef GDK_WINDOWING_X11
+    #if defined(GDK_WINDOWING_X11)
     GstXOverlay *xoverlay;
     GdkWindow *video_window;
     XID video_window_xid;
+    #elif defined(GDK_WINDOWING_WIN32)
+    GstXOverlay *xoverlay;
+    GdkWindow *video_window;
+    HWND video_window_xid;
     #endif
+    // Video geometry
+    gint width;
+    gint height;
+    gint fps_n;
+    gint fps_d;
+    gint par_n;
+    gint par_d;
        
     // Visualization State
     GstElement *vis_resampler;

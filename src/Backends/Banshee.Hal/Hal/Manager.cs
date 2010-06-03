@@ -31,6 +31,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using NDesk.DBus;
+using org.freedesktop.DBus;
 
 namespace Hal
 {
@@ -120,7 +121,17 @@ namespace Hal
         public Manager()
         {
             if(!Bus.System.NameHasOwner("org.freedesktop.Hal")) {
-                throw new ApplicationException("Could not find org.freedesktop.Hal");
+                // try to start it
+                Console.WriteLine ("About to try to start HAL service");
+                var reply = Bus.System.StartServiceByName ("org.freedesktop.Hal");
+                if (reply != StartReply.Success && reply != StartReply.AlreadyRunning) {
+                    throw new ApplicationException("Could not start org.freedesktop.Hal");
+                }
+
+                // If still not started, we're done
+                if(!Bus.System.NameHasOwner("org.freedesktop.Hal")) {
+                    throw new ApplicationException("Could not find org.freedesktop.Hal");
+                }
             }
 
             manager = Bus.System.GetObject<IManager>("org.freedesktop.Hal",

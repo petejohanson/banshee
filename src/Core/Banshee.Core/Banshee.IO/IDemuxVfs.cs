@@ -30,5 +30,7 @@ namespace Banshee.IO
 {
     public interface IDemuxVfs : TagLib.File.IFileAbstraction
     {
+        bool IsReadable { get; }
+        bool IsWritable { get; }
     }
 }

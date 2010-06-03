@@ -4,7 +4,7 @@
 // Author:
 //   Aaron Bockover <abockover@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2008-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -40,6 +40,8 @@ namespace Banshee.NowPlaying
         private bool probed = false;
         private bool first_fullscreen = false;
 
+        public event EventHandler SuggestUnfullscreen;
+
         public void Fullscreen (Window window, bool fullscreen)
         {
             if (!first_fullscreen && !fullscreen) {
@@ -65,6 +67,7 @@ namespace Banshee.NowPlaying
             foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes ("/Banshee/NowPlaying/FullscreenAdapter")) {
                 try {
                     adapter = (IFullscreenAdapter)node.CreateInstance (typeof (IFullscreenAdapter));
+                    adapter.SuggestUnfullscreen += OnSuggestUnfullscreen;
                     Log.DebugFormat ("Loaded IFullscreenAdapter: {0}", adapter.GetType ().FullName);
                     break;
                 } catch (Exception e) {
@@ -74,6 +77,14 @@ namespace Banshee.NowPlaying
 
             probed = true;
             Fullscreen (window, fullscreen);
+        }
+
+        private void OnSuggestUnfullscreen (object o, EventArgs args)
+        {
+            var handler = SuggestUnfullscreen;
+            if (handler != null) {
+                handler (this, EventArgs.Empty);
+            }
         }
 
         public void Dispose ()
@@ -86,6 +97,7 @@ namespace Banshee.NowPlaying
         {
             if (adapter != null) {
                 try {
+                    adapter.SuggestUnfullscreen -= OnSuggestUnfullscreen;
                     adapter.Dispose ();
                 } catch (Exception e) {
                     Log.Exception ("IFullscreenAdapter failed to dispose", e);

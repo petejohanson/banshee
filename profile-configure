@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+profiles=(
+	"darwin
+		--disable-mtp
+		--disable-daap
+		--disable-ipod
+		--disable-boo
+		--disable-gnome
+		--disable-webkit
+		--disable-youtube
+		--disable-docs
+	"
+	"meego
+		--enable-meego
+		--disable-daap
+		--disable-webkit
+		--disable-youtube
+		--disable-boo
+		--disable-ipod
+		--disable-docs
+	"
+)
+
+selected_profile=$1; shift
+
+for ((i=0; i<${#profiles[@]}; i++)); do
+	profile=(${profiles[$i]})
+	if [ "${profile[0]}" = "$selected_profile" ]; then
+		configure="./configure"
+		for ((j=1; j<${#profile[@]}; j++)); do
+			configure="$configure ${profile[$j]}"
+		done
+		if [ -d .git ]; then
+			configure="$configure --enable-maintainer-mode"
+		fi
+		echo "Running $configure $@"
+		$configure $@
+		exit $?
+	fi
+done
+
+echo "Usage: $0 <profile> [extra configure args]"
+echo
+echo "  Available profiles:"
+echo
+for ((i=0; i<${#profiles[@]}; i++)); do
+	profile=(${profiles[$i]})
+	echo "    ${profile[0]}"
+done
+echo
+exit 1

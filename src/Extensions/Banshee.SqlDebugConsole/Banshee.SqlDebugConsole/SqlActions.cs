@@ -127,7 +127,7 @@ namespace Banshee.SqlDebugConsole
 
         private void OnCommandExecuted (object o, CommandExecutedArgs args)
         {
-            Hyena.Log.DebugFormat ("in {0}ms executed {1}", args.Ms, args.SqlWithValues);
+            Hyena.Log.DebugFormat ("in {0}ms executed {1}", args.Ms, args.Sql);
         }
 
         private void UpdateActions ()

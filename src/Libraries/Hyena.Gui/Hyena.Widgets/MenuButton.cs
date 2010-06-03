@@ -41,6 +41,8 @@ namespace Hyena.Widgets
         private Menu menu;
         private Widget size_widget;
 
+        protected MenuButton (IntPtr ptr) : base (ptr) {}
+
         public MenuButton ()
         {
         }
@@ -104,11 +106,11 @@ namespace Hyena.Widgets
             toggle_button.Active = false;
         }
 
-        protected ToggleButton ToggleButton {
+        public ToggleButton ToggleButton {
             get { return toggle_button; }
         }
 
-        protected Arrow Arrow {
+        public Arrow Arrow {
             get { return arrow; }
         }
 

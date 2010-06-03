@@ -6,7 +6,7 @@
 //   Larry Ewing <lewing@novell.com>
 //   Gabriel Burt <gburt@novell.com>
 //
-// Copyright (C) 2008 Novell, Inc.
+// Copyright 2008-2010 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -133,6 +133,8 @@ namespace Banshee.NowPlaying
             Events |= Gdk.EventMask.PointerMotionMask;
 
             base.OnRealized ();
+
+            GdkWindow.OverrideRedirect = true;
 
             Screen.SizeChanged += OnScreenSizeChanged;
         }

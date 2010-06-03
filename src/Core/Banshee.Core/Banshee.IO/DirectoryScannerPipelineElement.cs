@@ -76,8 +76,6 @@ namespace Banshee.IO
                 }
             } else if (is_directory) {
                 try {
-                    // Normalise the path (remove the trailing directory separator)
-                    source = Path.Combine (Path.GetDirectoryName (source), Path.GetFileName (source));
                     if (!skip_hidden || !Path.GetFileName (source).StartsWith (".")) {
                         visited_dirs.Add (source);
                         try {
@@ -90,7 +88,8 @@ namespace Banshee.IO
                                     ScanForFiles (directory, true);
                                 }
                             }
-                        } catch {
+                        } catch (Exception e) {
+                            Hyena.Log.Exception (e);
                         }
                     }
                 } catch (System.ArgumentException) {

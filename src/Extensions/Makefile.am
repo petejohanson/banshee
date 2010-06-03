@@ -1,7 +1,6 @@
 SUBDIRS = \
 	Banshee.Audiobook \
 	Banshee.AudioCd \
-	Banshee.Bookmarks \
 	Banshee.BooScript \
 	Banshee.Bpm \
 	Banshee.CoverArt \
@@ -11,6 +10,7 @@ SUBDIRS = \
 	Banshee.InternetArchive \
 	Banshee.InternetRadio \
 	Banshee.Lastfm \
+	Banshee.LastfmStreaming \
 	Banshee.LibraryWatcher \
 	Banshee.MiniMode \
 	Banshee.MultimediaKeys \
@@ -18,7 +18,7 @@ SUBDIRS = \
 	Banshee.NowPlaying \
 	Banshee.PlayerMigration \
 	Banshee.PlayQueue \
-	Banshee.Moblin \
+	Banshee.MeeGo \
 	Banshee.Podcasting \
 	Banshee.Sample \
 	Banshee.SqlDebugConsole \

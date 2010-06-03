@@ -70,6 +70,22 @@ namespace Banshee.GnomeBackend
             }
         }
 
+        public GConfConfigurationClient ()
+        {
+            if (Hyena.PlatformDetection.IsMeeGo) {
+                throw new InvalidOperationException ("GConf is not supported on MeeGo");
+            }
+        }
+
+        public void AddCallback (string @namespace, NotifyEventHandler callback)
+        {
+            if (DisableGConf || @namespace == null) {
+                return;
+            }
+
+            client.AddNotify(@namespace, callback);
+        }
+
         private string CreateKey (string @namespace, string part)
         {
             string hash_key = String.Concat (@namespace, part);
@@ -84,7 +100,7 @@ namespace Banshee.GnomeBackend
                     } else {
                         @namespace = @namespace.Replace ('/', '_');
                         key_table.Add (hash_key, String.Concat (BaseKey,
-                            StringUtil.CamelCaseToUnderCase (String.Concat (@namespace.Replace (".", "/"), "/", part))
+                            StringUtil.CamelCaseToUnderCase (String.Concat (@namespace.Replace ('.', '/'), "/", part))
                         ));
                     }
 

@@ -69,6 +69,7 @@ namespace Banshee.NotificationArea
 
         public override void Dispose ()
         {
+            seek_slider.Disconnect ();
             header.Dispose ();
             base.Dispose ();
         }

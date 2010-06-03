@@ -27,6 +27,8 @@
 //
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
 
@@ -104,6 +106,11 @@ namespace Banshee.Gui
                 new ActionEntry ("SortChildrenAction", Stock.SortDescending,
                     Catalog.GetString ("Sort Children by"), null, null,
                     OnSortChildrenMenu),
+
+                new ActionEntry ("OpenSourceSwitcher", null,
+                    Catalog.GetString ("Switch Source"), "G",
+                    Catalog.GetString ("Switch to a source by typing its name"),
+                    null),
 
                 new ActionEntry ("SourcePreferencesAction", null, Catalog.GetString ("Preferences"), null,
                     Catalog.GetString ("Edit preferences related to this source"), OnSourcePreferences),
@@ -372,6 +379,7 @@ namespace Banshee.Gui
                 UpdateAction ("SourcePropertiesAction", source.HasProperties, true, source);
                 UpdateAction ("SourcePreferencesAction", source.PreferencesPageId != null, true, source);
                 UpdateAction ("RefreshSmartPlaylistAction", smart_playlist != null && smart_playlist.CanRefresh, true, source);
+                this["OpenSourceSwitcher"].Visible = false;
 
                 bool playlists_writable = primary_source != null && primary_source.SupportsPlaylists && !primary_source.PlaylistsReadOnly;
                 UpdateAction ("NewPlaylistAction", playlists_writable, true, source);

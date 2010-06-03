@@ -71,11 +71,6 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Listen to and rip Audio CDs.");
         Catalog.GetString (@"Core");
 
-        // ../src/Extensions/Banshee.Bookmarks/Banshee.Bookmarks.addin.xml
-        Catalog.GetString (@"Bookmarks");
-        Catalog.GetString (@"Save your position in tracks so you can resume playback later.");
-        Catalog.GetString (@"Utilities");
-
         // ../src/Extensions/Banshee.BooScript/Banshee.BooScript.addin.xml
         Catalog.GetString (@"Boo Scripting");
         Catalog.GetString (@"Customize and extend Banshee with Boo-language scripts.");
@@ -117,8 +112,13 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Core");
 
         // ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.addin.xml
-        Catalog.GetString (@"Last.fm Radio and Scrobbling");
-        Catalog.GetString (@"Last.fm streaming radio, scrobbling, and context pane recommendations.");
+        Catalog.GetString (@"Last.fm Scrobbling");
+        Catalog.GetString (@"Last.fm scrobbling and context pane recommendations.");
+        Catalog.GetString (@"Online Sources");
+
+        // ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming.addin.xml
+        Catalog.GetString (@"Last.fm Radio");
+        Catalog.GetString (@"Last.fm streaming radio for paid subscribers.");
         Catalog.GetString (@"Online Sources");
 
         // ../src/Extensions/Banshee.LibraryWatcher/Banshee.LibraryWatcher.addin.xml
@@ -126,14 +126,14 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Automatically update music and video libraries");
         Catalog.GetString (@"Utilities");
 
+        // ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo.addin.xml
+        Catalog.GetString (@"MeeGo Support");
+        Catalog.GetString (@"Provides MeeGo integration, including a custom media panel.");
+
         // ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
         Catalog.GetString (@"Mini Mode");
         Catalog.GetString (@"Control Banshee through a small window with only playback controls and track information.");
         Catalog.GetString (@"Utilities");
-
-        // ../src/Extensions/Banshee.Moblin/Banshee.Moblin.addin.xml
-        Catalog.GetString (@"Moblin Support");
-        Catalog.GetString (@"Provides Moblin integration, including a custom media panel.");
 
         // ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
         Catalog.GetString (@"Multimedia Keys");

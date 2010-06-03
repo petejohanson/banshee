@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using Mono.Unix;
 using Mono.Addins;
 
+using Hyena;
 using Hyena.Jobs;
 
 using Banshee.Base;

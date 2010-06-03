@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -99,7 +101,7 @@ br_iterate_timeout (BansheeRipper *ripper)
     }
     
     if (ripper->progress_cb != NULL) {
-        ripper->progress_cb (ripper, position / GST_MSECOND, NULL);
+        ripper->progress_cb (ripper, (guint) (position / GST_MSECOND), NULL);
     }
 
     return TRUE;
@@ -130,7 +132,7 @@ br_stop_iterate_timeout (BansheeRipper *ripper)
     ripper->iterate_timeout_id = 0;
 }
 
-static const gchar const *
+static const gchar *
 br_encoder_probe_mime_type (GstBin *bin)
 {
     GstIterator *elem_iter = gst_bin_iterate_recurse (bin);

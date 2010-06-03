@@ -59,7 +59,7 @@ namespace Banshee.IO.Gio
 
         public void Copy (SafeUri from, SafeUri to, bool overwrite)
         {
-            FileFactory.NewForUri (from.AbsoluteUri).Move (FileFactory.NewForUri (to.AbsoluteUri), overwrite ? FileCopyFlags.Overwrite : FileCopyFlags.None, null, null);
+            FileFactory.NewForUri (from.AbsoluteUri).Copy (FileFactory.NewForUri (to.AbsoluteUri), overwrite ? FileCopyFlags.Overwrite : FileCopyFlags.None, null, null);
         }
 
         public System.IO.Stream OpenRead (SafeUri uri)
@@ -80,8 +80,9 @@ namespace Banshee.IO.Gio
         {
             try {
                 var file = FileFactory.NewForUri (uri.AbsoluteUri);
-                var file_info = file.QueryInfo ("standard::size", FileQueryInfoFlags.None, null);
-                return file_info.Size;
+                using (var file_info = file.QueryInfo ("standard::size", FileQueryInfoFlags.None, null)) {
+                    return file_info.Size;
+                }
             } catch {
                 return -1;
             }
@@ -90,8 +91,9 @@ namespace Banshee.IO.Gio
         public long GetModifiedTime (SafeUri uri)
         {
             var file = FileFactory.NewForUri (uri.AbsoluteUri);
-            var file_info = file.QueryInfo ("time::modified", FileQueryInfoFlags.None, null);
-            return (long) file_info.GetAttributeULong ("time::modified");
+            using (var file_info = file.QueryInfo ("time::modified", FileQueryInfoFlags.None, null)) {
+                return (long) file_info.GetAttributeULong ("time::modified");
+            }
         }
     }
 }

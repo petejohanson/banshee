@@ -30,6 +30,8 @@ using System;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
+
 using Banshee.Base;
 
 namespace Banshee.Library.Gui

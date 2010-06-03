@@ -35,9 +35,9 @@ namespace Banshee.Widgets
     {
         private static readonly int pixbuf_size = 40;
 
-        private Image image = new Image();
-        private Label primary_label = new Label();
-        private Label secondary_label = new Label();
+        private Image image = new Image ();
+        public Label PrimaryLabel { get; private set; }
+        public Label SecondaryLabel { get; private set; }
 
         private string primary_text;
         private string secondary_text;
@@ -47,33 +47,36 @@ namespace Banshee.Widgets
             PrimaryText = primaryText;
         }
 
-        public Tile()
+        public Tile ()
         {
-            Table table = new Table(2, 2, false);
+            Table table = new Table (2, 2, false);
             table.ColumnSpacing = 6;
             table.RowSpacing = 2;
             table.BorderWidth = 2;
 
-            table.Attach(image, 0, 1, 0, 2, AttachOptions.Shrink, AttachOptions.Shrink, 0, 0);
-            table.Attach(primary_label, 1, 2, 0, 1,
+            PrimaryLabel = new Label ();
+            SecondaryLabel = new Label ();
+
+            table.Attach (image, 0, 1, 0, 2, AttachOptions.Shrink, AttachOptions.Shrink, 0, 0);
+            table.Attach (PrimaryLabel, 1, 2, 0, 1,
                 AttachOptions.Fill | AttachOptions.Expand,
                 AttachOptions.Shrink, 0, 0);
-            table.Attach(secondary_label, 1, 2, 1, 2,
+            table.Attach (SecondaryLabel, 1, 2, 1, 2,
                 AttachOptions.Fill | AttachOptions.Expand,
                 AttachOptions.Fill | AttachOptions.Expand, 0, 0);
 
-            table.ShowAll();
-            Add(table);
+            table.ShowAll ();
+            Add (table);
 
-            primary_label.Xalign = 0.0f;
-            primary_label.Yalign = 0.0f;
+            PrimaryLabel.Xalign = 0.0f;
+            PrimaryLabel.Yalign = 0.0f;
 
-            secondary_label.Xalign = 0.0f;
-            secondary_label.Yalign = 0.0f;
+            SecondaryLabel.Xalign = 0.0f;
+            SecondaryLabel.Yalign = 0.0f;
 
             StyleSet += delegate {
-                primary_label.ModifyFg (StateType.Normal, Style.Text (StateType.Normal));
-                secondary_label.ModifyFg (StateType.Normal, Hyena.Gui.GtkUtilities.ColorBlend (
+                PrimaryLabel.ModifyFg (StateType.Normal, Style.Text (StateType.Normal));
+                SecondaryLabel.ModifyFg (StateType.Normal, Hyena.Gui.GtkUtilities.ColorBlend (
                     Style.Foreground (StateType.Normal), Style.Background (StateType.Normal)));
             };
 
@@ -84,7 +87,7 @@ namespace Banshee.Widgets
             get { return primary_text; }
             set {
                 primary_text = value;
-                primary_label.Text = value;
+                PrimaryLabel.Text = value;
             }
         }
 
@@ -92,8 +95,8 @@ namespace Banshee.Widgets
             get { return secondary_text; }
             set {
                 secondary_text = value;
-                secondary_label.Markup = String.Format("<small>{0}</small>",
-                    GLib.Markup.EscapeText(value));
+                SecondaryLabel.Markup = String.Format ("<small>{0}</small>",
+                    GLib.Markup.EscapeText (value));
             }
         }
 
@@ -109,7 +112,7 @@ namespace Banshee.Widgets
                     return;
                 }
 
-                image.Pixbuf = value.ScaleSimple(pixbuf_size, pixbuf_size,
+                image.Pixbuf = value.ScaleSimple (pixbuf_size, pixbuf_size,
                     Gdk.InterpType.Bilinear);
             }
         }

@@ -82,8 +82,11 @@ query-trace:
 	MONO_PID=$$(ps aux | grep mono | grep '\--uninstalled' | grep -v 'cd bin' | awk '{print$$2}'); \
 	kill -USR2 $$MONO_PID
 
-push-moblin:
-	@extras/push-moblin
+push-meego:
+	@extras/push-meego
+
+monitor-meego:
+	@extras/monitor-meego
 
 gdb:
 	@pushd bin; \
@@ -115,10 +118,44 @@ hg:
 	rm tester.*; \
 	popd; 
 
+update-docs:
+	make -C docs/Hyena update-docs; \
+	make -C docs/Banshee update-docs;
+
+merge-docs:
+	make -C docs/Hyena merge; \
+	make -C docs/Banshee merge;
+
+check-since:
+	@if [ -z '$(SINCE)' ]; then echo 'Specify a SINCE (e.g. make package-patch SINCE=1.6.0)'; exit 1; fi;
+
+package-patch: check-since
+	@if [ -f 'since-$(SINCE).patch' ]; then echo 'since-$(SINCE).patch already exists'; exit 1; fi;
+	@git diff-tree -p "$(SINCE).." | filterdiff \
+		-x 'a/Makefile.am' \
+		-x 'a/profile-configure' \
+		-x 'a/po/*' \
+		-x 'a/banshee.doap' \
+		-x \*.csproj \
+		-x \*.sln \
+		-x \*extras/\* &> 'since-$(SINCE).patch'
+	@echo 'since-$(SINCE).patch is ready'
+
+package-po: check-since
+	@if [ -f 'po-since-$(SINCE).tar.bz2' ]; then echo 'po-since-$(SINCE).tar.bz2 already exists'; exit 1; fi;
+	@git diff-tree -p '$(SINCE)..' po \
+		| awk -F / '{if ($$0 ~ /^+++ b\/po\/.+\.po$$/) print $$2 "/" $$3}' \
+		| xargs tar cfj po-since-$(SINCE).tar.bz2 2>/dev/null; \
+	if [ $$? -eq 123 ]; then \
+		echo 'No po changes since $(SINCE)'; \
+		exit 0; \
+	fi
+
 EXTRA_DIST = \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
+	autogen.sh \
 	AUTHORS \
 	HACKING
 

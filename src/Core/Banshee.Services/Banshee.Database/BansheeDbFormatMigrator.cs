@@ -56,7 +56,7 @@ namespace Banshee.Database
         // NOTE: Whenever there is a change in ANY of the database schema,
         //       this version MUST be incremented and a migration method
         //       MUST be supplied to match the new version number
-        protected const int CURRENT_VERSION = 41;
+        protected const int CURRENT_VERSION = 42;
         protected const int CURRENT_METADATA_VERSION = 7;
 
 #region Migration Driver
@@ -70,7 +70,7 @@ namespace Banshee.Database
         public event EventHandler Started;
         public event EventHandler Finished;
 
-        protected class DatabaseVersionAttribute : Attribute
+        protected sealed class DatabaseVersionAttribute : Attribute
         {
             private int version;
 
@@ -135,7 +135,9 @@ namespace Banshee.Database
         {
             try {
 
-                if (DatabaseVersion < CURRENT_VERSION) {
+                if (DatabaseVersion > CURRENT_VERSION) {
+                    throw new DatabaseVersionTooHigh (CURRENT_VERSION, DatabaseVersion);
+                } else if (DatabaseVersion < CURRENT_VERSION) {
                     Execute ("BEGIN");
                     InnerMigrate ();
                     Execute ("COMMIT");
@@ -148,6 +150,8 @@ namespace Banshee.Database
                 if (DatabaseVersion == CURRENT_VERSION && metadata_version < CURRENT_METADATA_VERSION) {
                     ServiceManager.ServiceStarted += OnServiceStarted;
                 }
+            } catch (DatabaseVersionTooHigh) {
+                throw;
             } catch (Exception) {
                 Log.Warning ("Rolling back database migration");
                 Execute ("ROLLBACK");
@@ -734,7 +738,7 @@ namespace Banshee.Database
                         WHERE UriType = 1
                           AND PrimarySourceID != ?", library_path, podcast_src_id);
 
-                    string podcast_path = Banshee.Base.Paths.Combine (library_path, "Podcasts");
+                    string podcast_path = Paths.Combine (library_path, "Podcasts");
                     connection.Execute (@"
                         UPDATE CoreTracks SET Uri = BANSHEE_MIGRATE_PARTIAL(?, Uri)
                         WHERE UriType = 1
@@ -921,6 +925,18 @@ namespace Banshee.Database
                 )
             ");
             Execute ("CREATE INDEX CoreShuffleModificationsIndex ON CoreShuffleModifications (ShufflerId, TrackID, LastModifiedAt, ModificationType)");
+            return true;
+        }
+
+        [DatabaseVersion (42)]
+        private bool Migrate_42 ()
+        {
+            // Unset the Music attribute for any videos or podcasts
+            connection.Execute (
+                @"UPDATE CoreTracks SET Attributes = Attributes & ? WHERE (Attributes & ?) != 0",
+                (int)(~TrackMediaAttributes.Music),
+                (int)(TrackMediaAttributes.VideoStream | TrackMediaAttributes.Podcast)
+            );
             return true;
         }
 
@@ -1378,8 +1394,9 @@ namespace Banshee.Database
 
                         if (track != null && track.Uri != null && track.Uri.IsFile) {
                             try {
-                                TagLib.File file = StreamTagger.ProcessUri (track.Uri);
-                                StreamTagger.TrackInfoMerge (track, file, true);
+                                using (var file = StreamTagger.ProcessUri (track.Uri)) {
+                                    StreamTagger.TrackInfoMerge (track, file, true);
+                                }
                             } catch (Exception e) {
                                 Log.Warning (String.Format ("Failed to update metadata for {0}", track),
                                     e.GetType ().ToString (), false);
@@ -1411,6 +1428,20 @@ namespace Banshee.Database
 
 #endregion
 
+        class DatabaseVersionTooHigh : ApplicationException
+        {
+            internal DatabaseVersionTooHigh (int currentVersion, int databaseVersion)
+                : base (String.Format (
+                "This version of Banshee was prepared to work with older database versions (=< {0}) thus it is too old to support the current version of the database ({1}).",
+                currentVersion, databaseVersion))
+            {
+            }
+
+            private DatabaseVersionTooHigh ()
+            {
+            }
+        }
+
     }
 
     [SqliteFunction (Name = "BANSHEE_MIGRATE_PARTIAL", FuncType = FunctionType.Scalar, Arguments = 2)]
@@ -1420,7 +1451,7 @@ namespace Banshee.Database
         {
             string library_path = (string)args[0];
             string filename_fragment = (string)args[1];
-            string full_path = Banshee.Base.Paths.Combine (library_path, filename_fragment);
+            string full_path = Paths.Combine (library_path, filename_fragment);
             return Banshee.Base.SafeUri.FilenameToUri (full_path);
         }
     }

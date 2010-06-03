@@ -52,16 +52,28 @@ namespace Banshee.GStreamer
         Playing = 4
     }
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void BansheePlayerEosCallback (IntPtr player);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void BansheePlayerErrorCallback (IntPtr player, uint domain, int code, IntPtr error, IntPtr debug);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void BansheePlayerStateChangedCallback (IntPtr player, GstState old_state, GstState new_state, GstState pending_state);
-    internal delegate void BansheePlayerIterateCallback (IntPtr player);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void BansheePlayerBufferingCallback (IntPtr player, int buffering_progress);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void BansheePlayerVisDataCallback (IntPtr player, int channels, int samples, IntPtr data, int bands, IntPtr spectrum);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void BansheePlayerNextTrackStartingCallback (IntPtr player);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void BansheePlayerAboutToFinishCallback (IntPtr player);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate IntPtr VideoPipelineSetupHandler (IntPtr player, IntPtr bus);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate void VideoPrepareWindowHandler (IntPtr player);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate void BansheePlayerVolumeChangedCallback (IntPtr player, double newVolume);
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void GstTaggerTagFoundCallback (IntPtr player, string tagName, ref GLib.Value value);
 
     public class PlayerEngine : Banshee.MediaEngine.PlayerEngine,
@@ -76,25 +88,26 @@ namespace Banshee.GStreamer
         private uint GST_STREAM_ERROR = 0;
 
         private HandleRef handle;
-        private bool initialized;
+        private bool is_initialized;
 
         private BansheePlayerEosCallback eos_callback;
         private BansheePlayerErrorCallback error_callback;
         private BansheePlayerStateChangedCallback state_changed_callback;
-        private BansheePlayerIterateCallback iterate_callback;
         private BansheePlayerBufferingCallback buffering_callback;
         private BansheePlayerVisDataCallback vis_data_callback;
         private VideoPipelineSetupHandler video_pipeline_setup_callback;
+        private VideoPrepareWindowHandler video_prepare_window_callback;
         private GstTaggerTagFoundCallback tag_found_callback;
         private BansheePlayerNextTrackStartingCallback next_track_starting_callback;
         private BansheePlayerAboutToFinishCallback about_to_finish_callback;
+        private BansheePlayerVolumeChangedCallback volume_changed_callback;
 
         private bool next_track_pending;
         private SafeUri pending_uri;
 
         private bool buffering_finished;
-        private int pending_volume = -1;
         private bool xid_is_set = false;
+        private uint iterate_timeout_id = 0;
 
         private bool gapless_enabled;
         private EventWaitHandle next_track_set;
@@ -145,23 +158,23 @@ namespace Banshee.GStreamer
             eos_callback = new BansheePlayerEosCallback (OnEos);
             error_callback = new BansheePlayerErrorCallback (OnError);
             state_changed_callback = new BansheePlayerStateChangedCallback (OnStateChange);
-            iterate_callback = new BansheePlayerIterateCallback (OnIterate);
             buffering_callback = new BansheePlayerBufferingCallback (OnBuffering);
             vis_data_callback = new BansheePlayerVisDataCallback (OnVisualizationData);
             video_pipeline_setup_callback = new VideoPipelineSetupHandler (OnVideoPipelineSetup);
+            video_prepare_window_callback = new VideoPrepareWindowHandler (OnVideoPrepareWindow);
             tag_found_callback = new GstTaggerTagFoundCallback (OnTagFound);
             next_track_starting_callback = new BansheePlayerNextTrackStartingCallback (OnNextTrackStarting);
             about_to_finish_callback = new BansheePlayerAboutToFinishCallback (OnAboutToFinish);
+            volume_changed_callback = new BansheePlayerVolumeChangedCallback (OnVolumeChanged);
             bp_set_eos_callback (handle, eos_callback);
-#if !WIN32
-            bp_set_iterate_callback (handle, iterate_callback);
-#endif
             bp_set_error_callback (handle, error_callback);
             bp_set_state_changed_callback (handle, state_changed_callback);
             bp_set_buffering_callback (handle, buffering_callback);
             bp_set_tag_found_callback (handle, tag_found_callback);
             bp_set_next_track_starting_callback (handle, next_track_starting_callback);
             bp_set_video_pipeline_setup_callback (handle, video_pipeline_setup_callback);
+            bp_set_video_prepare_window_callback (handle, video_prepare_window_callback);
+            bp_set_volume_changed_callback (handle, volume_changed_callback);
 
             next_track_set = new EventWaitHandle (false, EventResetMode.ManualReset);
         }
@@ -174,16 +187,17 @@ namespace Banshee.GStreamer
                 throw new ApplicationException (Catalog.GetString ("Could not initialize GStreamer library"));
             }
 
-            initialized = true;
             OnStateChanged (PlayerState.Ready);
-
-            if (pending_volume >= 0) {
-                Volume = (ushort)pending_volume;
-            }
 
             InstallPreferences ();
             ReplayGainEnabled = ReplayGainEnabledSchema.Get ();
             GaplessEnabled = GaplessEnabledSchema.Get ();
+
+            is_initialized = true;
+
+            if (!bp_supports_stream_volume (handle)) {
+                Volume = (ushort)PlayerEngineService.VolumeSchema.Get ();
+            }
         }
 
         public override void Dispose ()
@@ -192,6 +206,7 @@ namespace Banshee.GStreamer
             base.Dispose ();
             bp_destroy (handle);
             handle = new HandleRef (this, IntPtr.Zero);
+            is_initialized = false;
         }
 
         public override void Close (bool fullShutdown)
@@ -302,9 +317,36 @@ namespace Banshee.GStreamer
             }
         }
 
+        private bool OnIterate ()
+        {
+            // Actual iteration.
+            OnEventChanged (PlayerEvent.Iterate);
+            // Run forever until we are stopped
+            return true;
+        }
+
+        private void StartIterating ()
+        {
+            if (iterate_timeout_id > 0) {
+                GLib.Source.Remove (iterate_timeout_id);
+            }
+
+            iterate_timeout_id = GLib.Timeout.Add (200, OnIterate);
+        }
+
+        private void StopIterating ()
+        {
+            if (iterate_timeout_id > 0) {
+                GLib.Source.Remove (iterate_timeout_id);
+            }
+        }
+
         private void OnNextTrackStarting (IntPtr player)
         {
             if (GaplessEnabled) {
+                // Must do it here because the next track is already playing.
+                ServiceManager.PlayerEngine.IncrementLastPlayed (1.0);
+
                 OnEventChanged (PlayerEvent.EndOfStream);
                 OnEventChanged (PlayerEvent.StartOfStream);
             }
@@ -334,13 +376,10 @@ namespace Banshee.GStreamer
             }
         }
 
-        private void OnIterate (IntPtr player)
-        {
-            OnEventChanged (PlayerEvent.Iterate);
-        }
-
         private void OnStateChange (IntPtr player, GstState old_state, GstState new_state, GstState pending_state)
         {
+            // Start by clearing any timeout we might have
+            StopIterating ();
             if (CurrentState != PlayerState.Loaded && old_state == GstState.Ready && new_state == GstState.Paused && pending_state == GstState.Playing) {
                 if (ready_timeout != 0) {
                     Application.IdleTimeoutRemove (ready_timeout);
@@ -353,6 +392,8 @@ namespace Banshee.GStreamer
                     OnEventChanged (PlayerEvent.StartOfStream);
                 }
                 OnStateChanged (PlayerState.Playing);
+                // Start iterating only when going to playing
+                StartIterating ();
                 return;
             } else if (CurrentState == PlayerState.Playing && old_state == GstState.Playing && new_state == GstState.Paused) {
                 OnStateChanged (PlayerState.Paused);
@@ -480,6 +521,11 @@ namespace Banshee.GStreamer
             }
         }
 
+        private void OnVolumeChanged (IntPtr player, double newVolume)
+        {
+            OnEventChanged (PlayerEvent.Volume);
+        }
+
         private static StreamTag ProcessNativeTagResult (string tagName, ref GLib.Value valueRaw)
         {
             if (tagName == String.Empty || tagName == null) {
@@ -506,14 +552,21 @@ namespace Banshee.GStreamer
         }
 
         public override ushort Volume {
-            get { return (ushort)Math.Round (bp_get_volume (handle) * 100.0); }
+            get {
+                return is_initialized
+                    ? (ushort)Math.Round (bp_get_volume (handle) * 100.0)
+                    : (ushort)0;
+            }
             set {
-                if (!initialized) {
-                    pending_volume = value;
+                if (!is_initialized) {
                     return;
                 }
 
                 bp_set_volume (handle, value / 100.0);
+                if (!bp_supports_stream_volume (handle)) {
+                    PlayerEngineService.VolumeSchema.Set ((int)value);
+                }
+
                 OnEventChanged (PlayerEvent.Volume);
             }
         }
@@ -684,6 +737,11 @@ namespace Banshee.GStreamer
             return clutter_video_sink;
         }
 
+        private void OnVideoPrepareWindow (IntPtr player)
+        {
+            OnEventChanged (PlayerEvent.PrepareVideoWindow);
+        }
+
 #endregion
 
 #region Preferences
@@ -767,10 +825,6 @@ namespace Banshee.GStreamer
             BansheePlayerStateChangedCallback cb);
 
         [DllImport ("libbanshee.dll")]
-        private static extern void bp_set_iterate_callback (HandleRef player,
-            BansheePlayerIterateCallback cb);
-
-        [DllImport ("libbanshee.dll")]
         private static extern void bp_set_buffering_callback (HandleRef player,
             BansheePlayerBufferingCallback cb);
 
@@ -781,6 +835,10 @@ namespace Banshee.GStreamer
         [DllImport ("libbanshee.dll")]
         private static extern void bp_set_tag_found_callback (HandleRef player,
             GstTaggerTagFoundCallback cb);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern void bp_set_video_prepare_window_callback (HandleRef player,
+           VideoPrepareWindowHandler cb);
 
         [DllImport ("libbanshee.dll")]
         private static extern void bp_set_next_track_starting_callback (HandleRef player,
@@ -815,7 +873,14 @@ namespace Banshee.GStreamer
         private static extern double bp_get_volume (HandleRef player);
 
         [DllImport ("libbanshee.dll")]
+        private static extern void bp_set_volume_changed_callback (HandleRef player,
+            BansheePlayerVolumeChangedCallback cb);
+
+        [DllImport ("libbanshee.dll")]
         private static extern bool bp_can_seek (HandleRef player);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern bool bp_supports_stream_volume (HandleRef player);
 
         [DllImport ("libbanshee.dll")]
         private static extern bool bp_set_position (HandleRef player, ulong time_ms);

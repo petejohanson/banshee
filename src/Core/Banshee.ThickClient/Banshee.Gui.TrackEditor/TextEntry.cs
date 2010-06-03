@@ -78,5 +78,10 @@ namespace Banshee.Gui.TrackEditor
             get { return base.Text; }
             set { base.Text = value ?? String.Empty; }
         }
+
+        public void SetAsReadOnly ()
+        {
+            IsEditable = false;
+        }
     }
 }

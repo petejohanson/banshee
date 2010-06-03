@@ -124,13 +124,14 @@ namespace Banshee.Collection.Gui
                 image_allocation.Y = Math.Round ((inner_allocation.Height - height) / 2.0);
             }
 
+            double allocated_image_size = Math.Max (image_allocation.Height, image_allocation.Width);
             if (IsGridLayout) {
-                first_line_allocation.Y = image_allocation.Height + ImageSpacing;
+                first_line_allocation.Y = allocated_image_size + ImageSpacing;
                 first_line_allocation.Width = second_line_allocation.Width = inner_allocation.Width;
             } else {
-                first_line_allocation.X = second_line_allocation.X = image_allocation.Width + ImageSpacing;
+                first_line_allocation.X = second_line_allocation.X = allocated_image_size + ImageSpacing;
                 first_line_allocation.Width = second_line_allocation.Width =
-                    inner_allocation.Width - image_allocation.Width - ImageSpacing;
+                    inner_allocation.Width - allocated_image_size - ImageSpacing;
             }
 
             second_line_allocation.Y = first_line_allocation.Bottom + TextSpacing;
@@ -154,7 +155,8 @@ namespace Banshee.Collection.Gui
                 grad.AddColorStop (0, new Color (0, 0, 0, 0.65 * a));
                 grad.AddColorStop (1, new Color (0, 0, 0, 0.15 * a));
                 cr.Pattern = grad;
-                cr.Rectangle ((Cairo.Rectangle)image_allocation);
+                CairoExtensions.RoundedRectangle (cr, image_allocation.X, image_allocation.Y,
+                    image_allocation.Width, image_allocation.Height, context.Theme.Context.Radius);
                 cr.Fill ();
                 grad.Destroy ();
 
@@ -192,8 +194,7 @@ namespace Banshee.Collection.Gui
             int small_size = (int)(normal_size * Pango.Scale.Small);
 
             if (!String.IsNullOrEmpty (lines[0])) {
-                layout.FontDescription.Weight = Pango.Weight.Bold;
-                layout.FontDescription.Size = normal_size;
+                layout.FontDescription.Size = small_size;
                 layout.SetText (lines[0]);
 
                 context.Context.Color = text_color;
@@ -206,7 +207,7 @@ namespace Banshee.Collection.Gui
                 layout.FontDescription.Size = small_size;
                 layout.SetText (lines[1]);
 
-                text_color.A = 0.75;
+                text_color.A = 0.60;
                 context.Context.Color = text_color;
                 context.Context.MoveTo (second_line_allocation.X, second_line_allocation.Y);
                 PangoCairoHelper.ShowLayout (context.Context, layout);
@@ -219,17 +220,17 @@ namespace Banshee.Collection.Gui
         {
             var widget = ParentLayout.View;
 
-            using (var layout = new Pango.Layout (widget.PangoContext) {
-                    FontDescription = widget.PangoContext.FontDescription.Copy ()
-                }) {
-                layout.FontDescription.Weight = Pango.Weight.Bold;
-                first_line_allocation.Height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
+            var fd = widget.PangoContext.FontDescription;
+            int normal_size = fd.Size;
 
-                layout.FontDescription.Weight = Pango.Weight.Normal;
-                layout.FontDescription.Size = (int)(layout.FontDescription.Size * Pango.Scale.Small);
-                layout.FontDescription.Style = Pango.Style.Italic;
-                second_line_allocation.Height = layout.FontDescription.MeasureTextHeight (widget.PangoContext);
-            }
+            fd.Size = (int)(fd.Size * Pango.Scale.Small);
+            first_line_allocation.Height = fd.MeasureTextHeight (widget.PangoContext);
+
+            fd.Weight = Pango.Weight.Normal;
+            fd.Size = (int)(fd.Size * Pango.Scale.Small);
+            second_line_allocation.Height = fd.MeasureTextHeight (widget.PangoContext);
+
+            fd.Size = normal_size;
 
             double width, height;
             double text_height = first_line_allocation.Height + second_line_allocation.Height;
@@ -276,7 +277,8 @@ namespace Banshee.Collection.Gui
                 throw new InvalidCastException ("ColumnCellAlbum can only bind to AlbumInfo objects");
             }
 
-            lines = new [] { album.DisplayTitle, ModelRowIndex == 0 ? "" : album.DisplayArtistName };
+            bool hide_artist = ModelRowIndex == 0 && String.IsNullOrEmpty (album.ArtistName);
+            lines = new [] { album.DisplayTitle, hide_artist ? "" : album.DisplayArtistName };
             image = artwork_manager != null
                 ? artwork_manager.LookupScaleSurface (album.ArtworkId, (int)ImageSize, true)
                 : null;

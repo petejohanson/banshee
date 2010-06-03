@@ -234,20 +234,20 @@ namespace Banshee.PlaybackController
             Next (restart, true);
         }
 
-        public void Next (bool restart, bool userRequested)
+        public void Next (bool restart, bool changeImmediately)
         {
             CancelErrorTransition ();
 
             Source = NextSource;
             raise_started_after_transition = true;
 
-            if (userRequested) {
+            if (changeImmediately) {
                 player_engine.IncrementLastPlayed ();
             }
 
-            if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart, userRequested)) {
+            if (Source is IBasicPlaybackController && ((IBasicPlaybackController)Source).Next (restart, changeImmediately)) {
             } else {
-                ((IBasicPlaybackController)this).Next (restart, userRequested);
+                ((IBasicPlaybackController)this).Next (restart, changeImmediately);
             }
 
             OnTransition ();
@@ -307,14 +307,14 @@ namespace Banshee.PlaybackController
             return true;
         }
 
-        bool IBasicPlaybackController.Next (bool restart, bool userRequested)
+        bool IBasicPlaybackController.Next (bool restart, bool changeImmediately)
         {
             if (CurrentTrack != null) {
                 previous_stack.Push (CurrentTrack);
             }
 
             CurrentTrack = CalcNextTrack (Direction.Next, restart);
-            if (!userRequested) {
+            if (!changeImmediately) {
                 // A RequestNextTrack event should always result in SetNextTrack being called.  null is acceptable.
                 player_engine.SetNextTrack (CurrentTrack);
             } else if (CurrentTrack != null) {

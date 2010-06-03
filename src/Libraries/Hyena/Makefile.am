@@ -126,6 +126,7 @@ SOURCES =  \
 	Hyena/EventArgs.cs \
 	Hyena/IUndoAction.cs \
 	Hyena/Log.cs \
+	Hyena/Paths.cs \
 	Hyena/PlatformDetection.cs \
 	Hyena/StringUtil.cs \
 	Hyena/Tests/CryptoUtilTests.cs \
@@ -140,9 +141,3 @@ SOURCES =  \
 	System.Web/HttpUtility.cs
 
 include $(top_srcdir)/build/build.mk
-
-test: all
-	pushd $(top_srcdir)/tests; \
-	make hyena; \
-	popd
-

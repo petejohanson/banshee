@@ -67,12 +67,11 @@ namespace Banshee.Widgets
         private void BuildLayouts ()
         {
             if (layout != null) {
-                layout.FontDescription.Dispose ();
                 layout.Dispose ();
             }
 
             layout = new Pango.Layout (PangoContext);
-            layout.FontDescription = PangoContext.FontDescription.Copy ();
+            layout.FontDescription = PangoContext.FontDescription;
             layout.Ellipsize = Pango.EllipsizeMode.None;
         }
 

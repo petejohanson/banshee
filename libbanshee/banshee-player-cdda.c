@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -73,7 +75,7 @@ bp_cdda_on_notify_source (GstElement *playbin, gpointer unknown, BansheePlayer *
     
     // Technically don't need to check the class, since GstCddaBaseSrc elements will always have this
     if (G_LIKELY (g_object_class_find_property (G_OBJECT_GET_CLASS (cdda_src), "device"))) {
-        bp_debug ("bp_cdda: setting device property on source (%s)", player->cdda_device);
+        bp_debug2 ("bp_cdda: setting device property on source (%s)", player->cdda_device);
         g_object_set (cdda_src, "device", player->cdda_device, NULL);
     }
     
@@ -112,7 +114,7 @@ bp_cdda_source_seek_to_track (GstElement *playbin, guint track)
     
     if (gst_element_seek (playbin, 1.0, format, GST_SEEK_FLAG_FLUSH, 
         GST_SEEK_TYPE_SET, track - 1, GST_SEEK_TYPE_NONE, -1)) {
-        bp_debug ("bp_cdda: seeking to track %d, avoiding playbin", track);
+        bp_debug2 ("bp_cdda: seeking to track %d, avoiding playbin", track);
         g_object_unref (cdda_src);
         return TRUE;
     }
@@ -149,7 +151,7 @@ _bp_cdda_handle_uri (BansheePlayer *player, const gchar *uri)
     if (player == NULL || uri == NULL || !g_str_has_prefix (uri, "cdda://")) {
         // Something is hosed or the URI isn't actually CDDA
         if (player->cdda_device != NULL) {
-            bp_debug ("bp_cdda: finished using device (%s)", player->cdda_device);
+            bp_debug2 ("bp_cdda: finished using device (%s)", player->cdda_device);
             g_free (player->cdda_device);
             player->cdda_device = NULL;
         }
@@ -163,7 +165,7 @@ _bp_cdda_handle_uri (BansheePlayer *player, const gchar *uri)
         // have its own valid device node
         g_free (player->cdda_device);
         player->cdda_device = NULL;
-        bp_debug ("bp_cdda: invalid device node in URI (%s)", uri);
+        bp_debug2 ("bp_cdda: invalid device node in URI (%s)", uri);
         return FALSE;
     }
     
@@ -173,7 +175,7 @@ _bp_cdda_handle_uri (BansheePlayer *player, const gchar *uri)
         // If we weren't already playing from a CD, cache the
         // device and allow playbin to begin playing it
         player->cdda_device = g_strdup (new_cdda_device);
-        bp_debug ("bp_cdda: storing device node for fast seeks (%s)", player->cdda_device);
+        bp_debug2 ("bp_cdda: storing device node for fast seeks (%s)", player->cdda_device);
         return FALSE;
     }
     
@@ -184,14 +186,14 @@ _bp_cdda_handle_uri (BansheePlayer *player, const gchar *uri)
         gchar *track_str = g_strndup (uri + 7, strlen (uri) - strlen (new_cdda_device) - 8);
         gint track_num = atoi (track_str);
         g_free (track_str);
-        bp_debug ("bp_cdda: fast seeking to track on already playing device (%s)", player->cdda_device);
+        bp_debug2 ("bp_cdda: fast seeking to track on already playing device (%s)", player->cdda_device);
         
         return bp_cdda_source_seek_to_track (player->playbin, track_num);
     }
     
     // We were already playing some CD, but switched to a different device node, 
     // so unset and re-cache the new device node and allow playbin to do its thing
-    bp_debug ("bp_cdda: switching devices for CDDA playback (from %s, to %s)", player->cdda_device, new_cdda_device);
+    bp_debug3 ("bp_cdda: switching devices for CDDA playback (from %s, to %s)", player->cdda_device, new_cdda_device);
     g_free (player->cdda_device);
     player->cdda_device = g_strdup(new_cdda_device);
     

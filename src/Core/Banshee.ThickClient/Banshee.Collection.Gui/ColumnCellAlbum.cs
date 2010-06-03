@@ -60,10 +60,12 @@ namespace Banshee.Collection.Gui
             public ColumnCellAlbumAccessible (object bound_object, ColumnCellAlbum cell, ICellAccessibleParent parent)
                 : base (bound_object, cell as ColumnCell, parent)
             {
-                AlbumInfo bound_album_info = (AlbumInfo)bound_object;
-                Name = String.Format ("{0} - {1}",
-                                     bound_album_info.DisplayTitle,
-                                     bound_album_info.DisplayArtistName);
+                var bound_album_info = bound_object as AlbumInfo;
+                if (bound_album_info != null) {
+                    Name = String.Format ("{0} - {1}",
+                                         bound_album_info.DisplayTitle,
+                                         bound_album_info.DisplayArtistName);
+                }
             }
         }
 
@@ -155,7 +157,7 @@ namespace Banshee.Collection.Gui
             int text_w, text_h;
 
             Pango.Layout layout = new Pango.Layout (widget.PangoContext);
-            layout.FontDescription = widget.PangoContext.FontDescription.Copy ();
+            layout.FontDescription = widget.PangoContext.FontDescription;
 
             layout.FontDescription.Weight = Pango.Weight.Bold;
             layout.SetText ("W");
@@ -169,7 +171,6 @@ namespace Banshee.Collection.Gui
             layout.GetPixelSize (out text_w, out text_h);
             height += text_h;
 
-            layout.FontDescription.Dispose ();
             layout.Dispose ();
 
             return (height < image_size ? image_size : height) + 6;

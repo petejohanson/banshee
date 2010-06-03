@@ -214,8 +214,9 @@ namespace Banshee.Collection
 
             // If the file was modified since we last scanned, parse the file's metadata
             if (mtime > track.FileModifiedStamp) {
-                TagLib.File file = Banshee.Streaming.StreamTagger.ProcessUri (track.Uri);
-                Banshee.Streaming.StreamTagger.TrackInfoMerge (track, file, false);
+                using (var file = Banshee.Streaming.StreamTagger.ProcessUri (track.Uri)) {
+                    Banshee.Streaming.StreamTagger.TrackInfoMerge (track, file, false);
+                }
             }
         }
     }

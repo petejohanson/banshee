@@ -56,7 +56,7 @@ namespace Banshee.Playlists.Formats.Tests
         {
             Mono.Addins.AddinManager.Initialize (BinDir);
 
-            playlists_dir = Path.Combine (TestsDir, "Banshee.Services/playlist-data");
+            playlists_dir = Path.Combine (TestsDir, "data/playlist-data");
             IPlaylistFormat playlist = LoadPlaylist (new M3uPlaylistFormat (), "extended.m3u");
             foreach (Dictionary<string, object> element in playlist.Elements) {
                 elements.Add (element);

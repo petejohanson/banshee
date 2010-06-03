@@ -30,7 +30,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Web;
-using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
 using ICSharpCode.SharpZipLib.GZip;
@@ -44,7 +43,7 @@ namespace Banshee.YouTube.Data
     {
         private const int CACHE_VERSION = 2;
         public static string UserAgent = Banshee.Web.Browser.UserAgent;
-        public static string CachePath = Path.Combine (Banshee.Base.Paths.ExtensionCacheRoot, "youtube");
+        public static string CachePath = Path.Combine (Paths.ExtensionCacheRoot, "youtube");
         public static TimeSpan NormalCacheTime = TimeSpan.FromHours (2);
 
         private static bool initialized = false;

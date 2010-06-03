@@ -43,7 +43,7 @@ namespace Halie
 {
     public static class Client
     {
-        // NOTE: Interface is copied from Banshee.ThickClient/Banshee.Gui
+        // NOTE: Interfaces are copied from Banshee.ThickClient/Banshee.Gui
         // since we don't want to link against any GUI assemblies for this
         // client. It's a simple interface
         [Interface ("org.bansheeproject.Banshee.ClientWindow")]
@@ -51,6 +51,16 @@ namespace Halie
         {
             void Present ();
             void Hide ();
+            void Fullscreen ();
+        }
+
+        [Interface ("org.bansheeproject.Banshee.GlobalUIActions")]
+        public interface IGlobalUIActions
+        {
+            void ShowImportDialog ();
+            void ShowAboutDialog ();
+            void ShowOpenLocationDialog ();
+            void ShowPreferencesDialog ();
         }
 
         private static bool hide_field;
@@ -73,7 +83,10 @@ namespace Halie
             command = DBusServiceManager.FindInstance<DBusCommandService> ("/DBusCommandService");
             hide_field = ApplicationContext.CommandLine.Contains ("hide-field");
 
-            bool present = HandlePlayerCommands () && !ApplicationContext.CommandLine.Contains ("indexer");
+            bool present =
+                HandlePlayerCommands () &&
+                HandleGlobalUIActions () &&
+                !ApplicationContext.CommandLine.Contains ("indexer");
             HandleWindowCommands (present);
             HandleFiles ();
         }
@@ -89,6 +102,7 @@ namespace Halie
                 switch (arg.Key) {
                     case "show":
                     case "present": present = true; break;
+                    case "fullscreen": window.Fullscreen (); break;
                     case "hide":
                         present = false;
                         window.Hide ();
@@ -111,6 +125,34 @@ namespace Halie
                     command.PushFile (Path.GetFullPath (file));
                 }
             }
+        }
+
+        private static bool HandleGlobalUIActions ()
+        {
+            var global_ui_actions = DBusServiceManager.FindInstance<IGlobalUIActions> ("/GlobalUIActions");
+            var handled = false;
+
+            if (ApplicationContext.CommandLine.Contains ("show-import-media")) {
+                global_ui_actions.ShowImportDialog ();
+                handled |= true;
+            }
+
+            if (ApplicationContext.CommandLine.Contains ("show-about")) {
+                global_ui_actions.ShowAboutDialog ();
+                handled |= true;
+            }
+
+            if (ApplicationContext.CommandLine.Contains ("show-preferences")) {
+                global_ui_actions.ShowPreferencesDialog ();
+                handled |= true;
+            }
+
+            if (ApplicationContext.CommandLine.Contains ("show-open-location")) {
+                global_ui_actions.ShowOpenLocationDialog ();
+                handled |= true;
+            }
+
+            return !handled;
         }
 
         private static bool HandlePlayerCommands ()

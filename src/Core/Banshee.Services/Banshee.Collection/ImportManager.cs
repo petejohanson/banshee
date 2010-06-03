@@ -92,23 +92,18 @@ namespace Banshee.Collection
 
 #region Public API
 
-        public virtual void Enqueue (UriList uris)
+        public override void Enqueue (string path)
         {
             CreateUserJob ();
-
-            foreach (string path in uris.LocalPaths) {
-                base.Enqueue (path);
-            }
-        }
-
-        public override void Enqueue (string source)
-        {
-            Enqueue (new UriList (source));
+            base.Enqueue (path);
         }
 
         public void Enqueue (string [] paths)
         {
-            Enqueue (new UriList (paths));
+            CreateUserJob ();
+            foreach (string path in paths) {
+                base.Enqueue (path);
+            }
         }
 
         public bool IsImportInProgress {

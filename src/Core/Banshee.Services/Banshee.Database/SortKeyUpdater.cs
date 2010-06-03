@@ -35,6 +35,10 @@ namespace Banshee.Database
 {
     internal class SortKeyUpdater
     {
+#if ENABLE_TESTS
+        internal static bool Disable;
+#endif
+
         public static void Update ()
         {
             string locale = CultureInfo.CurrentCulture.Name;
@@ -51,6 +55,12 @@ namespace Banshee.Database
 
         protected static void ForceUpdate (string new_locale)
         {
+#if ENABLE_TESTS
+            if (Disable) {
+                return;
+            }
+#endif
+
             ServiceManager.DbConnection.Execute (@"
                     UPDATE CoreArtists SET
                         NameSortKey       = HYENA_COLLATION_KEY(COALESCE(NameSort, Name, ?)),

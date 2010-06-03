@@ -32,6 +32,11 @@ namespace Banshee.IO.Gio
 {
     public class Provider : Banshee.IO.IProvider
     {
+        static Provider ()
+        {
+            GLib.GType.Init ();
+        }
+
         public Type FileProvider {
             get { return typeof (File); }
         }

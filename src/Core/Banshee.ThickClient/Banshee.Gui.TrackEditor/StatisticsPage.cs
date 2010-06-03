@@ -152,7 +152,7 @@ namespace Banshee.Gui.TrackEditor
             model = null;
             CreateModel ();
 
-            TagLib.File file = track.TaglibFile;
+            TagLib.File file = track.GetTaglibFile ();
 
             if (track.Uri.IsLocalPath) {
                 string path = track.Uri.AbsolutePath;
@@ -201,6 +201,7 @@ namespace Banshee.Gui.TrackEditor
 
                 AddItem (Catalog.GetString ("Container Formats:"), file.TagTypes.ToString ());
                 AddSeparator ();
+                file.Dispose ();
             }
 
             AddItem (Catalog.GetString ("Imported On:"), track.DateAdded > DateTime.MinValue

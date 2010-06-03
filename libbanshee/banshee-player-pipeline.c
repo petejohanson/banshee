@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Julien Moutte <julien@fluendo.com>
 //
 // Copyright (C) 2005-2008 Novell, Inc.
+// Copyright (C) 2010 Fluendo S.A.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -67,16 +69,28 @@ bp_pipeline_process_tag (const GstTagList *tag_list, const gchar *tag_name, Bans
     }
 }
 
+static void
+playbin_stream_changed_cb (GstElement * element, BansheePlayer *player)
+{
+    GstMessage *msg;
+
+    // We're being called from the streaming thread, so don't do anything here
+    msg = gst_message_new_application (GST_OBJECT (player->playbin), gst_structure_new ("stream-changed", NULL));
+    gst_element_post_message (player->playbin, msg);
+}
+
 static gboolean
 bp_next_track_starting (BansheePlayer *player)
 {
+    gboolean has_video;
+
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
     g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), FALSE);
 
     // Work around BGO #602437 - gapless transition between tracks with 
     // video streams results in broken behaviour - most obviously, huge A/V
     // sync issues.
-    gboolean has_video = bp_stream_has_video (player->playbin);
+    has_video = bp_stream_has_video (player->playbin);
     if (player->in_gapless_transition && has_video) {
         gchar *uri;
     
@@ -207,6 +221,16 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
             _bp_missing_elements_process_message (player, message);
             break;
         }
+
+        case GST_MESSAGE_APPLICATION: {
+            const gchar * name;
+            const GstStructure * s = gst_message_get_structure (message);
+            name = gst_structure_get_name (s);
+            if (name && !strcmp (name, "stream-changed")) {
+                _bp_parse_stream_info (player);
+            }
+            break;
+        }
         
         default: break;
     }
@@ -234,6 +258,20 @@ static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *pla
 }
 #endif //ENABLE_GAPLESS
 
+static void bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, BansheePlayer *player)
+{
+    gdouble volume;
+
+    g_return_if_fail (IS_BANSHEE_PLAYER (player));
+    g_return_if_fail (GST_IS_ELEMENT (playbin));
+
+    g_object_get (G_OBJECT (playbin), "volume", &volume, NULL);
+
+    if (player->volume_changed_cb != NULL) {
+        player->volume_changed_cb (player, volume);
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Internal Functions
 // ---------------------------------------------------------------------------
@@ -254,6 +292,15 @@ _bp_pipeline_construct (BansheePlayer *player)
     // source and decoder elements) based on source URI and stream content
     player->playbin = gst_element_factory_make ("playbin2", "playbin");
 
+    player->supports_stream_volume = FALSE;
+#if BANSHEE_CHECK_GST_VERSION(0,10,25)
+    player->supports_stream_volume = gst_element_implements_interface (
+        player->playbin, GST_TYPE_STREAM_VOLUME);
+#endif
+
+    bp_debug ("Stream volume supported: %s",
+        player->supports_stream_volume ? "YES" : "NO");
+
 #ifdef ENABLE_GAPLESS
     // Connect a proxy about-to-finish callback that will generate a next-track-starting callback.
     // This can be removed once playbin2 generates its own next-track signal.
@@ -261,6 +308,11 @@ _bp_pipeline_construct (BansheePlayer *player)
 #endif //ENABLE_GAPLESS
 
     g_return_val_if_fail (player->playbin != NULL, FALSE);
+
+    g_signal_connect (player->playbin, "notify::volume", G_CALLBACK (bp_volume_changed_callback), player);
+    g_signal_connect (player->playbin, "video-changed", G_CALLBACK (playbin_stream_changed_cb), player);
+    g_signal_connect (player->playbin, "audio-changed", G_CALLBACK (playbin_stream_changed_cb), player);
+    g_signal_connect (player->playbin, "text-changed", G_CALLBACK (playbin_stream_changed_cb), player);
 
     // Try to find an audio sink, prefer gconf, which typically is set to auto these days,
     // fall back on auto, which should work on windows, and as a last ditch, try alsa
@@ -304,17 +356,11 @@ _bp_pipeline_construct (BansheePlayer *player)
     }
     
     // Add elements to custom audio sink
-    gst_bin_add (GST_BIN (player->audiobin), player->audiotee);
+    gst_bin_add_many (GST_BIN (player->audiobin), player->audiotee, audiosinkqueue, audiosink, NULL);
     
     if (player->equalizer != NULL) {
-        gst_bin_add (GST_BIN (player->audiobin), eq_audioconvert);
-        gst_bin_add (GST_BIN (player->audiobin), eq_audioconvert2);
-        gst_bin_add (GST_BIN (player->audiobin), player->equalizer);
-        gst_bin_add (GST_BIN (player->audiobin), player->preamp);
+        gst_bin_add_many (GST_BIN (player->audiobin), eq_audioconvert, eq_audioconvert2, player->equalizer, player->preamp, NULL);
     }
-    
-    gst_bin_add (GST_BIN (player->audiobin), audiosinkqueue);
-    gst_bin_add (GST_BIN (player->audiobin), audiosink);
    
     // Ghost pad the audio bin so audio is passed from the bin into the tee
     teepad = gst_element_get_pad (player->audiotee, "sink");

@@ -82,26 +82,27 @@ namespace Banshee.Dap.MassStorage
 
         public override bool LoadDeviceConfiguration ()
         {
+            LoadConfig ();
             return true;
         }
 
-        public override string [] AudioFolders {
+        protected override string [] DefaultAudioFolders {
             get { return audio_folders; }
         }
 
-        public override string [] VideoFolders {
+        protected override string [] DefaultVideoFolders {
             get { return video_folders; }
         }
 
-        public override string [] PlaylistFormats {
+        protected override string [] DefaultPlaylistFormats {
             get { return playlist_formats; }
         }
 
-        public override string PlaylistPath {
+        protected override string DefaultPlaylistPath {
             get { return playlists_path; }
         }
 
-        public override string [] PlaybackMimeTypes {
+        protected override string [] DefaultPlaybackMimeTypes {
             get { return playback_mime_types; }
         }
 
@@ -109,19 +110,19 @@ namespace Banshee.Dap.MassStorage
         // packages/apps/Music/src/com/android/music/MusicUtils.java
         // <3 open source
 
-        public override int FolderDepth {
+        protected override int DefaultFolderDepth {
             get { return 2; }
         }
 
-        public override string CoverArtFileName {
+        protected override string DefaultCoverArtFileName {
             get { return "AlbumArt.jpg"; }
         }
 
-        public override string CoverArtFileType {
+        protected override string DefaultCoverArtFileType {
             get { return "jpeg"; }
         }
 
-        public override int CoverArtSize {
+        protected override int DefaultCoverArtSize {
             get { return 320; }
         }
 

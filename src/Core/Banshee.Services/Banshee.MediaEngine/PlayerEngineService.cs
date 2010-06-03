@@ -196,7 +196,6 @@ namespace Banshee.MediaEngine
         private void HandleStateChange (PlayerEventStateChangeArgs args)
         {
             if (args.Current == PlayerState.Loaded && CurrentTrack != null) {
-                active_engine.Volume = (ushort) VolumeSchema.Get ();
                 MetadataService.Instance.Lookup (CurrentTrack);
             } else if (args.Current == PlayerState.Ready) {
                 // Enable our preferred equalizer if it exists and was enabled last time.
@@ -391,16 +390,19 @@ namespace Banshee.MediaEngine
             }
         }
 
-        private bool incremented_last_played = true;
         public void IncrementLastPlayed ()
         {
+            // If Length <= 0 assume 100% completion.
+            IncrementLastPlayed (active_engine.Length <= 0
+                ? 1.0
+                : (double)active_engine.Position / active_engine.Length);
+        }
+
+        private bool incremented_last_played = true;
+        public void IncrementLastPlayed (double completed)
+        {
             if (!incremented_last_played && CurrentTrack != null && CurrentTrack.PlaybackError == StreamPlaybackError.None) {
-                //if Length <= 0 assume 100% completion:
-                if (active_engine.Length <= 0) {
-                    CurrentTrack.OnPlaybackFinished (1);
-                } else {
-                    CurrentTrack.OnPlaybackFinished ((double)active_engine.Position / (double)active_engine.Length);
-                }
+                CurrentTrack.OnPlaybackFinished (completed);
                 incremented_last_played = true;
             }
         }
@@ -535,8 +537,8 @@ namespace Banshee.MediaEngine
 
         private void CheckPending ()
         {
-            if(pending_engine != null && pending_engine != active_engine) {
-                if(active_engine.CurrentState == PlayerState.Idle) {
+            if (pending_engine != null && pending_engine != active_engine) {
+                if (active_engine.CurrentState == PlayerState.Idle) {
                     Close ();
                 }
 
@@ -689,7 +691,8 @@ namespace Banshee.MediaEngine
             | PlayerEvent.Volume
             | PlayerEvent.Metadata
             | PlayerEvent.TrackInfoUpdated
-            | PlayerEvent.RequestNextTrack;
+            | PlayerEvent.RequestNextTrack
+            | PlayerEvent.PrepareVideoWindow;
 
         private const PlayerEvent event_default_mask = event_all_mask & ~PlayerEvent.Iterate;
 

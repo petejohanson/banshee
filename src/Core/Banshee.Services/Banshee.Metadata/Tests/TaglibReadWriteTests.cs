@@ -52,101 +52,105 @@ namespace Banshee.Metadata
         [TestFixtureSetUp]
         public void Setup ()
         {
-            Mono.Addins.AddinManager.Initialize (BinDir);
-
             files = new string [] {
                 Path.Combine (TestsDir, "data/test.mp3")
             };
         }
 
         [Test]
-        public void TestSystemIO ()
+        public void TestChangeTrack ()
         {
-            Banshee.IO.Provider.SetProvider (new Banshee.IO.SystemIO.Provider ());
-            WriteMetadata (files, ChangeTrack, VerifyTrack);
-        }
-
-        [Test]
-        public void TestUnixIO ()
-        {
-            Banshee.IO.Provider.SetProvider (CreateUnixIOProvider ());
-            WriteMetadata (files, ChangeTrack, VerifyTrack);
+            foreach (var p in Banshee.IO.Tests.Providers) {
+                Banshee.IO.Provider.SetProvider (p);
+                WriteMetadata (files, ChangeTrack, VerifyTrack);
+            }
         }
 
         [Test]
         public void TestGenre ()
         {
-            Banshee.IO.Provider.SetProvider (CreateUnixIOProvider ());
-            WriteMetadata (files, delegate (TrackInfo track) {
-                ChangeTrack (track);
-                track.Genre = "My Genre";
-            }, delegate (TrackInfo track) {
-                VerifyTrack (track);
-                Assert.AreEqual ("My Genre", track.Genre);
-            });
+            foreach (var p in Banshee.IO.Tests.Providers) {
+                Banshee.IO.Provider.SetProvider (p);
+                WriteMetadata (files, delegate (TrackInfo track) {
+                    ChangeTrack (track);
+                    track.Genre = "My Genre";
+                }, delegate (TrackInfo track) {
+                    VerifyTrack (track);
+                    Assert.AreEqual ("My Genre", track.Genre);
+                });
+            }
         }
 
         [Test]
         public void TestNullGenreBug ()
         {
-            // Bug in taglib-sharp-2.0.3.0: Crash if you send it a genre of "{ null }" on
-            // a song with both ID3v1 and ID3v2 metadata. It's happy with "{}", though.
-            // (see http://forum.taglib-sharp.com/viewtopic.php?f=5&t=239 )
-            // This tests our workaround.
-            Banshee.IO.Provider.SetProvider (CreateUnixIOProvider ());
-            WriteMetadata (files, delegate (TrackInfo track) {
-                ChangeTrack (track);
-                track.Genre = null;
-            }, delegate (TrackInfo track) {
-                VerifyTrack (track);
-                Assert.IsNull (track.Genre);
-            });
+            foreach (var p in Banshee.IO.Tests.Providers) {
+                Banshee.IO.Provider.SetProvider (p);
+                // Bug in taglib-sharp-2.0.3.0: Crash if you send it a genre of "{ null }" on
+                // a song with both ID3v1 and ID3v2 metadata. It's happy with "{}", though.
+                // (see http://forum.taglib-sharp.com/viewtopic.php?f=5&t=239 )
+                // This tests our workaround.
+                WriteMetadata (files, delegate (TrackInfo track) {
+                    ChangeTrack (track);
+                    track.Genre = null;
+                }, delegate (TrackInfo track) {
+                    VerifyTrack (track);
+                    Assert.IsNull (track.Genre);
+                });
+            }
         }
 
         [Test]
         public void TestIsCompilation ()
         {
-            Banshee.IO.Provider.SetProvider (CreateUnixIOProvider ());
-            WriteMetadata (files, delegate (TrackInfo track) {
-                ChangeTrack (track);
-                // bgo#563283: IsCompilation was reset if AlbumArtist == Artist
-                track.AlbumArtist = track.ArtistName;
-                track.IsCompilation = true;
-            }, delegate (TrackInfo track) {
-                VerifyTrack (track);
-                Assert.AreEqual (track.ArtistName, track.AlbumArtist);
-                Assert.IsTrue (track.IsCompilation);
-            });
+            foreach (var p in Banshee.IO.Tests.Providers) {
+                Banshee.IO.Provider.SetProvider (p);
+
+                WriteMetadata (files, delegate (TrackInfo track) {
+                    ChangeTrack (track);
+                    // bgo#563283: IsCompilation was reset if AlbumArtist == Artist
+                    track.AlbumArtist = track.ArtistName;
+                    track.IsCompilation = true;
+                }, delegate (TrackInfo track) {
+                    VerifyTrack (track);
+                    Assert.AreEqual (track.ArtistName, track.AlbumArtist);
+                    Assert.IsTrue (track.IsCompilation);
+                });
+            }
         }
 
         [Test]
         public void TestIsNotCompilation ()
         {
-            Banshee.IO.Provider.SetProvider (CreateUnixIOProvider ());
-            WriteMetadata (files, delegate (TrackInfo track) {
-                ChangeTrack (track);
-                track.AlbumArtist = track.ArtistName;
-                track.IsCompilation = false;
-            }, delegate (TrackInfo track) {
-                VerifyTrack (track);
-                Assert.AreEqual (track.ArtistName, track.AlbumArtist);
-                Assert.IsFalse (track.IsCompilation);
-            });
+            foreach (var p in Banshee.IO.Tests.Providers) {
+                Banshee.IO.Provider.SetProvider (p);
+                WriteMetadata (files, delegate (TrackInfo track) {
+                    ChangeTrack (track);
+                    track.AlbumArtist = track.ArtistName;
+                    track.IsCompilation = false;
+                }, delegate (TrackInfo track) {
+                    VerifyTrack (track);
+                    Assert.AreEqual (track.ArtistName, track.AlbumArtist);
+                    Assert.IsFalse (track.IsCompilation);
+                });
+            }
         }
 
         [Test]
         public void TestIsCompilationAndAlbumArtist ()
         {
-            Banshee.IO.Provider.SetProvider (CreateUnixIOProvider ());
-            WriteMetadata (files, delegate (TrackInfo track) {
-                ChangeTrack (track);
-                track.AlbumArtist = "My Album Artist";
-                track.IsCompilation = true;
-            }, delegate (TrackInfo track) {
-                VerifyTrack (track);
-                Assert.AreEqual ("My Album Artist", track.AlbumArtist);
-                Assert.IsTrue (track.IsCompilation);
-            });
+            foreach (var p in Banshee.IO.Tests.Providers) {
+                Banshee.IO.Provider.SetProvider (p);
+                WriteMetadata (files, delegate (TrackInfo track) {
+                    ChangeTrack (track);
+                    track.AlbumArtist = "My Album Artist";
+                    track.IsCompilation = true;
+                }, delegate (TrackInfo track) {
+                    VerifyTrack (track);
+                    Assert.AreEqual ("My Album Artist", track.AlbumArtist);
+                    Assert.IsTrue (track.IsCompilation);
+                });
+            }
         }
 
         private void WriteMetadata (string [] files, Action<TrackInfo> change, Action<TrackInfo> verify)
@@ -175,6 +179,7 @@ namespace Banshee.Metadata
             TagLib.File file = StreamTagger.ProcessUri (uri);
             TrackInfo track = new TrackInfo ();
             StreamTagger.TrackInfoMerge (track, file);
+            file.Dispose ();
 
             // Make changes
             change (track);
@@ -187,6 +192,7 @@ namespace Banshee.Metadata
             file = StreamTagger.ProcessUri (uri);
             track = new TrackInfo ();
             StreamTagger.TrackInfoMerge (track, file, false, true);
+            file.Dispose ();
 
             // Verify changes
             verify (track);
@@ -214,18 +220,6 @@ namespace Banshee.Metadata
             Assert.AreEqual (1999, track.Year);
             Assert.AreEqual (2, track.Rating);
             Assert.AreEqual (3, track.PlayCount);
-        }
-
-        private Type unix_io_type;
-
-        private Banshee.IO.IProvider CreateUnixIOProvider ()
-        {
-            if (unix_io_type == null) {
-                Assembly asm = Assembly.LoadFrom (BinDir + "/Banshee.Unix.dll");
-                unix_io_type = asm.GetType ("Banshee.IO.Unix.Provider");
-            }
-
-            return (Banshee.IO.IProvider)Activator.CreateInstance (unix_io_type);
         }
     }
 }

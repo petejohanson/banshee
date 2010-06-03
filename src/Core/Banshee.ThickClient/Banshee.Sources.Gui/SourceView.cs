@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Gtk;
@@ -75,6 +76,7 @@ namespace Banshee.Sources.Gui
             store.SourceRowRemoved += OnSourceRowRemoved;
             store.RowChanged += OnRowChanged;
             Model = store;
+            EnableSearch = false;
 
             ConfigureDragAndDrop ();
             store.Refresh ();
@@ -140,18 +142,20 @@ namespace Banshee.Sources.Gui
                 }
                 return true;
             };
+
+            ServiceManager.Get<InterfaceActionService> ().SourceActions["OpenSourceSwitcher"].Activated += delegate {
+                new SourceSwitcherEntry (this);
+            };
         }
 
 #endregion
 
 #region Gtk.Widget Overrides
 
-        protected override void OnRealized ()
+        protected override void OnStyleSet (Style old_style)
         {
-            base.OnRealized ();
-
-            theme = new GtkTheme (this);
-            // theme.RefreshColors ();
+            base.OnStyleSet (old_style);
+            theme = Hyena.Gui.Theming.ThemeEngine.CreateTheme (this);
         }
 
         protected override bool OnButtonPressEvent (Gdk.EventButton press)
@@ -251,7 +255,12 @@ namespace Banshee.Sources.Gui
 
             try {
                 cr = Gdk.CairoHelper.Create (evnt.Window);
-                return base.OnExposeEvent (evnt);
+                base.OnExposeEvent (evnt);
+                if (Hyena.PlatformDetection.IsMeeGo) {
+                    theme.DrawFrameBorder (cr, new Gdk.Rectangle (0, 0,
+                        Allocation.Width, Allocation.Height));
+                }
+                return true;
             } finally {
                 CairoExtensions.DisposeContext (cr);
                 cr = null;
@@ -337,6 +346,12 @@ namespace Banshee.Sources.Gui
         private void OnRowChanged (object o, RowChangedArgs args)
         {
             QueueDraw ();
+        }
+
+        internal void Expand (Source src)
+        {
+            Expand (store.FindSource (src));
+            src.Expanded = true;
         }
 
         private void Expand (TreeIter iter)

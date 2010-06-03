@@ -71,6 +71,10 @@ namespace Banshee.Widgets
             get { return menu; }
         }
 
+        protected SearchEntry (IntPtr raw) : base (raw)
+        {
+        }
+
         public SearchEntry()
         {
             ChangeTimeoutMs = 25;
@@ -252,6 +256,8 @@ namespace Banshee.Widgets
 
         protected override bool OnExposeEvent(Gdk.EventExpose evnt)
         {
+            Style.PaintFlatBox (entry.Style, GdkWindow, State, ShadowType.None, evnt.Area, this,
+                "entry_bg", 0, 0, Allocation.Width, Allocation.Height);
             PropagateExpose(Child, evnt);
             Style.PaintShadow(entry.Style, GdkWindow, StateType.Normal,
                 ShadowType.In, evnt.Area, entry, "entry",
@@ -506,7 +512,7 @@ namespace Banshee.Widgets
 
                 if (layout == null) {
                     layout = new Pango.Layout(PangoContext);
-                    layout.FontDescription = PangoContext.FontDescription.Copy();
+                    layout.FontDescription = PangoContext.FontDescription;
                 }
 
                 int width, height;

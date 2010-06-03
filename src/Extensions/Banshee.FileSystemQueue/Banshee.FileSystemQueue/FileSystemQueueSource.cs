@@ -238,6 +238,10 @@ namespace Banshee.FileSystemQueue
             }
         }
 
+        public override bool HasEditableTrackProperties {
+            get { return true; }
+        }
+
         private void OnTrackModelReloaded (object sender, EventArgs args)
         {
             if (Count > 0 && !visible) {

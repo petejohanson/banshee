@@ -37,5 +37,10 @@ namespace Banshee.Gui.TrackEditor
         {
             AlwaysShowEmptyStars = true;
         }
+
+        public void SetAsReadOnly ()
+        {
+            Sensitive = false;
+        }
     }
 }

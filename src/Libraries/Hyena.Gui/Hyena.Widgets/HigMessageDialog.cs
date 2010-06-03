@@ -33,6 +33,7 @@ namespace Hyena.Widgets
     public class HigMessageDialog : Gtk.Dialog
     {
         private Gtk.Image image;
+        private Gtk.VBox inner_vbox;
         private Gtk.VBox label_vbox;
         private Gtk.Label message_label;
 
@@ -79,9 +80,13 @@ namespace Hyena.Widgets
             image.Show ();
             hbox.PackStart (image, false, false, 0);
 
+            inner_vbox = new Gtk.VBox (false, 12);
+            inner_vbox.Show ();
+            hbox.PackStart (inner_vbox, true, true, 0);
+
             label_vbox = new Gtk.VBox (false, 0);
             label_vbox.Show ();
-            hbox.PackStart (label_vbox, true, true, 0);
+            inner_vbox.PackStart (label_vbox, true, true, 0);
 
             string title = String.Format ("<span weight='bold' size='larger'>{0}" +
                               "</span>\n",
@@ -226,7 +231,7 @@ namespace Hyena.Widgets
         }
 
         public Gtk.VBox LabelVBox {
-            get { return label_vbox; }
+            get { return inner_vbox; }
         }
     }
 }

@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using Mono.Unix;
 
 using Hyena.Jobs;
@@ -63,6 +64,10 @@ namespace Banshee.Metadata
         private SaveTrackMetadataJob job;
         private object sync = new object ();
         private bool inited = false;
+        private List<PrimarySource> sources = new List<PrimarySource> ();
+        public IEnumerable<PrimarySource> Sources {
+            get { return sources.AsReadOnly (); }
+        }
 
         public SaveTrackMetadataService ()
         {
@@ -70,17 +75,50 @@ namespace Banshee.Metadata
                 WriteMetadataEnabled.ValueChanged += OnEnabledChanged;
                 WriteRatingsAndPlayCountsEnabled.ValueChanged += OnEnabledChanged;
                 RenameEnabled.ValueChanged += OnEnabledChanged;
-                ServiceManager.SourceManager.MusicLibrary.TracksChanged += OnTracksChanged;
+                foreach (var source in ServiceManager.SourceManager.Sources) {
+                    AddPrimarySource (source);
+                }
+                ServiceManager.SourceManager.SourceAdded += (args) => {
+                    AddPrimarySource (args.Source);
+                };
+                ServiceManager.SourceManager.SourceRemoved += (args) => {
+                    RemovePrimarySource(args.Source);
+                };
                 Save ();
                 inited = true;
                 return false;
             });
         }
 
+        private void AddPrimarySource (Source s)
+        {
+            PrimarySource p = s as PrimarySource;
+            if (p != null && p.HasEditableTrackProperties) {
+                sources.Add (p);
+                p.TracksChanged += OnTracksChanged;
+            }
+        }
+
+        private void RemovePrimarySource (Source s)
+        {
+            PrimarySource p = s as PrimarySource;
+            if (p != null && sources.Remove (p)) {
+                p.TracksChanged -= OnTracksChanged;
+            }
+        }
+
+        private void RemovePrimarySources ()
+        {
+            foreach (var source in sources) {
+                source.TracksChanged -= OnTracksChanged;
+            }
+            sources.Clear ();
+        }
+
         public void Dispose ()
         {
             if (inited) {
-                ServiceManager.SourceManager.MusicLibrary.TracksChanged -= OnTracksChanged;
+                RemovePrimarySources ();
 
                 if (job != null) {
                     ServiceManager.JobScheduler.Cancel (job);
@@ -127,7 +165,7 @@ namespace Banshee.Metadata
         }
 
         string IService.ServiceName {
-            get { return "SaveMetadataService"; }
+            get { return "SaveTrackMetadataService"; }
         }
 
         // Reserve strings in preparation for the forthcoming string freeze.

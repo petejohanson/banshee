@@ -28,6 +28,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 
 using Mono.Unix;
@@ -67,11 +68,15 @@ namespace Banshee.Dap.MassStorage
             return true;
         }
 
+        public virtual bool ShouldIgnoreDevice ()
+        {
+            return File.Exists (IsNotAudioPlayerPath);
+        }
+
         public virtual bool LoadDeviceConfiguration ()
         {
             string path = IsAudioPlayerPath;
             string path_rockbox = System.IO.Path.Combine (source.Volume.MountPoint, ".rockbox/config.cfg");
-            StreamReader reader = null;
 
             if (!File.Exists (path) && !File.Exists (path_rockbox) ) {
                 return false;
@@ -89,48 +94,67 @@ namespace Banshee.Dap.MassStorage
                 cover_art_file_name = "cover.jpg";
                 cover_art_file_type = "jpeg";
                 cover_art_size = 320;
+
+            } else {
+                LoadConfig ();
             }
 
-            if (File.Exists (path)) {
-                try {
-                    foreach (KeyValuePair<string, string []> item in new KeyValueParser (reader = new StreamReader (path))) {
-                        try {
-                            switch (item.Key) {
-                                case "name": name = item.Value[0]; break;
+            return true;
+        }
 
-                                case "cover_art_file_type": cover_art_file_type = item.Value[0].ToLower (); break;
-                                case "cover_art_file_name": cover_art_file_name = item.Value[0]; break;
-                                case "cover_art_size": Int32.TryParse (item.Value[0], out cover_art_size); break;
-                                case "audio_folders": audio_folders = item.Value; break;
-                                case "video_folders": video_folders = item.Value; break;
-                                case "output_formats": playback_mime_types = item.Value; break;
-                                case "playlist_format": playlist_formats = item.Value; break;
-                                case "playlist_path": playlist_path = item.Value[0]; break;
-                                case "folder_depth":
-                                    if (!Int32.TryParse (item.Value[0], out folder_depth)) {
-                                        folder_depth = -1;
-                                    }
-                                    Hyena.Log.DebugFormat ("MassStorageDevice.LoadDeviceConfiguration {0}", folder_depth);
-                                    break;
-                                default:
-                                    throw new ApplicationException ("unsupported key");
-                            }
-                        } catch (Exception e) {
-                            Log.Exception ("Invalid .is_audio_player item " + item.Key, e);
-                        }
+        protected void LoadConfig ()
+        {
+            var config = new Dictionary<string, string[]> ();
+
+            if (File.Exists (IsAudioPlayerPath)) {
+
+                try {
+                    using (var reader = new StreamReader (IsAudioPlayerPath)) {
+                        config = new KeyValueParser (reader);
+                        has_is_audio_player_file = true;
                     }
+
                 } catch (Exception e) {
-                    Log.Exception ("Error parsing " + path, e);
-                } finally {
-                    if (reader != null) {
-                        reader.Dispose ();
-                    }
+                    Log.Exception ("Error parsing " + IsAudioPlayerPath, e);
                 }
             }
 
-            has_is_audio_player_file = true;
+            name = GetPreferredValue ("name", config, DefaultName);
+            cover_art_file_type = GetPreferredValue ("cover_art_file_type", config, DefaultCoverArtFileType);
+            cover_art_file_name = GetPreferredValue ("cover_art_file_name", config, DefaultCoverArtFileName);
+            cover_art_size = GetPreferredValue ("cover_art_size", config, DefaultCoverArtSize);
+            audio_folders = MergeValues ("audio_folders", config, DefaultAudioFolders);
+            video_folders = MergeValues ("video_folders", config, DefaultVideoFolders);
+            playback_mime_types = MergeValues ("output_formats", config, DefaultPlaybackMimeTypes);
+            playlist_formats = MergeValues ("playlist_formats", config, DefaultPlaylistFormats);
+            playlist_path = GetPreferredValue ("playlist_path", config, DefaultPlaylistPath);
+            folder_depth = GetPreferredValue ("folder_depth", config, DefaultFolderDepth);
+        }
 
-            return true;
+        private string[] MergeValues (string key, IDictionary<string, string[]> config, string[] defaultValues)
+        {
+            if (config.ContainsKey (key)) {
+                return config[key].Union (defaultValues).ToArray ();
+            }
+            return defaultValues;
+        }
+
+        private int GetPreferredValue (string key, IDictionary<string, string[]> config, int defaultValue)
+        {
+            int parsedValue;
+            if (config.ContainsKey (key) && config[key].Length > 0
+                    && int.TryParse (config[key][0], out parsedValue)) {
+                return parsedValue;
+            }
+            return defaultValue;
+        }
+
+        private string GetPreferredValue (string key, IDictionary<string, string[]> config, string defaultValue)
+        {
+            if (config.ContainsKey (key)) {
+                return config[key][0];
+            }
+            return defaultValue;
         }
 
         public virtual bool GetTrackPath (TrackInfo track, out string path)
@@ -148,9 +172,21 @@ namespace Banshee.Dap.MassStorage
             get { return System.IO.Path.Combine (source.Volume.MountPoint, ".is_audio_player"); }
         }
 
+        private string IsNotAudioPlayerPath {
+            get { return System.IO.Path.Combine (source.Volume.MountPoint, ".is_not_audio_player"); }
+        }
+
+        protected virtual string DefaultName {
+            get { return source.Volume.Name; }
+        }
+
         private string name;
         public virtual string Name {
             get { return name ?? source.Volume.Name; }
+        }
+
+        protected virtual int DefaultCoverArtSize {
+            get { return 200; }
         }
 
         private int cover_art_size;
@@ -158,19 +194,35 @@ namespace Banshee.Dap.MassStorage
             get { return cover_art_size; }
         }
 
+        protected virtual int DefaultFolderDepth {
+            get { return -1; }
+        }
+
         private int folder_depth = -1;
         public virtual int FolderDepth {
             get { return folder_depth; }
         }
 
-        private string [] audio_folders = new string[0];
-        public virtual string [] AudioFolders {
+        protected virtual string [] DefaultAudioFolders {
+            get { return new string[0]; }
+        }
+
+        private string[] audio_folders = new string[0];
+        public virtual string[] AudioFolders {
             get { return audio_folders; }
         }
 
-        private string [] video_folders = new string[0];
-        public virtual string [] VideoFolders {
+        protected virtual string[] DefaultVideoFolders {
+            get { return new string[0]; }
+        }
+
+        private string[] video_folders = new string[0];
+        public virtual string[] VideoFolders {
             get { return video_folders; }
+        }
+
+        protected virtual string DefaultCoverArtFileType {
+            get { return ""; }
         }
 
         private string cover_art_file_type;
@@ -178,14 +230,26 @@ namespace Banshee.Dap.MassStorage
             get { return cover_art_file_type; }
         }
 
+        protected virtual string DefaultCoverArtFileName {
+            get { return "cover.jpg"; }
+        }
+
         private string cover_art_file_name;
         public virtual string CoverArtFileName {
             get { return cover_art_file_name; }
         }
 
-        private string [] playlist_formats;
-        public virtual string [] PlaylistFormats {
+        protected virtual string[] DefaultPlaylistFormats {
+            get { return new string[0]; }
+        }
+
+        private string[] playlist_formats;
+        public virtual string[] PlaylistFormats {
             get { return playlist_formats; }
+        }
+
+        protected virtual string DefaultPlaylistPath {
+            get { return null; }
         }
 
         private string playlist_path;
@@ -193,8 +257,12 @@ namespace Banshee.Dap.MassStorage
             get { return playlist_path; }
         }
 
-        private string [] playback_mime_types;
-        public virtual string [] PlaybackMimeTypes {
+        protected virtual string[] DefaultPlaybackMimeTypes {
+            get { return new string[0]; }
+        }
+
+        private string[] playback_mime_types;
+        public virtual string[] PlaybackMimeTypes {
             get { return playback_mime_types; }
         }
 
