@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>..\..\..\bin</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,16 +25,22 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Windows</OutputPath>
-    <DefineConstants>HAVE_GST_SHARP</DefineConstants>
+    <OutputPath>..\..\..\bin</OutputPath>
+    <DefineConstants>WIN32 ENABLE_GST_SHARP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="gstreamer-sharp, Version=0.9.3.0, Culture=neutral, PublicKeyToken=4956b48baf980190" />
     <Reference Include="System.Core" />
-    <Reference Include="Mono.Posix" />
+    <Reference Include="gstreamer-sharp">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..bin\gstreamer-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..bin\Mono.Posix.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Services\Banshee.Services.csproj">
