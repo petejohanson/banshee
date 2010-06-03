@@ -44,6 +44,7 @@ using Migo.TaskCore;
 using Migo.Syndication;
 using Migo.DownloadCore;
 
+using Banshee.Networking;
 using Banshee.MediaEngine;
 using Banshee.Podcasting.Gui;
 using Banshee.Podcasting.Data;
@@ -272,7 +273,16 @@ namespace Banshee.Podcasting
 
                 // Every 10 minutes try to refresh again
                 refresh_timeout_id = Application.RunTimeout (1000 * 60 * 10, RefreshFeeds);
+
+                ServiceManager.Get<Network> ().StateChanged += OnNetworkStateChanged;
             });
+        }
+
+        private void OnNetworkStateChanged (object o, NetworkStateChangedArgs args)
+        {
+            if (args.Connected) {
+                RefreshFeeds ();
+            }
         }
 
         bool disposing;
@@ -291,6 +301,7 @@ namespace Banshee.Podcasting
 
             ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
             ServiceManager.Get<DBusCommandService> ().ArgumentPushed -= OnCommandLineArgument;
+            ServiceManager.Get<Network> ().StateChanged -= OnNetworkStateChanged;
 
             if (download_manager_iface != null) {
                 download_manager_iface.Dispose ();
