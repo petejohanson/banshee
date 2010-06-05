@@ -10,12 +10,10 @@ RESOURCES = Banshee.GStreamerSharp.addin.xml
 
 if ENABLE_GST_SHARP
 include $(top_srcdir)/build/build.mk
-BUILD_DEFINES="-define:ENABLE_GST_SHARP"
 else
 EXTRA_DIST = $(SOURCES) $(RESOURCES)
-BUILD_DEFINES=""
 endif
 
 if ENABLE_GAPLESS
-BUILD_DEFINES+="-define:ENABLE_GAPLESS"
+BUILD_DEFINES="-define:ENABLE_GAPLESS"
 endif
