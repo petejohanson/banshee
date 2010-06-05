@@ -56,7 +56,7 @@ namespace Banshee.Database
         // NOTE: Whenever there is a change in ANY of the database schema,
         //       this version MUST be incremented and a migration method
         //       MUST be supplied to match the new version number
-        protected const int CURRENT_VERSION = 41;
+        protected const int CURRENT_VERSION = 42;
         protected const int CURRENT_METADATA_VERSION = 7;
 
 #region Migration Driver
@@ -925,6 +925,18 @@ namespace Banshee.Database
                 )
             ");
             Execute ("CREATE INDEX CoreShuffleModificationsIndex ON CoreShuffleModifications (ShufflerId, TrackID, LastModifiedAt, ModificationType)");
+            return true;
+        }
+
+        [DatabaseVersion (42)]
+        private bool Migrate_42 ()
+        {
+            // Unset the Music attribute for any videos or podcasts
+            connection.Execute (
+                @"UPDATE CoreTracks SET Attributes = Attributes & ? WHERE (Attributes & ?) != 0",
+                (int)(~TrackMediaAttributes.Music),
+                (int)(TrackMediaAttributes.VideoStream | TrackMediaAttributes.Podcast)
+            );
             return true;
         }
 

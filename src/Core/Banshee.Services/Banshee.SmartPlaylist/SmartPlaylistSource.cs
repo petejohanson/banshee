@@ -513,18 +513,14 @@ namespace Banshee.SmartPlaylist
             }
         }
 
-        private static bool temps_cleared = false;
         private static void ClearTemporary ()
         {
-            if (!temps_cleared) {
-                temps_cleared = true;
-                ServiceManager.DbConnection.Execute (@"
-                    BEGIN TRANSACTION;
-                        DELETE FROM CoreSmartPlaylistEntries WHERE SmartPlaylistID IN (SELECT SmartPlaylistID FROM CoreSmartPlaylists WHERE IsTemporary = 1);
-                        DELETE FROM CoreSmartPlaylists WHERE IsTemporary = 1;
-                    COMMIT TRANSACTION"
-                );
-            }
+            ServiceManager.DbConnection.Execute (@"
+                BEGIN TRANSACTION;
+                    DELETE FROM CoreSmartPlaylistEntries WHERE SmartPlaylistID IN (SELECT SmartPlaylistID FROM CoreSmartPlaylists WHERE IsTemporary = 1);
+                    DELETE FROM CoreSmartPlaylists WHERE IsTemporary = 1;
+                COMMIT TRANSACTION"
+            );
         }
 
         private static void HandleSourceAdded (SourceEventArgs args)

@@ -521,7 +521,7 @@ namespace Banshee.Collection
                     value = ((TimeSpan)value).TotalSeconds;
                 } else if (value is DateTime) {
                     DateTime date = (DateTime)value;
-                    value = date == DateTime.MinValue ? 0l : DateTimeUtil.ToTimeT (date);
+                    value = date == DateTime.MinValue ? 0L : DateTimeUtil.ToTimeT (date);
                 } else if (value is SafeUri) {
                     value = ((SafeUri)value).AbsoluteUri;
                 } else if (value is TrackMediaAttributes) {

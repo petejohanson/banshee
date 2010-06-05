@@ -1,0 +1,80 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:e="http://projectmallard.org/experimental/"
+      type="topic" style="task"
+      id="add-podcast">
+
+  <info>
+    <link type="guide" xref="index#media"/>
+    <link type="seealso" xref="remove-media"/>
+    <link type="seealso" xref="add-radio"/>
+    <link type="seealso" xref="import"/>
+    <desc>Add, remove and play podcasts in Banshee.</desc>
+    <revision pkgversion="1.6" version="0.1" date="2009-01-22" status="draft"/>
+    <credit type="author">
+      <name>Paul Cutler</name>
+      <email>pcutler@gnome.org</email>
+    </credit>    
+<!--
+    <copyright>
+      <year>2010</year>
+      <name>GNOME Documentation Project</name>
+    </copyright>
+-->
+    <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
+  </info>
+
+  <title>Podcasts</title> 
+  
+  <section id="podcastdescription">
+     <title>What is a Podcast?</title>
+     
+  <p>Podcasts are recorded programs, similar to radio programs, that are
+  available on the internet and allow you to subscribe.  When you subscribe
+  to a podcast in Banshee, each time a new program is released, Banshee
+  will automatically download the podcast and allow you to listen to it.</p>
+  
+  <p>There are podcasts on almost any subject including music, movies, Linux,
+  and more.  Search the internet using your favorite search engine with a 
+  search term such as "movie podcast" and you will be presented with many 
+  options to choose from.</p>
+  
+  </section>
+  
+  <section id="addpodcast">
+    <title>Add a Podcast</title>
+  
+  <p>To add a Podcast to Banshee you will first need to visit the pdocast's
+  home page on the internet in your browser.  Almost all podcasts will have a 
+  button or link displayed to subscribe to the podcast.  Copy the link
+  to the podcast's subscription.  In most web browsers, you can right click
+  on the link and choose <gui>Copy link</gui>.
+  </p>
+  
+  <p>In Banshee, press and choose <gui>Subscribe to Podcasts</gui> in the 
+  upper right hand corner, from the menu choose <guiseq><gui>Media</gui><gui>
+  Subscribe to Podcast</gui></guiseq> or use the keyboard shortcut <keyseq>
+  <key>Shift</key><key>Control</key><key>F</key></keyseq>.
+  </p>
+  
+  <p>Banshee will then allow you to choose how you want to download new podcasts
+  from a drop down menu.  Your choices include:</p>
+  
+  <list>
+  	<item><p>Download the Most Recent Episode (This will automatically
+  	download the last episode that was released).</p></item>
+  	<item><p>Download All Episodes (This will download all episodes).</p></item>
+	<item><p>Let Me Decide Which Episodes to Download (This will allow you
+	to choose which episodes you would like to download).</p></item>
+  </list>
+
+  <p>After you have added a Podcast feed, Banshee will display:</p>
+  
+  <list>
+  	<item><p><gui>Name</gui>: (Name of the specific episode)</p></item>
+  	<item><p><gui>Podcast</gui>: (Name of the Podcast)</p></item>
+  	<item><p><gui>Published</gui> (Date the episode was published or released)</p></item>
+  </list>
+  
+  </section>	
+  	  	  
+</page>

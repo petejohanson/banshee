@@ -188,7 +188,15 @@ namespace Banshee.Collection.Database
                 // TODO get rid of unused artists/albums
             }
 
-            if (fields_changed.Length == 0 || !transient_fields.IsSupersetOf (fields_changed)) {
+            // If PlayCountField is not transient we still want to update the file only if it's from the music library
+            var transient = transient_fields;
+            if (!transient.Contains (BansheeQuery.PlayCountField) &&
+                !ServiceManager.SourceManager.MusicLibrary.Equals (PrimarySource)) {
+                transient = new HashSet<QueryField> (transient_fields);
+                transient.Add (BansheeQuery.PlayCountField);
+            }
+
+            if (fields_changed.Length == 0 || !transient.IsSupersetOf (fields_changed)) {
                 DateUpdated = DateTime.Now;
             }
 

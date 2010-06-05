@@ -359,18 +359,14 @@ namespace Banshee.Playlist
             }
         }
 
-        private static bool temps_cleared = false;
         private static void ClearTemporary ()
         {
-            if (!temps_cleared) {
-                temps_cleared = true;
-                ServiceManager.DbConnection.BeginTransaction ();
-                ServiceManager.DbConnection.Execute (@"
-                    DELETE FROM CorePlaylistEntries WHERE PlaylistID IN (SELECT PlaylistID FROM CorePlaylists WHERE IsTemporary = 1);
-                    DELETE FROM CorePlaylists WHERE IsTemporary = 1;"
-                );
-                ServiceManager.DbConnection.CommitTransaction ();
-            }
+            ServiceManager.DbConnection.BeginTransaction ();
+            ServiceManager.DbConnection.Execute (@"
+                DELETE FROM CorePlaylistEntries WHERE PlaylistID IN (SELECT PlaylistID FROM CorePlaylists WHERE IsTemporary = 1);
+                DELETE FROM CorePlaylists WHERE IsTemporary = 1;"
+            );
+            ServiceManager.DbConnection.CommitTransaction ();
         }
 
         private static int GetPlaylistId (string name)

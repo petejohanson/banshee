@@ -1,6 +1,7 @@
 SUBDIRS = \
 	build \
 	data \
+	help \
 	libbanshee \
 	gstreamer \
 	hyena \
@@ -152,7 +153,10 @@ package-po: check-since
 		exit 0; \
 	fi
 
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
+
 EXTRA_DIST = \
+	gnome-doc-utils.make \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
@@ -166,6 +170,7 @@ CLEANFILES = \
 	intltool-merge
 
 DISTCLEANFILES = \
+	gnome-doc-utils.make \
 	*.bak \
 	*~ \
 	*.pidb

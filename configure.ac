@@ -2,7 +2,7 @@ dnl Granularly define the version components
 dnl Remember to also update the Display Version
 m4_define([banshee_version_major], [1])
 m4_define([banshee_version_minor], [7])
-m4_define([banshee_version_micro], [0])
+m4_define([banshee_version_micro], [1])
 
 dnl set to 0 when doing an official release
 m4_define([banshee_version_pre_release], [0])
@@ -23,7 +23,7 @@ m4_define([banshee_version],
 
 dnl this can sometimes differ manually
 m4_define([banshee_display_version],
-	["1.7.0"])
+	["1.7.1"])
 
 m4_define([banshee_api_version],
 	[banshee_version_major.banshee_version_minor])
@@ -38,11 +38,15 @@ AC_INIT([banshee-1], banshee_version,
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 tar-ustar dist-zip foreign])
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER([config.h])
+AC_CONFIG_MACRO_DIR([build/m4])
 AC_SUBST([ACLOCAL_AMFLAGS], ["-I build/m4/shamrock -I build/m4/banshee -I build/m4/shave \${ACLOCAL_FLAGS}"])
 
 IT_PROG_INTLTOOL([0.35.0])
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
+
+dnl User help
+GNOME_DOC_INIT
 
 dnl How to configure for distcheck
 DISTCHECK_CONFIGURE_FLAGS="--disable-docs --enable-mtp --enable-daap --enable-podcast --enable-release"
@@ -62,7 +66,12 @@ dnl libbanshee/native dependencies (required)
 BANSHEE_CHECK_LIBBANSHEE
 BANSHEE_CHECK_GSTREAMER
 
+dnl For the new media backend using gstreamer-sharp
+BANSHEE_CHECK_GSTREAMER_SHARP
+
 BANSHEE_CHECK_NOW_PLAYING_X11
+
+SHAMROCK_CHECK_GNOME_DOC_UTILS(0.17.3)
 
 dnl Mono and gmcs
 SHAMROCK_CHECK_MONO_MODULE(1.9.1)
@@ -242,6 +251,8 @@ data/desktop-files/Makefile
 data/desktop-files/common.desktop
 data/icon-theme-hicolor/Makefile
 
+help/Makefile
+
 docs/Makefile
 docs/Hyena/Makefile
 docs/Banshee/Makefile
@@ -294,6 +305,7 @@ src/Backends/Makefile
 src/Backends/Banshee.Gio/Makefile
 src/Backends/Banshee.Gnome/Makefile
 src/Backends/Banshee.GStreamer/Makefile
+src/Backends/Banshee.GStreamerSharp/Makefile
 src/Backends/Banshee.Hal/Makefile
 src/Backends/Banshee.Unix/Makefile
 src/Backends/Banshee.Osx/Makefile
@@ -391,6 +403,7 @@ ${PACKAGE}-${VERSION}
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
     API Docs:          ${enable_docs} (requires monodocer and mdassembler)
+    User Help:         ${HAVE_GNOME_DOC_UTILS} (requires gnome-doc-utils >= 0.17.3)
     Custom a11y:       ${gtksharp_with_a11y} (requires gtk-sharp >= 2.12.10)
     Release Build:     ${enable_release}
     Vendor Build ID:   ${vendor_build_id}
@@ -401,6 +414,7 @@ EOF
 if test "x$enable_moonlight" = "xyes";    then br=yes; echo "  Moonlight Effects:   ${enable_moonlight}";    fi
 if test "x$enable_remote_audio" = "xyes"; then br=yes; echo "  Remote Audio:        ${enable_remote_audio}"; fi
 if test "x$enable_torrent" = "xyes";      then br=yes; echo "  Torrent Podcasts:    ${enable_torrent}";      fi
+if test "x$enable_gst_sharp" = "xyes";    then br=yes; echo "  Gst# Backend:        ${enable_gst_sharp} (unfinished, experimental!)";      fi
 
 if test -d ${expanded_libdir}/${PACKAGE}; then
 	if test x$br = xyes; then echo; fi

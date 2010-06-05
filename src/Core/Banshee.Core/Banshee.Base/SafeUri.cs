@@ -124,6 +124,11 @@ namespace Banshee.Base
             return AbsoluteUri;
         }
 
+        public static implicit operator string (SafeUri s)
+        {
+            return s.ToString ();
+        }
+
         public override bool Equals (object o)
         {
             if (!(o is SafeUri)) {

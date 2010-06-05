@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Addin 
+    id="Banshee.GStreamerSharp"
+    version="1.0"
+    compatVersion="1.0"
+    copyright="© 2010 Novell Inc. Licensed under the MIT X11 license."
+    category="required:Backends"
+    description="GStreamer multimedia services including playback, CD ripping, and transcoding."
+    defaultEnabled="true">
+ 
+  <Dependencies>
+    <Addin id="Banshee.Services" version="1.0" />
+  </Dependencies>
+
+  <!--
+  <Extension path="/Banshee/ServiceManager/Service">
+    <Service class="Banshee.GStreamer.Service"/>
+</Extension> -->
+  
+  <Extension path="/Banshee/MediaEngine/PlayerEngine">
+    <PlayerEngine class="Banshee.GStreamerSharp.PlayerEngine"/>
+  </Extension>
+  
+  <!--
+  <Extension path="/Banshee/MediaEngine/AudioCdRipper">
+    <AudioCdRipper class="Banshee.GStreamer.AudioCdRipper"/>
+  </Extension>
+
+  <Extension path="/Banshee/MediaEngine/Transcoder">
+    <Transcoder class="Banshee.GStreamer.Transcoder"/>
+  </Extension>
+
+  <Extension path="/Banshee/MediaEngine/BpmDetector">
+    <BpmDetector class="Banshee.GStreamer.BpmDetector"/>
+  </Extension>
+  -->
+
+</Addin>

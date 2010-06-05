@@ -1,0 +1,72 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:e="http://projectmallard.org/experimental/"
+      type="topic" style="task"
+      id="playlists">
+
+  <info>
+    <link type="guide" xref="index#manage"/>
+    <link type="seealso" xref="tags"/>
+    <link type="seealso" xref="coverart"/>
+    <desc>Create and manage playlists.</desc>
+    <revision pkgversion="1.6" version="0.1" date="2010-05-26" status="draft"/>
+    <credit type="author">
+      <name>Paul Cutler</name>
+      <email>pcutler@gnome.org</email>
+    </credit>    
+    <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
+  </info>
+
+  <title>Playlists</title>    
+  
+  <p>Playlists allow you to create and save a list of music tracks to be played
+  in a specific order.  Playlists are convenient to create a list of your
+  favorite songs or to split your library into smaller lists that are easy
+  to browse through. Some portable media players even allow you to transfer the 
+  playlist so you can take it with you on the go.
+  </p>
+  
+  <p>Banshee supports normal playlists, which include songs you add to the
+  playlist, as well as smart playlists.  Smart Playlists are automatically 
+  generated playlists based on your listening habits, favorite music, or more.</p>
+  
+  <section id="manual">
+  
+    <title>Normal Playlists</title>
+  
+    <p>A normal playlist is a list of songs that you add and manage.  You might
+    want to create your own list of songs by your favorite artist from 
+    multiple albums, your latest favorite songs, or an upbeat playlist to listen
+    to while you exercise.
+    </p>
+    
+    <p>You can create a new playlist by pressing <keyseq><key>Control</key>
+    <key>N</key></keyseq>, from the menu choosing <guiseq><gui>Menu</gui>
+    <gui>New Playlist</gui></guiseq> or by selecing the track(s) you would like
+    to add to the playlist.  Select the track(s), right click them, and choose
+    <guiseq><gui>Add to Playlist</gui><gui>New Playlist</gui></guiseq>.
+    You can also drag and drop them to a new playlist by selcting the track(s) 
+    and dragging them to the left hand
+    window pane over <gui>Music</gui>.  As you drag it over <gui>Music</gui>,
+    a new option <gui><em>New Playlist</em></gui> will appear and you can drop
+    the track(s) over <gui><em>New Playlist</em></gui> to add them to the 
+    playlist.  You can repeat this process until you have added all the tracks
+    you want in the playlist.
+    </p>
+
+    <p>To give your playlist its own name, select the playlist and right click
+    on the playlist and press <gui>Rename Playlist</gui> and enter the name
+    of your playlist.
+    </p>
+    
+    <note>
+      <p>You can not re-order a playlist.  As you add songs to the playlist,
+      they will played in the order in which you added them to the playlist.</p>
+    </note> 
+    
+    <p>To remove a track from the playlist, select the track(s) you wish to 
+    remove.  Press the <key>Delete</key>, from the menu choose 
+    <guiseq><gui>Edit</gui><gui>Remove from Playlist</gui></guiseq> or right
+    click the track(s) with your mouse and press <gui>Remove from Playlist</gui>.
+    </p>
+  </section>  
+</page>
