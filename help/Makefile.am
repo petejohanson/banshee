@@ -7,7 +7,7 @@ DOC_FIGURES =
 
 DOC_PAGES = \
 	add-podcast.page \
-	add-radiostation.page \
+	add-radio.page \
 	advanced.page \
 	import.page \
 	index.page \

@@ -45,6 +45,9 @@ IT_PROG_INTLTOOL([0.35.0])
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 
+dnl User help
+GNOME_DOC_INIT
+
 dnl How to configure for distcheck
 DISTCHECK_CONFIGURE_FLAGS="--disable-docs --enable-mtp --enable-daap --enable-podcast --enable-release"
 AC_SUBST(DISTCHECK_CONFIGURE_FLAGS)
