@@ -26,8 +26,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if ENABLE_GST_SHARP
-
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
@@ -150,4 +148,3 @@ namespace Banshee.GStreamerSharp
         }
     }
 }
-#endif
