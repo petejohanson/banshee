@@ -64,6 +64,8 @@ check_autotool_version $LIBTOOLIZE 1.4.3
 check_autotool_version intltoolize 0.35.0
 check_autotool_version pkg-config 0.14.0
 
+git submodule update --init
+
 run intltoolize --force --copy
 run $LIBTOOLIZE --force --copy --automake
 run aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave $ACLOCAL_FLAGS
