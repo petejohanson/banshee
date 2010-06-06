@@ -469,18 +469,23 @@ namespace Banshee.PlayQueue
 
         public override void ReorderSelectedTracks (int drop_row)
         {
-            // If the current_track is not playing, make the first pending unselected track the current one.
+            // If the current_track is not playing, dropping tracks may change it.
+            // If the selection is dropped above the current_track, the first pending
+            // of the dropped tracks (if any) will become the new current_track.
+            // If the tracks are dropped below the curren_track,
+            // the first pending track not in the selection will become current.
             if (current_track != null && !ServiceManager.PlayerEngine.IsPlaying (current_track)) {
                 int current_index = TrackModel.IndexOf (current_track);
+                bool above = drop_row <= current_index;
                 int new_index = -1;
                 for (int index = current_index; index < TrackModel.Count; index++) {
-                    if (!TrackModel.Selection.Contains (index)) {
+                    if (above == TrackModel.Selection.Contains (index)) {
                         new_index = index;
                         break;
                     }
                 }
-                if (new_index != current_index) {
-                    SetCurrentTrack (new_index == -1 ? null : TrackModel[new_index] as DatabaseTrackInfo);
+                if (new_index != current_index && new_index >= 0) {
+                    SetCurrentTrack (TrackModel[new_index] as DatabaseTrackInfo);
                 }
             }
 
