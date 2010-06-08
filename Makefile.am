@@ -152,8 +152,6 @@ package-po: check-since
 		exit 0; \
 	fi
 
-DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
-
 EXTRA_DIST = \
 	gnome-doc-utils.make \
 	intltool-extract.in \
