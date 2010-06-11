@@ -38,7 +38,7 @@ namespace MusicBrainz
         #region Private Fields
 
         static DateTime last_accessed;
-        static readonly TimeSpan min_interval = new TimeSpan (0, 0, 1); // 1 second
+        static readonly TimeSpan min_interval = TimeSpan.FromSeconds (1);
         static readonly object server_mutex = new object ();
         static readonly string [] rels_params = new string [] {
             "artist-rels",
@@ -377,6 +377,8 @@ namespace MusicBrainz
             builder.Append (parameters);
             return builder.ToString ();
         }
+        
+        static bool? cache_implemented;
 
         static void XmlProcessingClosure (string url, XmlProcessingDelegate code)
         {
@@ -388,12 +390,15 @@ namespace MusicBrainz
                 Thread.Sleep ((min_interval - time).Milliseconds);
 
             WebRequest request = WebRequest.Create (url);
-            bool cache_implemented = false;
-
-            try {
+            if (cache_implemented == null) {
+                try {
+                    request.CachePolicy = MusicBrainzService.CachePolicy;
+                } catch (NotImplementedException) {
+                    cache_implemented = false;
+                }
+            } else if (cache_implemented.Value == true) {
                 request.CachePolicy = MusicBrainzService.CachePolicy;
-                cache_implemented = true;
-            } catch (NotImplementedException) {}
+            }
 
             HttpWebResponse response = null;
 
@@ -417,16 +422,25 @@ namespace MusicBrainz
                 throw new MusicBrainzNotFoundException ();
             }
 
-            bool from_cache = false;
-            try {
-                from_cache = cache_implemented && response.IsFromCache;
-            } catch (NotImplementedException) {}
+            bool from_cache;
+            if (cache_implemented == null) {
+                try {
+                    from_cache = response.IsFromCache;
+                    cache_implemented = true;
+                } catch (NotImplementedException) {
+                    from_cache = false;
+                    cache_implemented = false;
+                }
+            } else if (cache_implemented.Value) {
+                from_cache = response.IsFromCache;
+            } else {
+                from_cache = false;
+            }
 
             if (from_cache) Monitor.Exit (server_mutex);
 
             MusicBrainzService.OnXmlRequest (url, from_cache);
 
-            // Should we read the stream into a memory stream and run the XmlReader off of that?
             code (new XmlTextReader (response.GetResponseStream ()));
             response.Close ();
 

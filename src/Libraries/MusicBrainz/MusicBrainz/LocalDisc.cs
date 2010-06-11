@@ -101,7 +101,8 @@ namespace MusicBrainz
                 if (submission_url == null) {
                     submission_url = BuildSubmissionUrl ();
                 }
-                return submission_url; }
+                return submission_url;
+            }
         }
 
         Uri BuildSubmissionUrl ()
@@ -131,7 +132,12 @@ namespace MusicBrainz
             try {
                 switch (Environment.OSVersion.Platform){
                 case PlatformID.Unix:
-                    return new DiscLinux (device);
+                    // TODO can we actually detect the environment?
+                    //try {
+                        return new DiscLinux (device);
+                    //} catch {
+                    //    return new DiscFreeBSD (device);
+                    //}
                 //case PlatformID.Win32NT:
                     //return new DiscWin32NT (device);
                 default:
