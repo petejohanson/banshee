@@ -40,15 +40,29 @@ namespace InternetArchive
     {
         JsonObject file;
         string location_root;
+        string object_key;
 
-        public DetailsFile (JsonObject file, string location_root)
+        public DetailsFile (JsonObject file, string location_root, string objectKey)
         {
             this.file = file;
             this.location_root = location_root;
+            this.object_key = objectKey;
         }
 
+        private string location;
         public string Location {
-            get { return location_root + file.Get<string> ("location"); }
+            get {
+                if (location == null) {
+                    string loc = file.Get<string> ("location");
+                    if (String.IsNullOrEmpty (loc)) {
+                        loc = object_key ?? "";
+                    }
+
+                    location = location_root + loc;
+                }
+
+                return location;
+            }
         }
 
         public long Size {
