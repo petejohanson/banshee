@@ -55,7 +55,7 @@ namespace Banshee.PlayQueue
 {
     public class PlayQueueSource : PlaylistSource, IBasicPlaybackController, IPlayQueue, IDBusExportable, IDisposable
     {
-        private static string special_playlist_name = "Play Queue";
+        private static string special_playlist_name = Catalog.GetString ("Play Queue");
 
         private ITrackModelSource prior_playback_source;
         private DatabaseTrackInfo current_track;
