@@ -209,7 +209,8 @@ namespace Banshee.Gui.Widgets
 
             if (first_line_layout == null) {
                 first_line_layout = CairoExtensions.CreateLayout (this, cr);
-                first_line_layout.Ellipsize = Pango.EllipsizeMode.End;
+                first_line_layout.Wrap = Pango.WrapMode.Word;
+                first_line_layout.Ellipsize = Pango.EllipsizeMode.None;
                 first_line_layout.Alignment = Pango.Alignment.Right;
 
                 int base_size = first_line_layout.FontDescription.Size;
@@ -218,13 +219,15 @@ namespace Banshee.Gui.Widgets
 
             if (second_line_layout == null) {
                 second_line_layout = CairoExtensions.CreateLayout (this, cr);
-                second_line_layout.Ellipsize = Pango.EllipsizeMode.End;
+                second_line_layout.Wrap = Pango.WrapMode.Word;
+                second_line_layout.Ellipsize = Pango.EllipsizeMode.None;
                 second_line_layout.Alignment = Pango.Alignment.Right;
             }
 
             if (third_line_layout == null) {
                 third_line_layout = CairoExtensions.CreateLayout (this, cr);
-                third_line_layout.Ellipsize = Pango.EllipsizeMode.End;
+                third_line_layout.Wrap = Pango.WrapMode.Word;
+                third_line_layout.Ellipsize = Pango.EllipsizeMode.None;
                 third_line_layout.Alignment = Pango.Alignment.Right;
             }
 
