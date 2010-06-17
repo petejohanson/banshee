@@ -258,7 +258,7 @@ static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *pla
 }
 #endif //ENABLE_GAPLESS
 
-static void bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, BansheePlayer *player)
+void bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, BansheePlayer *player)
 {
     gdouble volume;
 
@@ -309,7 +309,7 @@ _bp_pipeline_construct (BansheePlayer *player)
 
     g_return_val_if_fail (player->playbin != NULL, FALSE);
 
-    g_signal_connect (player->playbin, "notify::volume", G_CALLBACK (bp_volume_changed_callback), player);
+    g_signal_connect (player->playbin, "deep-notify::volume", G_CALLBACK (bp_volume_changed_callback), player);
     g_signal_connect (player->playbin, "video-changed", G_CALLBACK (playbin_stream_changed_cb), player);
     g_signal_connect (player->playbin, "audio-changed", G_CALLBACK (playbin_stream_changed_cb), player);
     g_signal_connect (player->playbin, "text-changed", G_CALLBACK (playbin_stream_changed_cb), player);
@@ -330,6 +330,21 @@ _bp_pipeline_construct (BansheePlayer *player)
     }
     
     g_return_val_if_fail (audiosink != NULL, FALSE);
+
+    // See if the audiosink has a 'volume' property.  If it does, we assume it saves and restores
+    // its volume information - and that we shouldn't
+    player->audiosink_has_volume = FALSE;
+    if (!GST_IS_BIN (audiosink)) {
+        player->audiosink_has_volume = g_object_class_find_property (G_OBJECT_GET_CLASS (audiosink), "volume") != NULL;
+    } else {
+        GstIterator *elem_iter = gst_bin_iterate_recurse (GST_BIN (audiosink));
+        BANSHEE_GST_ITERATOR_ITERATE (elem_iter, GstElement *, element, TRUE, {
+            player->audiosink_has_volume |= g_object_class_find_property (G_OBJECT_GET_CLASS (element), "volume") != NULL;
+            gst_object_unref (element);
+        });
+    }
+    bp_debug ("Audiosink has volume: %s",
+        player->audiosink_has_volume ? "YES" : "NO");
         
     // Set the profile to "music and movies" (gst-plugins-good 0.10.3)
     if (g_object_class_find_property (G_OBJECT_GET_CLASS (audiosink), "profile")) {

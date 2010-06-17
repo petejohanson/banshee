@@ -34,5 +34,6 @@
 gboolean  _bp_pipeline_construct (BansheePlayer *player);
 void      _bp_pipeline_destroy   (BansheePlayer *player);
 void      _bp_pipeline_rebuild   (BansheePlayer* player);
+void       bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, BansheePlayer *player);
 
 #endif /* _BANSHEE_PLAYER_PIPELINE_H */
