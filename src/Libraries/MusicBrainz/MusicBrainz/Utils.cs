@@ -66,9 +66,8 @@ namespace MusicBrainz
                     c == '-' || c == '_' || c == '.' || c == '~')
                     builder.Append (c);
                 else {
-                    builder.Append ('%');
                     foreach (byte b in Encoding.UTF8.GetBytes (new char [] { c }))
-                        builder.AppendFormat ("{0:X}", b);
+                        builder.AppendFormat ("%{0:X}", b);
                 }
             }
         }

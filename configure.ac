@@ -45,9 +45,6 @@ IT_PROG_INTLTOOL([0.35.0])
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 
-dnl User help
-GNOME_DOC_INIT
-
 dnl How to configure for distcheck
 DISTCHECK_CONFIGURE_FLAGS="--disable-docs --enable-mtp --enable-daap --enable-podcast --enable-release"
 AC_SUBST(DISTCHECK_CONFIGURE_FLAGS)
@@ -71,6 +68,7 @@ BANSHEE_CHECK_GSTREAMER_SHARP
 
 BANSHEE_CHECK_NOW_PLAYING_X11
 
+dnl User help
 SHAMROCK_CHECK_GNOME_DOC_UTILS(0.17.3)
 
 dnl Mono and gmcs

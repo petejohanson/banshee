@@ -64,7 +64,7 @@ namespace MusicBrainz
             get { return EXTENSION; }
         }
 
-        static readonly string [] track_params = new string [] { "tracks", "track-level-rels", "artist" };
+        static readonly string [] track_params = new string [] { "tracks", "track-level-rels", "artist", "isrcs" };
 
         internal override void CreateIncCore (StringBuilder builder)
         {

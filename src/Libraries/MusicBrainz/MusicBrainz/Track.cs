@@ -37,6 +37,7 @@ namespace MusicBrainz
         TimeSpan? duration;
         ReadOnlyCollection<Release> releases;
         ReadOnlyCollection<string> puids;
+        ReadOnlyCollection<string> isrcs;
 
         #endregion
 
@@ -66,6 +67,7 @@ namespace MusicBrainz
         {
             if (releases == null) AppendIncParameters (builder, "releases");
             if (puids == null) AppendIncParameters (builder, "puids");
+            if (isrcs == null) AppendIncParameters (builder, "isrcs");
             base.CreateIncCore (builder);
         }
 
@@ -75,6 +77,7 @@ namespace MusicBrainz
             duration = track.GetDuration ();
             if (releases == null) releases = track.GetReleases ();
             if (puids == null) puids = track.GetPuids ();
+            if (isrcs == null) isrcs = track.GetIsrcs ();
             base.LoadMissingDataCore (track);
         }
 
@@ -98,6 +101,14 @@ namespace MusicBrainz
                     do puids.Add (reader["id"]);
                     while (reader.ReadToNextSibling ("puid"));
                     this.puids = puids.AsReadOnly ();
+                }
+                break;
+            case "isrc-list":
+                if (reader.ReadToDescendant ("isrc")) {
+                    List<string> isrcs = new List<string> ();
+                    do isrcs.Add (reader["id"]);
+                    while (reader.ReadToNextSibling ("isrc"));
+                    this.isrcs = isrcs.AsReadOnly ();
                 }
                 break;
             default:
@@ -136,6 +147,11 @@ namespace MusicBrainz
         public ReadOnlyCollection<string> GetPuids ()
         {
             return GetPropertyOrNew (ref puids);
+        }
+        
+        public ReadOnlyCollection<string> GetIsrcs ()
+        {
+            return GetPropertyOrNew (ref isrcs, !AllRelsLoaded);
         }
 
         public int GetTrackNumber (Release release)

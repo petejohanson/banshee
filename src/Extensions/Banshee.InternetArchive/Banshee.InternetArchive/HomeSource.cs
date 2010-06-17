@@ -119,13 +119,13 @@ namespace Banshee.InternetArchive
             pref_section = pref_page.Add (new Section ("mediatypes", Catalog.GetString ("Preferred Media Types"), 20));
 
             pref_section.Add (new SchemaPreference<string> (AudioTypes,
-                Catalog.GetString ("_Audio"), Catalog.GetString ("")));
+                Catalog.GetString ("_Audio"), ""));
 
             pref_section.Add (new SchemaPreference<string> (VideoTypes,
-                Catalog.GetString ("_Video"), Catalog.GetString ("")));
+                Catalog.GetString ("_Video"), ""));
 
             pref_section.Add (new SchemaPreference<string> (TextTypes,
-                Catalog.GetString ("_Text"), Catalog.GetString ("")));
+                Catalog.GetString ("_Text"), ""));
         }
 
         private void UninstallPreferences ()

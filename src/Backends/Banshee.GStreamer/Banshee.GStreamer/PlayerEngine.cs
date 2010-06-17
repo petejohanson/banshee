@@ -195,7 +195,7 @@ namespace Banshee.GStreamer
 
             is_initialized = true;
 
-            if (!bp_supports_stream_volume (handle)) {
+            if (!bp_audiosink_has_volume (handle)) {
                 Volume = (ushort)PlayerEngineService.VolumeSchema.Get ();
             }
         }
@@ -563,7 +563,7 @@ namespace Banshee.GStreamer
                 }
 
                 bp_set_volume (handle, value / 100.0);
-                if (!bp_supports_stream_volume (handle)) {
+                if (!bp_audiosink_has_volume (handle)) {
                     PlayerEngineService.VolumeSchema.Set ((int)value);
                 }
 
@@ -880,7 +880,7 @@ namespace Banshee.GStreamer
         private static extern bool bp_can_seek (HandleRef player);
 
         [DllImport ("libbanshee.dll")]
-        private static extern bool bp_supports_stream_volume (HandleRef player);
+        private static extern bool bp_audiosink_has_volume (HandleRef player);
 
         [DllImport ("libbanshee.dll")]
         private static extern bool bp_set_position (HandleRef player, ulong time_ms);

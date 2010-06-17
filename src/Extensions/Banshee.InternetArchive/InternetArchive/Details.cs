@@ -157,8 +157,9 @@ namespace InternetArchive
             get {
                 string location_root = String.Format ("http://{0}{1}", details.Get<string> ("server"), details.Get<string> ("dir"));
                 var files = details["files"] as JsonObject;
-                foreach (JsonObject file in files.Values) {
-                    yield return new DetailsFile (file, location_root);
+                foreach (string key in files.Keys) {
+                    var file = files[key] as JsonObject;
+                    yield return new DetailsFile (file, location_root, key);
                 }
             }
         }

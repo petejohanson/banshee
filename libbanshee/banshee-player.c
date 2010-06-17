@@ -260,6 +260,13 @@ bp_supports_stream_volume (BansheePlayer *player)
     return player->supports_stream_volume;
 }
 
+P_INVOKE gboolean
+bp_audiosink_has_volume (BansheePlayer *player)
+{
+    g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
+    return player->audiosink_has_volume;
+}
+
 P_INVOKE void
 bp_set_volume (BansheePlayer *player, gdouble volume)
 {
