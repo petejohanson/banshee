@@ -273,10 +273,6 @@ bp_set_volume (BansheePlayer *player, gdouble volume)
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     g_return_if_fail (GST_IS_ELEMENT (player->playbin));
 
-    // Idea taken from RB: ignore the deep-notify we get directly from the sink, as it causes deadlock, and we'll
-    // get another anyway
-    g_signal_handlers_block_by_func (player->playbin, bp_volume_changed_callback, player);
-
     if (bp_supports_stream_volume (player)) {
         #if BANSHEE_CHECK_GST_VERSION(0,10,25)
         gst_stream_volume_set_volume (GST_STREAM_VOLUME (player->playbin),
@@ -286,7 +282,6 @@ bp_set_volume (BansheePlayer *player, gdouble volume)
         g_object_set (player->playbin, "volume", CLAMP (volume, 0.0, 1.0), NULL);
     }
 
-    g_signal_handlers_unblock_by_func (player->playbin, bp_volume_changed_callback, player);
     _bp_rgvolume_print_volume (player);
 }
 

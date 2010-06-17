@@ -258,7 +258,7 @@ static void bp_about_to_finish_callback (GstElement *playbin, BansheePlayer *pla
 }
 #endif //ENABLE_GAPLESS
 
-void bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, BansheePlayer *player)
+static void bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, BansheePlayer *player)
 {
     gdouble volume;
 
@@ -309,7 +309,7 @@ _bp_pipeline_construct (BansheePlayer *player)
 
     g_return_val_if_fail (player->playbin != NULL, FALSE);
 
-    g_signal_connect (player->playbin, "deep-notify::volume", G_CALLBACK (bp_volume_changed_callback), player);
+    g_signal_connect (player->playbin, "notify::volume", G_CALLBACK (bp_volume_changed_callback), player);
     g_signal_connect (player->playbin, "video-changed", G_CALLBACK (playbin_stream_changed_cb), player);
     g_signal_connect (player->playbin, "audio-changed", G_CALLBACK (playbin_stream_changed_cb), player);
     g_signal_connect (player->playbin, "text-changed", G_CALLBACK (playbin_stream_changed_cb), player);
