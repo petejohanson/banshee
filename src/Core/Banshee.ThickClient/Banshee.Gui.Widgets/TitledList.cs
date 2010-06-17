@@ -52,7 +52,9 @@ namespace Banshee.Gui.Widgets
         {
             title = new Label ();
             title.Xalign = 0;
-            title.Ellipsize = Pango.EllipsizeMode.End;
+            title.Wrap = true;
+            title.Layout.Wrap = Pango.WrapMode.Word;
+            title.Ellipsize = Pango.EllipsizeMode.None;
             Title = title_str;
 
             PackStart (title, false, false, 0);
