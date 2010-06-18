@@ -42,7 +42,7 @@ namespace Banshee.YouTube
         {
             Id = "YouTube";
             Name = Catalog.GetString ("YouTube");
-            IconNames = new string[] { "applications-multimedia" };
+            IconNames = new string[] { "youtube" };
         }
 
         private YouTubePane yt_videos;
