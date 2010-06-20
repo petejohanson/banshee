@@ -46,11 +46,14 @@ public class X11NotificationArea : Plug
 {
     private uint stamp;
     private Orientation orientation;
+    private Visual visual;
+    private bool visual_is_rgba;
 
     private IntPtr selection_atom;
     private IntPtr manager_atom;
     private IntPtr system_tray_opcode_atom;
     private IntPtr orientation_atom;
+    private IntPtr visual_atom;
     private IntPtr message_data_atom;
     private IntPtr manager_window;
     private FilterFunc filter;
@@ -122,6 +125,18 @@ public class X11NotificationArea : Plug
         orientation = Orientation.Horizontal;
         AddEvents ((int)EventMask.PropertyChangeMask);
         filter = new FilterFunc (ManagerFilter);
+
+        Display display = Screen.Display;
+        IntPtr xdisplay = gdk_x11_display_get_xdisplay (display.Handle);
+        selection_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_S" + Screen.Number.ToString (), false);
+        manager_atom = XInternAtom (xdisplay, "MANAGER", false);
+        system_tray_opcode_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_OPCODE", false);
+        orientation_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_ORIENTATION", false);
+        visual_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_VISUAL", false);
+        message_data_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_MESSAGE_DATA", false);
+
+        Screen.RootWindow.AddFilter (filter);
+        UpdateManagerWindow (false);
     }
 
     [GLib.ConnectBefore]
@@ -130,14 +145,29 @@ public class X11NotificationArea : Plug
         Gtk.Widget widget = (Gtk.Widget)obj;
         Gdk.Rectangle area = args.Event.Area;
 
-        widget.GdkWindow.ClearArea (area.X, area.Y, area.Width, area.Height);
+        if (visual_is_rgba) {
+            Cairo.Context cr = Gdk.CairoHelper.Create (widget.GdkWindow);
+            cr.SetSourceRGBA (0, 0, 0, 0);
+            cr.Operator = Cairo.Operator.Source;
+            Gdk.CairoHelper.Region (cr, args.Event.Region);
+            cr.Fill ();
+
+            ((IDisposable)cr.Target).Dispose ();
+            ((IDisposable)cr).Dispose ();
+        } else {
+            widget.GdkWindow.ClearArea (area.X, area.Y, area.Width, area.Height);
+        }
     }
 
     private void MakeTransparentAgain (object obj, Gtk.StyleSetArgs args)
     {
         Gtk.Widget widget = (Gtk.Widget)obj;
 
-        widget.GdkWindow.SetBackPixmap (null, true);
+        if (visual_is_rgba) {
+            widget.GdkWindow.Background = Gdk.Color.Zero;
+        } else {
+            widget.GdkWindow.SetBackPixmap (null, true);
+        }
     }
 
     private void MakeTransparent (object obj, EventArgs args)
@@ -147,26 +177,37 @@ public class X11NotificationArea : Plug
             return;
 
         widget.AppPaintable = true;
-        widget.DoubleBuffered = false;
-        widget.GdkWindow.SetBackPixmap (null, true);
+        if (visual_is_rgba) {
+            widget.GdkWindow.Background = Gdk.Color.Zero;
+        } else {
+            widget.DoubleBuffered = false;
+            widget.GdkWindow.SetBackPixmap (null, true);
+        }
         widget.ExposeEvent += TransparentExposeEvent;
         widget.StyleSet += MakeTransparentAgain;
     }
 
+    private void SetColormap ()
+    {
+        Gtk.Widget widget = (Gtk.Widget)this;
+
+        if (visual == null || visual == Screen.SystemVisual) {
+            widget.Colormap = Screen.SystemColormap;
+        } else if (visual == Screen.RgbVisual) {
+            widget.Colormap = Screen.RgbColormap;
+        } else if (visual == Screen.RgbaVisual) {
+            widget.Colormap = Screen.RgbaColormap;
+        } else {
+            widget.Colormap = new Colormap (visual, false);
+        }
+    }
+
     protected override void OnRealized ()
     {
+        SetColormap ();
         base.OnRealized ();
         MakeTransparent (this, EventArgs.Empty);
-        Display display = Screen.Display;
-        IntPtr xdisplay = gdk_x11_display_get_xdisplay (display.Handle);
-        selection_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_S" + Screen.Number.ToString (), false);
-        manager_atom = XInternAtom (xdisplay, "MANAGER", false);
-        system_tray_opcode_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_OPCODE", false);
-        orientation_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_ORIENTATION", false);
-        message_data_atom = XInternAtom (xdisplay, "_NET_SYSTEM_TRAY_MESSAGE_DATA", false);
-        UpdateManagerWindow (false);
         SendDockRequest ();
-        Screen.RootWindow.AddFilter (filter);
     }
 
     protected override void OnAdded (Gtk.Widget child)
@@ -216,11 +257,23 @@ public class X11NotificationArea : Plug
                 gdkwin.AddFilter (filter);
             }
 
-            if (dock_if_realized && IsRealized) {
-                SendDockRequest ();
-            }
-
             GetOrientationProperty ();
+            GetVisualProperty ();
+
+            if (IsRealized) {
+                if ((visual == null && Visual == Screen.SystemVisual)
+                    || visual == Visual) {
+                    // Already have the right visual, can just dock
+                    if (dock_if_realized) {
+                        SendDockRequest ();
+                    }
+                } else {
+                    // Need to re-realize the widget to get the right visual
+                    Hide ();
+                    Unrealize ();
+                    Show ();
+                }
+            }
         }
     }
 
@@ -333,6 +386,55 @@ public class X11NotificationArea : Plug
             XFree (prop_return);
         }
     }
+
+    private void GetVisualProperty ()
+    {
+        IntPtr display;
+        IntPtr type;
+        int format;
+        IntPtr prop_return;
+        IntPtr nitems, bytes_after;
+        int error, result;
+
+        if (manager_window == IntPtr.Zero) {
+            return;
+        }
+
+        display = gdk_x11_display_get_xdisplay (Display.Handle);
+
+        gdk_error_trap_push ();
+        type = IntPtr.Zero;
+
+        result = XGetWindowProperty (display, manager_window, visual_atom, (IntPtr) 0,
+                         (IntPtr) System.Int32.MaxValue, false, (IntPtr) XAtom.VisualId, out type, out format,
+                         out nitems, out bytes_after, out prop_return);
+
+        error = gdk_error_trap_pop ();
+
+        if (error != 0 || result != 0) {
+            return;
+        }
+
+        if (type == (IntPtr) XAtom.VisualId) {
+            int visual_id = Marshal.ReadInt32 (prop_return);
+            IntPtr raw_ret = gdk_x11_screen_lookup_visual (Screen.Handle, visual_id);
+            visual = GLib.Object.GetObject (raw_ret) as Gdk.Visual;
+        }
+
+        // TODO the proper check is (visual->red_prec + visual->blue_prec + visual->green_prec < visual->depth)
+        // but this seems to work
+        visual_is_rgba = visual != null && visual == Screen.RgbaVisual;
+
+        // we can't be double-buffered when we aren't using a real RGBA visual
+        DoubleBuffered = visual_is_rgba;
+
+        if (prop_return != IntPtr.Zero) {
+            XFree (prop_return);
+        }
+    }
+
+    [DllImport ("libgdk-x11-2.0.so.0")]
+    private static extern IntPtr gdk_x11_screen_lookup_visual (IntPtr screen, int visual_id);
 
     [DllImport ("libgdk-x11-2.0.so.0")]
     private static extern IntPtr gdk_x11_display_get_xdisplay (IntPtr display);
@@ -462,6 +564,7 @@ public class X11NotificationArea : Plug
 
     private enum XAtom {
         Cardinal                = 6,
+        VisualId                = 32,
         LASTAtom
     }
 
