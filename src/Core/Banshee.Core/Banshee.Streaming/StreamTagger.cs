@@ -209,7 +209,8 @@ namespace Banshee.Streaming
 
             if (String.IsNullOrEmpty (track.TrackTitle)) {
                 try {
-                    string filename = System.IO.Path.GetFileNameWithoutExtension (track.Uri.AbsoluteUri);
+                    string filename = System.Web.HttpUtility.UrlDecode
+			    (System.IO.Path.GetFileNameWithoutExtension (track.Uri.AbsoluteUri));
                     if (!String.IsNullOrEmpty (filename)) {
                         track.TrackTitle = filename;
                     }
