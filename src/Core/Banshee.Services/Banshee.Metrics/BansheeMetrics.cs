@@ -126,7 +126,7 @@ namespace Banshee.Metrics
                     var last_post_time = DatabaseConfigurationClient.Client.Get<DateTime> (last_post_key, DateTime.MinValue);
                     var last_post_rel = (DateTime.Now - last_post_time).TotalHours;
                     if (last_post_rel < 0 || last_post_rel > 48.0) {
-                        var poster = new HttpPoster ("http://download.banshee-project.org/metrics/metrics.py", metrics);
+                        var poster = new HttpPoster ("http://metrics.banshee.fm/submit", metrics);
                         bool posted = poster.Post ();
                         Log.InformationFormat ("Posted usage data? {0}", posted);
                         if (posted) {

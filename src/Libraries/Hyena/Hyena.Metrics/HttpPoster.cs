@@ -39,6 +39,9 @@ namespace Hyena.Metrics
         {
             this.url = url;
             this.metrics = metrics;
+
+            // Sending the Expect header causes lighttpd to fail with a 417 header.
+            ServicePointManager.Expect100Continue = false;
         }
 
         public bool Post ()
