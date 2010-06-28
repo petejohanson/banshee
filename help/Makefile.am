@@ -20,6 +20,6 @@ DOC_PAGES = \
 	sort.page \
 	sync.page
 
-DOC_LINGUAS = 
+DOC_LINGUAS = de
 dist-hook: doc-dist-hook
 endif
