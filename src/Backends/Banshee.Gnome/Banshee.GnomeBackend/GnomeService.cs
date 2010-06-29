@@ -35,6 +35,8 @@ namespace Banshee.GnomeBackend
 {
     public class GnomeService : IExtensionService, IDisposable
     {
+        private GConfProxy gconf_proxy;
+
         private Brasero brasero;
         internal Brasero Brasero {
             get { return brasero; }
@@ -47,11 +49,16 @@ namespace Banshee.GnomeBackend
         public void Initialize ()
         {
             try {
+                // FIXME: this needs to be deferred/delayed initialized
+                gconf_proxy = new GConfProxy ();
+            } catch (Exception e) {
+                Hyena.Log.Exception ("GConfProxy", e);
+                gconf_proxy = null;
+            }
+
+            try {
                 brasero = new Brasero ();
                 brasero.Initialize ();
-
-                new GConfProxy ();
-
             } catch {
                 brasero = null;
             }
@@ -66,6 +73,11 @@ namespace Banshee.GnomeBackend
             if (brasero != null) {
                 brasero.Dispose ();
                 brasero = null;
+            }
+
+            if (gconf_proxy != null) {
+                gconf_proxy.Dispose ();
+                gconf_proxy = null;
             }
 
             if (Browser.OpenHandler == (Banshee.Web.Browser.OpenUrlHandler) OpenUrl) {
