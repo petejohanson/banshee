@@ -29,11 +29,24 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
 
     Enhancements:
 
-      * TODO
+      * Overhaul GNOME proxy support (bmc#1920)
+      * Mallard-based documentation
+      * Make GIO optional with --disable-gio configure switch
+      * Use new YouTube icon in context buttons
+      * Wrap long strings in the Now Playing view
+      * Xperia X10 support
+      * Brand new ready to hack on Gst#-based backend
+      * Refresh podcast feeds when network is reconnected
+      * Add metadata-saving support for File System Queue (bgo#609411)
 
-    Notable Bugs Fixed (X fixed since 1.7.1):
+    Notable Bugs Fixed (23 fixed since 1.7.1):
 
-      * TODO
+      * Allow building without gnome-doc-utils
+      * Fix various volume-related issues
+      * Fix Play Queue when using it with different locales (bgo#621480)
+      * Fix the Internet Archive playback (bgo#621687)
+      * Correct Play Queue track reordering (bgo#613333)
+      * Fix SourceSwitcher crasher (bgo#618117)
 
 ===============================================================================
 SOURCES / PACKAGES
