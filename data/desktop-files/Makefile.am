@@ -16,6 +16,9 @@ endif
 
 @INTLTOOL_DESKTOP_RULE@
 
+install-data-hook:
+	update-desktop-database $(DESTDIR)$(datadir)/applications || :
+
 EXTRA_DIST = \
 	$(desktop_in_files) \
 	$(DESKTOP_MIME_DEPS) \

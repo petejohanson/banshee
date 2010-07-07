@@ -23,7 +23,7 @@ bamz: bamz.in
 	@echo '  GEN   $@'; sed 's,@bansheedir@,$(pkglibdir),g' < $< > $@
 
 define EXTRA_INSTALL_DATA_HOOK
-	update-mime-database $(DESTDIR)$(datadir)/mime
+	update-mime-database $(DESTDIR)$(datadir)/mime || :
 endef
 
 include $(top_srcdir)/build/build.mk
