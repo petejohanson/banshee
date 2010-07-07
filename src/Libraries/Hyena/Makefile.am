@@ -50,6 +50,11 @@ SOURCES =  \
 	Hyena.Data/ModelSelection.cs \
 	Hyena.Data/PropertyStore.cs \
 	Hyena.Data/SortType.cs \
+	Hyena.Downloader/Buffer.cs \
+	Hyena.Downloader/DownloadManager.cs \
+	Hyena.Downloader/HttpDownloader.cs \
+	Hyena.Downloader/HttpDownloaderState.cs \
+	Hyena.Downloader/HttpFileDownloader.cs \
 	Hyena.Jobs/Job.cs \
 	Hyena.Jobs/JobExtensions.cs \
 	Hyena.Jobs/PriorityHints.cs \
