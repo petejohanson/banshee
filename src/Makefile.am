@@ -1,4 +1,5 @@
 SUBDIRS = \
+	Hyena \
 	Libraries \
 	Core \
 	Dap \

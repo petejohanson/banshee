@@ -73,6 +73,8 @@ else
     touch gnome-doc-utils.make
 fi
 
+git submodule update --init
+
 run intltoolize --force --copy
 run $LIBTOOLIZE --force --copy --automake
 run aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave $ACLOCAL_FLAGS

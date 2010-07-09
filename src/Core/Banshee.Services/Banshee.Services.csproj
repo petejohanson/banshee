@@ -70,7 +70,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Hyena\Hyena.csproj">
+    <ProjectReference Include="..\..\..\hyena\src\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
+      <Name>Hyena.Data.Sqlite</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\hyena\src\Hyena\Hyena.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
       <Name>Hyena</Name>
       <Private>False</Private>
@@ -89,7 +94,7 @@
       <Name>Lastfm</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Mono.Data.Sqlite\Mono.Data.Sqlite.csproj">
+    <ProjectReference Include="..\..\..\hyena\src\Mono.Data.Sqlite\Mono.Data.Sqlite.csproj">
       <Project>{BB1D1D81-7A74-4183-B7B1-3E78B32D42F1}</Project>
       <Name>Mono.Data.Sqlite</Name>
     </ProjectReference>
