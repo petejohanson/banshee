@@ -4,7 +4,6 @@ SUBDIRS = \
 	help \
 	libbanshee \
 	gstreamer \
-	lib/Hyena \
 	src \
 	docs \
 	tests \

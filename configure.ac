@@ -268,13 +268,13 @@ libbanshee/Makefile
 gstreamer/Makefile
 gstreamer/equalizer/Makefile
 
-lib/Hyena/Makefile
-lib/Hyena/build/Makefile
-lib/Hyena/build/m4/Makefile
-lib/Hyena/src/Mono.Data.Sqlite/Makefile
-lib/Hyena/src/Hyena/Makefile
-lib/Hyena/src/Hyena.Data.Sqlite/Makefile
-lib/Hyena/src/Hyena.Gui/Makefile
+src/Hyena/Makefile
+src/Hyena/build/Makefile
+src/Hyena/build/m4/Makefile
+src/Hyena/Mono.Data.Sqlite/Makefile
+src/Hyena/Hyena/Makefile
+src/Hyena/Hyena.Data.Sqlite/Makefile
+src/Hyena/Hyena.Gui/Makefile
 
 src/Makefile
 src/AssemblyInfo.cs
