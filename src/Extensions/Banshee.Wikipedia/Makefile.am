@@ -1,6 +1,6 @@
 ASSEMBLY = Banshee.Wikipedia
 TARGET = library
-LINK = $(LINK_BANSHEE_THICKCLIENT_DEPS) $(LINK_WEBKIT)
+LINK = $(REF_EXTENSION_WIKIPEDIA)
 INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
@@ -9,7 +9,7 @@ SOURCES =  \
 
 RESOURCES = Banshee.Wikipedia.addin.xml
 
-if HAVE_WEBKIT
+if HAVE_LIBWEBKIT
 include $(top_srcdir)/build/build.mk
 else
 EXTRA_DIST = $(SOURCES) $(RESOURCES) $(shell find $(srcdir)/ThemeIcons -type f)

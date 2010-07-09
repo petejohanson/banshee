@@ -30,8 +30,6 @@ using System;
 using Mono.Unix;
 using Gtk;
 
-using WebKit;
-
 using Hyena;
 
 using Banshee.ServiceStack;
@@ -40,6 +38,8 @@ using Banshee.Collection;
 
 using Banshee.Gui;
 
+using Banshee.WebBrowser;
+
 namespace Banshee.Wikipedia
 {
     public class WikipediaView : Gtk.ScrolledWindow, IDisableKeybindings
@@ -47,11 +47,11 @@ namespace Banshee.Wikipedia
         // Translators: this is used for looking up artist pages on Wikipedia; change to your wikipedia language if you want
         private string url_format = Catalog.GetString ("http://en.wikipedia.org/wiki/{0}");
 
-        internal WebKit.WebView view;
+        internal OssiferWebView view;
 
         public WikipediaView ()
         {
-            view = new WebView ();
+            view = new OssiferWebView ();
 
             Add (view);
         }
@@ -75,8 +75,7 @@ namespace Banshee.Wikipedia
         private void OpenUrl (string uri)
         {
             Hyena.Log.DebugFormat ("Opening {0}", uri);
-            //Open (uri);
-            view.ExecuteScript (String.Format ("document.location = \"{0}\";", uri));
+            view.LoadUri (uri);
         }
     }
 }

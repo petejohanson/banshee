@@ -49,6 +49,9 @@ namespace Banshee.WebBrowser
 
         private Callbacks callbacks;
 
+        // FIXME: provide more complete events here to match the protected virtuals
+        public event EventHandler DocumentLoadFinished;
+
         [DllImport (LIBOSSIFER)]
         private static extern IntPtr ossifer_web_view_get_type ();
 
@@ -113,6 +116,10 @@ namespace Banshee.WebBrowser
 
         protected virtual void OnDocumentLoadFinished (string uri)
         {
+            var handler = DocumentLoadFinished;
+            if (handler != null) {
+                handler (this, EventArgs.Empty);
+            }
         }
 
         private void HandleDownloadStatusChanged (IntPtr ossifer, OssiferDownloadStatus status, IntPtr destinationUri)

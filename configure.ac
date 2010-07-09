@@ -116,7 +116,6 @@ dnl Monodoc (optional through --disable-docs)
 SHAMROCK_CHECK_MONODOC
 
 dnl webkit (optional through --disable-webkit)
-BANSHEE_CHECK_WEBKIT
 BANSHEE_CHECK_LIBWEBKIT
 
 dnl gdata (optional through --disable-youtube)
