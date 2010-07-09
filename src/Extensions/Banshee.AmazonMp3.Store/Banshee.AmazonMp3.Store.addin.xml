@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Addin
+    id="Banshee.AmazonMp3.Store"
+    version="1.0"
+    compatVersion="1.0"
+    copyright="Copyright 2010 Novell, Inc."
+    name="Amazon MP3 Store Source"
+    category="Online Sources"
+    description="Browse, search, and purchase music from the Amazon MP3 store"
+    author="Aaron Bockover"
+    url="http://banshee.fm/"
+    defaultEnabled="true">
+  <Dependencies>
+    <Addin id="Banshee.Services" version="1.0"/>
+    <Addin id="Banshee.AmazonMp3" version="1.0"/>
+  </Dependencies>
+  <Extension path="/Banshee/SourceManager/Source">
+    <Source class="Banshee.AmazonMp3.Store.StoreSource"/>
+  </Extension>
+</Addin>

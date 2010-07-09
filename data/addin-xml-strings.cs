@@ -61,6 +61,11 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Digital Media Player Support");
         Catalog.GetString (@"Provides general support for many kinds of media player devices.");
 
+        // ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store.addin.xml
+        Catalog.GetString (@"Amazon MP3 Store Source");
+        Catalog.GetString (@"Browse, search, and purchase music from the Amazon MP3 store");
+        Catalog.GetString (@"Online Sources");
+
         // ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3.addin.xml
         Catalog.GetString (@"Amazon MP3 Import");
         Catalog.GetString (@"Download and import music purchased from Amazon.com");

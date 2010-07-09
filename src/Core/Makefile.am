@@ -3,7 +3,8 @@ SUBDIRS = \
 	Banshee.Core \
 	Banshee.Services \
 	Banshee.Widgets \
-	Banshee.ThickClient
+	Banshee.ThickClient \
+	Banshee.WebBrowser
 
 run:
 	@pushd $(top_builddir); \

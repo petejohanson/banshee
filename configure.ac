@@ -117,6 +117,7 @@ SHAMROCK_CHECK_MONODOC
 
 dnl webkit (optional through --disable-webkit)
 BANSHEE_CHECK_WEBKIT
+BANSHEE_CHECK_LIBWEBKIT
 
 dnl gdata (optional through --disable-youtube)
 BANSHEE_CHECK_YOUTUBE
@@ -295,6 +296,8 @@ src/Core/Banshee.Core/Makefile
 src/Core/Banshee.Services/Makefile
 src/Core/Banshee.ThickClient/Makefile
 src/Core/Banshee.Widgets/Makefile
+src/Core/Banshee.WebBrowser/Makefile
+src/Core/Banshee.WebBrowser/libossifer/Makefile
 
 src/Backends/Makefile
 src/Backends/Banshee.Gio/Makefile
@@ -325,6 +328,7 @@ src/Dap/Banshee.Dap.Karma/Makefile
 
 src/Extensions/Makefile
 src/Extensions/Banshee.AmazonMp3/Makefile
+src/Extensions/Banshee.AmazonMp3.Store/Makefile
 src/Extensions/Banshee.Audiobook/Makefile
 src/Extensions/Banshee.AudioCd/Makefile
 src/Extensions/Banshee.BooScript/Makefile
@@ -386,15 +390,18 @@ ${PACKAGE}-${VERSION}
     Karma:             ${enable_karmasharp}
 
   Extra Features:
+    Web Browser:       ${have_libwebkit} (webkit-1.0 >= 1.2.0, libsoup-2.4 >= 2.26)
+      + GNOME Proxy    ${have_libsoup_gnome} (libsoup-gnome-2.4 >= 2.26)
+      + Amazon MP3     ${have_libwebkit}
+      + Wikipedia      ${have_libwebkit}
     Boo Scripting:     ${enable_boo}
     Builtin Equalizer: ${enable_builtin_equalizer}
     DAAP:              ${enable_daap}
-    GIO Backend:       ${enable_gio} (requires glib >= 2.22, gtk-sharp-beans, and gio-sharp)
-    Library Watcher:   ${HAVE_MONO_2_4_3} (requires Mono >= 2.4.3)
+    GIO Backend:       ${enable_gio} (glib >= 2.22, gtk-sharp-beans, and gio-sharp)
+    Library Watcher:   ${HAVE_MONO_2_4_3} (Mono >= 2.4.3)
     Podcasts:          ${enable_podcast}
-    Wikipedia:         ${enable_webkit} (requires webkit-sharp)
-    Gapless playback:  ${ENABLE_GAPLESS} (requires gstreamer-plugins-base > 0.10.25.2)
-    YouTube extension: ${enable_youtube} (requires gdata-sharp >= 1.4)
+    Gapless playback:  ${ENABLE_GAPLESS} (gstreamer-plugins-base > 0.10.25.2)
+    YouTube extension: ${enable_youtube} (gdata-sharp >= 1.4)
 
   Build/Development:
     Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})

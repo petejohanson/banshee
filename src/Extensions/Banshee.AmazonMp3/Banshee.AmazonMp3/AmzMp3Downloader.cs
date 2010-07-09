@@ -35,12 +35,17 @@ namespace Banshee.AmazonMp3
 {
     public class AmzMp3Downloader : HttpFileDownloader
     {
+        private static string amazon_mp3_downloader_compat_version = "1.0.9";
+        public static string AmazonMp3DownloaderCompatVersion {
+            get { return amazon_mp3_downloader_compat_version; }
+        }
+
         public Xspf.Track Track { get; private set; }
         public string OutputPath { get; set; }
 
         public AmzMp3Downloader (Xspf.Track track)
         {
-            UserAgent = "Amazon MP3 Downloader (Linux 1.0.9 en_US)";
+            UserAgent = String.Format ("Amazon MP3 Downloader (Linux {0} en_US)", AmazonMp3DownloaderCompatVersion);
             TempPathRoot = Path.Combine (Path.GetTempPath (), "banshee-amz-downloader");
             FileExtension = "mp3";
             Uri = track.Locations[0];

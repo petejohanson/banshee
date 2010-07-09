@@ -1,5 +1,6 @@
 SUBDIRS = \
 	Banshee.AmazonMp3 \
+	Banshee.AmazonMp3.Store \
 	Banshee.Audiobook \
 	Banshee.AudioCd \
 	Banshee.BooScript \
