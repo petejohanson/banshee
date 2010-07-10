@@ -113,5 +113,10 @@ namespace Banshee.AmazonMp3.Store
         {
             LoadUri ("http://amz-proxy.banshee.fm/");
         }
+
+        public void GoSearch (string query)
+        {
+            LoadUri (new Uri ("http://amz-proxy.banshee.fm/search/" + query).AbsoluteUri);
+        }
     }
 }

@@ -29,6 +29,7 @@ using System;
 using Gtk;
 using Mono.Unix;
 
+using Banshee.Widgets;
 using Banshee.WebBrowser;
 
 namespace Banshee.AmazonMp3.Store
@@ -39,12 +40,26 @@ namespace Banshee.AmazonMp3.Store
         private StoreView store_view = new StoreView ();
         private NavigationControl navigation_control = new NavigationControl ();
         private Label title = new Label ();
+        private SearchEntry search_entry = new SearchEntry ();
+        private int search_clear_on_navigate_state;
 
-        public WebBrowserShell () : base (2, 1, false)
+        public WebBrowserShell () : base (3, 2, false)
         {
+            RowSpacing = 5;
+
             store_view.LoadStatusChanged += (o, e) => {
                 if (store_view.LoadStatus == OssiferLoadStatus.FirstVisuallyNonEmptyLayout) {
                     UpdateTitle (store_view.Title);
+
+                    switch (search_clear_on_navigate_state) {
+                        case 1:
+                            search_clear_on_navigate_state = 2;
+                            break;
+                        case 2:
+                            search_clear_on_navigate_state = 0;
+                            search_entry.Query = String.Empty;
+                            break;
+                    }
                 }
             };
 
@@ -57,7 +72,7 @@ namespace Banshee.AmazonMp3.Store
                 0, 0);
 
             title.Xalign = 0.0f;
-            title.Xpad = 10;
+            title.Xpad = 20;
             title.Ellipsize = Pango.EllipsizeMode.End;
 
             Attach (title, 1, 2, 0, 1,
@@ -65,10 +80,28 @@ namespace Banshee.AmazonMp3.Store
                 AttachOptions.Shrink,
                 0, 0);
 
+            search_entry.EmptyMessage = String.Format (Catalog.GetString ("Search the Amazon MP3 Store"));
+            search_entry.SetSizeRequest (260, -1);
+            // FIXME: dummy option to make the "search" icon show up;
+            // we should probably fix this in the SearchEntry, but also
+            // add real filter options for searching Amazon MP3 (artist,
+            // album, genre, etc.)
+            search_entry.AddFilterOption (0, Catalog.GetString ("Amazon MP3 Store"));
+            search_entry.Show ();
+            search_entry.Activated += (o, e) => {
+                store_view.GoSearch (search_entry.Query);
+                store_view.HasFocus = true;
+                search_clear_on_navigate_state = 1;
+            };
+            Attach (search_entry, 2, 3, 0, 1,
+                AttachOptions.Fill,
+                AttachOptions.Shrink,
+                0, 0);
+
             store_view_scroll.Add (store_view);
             store_view_scroll.ShadowType = ShadowType.In;
 
-            Attach (store_view_scroll, 0, 2, 1, 2,
+            Attach (store_view_scroll, 0, 3, 1, 2,
                 AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Expand | AttachOptions.Fill,
                 0, 0);
