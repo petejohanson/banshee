@@ -42,11 +42,24 @@ namespace Banshee.AmazonMp3.Store
     {
         public StoreView ()
         {
+            // Ensure that Amazon knows a valid downloader is available,
+            // otherwise the purchase experience is interrupted with a
+            // confusing message about downloading and installing software.
             SetCookie ("dmusic_download_manager_enabled",
                 AmzMp3Downloader.AmazonMp3DownloaderCompatVersion,
                 ".amazon.com", "/", TimeSpan.FromDays (365.2422));
 
-            LoadUri ("http://www.amazon.com/mp3/");
+            // This is an HTML5 Canvas/JS spinner icon. It is awesome
+            // and renders immediately, going away when the store loads.
+            LoadString (AssemblyResource.GetFileContents ("loading.html"),
+                "text/html", "UTF-8", null);
+
+            // We defer this to another main loop iteration, otherwise
+            // our load placeholder document will never be rendered.
+            GLib.Idle.Add (delegate {
+                GoHome ();
+                return false;
+            });
         }
 
         protected override OssiferNavigationResponse OnMimeTypePolicyDecisionRequested (string mimetype)
@@ -61,11 +74,6 @@ namespace Banshee.AmazonMp3.Store
                     Log.Debug ("OssiferWebView: ignoring mime type", mimetype);
                     return OssiferNavigationResponse.Ignore;
             }
-        }
-
-        protected override void OnLoadStatusChanged (OssiferLoadStatus status)
-        {
-            Console.WriteLine ("LOAD STATUS: {0} -> {1} ({2}, {3})", status, LoadStatus, Uri, Title);
         }
 
         protected override string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
@@ -99,6 +107,11 @@ namespace Banshee.AmazonMp3.Store
                         .DownloadAmz (new SafeUri (destinationUri).LocalPath);
                     break;
             }
+        }
+
+        public void GoHome ()
+        {
+            LoadUri ("http://amz-proxy.banshee.fm/");
         }
     }
 }

@@ -300,3 +300,45 @@ ossifer_web_view_get_load_status (OssiferWebView *ossifer)
     g_return_val_if_fail (OSSIFER_WEB_VIEW (ossifer), WEBKIT_LOAD_FAILED);
     return webkit_web_view_get_load_status (WEBKIT_WEB_VIEW (ossifer));
 }
+
+gboolean
+ossifer_web_view_can_go_back (OssiferWebView *ossifer)
+{
+    g_return_val_if_fail (OSSIFER_WEB_VIEW (ossifer), FALSE);
+    return webkit_web_view_can_go_back (WEBKIT_WEB_VIEW (ossifer));
+}
+
+gboolean
+ossifer_web_view_can_go_forward (OssiferWebView *ossifer)
+{
+    g_return_val_if_fail (OSSIFER_WEB_VIEW (ossifer), FALSE);
+    return webkit_web_view_can_go_forward (WEBKIT_WEB_VIEW (ossifer));
+}
+
+void
+ossifer_web_view_go_back (OssiferWebView *ossifer)
+{
+    g_return_if_fail (OSSIFER_WEB_VIEW (ossifer));
+    return webkit_web_view_go_back (WEBKIT_WEB_VIEW (ossifer));
+}
+
+void
+ossifer_web_view_go_forward (OssiferWebView *ossifer)
+{
+    g_return_if_fail (OSSIFER_WEB_VIEW (ossifer));
+    return webkit_web_view_go_forward (WEBKIT_WEB_VIEW (ossifer));
+}
+
+void
+ossifer_web_view_reload (OssiferWebView *ossifer)
+{
+    g_return_if_fail (OSSIFER_WEB_VIEW (ossifer));
+    return webkit_web_view_reload (WEBKIT_WEB_VIEW (ossifer));
+}
+
+void
+ossifer_web_view_reload_bypass_cache (OssiferWebView *ossifer)
+{
+    g_return_if_fail (OSSIFER_WEB_VIEW (ossifer));
+    return webkit_web_view_reload_bypass_cache (WEBKIT_WEB_VIEW (ossifer));
+}

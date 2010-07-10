@@ -177,23 +177,73 @@ namespace Banshee.WebBrowser
         }
 
         [DllImport (LIBOSSIFER)]
+        private static extern bool ossifer_web_view_can_go_forward (IntPtr ossifer);
+
+        public virtual bool CanGoForward {
+            get { return ossifer_web_view_can_go_forward (Handle); }
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern bool ossifer_web_view_can_go_back (IntPtr ossifer);
+
+        public virtual bool CanGoBack {
+            get { return ossifer_web_view_can_go_back (Handle); }
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern void ossifer_web_view_go_forward (IntPtr ossifer);
+
+        public virtual void GoForward ()
+        {
+            ossifer_web_view_go_forward (Handle);
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern void ossifer_web_view_go_back (IntPtr ossifer);
+
+        public virtual void GoBack ()
+        {
+            ossifer_web_view_go_back (Handle);
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern void ossifer_web_view_reload (IntPtr ossifer);
+
+        [DllImport (LIBOSSIFER)]
+        private static extern void ossifer_web_view_reload_bypass_cache (IntPtr ossifer);
+
+        public virtual void Reload (bool bypassCache)
+        {
+            if (bypassCache) {
+                ossifer_web_view_reload_bypass_cache (Handle);
+            } else {
+                ossifer_web_view_reload (Handle);
+            }
+        }
+
+        public void Reload ()
+        {
+            Reload (false);
+        }
+
+        [DllImport (LIBOSSIFER)]
         private static extern IntPtr ossifer_web_view_get_uri (IntPtr ossifer);
 
-        public string Uri {
+        public virtual string Uri {
             get { return GLib.Marshaller.Utf8PtrToString (ossifer_web_view_get_uri (Handle)); }
         }
 
         [DllImport (LIBOSSIFER)]
         private static extern IntPtr ossifer_web_view_get_title (IntPtr ossifer);
 
-        public string Title {
+        public virtual string Title {
             get { return GLib.Marshaller.Utf8PtrToString (ossifer_web_view_get_title (Handle)); }
         }
 
         [DllImport (LIBOSSIFER)]
         private static extern OssiferLoadStatus ossifer_web_view_get_load_status (IntPtr ossifer);
 
-        public OssiferLoadStatus LoadStatus {
+        public virtual OssiferLoadStatus LoadStatus {
             get { return ossifer_web_view_get_load_status (Handle); }
         }
 

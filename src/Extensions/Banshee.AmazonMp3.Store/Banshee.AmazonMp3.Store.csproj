@@ -54,9 +54,13 @@
     <EmbeddedResource Include="Banshee.AmazonMp3.Store.addin.xml">
       <LogicalName>Banshee.AmazonMp3.Store.addin.xml</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\loading.html">
+      <LogicalName>loading.html</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Banshee.AmazonMp3.Store\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

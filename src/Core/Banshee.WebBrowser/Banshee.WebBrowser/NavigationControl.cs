@@ -27,6 +27,7 @@
 using System;
 
 using Gtk;
+using Hyena.Gui;
 
 namespace Banshee.WebBrowser
 {
@@ -37,19 +38,84 @@ namespace Banshee.WebBrowser
         private Button reload_button = new Button (new Image (Stock.Refresh, IconSize.Button)) { Relief = ReliefStyle.None };
         private Button home_button = new Button (new Image (Stock.Home, IconSize.Button)) { Relief = ReliefStyle.None };
 
+        public event EventHandler GoHomeEvent;
+
         public NavigationControl ()
         {
+            back_button.Clicked += (o, e) => {
+                if (web_view != null && web_view.CanGoBack) {
+                    web_view.GoBack ();
+                }
+            };
+
+            forward_button.Clicked += (o, e) => {
+                if (web_view != null && web_view.CanGoForward) {
+                    web_view.GoForward ();
+                }
+            };
+
+            reload_button.Clicked += (o, e) => {
+                if (web_view != null) {
+                    web_view.Reload (!GtkUtilities.NoImportantModifiersAreSet ());
+                }
+            };
+
+            home_button.Clicked += (o, e) => {
+                var handler = GoHomeEvent;
+                if (handler != null) {
+                    handler (this, EventArgs.Empty);
+                }
+            };
+
+            UpdateNavigation ();
+
             PackStart (back_button, false, false, 0);
             PackStart (forward_button, false, false, 0);
             PackStart (reload_button, false, false, 5);
             PackStart (home_button, false, false, 0);
+
             ShowAll ();
         }
 
         private OssiferWebView web_view;
         public OssiferWebView WebView {
             get { return web_view; }
-            set { web_view = value; }
+            set {
+                if (web_view == value) {
+                    return;
+                } else if (web_view != null) {
+                    web_view.LoadStatusChanged -= OnOssiferWebViewLoadStatusChanged;
+                }
+
+                web_view = value;
+
+                if (web_view != null) {
+                    web_view.LoadStatusChanged += OnOssiferWebViewLoadStatusChanged;
+                }
+
+                UpdateNavigation ();
+            }
+        }
+
+        public void UpdateNavigation ()
+        {
+            if (web_view == null) {
+                Sensitive = false;
+                return;
+            }
+
+            Sensitive = true;
+
+            back_button.Sensitive = web_view.CanGoBack;
+            forward_button.Sensitive = web_view.CanGoForward;
+        }
+
+        private void OnOssiferWebViewLoadStatusChanged (object o, EventArgs args)
+        {
+            if (web_view.LoadStatus == OssiferLoadStatus.Committed ||
+                web_view.LoadStatus == OssiferLoadStatus.Failed) {
+                UpdateNavigation ();
+            }
         }
     }
 }

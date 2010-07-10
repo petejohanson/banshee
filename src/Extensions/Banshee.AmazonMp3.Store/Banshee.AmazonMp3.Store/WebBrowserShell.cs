@@ -41,6 +41,7 @@ namespace Banshee.AmazonMp3.Store
         public WebBrowserShell () : base (2, 1, false)
         {
             navigation_control.WebView = store_view;
+            navigation_control.GoHomeEvent += (o, e) => store_view.GoHome ();
 
             Attach (navigation_control, 0, 1, 0, 1,
                 AttachOptions.Expand | AttachOptions.Fill,

@@ -8,7 +8,9 @@ SOURCES =  \
 	Banshee.AmazonMp3.Store/StoreView.cs \
 	Banshee.AmazonMp3.Store/WebBrowserShell.cs 
 
-RESOURCES = Banshee.AmazonMp3.Store.addin.xml
+RESOURCES =  \
+	Banshee.AmazonMp3.Store.addin.xml \
+	Resources/loading.html
 
 if HAVE_LIBWEBKIT
 include $(top_srcdir)/build/build.mk
