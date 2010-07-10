@@ -31,6 +31,7 @@ using Hyena;
 
 using Banshee.Sources;
 using Banshee.Sources.Gui;
+using Banshee.WebBrowser;
 
 namespace Banshee.AmazonMp3.Store
 {
@@ -43,6 +44,7 @@ namespace Banshee.AmazonMp3.Store
         {
             TypeUniqueId = "amazon-mp3-store";
             Properties.SetString ("Icon.Name", "amazon-mp3-source");
+            Properties.Set<bool> ("Nereid.SourceContents.HeaderVisible", false);
         }
 
         public override void Activate ()

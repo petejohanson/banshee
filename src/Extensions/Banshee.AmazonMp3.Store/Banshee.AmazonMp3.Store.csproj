@@ -68,17 +68,9 @@
       <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
       <Name>Banshee.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Hyena.Gui\Hyena.Gui.csproj">
-      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
-      <Name>Hyena.Gui</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Banshee.ThickClient\Banshee.ThickClient.csproj">
       <Project>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</Project>
       <Name>Banshee.ThickClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Hyena\Hyena.csproj">
-      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
-      <Name>Hyena</Name>
     </ProjectReference>
     <ProjectReference Include="..\Banshee.AmazonMp3\Banshee.AmazonMp3.csproj">
       <Project>{930ADBFD-07F1-4044-A1C5-8B28BD23DB5C}</Project>
@@ -87,6 +79,14 @@
     <ProjectReference Include="..\..\Core\Banshee.WebBrowser\Banshee.WebBrowser.csproj">
       <Project>{E7660EC3-6CBD-4809-93ED-B4B88E65D3D3}</Project>
       <Name>Banshee.WebBrowser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena.Gui\Hyena.Gui.csproj">
+      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
+      <Name>Hyena.Gui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena\Hyena.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
+      <Name>Hyena</Name>
     </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>

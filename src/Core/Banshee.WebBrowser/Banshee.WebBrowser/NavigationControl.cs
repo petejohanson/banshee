@@ -1,5 +1,5 @@
 // 
-// OssiferDownloadStatus.cs
+// NavigationControl.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -26,14 +26,30 @@
 
 using System;
 
+using Gtk;
+
 namespace Banshee.WebBrowser
 {
-    public enum OssiferDownloadStatus
+    public class NavigationControl : HBox
     {
-        Error = -1,
-        Created = 0,
-        Started,
-        Cancelled,
-        Finished
+        private Button back_button = new Button (new Image (Stock.GoBack, IconSize.Button)) { Relief = ReliefStyle.None };
+        private Button forward_button = new Button (new Image (Stock.GoForward, IconSize.Button)) { Relief = ReliefStyle.None };
+        private Button reload_button = new Button (new Image (Stock.Refresh, IconSize.Button)) { Relief = ReliefStyle.None };
+        private Button home_button = new Button (new Image (Stock.Home, IconSize.Button)) { Relief = ReliefStyle.None };
+
+        public NavigationControl ()
+        {
+            PackStart (back_button, false, false, 0);
+            PackStart (forward_button, false, false, 0);
+            PackStart (reload_button, false, false, 5);
+            PackStart (home_button, false, false, 0);
+            ShowAll ();
+        }
+
+        private OssiferWebView web_view;
+        public OssiferWebView WebView {
+            get { return web_view; }
+            set { web_view = value; }
+        }
     }
 }

@@ -1,5 +1,5 @@
-// 
-// OssiferDownloadStatus.cs
+//
+// OssiferLoadStatus.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -28,12 +28,12 @@ using System;
 
 namespace Banshee.WebBrowser
 {
-    public enum OssiferDownloadStatus
+    public enum OssiferLoadStatus
     {
-        Error = -1,
-        Created = 0,
-        Started,
-        Cancelled,
-        Finished
+        Provisional,
+        Committed,
+        Finished,
+        FirstVisuallyNonEmptyLayout,
+        Failed
     }
 }

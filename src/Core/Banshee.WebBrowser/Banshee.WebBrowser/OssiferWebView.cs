@@ -33,7 +33,7 @@ namespace Banshee.WebBrowser
     {
         private delegate OssiferNavigationResponse MimeTypePolicyDecisionRequestedCallback (IntPtr ossifer, IntPtr mimetype);
         private delegate IntPtr DownloadRequestedCallback (IntPtr ossifer, IntPtr mimetype, IntPtr uri, IntPtr suggested_filename);
-        private delegate void DocumentLoadFinishedCallback (IntPtr ossifer, IntPtr uri);
+        private delegate void LoadStatusChangedCallback (IntPtr ossifer, OssiferLoadStatus status);
         private delegate void DownloadStatusChangedCallback (IntPtr ossifer, OssiferDownloadStatus status, IntPtr mimetype, IntPtr destnation_uri);
 
         [StructLayout (LayoutKind.Sequential)]
@@ -41,7 +41,7 @@ namespace Banshee.WebBrowser
         {
             public MimeTypePolicyDecisionRequestedCallback MimeTypePolicyDecisionRequested;
             public DownloadRequestedCallback DownloadRequested;
-            public DocumentLoadFinishedCallback DocumentLoadFinished;
+            public LoadStatusChangedCallback LoadStatusChanged;
             public DownloadStatusChangedCallback DownloadStatusChanged;
         }
 
@@ -49,8 +49,7 @@ namespace Banshee.WebBrowser
 
         private Callbacks callbacks;
 
-        // FIXME: provide more complete events here to match the protected virtuals
-        public event EventHandler DocumentLoadFinished;
+        public event EventHandler LoadStatusChanged;
 
         [DllImport (LIBOSSIFER)]
         private static extern IntPtr ossifer_web_view_get_type ();
@@ -75,7 +74,7 @@ namespace Banshee.WebBrowser
                 MimeTypePolicyDecisionRequested =
                     new MimeTypePolicyDecisionRequestedCallback (HandleMimeTypePolicyDecisionRequested),
                 DownloadRequested = new DownloadRequestedCallback (HandleDownloadRequested),
-                DocumentLoadFinished = new DocumentLoadFinishedCallback (HandleDocumentLoadFinished),
+                LoadStatusChanged = new LoadStatusChangedCallback (HandleLoadStatusChanged),
                 DownloadStatusChanged = new DownloadStatusChangedCallback (HandleDownloadStatusChanged)
             };
 
@@ -110,14 +109,14 @@ namespace Banshee.WebBrowser
             return null;
         }
 
-        private void HandleDocumentLoadFinished (IntPtr ossifer, IntPtr uri)
+        private void HandleLoadStatusChanged (IntPtr ossifer, OssiferLoadStatus status)
         {
-            OnDocumentLoadFinished (GLib.Marshaller.Utf8PtrToString (uri));
+            OnLoadStatusChanged (status);
         }
 
-        protected virtual void OnDocumentLoadFinished (string uri)
+        protected virtual void OnLoadStatusChanged (OssiferLoadStatus status)
         {
-            var handler = DocumentLoadFinished;
+            var handler = LoadStatusChanged;
             if (handler != null) {
                 handler (this, EventArgs.Empty);
             }
@@ -175,6 +174,27 @@ namespace Banshee.WebBrowser
                 GLib.Marshaller.Free (encoding_raw);
                 GLib.Marshaller.Free (base_uri_raw);
             }
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern IntPtr ossifer_web_view_get_uri (IntPtr ossifer);
+
+        public string Uri {
+            get { return GLib.Marshaller.Utf8PtrToString (ossifer_web_view_get_uri (Handle)); }
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern IntPtr ossifer_web_view_get_title (IntPtr ossifer);
+
+        public string Title {
+            get { return GLib.Marshaller.Utf8PtrToString (ossifer_web_view_get_title (Handle)); }
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern OssiferLoadStatus ossifer_web_view_get_load_status (IntPtr ossifer);
+
+        public OssiferLoadStatus LoadStatus {
+            get { return ossifer_web_view_get_load_status (Handle); }
         }
 
 #endregion

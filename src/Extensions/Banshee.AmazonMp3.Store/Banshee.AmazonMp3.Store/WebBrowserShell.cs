@@ -28,16 +28,33 @@ using System;
 
 using Gtk;
 
+using Banshee.WebBrowser;
+
 namespace Banshee.AmazonMp3.Store
 {
-    public class WebBrowserShell : Gtk.ScrolledWindow, Banshee.Gui.IDisableKeybindings
+    public class WebBrowserShell : Table, Banshee.Gui.IDisableKeybindings
     {
-        public StoreView View { get; private set; }
+        private ScrolledWindow store_view_scroll = new ScrolledWindow ();
+        private StoreView store_view = new StoreView ();
+        private NavigationControl navigation_control = new NavigationControl ();
 
-        public WebBrowserShell ()
+        public WebBrowserShell () : base (2, 1, false)
         {
-            ShadowType = ShadowType.In;
-            Add (View = new StoreView ());
+            navigation_control.WebView = store_view;
+
+            Attach (navigation_control, 0, 1, 0, 1,
+                AttachOptions.Expand | AttachOptions.Fill,
+                AttachOptions.Shrink,
+                0, 0);
+
+            store_view_scroll.Add (store_view);
+            store_view_scroll.ShadowType = ShadowType.In;
+
+            Attach (store_view_scroll, 0, 1, 1, 2,
+                AttachOptions.Expand | AttachOptions.Fill,
+                AttachOptions.Expand | AttachOptions.Fill,
+                0, 0);
+
             ShowAll ();
         }
     }

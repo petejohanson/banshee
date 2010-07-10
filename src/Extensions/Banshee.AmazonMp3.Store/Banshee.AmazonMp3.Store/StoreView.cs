@@ -63,6 +63,11 @@ namespace Banshee.AmazonMp3.Store
             }
         }
 
+        protected override void OnLoadStatusChanged (OssiferLoadStatus status)
+        {
+            Console.WriteLine ("LOAD STATUS: {0} -> {1} ({2}, {3})", status, LoadStatus, Uri, Title);
+        }
+
         protected override string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
         {
             switch (mimetype) {

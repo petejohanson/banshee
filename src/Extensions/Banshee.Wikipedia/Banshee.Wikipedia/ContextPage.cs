@@ -57,7 +57,11 @@ namespace Banshee.Wikipedia
             get {
                 if (view == null) {
                     view = new WikipediaView ();
-                    view.view.DocumentLoadFinished += delegate { State = ContextState.Loaded; };
+                    view.view.LoadStatusChanged += delegate {
+                        if (view.view.LoadStatus == Banshee.WebBrowser.OssiferLoadStatus.FirstVisuallyNonEmptyLayout) {
+                            State = ContextState.Loaded;
+                        }
+                    };
                     view.ShowAll ();
                 }
                 return view;
