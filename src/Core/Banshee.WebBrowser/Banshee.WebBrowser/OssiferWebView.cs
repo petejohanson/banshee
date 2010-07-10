@@ -32,9 +32,9 @@ namespace Banshee.WebBrowser
     public class OssiferWebView : Gtk.Widget
     {
         private delegate OssiferNavigationResponse MimeTypePolicyDecisionRequestedCallback (IntPtr ossifer, IntPtr mimetype);
-        private delegate IntPtr DownloadRequestedCallback (IntPtr ossifer, IntPtr uri, IntPtr suggested_filename);
+        private delegate IntPtr DownloadRequestedCallback (IntPtr ossifer, IntPtr mimetype, IntPtr uri, IntPtr suggested_filename);
         private delegate void DocumentLoadFinishedCallback (IntPtr ossifer, IntPtr uri);
-        private delegate void DownloadStatusChangedCallback (IntPtr ossifer, OssiferDownloadStatus status, IntPtr destnation_uri);
+        private delegate void DownloadStatusChangedCallback (IntPtr ossifer, OssiferDownloadStatus status, IntPtr mimetype, IntPtr destnation_uri);
 
         [StructLayout (LayoutKind.Sequential)]
         private struct Callbacks
@@ -71,15 +71,15 @@ namespace Banshee.WebBrowser
             Initialize ();
             CreateNativeObject (new string[0], new GLib.Value[0]);
 
-            ossifer_web_view_set_callbacks (Handle, callbacks = new Callbacks () {
+            callbacks = new Callbacks () {
                 MimeTypePolicyDecisionRequested =
                     new MimeTypePolicyDecisionRequestedCallback (HandleMimeTypePolicyDecisionRequested),
                 DownloadRequested = new DownloadRequestedCallback (HandleDownloadRequested),
                 DocumentLoadFinished = new DocumentLoadFinishedCallback (HandleDocumentLoadFinished),
                 DownloadStatusChanged = new DownloadStatusChangedCallback (HandleDownloadStatusChanged)
-            });
+            };
 
-            GC.KeepAlive (callbacks);
+            ossifer_web_view_set_callbacks (Handle, callbacks);
         }
 
 #region Callback Implementations
@@ -94,9 +94,10 @@ namespace Banshee.WebBrowser
             return OssiferNavigationResponse.Unhandled;
         }
 
-        private IntPtr HandleDownloadRequested (IntPtr ossifer, IntPtr uri, IntPtr suggested_filename)
+        private IntPtr HandleDownloadRequested (IntPtr ossifer, IntPtr mimetype, IntPtr uri, IntPtr suggested_filename)
         {
             var destination_uri = OnDownloadRequested (
+                GLib.Marshaller.Utf8PtrToString (mimetype),
                 GLib.Marshaller.Utf8PtrToString (uri),
                 GLib.Marshaller.Utf8PtrToString (suggested_filename));
             return destination_uri == null
@@ -104,7 +105,7 @@ namespace Banshee.WebBrowser
                 : GLib.Marshaller.StringToPtrGStrdup (destination_uri);
         }
 
-        protected virtual string OnDownloadRequested (string uri, string suggestedFilename)
+        protected virtual string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
         {
             return null;
         }
@@ -122,12 +123,14 @@ namespace Banshee.WebBrowser
             }
         }
 
-        private void HandleDownloadStatusChanged (IntPtr ossifer, OssiferDownloadStatus status, IntPtr destinationUri)
+        private void HandleDownloadStatusChanged (IntPtr ossifer, OssiferDownloadStatus status, IntPtr mimetype, IntPtr destinationUri)
         {
-            OnDownloadStatusChanged (status, GLib.Marshaller.Utf8PtrToString (destinationUri));
+            OnDownloadStatusChanged (status,
+                GLib.Marshaller.Utf8PtrToString (mimetype),
+                GLib.Marshaller.Utf8PtrToString (destinationUri));
         }
 
-        protected virtual void OnDownloadStatusChanged (OssiferDownloadStatus status, string destinationUri)
+        protected virtual void OnDownloadStatusChanged (OssiferDownloadStatus status, string mimetype, string destinationUri)
         {
         }
 

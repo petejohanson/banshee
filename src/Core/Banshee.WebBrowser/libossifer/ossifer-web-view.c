@@ -37,13 +37,13 @@ typedef WebKitNavigationResponse (* OssiferWebViewMimeTypePolicyDecisionRequeste
     (OssiferWebView *ossifer, const gchar *mimetype);
 
 typedef gchar * (* OssiferWebViewDownloadRequestedCallback)
-    (OssiferWebView *ossifer, const gchar *uri, const gchar *suggested_filename);
+    (OssiferWebView *ossifer, const gchar *mimetype, const gchar *uri, const gchar *suggested_filename);
 
 typedef void (* OssiferWebViewDocumentLoadFinishedCallback)
     (OssiferWebView *ossifer, const gchar *uri);
 
 typedef void (* OssiferWebViewDownloadStatusChanged)
-    (OssiferWebView *ossifer, WebKitDownloadStatus status, const gchar *uri);
+    (OssiferWebView *ossifer, WebKitDownloadStatus status, const gchar *mimetype, const gchar *uri);
 
 typedef struct {
     OssiferWebViewMimeTypePolicyDecisionRequestedCallback mime_type_policy_decision_requested;
@@ -59,6 +59,15 @@ struct OssiferWebViewPrivate {
 // ---------------------------------------------------------------------------
 // OssiferWebView Internal Implementation
 // ---------------------------------------------------------------------------
+
+static const gchar *
+ossifer_web_view_download_get_mimetype (WebKitDownload *download)
+{
+    return soup_message_headers_get_content_type (
+        webkit_network_response_get_message (
+            webkit_download_get_network_response (download)
+        )->response_headers, NULL);
+}
 
 static WebKitWebView *
 ossifer_web_view_create_web_view (WebKitWebView *web_view, WebKitWebFrame *web_frame)
@@ -103,6 +112,7 @@ ossifer_web_view_download_notify_status (GObject* object, GParamSpec* pspec, gpo
     if (ossifer->priv->callbacks.download_status_changed != NULL) {
         ossifer->priv->callbacks.download_status_changed (ossifer,
             webkit_download_get_status (download),
+            ossifer_web_view_download_get_mimetype (download),
             webkit_download_get_destination_uri (download));
     }
 }
@@ -116,6 +126,7 @@ ossifer_web_view_download_requested (WebKitWebView *web_view, WebKitDownload *do
     if (ossifer->priv->callbacks.download_requested == NULL ||
         (destination_uri = ossifer->priv->callbacks.download_requested (
             ossifer,
+            ossifer_web_view_download_get_mimetype (download),
             webkit_download_get_uri (download),
             webkit_download_get_suggested_filename (download))) == NULL) {
         return FALSE;
@@ -172,7 +183,10 @@ ossifer_web_view_init (OssiferWebView *ossifer)
     ossifer->priv = G_TYPE_INSTANCE_GET_PRIVATE (ossifer, OSSIFER_TYPE_WEB_VIEW, OssiferWebViewPrivate);
 
     g_object_get (ossifer, "settings", &settings, NULL);
-    g_object_set (settings, "enable-plugins", FALSE, NULL);
+    g_object_set (settings,
+        "enable-plugins", FALSE,
+        "enable-default-context-menu", FALSE,
+        NULL);
 
     g_signal_connect (ossifer, "mime-type-policy-decision-requested",
         G_CALLBACK (ossifer_web_view_mime_type_policy_decision_requested), NULL);

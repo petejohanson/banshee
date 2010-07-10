@@ -55,25 +55,44 @@ namespace Banshee.AmazonMp3.Store
             // download audio/x-amzxml - everything else is ignored.
             switch (mimetype) {
                 case "text/html": return OssiferNavigationResponse.Accept;
+                case "audio/x-mpegurl":
                 case "audio/x-amzxml": return OssiferNavigationResponse.Download;
-                default: return OssiferNavigationResponse.Ignore;
+                default:
+                    Log.Debug ("OssiferWebView: ignoring mime type", mimetype);
+                    return OssiferNavigationResponse.Ignore;
             }
         }
 
-        protected override string OnDownloadRequested (string uri, string suggestedFilename)
+        protected override string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
         {
-            var dest_uri_base = "file://" + Paths.Combine (Paths.TempDir, suggestedFilename);
-            var dest_uri = new SafeUri (dest_uri_base);
-            for (int i = 1; File.Exists (dest_uri);
-                dest_uri = new SafeUri (String.Format ("{0} ({1})", dest_uri_base, ++i)));
-            return dest_uri.AbsoluteUri;
+            switch (mimetype) {
+                case "audio/x-amzurl":
+                    var dest_uri_base = "file://" + Paths.Combine (Paths.TempDir, suggestedFilename);
+                    var dest_uri = new SafeUri (dest_uri_base);
+                    for (int i = 1; File.Exists (dest_uri);
+                        dest_uri = new SafeUri (String.Format ("{0} ({1})", dest_uri_base, ++i)));
+                    return dest_uri.AbsoluteUri;
+                case "audio/x-mpegurl":
+                    Banshee.Streaming.RadioTrackInfo.OpenPlay (uri);
+                    return null;
+            }
+
+            return null;
         }
 
-        protected override void OnDownloadStatusChanged (OssiferDownloadStatus status, string destinationUri)
+        protected override void OnDownloadStatusChanged (OssiferDownloadStatus status, string mimetype, string destinationUri)
         {
-            if (status == OssiferDownloadStatus.Finished) {
-                Banshee.ServiceStack.ServiceManager.Get<AmazonMp3DownloaderService> ()
-                    .DownloadAmz (new SafeUri (destinationUri).LocalPath);
+            // FIXME: handle the error case
+            if (status != OssiferDownloadStatus.Finished) {
+                return;
+            }
+
+            switch (mimetype) {
+                case "audio/x-amzurl":
+                    Log.Debug ("OssiferWebView: downloaded purchase list", destinationUri);
+                    Banshee.ServiceStack.ServiceManager.Get<AmazonMp3DownloaderService> ()
+                        .DownloadAmz (new SafeUri (destinationUri).LocalPath);
+                    break;
             }
         }
     }
