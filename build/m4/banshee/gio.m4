@@ -17,7 +17,7 @@ AC_DEFUN([BANSHEE_CHECK_GIO_SHARP],
 			glib-2.0 >= 2.22,
 			enable_gio="$enable_gio", enable_gio=no)
 
-		AM_CONDITIONAL(ENABLE_GIO, "x$enable_gio" = "xyes")
+		AM_CONDITIONAL(ENABLE_GIO, test "x$enable_gio" = "xyes")
 	else
 		AM_CONDITIONAL(ENABLE_GIO, false)
 	fi
