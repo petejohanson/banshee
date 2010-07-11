@@ -78,7 +78,6 @@ namespace Banshee.AmazonMp3.Store
 
         protected override string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
         {
-            Console.WriteLine ("WTF: {0}", mimetype);
             switch (mimetype) {
                 case "audio/x-amzxml":
                     var dest_uri_base = "file://" + Paths.Combine (Paths.TempDir, suggestedFilename);
