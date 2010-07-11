@@ -79,15 +79,25 @@ namespace Banshee.AmazonMp3
                     count++;
                 }
                 user_job.Progress = progress;
-                user_job.Status = String.Format (
-                    Catalog.GetPluralString (
-                        "{0} download at {1}/s ({2} pending)",
-                        "{0} downloads at {1}/s ({2} pending)",
-                        count),
-                    count, new Hyena.Query.FileSizeQueryValue (
-                        (long)Math.Round (speed)).ToUserQuery (),
-                    PendingDownloadCount
-                );
+
+                var human_speed = new Hyena.Query.FileSizeQueryValue ((long)Math.Round (speed)).ToUserQuery ();
+                if (PendingDownloadCount == 0) {
+                    user_job.Status = String.Format (
+                        Catalog.GetPluralString (
+                            "{0} download at {1}/s",
+                            "{0} downloads at {1}/s",
+                            count),
+                        count, human_speed
+                    );
+                } else {
+                    user_job.Status = String.Format (
+                        Catalog.GetPluralString (
+                            "{0} download at {1}/s ({2} pending)",
+                            "{0} downloads at {1}/s ({2} pending)",
+                            count),
+                        count, human_speed, PendingDownloadCount
+                    );
+                }
             }
         }
 
