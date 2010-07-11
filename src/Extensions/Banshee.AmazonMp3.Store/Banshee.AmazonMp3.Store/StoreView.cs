@@ -87,6 +87,7 @@ namespace Banshee.AmazonMp3.Store
                     return dest_uri.AbsoluteUri;
                 case "audio/x-mpegurl":
                     Banshee.Streaming.RadioTrackInfo.OpenPlay (uri);
+                    Banshee.ServiceStack.ServiceManager.PlaybackController.StopWhenFinished = true;
                     return null;
             }
 
