@@ -14,15 +14,18 @@ EXTRA_BUNDLE = $(KARMASHARP_ASSEMBLIES)
 if ENABLE_KARMA
 include $(top_srcdir)/build/build.mk
 
-install-data-hook:
+define EXTRA_INSTALL_DATA_HOOK
 	for ASM in $(KARMASHARP_ASSEMBLIES); do \
 		$(INSTALL) -m 0755 $$ASM $(DESTDIR)$(moduledir); \
 	done;
+endef
 
-uninstall-hook:
+define EXTRA_UNINSTALL_HOOK
 	for ASM in $(KARMASHARP_ASSEMBLIES); do \
 		rm -f $(DESTDIR)$(moduledir)/`basename $$ASM`; \
 	done;
+endef
+
 else
 EXTRA_DIST = $(SOURCES) $(RESOURCES)
 endif
