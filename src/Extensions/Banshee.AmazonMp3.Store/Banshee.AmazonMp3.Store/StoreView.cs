@@ -78,8 +78,9 @@ namespace Banshee.AmazonMp3.Store
 
         protected override string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
         {
+            Console.WriteLine ("WTF: {0}", mimetype);
             switch (mimetype) {
-                case "audio/x-amzurl":
+                case "audio/x-amzxml":
                     var dest_uri_base = "file://" + Paths.Combine (Paths.TempDir, suggestedFilename);
                     var dest_uri = new SafeUri (dest_uri_base);
                     for (int i = 1; File.Exists (dest_uri);
@@ -102,7 +103,7 @@ namespace Banshee.AmazonMp3.Store
             }
 
             switch (mimetype) {
-                case "audio/x-amzurl":
+                case "audio/x-amzxml":
                     Log.Debug ("OssiferWebView: downloaded purchase list", destinationUri);
                     Banshee.ServiceStack.ServiceManager.Get<AmazonMp3DownloaderService> ()
                         .DownloadAmz (new SafeUri (destinationUri).LocalPath);
