@@ -189,7 +189,7 @@ namespace Banshee.LibraryWatcher
         {
             using (var reader = ServiceManager.DbConnection.Query (
                 DatabaseTrackInfo.Provider.CreateFetchCommand (
-                "CoreTracks.Uri = ? LIMIT 1"), new SafeUri (track).AbsoluteUri)) {
+                "CoreTracks.PrimarySourceID = ? AND CoreTracks.Uri = ? LIMIT 1"), library.DbId, new SafeUri (track).AbsoluteUri)) {
                 if (reader.Read ()) {
                     var track_info = DatabaseTrackInfo.Provider.Load (reader);
                     if (Banshee.IO.File.GetModifiedTime (track_info.Uri) > track_info.FileModifiedStamp) {
