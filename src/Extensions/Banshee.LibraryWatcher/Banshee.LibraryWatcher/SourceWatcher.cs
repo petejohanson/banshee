@@ -230,15 +230,14 @@ namespace Banshee.LibraryWatcher
             }
 
             if (hash != null) {
-                QueueItem item;
                 lock (queue) {
-                    item = queue.FirstOrDefault (
-                        i => i.ChangeType == WatcherChangeTypes.Created && GetMetadataHash(i) == hash);
-                }
-                if (item != null) {
-                    item.ChangeType = WatcherChangeTypes.Renamed;
-                    item.OldFullPath = track;
-                    return;
+                    var item = queue.FirstOrDefault (
+                        i => i.ChangeType == WatcherChangeTypes.Created && GetMetadataHash (i) == hash);
+                    if (item != null) {
+                        item.ChangeType = WatcherChangeTypes.Renamed;
+                        item.OldFullPath = track;
+                        return;
+                    }
                 }
             }
 
