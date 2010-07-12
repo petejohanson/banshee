@@ -43,7 +43,7 @@ namespace Banshee.AmazonMp3.Store
         private SearchEntry search_entry = new SearchEntry ();
         private int search_clear_on_navigate_state;
 
-        public WebBrowserShell () : base (3, 2, false)
+        public WebBrowserShell () : base (2, 3, false)
         {
             RowSpacing = 5;
 
