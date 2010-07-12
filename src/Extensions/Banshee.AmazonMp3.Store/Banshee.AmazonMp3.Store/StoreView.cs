@@ -40,8 +40,14 @@ namespace Banshee.AmazonMp3.Store
 {
     public class StoreView : OssiferWebView
     {
+        public bool IsSignedIn { get; private set; }
+
+        public event EventHandler SignInChanged;
+
         public StoreView ()
         {
+            OssiferSession.CookieChanged += (o, n) => CheckSignIn ();
+
             // Ensure that Amazon knows a valid downloader is available,
             // otherwise the purchase experience is interrupted with a
             // confusing message about downloading and installing software.
@@ -49,17 +55,8 @@ namespace Banshee.AmazonMp3.Store
                 AmzMp3Downloader.AmazonMp3DownloaderCompatVersion,
                 ".amazon.com", "/", TimeSpan.FromDays (365.2422));
 
-            // This is an HTML5 Canvas/JS spinner icon. It is awesome
-            // and renders immediately, going away when the store loads.
-            LoadString (AssemblyResource.GetFileContents ("loading.html"),
-                "text/html", "UTF-8", null);
-
-            // We defer this to another main loop iteration, otherwise
-            // our load placeholder document will never be rendered.
-            GLib.Idle.Add (delegate {
-                GoHome ();
-                return false;
-            });
+            CheckSignIn ();
+            FullReload ();
         }
 
         protected override OssiferNavigationResponse OnMimeTypePolicyDecisionRequested (string mimetype)
@@ -118,6 +115,48 @@ namespace Banshee.AmazonMp3.Store
         public void GoSearch (string query)
         {
             LoadUri (new Uri ("http://amz-proxy.banshee.fm/search/" + query).AbsoluteUri);
+        }
+
+        public void SignOut ()
+        {
+            foreach (var name in new [] { "at-main", "x-main", "session-id",
+                "session-id-time", "session-token", "uidb-main", "pf"}) {
+                OssiferSession.DeleteCookie (name, ".amazon.com", "/");
+            }
+
+            FullReload ();
+        }
+
+        public void FullReload ()
+        {
+            // This is an HTML5 Canvas/JS spinner icon. It is awesome
+            // and renders immediately, going away when the store loads.
+            LoadString (AssemblyResource.GetFileContents ("loading.html"),
+                "text/html", "UTF-8", null);
+
+            // We defer this to another main loop iteration, otherwise
+            // our load placeholder document will never be rendered.
+            GLib.Idle.Add (delegate {
+                GoHome ();
+                return false;
+            });
+        }
+
+        private void CheckSignIn ()
+        {
+            var signed_in = OssiferSession.GetCookie ("at-main", ".amazon.com", "/") != null;
+            if (IsSignedIn != signed_in) {
+                IsSignedIn = signed_in;
+                OnSignInChanged ();
+            }
+        }
+
+        protected virtual void OnSignInChanged ()
+        {
+            var handler = SignInChanged;
+            if (handler != null) {
+                handler (this, EventArgs.Empty);
+            }
         }
     }
 }

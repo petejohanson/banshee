@@ -102,5 +102,56 @@ namespace Banshee.WebBrowser
                 handler (oldCookie, newCookie);
             }
         }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern IntPtr ossifer_session_get_cookie (IntPtr name, IntPtr domain, IntPtr path);
+
+        [DllImport (LIBOSSIFER)]
+        private static extern void ossifer_cookie_free (IntPtr cookie);
+
+        public static OssiferCookie GetCookie (string name, string domain, string path)
+        {
+            var name_raw = IntPtr.Zero;
+            var domain_raw = IntPtr.Zero;
+            var path_raw = IntPtr.Zero;
+
+            try {
+                var ptr = ossifer_session_get_cookie (
+                    name_raw = GLib.Marshaller.StringToPtrGStrdup (name),
+                    domain_raw = GLib.Marshaller.StringToPtrGStrdup (domain),
+                    path_raw = GLib.Marshaller.StringToPtrGStrdup (path));
+                if (ptr != IntPtr.Zero) {
+                    var cookie = new OssiferCookie (ptr);
+                    ossifer_cookie_free (ptr);
+                    return cookie;
+                }
+                return null;
+            } finally {
+                GLib.Marshaller.Free (name_raw);
+                GLib.Marshaller.Free (domain_raw);
+                GLib.Marshaller.Free (path_raw);
+            }
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern bool ossifer_session_delete_cookie (IntPtr name, IntPtr domain, IntPtr path);
+
+        public static bool DeleteCookie (string name, string domain, string path)
+        {
+            var name_raw = IntPtr.Zero;
+            var domain_raw = IntPtr.Zero;
+            var path_raw = IntPtr.Zero;
+
+            try {
+                return ossifer_session_delete_cookie (
+                    name_raw = GLib.Marshaller.StringToPtrGStrdup (name),
+                    domain_raw = GLib.Marshaller.StringToPtrGStrdup (domain),
+                    path_raw = GLib.Marshaller.StringToPtrGStrdup (path));
+            } finally {
+                GLib.Marshaller.Free (name_raw);
+                GLib.Marshaller.Free (domain_raw);
+                GLib.Marshaller.Free (path_raw);
+            }
+        }
     }
 }

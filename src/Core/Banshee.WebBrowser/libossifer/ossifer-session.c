@@ -24,6 +24,13 @@ ossifer_session_cookie_jar_changed (SoupCookieJar *jar,
     }
 }
 
+static SoupCookieJar *
+ossifer_session_get_cookie_jar ()
+{
+    return (SoupCookieJar *)soup_session_get_feature (webkit_get_default_session (),
+        SOUP_TYPE_COOKIE_JAR);
+}
+
 OssiferSession *
 ossifer_session_initialize (const gchar *cookie_db_path,
     OssiferSessionCookieJarChanged cookie_jar_changed_callback)
@@ -69,15 +76,56 @@ void
 ossifer_session_set_cookie (const gchar *name, const gchar *value,
     const gchar *domain, const gchar *path, gint max_age)
 {
-    SoupSession *session;
-    SoupCookieJar *cookies;
     SoupCookie *cookie;
+    SoupCookieJar *cookie_jar = ossifer_session_get_cookie_jar ();
 
-    session = webkit_get_default_session ();
-    cookies = (SoupCookieJar *)soup_session_get_feature (session, SOUP_TYPE_COOKIE_JAR);
-
-    g_return_if_fail (cookies != NULL);
+    g_return_if_fail (cookie_jar != NULL);
 
     cookie = soup_cookie_new (name, value, domain, path, max_age);
-    soup_cookie_jar_add_cookie (cookies, cookie);
+    soup_cookie_jar_add_cookie (cookie_jar, cookie);
+}
+
+SoupCookie *
+ossifer_session_get_cookie (const gchar *name, const gchar *domain, const gchar *path)
+{
+    GSList *cookies;
+    GSList *item;
+    SoupCookie *found_cookie = NULL;
+
+    cookies = soup_cookie_jar_all_cookies (ossifer_session_get_cookie_jar ());
+
+    for (item = cookies; item != NULL; item = item->next) {
+        SoupCookie *cookie = (SoupCookie *)item->data;
+
+        if (g_str_equal (name, cookie->name) &&
+            g_str_equal (domain, cookie->domain) &&
+            g_str_equal (path, cookie->path)) {
+            found_cookie = soup_cookie_copy (cookie);
+            break;
+        }
+    }
+
+    soup_cookies_free (cookies);
+
+    return found_cookie;
+}
+
+gboolean
+ossifer_session_delete_cookie (const gchar *name, const gchar *domain, const gchar *path)
+{
+    SoupCookie *cookie = ossifer_session_get_cookie (name, domain, path);
+
+    if (cookie != NULL) {
+        soup_cookie_jar_delete_cookie (ossifer_session_get_cookie_jar (), cookie);
+        soup_cookie_free (cookie);
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+void
+ossifer_cookie_free (SoupCookie *cookie)
+{
+    soup_cookie_free (cookie);
 }

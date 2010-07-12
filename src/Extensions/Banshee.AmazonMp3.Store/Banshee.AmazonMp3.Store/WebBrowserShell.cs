@@ -40,10 +40,11 @@ namespace Banshee.AmazonMp3.Store
         private StoreView store_view = new StoreView ();
         private NavigationControl navigation_control = new NavigationControl ();
         private Label title = new Label ();
+        private Button sign_out_button = new Button (Catalog.GetString ("Sign out of Amazon")) { Relief = ReliefStyle.None };
         private SearchEntry search_entry = new SearchEntry ();
         private int search_clear_on_navigate_state;
 
-        public WebBrowserShell () : base (2, 3, false)
+        public WebBrowserShell () : base (2, 4, false)
         {
             RowSpacing = 5;
 
@@ -80,6 +81,13 @@ namespace Banshee.AmazonMp3.Store
                 AttachOptions.Shrink,
                 0, 0);
 
+            sign_out_button.Clicked += (o, e) => store_view.SignOut ();
+
+            Attach (sign_out_button, 2, 3, 0, 1,
+                AttachOptions.Shrink,
+                AttachOptions.Shrink,
+                0, 0);
+
             search_entry.EmptyMessage = String.Format (Catalog.GetString ("Search the Amazon MP3 Store"));
             search_entry.SetSizeRequest (260, -1);
             // FIXME: dummy option to make the "search" icon show up;
@@ -93,7 +101,7 @@ namespace Banshee.AmazonMp3.Store
                 store_view.HasFocus = true;
                 search_clear_on_navigate_state = 1;
             };
-            Attach (search_entry, 2, 3, 0, 1,
+            Attach (search_entry, 3, 4, 0, 1,
                 AttachOptions.Fill,
                 AttachOptions.Shrink,
                 0, 0);
@@ -101,7 +109,7 @@ namespace Banshee.AmazonMp3.Store
             store_view_scroll.Add (store_view);
             store_view_scroll.ShadowType = ShadowType.In;
 
-            Attach (store_view_scroll, 0, 3, 1, 2,
+            Attach (store_view_scroll, 0, 4, 1, 2,
                 AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Expand | AttachOptions.Fill,
                 0, 0);
@@ -109,6 +117,14 @@ namespace Banshee.AmazonMp3.Store
             UpdateTitle (Catalog.GetString ("Loading Amazon MP3 Store..."));
 
             ShowAll ();
+
+            store_view.SignInChanged += (o, e) => UpdateSignInButton ();
+            UpdateSignInButton ();
+        }
+
+        private void UpdateSignInButton ()
+        {
+            sign_out_button.Visible = store_view.IsSignedIn;
         }
 
         private void UpdateTitle (string titleText)
