@@ -89,6 +89,7 @@
   <ItemGroup>
     <None Include="libossifer\ossifer-web-view.c" />
     <None Include="libossifer\ossifer-web-view.h" />
+    <None Include="libossifer\ossifer-session.c" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Banshee.WebBrowser\" />
@@ -99,5 +100,7 @@
     <Compile Include="Banshee.WebBrowser\OssiferDownloadStatus.cs" />
     <Compile Include="Banshee.WebBrowser\NavigationControl.cs" />
     <Compile Include="Banshee.WebBrowser\OssiferLoadStatus.cs" />
+    <Compile Include="Banshee.WebBrowser\OssiferCookie.cs" />
+    <Compile Include="Banshee.WebBrowser\OssiferSession.cs" />
   </ItemGroup>
 </Project>

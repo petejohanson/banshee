@@ -27,10 +27,6 @@
 #include <config.h>
 #include "ossifer-web-view.h"
 
-#ifdef HAVE_LIBSOUP_GNOME
-#  include <libsoup/soup-gnome.h>
-#endif
-
 G_DEFINE_TYPE (OssiferWebView, ossifer_web_view, WEBKIT_TYPE_WEB_VIEW);
 
 typedef WebKitNavigationResponse (* OssiferWebViewMimeTypePolicyDecisionRequestedCallback)
@@ -197,61 +193,6 @@ ossifer_web_view_init (OssiferWebView *ossifer)
 
     g_signal_connect (ossifer, "notify::load-status",
         G_CALLBACK (ossifer_web_view_notify_load_status), NULL);
-}
-
-
-// ---------------------------------------------------------------------------
-// OssiferWebView Public Static API
-// ---------------------------------------------------------------------------
-
-void
-ossifer_web_view_global_initialize (const gchar *cookie_db_path)
-{
-    static gboolean already_initialized = FALSE;
-
-    SoupSession *session;
-    SoupCookieJar *cookies;
-    gchar *path;
-
-    if (already_initialized) {
-        return;
-    }
-
-    already_initialized = TRUE;
-
-    session = webkit_get_default_session ();
-
-#ifdef HAVE_LIBSOUP_GNOME
-    path = g_strdup_printf ("%s.sqlite", cookie_db_path);
-    cookies = soup_cookie_jar_sqlite_new (path, FALSE);
-#else
-    path = g_strdup_printf ("%s.txt", cookie_db_path);
-    cookies = soup_cookie_jar_text_new (path, FALSE);
-#endif
-    soup_session_add_feature (session, SOUP_SESSION_FEATURE (cookies));
-    g_object_unref (cookies);
-    g_free (path);
-
-#ifdef HAVE_LIBSOUP_GNOME
-    soup_session_add_feature_by_type (session, SOUP_TYPE_PROXY_RESOLVER_GNOME);
-#endif
-}
-
-void
-ossifer_web_view_global_set_cookie (const gchar *name, const gchar *value,
-    const gchar *domain, const gchar *path, gint max_age)
-{
-    SoupSession *session;
-    SoupCookieJar *cookies;
-    SoupCookie *cookie;
-
-    session = webkit_get_default_session ();
-    cookies = (SoupCookieJar *)soup_session_get_feature (session, SOUP_TYPE_COOKIE_JAR);
-
-    g_return_if_fail (cookies != NULL);
-
-    cookie = soup_cookie_new (name, value, domain, path, max_age);
-    soup_cookie_jar_add_cookie (cookies, cookie);
 }
 
 // ---------------------------------------------------------------------------

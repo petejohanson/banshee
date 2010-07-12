@@ -45,7 +45,7 @@ namespace Banshee.AmazonMp3.Store
             // Ensure that Amazon knows a valid downloader is available,
             // otherwise the purchase experience is interrupted with a
             // confusing message about downloading and installing software.
-            SetCookie ("dmusic_download_manager_enabled",
+            OssiferSession.SetCookie ("dmusic_download_manager_enabled",
                 AmzMp3Downloader.AmazonMp3DownloaderCompatVersion,
                 ".amazon.com", "/", TimeSpan.FromDays (365.2422));
 

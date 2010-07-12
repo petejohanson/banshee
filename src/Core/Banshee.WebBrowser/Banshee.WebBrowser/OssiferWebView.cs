@@ -67,7 +67,7 @@ namespace Banshee.WebBrowser
 
         public OssiferWebView ()
         {
-            Initialize ();
+            OssiferSession.Initialize ();
             CreateNativeObject (new string[0], new GLib.Value[0]);
 
             callbacks = new Callbacks () {
@@ -245,50 +245,6 @@ namespace Banshee.WebBrowser
 
         public virtual OssiferLoadStatus LoadStatus {
             get { return ossifer_web_view_get_load_status (Handle); }
-        }
-
-#endregion
-
-#region Static API
-
-        [DllImport (LIBOSSIFER)]
-        private static extern void ossifer_web_view_global_initialize (IntPtr cookie_db_path);
-
-        public static void Initialize ()
-        {
-            var path = System.IO.Path.Combine (Hyena.Paths.ApplicationData, "ossifer-browser-cookies");
-            var path_raw = IntPtr.Zero;
-            try {
-                ossifer_web_view_global_initialize (path_raw = GLib.Marshaller.StringToPtrGStrdup (path));
-            } finally {
-                GLib.Marshaller.Free (path_raw);
-            }
-        }
-
-        [DllImport (LIBOSSIFER)]
-        private static extern void ossifer_web_view_global_set_cookie (IntPtr name, IntPtr value,
-            IntPtr domain, IntPtr path, int max_age);
-
-        public static void SetCookie (string name, string value, string domain, string path, TimeSpan maxAge)
-        {
-            var name_raw = IntPtr.Zero;
-            var value_raw = IntPtr.Zero;
-            var domain_raw = IntPtr.Zero;
-            var path_raw = IntPtr.Zero;
-
-            try {
-                ossifer_web_view_global_set_cookie (
-                    name_raw = GLib.Marshaller.StringToPtrGStrdup (name),
-                    value_raw = GLib.Marshaller.StringToPtrGStrdup (value),
-                    domain_raw = GLib.Marshaller.StringToPtrGStrdup (domain),
-                    path_raw = GLib.Marshaller.StringToPtrGStrdup (path),
-                    (int)Math.Round (maxAge.TotalSeconds));
-            } finally {
-                GLib.Marshaller.Free (name_raw);
-                GLib.Marshaller.Free (value_raw);
-                GLib.Marshaller.Free (domain_raw);
-                GLib.Marshaller.Free (path_raw);
-            }
         }
 
 #endregion

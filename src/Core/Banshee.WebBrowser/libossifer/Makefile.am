@@ -1,4 +1,6 @@
-SOURCES = ossifer-web-view.c
+SOURCES = \
+	ossifer-web-view.c \
+	ossifer-session.c
 
 if HAVE_LIBWEBKIT
 ossiferdir = $(pkglibdir)

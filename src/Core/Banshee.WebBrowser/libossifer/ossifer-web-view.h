@@ -1,7 +1,6 @@
 #ifndef OSSIFER_WEB_VIEW_H
 #define OSSIFER_WEB_VIEW_H
 
-#include <gtk/gtk.h>
 #include <webkit/webkit.h>
 
 G_BEGIN_DECLS
