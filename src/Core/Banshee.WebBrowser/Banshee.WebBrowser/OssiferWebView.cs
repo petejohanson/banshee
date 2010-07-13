@@ -227,6 +227,19 @@ namespace Banshee.WebBrowser
         }
 
         [DllImport (LIBOSSIFER)]
+        private static extern void ossifer_web_view_execute_script (IntPtr ossifer, IntPtr script);
+
+        public void ExecuteScript (string script)
+        {
+            var script_raw = IntPtr.Zero;
+            try {
+                ossifer_web_view_execute_script (Handle, script_raw = GLib.Marshaller.StringToPtrGStrdup (script));
+            } finally {
+                GLib.Marshaller.Free (script_raw);
+            }
+        }
+
+        [DllImport (LIBOSSIFER)]
         private static extern IntPtr ossifer_web_view_get_uri (IntPtr ossifer);
 
         public virtual string Uri {

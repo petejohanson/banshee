@@ -66,7 +66,7 @@ ossifer_web_view_download_get_mimetype (WebKitDownload *download)
 }
 
 static WebKitWebView *
-ossifer_web_view_create_web_view (WebKitWebView *web_view, WebKitWebFrame *web_frame)
+ossifer_web_view_create_web_view (WebKitWebView *web_view, WebKitWebFrame *frame, gpointer user_data)
 {
     return WEBKIT_WEB_VIEW (g_object_new (OSSIFER_TYPE_WEB_VIEW, NULL));
 }
@@ -149,27 +149,30 @@ ossifer_web_view_notify_load_status (GObject* object, GParamSpec* pspec, gpointe
     }
 }
 
+static GtkWidget *
+ossifer_web_view_create_plugin_widget (WebKitWebView *web_view, gchar *mime_type,
+    gchar *uri, GHashTable *param, gpointer user_data)
+{
+    // FIXME: this is just a useless stub, but could be used to provide
+    // overriding plugins that hook directly into Banshee - e.g. provide
+    // in-page controls that match the functionality of Amazon's MP3
+    // preview Flash control.
+    //
+    // I'm opting not to do this now, because this requires setting
+    // "enable-plugins" to TRUE, which causes all the plugins to be
+    // loaded, which can introduce instability. There should be a fix
+    // to avoid building the plugin registry at all in libwebkit.
+    return NULL;
+}
+
 // ---------------------------------------------------------------------------
 // OssiferWebView Class/Object Implementation
 // ---------------------------------------------------------------------------
 
 static void
-ossifer_web_view_finalize (GObject *object)
-{
-    G_OBJECT_CLASS (ossifer_web_view_parent_class)->finalize (object);
-}
-
-static void
 ossifer_web_view_class_init (OssiferWebViewClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass);
-    WebKitWebViewClass *web_view_class = WEBKIT_WEB_VIEW_CLASS (klass);
-
     g_type_class_add_private (klass, sizeof (OssiferWebViewPrivate));
-
-    object_class->finalize = ossifer_web_view_finalize;
-
-    web_view_class->create_web_view = ossifer_web_view_create_web_view;
 }
 
 static void
@@ -193,6 +196,12 @@ ossifer_web_view_init (OssiferWebView *ossifer)
 
     g_signal_connect (ossifer, "notify::load-status",
         G_CALLBACK (ossifer_web_view_notify_load_status), NULL);
+
+    g_signal_connect (ossifer, "create-plugin-widget",
+        G_CALLBACK (ossifer_web_view_create_plugin_widget), NULL);
+
+    g_signal_connect (ossifer, "create-web-view",
+        G_CALLBACK (ossifer_web_view_create_web_view), NULL);
 }
 
 // ---------------------------------------------------------------------------
@@ -282,4 +291,11 @@ ossifer_web_view_reload_bypass_cache (OssiferWebView *ossifer)
 {
     g_return_if_fail (OSSIFER_WEB_VIEW (ossifer));
     return webkit_web_view_reload_bypass_cache (WEBKIT_WEB_VIEW (ossifer));
+}
+
+void
+ossifer_web_view_execute_script (OssiferWebView *ossifer, const gchar *script)
+{
+    g_return_if_fail (OSSIFER_WEB_VIEW (ossifer));
+    return webkit_web_view_execute_script (WEBKIT_WEB_VIEW (ossifer), script);
 }

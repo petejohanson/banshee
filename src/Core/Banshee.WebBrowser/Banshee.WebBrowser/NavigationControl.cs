@@ -99,15 +99,17 @@ namespace Banshee.WebBrowser
 
         public void UpdateNavigation ()
         {
-            if (web_view == null) {
-                Sensitive = false;
-                return;
+            if (web_view != null) {
+                back_button.Sensitive = web_view.CanGoBack;
+                forward_button.Sensitive = web_view.CanGoForward;
+                home_button.Sensitive = true;
+                reload_button.Sensitive = true;
+            } else {
+                back_button.Sensitive = false;
+                forward_button.Sensitive = false;
+                home_button.Sensitive = false;
+                reload_button.Sensitive = false;
             }
-
-            Sensitive = true;
-
-            back_button.Sensitive = web_view.CanGoBack;
-            forward_button.Sensitive = web_view.CanGoForward;
         }
 
         private void OnOssiferWebViewLoadStatusChanged (object o, EventArgs args)
