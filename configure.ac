@@ -212,6 +212,8 @@ else
 fi
 AC_SUBST(GMCS_FLAGS)
 
+AM_CONDITIONAL(HYENA_PKG_CONFIG, false)
+
 AC_ARG_WITH(vendor-build-id,
 	AC_HELP_STRING([--with-vendor-build-id=<vendor-build-id>],
 		[Set a vendor build ID, recommended for packagers]),
