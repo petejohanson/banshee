@@ -43,7 +43,7 @@ namespace Banshee.AmazonMp3.Store
             Catalog.GetString ("Amazon MP3 Store"), 150, "amazon-mp3-store")
         {
             TypeUniqueId = "amazon-mp3-store";
-            Properties.SetString ("Icon.Name", "amazon-mp3-source");
+            Properties.SetString ("Icon.Name", "amazon-mp3-store-source");
             Properties.Set<bool> ("Nereid.SourceContents.HeaderVisible", false);
         }
 

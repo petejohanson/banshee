@@ -17,3 +17,5 @@ include $(top_srcdir)/build/build.mk
 else
 EXTRA_DIST = $(SOURCES) $(RESOURCES)
 endif
+
+EXTRA_DIST += ThemeIcons/amazon-mp3-store-source.svg
