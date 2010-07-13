@@ -270,6 +270,7 @@ gstreamer/equalizer/Makefile
 
 src/Hyena/Makefile
 src/Hyena/build/Makefile
+src/Hyena/build/pkg-config/Makefile
 src/Hyena/build/m4/Makefile
 src/Hyena/Mono.Data.Sqlite/Makefile
 src/Hyena/Hyena/Makefile
