@@ -32,7 +32,9 @@ namespace Banshee.WebBrowser
     public class OssiferWebView : Gtk.Widget
     {
         private delegate OssiferNavigationResponse MimeTypePolicyDecisionRequestedCallback (IntPtr ossifer, IntPtr mimetype);
+        private delegate OssiferNavigationResponse NavigationPolicyDecisionRequestedCallback (IntPtr ossifer, IntPtr uri);
         private delegate IntPtr DownloadRequestedCallback (IntPtr ossifer, IntPtr mimetype, IntPtr uri, IntPtr suggested_filename);
+        private delegate IntPtr ResourceRequestStartingCallback (IntPtr ossifer, IntPtr uri);
         private delegate void LoadStatusChangedCallback (IntPtr ossifer, OssiferLoadStatus status);
         private delegate void DownloadStatusChangedCallback (IntPtr ossifer, OssiferDownloadStatus status, IntPtr mimetype, IntPtr destnation_uri);
 
@@ -40,7 +42,9 @@ namespace Banshee.WebBrowser
         private struct Callbacks
         {
             public MimeTypePolicyDecisionRequestedCallback MimeTypePolicyDecisionRequested;
+            public NavigationPolicyDecisionRequestedCallback NavigationPolicyDecisionRequested;
             public DownloadRequestedCallback DownloadRequested;
+            public ResourceRequestStartingCallback ResourceRequestStarting;
             public LoadStatusChangedCallback LoadStatusChanged;
             public DownloadStatusChangedCallback DownloadStatusChanged;
         }
@@ -73,7 +77,10 @@ namespace Banshee.WebBrowser
             callbacks = new Callbacks () {
                 MimeTypePolicyDecisionRequested =
                     new MimeTypePolicyDecisionRequestedCallback (HandleMimeTypePolicyDecisionRequested),
+                NavigationPolicyDecisionRequested =
+                    new NavigationPolicyDecisionRequestedCallback (HandleNavigationPolicyDecisionRequested),
                 DownloadRequested = new DownloadRequestedCallback (HandleDownloadRequested),
+                ResourceRequestStarting = new ResourceRequestStartingCallback (HandleResourceRequestStarting),
                 LoadStatusChanged = new LoadStatusChangedCallback (HandleLoadStatusChanged),
                 DownloadStatusChanged = new DownloadStatusChangedCallback (HandleDownloadStatusChanged)
             };
@@ -93,6 +100,16 @@ namespace Banshee.WebBrowser
             return OssiferNavigationResponse.Unhandled;
         }
 
+        private OssiferNavigationResponse HandleNavigationPolicyDecisionRequested (IntPtr ossifer, IntPtr mimetype)
+        {
+            return OnNavigationPolicyDecisionRequested (GLib.Marshaller.Utf8PtrToString (mimetype));
+        }
+
+        protected virtual OssiferNavigationResponse OnNavigationPolicyDecisionRequested (string mimetype)
+        {
+            return OssiferNavigationResponse.Unhandled;
+        }
+
         private IntPtr HandleDownloadRequested (IntPtr ossifer, IntPtr mimetype, IntPtr uri, IntPtr suggested_filename)
         {
             var destination_uri = OnDownloadRequested (
@@ -105,6 +122,19 @@ namespace Banshee.WebBrowser
         }
 
         protected virtual string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
+        {
+            return null;
+        }
+
+        private IntPtr HandleResourceRequestStarting (IntPtr ossifer, IntPtr old_uri)
+        {
+            string new_uri = OnResourceRequestStarting (GLib.Marshaller.Utf8PtrToString (old_uri));
+            return new_uri == null
+                ? IntPtr.Zero
+                : GLib.Marshaller.StringToPtrGStrdup (new_uri);
+        }
+
+        protected virtual string OnResourceRequestStarting (string old_uri)
         {
             return null;
         }
