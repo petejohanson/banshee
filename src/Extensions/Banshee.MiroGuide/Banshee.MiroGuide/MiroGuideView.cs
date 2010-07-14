@@ -45,33 +45,12 @@ namespace Banshee.MiroGuide
         public MiroGuideView ()
         {
             CanSearch = true;
+            FixupJavascriptUrl = "http://integrated-services.banshee.fm/miro/guide-fixups.js";
             FullReload ();
         }
 
         protected override void OnLoadStatusChanged (OssiferLoadStatus status)
         {
-            if ((status == OssiferLoadStatus.FirstVisuallyNonEmptyLayout ||
-                status == OssiferLoadStatus.Finished) && Uri != "about:blank") {
-
-                //if (fixup_javascript != null) {
-                    //ExecuteScript (fixup_javascript);
-                //}
-                var fixup_javascript = @"
-                    // Hide welcome
-                    var w = document.getElementById ('welcome');
-                    if (w != null) { w.style.display = 'none'; }
-
-                    // Hide these
-                    var a = document.getElementsByClassName ('only-in-browser')
-                    for (var i = 0; i < a.length; i++) { a[i].style.display = 'none'; }
-
-                    // Show these
-                    a = document.getElementsByClassName ('only-in-miro')
-                    for (var i = 0; i < a.length; i++) { a[i].className = ''; }
-                ";
-                ExecuteScript (fixup_javascript);
-            }
-
             if (status == OssiferLoadStatus.Finished && Uri != null && Uri.StartsWith ("http://miroguide.com")) {
                 last_was_audio.Set (Uri.Contains ("miroguide.com/audio/"));
             }
@@ -84,10 +63,8 @@ namespace Banshee.MiroGuide
             // We only explicitly accept (render) text/html types, and only
             // download audio/x-amzxml - everything else is ignored.
             switch (mimetype) {
-                case "application/x-miro":
-                    return OssiferNavigationResponse.Download;
-                default:
-                    return base.OnMimeTypePolicyDecisionRequested (mimetype);
+                case "application/x-miro": return OssiferNavigationResponse.Download;
+                default:                   return base.OnMimeTypePolicyDecisionRequested (mimetype);
             }
         }
 
