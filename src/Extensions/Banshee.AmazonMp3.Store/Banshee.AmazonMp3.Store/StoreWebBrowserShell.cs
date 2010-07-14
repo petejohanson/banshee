@@ -1,5 +1,5 @@
 //
-// StoreSource.cs
+// StoreWebBrowserShell.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -25,22 +25,39 @@
 // THE SOFTWARE.
 
 using System;
+
+using Gtk;
 using Mono.Unix;
 
-using Hyena;
+using Banshee.WebBrowser;
 
 namespace Banshee.AmazonMp3.Store
 {
-    public class StoreSource : Banshee.WebSource.WebSource
+    public class StoreWebBrowserShell : Banshee.WebSource.WebBrowserShell
     {
-        public StoreSource () : base (Catalog.GetString ("Amazon MP3 Store"), 150, "amazon-mp3-store")
+        private StoreView store_view;
+        private Button sign_out_button = new Button (Catalog.GetString ("Sign out of Amazon")) { Relief = ReliefStyle.None };
+
+        public StoreWebBrowserShell (StoreView store_view) : base (Catalog.GetString ("Amazon MP3 Store"), store_view)
         {
-            Properties.SetString ("Icon.Name", "amazon-mp3-store-source");
+            this.store_view = store_view;
+            sign_out_button.Clicked += (o, e) => store_view.SignOut ();
+
+            Attach (sign_out_button, 2, 3, 0, 1,
+                AttachOptions.Shrink,
+                AttachOptions.Shrink,
+                0, 0);
+
+            SearchEntry.EmptyMessage = String.Format (Catalog.GetString ("Search the Amazon MP3 Store"));
+
+            store_view.SignInChanged += (o, e) => UpdateSignInButton ();
+            ShowAll ();
+            UpdateSignInButton ();
         }
 
-        protected override Gtk.Widget GetWidget ()
+        private void UpdateSignInButton ()
         {
-            return new StoreWebBrowserShell (new StoreView ());
+            sign_out_button.Visible = store_view.IsSignedIn;
         }
     }
 }

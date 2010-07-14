@@ -1,8 +1,9 @@
 //
 // WebBrowserShell.cs
 //
-// Author:
+// Authors:
 //   Aaron Bockover <abockover@novell.com>
+//   Gabriel Burt <gburt@novell.com>
 //
 // Copyright 2010 Novell, Inc.
 //
@@ -32,25 +33,30 @@ using Mono.Unix;
 using Banshee.Widgets;
 using Banshee.WebBrowser;
 
-namespace Banshee.AmazonMp3.Store
+namespace Banshee.WebSource
 {
     public class WebBrowserShell : Table, Banshee.Gui.IDisableKeybindings
     {
-        private ScrolledWindow store_view_scroll = new ScrolledWindow ();
-        private StoreView store_view = new StoreView ();
+        private string name;
+        private ScrolledWindow view_scroll = new ScrolledWindow ();
+        private WebView view;
         private NavigationControl navigation_control = new NavigationControl ();
         private Label title = new Label ();
-        private Button sign_out_button = new Button (Catalog.GetString ("Sign out of Amazon")) { Relief = ReliefStyle.None };
         private SearchEntry search_entry = new SearchEntry ();
         private int search_clear_on_navigate_state;
 
-        public WebBrowserShell () : base (2, 4, false)
+        public SearchEntry SearchEntry { get { return search_entry; } }
+
+        public WebBrowserShell (string name, WebView view) : base (2, 4, false)
         {
+            this.name = name;
+            this.view = view;
+
             RowSpacing = 5;
 
-            store_view.LoadStatusChanged += (o, e) => {
-                if (store_view.LoadStatus == OssiferLoadStatus.FirstVisuallyNonEmptyLayout) {
-                    UpdateTitle (store_view.Title);
+            view.LoadStatusChanged += (o, e) => {
+                if (view.LoadStatus == OssiferLoadStatus.FirstVisuallyNonEmptyLayout) {
+                    UpdateTitle (view.Title);
 
                     switch (search_clear_on_navigate_state) {
                         case 1:
@@ -64,9 +70,9 @@ namespace Banshee.AmazonMp3.Store
                 }
             };
 
-            store_view.Ready += (o, e) => navigation_control.WebView = store_view;
+            view.Ready += (o, e) => navigation_control.WebView = view;
 
-            navigation_control.GoHomeEvent += (o, e) => store_view.GoHome ();
+            navigation_control.GoHomeEvent += (o, e) => view.GoHome ();
 
             Attach (navigation_control, 0, 1, 0, 1,
                 AttachOptions.Shrink,
@@ -82,24 +88,17 @@ namespace Banshee.AmazonMp3.Store
                 AttachOptions.Shrink,
                 0, 0);
 
-            sign_out_button.Clicked += (o, e) => store_view.SignOut ();
-
-            Attach (sign_out_button, 2, 3, 0, 1,
-                AttachOptions.Shrink,
-                AttachOptions.Shrink,
-                0, 0);
-
-            search_entry.EmptyMessage = String.Format (Catalog.GetString ("Search the Amazon MP3 Store"));
+            //search_entry.EmptyMessage = String.Format (Catalog.GetString ("Search the Amazon MP3 Store"));
             search_entry.SetSizeRequest (260, -1);
             // FIXME: dummy option to make the "search" icon show up;
             // we should probably fix this in the SearchEntry, but also
             // add real filter options for searching Amazon MP3 (artist,
             // album, genre, etc.)
-            search_entry.AddFilterOption (0, Catalog.GetString ("Amazon MP3 Store"));
+            search_entry.AddFilterOption (0, name);
             search_entry.Show ();
             search_entry.Activated += (o, e) => {
-                store_view.GoSearch (search_entry.Query);
-                store_view.HasFocus = true;
+                view.GoSearch (search_entry.Query);
+                view.HasFocus = true;
                 search_clear_on_navigate_state = 1;
             };
             Attach (search_entry, 3, 4, 0, 1,
@@ -107,32 +106,24 @@ namespace Banshee.AmazonMp3.Store
                 AttachOptions.Shrink,
                 0, 0);
 
-            store_view_scroll.Add (store_view);
-            store_view_scroll.ShadowType = ShadowType.In;
+            view_scroll.Add (view);
+            view_scroll.ShadowType = ShadowType.In;
 
-            Attach (store_view_scroll, 0, 4, 1, 2,
+            Attach (view_scroll, 0, 4, 1, 2,
                 AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Expand | AttachOptions.Fill,
                 0, 0);
 
-            UpdateTitle (Catalog.GetString ("Loading Amazon MP3 Store..."));
+            UpdateTitle (String.Format (Catalog.GetString ("Loading {0}..."), name));
 
             ShowAll ();
-
-            store_view.SignInChanged += (o, e) => UpdateSignInButton ();
-            UpdateSignInButton ();
-        }
-
-        private void UpdateSignInButton ()
-        {
-            sign_out_button.Visible = store_view.IsSignedIn;
         }
 
         private void UpdateTitle (string titleText)
         {
-            if (store_view.Uri != "about:blank") {
+            if (view.Uri != "about:blank") {
                 if (String.IsNullOrEmpty (titleText)) {
-                    titleText = Catalog.GetString ("Amazon MP3 Store");
+                    titleText = name;
                 }
                 title.Markup = String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (titleText));
             }

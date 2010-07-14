@@ -3,6 +3,7 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Gabriel Burt <gburt@novell.com>
 //
 // Copyright 2010 Novell, Inc.
 //
@@ -34,23 +35,22 @@ using Hyena.Downloader;
 using Banshee.Base;
 using Banshee.IO;
 using Banshee.WebBrowser;
+using Banshee.WebSource;
 using Banshee.AmazonMp3;
 
 namespace Banshee.AmazonMp3.Store
 {
-    public class StoreView : OssiferWebView
+    public class StoreView : WebView
     {
-        private string fixup_javascript;
-        private bool fixup_javascript_fetched;
+        public event EventHandler SignInChanged;
 
         public bool IsSignedIn { get; private set; }
-        public bool IsReady { get; private set; }
-
-        public event EventHandler SignInChanged;
-        public event EventHandler Ready;
 
         public StoreView ()
         {
+            CanSearch = true;
+            FixupJavascriptUrl = "http://amz-proxy.banshee.fm/amz-fixups.js";
+
             OssiferSession.CookieChanged += (o, n) => CheckSignIn ();
 
             // Ensure that Amazon knows a valid downloader is available,
@@ -64,31 +64,16 @@ namespace Banshee.AmazonMp3.Store
             FullReload ();
         }
 
-        protected override void OnLoadStatusChanged (OssiferLoadStatus status)
-        {
-            if ((status == OssiferLoadStatus.FirstVisuallyNonEmptyLayout ||
-                status == OssiferLoadStatus.Finished) && Uri != "about:blank") {
-                // Hide "Install Flash" messages on Amazon since we
-                // play content previews natively in Banshee
-                if (fixup_javascript != null) {
-                    ExecuteScript (fixup_javascript);
-                }
-            }
-
-            base.OnLoadStatusChanged (status);
-        }
-
         protected override OssiferNavigationResponse OnMimeTypePolicyDecisionRequested (string mimetype)
         {
             // We only explicitly accept (render) text/html types, and only
             // download audio/x-amzxml - everything else is ignored.
             switch (mimetype) {
-                case "text/html": return OssiferNavigationResponse.Accept;
                 case "audio/x-mpegurl":
-                case "audio/x-amzxml": return OssiferNavigationResponse.Download;
+                case "audio/x-amzxml":
+                    return OssiferNavigationResponse.Download;
                 default:
-                    Log.Debug ("OssiferWebView: ignoring mime type", mimetype);
-                    return OssiferNavigationResponse.Ignore;
+                    return base.OnMimeTypePolicyDecisionRequested (mimetype);
             }
         }
 
@@ -126,12 +111,12 @@ namespace Banshee.AmazonMp3.Store
             }
         }
 
-        public void GoHome ()
+        public override void GoHome ()
         {
             LoadUri ("http://amz-proxy.banshee.fm/do/home/");
         }
 
-        public void GoSearch (string query)
+        public override void GoSearch (string query)
         {
             LoadUri (new Uri ("http://amz-proxy.banshee.fm/do/search/" + query).AbsoluteUri);
         }
@@ -144,56 +129,6 @@ namespace Banshee.AmazonMp3.Store
             }
 
             FullReload ();
-        }
-
-        public void FullReload ()
-        {
-            // This is an HTML5 Canvas/JS spinner icon. It is awesome
-            // and renders immediately, going away when the store loads.
-            LoadString (AssemblyResource.GetFileContents ("loading.html"),
-                "text/html", "UTF-8", null);
-
-            // Here we download and save for later injection some JavaScript
-            // to fix-up the Amazon pages. We don't store this locally since
-            // it may need to be updated if Amazon's page structure changes.
-            // We're mainly concerned about hiding the "You don't have Flash"
-            // messages, since we do the streaming of previews natively.
-            if (!fixup_javascript_fetched) {
-                fixup_javascript_fetched = true;
-                new Hyena.Downloader.HttpStringDownloader () {
-                    Uri = new Uri ("http://amz-proxy.banshee.fm/amz-fixups.js"),
-                    Finished = (d) => {
-                        if (d.State.Success) {
-                            fixup_javascript = d.Content;
-                        }
-                        LoadHome ();
-                    },
-                    AcceptContentTypes = new [] { "text/javascript" }
-                }.Start ();
-            } else {
-                LoadHome ();
-            }
-        }
-
-        private void LoadHome ()
-        {
-            // We defer this to another main loop iteration, otherwise
-            // our load placeholder document will never be rendered.
-            GLib.Idle.Add (delegate {
-                GoHome ();
-
-                // Emit the Ready event once we are first allowed
-                // to load the home page (ensures we've downloaded
-                // the fixup javascript, etc.).
-                if (!IsReady) {
-                    IsReady = true;
-                    var handler = Ready;
-                    if (handler != null) {
-                        handler (this, EventArgs.Empty);
-                    }
-                }
-                return false;
-            });
         }
 
         private void CheckSignIn ()

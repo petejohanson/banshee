@@ -12,10 +12,16 @@ SOURCES =  \
 	Banshee.WebBrowser/OssiferLoadStatus.cs \
 	Banshee.WebBrowser/OssiferNavigationResponse.cs \
 	Banshee.WebBrowser/OssiferSession.cs \
-	Banshee.WebBrowser/OssiferWebView.cs
+	Banshee.WebBrowser/OssiferWebView.cs \
+	Banshee.WebSource/WebBrowserShell.cs \
+	Banshee.WebSource/WebSource.cs \
+	Banshee.WebSource/WebView.cs
+
+RESOURCES =  \
+	Resources/loading.html
 
 if HAVE_LIBWEBKIT
 include $(top_srcdir)/build/build.mk
 else
-EXTRA_DIST = $(SOURCES)
+EXTRA_DIST = $(SOURCES) $(RESOURCES)
 endif
