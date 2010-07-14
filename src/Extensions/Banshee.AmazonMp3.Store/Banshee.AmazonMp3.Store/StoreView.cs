@@ -49,7 +49,7 @@ namespace Banshee.AmazonMp3.Store
         public StoreView ()
         {
             CanSearch = true;
-            FixupJavascriptUrl = "http://amz-proxy.banshee.fm/amz-fixups.js";
+            FixupJavascriptUrl = "http://integrated-services.banshee.fm/amz/amz-fixups.js";
 
             OssiferSession.CookieChanged += (o, n) => CheckSignIn ();
 
@@ -113,12 +113,12 @@ namespace Banshee.AmazonMp3.Store
 
         public override void GoHome ()
         {
-            LoadUri ("http://amz-proxy.banshee.fm/do/home/");
+            LoadUri ("http://integrated-services.banshee.fm/amz/do/home/");
         }
 
         public override void GoSearch (string query)
         {
-            LoadUri (new Uri ("http://amz-proxy.banshee.fm/do/search/" + query).AbsoluteUri);
+            LoadUri (new Uri ("http://integrated-services.banshee.fm/amz/do/search/" + query).AbsoluteUri);
         }
 
         public void SignOut ()
