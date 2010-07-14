@@ -100,12 +100,12 @@ namespace Banshee.WebBrowser
             return OssiferNavigationResponse.Unhandled;
         }
 
-        private OssiferNavigationResponse HandleNavigationPolicyDecisionRequested (IntPtr ossifer, IntPtr mimetype)
+        private OssiferNavigationResponse HandleNavigationPolicyDecisionRequested (IntPtr ossifer, IntPtr uri)
         {
-            return OnNavigationPolicyDecisionRequested (GLib.Marshaller.Utf8PtrToString (mimetype));
+            return OnNavigationPolicyDecisionRequested (GLib.Marshaller.Utf8PtrToString (uri));
         }
 
-        protected virtual OssiferNavigationResponse OnNavigationPolicyDecisionRequested (string mimetype)
+        protected virtual OssiferNavigationResponse OnNavigationPolicyDecisionRequested (string uri)
         {
             return OssiferNavigationResponse.Unhandled;
         }
