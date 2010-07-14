@@ -145,6 +145,11 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Control Banshee through a small window with only playback controls and track information.");
         Catalog.GetString (@"Utilities");
 
+        // ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide.addin.xml
+        Catalog.GetString (@"Miro Guide Podcast Directory");
+        Catalog.GetString (@"Browse and subscribe to thousands of audio and video podcasts.");
+        Catalog.GetString (@"Online Sources");
+
         // ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
         Catalog.GetString (@"Multimedia Keys");
         Catalog.GetString (@"Control playback via the multimedia keys on your keyboard.");

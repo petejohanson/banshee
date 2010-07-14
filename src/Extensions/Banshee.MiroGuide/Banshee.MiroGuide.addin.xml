@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Addin 
+    id="Banshee.MiroGuide"
+    version="1.0"
+    compatVersion="1.0"
+    copyright="Copyright © 2010 Novell, Inc. Licensed under the MIT X11 license."
+    name="Miro Guide Podcast Directory"
+    category="Online Sources"
+    description="Browse and subscribe to thousands of audio and video podcasts."
+    author="Gabriel Burt"
+    url="http://banshee-project.org/"
+    defaultEnabled="false">
+
+  <Dependencies>
+    <Addin id="Banshee.Services" version="1.0"/>
+    <Addin id="Banshee.ThickClient" version="1.0"/>
+  </Dependencies>
+
+  <Extension path="/Banshee/SourceManager/Source">
+    <Source class="Banshee.MiroGuide.MiroGuideSource"/>
+  </Extension>
+
+</Addin>

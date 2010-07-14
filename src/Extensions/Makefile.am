@@ -15,6 +15,7 @@ SUBDIRS = \
 	Banshee.LastfmStreaming \
 	Banshee.LibraryWatcher \
 	Banshee.MiniMode \
+	Banshee.MiroGuide \
 	Banshee.MultimediaKeys \
 	Banshee.NotificationArea \
 	Banshee.NowPlaying \

@@ -345,6 +345,7 @@ src/Extensions/Banshee.Lastfm/Makefile
 src/Extensions/Banshee.LastfmStreaming/Makefile
 src/Extensions/Banshee.LibraryWatcher/Makefile
 src/Extensions/Banshee.MiniMode/Makefile
+src/Extensions/Banshee.MiroGuide/Makefile
 src/Extensions/Banshee.MeeGo/Makefile
 src/Extensions/Banshee.MultimediaKeys/Makefile
 src/Extensions/Banshee.NotificationArea/Makefile
@@ -395,6 +396,7 @@ ${PACKAGE}-${VERSION}
     Web Browser:       ${have_libwebkit} (webkit-1.0 >= 1.2.0, libsoup-2.4 >= 2.26)
       + GNOME Proxy    ${have_libsoup_gnome} (libsoup-gnome-2.4 >= 2.26)
       + Amazon MP3     ${have_libwebkit}
+      + Miro Guide     ${have_libwebkit}
       + Wikipedia      ${have_libwebkit}
     Boo Scripting:     ${enable_boo}
     Builtin Equalizer: ${enable_builtin_equalizer}
