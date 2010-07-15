@@ -1,5 +1,5 @@
 SOURCES = \
-	ossifer-web-view.c \
+	ossifer-web-view.c ossifer-web-view.h \
 	ossifer-session.c
 
 if HAVE_LIBWEBKIT
