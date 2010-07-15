@@ -51,7 +51,11 @@ namespace Banshee.MiroGuide
 
         protected override Banshee.WebSource.WebBrowserShell GetWidget ()
         {
-            return new Banshee.WebSource.WebBrowserShell (Name, new MiroGuideView ());
+            var view = new MiroGuideView ();
+            var shell = new Banshee.WebSource.WebBrowserShell (Name, view);
+            view.Shell = shell;
+            view.UpdateSearchText ();
+            return shell;
         }
     }
 }

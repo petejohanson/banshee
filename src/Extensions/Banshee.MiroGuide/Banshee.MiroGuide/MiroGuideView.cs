@@ -26,6 +26,7 @@
 // THE SOFTWARE.
 
 using System;
+using Mono.Unix;
 
 using Gtk;
 
@@ -49,10 +50,20 @@ namespace Banshee.MiroGuide
             FullReload ();
         }
 
+        internal Banshee.WebSource.WebBrowserShell Shell { get; set; }
+
+        public void UpdateSearchText ()
+        {
+            Shell.SearchEntry.EmptyMessage = last_was_audio.Get ()
+                ? Catalog.GetString ("Search for Podcasts")
+                : Catalog.GetString ("Search for Video Podcasts");
+        }
+
         protected override void OnLoadStatusChanged (OssiferLoadStatus status)
         {
             if (status == OssiferLoadStatus.Finished && Uri != null && Uri.StartsWith ("http://miroguide.com")) {
                 last_was_audio.Set (Uri.Contains ("miroguide.com/audio/"));
+                UpdateSearchText ();
             }
 
             base.OnLoadStatusChanged (status);
