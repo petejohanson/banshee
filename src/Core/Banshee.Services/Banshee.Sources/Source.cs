@@ -762,7 +762,7 @@ namespace Banshee.Sources
                 return String.Empty;
             }
 
-            builder.AppendFormat (Catalog.GetPluralString ("{0} item", "{0} items", count), count);
+            builder.AppendFormat (Catalog.GetPluralString ("{0:N0} item", "{0:N0} items", count), count);
 
             if (this is IDurationAggregator && StatusFormatsCount > 0) {
                 var duration = ((IDurationAggregator)this).Duration;
