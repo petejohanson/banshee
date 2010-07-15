@@ -51,7 +51,7 @@ namespace Banshee.InternetRadio
     {
         private uint ui_id;
 
-        public InternetRadioSource () : base (Catalog.GetString ("Radio"), Catalog.GetString ("Radio"), "internet-radio", 220)
+        public InternetRadioSource () : base (Catalog.GetString ("Radio"), Catalog.GetString ("Radio"), "internet-radio", 52)
         {
             Properties.SetString ("Icon.Name", "radio");
             TypeUniqueId = "internet-radio";

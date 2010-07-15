@@ -96,7 +96,7 @@ namespace Banshee.Podcasting.Gui
 
 #region Constructors
 
-        public PodcastSource () : base (Catalog.GetString ("Podcasts"), "PodcastLibrary", 200)
+        public PodcastSource () : base (Catalog.GetString ("Podcasts"), "PodcastLibrary", 51)
         {
             TrackExternalObjectHandler = GetPodcastInfoObject;
             TrackArtworkIdHandler = GetTrackArtworkId;
