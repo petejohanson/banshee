@@ -239,7 +239,7 @@ namespace Banshee.Sources.Gui
 
                 SetValue (iter, 0, source);
                 SetValue (iter, 1, source.Order);
-                SetValue (iter, 2, false);
+                SetValue (iter, 2, source is SourceManager.GroupSource);
 
                 lock (source.Children) {
                     foreach (Source child in source.Children) {

@@ -66,12 +66,22 @@ namespace Banshee.Sources
         public event SourceEventHandler SourceRemoved;
         public event SourceEventHandler ActiveSourceChanged;
 
+        public class GroupSource : Source
+        {
+            public GroupSource (string name, int order) : base (name, name, order)
+            {
+            }
+        }
+
         public void Initialize ()
         {
             // TODO should add library sources here, but requires changing quite a few
             // things that depend on being loaded before the music library is added.
             //AddSource (music_library = new MusicLibrarySource (), true);
             //AddSource (video_library = new VideoLibrarySource (), false);
+            AddSource (new GroupSource ("Library", 39));
+            AddSource (new GroupSource ("Online Media", 60));
+            //AddSource (new GroupSource ("Devices", 400));
         }
 
         internal void LoadExtensionSources ()
