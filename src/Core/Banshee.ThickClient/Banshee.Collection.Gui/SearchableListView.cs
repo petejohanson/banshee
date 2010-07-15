@@ -57,7 +57,7 @@ namespace Banshee.Collection.Gui
         }
 
         public virtual bool SelectOnRowFound {
-            get { return false; }
+            get { return true; }
         }
 
         private QueryTermNode CreateNode (QueryField field, Operator op, string target)
