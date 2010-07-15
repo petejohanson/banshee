@@ -49,7 +49,7 @@ namespace Banshee.MiroGuide
             Properties.SetString ("Icon.Name", "miro-guide-source");
         }
 
-        protected override Gtk.Widget GetWidget ()
+        protected override Banshee.WebSource.WebBrowserShell GetWidget ()
         {
             return new Banshee.WebSource.WebBrowserShell (Name, new MiroGuideView ());
         }

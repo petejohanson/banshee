@@ -48,14 +48,16 @@ namespace Banshee.WebSource
         public override void Activate ()
         {
             if (source_contents == null) {
+                var shell = GetWidget ();
                 Properties.Set<ISourceContents> ("Nereid.SourceContents",
-                    source_contents = new WebSourceContents (this, GetWidget ()));
+                    source_contents = new WebSourceContents (this, shell));
+                Properties.Set<Banshee.Widgets.SearchEntry> ("Nereid.SearchEntry", shell.SearchEntry);
             }
 
             base.Activate ();
         }
 
-        protected abstract Gtk.Widget GetWidget ();
+        protected abstract WebBrowserShell GetWidget ();
 
         public override int Count {
             get { return 0; }

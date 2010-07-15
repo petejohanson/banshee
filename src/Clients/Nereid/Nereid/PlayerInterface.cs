@@ -666,8 +666,11 @@ namespace Nereid
                     break;
             }
 
-            if (focus_search && view_container.SearchEntry.Visible && !view_container.SearchEntry.HasFocus && !source_view.EditingRow) {
-                view_container.SearchEntry.HasFocus = true;
+            // The source might have its own custom search entry - use it if so
+            var src = ServiceManager.SourceManager.ActiveSource;
+            var search_entry = src.Properties.Get<SearchEntry> ("Nereid.SearchEntry") ?? view_container.SearchEntry;
+            if (focus_search && search_entry.Visible && !search_entry.HasFocus && !source_view.EditingRow) {
+                search_entry.HasFocus = true;
                 return true;
             }
 

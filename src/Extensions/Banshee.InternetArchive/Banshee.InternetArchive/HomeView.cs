@@ -95,10 +95,12 @@ namespace Banshee.InternetArchive
 
             // Search entry/button
             var search_box = new HBox () { Spacing = 6, BorderWidth = 4 };
-            var entry = new Banshee.Widgets.SearchEntry () {
+            var entry = new SearchEntry () {
                 Visible = true,
                 EmptyMessage = String.Format (Catalog.GetString ("Search..."))
             };
+
+            source.Properties.Set<SearchEntry> ("Nereid.SearchEntry", entry);
 
             // Make the search entry text nice and big
             var font = entry.InnerEntry.Style.FontDescription.Copy ();

@@ -118,6 +118,8 @@ namespace Banshee.InternetArchive
                 EmptyMessage = String.Format (Catalog.GetString ("Optional Query"))
             };
 
+            source.Properties.Set<Banshee.Widgets.SearchEntry> ("Nereid.SearchEntry", entry);
+
             entry.Activated += (o, a) => { search_button.Activate (); };
 
             // Add 'filter' items

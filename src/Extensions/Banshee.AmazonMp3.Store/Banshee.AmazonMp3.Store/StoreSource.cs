@@ -38,7 +38,7 @@ namespace Banshee.AmazonMp3.Store
             Properties.SetString ("Icon.Name", "amazon-mp3-store-source");
         }
 
-        protected override Gtk.Widget GetWidget ()
+        protected override Banshee.WebSource.WebBrowserShell GetWidget ()
         {
             return new StoreWebBrowserShell (new StoreView ());
         }
