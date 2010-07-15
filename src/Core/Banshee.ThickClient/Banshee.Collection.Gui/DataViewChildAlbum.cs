@@ -151,9 +151,11 @@ namespace Banshee.Collection.Gui
             if (IsGridLayout && prelight_opacity > 0) {
                 var a = prelight_opacity;
                 var cr = context.Context;
-                var grad = new RadialGradient (5, 5, (image_allocation.Width + image_allocation.Height) / 2.0, 5, 5, 0);
-                grad.AddColorStop (0, new Color (0, 0, 0, 0.65 * a));
-                grad.AddColorStop (1, new Color (0, 0, 0, 0.15 * a));
+                var x = image_allocation.Width / 2.0;
+                var y = image_allocation.Height / 3.0;
+                var grad = new RadialGradient (x, y, 0, x, y, x);
+                grad.AddColorStop (0, new Color (1, 1, 1, 0.45 * a));
+                grad.AddColorStop (1, new Color (1, 1, 1, 0.05 * a));
                 cr.Pattern = grad;
                 CairoExtensions.RoundedRectangle (cr, image_allocation.X, image_allocation.Y,
                     image_allocation.Width, image_allocation.Height, context.Theme.Context.Radius);
