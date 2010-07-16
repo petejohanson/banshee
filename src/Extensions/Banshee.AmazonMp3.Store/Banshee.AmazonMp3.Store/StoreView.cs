@@ -46,6 +46,12 @@ namespace Banshee.AmazonMp3.Store
 
         public bool IsSignedIn { get; private set; }
 
+        private string country;
+        public string Country {
+            get { return country ?? "geo"; }
+            set { country = value; }
+        }
+
         public StoreView ()
         {
             CanSearch = true;
@@ -113,12 +119,12 @@ namespace Banshee.AmazonMp3.Store
 
         public override void GoHome ()
         {
-            LoadUri ("http://integrated-services.banshee.fm/amz/do/home/");
+            LoadUri ("http://integrated-services.banshee.fm/amz/redirect.do/" + Country + "/home/");
         }
 
         public override void GoSearch (string query)
         {
-            LoadUri (new Uri ("http://integrated-services.banshee.fm/amz/do/search/" + query).AbsoluteUri);
+            LoadUri (new Uri ("http://integrated-services.banshee.fm/amz/redirect.do/" + Country + "/search/" + query).AbsoluteUri);
         }
 
         public void SignOut ()
