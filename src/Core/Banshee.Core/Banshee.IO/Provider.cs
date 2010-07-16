@@ -27,6 +27,8 @@
 //
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Reflection;
 using Mono.Addins;
 
@@ -42,33 +44,33 @@ namespace Banshee.IO
         private static IDirectory directory;
         private static IFile file;
 
+        public static IEnumerable<TypeExtensionNode> GetOrderedExtensions (string extensionPoint, params string [] ordered_ids)
+        {
+                return AddinManager.GetExtensionNodes (extensionPoint)
+                                   .Cast<TypeExtensionNode> ()
+                                   .Where (n => n.HasId)
+                                   .OrderBy (n => {
+                                       var o = Array.IndexOf (ordered_ids, n.Id);
+                                       return o == -1 ? int.MaxValue : o;
+                                   });
+        }
+
         static Provider () {
             lock (typeof (Provider)) {
                 if (provider != null) {
                     return;
                 }
 
-                TypeExtensionNode best_node = null;
-                int best_index = Int32.MaxValue;
+                var extensions = GetOrderedExtensions (
+                    "/Banshee/Platform/IOProvider",
+                    ProviderSchema.Get (),
+                    "Banshee.IO.Gio.Provider", "Banshee.IO.Unix.Provider", "Banshee.IO.SystemIO.Provider"
+                );
 
-                foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes ("/Banshee/Platform/IOProvider")) {
-                    if (node.HasId) {
-                        if (node.Id == ProviderSchema.Get ()) {
-                            best_node = node;
-                            best_index = -1;
-                        } else {
-                            int idx = Array.IndexOf (builtin_backend_preference, node.Id);
-                            if (idx != -1 && idx < best_index) {
-                                best_index = idx;
-                                best_node = node;
-                            }
-                        }
-                    }
-                }
-
-                if (best_node != null) {
+                foreach (var node in extensions) {
                     try {
-                        provider = (IProvider)best_node.CreateInstance (typeof (IProvider));
+                        provider = (IProvider)node.CreateInstance (typeof (IProvider));
+                        break;
                     } catch (Exception e) {
                         Log.Warning ("IO provider extension failed to load", e.Message);
                     }
@@ -117,12 +119,6 @@ namespace Banshee.IO
 
             return uri;
         }
-
-        private static string [] builtin_backend_preference = new string [] {
-            "Banshee.IO.Gio.Provider",
-            "Banshee.IO.Unix.Provider",
-            "Banshee.IO.SystemIO.Provider"
-        };
 
         internal static readonly SchemaEntry<string> ProviderSchema = new SchemaEntry<string> (
             "core", "io_provider",
