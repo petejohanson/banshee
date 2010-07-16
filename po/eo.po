@@ -1,16 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Esperanto translation of Banshee
+# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the Banshee package.
+#
+# Gerard BONNER <gbonner at mymeteor dot ie>, 2009.
 # Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2010.
 #
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:47
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:49
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:47
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:49
 msgid ""
 msgstr ""
 "Project-Id-Version: Banshee 1.4.3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-07-11 01:41+0000\n"
-"PO-Revision-Date: 2010-07-11 12:51+0200\n"
+"POT-Creation-Date: 2010-07-16 03:19+0000\n"
+"PO-Revision-Date: 2010-07-16 18:21+0200\n"
 "Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
 "Language-Team: Esperanto <ubuntu-l10n-eo@lists.launchpad.net>\n"
 "MIME-Version: 1.0\n"
@@ -80,7 +85,7 @@ msgstr ""
 #. ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod.addin.xml
 #: ../data/addin-xml-strings.cs:41
 msgid "iPod Support"
-msgstr ""
+msgstr "iPodo-subteno"
 
 #: ../data/addin-xml-strings.cs:42
 msgid "Support for most iPod devices."
@@ -89,7 +94,7 @@ msgstr ""
 #: ../data/addin-xml-strings.cs:43 ../data/addin-xml-strings.cs:48
 #: ../data/addin-xml-strings.cs:53 ../data/addin-xml-strings.cs:58
 msgid "Device Support"
-msgstr ""
+msgstr "Aparat-subteno"
 
 #. ../src/Dap/Banshee.Dap.Karma/Banshee.Dap.Karma.addin.xml
 #: ../data/addin-xml-strings.cs:46
@@ -139,10 +144,11 @@ msgid "Browse, search, and purchase music from the Amazon MP3 store"
 msgstr ""
 
 #: ../data/addin-xml-strings.cs:67 ../data/addin-xml-strings.cs:72
-#: ../data/addin-xml-strings.cs:107 ../data/addin-xml-strings.cs:117
-#: ../data/addin-xml-strings.cs:127 ../data/addin-xml-strings.cs:132
+#: ../data/addin-xml-strings.cs:107 ../data/addin-xml-strings.cs:122
+#: ../data/addin-xml-strings.cs:132 ../data/addin-xml-strings.cs:137
+#: ../data/addin-xml-strings.cs:156
 msgid "Online Sources"
-msgstr ""
+msgstr "Retaj fontoj"
 
 #. ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3.addin.xml
 #: ../data/addin-xml-strings.cs:70
@@ -163,8 +169,8 @@ msgid "Organize audiobooks, lectures, etc."
 msgstr ""
 
 #: ../data/addin-xml-strings.cs:77 ../data/addin-xml-strings.cs:82
-#: ../data/addin-xml-strings.cs:112 ../data/addin-xml-strings.cs:122
-#: ../data/addin-xml-strings.cs:170 ../data/addin-xml-strings.cs:175
+#: ../data/addin-xml-strings.cs:112 ../data/addin-xml-strings.cs:127
+#: ../data/addin-xml-strings.cs:180 ../data/addin-xml-strings.cs:185
 msgid "Core"
 msgstr ""
 
@@ -188,11 +194,11 @@ msgstr ""
 
 #: ../data/addin-xml-strings.cs:87 ../data/addin-xml-strings.cs:92
 #: ../data/addin-xml-strings.cs:97 ../data/addin-xml-strings.cs:102
-#: ../data/addin-xml-strings.cs:137 ../data/addin-xml-strings.cs:146
-#: ../data/addin-xml-strings.cs:151 ../data/addin-xml-strings.cs:156
-#: ../data/addin-xml-strings.cs:165 ../data/addin-xml-strings.cs:194
+#: ../data/addin-xml-strings.cs:142 ../data/addin-xml-strings.cs:151
+#: ../data/addin-xml-strings.cs:161 ../data/addin-xml-strings.cs:166
+#: ../data/addin-xml-strings.cs:175 ../data/addin-xml-strings.cs:204
 msgid "Utilities"
-msgstr ""
+msgstr "Utilaĵoj"
 
 #. ../src/Extensions/Banshee.Bpm/Banshee.Bpm.addin.xml
 #: ../data/addin-xml-strings.cs:90
@@ -239,207 +245,230 @@ msgstr ""
 msgid "Preview files without importing to your library."
 msgstr ""
 
-#. ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive.addin.xml
+#. ../src/Extensions/Banshee.Fixup/Banshee.Fixup.addin.xml
 #: ../data/addin-xml-strings.cs:115
+msgid "Metadata Fixup"
+msgstr ""
+
+#: ../data/addin-xml-strings.cs:116
+msgid "Fix up metadata using bulk operations"
+msgstr ""
+
+#: ../data/addin-xml-strings.cs:117
+#| msgid "Username:"
+msgid "User Interface"
+msgstr "Uzanto-interfaco"
+
+#. ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive.addin.xml
+#: ../data/addin-xml-strings.cs:120
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:58
 msgid "Internet Archive"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:116
+#: ../data/addin-xml-strings.cs:121
 msgid "Browse and search the Internet Archive's vast media collection."
 msgstr ""
 
 #. ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio.addin.xml
-#: ../data/addin-xml-strings.cs:120
+#: ../data/addin-xml-strings.cs:125
 msgid "Internet Radio"
-msgstr ""
+msgstr "Interreta radio"
 
-#: ../data/addin-xml-strings.cs:121
+#: ../data/addin-xml-strings.cs:126
 msgid "Listen to and organize Internet Radio stations."
 msgstr ""
 
 #. ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.addin.xml
-#: ../data/addin-xml-strings.cs:125
+#: ../data/addin-xml-strings.cs:130
 msgid "Last.fm Scrobbling"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:126
+#: ../data/addin-xml-strings.cs:131
 msgid "Last.fm scrobbling and context pane recommendations."
 msgstr ""
 
 #. ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming.addin.xml
-#: ../data/addin-xml-strings.cs:130
+#: ../data/addin-xml-strings.cs:135
 msgid "Last.fm Radio"
-msgstr ""
+msgstr "Last.fm Radio"
 
-#: ../data/addin-xml-strings.cs:131
+#: ../data/addin-xml-strings.cs:136
 msgid "Last.fm streaming radio for paid subscribers."
 msgstr ""
 
 #. ../src/Extensions/Banshee.LibraryWatcher/Banshee.LibraryWatcher.addin.xml
-#: ../data/addin-xml-strings.cs:135
+#: ../data/addin-xml-strings.cs:140
 msgid "Library Watcher"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:136
+#: ../data/addin-xml-strings.cs:141
 msgid "Automatically update music and video libraries"
 msgstr ""
 
 #. ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo.addin.xml
-#: ../data/addin-xml-strings.cs:140
+#: ../data/addin-xml-strings.cs:145
 msgid "MeeGo Support"
-msgstr ""
+msgstr "MeeGo-subteno"
 
-#: ../data/addin-xml-strings.cs:141
+#: ../data/addin-xml-strings.cs:146
 msgid "Provides MeeGo integration, including a custom media panel."
 msgstr ""
 
 #. ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
-#: ../data/addin-xml-strings.cs:144
+#: ../data/addin-xml-strings.cs:149
 msgid "Mini Mode"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:145
+#: ../data/addin-xml-strings.cs:150
 msgid ""
 "Control Banshee through a small window with only playback controls and track "
 "information."
 msgstr ""
 
+#. ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide.addin.xml
+#: ../data/addin-xml-strings.cs:154
+msgid "Miro Guide Podcast Directory"
+msgstr ""
+
+#: ../data/addin-xml-strings.cs:155
+msgid "Browse and subscribe to thousands of audio and video podcasts."
+msgstr ""
+
 #. ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
-#: ../data/addin-xml-strings.cs:149
+#: ../data/addin-xml-strings.cs:159
 msgid "Multimedia Keys"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:150
+#: ../data/addin-xml-strings.cs:160
 msgid "Control playback via the multimedia keys on your keyboard."
 msgstr ""
 
 #. ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea.addin.xml
-#: ../data/addin-xml-strings.cs:154
+#: ../data/addin-xml-strings.cs:164
 msgid "Notification Area Icon"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:155
+#: ../data/addin-xml-strings.cs:165
 msgid "Display an icon in the notification area for controlling Banshee."
 msgstr ""
 
 #. ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying.addin.xml
-#: ../data/addin-xml-strings.cs:159
+#: ../data/addin-xml-strings.cs:169
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:164
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:50
 msgid "Now Playing"
 msgstr "Nun ludante"
 
-#: ../data/addin-xml-strings.cs:160
+#: ../data/addin-xml-strings.cs:170
 msgid ""
 "Provides a source that displays embedded video and provides fullscreen video "
 "playback and controls."
 msgstr ""
 
 #. ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration.addin.xml
-#: ../data/addin-xml-strings.cs:163
+#: ../data/addin-xml-strings.cs:173
 msgid "Importers for Amarok, Rhythmbox and iTunes"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:164
+#: ../data/addin-xml-strings.cs:174
 msgid "Import your library from Amarok, Rhythmbox or iTunes."
 msgstr ""
 
 #. ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue.addin.xml
-#: ../data/addin-xml-strings.cs:168
+#: ../data/addin-xml-strings.cs:178
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:58
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:79
 msgid "Play Queue"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:169
+#: ../data/addin-xml-strings.cs:179
 msgid "Queue tracks in an ad-hoc playlist, or let the Auto DJ take over."
 msgstr ""
 
 #. ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.addin.xml
-#: ../data/addin-xml-strings.cs:173
+#: ../data/addin-xml-strings.cs:183
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/PodcastGroupSource.cs:38
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:107
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:99
 msgid "Podcasts"
-msgstr ""
+msgstr "Podkastoj"
 
-#: ../data/addin-xml-strings.cs:174
+#: ../data/addin-xml-strings.cs:184
 msgid "Subscribe to podcasts and stream or download episodes."
 msgstr ""
 
 #. ../src/Extensions/Banshee.RemoteAudio/Banshee.RemoteAudio.addin.xml
-#: ../data/addin-xml-strings.cs:178
+#: ../data/addin-xml-strings.cs:188
 msgid "Remote Audio"
-msgstr ""
+msgstr "Fora sono"
 
-#: ../data/addin-xml-strings.cs:179
+#: ../data/addin-xml-strings.cs:189
 msgid "Provides support for remote speakers like the Airport Express"
 msgstr ""
 
 #. ../src/Extensions/Banshee.Sample/Banshee.Sample.addin.xml
-#: ../data/addin-xml-strings.cs:182
+#: ../data/addin-xml-strings.cs:192
 #: ../src/Extensions/Banshee.Sample/Banshee.Sample/SampleSource.cs:40
 msgid "Sample"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:183
+#: ../data/addin-xml-strings.cs:193
 msgid "A sample source useful to developers."
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:184
+#: ../data/addin-xml-strings.cs:194
 msgid "Sources"
 msgstr "Fontoj"
 
 #. ../src/Extensions/Banshee.SqlDebugConsole/Banshee.SqlDebugConsole.addin.xml
-#: ../data/addin-xml-strings.cs:187
+#: ../data/addin-xml-strings.cs:197
 msgid "SQL Debug Console"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:188
+#: ../data/addin-xml-strings.cs:198
 msgid "Provides a UI for monitoring Banshee's SQL usage, and running queries."
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:189
+#: ../data/addin-xml-strings.cs:199
 msgid "Debug"
 msgstr "Sencimigo"
 
 #. ../src/Extensions/Banshee.Torrent/Banshee.Torrent.addin.xml
-#: ../data/addin-xml-strings.cs:192
+#: ../data/addin-xml-strings.cs:202
 msgid "Torrent Downloader"
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:193
+#: ../data/addin-xml-strings.cs:203
 msgid "Support downloading BitTorrent files from podcasts."
 msgstr ""
 
 #. ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia.addin.xml
-#: ../data/addin-xml-strings.cs:197
+#: ../data/addin-xml-strings.cs:207
 #: ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia/ContextPage.cs:44
 msgid "Wikipedia"
 msgstr "Vikipedio"
 
-#: ../data/addin-xml-strings.cs:198
+#: ../data/addin-xml-strings.cs:208
 msgid "View artist information from Wikipedia in the context pane."
 msgstr ""
 
-#: ../data/addin-xml-strings.cs:199 ../data/addin-xml-strings.cs:204
+#: ../data/addin-xml-strings.cs:209 ../data/addin-xml-strings.cs:214
 msgid "Context Pane"
 msgstr ""
 
 #. ../src/Extensions/Banshee.YouTube/Banshee.YouTube.addin.xml
-#: ../data/addin-xml-strings.cs:202
+#: ../data/addin-xml-strings.cs:212
 #: ../src/Extensions/Banshee.YouTube/Banshee.YouTube/ContextPage.cs:44
 msgid "YouTube"
 msgstr "YouTube"
 
-#: ../data/addin-xml-strings.cs:203
+#: ../data/addin-xml-strings.cs:213
 msgid "Show related YouTube videos in the context pane"
 msgstr ""
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:1
 msgid "3GPP"
-msgstr ""
+msgstr "3GPP"
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:2
 msgid "AAC (Novell Encoder)"
@@ -451,7 +480,7 @@ msgstr ""
 #: ../data/audio-profiles/wavpack.xml.in.h:3
 #: ../data/audio-profiles/wma.xml.in.h:4
 msgid "Bitrate"
-msgstr ""
+msgstr "Bitrapido"
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:4
 msgid "Container"
@@ -473,11 +502,11 @@ msgstr ""
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:8
 msgid "MPEG-4 ISO"
-msgstr ""
+msgstr "MPEG-4 ISO"
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:9
 msgid "MPEG-4 QuickTime"
-msgstr ""
+msgstr "MPEG-4 QuickTime"
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:10
 msgid "Output Format"
@@ -517,7 +546,7 @@ msgstr ""
 #: ../data/audio-profiles/wavpack.xml.in.h:2
 #: ../data/audio-profiles/wma.xml.in.h:3
 msgid "Best"
-msgstr ""
+msgstr "Plej bone"
 
 #: ../data/audio-profiles/mp3-lame.xml.in.h:5
 msgid "Constant Bitrate"
@@ -568,7 +597,7 @@ msgstr ""
 #: ../data/audio-profiles/wavpack.xml.in.h:15
 #: ../data/audio-profiles/wma.xml.in.h:7
 msgid "Worst"
-msgstr ""
+msgstr "Plej malbone"
 
 #: ../data/audio-profiles/mp3-xing.xml.in.h:3
 msgid "MP3 (Xing Encoder)"
@@ -616,7 +645,7 @@ msgstr ""
 
 #: ../data/audio-profiles/wavpack.xml.in.h:9
 msgid "Highest"
-msgstr ""
+msgstr "Plej alte"
 
 #: ../data/audio-profiles/wavpack.xml.in.h:10
 msgid "Lossy mode"
@@ -770,7 +799,7 @@ msgstr ""
 
 #: ../src/Backends/Banshee.Gnome/Banshee.GnomeBackend/Brasero.cs:104
 msgid "Could not write CD"
-msgstr ""
+msgstr "Ne eblis skibi KD-n"
 
 #: ../src/Backends/Banshee.Gnome/Banshee.GnomeBackend/Brasero.cs:105
 msgid "Brasero could not be started"
@@ -834,7 +863,7 @@ msgstr ""
 
 #: ../src/Backends/Banshee.GStreamerSharp/Banshee.GStreamerSharp/PlayerEngine.cs:139
 msgid "GStreamer# 0.10"
-msgstr ""
+msgstr "GStreamer# 0.10"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:91
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:131
@@ -843,17 +872,18 @@ msgstr "_Fermu"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:92
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:224
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:79
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:132
 msgid "Close"
 msgstr "Fermu"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:148
 msgid "Help Options"
-msgstr ""
+msgstr "Help-opcioj"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:149
 msgid "Show this help"
-msgstr ""
+msgstr "Montri tiun helpon"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:150
 msgid "Show options for controlling playback"
@@ -997,7 +1027,7 @@ msgstr "Muzikaĵtitolo"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:189
 msgid "Duration"
-msgstr ""
+msgstr "Daŭro"
 
 #. Translators: noun
 #: ../src/Clients/Booter/Booter/Entry.cs:190
@@ -1045,7 +1075,7 @@ msgstr "Poentoj"
 #: ../src/Clients/Booter/Booter/Entry.cs:196
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:143
 msgid "Bit Rate"
-msgstr ""
+msgstr "Bitrapido"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:199
 msgid "User Interface Options"
@@ -1143,7 +1173,7 @@ msgstr "_Ludi"
 
 #: ../src/Clients/Muinshee/Muinshee/MuinsheeActions.cs:47
 msgid "Play _Song"
-msgstr ""
+msgstr "Ludi _kanton"
 
 #: ../src/Clients/Muinshee/Muinshee/MuinsheeActions.cs:48
 msgid "Add a song to the playlist"
@@ -1164,7 +1194,7 @@ msgstr ""
 
 #: ../src/Clients/Muinshee/Muinshee/SongDialog.cs:53
 msgid "Play Song"
-msgstr ""
+msgstr "Ludi kanton"
 
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:159
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:87
@@ -1191,7 +1221,7 @@ msgstr ""
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:166
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:214
 msgid "Comment"
-msgstr ""
+msgstr "Komento"
 
 #. Translators: this is a verb (command), not a noun (things)
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:187
@@ -1230,7 +1260,7 @@ msgstr ""
 #: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:342
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:321
 msgid "File not found"
-msgstr ""
+msgstr "Ne trovis dosieron"
 
 #: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:344
 msgid "Codec for playing this media type not available"
@@ -1242,7 +1272,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:348
 msgid "Unknown error"
-msgstr ""
+msgstr "Nekonata eraro"
 
 #. TODO turn this into a PrimarySource-owned delegate?
 #: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:417
@@ -1292,7 +1322,7 @@ msgstr ""
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/Bookmark.cs:173
 #, csharp-format
 msgid "{0} ({1}:{2:00})"
-msgstr ""
+msgstr "{0} ({1}:{2:00})"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumListModel.cs:70
 #, csharp-format
@@ -1307,7 +1337,7 @@ msgstr ""
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseQueryFilterModel.cs:48
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:90
 msgid "Value"
-msgstr ""
+msgstr "Valoro"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:50
 msgid "Shuffle by A_lbum"
@@ -1339,7 +1369,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:37
 msgid "manually"
-msgstr ""
+msgstr "mane"
 
 #: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:38
 msgid "Do not shuffle playlist"
@@ -1678,7 +1708,7 @@ msgstr ""
 #: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:43
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/VideoGroupSource.cs:38
 msgid "Videos"
-msgstr ""
+msgstr "Videoj"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:64
 msgid "Produced By"
@@ -1804,15 +1834,15 @@ msgstr ""
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:59
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
 msgid "Playlist"
-msgstr ""
+msgstr "Ludlisto"
 
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:134
 msgid "Remove From Playlist"
-msgstr ""
+msgstr "Forigi de la ludlisto"
 
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:135
 msgid "Delete Playlist"
-msgstr ""
+msgstr "Forigi ludliston"
 
 #. TODO generate name based on the track selection, or begin editing it
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:386
@@ -1823,7 +1853,7 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:490
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView_DragAndDrop.cs:213
 msgid "New Playlist"
-msgstr ""
+msgstr "Nova ludlisto"
 
 #: ../src/Core/Banshee.Services/Banshee.Playlists.Formats/AsfReferencePlaylistFormat.cs:43
 msgid "Windows Media ASX"
@@ -1848,7 +1878,7 @@ msgstr ""
 #. Pages (tabs)
 #: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:50
 msgid "General"
-msgstr ""
+msgstr "Ĝenerale"
 
 #: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:51
 msgid "Source Specific"
@@ -1881,11 +1911,11 @@ msgstr "horoj"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:66
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:67
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:74
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:361
@@ -1899,7 +1929,7 @@ msgstr "artisto"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
 msgid "by"
-msgstr ""
+msgstr "de"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:76
 msgid "artists"
@@ -1921,24 +1951,24 @@ msgstr "albumo"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:94
 msgid "on"
-msgstr ""
+msgstr "sur"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:94
 msgid "from"
-msgstr ""
+msgstr "de"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:100
 msgid "Disc"
-msgstr ""
+msgstr "Disko"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
 msgid "disc"
-msgstr ""
+msgstr "disko"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
 msgid "cd"
-msgstr ""
+msgstr "kd"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:102
 msgid "discnum"
@@ -1947,11 +1977,11 @@ msgstr ""
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:110
 msgid "discs"
-msgstr ""
+msgstr "diskoj"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:110
 msgid "cds"
-msgstr ""
+msgstr "kd-j"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:119
@@ -2009,7 +2039,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:154
 msgid "Hz"
-msgstr ""
+msgstr "Hz"
 
 #. Translators: noun
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:161
@@ -2040,7 +2070,7 @@ msgstr "Nomo"
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "title"
-msgstr ""
+msgstr "titolo"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:171
 msgid "titled"
@@ -2065,7 +2095,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:179
 msgid "yr"
-msgstr ""
+msgstr "jr"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:187
@@ -2098,7 +2128,7 @@ msgstr ""
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:71
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:72
 msgid "License"
-msgstr ""
+msgstr "Permesilo"
 
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:224
@@ -2160,7 +2190,7 @@ msgstr ""
 #. Translators: These are unique search fields (and nouns). You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:256
 msgid "size"
-msgstr ""
+msgstr "grando"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:256
 msgid "filesize"
@@ -2173,7 +2203,7 @@ msgstr ""
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "uri"
-msgstr ""
+msgstr "uri"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "path"
@@ -2181,7 +2211,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "file"
-msgstr ""
+msgstr "dosiero"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:264
 msgid "location"
@@ -2189,12 +2219,12 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:270
 msgid "Time"
-msgstr ""
+msgstr "Tempo"
 
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "duration"
-msgstr ""
+msgstr "daŭro"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "length"
@@ -2202,7 +2232,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:272
 msgid "time"
-msgstr ""
+msgstr "tempo"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:278
 msgid "Mime Type"
@@ -2211,7 +2241,7 @@ msgstr ""
 #. Translators: These are unique search fields. You can use CSV for synonyms. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "type"
-msgstr ""
+msgstr "tipo"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:280
 msgid "mimetype"
@@ -2365,15 +2395,15 @@ msgstr ""
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:46
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapInfoBar.cs:97
 msgid "None"
-msgstr ""
+msgstr "Nenio"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:46
 msgid "none"
-msgstr ""
+msgstr "nenio"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:46
 msgid "no"
-msgstr ""
+msgstr "ne"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:49
 msgid "Resource Not Found"
@@ -2386,11 +2416,11 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:51
 msgid "missing"
-msgstr ""
+msgstr "mankas"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:51
 msgid "notfound"
-msgstr ""
+msgstr "ne trovis"
 
 #. Translators: These are unique strings for playback errors. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:54
@@ -2421,11 +2451,11 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:212
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:380
 msgid "Unknown"
-msgstr ""
+msgstr "Nekonate"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:66
 msgid "unknown"
-msgstr ""
+msgstr "nekonate"
 
 #: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/Migrator.cs:79
 msgid "Unable to Migrate Smart Playlists"
@@ -2457,8 +2487,8 @@ msgstr ""
 #, csharp-format
 msgid "{0} day"
 msgid_plural "{0} days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} tago"
+msgstr[1] "{0} tagoj"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/DurationStatusFormatters.cs:68
 #: ../src/Core/Banshee.Services/Banshee.Sources/DurationStatusFormatters.cs:94
@@ -2494,17 +2524,17 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:222
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ErrorListDialog.cs:46
 msgid "Error"
-msgstr ""
+msgstr "Eraro"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/ErrorSource.cs:84
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ErrorListDialog.cs:79
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:251
 msgid "Details"
-msgstr ""
+msgstr "Detaloj"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:152
 msgid "Errors"
-msgstr ""
+msgstr "Eraroj"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:205
 msgid "Sort Playlists By"
@@ -2513,7 +2543,7 @@ msgstr ""
 #. Translators: this is a noun, referring to the harddisk
 #: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:214
 msgid "Drive"
-msgstr ""
+msgstr "Diskingo"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:235
 msgid "File Organization"
@@ -2525,7 +2555,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:237
 msgid "File _name"
-msgstr ""
+msgstr "Dosier_nomo"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:686
 #, csharp-format
@@ -2547,8 +2577,10 @@ msgstr ""
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:765
 #, csharp-format
-msgid "{0} item"
-msgid_plural "{0} items"
+#| msgid "{0} minute"
+#| msgid_plural "{0} minutes"
+msgid "{0:N0} item"
+msgid_plural "{0:N0} items"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2579,21 +2611,21 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:49
 msgid "Show:"
-msgstr ""
+msgstr "Montri:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:51
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:84
 msgid "All"
-msgstr ""
+msgstr "Ĉiuj"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:52
 #: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerWindow.cs:82
 msgid "Enabled"
-msgstr ""
+msgstr "Ebligite"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:53
 msgid "Not Enabled"
-msgstr ""
+msgstr "Ne ebligite"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:56
 msgid "Search:"
@@ -2657,7 +2689,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:132
 msgid "Disc #"
-msgstr ""
+msgstr "Disko #"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:133
 msgid "Disc & Count"
@@ -2671,7 +2703,7 @@ msgstr "{0} kbps"
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:139
 #, csharp-format
 msgid "{0} Hz"
-msgstr ""
+msgstr "{0} Hz"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/DefaultColumnController.cs:142
 #, csharp-format
@@ -2711,11 +2743,11 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:87
 msgid "_Bookmarks"
-msgstr ""
+msgstr "_Legosignoj"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:90
 msgid "_Add Bookmark"
-msgstr ""
+msgstr "_Aldoni legosignon"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:91
 msgid "Bookmark the Position in the Current Track"
@@ -2723,15 +2755,15 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:103
 msgid "_Remove Bookmark"
-msgstr ""
+msgstr "_Forigi legosignon"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/AboutDialog.cs:54
 msgid "Maintainers"
-msgstr ""
+msgstr "Prizorgantoj"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/AboutDialog.cs:62
 msgid "Contributors"
-msgstr ""
+msgstr "Kontribuantoj"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/AboutDialog.cs:96
 msgid "Extraordinary Multimedia Management and Playback"
@@ -2750,7 +2782,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/AboutDialog.cs:104
 msgid "Banshee Website"
-msgstr ""
+msgstr "Retpaĝaro de Banshee"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ConfirmShutdownDialog.cs:50
 msgid "Important tasks are running"
@@ -2793,7 +2825,7 @@ msgstr ""
 #. Translators: verb
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/FileChooserDialog.cs:52
 msgid "I_mport"
-msgstr ""
+msgstr "I_mporti"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ImageFileChooserDialog.cs:39
 msgid "Select album cover image"
@@ -2814,11 +2846,11 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/OpenLocationDialog.cs:45
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/OpenLocationDialog.cs:103
 msgid "Open Location"
-msgstr ""
+msgstr "Malfermi lokon"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/OpenLocationDialog.cs:54
 msgid "Browse..."
-msgstr ""
+msgstr "Foliumi..."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/OpenLocationDialog.cs:64
 msgid "Enter the address of the file you would like to open:"
@@ -2866,7 +2898,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:71
 msgid "_Quit"
-msgstr ""
+msgstr "Ĉ_esi"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:72
 msgid "Quit Banshee"
@@ -2874,11 +2906,11 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:76
 msgid "_Edit"
-msgstr ""
+msgstr "R_edakti"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:79
 msgid "_Preferences"
-msgstr ""
+msgstr "_Agordo"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:80
 msgid "Modify your personal preferences"
@@ -2894,12 +2926,12 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:88
 msgid "_Tools"
-msgstr ""
+msgstr "_Iloj"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:92
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:133
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:135
 msgid "_Help"
-msgstr ""
+msgstr "_Helpo"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:95
 msgid "_Web Resources"
@@ -2953,7 +2985,7 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:181
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:559
 msgid "Playlists"
-msgstr ""
+msgstr "Ludlistoj"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:67
 msgid "Play or pause the current item"
@@ -2961,7 +2993,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:70
 msgid "_Next"
-msgstr ""
+msgstr "_Sekva"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:71
 msgid "Play the next item"
@@ -2969,7 +3001,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:74
 msgid "Pre_vious"
-msgstr ""
+msgstr "_Antaŭa"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:75
 msgid "Play the previous item"
@@ -3014,7 +3046,7 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackRepeatActions.cs:72
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackRepeatActions.cs:73
 msgid "Repeat"
-msgstr ""
+msgstr "Ripeti"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackRepeatActions.cs:78
 msgid "Repeat _Off"
@@ -3047,7 +3079,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:75
 msgid "_New Playlist"
-msgstr ""
+msgstr "_Nova ludlisto"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:76
 msgid "Create a new empty playlist"
@@ -3071,7 +3103,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:94
 msgid "Rename"
-msgstr ""
+msgstr "Alinomi"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:97
 msgid "Export Playlist..."
@@ -3105,7 +3137,7 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/PreferenceDialog.cs:50
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm/LastfmPreferences.cs:85
 msgid "Preferences"
-msgstr ""
+msgstr "Agordoj"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:116
 msgid "Edit preferences related to this source"
@@ -3116,10 +3148,11 @@ msgid "New _Smart Playlist"
 msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:129
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:84
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/LastfmStreamingActions.cs:67
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:57
 msgid "Refresh"
-msgstr ""
+msgstr "Aktualigi"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:130
 msgid "Refresh this randomly sorted smart playlist"
@@ -3140,7 +3173,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:70
 msgid "Select _All"
-msgstr ""
+msgstr "Elekti ĉi_on"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:71
 msgid "Select all tracks"
@@ -3148,7 +3181,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:74
 msgid "Select _None"
-msgstr ""
+msgstr "Elekti _nenion"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:75
 msgid "Unselect all tracks"
@@ -3176,7 +3209,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:86
 msgid "Add _to Playlist"
-msgstr ""
+msgstr "_Aldoni al ludlisto"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:87
 msgid "Append selected items to playlist or create new playlist from selection"
@@ -3188,7 +3221,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:96
 msgid "_Remove"
-msgstr ""
+msgstr "Fo_rigi"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:97
 msgid "Remove selected track(s) from this source"
@@ -3220,11 +3253,11 @@ msgstr ""
 
 #. Translators: this is a verb (command), not a noun (things)
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:115
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:169
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:171
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:112
 #, csharp-format
 msgid "_Search"
-msgstr ""
+msgstr "_Serĉi"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:116
 msgid "Search for items matching certain criteria"
@@ -3436,7 +3469,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/HelpPage.cs:69
 msgid "Help"
-msgstr ""
+msgstr "Helpo"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/LyricsPage.cs:46
 msgid "Lyrics"
@@ -3484,11 +3517,11 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:159
 msgid "File Name:"
-msgstr ""
+msgstr "Dosiernomo:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:160
 msgid "Directory:"
-msgstr ""
+msgstr "Dosierujo:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:161
 msgid "Full Path:"
@@ -3496,11 +3529,11 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:167
 msgid "URI:"
-msgstr ""
+msgstr "URI:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:176
 msgid "Duration:"
-msgstr ""
+msgstr "Daŭro:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:179
 msgid "Audio Bitrate:"
@@ -3558,7 +3591,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:221
 msgid "File Size:"
-msgstr ""
+msgstr "Dosiergrando:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:222
 msgid "bytes"
@@ -3645,7 +3678,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:80
 msgid "_Fullscreen"
-msgstr ""
+msgstr "_Tutekrana reĝimo"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:81
 msgid "Enter or leave fullscreen mode"
@@ -3688,7 +3721,7 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:544
 #, csharp-format
 msgid "{0} {1}"
-msgstr ""
+msgstr "{0} {1}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Artist Name and Album Title, respectively;
@@ -3735,12 +3768,12 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:148
 msgid "Continue"
-msgstr ""
+msgstr "Daŭrigi"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:149
 #, csharp-format
 msgid "Continue {0}"
-msgstr ""
+msgstr "Daŭrigi {0}"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:184
 msgid "Stopping..."
@@ -3774,7 +3807,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:82
 msgid "Select Files"
-msgstr ""
+msgstr "Elekti dosierojn"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:83
 msgid "(none selected)"
@@ -3802,7 +3835,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:76
 msgid "Select Folders"
-msgstr ""
+msgstr "Elekti dosierujojn"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:73
 msgid "<big><b>Import Media to Library</b></big>"
@@ -3826,7 +3859,7 @@ msgstr ""
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:82
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:385
 msgid "_Import"
-msgstr ""
+msgstr "_Importi"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/PhotoFolderImportSource.cs:69
 msgid "Videos From Photos Folder"
@@ -3838,7 +3871,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.MediaProfiles.Gui/ProfileConfigurationDialog.cs:74
 msgid "Advanced"
-msgstr ""
+msgstr "Altnivele"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.MediaProfiles.Gui/ProfileConfigurationDialog.cs:175
 #, csharp-format
@@ -3851,7 +3884,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Playlist.Gui/PlaylistExportDialog.cs:29
 msgid "Export"
-msgstr ""
+msgstr "Eksporti"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Playlist.Gui/PlaylistExportDialog.cs:54
 msgid "Select Format: "
@@ -3875,7 +3908,7 @@ msgstr ""
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/NotebookPage.cs:76
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:245
 msgid "Source:"
-msgstr ""
+msgstr "Fonto:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/PreferenceDialog.cs:55
 msgid "Could not show preferences"
@@ -3925,6 +3958,11 @@ msgstr ""
 msgid "Show or hide the artist/album browser"
 msgstr ""
 
+#: ../src/Core/Banshee.WebBrowser/Banshee.WebSource/WebBrowserShell.cs:117
+#, csharp-format
+msgid "Loading {0}..."
+msgstr ""
+
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/DiscUsageDisplay.cs:189
 msgid ""
 "Insert\n"
@@ -3937,7 +3975,7 @@ msgstr ""
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:148
 msgid "Idle"
-msgstr ""
+msgstr "Senokupe"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:149
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/UserJobDownloadManager.cs:55
@@ -3950,15 +3988,15 @@ msgstr ""
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/VolumeButton.cs:96
 msgid "Volume"
-msgstr ""
+msgstr "Laŭteco"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/VolumeButton.cs:548
 msgid "Muted"
-msgstr ""
+msgstr "Silentigite"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/VolumeButton.cs:550
 msgid "Full Volume"
-msgstr ""
+msgstr "Plej laŭte"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:131
 #, csharp-format
@@ -3977,7 +4015,7 @@ msgstr ""
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:199
 msgid "Product"
-msgstr ""
+msgstr "Produkto"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:200
 msgid "Vendor"
@@ -4050,15 +4088,15 @@ msgstr ""
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapInfoBar.cs:68
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:97
 msgid "Audio"
-msgstr ""
+msgstr "Sono"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapInfoBar.cs:69
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapInfoBar.cs:70
 msgid "Other"
-msgstr ""
+msgstr "Alia"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapInfoBar.cs:71
 msgid "Free Space"
@@ -4091,7 +4129,7 @@ msgstr ""
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:65
 #, csharp-format
 msgid "{0}:"
-msgstr ""
+msgstr "{0}:"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:70
 msgid "Manage manually"
@@ -4154,11 +4192,11 @@ msgstr ""
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:101
 msgid "Device"
-msgstr ""
+msgstr "Aparato"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
 msgid "Color"
-msgstr ""
+msgstr "Koloro"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:103
 msgid "Generation"
@@ -4373,16 +4411,32 @@ msgstr ""
 msgid "Amazon MP3 Purchases"
 msgstr ""
 
-#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/UserJobDownloadManager.cs:84
+#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/UserJobDownloadManager.cs:87
+#, csharp-format
+msgid "{0} download at {1}/s"
+msgid_plural "{0} downloads at {1}/s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/UserJobDownloadManager.cs:95
 #, csharp-format
 msgid "{0} download at {1}/s ({2} pending)"
 msgid_plural "{0} downloads at {1}/s ({2} pending)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:42
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:43
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:36
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:41
 msgid "Amazon MP3 Store"
+msgstr ""
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:39
+msgid "Sign out of Amazon"
+msgstr ""
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:51
+#, csharp-format
+msgid "Search the Amazon MP3 Store"
 msgstr ""
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:55
@@ -4418,7 +4472,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:152
 msgid "Author:"
-msgstr ""
+msgstr "Aŭtoro:"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:159
 msgid "Book Title:"
@@ -4428,7 +4482,7 @@ msgstr "Librotitolo:"
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:91
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:87
 msgid "Author"
-msgstr ""
+msgstr "Aŭtoro"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:62
 msgid "Author Initial"
@@ -4706,12 +4760,12 @@ msgstr "Uzantonomo:"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapLoginDialog.cs:112
 msgid "Password:"
-msgstr ""
+msgstr "Pasvorto:"
 
 #. Translators: this is a verb used as a button label, not a noun
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapLoginDialog.cs:124
 msgid "Login"
-msgstr ""
+msgstr "Ensaluti"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapResolverJob.cs:50
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:106
@@ -4814,7 +4868,7 @@ msgstr ""
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:72
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:71
 msgid "Clear"
-msgstr ""
+msgstr "Vakigi"
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:73
 msgid "Remove all tracks from the file system queue"
@@ -4827,6 +4881,59 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:80
 msgid "Clear the file system queue when quitting"
+msgstr ""
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:46
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:50
+msgid "Duplicate Albums"
+msgstr ""
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:48
+msgid ""
+"Displayed are albums that should likely be merged.  For each row, click the "
+"desired title to make it bold, or uncheck it to take no action."
+msgstr ""
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:76
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:79
+msgid " and "
+msgstr " kaj "
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:78
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:81
+msgid ", the"
+msgstr ", la"
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:80
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:83
+msgid "the "
+msgstr "la"
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:46
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:50
+msgid "Duplicate Artists"
+msgstr ""
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:48
+msgid ""
+"Displayed are artists that should likely be merged.  For each row, click the "
+"desired name to make it bold, or uncheck it to take no action."
+msgstr ""
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixActions.cs:50
+msgid "Fix Music Metadata..."
+msgstr ""
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:48
+msgid "Metadata Fixer"
+msgstr ""
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:54
+msgid "Problem Type:"
+msgstr ""
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/View.cs:76
+msgid "Fix?"
 msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:48
@@ -4857,7 +4964,7 @@ msgstr ""
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchSource.cs:190
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm/LastfmPreferences.cs:301
 msgid "Try Again"
-msgstr ""
+msgstr "Provi denove"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsSource.cs:151
 msgid "Error getting item details from the Internet Archive"
@@ -4874,7 +4981,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:221
 msgid "Creator:"
-msgstr ""
+msgstr "Kranto:"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:222
 msgid "Venue:"
@@ -4882,12 +4989,12 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:223
 msgid "Location:"
-msgstr ""
+msgstr "Loko:"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:225
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastPropertiesDialog.cs:81
 msgid "Date:"
-msgstr ""
+msgstr "Dato:"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:227
 msgid "Year:"
@@ -4899,7 +5006,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:230
 msgid "Keywords:"
-msgstr ""
+msgstr "Ŝlosilvortoj:"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:231
 msgid "License URL:"
@@ -4907,7 +5014,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:232
 msgid "Language:"
-msgstr ""
+msgstr "Lingvo:"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:236
 msgid "Downloads, overall:"
@@ -4935,7 +5042,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:246
 msgid "Contributor:"
-msgstr ""
+msgstr "Kontribuanto:"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:247
 msgid "Recorded by:"
@@ -4980,7 +5087,7 @@ msgstr ""
 msgid "Optional Query"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:163
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:165
 msgid "Sort by:"
 msgstr ""
 
@@ -4990,7 +5097,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:122
 msgid "_Audio"
-msgstr ""
+msgstr "_Sono"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:125
 msgid "_Video"
@@ -4998,75 +5105,75 @@ msgstr "_Video"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:128
 msgid "_Text"
-msgstr ""
+msgstr "_Teksto"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:100
 #, csharp-format
 msgid "Search..."
-msgstr ""
+msgstr "Serĉi..."
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:109
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:111
 msgid "_Go"
-msgstr ""
+msgstr "_Ek"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:117
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:119
 msgid "Staff Picks"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:118
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:120
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationSource.cs:588
 msgid "Creative Commons"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:119
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:121
 msgid "History"
-msgstr ""
+msgstr "Historio"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:120
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:122
 msgid "Classic Cartoons"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:121
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:123
 msgid "Speeches"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:122
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:124
 msgid "For Children"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:123
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:125
 msgid "Poetry"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:124
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:126
 msgid "Creator is United States"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:125
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:127
 msgid "Old Movies"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:126
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:128
 msgid "New From LibriVox"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:127
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:129
 msgid "Old Texts"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:128
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:130
 msgid "Charlie Chaplin"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:129
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:131
 msgid "NASA"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:130
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:132
 msgid "Library of Congress"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:146
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:148
 msgid ""
 "The Internet Archive, a 501(c)(3) non-profit, is building a digital library "
 "of Internet sites and other cultural artifacts in digital form. Like a paper "
@@ -5074,30 +5181,30 @@ msgid ""
 "the general public."
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:149
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:151
 msgid "Visit the Internet Archive online at archive.org"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:305
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:307
 msgid "Audiobooks"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:306
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:308
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:78
 msgid "Movies"
-msgstr ""
+msgstr "Filmoj"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:307
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:309
 msgid "Lectures"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:308
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:310
 msgid "Concerts"
 msgstr ""
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:309
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:311
 msgid "Books"
-msgstr ""
+msgstr "Libroj"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchSource.cs:58
 msgid "Search Results"
@@ -5139,7 +5246,7 @@ msgstr ""
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:98
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:134
 msgid "Creator"
-msgstr ""
+msgstr "Kreanto"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:129
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:75
@@ -5161,7 +5268,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:63
 msgid "Contributor"
-msgstr ""
+msgstr "Kontribuanto"
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:64
 msgid "Created"
@@ -5173,16 +5280,15 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:69
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:70
 msgid "Language"
-msgstr ""
+msgstr "Lingvo"
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:73
-#, fuzzy
 msgid "Media Type"
-msgstr "_Medio"
+msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:74
 msgid "Review Count"
@@ -5253,7 +5359,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:88
 msgid "Texts"
-msgstr ""
+msgstr "Tekstoj"
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:89
 msgid "American Libraries"
@@ -5321,7 +5427,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:112
 msgid "Software"
-msgstr ""
+msgstr "Programaro"
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:113
 msgid "CLASP"
@@ -5337,7 +5443,7 @@ msgstr "Plej novaj"
 
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:94
 msgid "Oldest"
-msgstr ""
+msgstr "Plej malnova"
 
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSourceContents.cs:62
 msgid "Not Set"
@@ -5444,7 +5550,7 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm/LastfmActions.cs:66
 msgid "Connect"
-msgstr ""
+msgstr "Konekti"
 
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm/LastfmActions.cs:74
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm/LastfmActions.cs:98
@@ -5527,7 +5633,7 @@ msgstr "http://eo.wikipedia.org/wiki/{0}"
 
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm/LastfmPreferences.cs:78
 msgid "Account"
-msgstr ""
+msgstr "Konto"
 
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm/LastfmPreferences.cs:80
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm/LastfmPreferences.cs:270
@@ -5817,16 +5923,15 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationType.cs:156
 msgid "lastfm:// URL"
-msgstr ""
+msgstr "lastfm:// URL"
 
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationType.cs:157
 msgid "lastfm://"
-msgstr ""
+msgstr "lastfm://"
 
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:109
-#, fuzzy
 msgid "Media"
-msgstr "_Medio"
+msgstr ""
 
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:119
 msgid "Library"
@@ -5838,9 +5943,8 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MeeGoPanel.cs:60
 #: ../src/Extensions/Banshee.MeeGo/meego-panel-banshee.desktop.in.in.h:2
-#, fuzzy
 msgid "media"
-msgstr "_Medio"
+msgstr ""
 
 #: ../src/Extensions/Banshee.MeeGo/meego-panel-banshee.desktop.in.in.h:1
 msgid "Quick access panel for your media"
@@ -5860,6 +5964,18 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:124
 msgid "Change repeat playback mode"
+msgstr ""
+
+#: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideSource.cs:47
+msgid "Miro Guide"
+msgstr ""
+
+#: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideView.cs:58
+msgid "Search for Podcasts"
+msgstr ""
+
+#: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideView.cs:59
+msgid "Search for Video Podcasts"
 msgstr ""
 
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:138
@@ -6037,7 +6153,7 @@ msgstr ""
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:165
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:86
 msgid "Podcast"
-msgstr ""
+msgstr "Podkasto"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastFeedModel.cs:69
 #, csharp-format
@@ -6052,12 +6168,12 @@ msgstr ""
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:165
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellPodcastStatusIndicator.cs:66
 msgid "New"
-msgstr ""
+msgstr "Nova"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:166
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:57
 msgid "Downloaded"
-msgstr ""
+msgstr "Elŝutite"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:58
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellUnheard.cs:58
