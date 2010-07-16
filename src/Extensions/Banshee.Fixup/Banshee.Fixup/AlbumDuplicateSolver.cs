@@ -96,8 +96,8 @@ namespace Banshee.Fixup
                 var losers = problem.ObjectIds.Where (id => id != winner_id).ToArray ();
 
                 ServiceManager.DbConnection.Execute (
-                    "UPDATE CoreTracks SET AlbumID = ? WHERE AlbumID IN (?)",
-                    winner_id, losers
+                    "UPDATE CoreTracks SET AlbumID = ?, DateUpdatedStamp = ? WHERE AlbumID IN (?)",
+                    winner_id, DateTime.Now, losers
                 );
             }
         }

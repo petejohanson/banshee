@@ -100,8 +100,12 @@ namespace Banshee.Fixup
 
                 ServiceManager.DbConnection.Execute (
                     @"UPDATE CoreAlbums SET ArtistID = ? WHERE ArtistID IN (?);
-                      UPDATE CoreTracks SET ArtistID = ? WHERE ArtistID IN (?)",
-                    winner_id, losers, winner_id, losers
+                      UPDATE CoreTracks SET ArtistID = ? WHERE ArtistID IN (?);
+                      UPDATE CoreTracks SET DateUpdatedStamp = ? WHERE
+                        ArtistID = ? OR AlbumID IN (SELECT AlbumID FROM CoreAlbums WHERE ArtistID = ?)",
+                    winner_id, losers,
+                    winner_id, losers,
+                    DateTime.Now, winner_id, winner_id
                 );
             }
         }

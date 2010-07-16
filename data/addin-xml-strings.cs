@@ -113,8 +113,8 @@ internal static class AddinXmlStringCatalog
 
         // ../src/Extensions/Banshee.Fixup/Banshee.Fixup.addin.xml
         Catalog.GetString (@"Metadata Fixup");
-        Catalog.GetString (@"Fix up metadata using bulk operations");
-        Catalog.GetString (@"User Interface");
+        Catalog.GetString (@"Fix broken and missing metadata using bulk operations");
+        Catalog.GetString (@"Utilities");
 
         // ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive.addin.xml
         Catalog.GetString (@"Internet Archive");
