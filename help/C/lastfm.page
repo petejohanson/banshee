@@ -1,0 +1,85 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:e="http://projectmallard.org/experimental/"
+      type="topic" style="task"
+      id="lastfm">
+
+  <info>
+    <link type="guide" xref="extensions#official"/>
+    <link type="seealso" xref="sync"/>
+    <desc>Sync your media to a portable media player.</desc>
+    <revision pkgversion="1.6" version="0.1" date="2010-07-15" status="draft"/>
+    <credit type="author">
+      <name>Paul Cutler</name>
+      <email>pcutler@gnome.org</email>
+    </credit>    
+<!--
+    <copyright>
+      <year>2010</year>
+      <name>GNOME Documentation Project</name>
+    </copyright>
+-->
+    <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
+  </info>
+
+  <title>Last.fm Overview</title>    
+  
+  <p>Last.fm is a popular online service that offers both free and paid
+  versions.  Last.fm offers information on music artists and albums and if you 
+  create a user profile Last.fm allows you to track the music you listen to 
+  in Banshee for free.  If you suscribe as a paying member, you can also listen
+  to streaming music from Last.fm in various music clients, including Banshee.
+  Last.fm offers multiple channels to stream, including recommended music for
+  you based on your listening habits, your favorites and more.</p>
+  
+  <section id="enable-lastfm">
+  <title>Enable Last.fm</title> 
+  <p>To get the most out of Last.fm, you will want to create a Last.fm profile.
+  Visit http://www.last.fm/join to create an account or choose 
+  <guiseq><gui>Edit</gui><gui>Preferences</gui></guiseq> from the Banshee
+  menu.  Then press the <gui>Source Specific</gui> tab and press the
+  <gui>Source</gui> drop down menu and choose <gui>Last.fm</gui> and select the
+  <em>Sign up for Last.fm</em> link.
+  </p>
+  
+  <p>To enable Banshee to report the songs you play on your computer to Last.fm,
+  sign in to Last.fm in Banshee in the <gui>Source Specific</gui> preferences.
+  Enter your username and press the <gui>Log in to Last.fm</gui> button.  You 
+  will be directed to a Last.fm webpage in your browser to grant Banshee access.
+  Press the <gui>Yes, allow access</gui> link in your browser and you will be 
+  redirected to a webpage that displays a message that Banshee now has access to
+  Last.fm.  Return to Banshee and press the <gui>Finish Logging In</gui> button
+  to complete the process.
+  
+  <section id="songreporting">
+  <title>Enable Last.fm Song Reporting</title> 
+  <p>After you have successfully linked Banshee to your Last.fm profile, to 
+  enable Banshee to report the songs to your Last.fm profile, in the 
+  <gui>Source Specific</gui> tab in Banshee's preferences, press the 
+  <gui>Enable Song Reporting</gui> checkbox.  If you have an active internet
+  connection, Banshee will now send Last.fm information regarding the songs
+  you play.  To view your play history, visit your profile on the Last.fm 
+  website.  Last.fm will automatically update your music metadata if any of your
+  artist, song title or album information is incorrect.
+  </p>
+  
+  <section id="lastfm-radio">
+  <title>Listen to Last.fm Radio</title> 
+  <p>Last.fm radio is free for residents of the United States, United Kingdom
+  and Germany.  Residents of other countries will have to pay for a premium 
+  account with Last.fm to listen to radio.  Premium members, in all countries,
+  also receive premium radio features: listening to playlists and stations of 
+  music you've loved or tagged.
+  </p>
+  
+  <p>In Banshee's context menu onthe left hand side, you will now have a 
+  Last.fm section, including your Lat.fm radio stations.  You will need an
+  active internet connection to listen to Last.fm radio.  Choose the radio
+  station you wish to listen to and Banshee will communicate with Last.fm
+  to populate songs for that radio station.  Press the <gui>Play</gui> button
+  in Banshee or <key>Spacebar</key> to start streaming a Last.fm radio
+  station.  You can also press the <gui>Next</gui> button in Banshee, 
+  <key>N</key> or choose <guiseq><gui>Playback</gui>Next<gui></gui></guiseq>
+  to play the next song in your radio station queue.
+  </p>
+	
+</page>
