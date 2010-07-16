@@ -340,6 +340,7 @@ src/Extensions/Banshee.Daap/Makefile
 src/Extensions/Banshee.Emusic/Makefile
 src/Extensions/Banshee.FileSystemQueue/Makefile
 src/Extensions/Banshee.InternetArchive/Makefile
+src/Extensions/Banshee.Fixup/Makefile
 src/Extensions/Banshee.InternetRadio/Makefile
 src/Extensions/Banshee.Lastfm/Makefile
 src/Extensions/Banshee.LastfmStreaming/Makefile

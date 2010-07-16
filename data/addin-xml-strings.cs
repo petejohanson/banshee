@@ -111,6 +111,11 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Preview files without importing to your library.");
         Catalog.GetString (@"Core");
 
+        // ../src/Extensions/Banshee.Fixup/Banshee.Fixup.addin.xml
+        Catalog.GetString (@"Metadata Fixup");
+        Catalog.GetString (@"Fix up metadata using bulk operations");
+        Catalog.GetString (@"User Interface");
+
         // ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive.addin.xml
         Catalog.GetString (@"Internet Archive");
         Catalog.GetString (@"Browse and search the Internet Archive's vast media collection.");

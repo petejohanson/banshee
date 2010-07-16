@@ -1,0 +1,13 @@
+<ui>
+  <toolbar name="HeaderToolbar">
+    <placeholder name="SourceActions">
+        <toolitem action="RefreshProblems" />
+        <toolitem action="UnmapSourceAction" />
+    </placeholder>
+  </toolbar>
+
+  <popup action="FixSourcePopup">
+    <menuitem action="RefreshProblems" />
+    <menuitem action="UnmapSourceAction" />
+  </popup>
+</ui>

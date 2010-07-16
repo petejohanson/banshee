@@ -10,6 +10,7 @@ SUBDIRS = \
 	Banshee.Emusic \
 	Banshee.FileSystemQueue \
 	Banshee.InternetArchive \
+	Banshee.Fixup \
 	Banshee.InternetRadio \
 	Banshee.Lastfm \
 	Banshee.LastfmStreaming \

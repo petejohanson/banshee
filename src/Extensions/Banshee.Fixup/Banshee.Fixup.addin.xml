@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Addin 
+    id="Banshee.Fixup"
+    version="1.0"
+    compatVersion="1.0"
+    copyright="Copyright 2009-2010 Novell Inc. Licensed under the MIT X11 license."
+    name="Metadata Fixup"
+    category="Utilities"
+    description="Fix broken and missing metadata using bulk operations"
+    author="Gabriel Burt"
+    url="http://banshee-project.org/"
+    defaultEnabled="true">
+
+  <Dependencies>
+    <Addin id="Banshee.Services" version="1.0"/>
+    <Addin id="Banshee.ThickClient" version="1.0"/>
+  </Dependencies>
+
+  <Extension path="/Banshee/ThickClient/ActionGroup">
+    <ActionGroup class="Banshee.Fixup.FixActions"/>
+  </Extension>
+
+  <Extension path="/Banshee/ThickClient/SourceContentProvider">
+    <Provider class="Banshee.Fixup.FixContentProvider"/>
+  </Extension>
+
+  <ExtensionPoint path="/Banshee/MetadataFix/Solver">
+    <ExtensionNode name="Solver"/>
+  </ExtensionPoint>
+
+  <Extension path="/Banshee/MetadataFix/Solver">
+    <Solver class="Banshee.Fixup.ArtistDuplicateSolver"/>
+    <Solver class="Banshee.Fixup.AlbumDuplicateSolver"/>
+    <!--<Solver class="Banshee.Fixup.CompilationSolver"/>-->
+  </Extension>
+
+</Addin>
