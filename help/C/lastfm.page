@@ -4,9 +4,9 @@
       id="lastfm">
 
   <info>
-    <link type="guide" xref="extensions#official"/>
+    <link type="guide" xref="extend#official"/>
     <link type="seealso" xref="sync"/>
-    <desc>Sync your media to a portable media player.</desc>
+    <desc>Enable Last.fm, song reporting and Last.fm radio.</desc>
     <revision pkgversion="1.6" version="0.1" date="2010-07-15" status="draft"/>
     <credit type="author">
       <name>Paul Cutler</name>
@@ -21,7 +21,7 @@
     <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
   </info>
 
-  <title>Last.fm Overview</title>    
+  <title>Last.fm</title>    
   
   <p>Last.fm is a popular online service that offers both free and paid
   versions.  Last.fm offers information on music artists and albums and if you 
@@ -34,7 +34,8 @@
   <section id="enable-lastfm">
   <title>Enable Last.fm</title> 
   <p>To get the most out of Last.fm, you will want to create a Last.fm profile.
-  Visit http://www.last.fm/join to create an account or choose 
+  Visit <link href="http://www.last.fm/join">http://www.last.fm/join</link>
+   to create an account or choose 
   <guiseq><gui>Edit</gui><gui>Preferences</gui></guiseq> from the Banshee
   menu.  Then press the <gui>Source Specific</gui> tab and press the
   <gui>Source</gui> drop down menu and choose <gui>Last.fm</gui> and select the
@@ -49,6 +50,9 @@
   redirected to a webpage that displays a message that Banshee now has access to
   Last.fm.  Return to Banshee and press the <gui>Finish Logging In</gui> button
   to complete the process.
+  </p>
+  
+  </section>
   
   <section id="songreporting">
   <title>Enable Last.fm Song Reporting</title> 
@@ -61,6 +65,8 @@
   website.  Last.fm will automatically update your music metadata if any of your
   artist, song title or album information is incorrect.
   </p>
+  
+  </section>
   
   <section id="lastfm-radio">
   <title>Listen to Last.fm Radio</title> 
@@ -78,8 +84,10 @@
   to populate songs for that radio station.  Press the <gui>Play</gui> button
   in Banshee or <key>Spacebar</key> to start streaming a Last.fm radio
   station.  You can also press the <gui>Next</gui> button in Banshee, 
-  <key>N</key> or choose <guiseq><gui>Playback</gui>Next<gui></gui></guiseq>
+  <key>N</key> or choose <guiseq><gui>Playback</gui><gui>Next</gui></guiseq>
   to play the next song in your radio station queue.
   </p>
+  
+  </section>
 	
 </page>
