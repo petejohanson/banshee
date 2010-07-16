@@ -194,18 +194,18 @@ namespace Banshee.MiroGuide
         public override void GoHome ()
         {
             if (last_was_audio.Get ()) {
-                LoadUri ("http://miroguide.com/audio/#popular");
+                LoadUri ("http://integrated-services.banshee.fm/miro/audio/home/");
             } else {
-                LoadUri ("http://miroguide.com/#popular");
+                LoadUri ("http://integrated-services.banshee.fm/miro/video/home/");
             }
         }
 
         public override void GoSearch (string query)
         {
             if (last_was_audio.Get ()) {
-                LoadUri (new Uri ("http://miroguide.com/audio/search?query=" + query).AbsoluteUri);
+                LoadUri (new Uri ("http://integrated-services.banshee.fm/miro/audio/search/" + query).AbsoluteUri);
             } else {
-                LoadUri (new Uri ("http://miroguide.com/search?query=" + query).AbsoluteUri);
+                LoadUri (new Uri ("http://integrated-services.banshee.fm/miro/video/search/" + query).AbsoluteUri);
             }
         }
 
