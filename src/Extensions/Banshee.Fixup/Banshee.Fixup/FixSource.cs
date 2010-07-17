@@ -59,7 +59,7 @@ namespace Banshee.Fixup
             }
             combo.Changed += (o, a) => {
                 problem_model.Solver = combo.ActiveValue;
-                SetStatus (problem_model.Solver.LongDescription, false, false, "gtk-info");
+                SetStatus (problem_model.Solver.Description, false, false, "gtk-info");
             };
             combo.Active = 0;
 

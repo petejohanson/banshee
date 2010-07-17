@@ -44,11 +44,7 @@ namespace Banshee.Fixup
         {
             Id = "dupe-artist";
             Name = Catalog.GetString ("Duplicate Artists");
-            ShortDescription = Catalog.GetString ("");
-            LongDescription = Catalog.GetString ("Displayed are artists that should likely be merged.  For each row, click the desired name to make it bold, or uncheck it to take no action.");
-            Action = Catalog.GetString ("");
-            OptionsTitle = Catalog.GetString ("Duplicate Artists");
-            Order = 5;
+            Description = Catalog.GetString ("Displayed are artists that should likely be merged.  For each row, click the desired name to make it bold, or uncheck it to take no action.");
 
             AddFinder (
                 "Name", "ArtistID", "CoreArtists",
@@ -65,6 +61,7 @@ namespace Banshee.Fixup
 
         public override void Dispose ()
         {
+            base.Dispose ();
             BinaryFunction.Remove (Id);
         }
 

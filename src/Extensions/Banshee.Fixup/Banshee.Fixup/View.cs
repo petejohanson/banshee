@@ -78,7 +78,7 @@ namespace Banshee.Fixup
                 var summary = new ColumnCellSolutionOptions ();
                 var summary_col = new Column ("", summary, 1.0);
                 ColumnController.Add (summary_col);
-                model.Reloaded += (o, a) => summary_col.Title = model.Solver.OptionsTitle;
+                model.Reloaded += (o, a) => summary_col.Title = model.Solver.Name;
 
                 RowOpaquePropertyName = "Selected";
                 RulesHint = true;

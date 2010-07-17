@@ -47,7 +47,6 @@ namespace Banshee.Fixup
 
         public Solver ()
         {
-            Order = 100;
         }
 
         public string Id {
@@ -62,12 +61,8 @@ namespace Banshee.Fixup
             }
         }
 
-        public string Action { get; set; }
         public string Name { get; set; }
-        public string ShortDescription { get; set; }
-        public string LongDescription { get; set; }
-        public string OptionsTitle { get; set; }
-        public int Order { get; set; }
+        public string Description { get; set; }
         public int Generation { get; private set; }
 
         public void FindProblems ()
@@ -139,7 +134,7 @@ namespace Banshee.Fixup
                     WHERE {6}
                     GROUP BY {7} HAVING num > 1
                     ORDER BY {3}",
-                Id, Order, "?", // ? is for the Generation variable, which changes
+                Id, 1, "?", // ? is for the Generation variable, which changes
                 value_column, id_column, from, condition ?? "1=1", group_by))
             );
         }
@@ -170,7 +165,6 @@ namespace Banshee.Fixup
             ShortDescription = Catalog.GetString ("Find albums that should be marked as compilation albums");
             LongDescription = Catalog.GetString ("Find albums that should be marked as compilation albums but are not");
             Action = Catalog.GetString ("Mark as compilation");
-            Order = 20;
 
             find_cmd = new HyenaSqliteCommand (String.Format (@"
                 INSERT INTO MetadataProblems (ProblemType, TypeOrder, Generation, SolutionValue, Options, Summary, Count)
