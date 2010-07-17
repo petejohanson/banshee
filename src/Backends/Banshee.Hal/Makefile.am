@@ -20,6 +20,10 @@ SOURCES =  \
 
 RESOURCES = Banshee.Hal.addin.xml
 
+if ENABLE_HAL
 include $(top_srcdir)/build/build.mk
+else
+EXTRA_DIST = $(SOURCES) $(RESOURCES)
+endif
 
 

@@ -32,6 +32,8 @@ namespace Banshee.Hardware
 {
     public interface IUsbDevice : IDevice
     {
+        int BusNumber { get; }
+        int DeviceNumber { get; }
         int ProductId { get; }
         int VendorId { get; }
         double Speed { get; }

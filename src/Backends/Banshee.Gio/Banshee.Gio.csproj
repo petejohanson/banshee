@@ -65,15 +65,18 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="gtk-sharp">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
     </Reference>
-    <Reference Include="glib-sharp">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="gnome-sharp, Version=2.24.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gnome-sharp-2.0</Package>
     </Reference>
-    <Reference Include="gio-sharp">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Core">
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>glib-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="gio-sharp, Version=2.14.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <HintPath>..\..\..\bin\gio-sharp.dll</HintPath>
     </Reference>
     <Reference Include="gtk-sharp-beans">
@@ -83,6 +86,25 @@
     <Reference Include="taglib-sharp">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+      <Package>taglib-sharp</Package>
+    </Reference>
+    <Reference Include="libgudev, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3565e728cafab25e">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\gudev-sharp\gudev\libgudev.dll</HintPath>
+    </Reference>
+    <Reference Include="gio-sharp, Version=2.14.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <HintPath>..\..\..\..\..\..\..\usr\local\lib\mono\gio-sharp-2.0\gio-sharp.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Mono.Posix" />
+    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c9892194e1b9ec1b">
+      <Package>nini-1.1</Package>
+    </Reference>
+    <Reference Include="gio-sharp, Version=0.0.0.0, Culture=neutral">
+    </Reference>
+    <Reference Include="gkeyfile-sharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e886e4e52ee77480">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\usr\local\lib\mono\gkeyfile-sharp-1.0\gkeyfile-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +113,26 @@
     <Compile Include="Banshee.IO.Gio\File.cs" />
     <Compile Include="Banshee.IO.Gio\Provider.cs" />
     <Compile Include="Banshee.IO.Gio\Tests.cs" />
+    <Compile Include="Banshee.GioBackend\HardwareManager.cs" />
+    <Compile Include="LowLevel\Manager.cs" />
+    <Compile Include="Banshee.GioBackend\Volume.cs" />
+    <Compile Include="Banshee.GioBackend\BlockDevice.cs" />
+    <Compile Include="Banshee.GioBackend\CdromDevice.cs" />
+    <Compile Include="Banshee.GioBackend\Device.cs" />
+    <Compile Include="Banshee.GioBackend\DeviceMediaCapabilities.cs" />
+    <Compile Include="Banshee.GioBackend\DiscVolume.cs" />
+    <Compile Include="Banshee.GioBackend\DiskDevice.cs" />
+    <Compile Include="Banshee.GioBackend\UsbDevice.cs" />
+    <Compile Include="LowLevel\IMetadataSource.cs" />
+    <Compile Include="LowLevel\UdevMetadataSource.cs" />
+    <Compile Include="LowLevel\GioVolumeMetadataSource.cs" />
+    <Compile Include="LowLevel\IRawDevice.cs" />
+    <Compile Include="LowLevel\RawDevice.cs" />
+    <Compile Include="LowLevel\RawVolume.cs" />
+    <Compile Include="LowLevel\RawBlockDevice.cs" />
+    <Compile Include="LowLevel\GioMetadataSource.cs" />
+    <Compile Include="LowLevel\GioDriveMetadetaSource.cs" />
+    <Compile Include="Banshee.GioBackend\UsbVolume.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Gio.addin.xml">
@@ -113,4 +155,8 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Banshee.GioBackend\" />
+    <Folder Include="LowLevel\" />
+  </ItemGroup>
 </Project>

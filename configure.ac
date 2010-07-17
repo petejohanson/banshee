@@ -120,6 +120,9 @@ BANSHEE_CHECK_LIBWEBKIT
 dnl gdata (optional through --disable-youtube)
 BANSHEE_CHECK_YOUTUBE
 
+dnl Check for disabled hal
+BANSHEE_CHECK_HAL
+
 dnl gtk#-beans and gio#
 BANSHEE_CHECK_GIO_SHARP
 
@@ -402,16 +405,18 @@ ${PACKAGE}-${VERSION}
     Builtin Equalizer: ${enable_builtin_equalizer}
     DAAP:              ${enable_daap}
     GIO Backend:       ${enable_gio} (glib >= 2.22, gtk-sharp-beans, and gio-sharp)
+    GIO Hardware:      ${enable_gio_hardware} (gudev-sharp, gkeyfile-sharp)
+    HAL Backend:       ${enable_hal}
     Library Watcher:   ${HAVE_MONO_2_4_3} (Mono >= 2.4.3)
     Podcasts:          ${enable_podcast}
     Gapless playback:  ${ENABLE_GAPLESS} (gstreamer-plugins-base > 0.10.25.2)
     YouTube extension: ${enable_youtube} (gdata-sharp >= 1.4)
 
   Build/Development:
-    Unit Tests:        ${do_tests} (requires nunit >= ${NUNIT_REQUIRED})
-    API Docs:          ${enable_docs} (requires monodocer and mdassembler)
-    User Help:         ${enable_user_help} (requires gnome-doc-utils >= 0.17.3)
-    Custom a11y:       ${gtksharp_with_a11y} (requires gtk-sharp >= 2.12.10)
+    Unit Tests:        ${do_tests} (nunit >= ${NUNIT_REQUIRED})
+    API Docs:          ${enable_docs} (monodocer and mdassembler)
+    User Help:         ${enable_user_help} (gnome-doc-utils >= 0.17.3)
+    Custom a11y:       ${gtksharp_with_a11y} (gtk-sharp >= 2.12.10)
     Release Build:     ${enable_release}
     Vendor Build ID:   ${vendor_build_id}
 

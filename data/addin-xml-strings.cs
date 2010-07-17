@@ -5,7 +5,7 @@ internal static class AddinXmlStringCatalog
     private static void Strings ()
     {
         // ../src/Backends/Banshee.Gio/Banshee.Gio.addin.xml
-        Catalog.GetString (@"GIO IO backend");
+        Catalog.GetString (@"GIO IO and Hardware backends");
 
         // ../src/Backends/Banshee.Gnome/Banshee.Gnome.addin.xml
         Catalog.GetString (@"Backend providers for the GNOME platform. Includes GConf support and general GNOME integration.");

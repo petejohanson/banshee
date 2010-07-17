@@ -5,14 +5,19 @@
     compatVersion="1.0"
     copyright="© 2009 Novell Inc. Licensed under the MIT X11 license."
     category="required:Backends"
-    description="GIO IO backend"
+    description="GIO IO and Hardware backends"
     defaultEnabled="true">
 
   <Dependencies>
     <Addin id="Banshee.Core" version="1.0"/>
+    <Addin id="Banshee.Services" version="1.0"/>
   </Dependencies>
   
   <Extension path="/Banshee/Platform/IOProvider">
     <IOProvider class="Banshee.IO.Gio.Provider" id="Banshee.IO.Gio.Provider" />
+  </Extension>
+  
+  <Extension path="/Banshee/Platform/HardwareManager">
+    <HardwareManager class="Banshee.Hardware.Gio.HardwareManager" id="Banshee.Hardware.Gio" />
   </Extension>
 </Addin>

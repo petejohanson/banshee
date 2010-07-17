@@ -122,7 +122,6 @@ namespace Hal
         {
             if(!Bus.System.NameHasOwner("org.freedesktop.Hal")) {
                 // try to start it
-                Console.WriteLine ("About to try to start HAL service");
                 var reply = Bus.System.StartServiceByName ("org.freedesktop.Hal");
                 if (reply != StartReply.Success && reply != StartReply.AlreadyRunning) {
                     throw new ApplicationException("Could not start org.freedesktop.Hal");
@@ -148,14 +147,16 @@ namespace Hal
 
         protected virtual void OnDeviceAdded(string udi)
         {
-            if(DeviceAdded != null)
+            if(DeviceAdded != null) {
                 DeviceAdded(this, new DeviceAddedArgs(udi));
+            }
         }
 
         protected virtual void OnDeviceRemoved(string udi)
         {
-            if(DeviceRemoved != null)
+            if(DeviceRemoved != null) {
                 DeviceRemoved(this, new DeviceRemovedArgs(udi));
+            }
         }
 
         protected virtual void OnNewCapability(string udi, string capability)
