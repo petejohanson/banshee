@@ -100,19 +100,18 @@ namespace Banshee.Collection
             //Hyena.Log.DebugFormat ("Have {0} items before delete", ServiceManager.DbConnection.Query<int>("select count(*) from coretracks where primarysourceid=?", psource.DbId));
 
             // Delete tracks that are under the BaseDirectory and that weren't rescanned just now
-            string condition = String.Format (
-                "WHERE PrimarySourceID = ? AND Uri LIKE '{0}%' AND LastSyncedStamp IS NOT NULL AND LastSyncedStamp < ?",
-                new SafeUri (psource.BaseDirectoryWithSeparator).AbsoluteUri
-            );
+            string condition =
+                @"WHERE PrimarySourceID = ? AND Uri LIKE ? ESCAPE '\' AND LastSyncedStamp IS NOT NULL AND LastSyncedStamp < ?";
+            string uri = Hyena.StringUtil.EscapeLike (new SafeUri (psource.BaseDirectoryWithSeparator).AbsoluteUri) + "%";
 
             ServiceManager.DbConnection.Execute (String.Format (@"BEGIN;
                     DELETE FROM CorePlaylistEntries WHERE TrackID IN (SELECT TrackID FROM CoreTracks {0});
                     DELETE FROM CoreSmartPlaylistEntries WHERE TrackID IN (SELECT TrackID FROM CoreTracks {0});
                     DELETE FROM CoreTracks {0}; COMMIT",
                 condition),
-                psource.DbId, scan_started,
-                psource.DbId, scan_started,
-                psource.DbId, scan_started
+                psource.DbId, uri, scan_started,
+                psource.DbId, uri, scan_started,
+                psource.DbId, uri, scan_started
             );
 
             // TODO prune artists/albums
