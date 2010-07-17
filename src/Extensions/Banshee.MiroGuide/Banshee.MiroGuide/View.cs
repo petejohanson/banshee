@@ -1,5 +1,5 @@
 //
-// MiroGuideView.cs
+// View.cs
 //
 // Authors:
 //   Aaron Bockover <abockover@novell.com>
@@ -41,20 +41,18 @@ using Banshee.WebBrowser;
 
 namespace Banshee.MiroGuide
 {
-    public class MiroGuideView : Banshee.WebSource.WebView
+    public class View : Banshee.WebSource.WebView
     {
-        public MiroGuideView ()
+        public View ()
         {
             CanSearch = true;
             FixupJavascriptUrl = "http://integrated-services.banshee.fm/miro/guide-fixups.js";
             FullReload ();
         }
 
-        internal Banshee.WebSource.WebBrowserShell Shell { get; set; }
-
         public void UpdateSearchText ()
         {
-            Shell.SearchEntry.EmptyMessage = last_was_audio.Get ()
+            Shell.SearchEntry.EmptyMessage = LastPageWasAudio
                 ? Catalog.GetString ("Search for Podcasts")
                 : Catalog.GetString ("Search for Video Podcasts");
         }
@@ -62,7 +60,7 @@ namespace Banshee.MiroGuide
         protected override void OnLoadStatusChanged (OssiferLoadStatus status)
         {
             if (status == OssiferLoadStatus.Finished && Uri != null && Uri.StartsWith ("http://miroguide.com")) {
-                last_was_audio.Set (Uri.Contains ("miroguide.com/audio/"));
+                LastPageWasAudio = Uri.Contains ("miroguide.com/audio/");
                 UpdateSearchText ();
             }
 
@@ -71,8 +69,6 @@ namespace Banshee.MiroGuide
 
         protected override OssiferNavigationResponse OnMimeTypePolicyDecisionRequested (string mimetype)
         {
-            // We only explicitly accept (render) text/html types, and only
-            // download audio/x-amzxml - everything else is ignored.
             switch (mimetype) {
                 case "application/x-miro": return OssiferNavigationResponse.Download;
                 default:                   return base.OnMimeTypePolicyDecisionRequested (mimetype);
@@ -104,6 +100,40 @@ namespace Banshee.MiroGuide
             }
 
             return OssiferNavigationResponse.Unhandled;
+        }
+
+
+        protected override void OnDownloadStatusChanged (OssiferDownloadStatus status, string mimetype, string destinationUri)
+        {
+            // FIXME: handle the error case
+            if (status != OssiferDownloadStatus.Finished) {
+                return;
+            }
+
+            switch (mimetype) {
+                case "application/x-miro":
+                    Log.Debug ("MiroGuide: downloaded Miro subscription file", destinationUri);
+                    ServiceManager.Get<DBusCommandService> ().PushFile (destinationUri);
+                    break;
+            }
+        }
+
+        public override void GoHome ()
+        {
+            var uri = LastPageWasAudio
+                ? "http://integrated-services.banshee.fm/miro/audio/home/"
+                : "http://integrated-services.banshee.fm/miro/video/home/";
+
+            LoadUri (uri);
+        }
+
+        public override void GoSearch (string query)
+        {
+            var uri = LastPageWasAudio
+                ? "http://integrated-services.banshee.fm/miro/audio/search/"
+                : "http://integrated-services.banshee.fm/miro/video/search/";
+
+            LoadUri (new Uri (uri + query).AbsoluteUri);
         }
 
         // The download and add-to-sidebar buttons take the user to a page that then redirects to the
@@ -176,37 +206,11 @@ namespace Banshee.MiroGuide
             return ret;
         }
 
-        protected override void OnDownloadStatusChanged (OssiferDownloadStatus status, string mimetype, string destinationUri)
-        {
-            // FIXME: handle the error case
-            if (status != OssiferDownloadStatus.Finished) {
-                return;
-            }
+        internal Banshee.WebSource.WebBrowserShell Shell { get; set; }
 
-            switch (mimetype) {
-                case "application/x-miro":
-                    Log.Debug ("MiroGuide: downloaded Miro subscription file", destinationUri);
-                    ServiceManager.Get<DBusCommandService> ().PushFile (destinationUri);
-                    break;
-            }
-        }
-
-        public override void GoHome ()
-        {
-            if (last_was_audio.Get ()) {
-                LoadUri ("http://integrated-services.banshee.fm/miro/audio/home/");
-            } else {
-                LoadUri ("http://integrated-services.banshee.fm/miro/video/home/");
-            }
-        }
-
-        public override void GoSearch (string query)
-        {
-            if (last_was_audio.Get ()) {
-                LoadUri (new Uri ("http://integrated-services.banshee.fm/miro/audio/search/" + query).AbsoluteUri);
-            } else {
-                LoadUri (new Uri ("http://integrated-services.banshee.fm/miro/video/search/" + query).AbsoluteUri);
-            }
+        private bool LastPageWasAudio {
+            get { return last_was_audio.Get (); }
+            set { last_was_audio.Set (value); }
         }
 
         private static Banshee.Configuration.SchemaEntry<bool> last_was_audio = new Banshee.Configuration.SchemaEntry<bool> (

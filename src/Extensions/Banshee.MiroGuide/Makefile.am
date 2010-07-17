@@ -5,7 +5,7 @@ LINK = $(LINK_BANSHEE_THICKCLIENT_DEPS) $(LINK_BANSHEE_WEBBROWSER_DEPS)
 
 SOURCES = \
 	Banshee.MiroGuide/MiroGuideSource.cs \
-	Banshee.MiroGuide/MiroGuideView.cs
+	Banshee.MiroGuide/View.cs
 
 RESOURCES = \
 	Banshee.MiroGuide.addin.xml \
