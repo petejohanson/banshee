@@ -1,7 +1,7 @@
 AC_DEFUN([BANSHEE_CHECK_LIBWEBKIT],
 [
 	have_libwebkit=no
-	PKG_CHECK_MODULES(LIBWEBKIT, webkit-1.0 >= 1.2.0 libsoup-2.4 >= 2.26,
+	PKG_CHECK_MODULES(LIBWEBKIT, webkit-1.0 >= 1.2.2 libsoup-2.4 >= 2.26,
 		have_libwebkit=yes, have_libwebkit=no)
 	AC_SUBST(LIBWEBKIT_LIBS)
 	AC_SUBST(LIBWEBKIT_CFLAGS)
