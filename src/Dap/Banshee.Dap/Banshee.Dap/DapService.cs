@@ -48,7 +48,7 @@ namespace Banshee.Dap
     {
         private Dictionary<string, DapSource> sources;
         private List<DeviceCommand> unhandled_device_commands;
-        private List<TypeExtensionNode> supported_dap_types;
+        private List<DapPriorityNode> supported_dap_types;
         private bool initialized;
         private object sync = new object ();
 
@@ -63,7 +63,7 @@ namespace Banshee.Dap
                     return;
 
                 sources = new Dictionary<string, DapSource> ();
-                supported_dap_types = new List<TypeExtensionNode> ();
+                supported_dap_types = new List<DapPriorityNode> ();
 
                 AddinManager.AddExtensionNodeHandler ("/Banshee/Dap/DeviceClass", OnExtensionChanged);
 
@@ -83,11 +83,15 @@ namespace Banshee.Dap
         private void OnExtensionChanged (object o, ExtensionNodeEventArgs args)
         {
             lock (sync) {
-                TypeExtensionNode node = (TypeExtensionNode)args.ExtensionNode;
+                var node = (DapPriorityNode)args.ExtensionNode;
+                if (!node.Type.IsSubclassOf (typeof (DapSource)))
+                    return;
 
                 if (args.Change == ExtensionChange.Add) {
                     Log.DebugFormat ("Dap support extension loaded: {0}", node.Addin.Id);
+
                     supported_dap_types.Add (node);
+                    supported_dap_types.Sort ((left, right) => right.Priority.CompareTo (left.Priority));
 
                     if (initialized) {
                         // See if any existing devices are handled by this new DAP support
@@ -96,7 +100,7 @@ namespace Banshee.Dap
                         }
                     }
                 } else if (args.Change == ExtensionChange.Remove) {
-                    supported_dap_types.Remove (node);
+                    supported_dap_types.Remove ((DapPriorityNode) args.ExtensionNode);
 
                     Queue<DapSource> to_remove = new Queue<DapSource> ();
                     foreach (DapSource source in sources.Values) {

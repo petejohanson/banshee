@@ -16,7 +16,7 @@
   </Dependencies>
 
   <Extension path="/Banshee/Dap/DeviceClass">
-    <DeviceClass class="Banshee.Dap.MassStorage.MassStorageSource"/>
+    <DeviceClass class="Banshee.Dap.MassStorage.MassStorageSource" priority="-10"/>
   </Extension>
   
   <ExtensionPoint path="/Banshee/Dap/MassStorage/Device">

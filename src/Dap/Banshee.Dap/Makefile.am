@@ -12,6 +12,7 @@ SOURCES =  \
 	Banshee.Dap.Gui/LibrarySyncOptions.cs \
 	Banshee.Dap.Gui/PurchasedMusicActions.cs \
 	Banshee.Dap/DapLibrarySync.cs \
+	Banshee.Dap/DapPriorityNode.cs \
 	Banshee.Dap/DapService.cs \
 	Banshee.Dap/DapSource.cs \
 	Banshee.Dap/DapSync.cs \
