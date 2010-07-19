@@ -3,13 +3,11 @@ TARGET = library
 INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 LINK = $(LINK_BANSHEE_THICKCLIENT_DEPS) $(LINK_BANSHEE_WEBBROWSER_DEPS) 
 
-SOURCES = \
+SOURCES =  \
 	Banshee.MiroGuide/MiroGuideSource.cs \
 	Banshee.MiroGuide/View.cs
 
-RESOURCES = \
-	Banshee.MiroGuide.addin.xml \
-	Resources/loading.html
+RESOURCES = Banshee.MiroGuide.addin.xml
 
 if HAVE_LIBWEBKIT
 include $(top_srcdir)/build/build.mk
