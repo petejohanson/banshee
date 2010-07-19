@@ -90,7 +90,7 @@ namespace Banshee.CoverArt
                         CoreTracks.AlbumID NOT IN (
                             SELECT AlbumID FROM CoverArtDownloads WHERE
                                 LastAttempt > ? OR Downloaded = 1)
-                    GROUP BY CoreTracks.AlbumID LIMIT ?",
+                    GROUP BY CoreTracks.AlbumID ORDER BY CoreTracks.DateUpdatedStamp DESC LIMIT ?",
                 ServiceManager.SourceManager.MusicLibrary.DbId, last_scan, last_scan - retry_every, 1
             );
 
