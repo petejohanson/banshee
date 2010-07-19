@@ -1,11 +1,11 @@
-//
-// StoreSource.cs
-//
+// 
+// StoreSourcePreferences.cs
+// 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
-//
+// 
 // Copyright 2010 Novell, Inc.
-//
+// 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -25,33 +25,45 @@
 // THE SOFTWARE.
 
 using System;
-using Mono.Unix;
 
-using Hyena;
+using Banshee.ServiceStack;
+using Banshee.Preferences;
 
 namespace Banshee.AmazonMp3.Store
 {
-    public class StoreSource : Banshee.WebSource.WebSource, IDisposable
+    public class StoreSourcePreferences : IDisposable
     {
-        private StoreSourcePreferences preferences;
+       // private StoreSource source;
+        private SourcePage source_page;
 
-        public StoreSource () : base (Catalog.GetString ("Amazon MP3 Store"), 150, "amazon-mp3-store")
+        public StoreSourcePreferences (StoreSource source)
         {
-            preferences = new StoreSourcePreferences (this);
-            Properties.SetString ("Icon.Name", "amazon-mp3-store-source");
+            var service = ServiceManager.Get<PreferenceService> ();
+            if (service == null) {
+                return;
+            }
+
+          //  this.source = source;
+
+            service.InstallWidgetAdapters += OnPreferencesServiceInstallWidgetAdapters;
+            source_page = new SourcePage (source);
         }
 
         public void Dispose ()
         {
-            if (preferences != null) {
-                preferences.Dispose ();
-                preferences = null;
+            var service = ServiceManager.Get<PreferenceService> ();
+            if (service == null || source_page == null) {
+                return;
             }
+
+            service.InstallWidgetAdapters -= OnPreferencesServiceInstallWidgetAdapters;
+            source_page.Dispose ();
+            source_page = null;
         }
 
-        protected override Banshee.WebSource.WebBrowserShell GetWidget ()
+        private void OnPreferencesServiceInstallWidgetAdapters (object sender, EventArgs args)
         {
-            return new StoreWebBrowserShell (new StoreView ());
         }
     }
 }
+
