@@ -394,8 +394,8 @@ ${PACKAGE}-${VERSION}
     Karma:             ${enable_karmasharp}
 
   Extra Features:
-    Web Browser:       ${have_libwebkit} (webkit-1.0 >= 1.2.0, libsoup-2.4 >= 2.26)
-      + GNOME Proxy    ${have_libsoup_gnome} (libsoup-gnome-2.4 >= 2.26)
+    Web Browser:       ${have_libwebkit} (webkit-1.0 >= $WEBKIT_MIN_VERSION, libsoup-2.4 >= $SOUP_MIN_VERSION)
+      + GNOME Proxy    ${have_libsoup_gnome} (libsoup-gnome-2.4 >= $SOUP_GNOME_MIN_VERSION)
       + Amazon MP3     ${have_libwebkit}
       + Miro Guide     ${have_libwebkit}
       + Wikipedia      ${have_libwebkit}
