@@ -197,6 +197,14 @@ namespace Banshee.Collection.Gui
                     if (artwork_id != null) {
                         ServiceManager.Get<ArtworkManager> ().ClearCacheFor (track.ArtworkId);
                     }
+
+                    // Deleting it from this table means the cover art downloader extension will
+                    // attempt to redownload it on its next run.
+                    var db = ServiceManager.DbConnection;
+                    var db_track = track as DatabaseTrackInfo;
+                    if (db_track != null && db.TableExists ("CoverArtDownloads")) {
+                        db.Execute ("DELETE FROM CoverArtDownloads WHERE AlbumID = ?", db_track.AlbumId);
+                    }
                 }
             }
 

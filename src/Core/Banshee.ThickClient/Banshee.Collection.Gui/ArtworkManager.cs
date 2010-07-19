@@ -79,6 +79,18 @@ namespace Banshee.Collection.Gui
             } catch (Exception e) {
                 Log.Exception ("Could not migrate album artwork cache directory", e);
             }
+
+            Banshee.Metadata.MetadataService.Instance.ArtworkUpdated += OnArtworkUpdated;
+        }
+
+        public void Dispose ()
+        {
+            Banshee.Metadata.MetadataService.Instance.ArtworkUpdated -= OnArtworkUpdated;
+        }
+
+        private void OnArtworkUpdated (IBasicTrackInfo track)
+        {
+            ClearCacheFor (track.ArtworkId, true);
         }
 
         public Cairo.ImageSurface LookupSurface (string id)
@@ -212,9 +224,22 @@ namespace Banshee.Collection.Gui
 
         public void ClearCacheFor (string id)
         {
+            ClearCacheFor (id, false);
+        }
+
+        public void ClearCacheFor (string id, bool inMemoryCacheOnly)
+        {
+            if (String.IsNullOrEmpty (id)) {
+                return;
+            }
+
             // Clear from the in-memory cache
             foreach (int size in scale_caches.Keys) {
                 scale_caches[size].Remove (id);
+            }
+
+            if (inMemoryCacheOnly) {
+                return;
             }
 
             // And delete from disk

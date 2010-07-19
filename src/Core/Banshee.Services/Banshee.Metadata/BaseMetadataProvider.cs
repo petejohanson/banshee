@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -39,6 +40,7 @@ namespace Banshee.Metadata
     public abstract class BaseMetadataProvider : IMetadataProvider
     {
         public event MetadataLookupResultHandler HaveResult;
+        public event Action<IBasicTrackInfo> ArtworkUpdated;
 
         protected BaseMetadataProvider()
         {
@@ -64,6 +66,13 @@ namespace Banshee.Metadata
         {
             if(tags == null || tags.Count == 0) {
                 return;
+            }
+
+            if (tags.Any (t => t.Name == CommonTags.AlbumCoverId)) {
+                var artwork_handler = ArtworkUpdated;
+                if (artwork_handler != null) {
+                    artwork_handler (track);
+                }
             }
 
             MetadataLookupResultHandler handler = HaveResult;

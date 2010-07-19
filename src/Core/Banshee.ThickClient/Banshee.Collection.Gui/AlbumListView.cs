@@ -78,6 +78,13 @@ namespace Banshee.Collection.Gui
                     ToggleAlbumGrid);
 
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.TrackInfoUpdated);
+            Banshee.Metadata.MetadataService.Instance.ArtworkUpdated += OnArtworkUpdated;
+        }
+
+        public override void Dispose ()
+        {
+            ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
+            Banshee.Metadata.MetadataService.Instance.ArtworkUpdated -= OnArtworkUpdated;
         }
 
         private void ToggleAlbumGrid ()
@@ -170,6 +177,11 @@ namespace Banshee.Collection.Gui
         {
             // TODO: a) Figure out if the track that changed is actually in view
             //       b) xfade the artwork if it is, that'd be slick
+            QueueDraw ();
+        }
+
+        private void OnArtworkUpdated (IBasicTrackInfo track)
+        {
             QueueDraw ();
         }
     }

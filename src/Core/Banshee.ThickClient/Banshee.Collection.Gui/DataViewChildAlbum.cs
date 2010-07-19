@@ -143,6 +143,14 @@ namespace Banshee.Collection.Gui
                 return;
             }
 
+            // Need to call this again here to make sure we have the latest artwork
+            var album = BoundObject as AlbumInfo;
+            if (album != null) {
+                image_surface = artwork_manager != null
+                    ? artwork_manager.LookupScaleSurface (album.ArtworkId, (int)ImageSize, true)
+                    : null;
+            }
+
             context.Context.Translate (inner_allocation.X, inner_allocation.Y);
 
             RenderImageSurface (context, image_allocation, image_surface);
