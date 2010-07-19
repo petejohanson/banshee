@@ -26,15 +26,20 @@
 
 using System;
 
+using Mono.Unix;
+
 using Banshee.ServiceStack;
 using Banshee.Preferences;
+using Banshee.Configuration;
 
 namespace Banshee.AmazonMp3.Store
 {
     public class StoreSourcePreferences : IDisposable
     {
-       // private StoreSource source;
+        private StoreSource source;
         private SourcePage source_page;
+        private PreferenceBase country_pref;
+        // private PreferenceBase logout_pref;
 
         public StoreSourcePreferences (StoreSource source)
         {
@@ -43,10 +48,22 @@ namespace Banshee.AmazonMp3.Store
                 return;
             }
 
-          //  this.source = source;
+            this.source = source;
 
             service.InstallWidgetAdapters += OnPreferencesServiceInstallWidgetAdapters;
+
             source_page = new SourcePage (source);
+
+            var country_section = source_page.Add (new Section ("country", Catalog.GetString ("Country"), 20));
+            country_section.Add (country_pref = new SchemaPreference<string> (StoreCountry,
+                null,
+                Catalog.GetString ("Which Amazon MP3 storefront to use by default.")));
+
+            /*var session_section = source_page.Add (new Section ("session", Catalog.GetString ("Session"), 30));
+            session_section.Add (new SchemaPreference<bool> (PersistLogin,
+                Catalog.GetString ("_Keep me logged in"),
+                Catalog.GetString ("Keep any session cookies that Amazon MP3 may set across instances.")));
+            session_section.Add (logout_pref = new VoidPreference ("log-out-button"));*/
         }
 
         public void Dispose ()
@@ -63,7 +80,43 @@ namespace Banshee.AmazonMp3.Store
 
         private void OnPreferencesServiceInstallWidgetAdapters (object sender, EventArgs args)
         {
+            /*if (source != null && source.Shell != null && source.Shell.StoreView != null) {
+                logout_pref.DisplayWidget = new SignOutButton (source.Shell.StoreView);
+            }*/
+
+            var combo = new Banshee.Widgets.DictionaryComboBox<string> ();
+            combo.Add (Catalog.GetString ("Automatic (Geo IP detection)"), "geo");
+            combo.Add (null, null);
+            combo.Add (Catalog.GetString ("France (amazon.fr)"), "FR");
+            combo.Add (Catalog.GetString ("Germany, Switzerland, Austria (amazon.de)"), "DE");
+            combo.Add (Catalog.GetString ("Japan (amazon.co.jp)"), "JP");
+            combo.Add (Catalog.GetString ("United Kingdom (amazon.co.uk)"), "UK");
+            combo.Add (Catalog.GetString ("United States (amazon.com)"), "US");
+            combo.RowSeparatorFunc = (model, iter) => model.GetValue (iter, 0) == null;
+            combo.ActiveValue = StoreCountry.Get ();
+            combo.Changed += (o, e) => {
+                StoreCountry.Set (combo.ActiveValue);
+                if (source != null && source.Shell != null && source.Shell.StoreView != null) {
+                    source.Shell.StoreView.Country = combo.ActiveValue;
+                    source.Shell.StoreView.GoHome ();
+                }
+            };
+            country_pref.DisplayWidget = combo;
         }
+
+        public string PreferencesPageId {
+            get { return source_page == null ? null : source_page.Id; }
+        }
+
+        public static readonly SchemaEntry<string> StoreCountry = new SchemaEntry<string> (
+            "plugins.amazonmp3store", "country",
+            "geo",
+            "Which store front to use (\"geo\" for auto-detect, US, UK, FR, DE, or JP", null);
+
+        public static readonly SchemaEntry<bool> PersistLogin = new SchemaEntry<bool> (
+            "plugins.amazonmp3store", "persist-login",
+            true,
+            "Persist the Amazon MP3 store account login across sessions (via cookies)", null);
     }
 }
 

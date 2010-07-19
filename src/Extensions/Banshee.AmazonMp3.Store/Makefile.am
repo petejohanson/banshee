@@ -4,6 +4,7 @@ LINK = $(REF_EXTENSION_AMAZONMP3_STORE)
 INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
+	Banshee.AmazonMp3.Store/SignOutButton.cs \
 	Banshee.AmazonMp3.Store/StoreSource.cs \
 	Banshee.AmazonMp3.Store/StoreSourcePreferences.cs \
 	Banshee.AmazonMp3.Store/StoreView.cs \

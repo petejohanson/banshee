@@ -54,9 +54,6 @@
     <EmbeddedResource Include="Banshee.AmazonMp3.Store.addin.xml">
       <LogicalName>Banshee.AmazonMp3.Store.addin.xml</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\loading.html">
-      <LogicalName>loading.html</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Banshee.AmazonMp3.Store\" />
@@ -116,5 +113,7 @@
     <Compile Include="Banshee.AmazonMp3.Store\StoreSource.cs" />
     <Compile Include="Banshee.AmazonMp3.Store\StoreView.cs" />
     <Compile Include="Banshee.AmazonMp3.Store\StoreWebBrowserShell.cs" />
+    <Compile Include="Banshee.AmazonMp3.Store\StoreSourcePreferences.cs" />
+    <Compile Include="Banshee.AmazonMp3.Store\SignOutButton.cs" />
   </ItemGroup>
 </Project>

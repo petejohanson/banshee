@@ -1,11 +1,11 @@
-//
-// StoreSource.cs
-//
+// 
+// SignOutButton.cs
+// 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
-//
+// 
 // Copyright 2010 Novell, Inc.
-//
+// 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -25,41 +25,33 @@
 // THE SOFTWARE.
 
 using System;
+
 using Mono.Unix;
-
-using Hyena;
-
-using Banshee.WebSource;
+using Gtk;
 
 namespace Banshee.AmazonMp3.Store
 {
-    public class StoreSource : Banshee.WebSource.WebSource, IDisposable
+    public class SignOutButton : Button
     {
-        private StoreSourcePreferences preferences;
+        private StoreView store_view;
 
-        public StoreWebBrowserShell Shell { get; private set; }
-
-        public StoreSource () : base (Catalog.GetString ("Amazon MP3 Store"), 150, "amazon-mp3-store")
+        public SignOutButton (StoreView storeView) : base (Catalog.GetString ("Sign out of Amazon"))
         {
-            preferences = new StoreSourcePreferences (this);
-            Properties.SetString ("Icon.Name", "amazon-mp3-store-source");
+            store_view = storeView;
+            store_view.SignInChanged += (o, e) => UpdateSignInButton ();
+            UpdateSignInButton ();
         }
 
-        public void Dispose ()
+        protected override void OnClicked ()
         {
-            if (preferences != null) {
-                preferences.Dispose ();
-                preferences = null;
-            }
+            base.OnClicked ();
+            store_view.SignOut ();
         }
 
-        protected override WebBrowserShell GetWidget ()
+        private void UpdateSignInButton ()
         {
-            return (Shell = new StoreWebBrowserShell (new StoreView ()));
-        }
-
-        public override string PreferencesPageId {
-            get { return preferences == null ? null : preferences.PreferencesPageId; }
+            Visible = store_view.IsSignedIn;
         }
     }
 }
+

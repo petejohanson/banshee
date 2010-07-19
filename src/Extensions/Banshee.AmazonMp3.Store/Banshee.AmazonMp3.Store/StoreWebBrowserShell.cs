@@ -29,35 +29,24 @@ using System;
 using Gtk;
 using Mono.Unix;
 
-using Banshee.WebBrowser;
-
 namespace Banshee.AmazonMp3.Store
 {
     public class StoreWebBrowserShell : Banshee.WebSource.WebBrowserShell
     {
-        private StoreView store_view;
-        private Button sign_out_button = new Button (Catalog.GetString ("Sign out of Amazon")) { Relief = ReliefStyle.None };
+        public StoreView StoreView { get; private set; }
 
         public StoreWebBrowserShell (StoreView store_view) : base (Catalog.GetString ("Amazon MP3 Store"), store_view)
         {
-            this.store_view = store_view;
-            sign_out_button.Clicked += (o, e) => store_view.SignOut ();
+            StoreView = store_view;
 
-            Attach (sign_out_button, 2, 3, 0, 1,
+            Attach (new SignOutButton (StoreView) { Relief = ReliefStyle.None }, 2, 3, 0, 1,
                 AttachOptions.Shrink,
                 AttachOptions.Shrink,
                 0, 0);
 
             SearchEntry.EmptyMessage = String.Format (Catalog.GetString ("Search the Amazon MP3 Store"));
 
-            store_view.SignInChanged += (o, e) => UpdateSignInButton ();
             ShowAll ();
-            UpdateSignInButton ();
-        }
-
-        private void UpdateSignInButton ()
-        {
-            sign_out_button.Visible = store_view.IsSignedIn;
         }
     }
 }

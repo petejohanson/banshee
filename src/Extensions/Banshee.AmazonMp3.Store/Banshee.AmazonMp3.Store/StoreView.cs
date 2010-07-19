@@ -66,6 +66,8 @@ namespace Banshee.AmazonMp3.Store
                 AmzMp3Downloader.AmazonMp3DownloaderCompatVersion,
                 ".amazon.com", "/", TimeSpan.FromDays (365.2422));
 
+            Country = StoreSourcePreferences.StoreCountry.Get ();
+
             CheckSignIn ();
             FullReload ();
         }
