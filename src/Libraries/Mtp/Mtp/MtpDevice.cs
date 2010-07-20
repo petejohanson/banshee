@@ -37,6 +37,15 @@ namespace Mtp
 
     public class MtpDevice : IDisposable
     {
+        internal static IntPtr Offset (IntPtr ptr, int offset)
+        {
+            if (IntPtr.Size == 8) {
+                return (IntPtr) (ptr.ToInt64 () + offset);
+            } else {
+                return (IntPtr) (ptr.ToInt32 () + offset);
+            }
+        }
+
         internal MtpDeviceHandle Handle;
         private MtpDeviceStruct device;
         private string name;
@@ -249,18 +258,32 @@ namespace Mtp
 
             return file_types;
         }
-        
-        public static List<MtpDevice> Detect ()
+
+        public static MtpDevice Connect (RawMtpDevice rawDevice)
         {
-            IntPtr ptr;
-            GetConnectedDevices(out ptr);
-            
-            List<MtpDevice> devices = new List<MtpDevice>();
-            while (ptr != IntPtr.Zero)
+            var raw = rawDevice.RawDevice;
+            IntPtr device = LIBMTP_Open_Raw_Device (ref raw);
+            if (device == IntPtr.Zero)
+                return null;
+            return new MtpDevice (new MtpDeviceHandle (device, true), (MtpDeviceStruct) Marshal.PtrToStructure (device, typeof (MtpDeviceStruct)));
+        }
+
+        public static List<RawMtpDevice> Detect ()
+        {
+            int count = 0;
+            IntPtr ptr = IntPtr.Zero;
+            Console.WriteLine ("Getting raw devices");
+            LIBMTP_Detect_Raw_Devices (ref ptr, ref count);
+            Console.WriteLine ("got raw devices");
+
+            List<RawMtpDevice> devices = new List<RawMtpDevice>();
+            Console.WriteLine ("Count is:{0}", count);
+            Console.WriteLine ("initial is: {0}", ptr);
+            for (int i = 0; i < count; i++)
             {
-                MtpDeviceStruct d = (MtpDeviceStruct)Marshal.PtrToStructure(ptr, typeof(MtpDeviceStruct));
-                devices.Add(new MtpDevice(ptr, true, d));
-                ptr = d.next;
+                IntPtr offset = Offset (ptr, i * Marshal.SizeOf (typeof (RawDeviceStruct)));
+                RawDeviceStruct d = (RawDeviceStruct)Marshal.PtrToStructure (offset, typeof(RawDeviceStruct));
+                devices.Add(new RawMtpDevice (d));
             }
             
             return devices;
@@ -395,7 +418,13 @@ namespace Mtp
         
         [DllImportAttribute("libmtp.dll")]
         private static extern ErrorCode LIBMTP_Get_Connected_Devices (out IntPtr list); //LIBMTP_mtpdevice_t **
-        
+
+        [DllImport ("libmtp.dll")]
+        private static extern ErrorCode LIBMTP_Detect_Raw_Devices (ref IntPtr list, ref int count); //LIBMTP_raw_device_t
+
+        [DllImport ("libmtp.dll")]
+        private static extern IntPtr LIBMTP_Open_Raw_Device (ref RawDeviceStruct rawdevice);
+
         // Deallocates the memory for the device
         [DllImportAttribute("libmtp.dll")]
         private static extern void LIBMTP_Release_Device (IntPtr device);
@@ -532,5 +561,32 @@ namespace Mtp
         public uint default_text_folder;
         public IntPtr cd; // void*
         public IntPtr next; // LIBMTP_mtpdevice_t*
+    }
+
+    [StructLayout (LayoutKind.Sequential)]
+    internal struct RawDeviceStruct {
+        public DeviceEntry device_entry; /**< The device entry for this raw device */
+        public uint bus_location; /**< Location of the bus, if device available */
+        public byte devnum; /**< Device number on the bus, if device available */
+    }
+
+    public class RawMtpDevice {
+
+        public uint BusNumber {
+            get { return RawDevice.bus_location; }
+        }
+
+        public int DeviceNumber {
+            get { return RawDevice.devnum; }
+        }
+
+        internal RawDeviceStruct RawDevice {
+            get; private set;
+        }
+
+        internal RawMtpDevice (RawDeviceStruct device)
+        {
+            RawDevice = device;
+        }
     }
 }
