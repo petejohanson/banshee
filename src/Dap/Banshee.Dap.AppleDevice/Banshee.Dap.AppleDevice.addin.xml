@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Addin
+    id="Banshee.Dap.AppleDevice"
+    version="0.1"
+    compatVersion="0.1"
+    copyright="© 2010 Novell Inc. Licensed under the MIT X11 license."
+    name="Apple device Support"
+    category="Device Support"
+    description="Support for most iPod/iPhone/iPad devices."
+    author="Alan McGovern"
+    url="http://banshee.fm/"
+    defaultEnabled="true">
+
+  <Dependencies>
+    <Addin id="Banshee.Services" version="1.0"/>
+    <Addin id="Banshee.Dap" version="1.0"/>
+  </Dependencies>
+
+  <Extension path="/Banshee/Platform/HardwareDeviceProvider">
+    <HardwareDeviceProvider class="Banshee.Dap.AppleDevice.AppleDeviceProvider"/>
+  </Extension>
+  
+  <Extension path="/Banshee/Dap/DeviceClass">
+    <DeviceClass class="Banshee.Dap.AppleDevice.AppleDeviceSource" priority="10"/>
+  </Extension>
+
+</Addin>
