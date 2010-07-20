@@ -1,6 +1,6 @@
 AC_DEFUN([BANSHEE_CHECK_DAP_MTP],
 [
-	LIBMTP_REQUIRED=0.2.0
+	LIBMTP_REQUIRED=0.3.0
 
 	AC_ARG_ENABLE(mtp, AC_HELP_STRING([--disable-mtp], [Disable MTP DAP support]), , enable_mtp="yes")
 	
