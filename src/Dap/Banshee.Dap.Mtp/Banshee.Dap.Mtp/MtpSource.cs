@@ -51,9 +51,6 @@ namespace Banshee.Dap.Mtp
 {
     public class MtpSource : DapSource
     {
-        // libmtp only lets us have one device connected at a time
-        private static MtpSource mtp_source;
-
 		private MtpDevice mtp_device;
         //private bool supports_jpegs = false;
         private Dictionary<int, Track> track_map;
@@ -68,66 +65,41 @@ namespace Banshee.Dap.Mtp
         {
             base.DeviceInitialize (device);
 
-            if (MediaCapabilities == null || !MediaCapabilities.IsType ("mtp")) {
+            if (!(device is IUsbDevice))
                 throw new InvalidDeviceException ();
-            }
 
-            // libmtp only allows us to have one MTP device active
-            if (mtp_source != null) {
-                Log.Information (
-                    Catalog.GetString ("MTP Support Ignoring Device"),
-                    Catalog.GetString ("Banshee's MTP audio player support can only handle one device at a time."),
-                    true
-                );
-                throw new InvalidDeviceException ();
-            }
+            int busnum = ((IUsbDevice) device).BusNumber;
+            int devnum = ((IUsbDevice) device).DeviceNumber;
 
-			List<MtpDevice> devices = null;
-			try {
-				devices = MtpDevice.Detect ();
-			} catch (TypeInitializationException e) {
+            List<RawMtpDevice> devices = null;
+            try {
+                devices = MtpDevice.Detect ();
+            } catch (TypeInitializationException e) {
                 Log.Exception (e);
-				Log.Error (
+                Log.Error (
                     Catalog.GetString ("Error Initializing MTP Device Support"),
                     Catalog.GetString ("There was an error intializing MTP device support.  See http://www.banshee-project.org/Guide/DAPs/MTP for more information."), true
                 );
                 throw new InvalidDeviceException ();
-			} catch (Exception e) {
+            } catch (Exception e) {
                 Log.Exception (e);
-				//ShowGeneralExceptionDialog (e);
+                //ShowGeneralExceptionDialog (e);
                 throw new InvalidDeviceException ();
-			}
+            }
 
-            if (devices == null || devices.Count == 0) {
-				Log.Error (
-                    Catalog.GetString ("Error Finding MTP Device Support"),
-                    Catalog.GetString ("An MTP device was detected, but Banshee was unable to load support for it."), true
-                );
-            } else {
-                string mtp_serial = devices[0].SerialNumber;
-                if (!String.IsNullOrEmpty (mtp_serial)) {
-                    if (mtp_serial.Contains (device.Serial)) {
-                        mtp_device = devices[0];
-                        mtp_source = this;
-                    } else if (device.Serial.Contains (mtp_serial.TrimStart('0'))) {
-                        // Special case for sony walkman players; BGO #543938
-                        mtp_device = devices[0];
-                        mtp_source = this;
+            IVolume volume = (IVolume) device;
+            foreach (var v in devices) {
+                if (v.BusNumber == busnum && v.DeviceNumber == devnum) {
+                    volume.Unmount ();
+                    try {
+                        mtp_device = MtpDevice.Connect (v);
+                    } catch (Exception){
+                        Log.Debug ("Failed to connect to mtp device");
                     }
                 }
-
-                if (mtp_device == null) {
-                    Log.Information(
-                        Catalog.GetString ("MTP Support Ignoring Device"),
-                        Catalog.GetString ("Banshee's MTP audio player support can only handle one device at a time."),
-                        true
-                    );
-                }
             }
-
-            if (mtp_device == null) {
+            if (mtp_device == null)
                 throw new InvalidDeviceException ();
-            }
 
             Name = mtp_device.Name;
             Initialize ();
@@ -441,7 +413,6 @@ namespace Banshee.Dap.Mtp
 
             ServiceManager.SourceManager.RemoveSource (this);
             mtp_device = null;
-            mtp_source = null;
         }
 
         protected override void Eject ()
