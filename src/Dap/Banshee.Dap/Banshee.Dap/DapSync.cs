@@ -159,7 +159,8 @@ namespace Banshee.Dap
             src_mgr.SourceAdded   += OnSourceAdded;
             src_mgr.SourceRemoved += OnSourceRemoved;
 
-            foreach (var src in src_mgr.Sources) {
+            var sources = src_mgr.Sources.ToList ();
+            foreach (var src in sources) {
                 AddLibrary (src, false);
             }
 
