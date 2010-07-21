@@ -23,14 +23,52 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
 
     New Features Since 1.7.2:
 
-      * 
-    Enhancements:
+      * Amazon MP3 Store Source, supporting US, UK, FR, DE, and JP storefronts
+        See http://abock.org/2010/07/13/amazon-mp3-store-in-banshee
+        Supports browsing, searching, previewing, buying, and downloading
+        music from Amazon MP3 stores.
 
-      * 
+	  * Support for downloading and importing Amazon MP3 purchases (.amz files)
+        See http://abock.org/2010/07/08/amazon-mp3-downloader-support-in-banshee
+
+      * New Miro Guide Podcast Directory extension integrating with
+        miroguide.com. Seamlessly stream and subscribe to podcasts in
+        the guide.
+
+      * New extension for bulk metadata fixing to merge artists and albums
+        that vary only by case, '&' vs 'and', etc.
+
+      * Add visual separators in the source view between categories of sources
+
+      * Culturally format the status bar item count (e.g. in en_US 1,000
+        instead of the old 1000)
+
+      * Tweak the grid view album artwork hover effect
+
+    Enhancements/API Additions:
+
+      * Improve the downloading and visual refreshing of new cover art
+
+      * New Banshee.WebBrowser API for creating embedded WebKit web browsers
+        and sources: used by the new Amazon MP3 store, Miro Guide, and the
+        Wikipedia context pane
+
+      * New Hyena.Downloader API for performing downloads and easy
+        HTTP operations: HttpFileDownloader, HttpStringDownloader
+
+      * Drop dependency of webkit-sharp, take dependency directly on
+        libwebkit 1.2.2+ for new Banshee.WebBrowser API
 
     Notable Bugs Fixed (9 fixed since 1.7.2):
 
-      * 
+      * bgo#624667: Fix cover art refreshing
+      * bgo#622826: Fix a slow running query to speed things up
+      * bgo#602840: Fix importing of compilation albums
+      * bgo#622028: Fix loading of libbnpx11.so on some distros
+      * bgo#621955: Wrap instead of elipsize Last.fm titles
+      * bgo#608382: Escape %20 in filenames for items without embedded metadata
+      * bgo#624531: Escape Uri value in SQL query
+
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -40,8 +78,8 @@ Sources
 -------
 
     * Banshee 1.7.3 Tarballs:
-      http://download.banshee.fm/banshee/stable/1.7.3/banshee-1-1.7.3.tar.bz2
-      http://download.banshee.fm/banshee/stable/1.7.3/banshee-1-1.7.3.tar.gz
+      http://download.banshee.fm/banshee/unstable/1.7.3/banshee-1-1.7.3.tar.bz2
+      http://download.banshee.fm/banshee/unstable/1.7.3/banshee-1-1.7.3.tar.gz
 
 Packages
 --------
@@ -58,13 +96,13 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee.fm/banshee/banshee-1-1.7.3.macosx.intel.dmg
+    * http://download.banshee.fm/banshee/unstable/1.7.3/banshee-1-1.7.3.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee.fm/banshee/stable/1.7.3/banshee-1-1.7.3.changes
-    * http://download.banshee.fm/banshee/stable/1.7.3/banshee-1-1.7.3.sha256sum
+    * http://download.banshee.fm/banshee/unstable/1.7.3/banshee-1-1.7.3.changes
+    * http://download.banshee.fm/banshee/unstable/1.7.3/banshee-1-1.7.3.sha256sum
 
 
 ===============================================================================
@@ -95,6 +133,8 @@ DEPENDENCIES
       * Wikipedia extensions requires webkit-sharp-1.0 >= 0.2
       * YouTube extension requires gdata-sharp-core and
         gdata-sharp-youtube >= 1.4
+      * Amazon MP3 Store, Wikipedia Context Pane, and Miro Guide require
+        webkit-1.0 >= 1.2.2
 
     * Run-time requirements for default feature stack:
       * HAL
