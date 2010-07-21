@@ -14,8 +14,6 @@ AC_DEFUN([SHAMROCK_CHECK_GNOME_DOC_UTILS],
 
 	if test "x$enable_user_help" = "xyes"; then
         GNOME_DOC_INIT([$1], enable_user_help=yes, enable_user_help=no)
-    else
-        AM_CONDITIONAL(ENABLE_SK, false)
     fi
 
 	AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x$enable_user_help" = "xyes")
