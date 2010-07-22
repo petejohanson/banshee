@@ -143,7 +143,8 @@ struct BansheePlayer {
     gint equalizer_status;
     
     // Pipeline/Playback State
-    GMutex *mutex;
+    GMutex *video_mutex;
+    GMutex *replaygain_mutex;
     GstState target_state;
     gboolean buffering;
     gchar *cdda_device;

@@ -91,9 +91,9 @@ bp_video_sink_element_added (GstBin *videosink, GstElement *element, BansheePlay
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
 
     #if defined(GDK_WINDOWING_X11) || defined(GDK_WINDOWING_WIN32)
-    g_mutex_lock (player->mutex);
+    g_mutex_lock (player->video_mutex);
     bp_video_find_xoverlay (player);
-    g_mutex_unlock (player->mutex);    
+    g_mutex_unlock (player->video_mutex);
     #endif
 }
 
@@ -110,9 +110,9 @@ bp_video_bus_element_sync_message (GstBus *bus, GstMessage *message, BansheePlay
         return;
     }
 
-    g_mutex_lock (player->mutex);
+    g_mutex_lock (player->video_mutex);
     found_xoverlay = bp_video_find_xoverlay (player);
-    g_mutex_unlock (player->mutex);
+    g_mutex_unlock (player->video_mutex);
 
     if (found_xoverlay) {
         gst_x_overlay_set_xwindow_id (player->xoverlay, player->video_window_xid);
@@ -319,15 +319,15 @@ bp_video_window_expose (BansheePlayer *player, GdkWindow *window, gboolean direc
         return;
     }
    
-    g_mutex_lock (player->mutex);
+    g_mutex_lock (player->video_mutex);
    
     if (player->xoverlay == NULL && !bp_video_find_xoverlay (player)) {
-        g_mutex_unlock (player->mutex);
+        g_mutex_unlock (player->video_mutex);
         return;
     }
     
     gst_object_ref (player->xoverlay);
-    g_mutex_unlock (player->mutex);
+    g_mutex_unlock (player->video_mutex);
 
     gst_x_overlay_set_xwindow_id (player->xoverlay, player->video_window_xid);
     gst_x_overlay_expose (player->xoverlay);

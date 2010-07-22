@@ -58,8 +58,12 @@ bp_destroy (BansheePlayer *player)
 {
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     
-    if (player->mutex != NULL) {
-        g_mutex_free (player->mutex);
+    if (player->video_mutex != NULL) {
+        g_mutex_free (player->video_mutex);
+    }
+
+    if (player->replaygain_mutex != NULL) {
+        g_mutex_free (player->replaygain_mutex);
     }
     
     if (player->cdda_device != NULL) {
@@ -82,8 +86,9 @@ bp_new ()
 {
     BansheePlayer *player = g_new0 (BansheePlayer, 1);
     
-    player->mutex = g_mutex_new ();
-    
+    player->video_mutex = g_mutex_new ();
+    player->replaygain_mutex = g_mutex_new ();
+
     return player;
 }
 

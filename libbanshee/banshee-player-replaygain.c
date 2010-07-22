@@ -94,12 +94,12 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data)
     // The pad_block_cb can get triggered multiple times, on different threads.
     // Lock around the link/unlink code, so we don't end up going through here
     // with inconsistent state.
-    g_mutex_lock (player->mutex);
+    g_mutex_lock (player->replaygain_mutex);
 
     if ((player->replaygain_enabled && player->rgvolume_in_pipeline) ||
         (!player->replaygain_enabled && !player->rgvolume_in_pipeline)) {
         // The pipeline is already in the correct state.  Unblock the pad, and return.
-        g_mutex_unlock (player->mutex);
+        g_mutex_unlock (player->replaygain_mutex);
         if (gst_pad_is_blocked (srcPad)) {
             gst_pad_set_blocked_async (srcPad, FALSE, &pad_block_cb, player);
         }
@@ -139,7 +139,7 @@ pad_block_cb (GstPad *srcPad, gboolean blocked, gpointer user_data)
     }
 
     // Our state is now consistent
-    g_mutex_unlock (player->mutex);
+    g_mutex_unlock (player->replaygain_mutex);
 
     if (gst_pad_is_blocked (srcPad)) {
         gst_pad_set_blocked_async (srcPad, FALSE, &pad_block_cb, player);
