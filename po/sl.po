@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&component=general\n"
-"POT-Creation-Date: 2010-07-16 20:05+0000\n"
-"PO-Revision-Date: 2010-07-21 12:44+0100\n"
+"POT-Creation-Date: 2010-07-22 22:00+0000\n"
+"PO-Revision-Date: 2010-07-24 11:43+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -251,7 +251,7 @@ msgstr "Predogled datotek brez uvoza v knjižnico."
 #. ../src/Extensions/Banshee.Fixup/Banshee.Fixup.addin.xml
 #: ../data/addin-xml-strings.cs:115
 msgid "Metadata Fixup"
-msgstr "Popravilo metapodakov"
+msgstr "Popravilo metapodatkov"
 
 #: ../data/addin-xml-strings.cs:116
 msgid "Fix broken and missing metadata using bulk operations"
@@ -4396,16 +4396,48 @@ msgstr[1] "{0} prejem pri {1}/s ({2} čakajočih)"
 msgstr[2] "{0} prejema pri {1}/s ({2} čakajočih)"
 msgstr[3] "{0} prejemi pri {1}/s ({2} čakajočih)"
 
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:36
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:41
-msgid "Amazon MP3 Store"
-msgstr "Trgovina Amazon MP3"
-
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:39
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/SignOutButton.cs:38
 msgid "Sign out of Amazon"
 msgstr "Odjavi se iz Amazona"
 
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:51
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:42
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:38
+msgid "Amazon MP3 Store"
+msgstr "Trgovina Amazon MP3"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:57
+msgid "Country"
+msgstr "Država"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:60
+msgid "Which Amazon MP3 storefront to use by default."
+msgstr "Katera trgovina Amazon MP3 naj bo uporabljena privzeto."
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:88
+msgid "Automatic (Geo IP detection)"
+msgstr "Samodejno (zaznavanje geo IP)"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:90
+msgid "France (amazon.fr)"
+msgstr "Francija (amazon.fr)"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:91
+msgid "Germany, Switzerland, Austria (amazon.de)"
+msgstr "Nemčija, Švica, Avstrija (amazon.de)"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:92
+msgid "Japan (amazon.co.jp)"
+msgstr "Japonska (amazon.co.jp)"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:93
+msgid "United Kingdom (amazon.co.uk)"
+msgstr "Združeno Kraljestvo (amazon.co.uk)"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:94
+msgid "United States (amazon.com)"
+msgstr "Združene Države (amazon.com)"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:47
 #, csharp-format
 msgid "Search the Amazon MP3 Store"
 msgstr "Iščite trgovino Amazon MP3"
@@ -4851,35 +4883,33 @@ msgid "Clear the file system queue when quitting"
 msgstr "Čiščenje čakalne vrste datotečnega sistema ob končanju"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:46
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:50
 msgid "Duplicate Albums"
 msgstr "Podvoji albume"
 
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:48
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:47
 msgid "Displayed are albums that should likely be merged.  For each row, click the desired title to make it bold, or uncheck it to take no action."
 msgstr "Prikazani so albumi, ki jih je verjetno treba združiti. Za vsako vrstico kliknite na želeno ime da postane krepko ali odstranite oznako, če ne želite storiti ničesar."
 
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:76
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:79
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:73
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:76
 msgid " and "
 msgstr "in"
 
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:78
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:81
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:75
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:78
 msgid ", the"
 msgstr ", "
 
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:80
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:83
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:77
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:80
 msgid "the "
 msgstr " "
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:46
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:50
 msgid "Duplicate Artists"
 msgstr "Podvoji izvajalce"
 
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:48
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:47
 msgid "Displayed are artists that should likely be merged.  For each row, click the desired name to make it bold, or uncheck it to take no action."
 msgstr "Prikazani so izvajalci, ki jih je verjetno treba združiti. Za vsako vrstico kliknite na želeno ime da postane krepko ali odstranite oznako, če ne želite storiti ničesar."
 
@@ -5931,11 +5961,11 @@ msgstr "Spremeni način ponavljanja predvajanja"
 msgid "Miro Guide"
 msgstr "Vodič Miro"
 
-#: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideView.cs:58
+#: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/View.cs:56
 msgid "Search for Podcasts"
 msgstr "Iskanje podcastov"
 
-#: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideView.cs:59
+#: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/View.cs:57
 msgid "Search for Video Podcasts"
 msgstr "Iskanje video podcastov"
 
