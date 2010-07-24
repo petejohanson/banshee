@@ -15,9 +15,6 @@ SOURCES =  \
 	Banshee.Hardware.Gio/DiscVolume.cs \
 	Banshee.Hardware.Gio/DiskDevice.cs \
 	Banshee.Hardware.Gio/HardwareManager.cs \
-	Banshee.Hardware.Gio/UsbDevice.cs \
-	Banshee.Hardware.Gio/UsbVolume.cs \
-	Banshee.Hardware.Gio/Volume.cs \
 	Banshee.Hardware.Gio/LowLevel/GioDriveMetadetaSource.cs \
 	Banshee.Hardware.Gio/LowLevel/GioMetadataSource.cs \
 	Banshee.Hardware.Gio/LowLevel/GioVolumeMetadataSource.cs \
@@ -26,8 +23,12 @@ SOURCES =  \
 	Banshee.Hardware.Gio/LowLevel/Manager.cs \
 	Banshee.Hardware.Gio/LowLevel/RawBlockDevice.cs \
 	Banshee.Hardware.Gio/LowLevel/RawDevice.cs \
+	Banshee.Hardware.Gio/LowLevel/RawUsbDevice.cs \
 	Banshee.Hardware.Gio/LowLevel/RawVolume.cs \
 	Banshee.Hardware.Gio/LowLevel/UdevMetadataSource.cs \
+	Banshee.Hardware.Gio/UsbDevice.cs \
+	Banshee.Hardware.Gio/UsbVolume.cs \
+	Banshee.Hardware.Gio/Volume.cs \
 	Banshee.IO.Gio/DemuxVfs.cs \
 	Banshee.IO.Gio/Directory.cs \
 	Banshee.IO.Gio/File.cs \
