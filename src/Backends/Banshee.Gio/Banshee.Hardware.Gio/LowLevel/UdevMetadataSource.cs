@@ -45,6 +45,10 @@ namespace Banshee.Hardware.Gio
             get { return Device.Name; }
         }
 
+        public UdevMetadataSource Parent {
+            get { return Device.Parent == null ? null : new UdevMetadataSource (Device.Parent); }
+        }
+
         public string Product {
             get { return Device.GetProperty ("PRODUCT"); }
         }
