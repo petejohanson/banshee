@@ -33,7 +33,7 @@ namespace Banshee.Widgets
 {
     public class Tile : Button
     {
-        private static readonly int pixbuf_size = 40;
+        private const int pixbuf_size = 40;
 
         private Image image = new Image ();
         public Label PrimaryLabel { get; private set; }

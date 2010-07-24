@@ -56,7 +56,7 @@ namespace Banshee.Widgets
         private Color text_color;
         private Color text_bg_color;
 
-        private static readonly double a1 = 3 * Math.PI / 2;
+        private const double a1 = 3 * Math.PI / 2;
         private double x, y, radius, a2, base_line_width;
 
         private long capacity;
