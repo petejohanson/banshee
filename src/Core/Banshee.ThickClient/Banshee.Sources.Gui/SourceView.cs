@@ -119,6 +119,10 @@ namespace Banshee.Sources.Gui
                     lock (args.Source) {
                         TreeIter iter = store.FindSource (args.Source);
                         if (!TreeIter.Zero.Equals (iter)) {
+                            if (args.Source.Expanded) {
+                                Expand (args.Source);
+                            }
+
                             need_resort = true;
                             QueueDraw ();
                         }

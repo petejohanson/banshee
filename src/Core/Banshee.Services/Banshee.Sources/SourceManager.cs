@@ -343,6 +343,9 @@ namespace Banshee.Sources
             }
 
             active_source = source;
+            if (source.Parent != null) {
+                source.Parent.Expanded = true;
+            }
 
             if(!notify) {
                 source.Activate();

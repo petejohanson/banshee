@@ -223,7 +223,10 @@ namespace Banshee.Sources
 
         public override bool Expanded {
             get { return ExpandedSchema.Get (); }
-            set { ExpandedSchema.Set (value); }
+            set {
+                ExpandedSchema.Set (value);
+                base.Expanded = value;
+            }
         }
 
         public PathPattern PathPattern { get; private set; }
