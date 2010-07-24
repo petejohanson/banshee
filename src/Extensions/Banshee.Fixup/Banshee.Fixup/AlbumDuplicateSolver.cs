@@ -68,7 +68,7 @@ namespace Banshee.Fixup
             if (ret == null || (artist as string) == null)
                 return null;
 
-            ret.ToLower ()
+            ret = ret.ToLower ()
                .Replace (" and ", " & ")
                .Replace (Catalog.GetString (" and "), " & ")
                .Replace (", the", "")
