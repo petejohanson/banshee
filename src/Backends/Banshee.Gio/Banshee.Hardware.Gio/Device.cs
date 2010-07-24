@@ -81,7 +81,7 @@ namespace Banshee.Hardware.Gio
 
         public IUsbDevice ResolveRootUsbDevice ()
         {
-            return null;
+            return UsbDevice.ResolveRootDevice (this);
         }
 
         public bool PropertyExists (string key)

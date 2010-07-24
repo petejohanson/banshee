@@ -41,9 +41,31 @@ namespace Banshee.Hardware.Gio
         const string UdevVendorId = "ID_VENDOR_ID";
         const string UdevProductId = "ID_MODEL_ID";
 
+        internal static IUsbDevice ResolveRootDevice (IDevice device)
+        {
+            // First check if the supplied device is an IUsbDevice itself
+            var result = Resolve (device);
+            if (result != null) {
+                return result;
+            }
+
+            // Now walk up the device tree to see if we can find one.
+            IRawDevice raw = device as IRawDevice;
+            if (raw != null) {
+                var parent = raw.Device.UdevMetadata.Parent;
+                while (parent != null) {
+                    if (parent.PropertyExists (UdevUsbBusNumber) && parent.PropertyExists (UdevUsbDeviceNumber)) {
+                        return new UsbDevice (new RawUsbDevice (raw.Device.Manager, raw.Device.GioMetadata, parent));
+                    }
+                    parent = parent.Parent;
+                }
+            }
+            return null;
+        }
+
         public IUsbDevice ResolveRootUsbDevice ()
         {
-            return null;
+            return this;
         }
 
         public static int GetBusNumber (IUsbDevice device)
