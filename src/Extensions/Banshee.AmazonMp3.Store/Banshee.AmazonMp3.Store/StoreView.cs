@@ -88,6 +88,9 @@ namespace Banshee.AmazonMp3.Store
         protected override string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
         {
             switch (mimetype) {
+                // The German store uses this mimetype, see bgo#625210
+                case "audio/x-amzaudio":
+                // The US and hopefully all other stores use this one
                 case "audio/x-amzxml":
                     var dest_uri_base = "file://" + Paths.Combine (Paths.TempDir, suggestedFilename);
                     var dest_uri = new SafeUri (dest_uri_base);
