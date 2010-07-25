@@ -84,6 +84,15 @@ namespace Banshee.Hardware.Gio
             return UsbDevice.ResolveRootDevice (this);
         }
 
+        public IUsbPortInfo ResolveUsbPortInfo ()
+        {
+            var f = UsbDevice.ResolveRootDevice (this);
+            if (f != null) {
+                return new UsbPortInfo (f.BusNumber, f.DeviceNumber);
+            }
+            return null;
+        }
+
         public bool PropertyExists (string key)
         {
             return device.PropertyExists (key);

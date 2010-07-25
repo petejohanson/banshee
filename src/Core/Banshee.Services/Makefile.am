@@ -75,7 +75,9 @@ SOURCES =  \
 	Banshee.Hardware/IDiskDevice.cs \
 	Banshee.Hardware/IHardwareManager.cs \
 	Banshee.Hardware/IUsbDevice.cs \
+	Banshee.Hardware/IUsbPortInfo.cs \
 	Banshee.Hardware/IVolume.cs \
+	Banshee.Hardware/UsbPortInfo.cs \
 	Banshee.Hardware/VendorProductDeviceNode.cs \
 	Banshee.Hardware/VendorProductInfo.cs \
 	Banshee.Library/HomeDirectoryImportSource.cs \

@@ -41,7 +41,7 @@ namespace Banshee.Hardware.Gio
         const string UdevVendorId = "ID_VENDOR_ID";
         const string UdevProductId = "ID_MODEL_ID";
 
-        internal static IUsbDevice ResolveRootDevice (IDevice device)
+        internal static UsbDevice ResolveRootDevice (IDevice device)
         {
             // First check if the supplied device is an IUsbDevice itself
             var result = Resolve (device);
@@ -66,6 +66,11 @@ namespace Banshee.Hardware.Gio
         public IUsbDevice ResolveRootUsbDevice ()
         {
             return this;
+        }
+
+        public IUsbPortInfo ResolveUsbPortInfo ()
+        {
+            return new UsbPortInfo (BusNumber, DeviceNumber);
         }
 
         public static int GetBusNumber (IUsbDevice device)
@@ -102,7 +107,7 @@ namespace Banshee.Hardware.Gio
             throw new NotImplementedException ();
         }
 
-        public static IUsbDevice Resolve (IDevice device)
+        public static UsbDevice Resolve (IDevice device)
         {
             IRawDevice raw = device as IRawDevice;
             if (raw != null) {

@@ -51,5 +51,6 @@ namespace Banshee.Hardware
         string [] GetPropertyStringList (string key);
 
         IUsbDevice ResolveRootUsbDevice ();
+        IUsbPortInfo ResolveUsbPortInfo ();
     }
 }

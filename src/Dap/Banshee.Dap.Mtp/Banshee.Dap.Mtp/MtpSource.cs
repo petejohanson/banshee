@@ -65,11 +65,13 @@ namespace Banshee.Dap.Mtp
         {
             base.DeviceInitialize (device);
 
-            if (!(device is IUsbDevice))
+            var portInfo = device.ResolveUsbPortInfo ();
+            if (portInfo == null) {
                 throw new InvalidDeviceException ();
+            }
 
-            int busnum = ((IUsbDevice) device).BusNumber;
-            int devnum = ((IUsbDevice) device).DeviceNumber;
+            int busnum = portInfo.BusNumber;
+            int devnum = portInfo.DeviceNumber;
 
             List<RawMtpDevice> devices = null;
             try {
@@ -87,19 +89,25 @@ namespace Banshee.Dap.Mtp
                 throw new InvalidDeviceException ();
             }
 
-            IVolume volume = (IVolume) device;
+            IVolume volume = device as IVolume;
             foreach (var v in devices) {
                 if (v.BusNumber == busnum && v.DeviceNumber == devnum) {
-                    volume.Unmount ();
-                    try {
-                        mtp_device = MtpDevice.Connect (v);
-                    } catch (Exception){
-                        Log.Debug ("Failed to connect to mtp device");
+                    if (volume != null)
+                        volume.Unmount ();
+                    for (int i = 5; i > 0 && mtp_device == null; i--) {
+                        try {
+                            mtp_device = MtpDevice.Connect (v);
+                        } catch (Exception){
+                            Log.Debug (string.Format ("Failed to connect to mtp device. Trying {0} more times...", i - i));
+                        }
+                        if (mtp_device == null)
+                            Thread.Sleep (2000);
                     }
                 }
             }
-            if (mtp_device == null)
+            if (mtp_device == null) {
                 throw new InvalidDeviceException ();
+            }
 
             Name = mtp_device.Name;
             Initialize ();

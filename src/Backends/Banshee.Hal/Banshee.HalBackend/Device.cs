@@ -134,6 +134,20 @@ namespace Banshee.HalBackend
             return UsbDevice.Resolve (HalManager, CollectUsbDeviceStack (device).Peek ());
         }
 
+        public IUsbPortInfo ResolveUsbPortInfo ()
+        {
+            var device = this.device;
+            while (device != null) {
+                if (device.PropertyExists ("usb.bus_number") && device.PropertyExists ("usb.linux.device_number")) {
+                    return new UsbPortInfo (device.GetPropertyInteger ("usb.bus_number"),
+                                             device.GetPropertyInteger ("usb.linux.device_number"));
+                }
+                device = device.Parent;
+            }
+            return null;
+        }
+
+
         private static Stack<Hal.Device> CollectUsbDeviceStack (Hal.Device device)
         {
             Stack<Hal.Device> device_stack = new Stack<Hal.Device> ();

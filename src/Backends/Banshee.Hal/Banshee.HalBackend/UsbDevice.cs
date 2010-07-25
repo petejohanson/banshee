@@ -49,14 +49,6 @@ namespace Banshee.HalBackend
         {
         }
 
-        public int BusNumber {
-            get { return HalDevice.GetPropertyInteger ("usb.bus_number"); }
-        }
-
-        public int DeviceNumber {
-            get { return HalDevice.GetPropertyInteger ("usb.linux.device_number"); }
-        }
-
         public int VendorId {
             get { return HalDevice.GetPropertyInteger ("usb_device.vendor_id"); }
         }
