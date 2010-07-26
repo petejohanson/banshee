@@ -24,7 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
+#if ENABLE_GIO_HARDWARE
 using System;
 
 namespace Banshee.Hardware.Gio
@@ -133,4 +133,5 @@ namespace Banshee.Hardware.Gio
         }
     }
 }
+#endif
 
