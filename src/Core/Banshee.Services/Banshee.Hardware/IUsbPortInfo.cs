@@ -24,12 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
-using System;
-
-namespace Banshee.Hardware {
-
-    public interface IUsbPortInfo {
+namespace Banshee.Hardware
+{
+    public interface IUsbPortInfo
+    {
         int BusNumber { get; }
         int DeviceNumber { get; }
     }

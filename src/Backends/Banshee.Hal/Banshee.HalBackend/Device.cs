@@ -147,7 +147,6 @@ namespace Banshee.HalBackend
             return null;
         }
 
-
         private static Stack<Hal.Device> CollectUsbDeviceStack (Hal.Device device)
         {
             Stack<Hal.Device> device_stack = new Stack<Hal.Device> ();
