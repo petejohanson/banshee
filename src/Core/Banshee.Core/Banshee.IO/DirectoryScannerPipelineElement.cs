@@ -37,6 +37,11 @@ namespace Banshee.IO
 {
     public class DirectoryScannerPipelineElement : QueuePipelineElement<string>
     {
+        public DirectoryScannerPipelineElement ()
+        {
+            SkipHiddenChildren = true;
+        }
+
         protected override string ProcessItem (string item)
         {
             try {
@@ -47,6 +52,8 @@ namespace Banshee.IO
             }
             return null;
         }
+
+        public bool SkipHiddenChildren { get; set; }
 
         private readonly HashSet<string> visited_dirs = new HashSet<string> ();
         private void ScanForFiles (string source, bool skip_hidden)
@@ -67,7 +74,7 @@ namespace Banshee.IO
 
             if (is_regular_file) {
                 try {
-                    if (!Path.GetFileName (source).StartsWith (".")) {
+                    if (!skip_hidden || !Path.GetFileName (source).StartsWith (".")) {
                         EnqueueDownstream (source);
                     }
                 } catch (System.ArgumentException) {
@@ -79,12 +86,12 @@ namespace Banshee.IO
                         visited_dirs.Add (source);
                         try {
                             foreach (string file in Banshee.IO.Directory.GetFiles (source)) {
-                                ScanForFiles (file, true);
+                                ScanForFiles (file, SkipHiddenChildren);
                             }
 
                             foreach (string directory in Banshee.IO.Directory.GetDirectories (source)) {
                                 if (!visited_dirs.Contains (directory)) {
-                                    ScanForFiles (directory, true);
+                                    ScanForFiles (directory, SkipHiddenChildren);
                                 }
                             }
                         } catch (Exception e) {
