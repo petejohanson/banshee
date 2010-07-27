@@ -78,7 +78,7 @@ namespace Banshee.Dap.Ipod
                         "version of the song database for your iPod that is too new " +
                         "for Banshee to recognize.\n\n" +
 
-                        "Banshee can rebuild your database, but some settings might be lost. " +
+                        "Banshee can rebuild your database, but you might lose your settings and all the content in the device (be sure to backup your data first). " +
                         "Using Banshee and iTunes with the same iPod is not recommended."
                     ));
 
