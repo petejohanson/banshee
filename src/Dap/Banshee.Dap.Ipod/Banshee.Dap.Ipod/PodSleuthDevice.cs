@@ -362,6 +362,11 @@ namespace Banshee.Dap.Ipod
             return volume.ResolveRootUsbDevice ();
         }
 
+        public IUsbPortInfo ResolveUsbPortInfo ()
+        {
+            return volume.ResolveUsbPortInfo ();
+        }
+
 #endregion
 
     }
