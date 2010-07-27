@@ -144,8 +144,10 @@ namespace Banshee.Dap.MassStorage
         {
             import_reset_event = new System.Threading.ManualResetEvent (false);
 
-            importer = new DatabaseImportManager (this);
-            importer.KeepUserJobHidden = true;
+            importer = new DatabaseImportManager (this) {
+                KeepUserJobHidden = true,
+                SkipHiddenChildren = false
+            };
             importer.Finished += OnImportFinished;
 
             foreach (string audio_folder in BaseDirectories) {
@@ -198,7 +200,10 @@ namespace Banshee.Dap.MassStorage
 
         public override void Import ()
         {
-            LibraryImportManager importer = new LibraryImportManager (true);
+            var importer = new LibraryImportManager (true) {
+                SkipHiddenChildren = false
+            };
+
             foreach (string audio_folder in BaseDirectories) {
                 importer.Enqueue (audio_folder);
             }
