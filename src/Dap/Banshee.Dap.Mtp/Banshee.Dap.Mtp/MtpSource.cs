@@ -180,15 +180,18 @@ namespace Banshee.Dap.Mtp
                         SELECT ?, TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND ExternalID = ?");
 
                 lock (mtp_device) {
-                    foreach (MTP.Playlist playlist in mtp_device.GetPlaylists ()) {
-                        PlaylistSource pl_src = new PlaylistSource (playlist.Name, this);
-                        pl_src.Save ();
-                        // TODO a transaction would make sense here (when the threading issue is fixed)
-                        foreach (int id in playlist.TrackIds) {
-                            ServiceManager.DbConnection.Execute (insert_cmd, pl_src.DbId, this.DbId, id);
+                    var playlists = mtp_device.GetPlaylists ();
+                    if (playlists != null) {
+                        foreach (MTP.Playlist playlist in playlists) {
+                            PlaylistSource pl_src = new PlaylistSource (playlist.Name, this);
+                            pl_src.Save ();
+                            // TODO a transaction would make sense here (when the threading issue is fixed)
+                            foreach (int id in playlist.TrackIds) {
+                                ServiceManager.DbConnection.Execute (insert_cmd, pl_src.DbId, this.DbId, id);
+                            }
+                            pl_src.UpdateCounts ();
+                            AddChildSource (pl_src);
                         }
-                        pl_src.UpdateCounts ();
-                        AddChildSource (pl_src);
                     }
                 }
 
