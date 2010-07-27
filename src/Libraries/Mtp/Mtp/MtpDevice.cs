@@ -272,15 +272,10 @@ namespace Mtp
         {
             int count = 0;
             IntPtr ptr = IntPtr.Zero;
-            Console.WriteLine ("Getting raw devices");
             LIBMTP_Detect_Raw_Devices (ref ptr, ref count);
-            Console.WriteLine ("got raw devices");
 
             List<RawMtpDevice> devices = new List<RawMtpDevice>();
-            Console.WriteLine ("Count is:{0}", count);
-            Console.WriteLine ("initial is: {0}", ptr);
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 IntPtr offset = Offset (ptr, i * Marshal.SizeOf (typeof (RawDeviceStruct)));
                 RawDeviceStruct d = (RawDeviceStruct)Marshal.PtrToStructure (offset, typeof(RawDeviceStruct));
                 devices.Add(new RawMtpDevice (d));

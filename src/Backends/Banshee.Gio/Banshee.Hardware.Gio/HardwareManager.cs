@@ -69,6 +69,7 @@ namespace Banshee.Hardware.Gio
         }
 
 #region IHardwareManager
+
         public event DeviceAddedHandler DeviceAdded;
         public event DeviceRemovedHandler DeviceRemoved;
 
