@@ -37,6 +37,11 @@ internal static class AddinXmlStringCatalog
         // ../src/Core/Banshee.ThickClient/Banshee.ThickClient.addin.xml
         Catalog.GetString (@"Provides GUI utilities and services.");
 
+        // ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice.addin.xml
+        Catalog.GetString (@"Apple device Support");
+        Catalog.GetString (@"Support for most iPod/iPhone/iPad devices.");
+        Catalog.GetString (@"Device Support");
+
         // ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod.addin.xml
         Catalog.GetString (@"iPod Support");
         Catalog.GetString (@"Support for most iPod devices.");
