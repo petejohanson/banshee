@@ -186,7 +186,7 @@ namespace Nereid
 
             if (PlatformDetection.IsMeeGo) {
                 header_toolbar.IconSize = IconSize.LargeToolbar;
-                header_toolbar.Name = "moblin-toolbar";
+                header_toolbar.Name = "meego-toolbar";
             }
 
             toolbar_alignment.Add (header_toolbar);

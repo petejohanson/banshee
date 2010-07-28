@@ -32,21 +32,21 @@ paneldir = $(libexecdir)
 panel_SCRIPTS = meego-panel-banshee
 
 servicedir = $(datadir)/dbus-1/services
-service_DATA = org.moblin.UX.Shell.Panels.banshee.service
+service_DATA = com.meego.UX.Shell.Panels.banshee.service
 
-org.moblin.UX.Shell.Panels.banshee.service: org.moblin.UX.Shell.Panels.banshee.service.in $(top_builddir)/config.log
+com.meego.UX.Shell.Panels.banshee.service: com.meego.UX.Shell.Panels.banshee.service.in $(top_builddir)/config.log
 	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 desktopfiles_in_files = meego-panel-banshee.desktop.in
 desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
-desktopfilesdir = $(datadir)/mutter-moblin/panels
+desktopfilesdir = $(datadir)/mutter-meego/panels
 desktopfiles_DATA = $(desktopfiles_files)
 
 %.desktop.in: %.desktop.in.in Makefile
 	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 clean-local:
-	rm -f org.moblin.UX.Shell.Panels.banshee.service \
+	rm -f com.meego.UX.Shell.Panels.banshee.service \
 		meego-panel-banshee.desktop \
 		meego-panel-banshee.desktop.in
 
@@ -57,5 +57,5 @@ endif
 EXTRA_DIST += \
 	Banshee.MeeGo.dll.config \
 	meego-panel-banshee \
-	org.moblin.UX.Shell.Panels.banshee.service.in \
+	com.meego.UX.Shell.Panels.banshee.service.in \
 	meego-panel-banshee.desktop.in.in

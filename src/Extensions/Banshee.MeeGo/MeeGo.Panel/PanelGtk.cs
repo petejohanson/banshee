@@ -33,14 +33,14 @@ namespace MeeGo.Panel
 {
     public class PanelGtk : PanelClient
     {
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern IntPtr mpl_panel_gtk_get_type ();
 
         public static new GLib.GType GType {
             get { return new GLib.GType (mpl_panel_gtk_get_type ()); }
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern IntPtr mpl_panel_gtk_new (string name, string tooltip, string stylesheet,
             string button_style, bool with_toolbar_service);
 
@@ -54,7 +54,7 @@ namespace MeeGo.Panel
         {
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_gtk_set_child (IntPtr panel, IntPtr child);
 
         public void SetChild (Widget child)
@@ -62,7 +62,7 @@ namespace MeeGo.Panel
             mpl_panel_gtk_set_child (Handle, child == null ? IntPtr.Zero : child.Handle);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern IntPtr mpl_panel_gtk_get_window (IntPtr panel);
 
         private Container container_window;

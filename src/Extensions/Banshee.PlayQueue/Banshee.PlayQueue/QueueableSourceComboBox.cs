@@ -44,7 +44,7 @@ namespace Banshee.PlayQueue
             // width reporting in SourceRowRenderer does not work as
             // I would expect, so currently it's forced to 200px wide
             // which causes quite a problem with a UI like Muinshee
-            // and the Moblin Media Panel
+            // and the MeeGo Media Panel
             //
             // SourceRowRenderer renderer = new SourceRowRenderer ();
             // renderer.ParentWidget = this;

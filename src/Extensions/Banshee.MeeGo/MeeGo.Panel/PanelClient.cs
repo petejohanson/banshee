@@ -31,7 +31,7 @@ namespace MeeGo.Panel
 {
     public class PanelClient : GLib.Object
     {
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern IntPtr mpl_panel_client_get_type ();
 
         public static new GLib.GType GType {
@@ -47,7 +47,7 @@ namespace MeeGo.Panel
         {
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_unload (IntPtr panel);
 
         public void Unload ()
@@ -55,7 +55,7 @@ namespace MeeGo.Panel
             mpl_panel_client_unload (Handle);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_ready (IntPtr panel);
 
         public void Ready ()
@@ -63,7 +63,7 @@ namespace MeeGo.Panel
             mpl_panel_client_ready (Handle);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern bool mpl_panel_client_set_delayed_ready (IntPtr panel, bool delayed);
 
         public bool SetDelayedReady (bool delayed)
@@ -71,7 +71,7 @@ namespace MeeGo.Panel
             return mpl_panel_client_set_delayed_ready (Handle, delayed);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_show (IntPtr panel);
 
         public void Show ()
@@ -79,7 +79,7 @@ namespace MeeGo.Panel
             mpl_panel_client_show (Handle);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_hide (IntPtr panel);
 
         public void Hide ()
@@ -87,10 +87,10 @@ namespace MeeGo.Panel
             mpl_panel_client_hide (Handle);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_set_height_request (IntPtr panel, uint height);
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern uint mpl_panel_client_get_height_request (IntPtr panel);
 
         public uint HeightRequest {
@@ -98,7 +98,7 @@ namespace MeeGo.Panel
             set { mpl_panel_client_set_height_request (Handle, value); }
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_request_focus (IntPtr panel);
 
         public void RequestFocus ()
@@ -106,7 +106,7 @@ namespace MeeGo.Panel
             mpl_panel_client_request_focus (Handle);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_request_button_style (IntPtr panel, string style);
 
         public void RequestButtonStyle (string style)
@@ -114,7 +114,7 @@ namespace MeeGo.Panel
             mpl_panel_client_request_button_style (Handle, style);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_request_tooltip (IntPtr panel, string tooltip);
 
         public void RequestTooltip (string tooltip)
@@ -122,7 +122,7 @@ namespace MeeGo.Panel
             mpl_panel_client_request_tooltip (Handle, tooltip);
         }
         
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_request_button_state (IntPtr panel, PanelButtonState state);
 
         public void RequestButtonState (PanelButtonState state)
@@ -130,7 +130,7 @@ namespace MeeGo.Panel
             mpl_panel_client_request_button_state (Handle, state);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern void mpl_panel_client_request_modality (IntPtr panel, bool modal);
 
         public void RequestModality (bool modal)
@@ -138,14 +138,14 @@ namespace MeeGo.Panel
             mpl_panel_client_request_modality (Handle, modal);
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern uint mpl_panel_client_get_xid (IntPtr panel);
 
         public uint Xid {
             get { return mpl_panel_client_get_xid (Handle); }
         }
 
-        [DllImport ("libmoblin-panel")]
+        [DllImport ("libmeego-panel")]
         private static extern bool mpl_panel_client_is_windowless (IntPtr panel);
 
         public bool IsWindowless {
