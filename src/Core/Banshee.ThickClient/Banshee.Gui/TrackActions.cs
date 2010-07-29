@@ -440,7 +440,7 @@ namespace Banshee.Gui
             }
 
             var md = new HigMessageDialog (
-                ServiceManager.Get<GtkElementsService> ("GtkElementsService").PrimaryWindow,
+                ServiceManager.Get<GtkElementsService> ().PrimaryWindow,
                 DialogFlags.DestroyWithParent, MessageType.Warning,
                 ButtonsType.None, Catalog.GetString ("The folder could not be found."),
                 Catalog.GetString ("Please check that the track's location is accessible by the system.")
@@ -527,7 +527,7 @@ namespace Banshee.Gui
             }
 
             HigMessageDialog md = new HigMessageDialog (
-                ServiceManager.Get<GtkElementsService> ("GtkElementsService").PrimaryWindow,
+                ServiceManager.Get<GtkElementsService> ().PrimaryWindow,
                 DialogFlags.DestroyWithParent, delete ? MessageType.Warning : MessageType.Question,
                 ButtonsType.None, header, message
             );

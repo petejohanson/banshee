@@ -109,7 +109,7 @@ namespace Banshee.Lastfm.Audioscrobbler
                 PlayerEvent.Seek |
                 PlayerEvent.Iterate);
 
-            action_service = ServiceManager.Get<InterfaceActionService> ("InterfaceActionService");
+            action_service = ServiceManager.Get<InterfaceActionService> ();
             InterfaceInitialize ();
         }
 

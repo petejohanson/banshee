@@ -227,7 +227,7 @@ namespace Banshee.ServiceStack
                 } else if (args.Change == ExtensionChange.Remove && extension_services.ContainsKey (node.Path)) {
                     IExtensionService service = extension_services[node.Path];
                     extension_services.Remove (node.Path);
-                    services.Remove (service.ServiceName);
+                    Remove (service);
                     ((IDisposable)service).Dispose ();
 
                     Log.DebugFormat ("Extension service disposed ({0})", service.ServiceName);
@@ -293,7 +293,7 @@ namespace Banshee.ServiceStack
         public static void RegisterService (IService service)
         {
             lock (self_mutex) {
-                services.Add (service.ServiceName, service);
+                Add (service);
 
                 if(service is IDBusExportable) {
                     DBusServiceManager.RegisterObject ((IDBusExportable)service);
@@ -333,11 +333,6 @@ namespace Banshee.ServiceStack
             return null;
         }
 
-        public static T Get<T> (string serviceName) where T : class, IService
-        {
-            return Get (serviceName) as T;
-        }
-
         public static T Get<T> () where T : class, IService
         {
             Type type = typeof (T);
@@ -347,6 +342,23 @@ namespace Banshee.ServiceStack
             }
 
             return service;
+        }
+
+        private static void Add (IService service)
+        {
+            services.Add (service.ServiceName, service);
+            //because Get<T>() works this way:
+            var type_name = service.GetType ().Name;
+            if (type_name != service.ServiceName) {
+                services.Add (type_name, service);
+            }
+        }
+
+        private static void Remove (IService service)
+        {
+            services.Remove (service.ServiceName);
+            //because Add () works this way:
+            services.Remove (service.GetType ().Name);
         }
 
         private static void OnStartupBegin ()

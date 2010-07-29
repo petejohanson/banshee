@@ -368,7 +368,7 @@ namespace Banshee.Dap
                     string message = Catalog.GetString ("Are you sure you want to continue?");
 
                     HigMessageDialog md = new HigMessageDialog (
-                        ServiceManager.Get<GtkElementsService> ("GtkElementsService").PrimaryWindow,
+                        ServiceManager.Get<GtkElementsService> ().PrimaryWindow,
                         DialogFlags.DestroyWithParent, MessageType.Warning,
                         ButtonsType.None, header, message
                     );

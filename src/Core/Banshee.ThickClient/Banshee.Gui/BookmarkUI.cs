@@ -78,7 +78,7 @@ namespace Banshee.Gui
 
         private BookmarkUI ()
         {
-            action_service = ServiceManager.Get<InterfaceActionService> ("InterfaceActionService");
+            action_service = ServiceManager.Get<InterfaceActionService> ();
 
             actions = new ActionGroup ("Bookmarks");
 

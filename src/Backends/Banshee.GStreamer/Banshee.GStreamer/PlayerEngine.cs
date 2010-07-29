@@ -221,7 +221,7 @@ namespace Banshee.GStreamer
             // needs to bring up the plugin installer so it can be transient to
             // the main window.
             if (!xid_is_set) {
-                IPropertyStoreExpose service = ServiceManager.Get<IService> ("GtkElementsService") as IPropertyStoreExpose;
+                var service = ServiceManager.Get ("GtkElementsService") as IPropertyStoreExpose;
                 if (service != null) {
                     bp_set_application_gdk_window (handle, service.PropertyStore.Get<IntPtr> ("PrimaryWindow.RawHandle"));
                 }

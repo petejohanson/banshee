@@ -19,7 +19,7 @@ namespace Banshee.MiniMode
 
         void IExtensionService.Initialize ()
         {
-            action_service = ServiceManager.Get<InterfaceActionService> ("InterfaceActionService");
+            action_service = ServiceManager.Get<InterfaceActionService> ();
 
             viewMenu = (action_service.UIManager.GetWidget ("/MainMenu/ViewMenu") as MenuItem).Submenu as Menu;
             menuItem = new MenuItem (Catalog.GetString ("_Mini Mode"));

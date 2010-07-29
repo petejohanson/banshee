@@ -103,7 +103,7 @@ namespace Banshee.Gui
         }
 
         public Gtk.Window PrimaryWindow {
-            get { return ServiceManager.Get<GtkElementsService> ("GtkElementsService").PrimaryWindow; }
+            get { return ServiceManager.Get<GtkElementsService> ().PrimaryWindow; }
         }
     }
 }

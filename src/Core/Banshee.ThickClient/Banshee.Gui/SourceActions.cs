@@ -419,7 +419,7 @@ namespace Banshee.Gui
             }
 
             Hyena.Widgets.HigMessageDialog dialog = new Hyena.Widgets.HigMessageDialog (
-                ServiceManager.Get<GtkElementsService> ("GtkElementsService").PrimaryWindow,
+                ServiceManager.Get<GtkElementsService> ().PrimaryWindow,
                 Gtk.DialogFlags.Modal,
                 Gtk.MessageType.Question,
                 Gtk.ButtonsType.Cancel,
