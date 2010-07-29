@@ -28,6 +28,7 @@
 //
 
 using System;
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading;
@@ -201,7 +202,9 @@ namespace Banshee.Dap
 
             if (acceptable_mimetypes == null) {
                 acceptable_mimetypes = HasMediaCapabilities ? MediaCapabilities.PlaybackMimeTypes : null;
-                acceptable_mimetypes = acceptable_mimetypes ?? new string [] { "taglib/mp3" };
+                if (acceptable_mimetypes == null || acceptable_mimetypes.Length == 0) {
+                    acceptable_mimetypes = new string [] { "taglib/mp3" };
+                }
             }
 
             AddChildSource (music_group_source = new MusicGroupSource (this));
