@@ -40,17 +40,9 @@
       <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
       <Name>Banshee.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Hyena\Hyena.csproj">
-      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
-      <Name>Hyena</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Banshee.Dap\Banshee.Dap.csproj">
       <Project>{BC2E94DF-7A82-461E-BE7C-60E41ADC3562}</Project>
       <Name>Banshee.Dap</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Hyena.Gui\Hyena.Gui.csproj">
-      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
-      <Name>Hyena.Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Banshee.ThickClient\Banshee.ThickClient.csproj">
       <Project>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</Project>
@@ -60,21 +52,37 @@
       <Project>{A3701765-E571-413D-808C-9788A22791AF}</Project>
       <Name>Banshee.Widgets</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena\Hyena.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
+      <Name>Hyena</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena.Gui\Hyena.Gui.csproj">
+      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
+      <Name>Hyena.Gui</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Mono.Posix">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>glib-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
     <Reference Include="taglib-sharp, Version=2.0.3.6, Culture=neutral, PublicKeyToken=db62eba44689b5b0">
       <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+      <Package>taglib-sharp</Package>
     </Reference>
     <Reference Include="libgpod-sharp, Version=1.0.3824.40135, Culture=neutral">
-      <Package>libgpod-sharp</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>

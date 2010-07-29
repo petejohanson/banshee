@@ -60,20 +60,6 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
-      <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
-      <Name>Hyena.Data.Sqlite</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena\Hyena.csproj">
-      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
-      <Name>Hyena</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena.Gui\Hyena.Gui.csproj">
-      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
-      <Name>Hyena.Gui</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\Backends\Banshee.GStreamer\Banshee.GStreamer.csproj">
       <Project>{6171E5DE-5B36-4AE4-8707-F6BEE0AD945B}</Project>
       <Name>Banshee.GStreamer</Name>
@@ -89,6 +75,7 @@
     <Reference Include="Mono.Addins">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+      <Package>mono-addins</Package>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -97,12 +84,15 @@
     </Reference>
     <Reference Include="glib-sharp">
       <SpecificVersion>False</SpecificVersion>
+      <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="gtk-sharp">
       <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="atk-sharp">
       <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
       <Project>{2ADB831A-A050-47D0-B6B9-9C19D60233BB}</Project>
@@ -113,6 +103,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
     </Reference>
+    <ProjectReference Include="..\..\Hyena\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
+      <Name>Hyena.Data.Sqlite</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena\Hyena.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
+      <Name>Hyena</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena.Gui\Hyena.Gui.csproj">
+      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
+      <Name>Hyena.Gui</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

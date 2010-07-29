@@ -151,6 +151,8 @@ namespace Banshee.Hardware.Gio
                                                           "/usr/local/share/media-player-info"},
                                            null, Flags.None);
                 } catch (GLib.GException) {
+                    Hyena.Log.WarningFormat ("Failed to load media-player-info file for {0}",
+                                             mediaPlayerId);
                 }
 
                 LoadProperties ();

@@ -45,19 +45,21 @@
       <Project>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</Project>
       <Name>Banshee.ThickClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
+    <ProjectReference Include="..\..\Hyena\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
       <Name>Hyena.Data.Sqlite</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena\Hyena.csproj">
+    <ProjectReference Include="..\..\Hyena\Hyena\Hyena.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
       <Name>Hyena</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="gtk-sharp" />
+    <Reference Include="gtk-sharp">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.SqlDebugConsole.addin.xml">

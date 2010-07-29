@@ -39,18 +39,21 @@
   <ItemGroup>
     <Reference Include="atk-sharp">
       <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="gdk-sharp">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="glib-sharp">
       <SpecificVersion>False</SpecificVersion>
+      <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="gtk-sharp">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="gtk-sharp">
       <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="Mono.Cairo">
       <SpecificVersion>False</SpecificVersion>
@@ -59,14 +62,17 @@
     <Reference Include="System" />
     <Reference Include="gdk-sharp">
       <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="NDesk.DBus">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
+      <Package>ndesk-dbus-1.0</Package>
     </Reference>
     <Reference Include="NDesk.DBus.GLib">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\NDesk.DBus.GLib.dll</HintPath>
+      <Package>ndesk-dbus-glib-1.0</Package>
     </Reference>
     <Reference Include="Mono.Posix">
       <SpecificVersion>False</SpecificVersion>
@@ -94,21 +100,6 @@
       <Name>Banshee.Widgets</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
-      <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
-      <Name>Hyena.Data.Sqlite</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena\Hyena.csproj">
-      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
-      <Name>Hyena</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena.Gui\Hyena.Gui.csproj">
-      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
-      <Name>Hyena.Gui</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\Extensions\Banshee.PlayQueue\Banshee.PlayQueue.csproj">
       <Project>{74B2E4CC-2701-4C8B-A11D-6E4443F4B21B}</Project>
       <Name>Banshee.PlayQueue</Name>
@@ -116,6 +107,21 @@
     <EmbeddedResource Include="Resources\GlobalUI.xml">
       <LogicalName>GlobalUI.xml</LogicalName>
     </EmbeddedResource>
+    <ProjectReference Include="..\..\Hyena\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
+      <Name>Hyena.Data.Sqlite</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena\Hyena.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
+      <Name>Hyena</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena.Gui\Hyena.Gui.csproj">
+      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
+      <Name>Hyena.Gui</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Muinshee\PlayerInterface.cs" />

@@ -41,19 +41,6 @@
       <Project>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</Project>
       <Name>Banshee.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
-      <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
-      <Name>Hyena.Data.Sqlite</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena\Hyena.csproj">
-      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
-      <Name>Hyena</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\hyena\src\Hyena.Gui\Hyena.Gui.csproj">
-      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
-      <Name>Hyena.Gui</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Banshee.ThickClient\Banshee.ThickClient.csproj">
       <Project>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</Project>
       <Name>Banshee.ThickClient</Name>
@@ -61,6 +48,19 @@
     <ProjectReference Include="..\..\Extensions\Banshee.NowPlaying\Banshee.NowPlaying.csproj">
       <Project>{16FB0D3A-53FA-4B8E-B02B-4AF66E87829A}</Project>
       <Name>Banshee.NowPlaying</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
+      <Name>Hyena.Data.Sqlite</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena\Hyena.csproj">
+      <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
+      <Name>Hyena</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Hyena.Gui\Hyena.Gui.csproj">
+      <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
+      <Name>Hyena.Gui</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -113,26 +113,27 @@
     <Compile Include="Banshee.IO.Gio\File.cs" />
     <Compile Include="Banshee.IO.Gio\Provider.cs" />
     <Compile Include="Banshee.IO.Gio\Tests.cs" />
-    <Compile Include="Banshee.GioBackend\HardwareManager.cs" />
-    <Compile Include="LowLevel\Manager.cs" />
-    <Compile Include="Banshee.GioBackend\Volume.cs" />
-    <Compile Include="Banshee.GioBackend\BlockDevice.cs" />
-    <Compile Include="Banshee.GioBackend\CdromDevice.cs" />
-    <Compile Include="Banshee.GioBackend\Device.cs" />
-    <Compile Include="Banshee.GioBackend\DeviceMediaCapabilities.cs" />
-    <Compile Include="Banshee.GioBackend\DiscVolume.cs" />
-    <Compile Include="Banshee.GioBackend\DiskDevice.cs" />
-    <Compile Include="Banshee.GioBackend\UsbDevice.cs" />
-    <Compile Include="LowLevel\IMetadataSource.cs" />
-    <Compile Include="LowLevel\UdevMetadataSource.cs" />
-    <Compile Include="LowLevel\GioVolumeMetadataSource.cs" />
-    <Compile Include="LowLevel\IRawDevice.cs" />
-    <Compile Include="LowLevel\RawDevice.cs" />
-    <Compile Include="LowLevel\RawVolume.cs" />
-    <Compile Include="LowLevel\RawBlockDevice.cs" />
-    <Compile Include="LowLevel\GioMetadataSource.cs" />
-    <Compile Include="LowLevel\GioDriveMetadetaSource.cs" />
-    <Compile Include="Banshee.GioBackend\UsbVolume.cs" />
+    <Compile Include="Banshee.Hardware.Gio\BlockDevice.cs" />
+    <Compile Include="Banshee.Hardware.Gio\CdromDevice.cs" />
+    <Compile Include="Banshee.Hardware.Gio\Device.cs" />
+    <Compile Include="Banshee.Hardware.Gio\DeviceMediaCapabilities.cs" />
+    <Compile Include="Banshee.Hardware.Gio\DiscVolume.cs" />
+    <Compile Include="Banshee.Hardware.Gio\DiskDevice.cs" />
+    <Compile Include="Banshee.Hardware.Gio\HardwareManager.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\GioDriveMetadetaSource.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\GioMetadataSource.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\GioVolumeMetadataSource.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\IMetadataSource.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\IRawDevice.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\Manager.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\RawBlockDevice.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\RawDevice.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\RawUsbDevice.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\RawVolume.cs" />
+    <Compile Include="Banshee.Hardware.Gio\LowLevel\UdevMetadataSource.cs" />
+    <Compile Include="Banshee.Hardware.Gio\UsbDevice.cs" />
+    <Compile Include="Banshee.Hardware.Gio\UsbVolume.cs" />
+    <Compile Include="Banshee.Hardware.Gio\Volume.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Gio.addin.xml">
