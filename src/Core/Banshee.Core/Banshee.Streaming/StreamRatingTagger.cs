@@ -175,10 +175,6 @@ namespace Banshee.Streaming
             if (popm != null) {
                 rating = PopmToBanshee (popm.Rating);
                 playcount = (int)popm.PlayCount;
-                Hyena.Log.DebugFormat ("Importing ID3v2 Rating={0}({1}) and Playcount={2}({3}) from File \"{4}\" as Creator \"{5}\"",
-                                       rating, popm.Rating,
-                                       playcount, popm.PlayCount,
-                                       from_file.Name, popm.User);
             }
         }
     }
