@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: banshee.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-07-24 14:23+0000\n"
-"PO-Revision-Date: 2010-07-26 14:15+0200\n"
+"POT-Creation-Date: 2010-07-27 12:58+0000\n"
+"PO-Revision-Date: 2010-07-31 12:40+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -262,14 +262,12 @@ msgstr "Previsualizar los archivos sin importarlos a la colección."
 
 #. ../src/Extensions/Banshee.Fixup/Banshee.Fixup.addin.xml
 #: ../data/addin-xml-strings.cs:115
-#, fuzzy
-#| msgid "Metadata"
 msgid "Metadata Fixup"
-msgstr "Metadatos"
+msgstr "Reparación de metadatos"
 
 #: ../data/addin-xml-strings.cs:116
 msgid "Fix broken and missing metadata using bulk operations"
-msgstr ""
+msgstr "Reparar metadatos ausentes o rotos usando operaciones masivas"
 
 #. ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive.addin.xml
 #: ../data/addin-xml-strings.cs:120
@@ -4384,12 +4382,21 @@ msgid "Unable to read your iPod"
 msgstr "Incapaz de leer su iPod"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:77
+#, fuzzy
+#| msgid ""
+#| "You have used this iPod with a version of iTunes that saves a version of "
+#| "the song database for your iPod that is too new for Banshee to "
+#| "recognize.\n"
+#| "\n"
+#| "Banshee can rebuild your database, but some settings might be lost. Using "
+#| "Banshee and iTunes with the same iPod is not recommended."
 msgid ""
 "You have used this iPod with a version of iTunes that saves a version of the "
 "song database for your iPod that is too new for Banshee to recognize.\n"
 "\n"
-"Banshee can rebuild your database, but some settings might be lost. Using "
-"Banshee and iTunes with the same iPod is not recommended."
+"Banshee can rebuild your database, but you might lose your settings and all "
+"the content in the device (be sure to backup your data first). Using Banshee "
+"and iTunes with the same iPod is not recommended."
 msgstr ""
 "Ha usado este iPod con una versión de iTunes que guarda una versión de la "
 "base de datos de canciones del iPod que es demasiado nueva para que la "
@@ -4578,37 +4585,36 @@ msgid "Amazon MP3 Store"
 msgstr "Tienda de Amazon MP3"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:57
-#| msgid "Count"
 msgid "Country"
 msgstr "País"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:60
 msgid "Which Amazon MP3 storefront to use by default."
-msgstr ""
+msgstr "Qué escaparate de Amazon MP3 usar de forma predeterminada."
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:88
 msgid "Automatic (Geo IP detection)"
-msgstr ""
+msgstr "Automático (geodetección de IP)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:90
 msgid "France (amazon.fr)"
-msgstr ""
+msgstr "Francia (amazon.fr)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:91
 msgid "Germany, Switzerland, Austria (amazon.de)"
-msgstr ""
+msgstr "Alemania, Suiza y Austria (amazon.de)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:92
 msgid "Japan (amazon.co.jp)"
-msgstr ""
+msgstr "Japón (amazon.co.jp)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:93
 msgid "United Kingdom (amazon.co.uk)"
-msgstr ""
+msgstr "Reino Unido (amazon.co.uk)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:94
 msgid "United States (amazon.com)"
-msgstr ""
+msgstr "Estados Unidos (amazon.com)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:47
 #, csharp-format
@@ -5081,65 +5087,63 @@ msgid "Clear the file system queue when quitting"
 msgstr "Limpiar la cola del sistema de archivos al salir"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:46
-#, fuzzy
-#| msgid "Duplicate CD"
 msgid "Duplicate Albums"
-msgstr "Copiar CD"
+msgstr "Álbumes duplicados"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:47
 msgid ""
 "Displayed are albums that should likely be merged.  For each row, click the "
 "desired title to make it bold, or uncheck it to take no action."
 msgstr ""
+"Los que se muestran son álbumes que podrían ser fusionados. Para cada fila, "
+"pulse en el título deseado para que se ponga en negrita o desmárquelo para "
+"no realizar ninguna acción."
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:73
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:76
 msgid " and "
-msgstr ""
+msgstr " y "
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:75
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:78
-#, fuzzy
 #| msgid "Other"
 msgid ", the"
-msgstr "Otros"
+msgstr ", los"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:77
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:80
-#, fuzzy
 #| msgid "Other"
 msgid "the "
-msgstr "Otros"
+msgstr "los "
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:46
-#, fuzzy
-#| msgid "Duplicate CD"
 msgid "Duplicate Artists"
-msgstr "Copiar CD"
+msgstr "Artistas duplicados"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:47
 msgid ""
 "Displayed are artists that should likely be merged.  For each row, click the "
 "desired name to make it bold, or uncheck it to take no action."
 msgstr ""
+"Los que se muestran son artistas que podrían ser fusionados. Para cada fila, "
+"pulse en el nombre deseado para que se ponga en negrita o desmárquelo para "
+"no realizar ninguna acción."
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixActions.cs:50
 msgid "Fix Music Metadata..."
-msgstr ""
+msgstr "Reparar metadatos de música…"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:48
-#, fuzzy
-#| msgid "Metadata"
 msgid "Metadata Fixer"
-msgstr "Metadatos"
+msgstr "Reparador de metadatos"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:54
 msgid "Problem Type:"
-msgstr ""
+msgstr "Tipo de problema:"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/View.cs:76
 msgid "Fix?"
-msgstr ""
+msgstr "¿Reparar?"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:48
 msgid "View Item Details"
