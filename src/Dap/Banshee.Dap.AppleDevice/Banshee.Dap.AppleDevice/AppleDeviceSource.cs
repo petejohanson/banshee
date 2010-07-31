@@ -67,8 +67,10 @@ namespace Banshee.Dap.AppleDevice
         public override void DeviceInitialize (IDevice device)
         {
             Volume = device as IVolume;
-            if (Volume == null || Volume.FileSystem != "afc")
+
+            if (Volume == null || !(Volume.FileSystem == "afc" || GPod.ITDB.GetControlPath (Volume.MountPoint) != null)) {
                 throw new InvalidDeviceException ();
+            }
 
             base.DeviceInitialize (device);
 
@@ -236,12 +238,12 @@ namespace Banshee.Dap.AppleDevice
         {
             string [] names = new string[4];
             string prefix = "multimedia-player-";
-            string shell_color = "green";
+            //string shell_color = "green";
 
             names[0] = "";
             names[2] = "ipod-standard-color";
             names[3] = "multimedia-player";
-
+            /*
             switch ("grayscale") {
                 case "grayscale":
                     names[1] = "ipod-standard-monochrome";
@@ -272,7 +274,7 @@ namespace Banshee.Dap.AppleDevice
                 default:
                     break;
             }
-
+          */
             names[1] = names[1] ?? names[2];
             names[1] = prefix + names[1];
             names[2] = prefix + names[2];
@@ -622,7 +624,6 @@ namespace Banshee.Dap.AppleDevice
                 }
             }
         }
-
 #endregion
 
     }
