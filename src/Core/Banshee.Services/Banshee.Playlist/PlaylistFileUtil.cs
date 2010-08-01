@@ -5,9 +5,9 @@ using System.Threading;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Data.Sqlite;
 
-using Banshee.Base;
 using Banshee.Configuration;
 using Banshee.ServiceStack;
 using Banshee.Database;

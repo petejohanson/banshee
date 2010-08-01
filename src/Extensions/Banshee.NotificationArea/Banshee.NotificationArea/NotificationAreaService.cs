@@ -35,6 +35,7 @@ using Mono.Unix;
 
 using Notifications;
 
+using Banshee.Base;
 using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.ServiceStack;
@@ -44,8 +45,8 @@ using Banshee.Collection.Gui;
 using Banshee.MediaEngine;
 
 using Banshee.IO;
-using Banshee.Base;
 
+using Hyena;
 using Hyena.Gui;
 using Hyena.Widgets;
 

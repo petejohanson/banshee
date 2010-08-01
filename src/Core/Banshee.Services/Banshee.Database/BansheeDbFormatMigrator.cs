@@ -1452,7 +1452,7 @@ namespace Banshee.Database
             string library_path = (string)args[0];
             string filename_fragment = (string)args[1];
             string full_path = Paths.Combine (library_path, filename_fragment);
-            return Banshee.Base.SafeUri.FilenameToUri (full_path);
+            return SafeUri.FilenameToUri (full_path);
         }
     }
 }

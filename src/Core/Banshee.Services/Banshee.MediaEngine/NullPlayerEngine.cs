@@ -29,7 +29,7 @@
 using System;
 using System.Collections;
 
-using Banshee.Base;
+using Hyena;
 
 namespace Banshee.MediaEngine
 {

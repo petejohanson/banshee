@@ -32,6 +32,7 @@ using Mono.Unix;
 
 using System.Collections.Generic;
 
+using Hyena;
 using Hyena.Data.Sqlite;
 
 using Banshee.MediaEngine;
@@ -203,7 +204,7 @@ namespace Banshee.Podcasting.Data
             track.Duration = Item.Enclosure.Duration;
             track.FileSize = Item.Enclosure.FileSize;
             track.LicenseUri = Item.LicenseUri;
-            track.Uri = new Banshee.Base.SafeUri (Item.Enclosure.LocalPath ?? Item.Enclosure.Url);
+            track.Uri = new SafeUri (Item.Enclosure.LocalPath ?? Item.Enclosure.Url);
 
             if (!String.IsNullOrEmpty (Item.Enclosure.LocalPath)) {
                 try {

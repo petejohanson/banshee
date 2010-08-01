@@ -32,10 +32,10 @@ using System;
 using System.Linq;
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Jobs;
 using Hyena.Data.Sqlite;
 
-using Banshee.Base;
 using Banshee.Streaming;
 using Banshee.Collection.Database;
 using Banshee.Library;

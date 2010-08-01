@@ -28,8 +28,8 @@
 
 using System;
 using Mono.Unix;
+using Hyena;
 
-using Banshee.Base;
 using Banshee.Collection;
 using Banshee.Collection.Database;
 using Daap;

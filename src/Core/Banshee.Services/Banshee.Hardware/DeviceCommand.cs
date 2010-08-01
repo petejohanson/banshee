@@ -28,7 +28,7 @@
 
 using System;
 
-using Banshee.Base;
+using Hyena;
 
 namespace Banshee.Hardware
 {
@@ -88,7 +88,7 @@ namespace Banshee.Hardware
             // HAL UDIs from the GIO URI that we were likely given by Nautilus
 
             try {
-                Banshee.Base.SafeUri uri = new Banshee.Base.SafeUri (argument);
+                SafeUri uri = new SafeUri (argument);
                 d_command.device_id = uri.IsLocalPath ? uri.LocalPath : argument;
             } catch {
                 d_command.device_id = argument;

@@ -33,6 +33,7 @@ using System.Linq;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
 using Hyena.Collections;
 using Hyena.Data.Sqlite;
 
@@ -40,7 +41,6 @@ using Hyena.Data;
 using Hyena.Data.Gui;
 using Hyena.Widgets;
 
-using Banshee.Base;
 using Banshee.Collection;
 using Banshee.Collection.Gui;
 using Banshee.Collection.Database;

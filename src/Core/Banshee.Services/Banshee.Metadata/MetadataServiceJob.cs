@@ -31,8 +31,10 @@ using System.IO;
 using System.Net;
 using System.Collections.Generic;
 
-using Banshee.Kernel;
+using Hyena;
+
 using Banshee.Base;
+using Banshee.Kernel;
 using Banshee.Collection;
 using Banshee.Streaming;
 using Banshee.Networking;

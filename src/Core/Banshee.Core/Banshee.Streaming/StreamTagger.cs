@@ -29,8 +29,8 @@
 using System;
 using System.Text.RegularExpressions;
 
+using Hyena;
 using Banshee.IO;
-using Banshee.Base;
 using Banshee.Collection;
 
 namespace Banshee.Streaming

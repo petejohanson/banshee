@@ -32,6 +32,7 @@ using System.Threading;
 using System.Collections;
 using System.Text.RegularExpressions;
 
+using Hyena;
 using Banshee.Base;
 
 namespace Banshee.Collection

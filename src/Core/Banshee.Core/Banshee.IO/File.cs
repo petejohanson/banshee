@@ -28,7 +28,7 @@
 
 using System;
 
-using Banshee.Base;
+using Hyena;
 
 namespace Banshee.IO
 {

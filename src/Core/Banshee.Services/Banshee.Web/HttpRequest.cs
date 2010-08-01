@@ -33,7 +33,8 @@ using System.Collections.Generic;
 
 using ICSharpCode.SharpZipLib.GZip;
 
-using Banshee.Base;
+using Hyena;
+
 using Banshee.ServiceStack;
 using Banshee.Networking;
 

@@ -1,6 +1,6 @@
 using System;
+using Hyena;
 using KarmaLib=Karma;
-using Banshee.Base;
 using Banshee.Collection.Database;
 
 namespace Banshee.Dap.Karma

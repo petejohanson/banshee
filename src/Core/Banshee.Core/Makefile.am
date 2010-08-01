@@ -11,7 +11,6 @@ SOURCES =  \
 	Banshee.Base/PlatformHacks.cs \
 	Banshee.Base/ProductInformation.cs \
 	Banshee.Base/Resource.cs \
-	Banshee.Base/SafeUri.cs \
 	Banshee.Base/Tests/CoverArtSpecTests.cs \
 	Banshee.Collection/AlbumInfo.cs \
 	Banshee.Collection/ArtistInfo.cs \

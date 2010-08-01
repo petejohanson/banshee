@@ -26,6 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Hyena;
+
 namespace Banshee.Collection
 {
     public interface IBasicTrackInfo
@@ -35,7 +37,7 @@ namespace Banshee.Collection
         string AlbumTitle { get; }
         string TrackTitle { get; }
         string ArtworkId { get; }
-        Banshee.Base.SafeUri Uri { get; }
+        SafeUri Uri { get; }
         TrackMediaAttributes MediaAttributes { get; }
     }
 }

@@ -28,8 +28,8 @@
 
 using System;
 
+using Hyena;
 using Hyena.Data.Gui;
-using Banshee.Base;
 
 namespace Banshee.Collection.Gui
 {

@@ -29,7 +29,8 @@
 using System;
 using System.IO;
 
-using Banshee.Base;
+using Hyena;
+
 using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.ServiceStack;

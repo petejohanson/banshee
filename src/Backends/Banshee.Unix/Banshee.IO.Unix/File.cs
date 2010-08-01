@@ -31,7 +31,7 @@ using System.IO;
 using Mono.Unix;
 using Mono.Unix.Native;
 
-using Banshee.Base;
+using Hyena;
 
 namespace Banshee.IO.Unix
 {

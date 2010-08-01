@@ -31,6 +31,7 @@ using System.Data;
 
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Jobs;
 using Hyena.Collections;
 using Hyena.Data.Sqlite;

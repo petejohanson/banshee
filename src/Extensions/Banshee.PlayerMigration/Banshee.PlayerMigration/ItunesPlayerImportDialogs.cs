@@ -31,7 +31,7 @@ using System.IO;
 using Gtk;
 using Mono.Unix;
 
-using Banshee.Base;
+using Hyena;
 
 namespace Banshee.PlayerMigration
 {
