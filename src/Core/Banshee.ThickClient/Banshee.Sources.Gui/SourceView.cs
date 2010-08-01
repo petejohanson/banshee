@@ -67,6 +67,8 @@ namespace Banshee.Sources.Gui
         private bool editing_row = false;
         private bool need_resort = false;
 
+        protected SourceView (IntPtr ptr) : base (ptr) {}
+
         public SourceView ()
         {
             BuildColumns ();
