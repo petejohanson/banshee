@@ -1,0 +1,38 @@
+This is a tiny C-based CGI proxy that accomplishes a few things. When a user
+accesses the Amazon MP3 Store through Banshee, the initial home request and
+any integrated search queries are sent through this proxy.
+
+The following is accomplished by the proxy:
+
+  - Use libGeoIP to quickly look up the country associated by the user's
+    IP address; if the user is in a country with a dedicated Amazon MP3
+	store, the user is sent automatically to that store; otherwise, the
+	user is sent to the .com (US) store.
+
+  - Set the Amazon Affiliate ID on the requests - the Affiliate ID is
+    'banshee-20' and this ID is controlled/owned by the GNOME Foundation,
+	a not-for-profit organization. 100% of all affiliate revenue generated
+	by Banshee/this proxy is sent to the GNOME Foundation.
+
+  - Generally provides a level of indirection over directly accessing any
+    of the Amazon web sites explicitly in the client.
+
+The default implementation of this proxy is currently hosted by the Banshee
+Project at:
+
+  http://integrated-services.banshee.fm/amz/redirect.do
+
+If a distribution or other entity has a desire to modify the source code
+of the Banshee client to access a proxy (this one or an alternate
+implementation) hosted elsewhere, we request that the functionality and the
+Affiliate ID 'banshee-20' be retained. Again, all generated revenue is sent
+directly to the GNOME Foundation, which directly helps foster development
+and awareness of Free/Open Source Software and surrounding communities.
+
+Contributions to this proxy can be made directly against Banshee git, just
+like normal. Checked in code will be pushed to the server above. The redirect.c
+file is licensed under the AGPL:
+
+  http://www.gnu.org/licenses/agpl-3.0.html
+
+Thank you for supporting the GNOME Foundation!
