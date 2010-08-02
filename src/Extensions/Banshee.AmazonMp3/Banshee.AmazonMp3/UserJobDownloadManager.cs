@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.IO;
 
 using Hyena;
 using Hyena.Downloader;
@@ -105,11 +106,33 @@ namespace Banshee.AmazonMp3
         {
             base.OnDownloaderFinished (downloader);
 
+            var amz_downloader = (AmzMp3Downloader)downloader;
+            var track = amz_downloader.Track;
+
             if (downloader.State.Success) {
-                import_manager.Enqueue (((HttpFileDownloader)downloader).LocalPath);
+                if (amz_downloader.FileExtension == "mp3") {
+                    import_manager.Enqueue (((HttpFileDownloader)downloader).LocalPath);
+                } else {
+                    // FIXME: this just ensures that we download any extension content (e.g. pdf)
+                    // but we do not actually import it since it's not an MP3. However, we should
+                    // support the digital booklets (pdf) by keeping a special track in the
+                    // database. Such a track would never be played, but manual activation would
+                    // open the file in the default document viewer.
+                    //
+                    // Also, computing a path like this is not great, since it is possible that
+                    // the booklet may not actually end up in the same album directory. We should
+                    // probably wait to copy extensions until all tracks are downloaded, and we
+                    // choose the most common album path out of all downloaded tracks as the final
+                    // resting place for the extension content. Make sense? GOOD.
+                    var base_path = ServiceManager.SourceManager.MusicLibrary.BaseDirectory;
+                    var dir = Path.Combine (base_path, Path.Combine (track.Creator, track.Album));
+                    var path = Path.Combine (dir, track.Title + "." + amz_downloader.FileExtension);
+                    Directory.CreateDirectory (dir);
+                    File.Copy (amz_downloader.LocalPath, path, true);
+                    File.Delete (amz_downloader.LocalPath);
+                }
             }
 
-            var track = ((AmzMp3Downloader)downloader).Track;
             Log.InformationFormat ("Finished downloading \"{0}\" by {1}", track.Title, track.Creator);
 
             lock (SyncRoot) {

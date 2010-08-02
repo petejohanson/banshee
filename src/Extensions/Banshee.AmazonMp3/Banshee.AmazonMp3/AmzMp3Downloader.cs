@@ -47,10 +47,12 @@ namespace Banshee.AmazonMp3
         {
             UserAgent = String.Format ("Amazon MP3 Downloader (Linux {0} en_US)", AmazonMp3DownloaderCompatVersion);
             TempPathRoot = Path.Combine (Path.GetTempPath (), "banshee-amz-downloader");
-            FileExtension = "mp3";
             Uri = track.Locations[0];
             Track = track;
             Name = String.Format ("{0} ({1})", Track.Title, Track.Creator);
+
+            var meta = track.FindMetaEntry (new Uri ("http://www.amazon.com/dmusic/trackType"));
+            FileExtension = !meta.Equals (Xspf.MetaEntry.Zero) ? meta.Value : "mp3";
         }
 
         protected override void OnFileFinished ()
@@ -65,19 +67,27 @@ namespace Banshee.AmazonMp3
                 return;
             }
 
-            using (var file = TagLib.File.Create (LocalPath, "taglib/mp3", TagLib.ReadStyle.Average)) {
-                var artist = StringUtil.EscapeFilename (file.Tag.JoinedPerformers);
-                var album = StringUtil.EscapeFilename (file.Tag.Album);
-                var title = StringUtil.EscapeFilename (file.Tag.Title);
+            string track_dir = null;
+            string track_path = null;
 
-                var track_dir = Path.Combine (OutputPath, Path.Combine (artist, album));
-                var track_path = Path.Combine (track_dir, String.Format ("{0:00}. {1}.mp3",
-                    file.Tag.Track, title));
+            if (FileExtension == "mp3") {
+                using (var file = TagLib.File.Create (LocalPath, "taglib/mp3", TagLib.ReadStyle.Average)) {
+                    var artist = StringUtil.EscapeFilename (file.Tag.JoinedPerformers);
+                    var album = StringUtil.EscapeFilename (file.Tag.Album);
+                    var title = StringUtil.EscapeFilename (file.Tag.Title);
 
-                Directory.CreateDirectory (track_dir);
-                File.Copy (LocalPath, track_path, true);
-                File.Delete (LocalPath);
+                    track_dir = Path.Combine (OutputPath, Path.Combine (artist, album));
+                    track_path = Path.Combine (track_dir, String.Format ("{0:00}. {1}.mp3",
+                        file.Tag.Track, title));
+                }
+            } else {
+                track_dir = Path.Combine (OutputPath, Path.Combine (Track.Creator, Track.Album));
+                track_path = Path.Combine (track_dir, Track.Title + "." + FileExtension);
             }
+
+            Directory.CreateDirectory (track_dir);
+            File.Copy (LocalPath, track_path, true);
+            File.Delete (LocalPath);
         }
     }
 }

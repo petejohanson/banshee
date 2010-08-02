@@ -26,6 +26,7 @@
 
 using System;
 using System.IO;
+using System.Xml;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography;
@@ -103,6 +104,15 @@ namespace Banshee.AmazonMp3
                 if (track.Meta.Contains (downloadable_track_meta)) {
                     downloadable_tracks.Add (track);
                 }
+            }
+        }
+
+        protected override void LoadExtensionNode (XmlNode extensionNode, XmlNamespaceManager xmlns)
+        {
+            // Digital Booklets (pdf) are stuffed under extension/deluxe, so we need
+            // to support this XSPF extension that is specific to the .amz format.
+            foreach (XmlNode node in extensionNode.SelectNodes ("xspf:deluxe/xspf:trackList", xmlns)) {
+                LoadTrackListFromNode (node, xmlns);
             }
         }
 
