@@ -6,13 +6,13 @@ The following is accomplished by the proxy:
 
   - Use libGeoIP to quickly look up the country associated by the user's
     IP address; if the user is in a country with a dedicated Amazon MP3
-	store, the user is sent automatically to that store; otherwise, the
-	user is sent to the .com (US) store.
+    store, the user is sent automatically to that store; otherwise, the
+    user is sent to the .com (US) store.
 
   - Set the Amazon Affiliate ID on the requests - the Affiliate ID is
     'banshee-20' and this ID is controlled/owned by the GNOME Foundation,
-	a not-for-profit organization. 100% of all affiliate revenue generated
-	by Banshee/this proxy is sent to the GNOME Foundation.
+    a not-for-profit organization. 100% of all affiliate revenue generated
+    by Banshee/this proxy is sent to the GNOME Foundation.
 
   - Generally provides a level of indirection over directly accessing any
     of the Amazon web sites explicitly in the client.
