@@ -13,3 +13,7 @@ redirect.do: check-deps redirect.c
 
 clean:
 	rm -f redirect.do
+
+push:
+	scp * banshee@banshee.fm:web/integrated-services.banshee.fm/amz/
+	ssh banshee@banshee.fm 'cd web/integrated-services.banshee.fm/amz/; make'
