@@ -26,14 +26,18 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
 using Hyena;
 using Hyena.Downloader;
 
 using Banshee.Library;
+using Banshee.Collection;
 using Banshee.Collection.Database;
 using Banshee.ServiceStack;
 using Banshee.I18n;
+using Banshee.Base;
 
 namespace Banshee.AmazonMp3
 {
@@ -44,12 +48,20 @@ namespace Banshee.AmazonMp3
         private int finished_count;
         private LibraryImportManager import_manager;
 
+        private int mp3_count;
+        private List<TrackInfo> mp3_imported_tracks = new List<TrackInfo> ();
+        private Queue<AmzMp3Downloader> non_mp3_queue = new Queue<AmzMp3Downloader> ();
+
         public UserJobDownloadManager (string path)
         {
             var playlist = new AmzXspfPlaylist (path);
             total_count = playlist.DownloadableTrackCount;
             foreach (var track in playlist.DownloadableTracks) {
-                QueueDownloader (new AmzMp3Downloader (track));
+                var downloader = new AmzMp3Downloader (track);
+                if (downloader.FileExtension == "mp3") {
+                    mp3_count++;
+                }
+                QueueDownloader (downloader);
             }
 
             user_job = new UserJob (Catalog.GetString ("Amazon MP3 Purchases"),
@@ -59,6 +71,82 @@ namespace Banshee.AmazonMp3
             import_manager = new LibraryImportManager (true) {
                 KeepUserJobHidden = true
             };
+            import_manager.ImportResult += OnImportManagerImportResult;
+        }
+
+        private static TResult MostCommon<T, TResult> (IEnumerable<T> collection, Func<T, TResult> map)
+        {
+            return (
+                from item in collection
+                group map (item) by map (item) into g
+                orderby g.Count () descending
+                select g.First ()
+            ).First ();
+        }
+
+        private void OnImportManagerImportResult (object o, DatabaseImportResultArgs args)
+        {
+            mp3_imported_tracks.Add (args.Track);
+
+            if (mp3_imported_tracks.Count != mp3_count || non_mp3_queue.Count <= 0) {
+                return;
+            }
+
+            // FIXME: this is all pretty lame. Amazon doesn't have any metadata on the PDF
+            // files, which is a shame. So I attempt to figure out the best common metadata
+            // from the already imported tracks in the album, and then forcefully persist
+            // this in the database. When Taglib# supports reading/writing PDF, we can
+            // persist this back the the PDF file, and support it for importing like normal.
+
+            var artist_name =
+                MostCommon<TrackInfo, string> (mp3_imported_tracks, track => track.AlbumArtist) ??
+                MostCommon<TrackInfo, string> (mp3_imported_tracks, track => track.ArtistName);
+            var album_title =
+                MostCommon<TrackInfo, string> (mp3_imported_tracks, track => track.AlbumTitle);
+            var genre =
+                MostCommon<TrackInfo, string> (mp3_imported_tracks, track => track.Genre);
+            var copyright =
+                MostCommon<TrackInfo, string> (mp3_imported_tracks, track => track.Copyright);
+            var year =
+                MostCommon<TrackInfo, int> (mp3_imported_tracks, track => track.Year);
+            var track_count =
+                MostCommon<TrackInfo, int> (mp3_imported_tracks, track => track.TrackCount);
+            var disc_count =
+                MostCommon<TrackInfo, int> (mp3_imported_tracks, track => track.DiscCount);
+
+            while (non_mp3_queue.Count > 0) {
+                var downloader = non_mp3_queue.Dequeue ();
+                var track = new DatabaseTrackInfo () {
+                    AlbumArtist = artist_name,
+                    ArtistName = artist_name,
+                    AlbumTitle = album_title,
+                    TrackTitle = downloader.Track.Title,
+                    TrackCount = track_count,
+                    DiscCount = disc_count,
+                    Year = year,
+                    Genre = genre,
+                    Copyright = copyright,
+                    Uri = new SafeUri (downloader.LocalPath),
+                    MediaAttributes = TrackMediaAttributes.ExternalResource,
+                    PrimarySource = ServiceManager.SourceManager.MusicLibrary
+                };
+
+                track.CopyToLibraryIfAppropriate (true);
+
+                if (downloader.FileExtension == "pdf") {
+                    track.MimeType = "application/pdf";
+                    Application.Invoke (delegate {
+                        ServiceManager.DbConnection.BeginTransaction ();
+                        try {
+                            track.Save ();
+                            ServiceManager.DbConnection.CommitTransaction ();
+                        } catch {
+                            ServiceManager.DbConnection.RollbackTransaction ();
+                            throw;
+                        }
+                    });
+                }
+            }
         }
 
         protected override void OnDownloaderStarted (HttpDownloader downloader)
@@ -111,25 +199,9 @@ namespace Banshee.AmazonMp3
 
             if (downloader.State.Success) {
                 if (amz_downloader.FileExtension == "mp3") {
-                    import_manager.Enqueue (((HttpFileDownloader)downloader).LocalPath);
+                    import_manager.Enqueue (amz_downloader.LocalPath);
                 } else {
-                    // FIXME: this just ensures that we download any extension content (e.g. pdf)
-                    // but we do not actually import it since it's not an MP3. However, we should
-                    // support the digital booklets (pdf) by keeping a special track in the
-                    // database. Such a track would never be played, but manual activation would
-                    // open the file in the default document viewer.
-                    //
-                    // Also, computing a path like this is not great, since it is possible that
-                    // the booklet may not actually end up in the same album directory. We should
-                    // probably wait to copy extensions until all tracks are downloaded, and we
-                    // choose the most common album path out of all downloaded tracks as the final
-                    // resting place for the extension content. Make sense? GOOD.
-                    var base_path = ServiceManager.SourceManager.MusicLibrary.BaseDirectory;
-                    var dir = Path.Combine (base_path, Path.Combine (track.Creator, track.Album));
-                    var path = Path.Combine (dir, track.Title + "." + amz_downloader.FileExtension);
-                    Directory.CreateDirectory (dir);
-                    File.Copy (amz_downloader.LocalPath, path, true);
-                    File.Delete (amz_downloader.LocalPath);
+                    non_mp3_queue.Enqueue (amz_downloader);
                 }
             }
 
