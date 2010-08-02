@@ -5,11 +5,11 @@ INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
 	Banshee.Fixup/AlbumDuplicateSolver.cs \
-	Banshee.Fixup/GenreDuplicateSolver.cs \
 	Banshee.Fixup/ArtistDuplicateSolver.cs \
 	Banshee.Fixup/ColumnCellSolutionOptions.cs \
 	Banshee.Fixup/FixActions.cs \
 	Banshee.Fixup/FixSource.cs \
+	Banshee.Fixup/GenreDuplicateSolver.cs \
 	Banshee.Fixup/Problem.cs \
 	Banshee.Fixup/ProblemModel.cs \
 	Banshee.Fixup/Solver.cs \
