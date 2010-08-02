@@ -42,6 +42,27 @@ namespace Banshee.AmazonMp3.Store
 {
     public class StoreView : WebView
     {
+        private static string [] domains = new [] {
+            "com",
+            "co.uk",
+            "co.jp",
+            "de",
+            "fr"
+        };
+
+        private static bool IsAmzContentType (string contentType)
+        {
+            switch (contentType) {
+                // The German store uses this mimetype, see bgo#625210
+                case "audio/x-amzaudio":
+                // The US and hopefully all other stores use this one
+                case "audio/x-amzxml":
+                    return true;
+            }
+
+            return false;
+        }
+
         public event EventHandler SignInChanged;
 
         public bool IsSignedIn { get; private set; }
@@ -62,9 +83,11 @@ namespace Banshee.AmazonMp3.Store
             // Ensure that Amazon knows a valid downloader is available,
             // otherwise the purchase experience is interrupted with a
             // confusing message about downloading and installing software.
-            OssiferSession.SetCookie ("dmusic_download_manager_enabled",
-                AmzMp3Downloader.AmazonMp3DownloaderCompatVersion,
-                ".amazon.com", "/", TimeSpan.FromDays (365.2422));
+            foreach (var domain in domains) {
+                OssiferSession.SetCookie ("dmusic_download_manager_enabled",
+                    AmzMp3Downloader.AmazonMp3DownloaderCompatVersion,
+                    ".amazon." + domain, "/", TimeSpan.FromDays (365.2422));
+            }
 
             Country = StoreSourcePreferences.StoreCountry.Get ();
 
@@ -75,32 +98,26 @@ namespace Banshee.AmazonMp3.Store
         protected override OssiferNavigationResponse OnMimeTypePolicyDecisionRequested (string mimetype)
         {
             // We only explicitly accept (render) text/html types, and only
-            // download audio/x-amzxml - everything else is ignored.
-            switch (mimetype) {
-                case "audio/x-mpegurl":
-                case "audio/x-amzxml":
-                    return OssiferNavigationResponse.Download;
-                default:
-                    return base.OnMimeTypePolicyDecisionRequested (mimetype);
+            // download what we can import or preview.
+            if (IsAmzContentType (mimetype) || mimetype == "audio/x-mpegurl") {
+                return OssiferNavigationResponse.Download;
             }
+
+            return base.OnMimeTypePolicyDecisionRequested (mimetype);
         }
 
         protected override string OnDownloadRequested (string mimetype, string uri, string suggestedFilename)
         {
-            switch (mimetype) {
-                // The German store uses this mimetype, see bgo#625210
-                case "audio/x-amzaudio":
-                // The US and hopefully all other stores use this one
-                case "audio/x-amzxml":
-                    var dest_uri_base = "file://" + Paths.Combine (Paths.TempDir, suggestedFilename);
-                    var dest_uri = new SafeUri (dest_uri_base);
-                    for (int i = 1; File.Exists (dest_uri);
-                        dest_uri = new SafeUri (String.Format ("{0} ({1})", dest_uri_base, ++i)));
-                    return dest_uri.AbsoluteUri;
-                case "audio/x-mpegurl":
-                    Banshee.Streaming.RadioTrackInfo.OpenPlay (uri);
-                    Banshee.ServiceStack.ServiceManager.PlaybackController.StopWhenFinished = true;
-                    return null;
+            if (IsAmzContentType (mimetype)) {
+                var dest_uri_base = "file://" + Paths.Combine (Paths.TempDir, suggestedFilename);
+                var dest_uri = new SafeUri (dest_uri_base);
+                for (int i = 1; File.Exists (dest_uri);
+                    dest_uri = new SafeUri (String.Format ("{0} ({1})", dest_uri_base, ++i)));
+                return dest_uri.AbsoluteUri;
+            } else if (mimetype == "audio/x-mpegurl") {
+                Banshee.Streaming.RadioTrackInfo.OpenPlay (uri);
+                Banshee.ServiceStack.ServiceManager.PlaybackController.StopWhenFinished = true;
+                return null;
             }
 
             return null;
@@ -113,12 +130,10 @@ namespace Banshee.AmazonMp3.Store
                 return;
             }
 
-            switch (mimetype) {
-                case "audio/x-amzxml":
-                    Log.Debug ("OssiferWebView: downloaded purchase list", destinationUri);
-                    Banshee.ServiceStack.ServiceManager.Get<AmazonMp3DownloaderService> ()
-                        .DownloadAmz (new SafeUri (destinationUri).LocalPath);
-                    break;
+            if (IsAmzContentType (mimetype)) {
+                Log.Debug ("OssiferWebView: downloaded purchase list", destinationUri);
+                Banshee.ServiceStack.ServiceManager.Get<AmazonMp3DownloaderService> ()
+                    .DownloadAmz (new SafeUri (destinationUri).LocalPath);
             }
         }
 
@@ -136,7 +151,9 @@ namespace Banshee.AmazonMp3.Store
         {
             foreach (var name in new [] { "at-main", "x-main", "session-id",
                 "session-id-time", "session-token", "uidb-main", "pf"}) {
-                OssiferSession.DeleteCookie (name, ".amazon.com", "/");
+                foreach (var domain in domains) {
+                    OssiferSession.DeleteCookie (name, ".amazon." + domain, "/");
+                }
             }
 
             FullReload ();
@@ -144,7 +161,11 @@ namespace Banshee.AmazonMp3.Store
 
         private void CheckSignIn ()
         {
-            var signed_in = OssiferSession.GetCookie ("at-main", ".amazon.com", "/") != null;
+            var signed_in = false;
+            foreach (var domain in domains) {
+                signed_in |= OssiferSession.GetCookie ("at-main", ".amazon." + domain, "/") != null;
+            }
+
             if (IsSignedIn != signed_in) {
                 IsSignedIn = signed_in;
                 OnSignInChanged ();
