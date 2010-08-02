@@ -155,13 +155,38 @@ namespace Media.Playlists.Xspf
 
             date = XmlUtil.ReadDate(playlist_node, xmlns, "xspf:date");
 
-            foreach(XmlNode node in playlist_node.SelectNodes("xspf:trackList/xspf:track", xmlns)) {
+            foreach(XmlNode node in playlist_node.ChildNodes) {
+                if(IsTrackListNode(node)) {
+                    LoadTrackListFromNode(node, xmlns);
+                } else if(IsExtensionNode(node)) {
+                    LoadExtensionNode(node, xmlns);
+                }
+            }
+
+            loaded = true;
+        }
+
+        protected bool IsExtensionNode(XmlNode node)
+        {
+            return node.Name == "extension" && node.NamespaceURI == XspfNamespace;
+        }
+
+        protected bool IsTrackListNode(XmlNode node)
+        {
+            return node.Name == "trackList" && node.NamespaceURI == XspfNamespace;
+        }
+
+        protected virtual void LoadExtensionNode(XmlNode extensionNode, XmlNamespaceManager xmlns)
+        {
+        }
+
+        protected void LoadTrackListFromNode(XmlNode parent, XmlNamespaceManager xmlns)
+        {
+            foreach(XmlNode node in parent.SelectNodes("xspf:track", xmlns)) {
                 Track track = new Track();
                 track.Load(this, node, xmlns);
                 AddTrack(track);
             }
-
-            loaded = true;
         }
 
         public void Load(string path)
