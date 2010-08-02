@@ -61,8 +61,12 @@ namespace Banshee.Collection.Gui
             RowActivated += (o, a) => {
                 ITrackModelSource source = ServiceManager.SourceManager.ActiveSource as ITrackModelSource;
                 if (source != null && source.TrackModel == Model) {
-                    ServiceManager.PlaybackController.Source = source;
-                    ServiceManager.PlayerEngine.OpenPlay (a.RowValue);
+                    if ((a.RowValue.MediaAttributes & TrackMediaAttributes.ExternalResource) != 0) {
+                        System.Diagnostics.Process.Start (a.RowValue.Uri);
+                    } else {
+                        ServiceManager.PlaybackController.Source = source;
+                        ServiceManager.PlayerEngine.OpenPlay (a.RowValue);
+                    }
                 }
             };
 

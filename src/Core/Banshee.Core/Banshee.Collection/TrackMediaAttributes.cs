@@ -41,6 +41,7 @@ namespace Banshee.Collection
         Podcast = (1 << 4),     // 16
         TvShow = (1 << 5),      // 32
         Movie = (1 << 6),       // 64
+        ExternalResource = (1 << 7), // 128
 
         Default = AudioStream | Music // 5
     }

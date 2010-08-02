@@ -104,7 +104,8 @@ namespace Banshee.Collection.Gui
             Playing,
             Paused,
             Error,
-            Protected
+            Protected,
+            External
         }
 
         private string [] status_names;
@@ -169,7 +170,7 @@ namespace Banshee.Collection.Gui
         }
 
         protected virtual int PixbufCount {
-            get { return 4; }
+            get { return 5; }
         }
 
         protected virtual int GetIconIndex (TrackInfo track)
@@ -184,6 +185,8 @@ namespace Banshee.Collection.Gui
                 icon_index = (int)(ServiceManager.PlayerEngine.CurrentState == PlayerState.Paused
                     ? Icon.Paused
                     : Icon.Playing);
+            } else if ((track.MediaAttributes & TrackMediaAttributes.ExternalResource) != 0) {
+                icon_index = (int)Icon.External;
             } else {
                 icon_index = -1;
             }
@@ -210,6 +213,7 @@ namespace Banshee.Collection.Gui
             pixbufs[(int)Icon.Paused]    = IconThemeUtils.LoadIcon (PixbufSize, "media-playback-pause");
             pixbufs[(int)Icon.Error]     = IconThemeUtils.LoadIcon (PixbufSize, "emblem-unreadable", "dialog-error");
             pixbufs[(int)Icon.Protected] = IconThemeUtils.LoadIcon (PixbufSize, "emblem-readonly", "dialog-error");
+            pixbufs[(int)Icon.External]  = IconThemeUtils.LoadIcon (PixbufSize, "x-office-document");
 
             if (status_names == null) {
                 status_names = new string[PixbufCount];
@@ -221,6 +225,7 @@ namespace Banshee.Collection.Gui
             status_names[(int)Icon.Paused]    = Catalog.GetString ("Paused");
             status_names[(int)Icon.Error]     = Catalog.GetString ("Error");
             status_names[(int)Icon.Protected] = Catalog.GetString ("Protected");
+            status_names[(int)Icon.External]  = Catalog.GetString ("External Document");
         }
 
         public override void NotifyThemeChange ()
