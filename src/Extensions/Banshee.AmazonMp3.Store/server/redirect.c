@@ -52,26 +52,25 @@ main (gint argc, gchar **argv)
     gchar *p;
     gchar *dest_url;
 
+    country = NULL;
+    input = NULL;
+    action = NULL;
+
     remote_addr = g_getenv ("REMOTE_ADDR");
 
     path_parts = g_strsplit (path_info = g_getenv ("PATH_INFO"), "/", 4);
-    if (path_parts == NULL ||
-        path_parts[0] == NULL ||
-        (country = path_parts[1]) == NULL) {
-        return 1;
-    }
-
-    input = NULL;
-    action = NULL;
-    if ((action = path_parts[2]) != NULL) {
+    if (path_parts != NULL &&
+        path_parts[0] != NULL &&
+        (country = path_parts[1]) != NULL &&
+        (action = path_parts[2]) != NULL) {
         input = path_parts[3];
     }
-    
+
     if ((p = strrchr (remote_addr, ':')) != NULL) {
         remote_addr = p + 1;
     }
 
-    if (strcmp (country, "geo") == 0) {
+    if (country == NULL || strcmp (country, "geo") == 0) {
         geoip = GeoIP_new (GEOIP_STANDARD);
         country = GeoIP_country_code_by_name (geoip, remote_addr);
     }
