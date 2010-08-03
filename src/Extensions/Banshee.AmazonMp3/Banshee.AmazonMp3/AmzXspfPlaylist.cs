@@ -84,6 +84,8 @@ namespace Banshee.AmazonMp3
                 return;
             }
 
+            stream.Seek (0, SeekOrigin.Begin);
+
             var crypto_service = new DESCryptoServiceProvider () {
                 Key = amz_key,
                 IV = amz_iv,
