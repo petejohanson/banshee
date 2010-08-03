@@ -125,6 +125,8 @@ namespace Banshee.ServiceStack
 
                 uint cumulative_timer_id = Log.InformationTimerStart ();
 
+                System.Net.ServicePointManager.DefaultConnectionLimit = 6;
+
                 foreach (Type type in service_types) {
                     RegisterService (type);
                 }
