@@ -375,6 +375,11 @@ namespace Banshee.MediaEngine
                 return;
             }
 
+            if (track != null && (track.MediaAttributes & TrackMediaAttributes.ExternalResource) != 0) {
+                RaiseEvent (new PlayerEventArgs (PlayerEvent.EndOfStream));
+                return;
+            }
+
             PlayerEngine supportingEngine = FindSupportingEngine (uri);
             SwitchToEngine (supportingEngine);
             CheckPending ();
