@@ -198,10 +198,15 @@ namespace Banshee.AmazonMp3
             var track = amz_downloader.Track;
 
             if (downloader.State.Success) {
-                if (amz_downloader.FileExtension == "mp3") {
-                    import_manager.Enqueue (amz_downloader.LocalPath);
-                } else {
-                    non_mp3_queue.Enqueue (amz_downloader);
+                switch (amz_downloader.FileExtension) {
+                    case "mp3":
+                    case "wmv":
+                    case "mp4":
+                        import_manager.Enqueue (amz_downloader.LocalPath);
+                        break;
+                    default:
+                        non_mp3_queue.Enqueue (amz_downloader);
+                        break;
                 }
             }
 
