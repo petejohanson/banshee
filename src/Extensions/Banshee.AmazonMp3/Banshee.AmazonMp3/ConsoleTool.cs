@@ -37,7 +37,7 @@ namespace Banshee.AmazonMp3
     {
         private static void Usage ()
         {
-            Console.Error.WriteLine ("Usage: amzclient [-o output_dir] amz_files...");
+            Console.Error.WriteLine ("Usage: bamz [-o output_dir] amz_files...");
             Console.Error.WriteLine ();
             Console.Error.WriteLine ("Written by Aaron Bockover <aaron@abock.org>");
             Console.Error.WriteLine ("Copyright 2010 Novell, Inc.");
