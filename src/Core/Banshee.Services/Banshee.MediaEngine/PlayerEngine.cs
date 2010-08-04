@@ -214,7 +214,8 @@ namespace Banshee.MediaEngine
         protected virtual void OnEventChanged (PlayerEventArgs args)
         {
             if (args.Event == PlayerEvent.StartOfStream && pending_track != null) {
-                Log.DebugFormat ("OnEventChanged called with StartOfStream.  Replacing current_track: \"{0}\" with pending_track: \"{1}\"", current_track.DisplayTrackTitle, pending_track.DisplayTrackTitle);
+                Log.DebugFormat ("OnEventChanged called with StartOfStream.  Replacing current_track with pending_track: \"{0}\"",
+                                 pending_track.DisplayTrackTitle);
                 current_track = pending_track;
                 current_uri = pending_uri;
                 pending_track = null;
