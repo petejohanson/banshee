@@ -17,7 +17,7 @@ bamzdir = $(bindir)
 bamz_SCRIPTS = bamz
 
 mimedir = $(datadir)/mime/packages
-mime_DATA = amazonmp3.xml
+mime_DATA = banshee-amz.xml
 
 bamz: bamz.in
 	@echo '  GEN   $@'; sed 's,@bansheedir@,$(pkglibdir),g' < $< > $@
@@ -29,4 +29,4 @@ endef
 include $(top_srcdir)/build/build.mk
 
 CLEANFILES += bamz
-EXTRA_DIST += bamz.in amazonmp3.xml
+EXTRA_DIST += bamz.in banshee-amz.xml
