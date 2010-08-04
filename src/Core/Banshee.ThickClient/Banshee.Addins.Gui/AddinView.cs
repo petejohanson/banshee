@@ -143,10 +143,10 @@ namespace Banshee.Addins.Gui
             search_entry.Changed += (o, a) => update_model ();
             filter_combo.Changed += (o, a) => update_model ();
 
-            var tree_scroll = new Gtk.ScrolledWindow () {
+            var tree_scroll = new Hyena.Widgets.ScrolledWindow () {
                 HscrollbarPolicy = PolicyType.Never
             };
-            tree_scroll.AddWithViewport (tree_view);
+            tree_scroll.AddWithFrame (tree_view);
 
             Spacing = 6;
             PackStart (hbox, false, false, 0);
