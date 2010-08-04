@@ -131,11 +131,12 @@ namespace Banshee.Base
 
         public override bool Equals (object o)
         {
-            if (!(o is SafeUri)) {
-                return false;
+            SafeUri s = o as SafeUri;
+            if (s != null) {
+                return s.AbsoluteUri == AbsoluteUri;
             }
 
-            return (o as SafeUri).AbsoluteUri == AbsoluteUri;
+            return false;
         }
 
         public override int GetHashCode ()
