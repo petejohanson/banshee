@@ -33,6 +33,7 @@ using System.Collections;
 
 using Gtk;
 using Gdk;
+using Mono.Unix;
 
 using Hyena;
 using Banshee.ServiceStack;
@@ -69,7 +70,8 @@ namespace Banshee.Equalizer.Gui
             range[1] = mid;
             range[2] = br[1];
 
-            amplifier_scale = new EqualizerBandScale (0, range[1] * 10, range[0] * 10, range[2] * 10, "Preamp");
+            amplifier_scale = new EqualizerBandScale (0, range[1] * 10, range[0] * 10, range[2] * 10,
+                                                      Catalog.GetString ("Preamp"));
             amplifier_scale.ValueChanged += OnAmplifierValueChanged;
             amplifier_scale.Show ();
             PackStart (amplifier_scale, false, false, 0);
@@ -93,10 +95,11 @@ namespace Banshee.Equalizer.Gui
 
         private string FormatDecibelString (int db)
         {
+            // Translators: {0} is a numerical value, and dB is the Decibel symbol
             if (db > 0) {
-                return String.Format ("+{0} dB", db);
+                return String.Format (Catalog.GetString ("+{0} dB"), db);
             } else {
-                return String.Format ("{0} dB", db);
+                return String.Format (Catalog.GetString ("{0} dB"), db);
             }
         }
 
@@ -115,9 +118,10 @@ namespace Banshee.Equalizer.Gui
             band_scales = new EqualizerBandScale[10];
 
             for (uint i = 0; i < 10; i++) {
+                // Translators: {0} is a numerical value, Hz and kHz are Hertz unit symbols
                 string label = frequencies[i] < 1000 ?
-                    String.Format ("{0} Hz", frequencies[i]) :
-                    String.Format ("{0} kHz", (int)Math.Round (frequencies[i] / 1000.0));
+                    String.Format (Catalog.GetString ("{0} Hz"), frequencies[i]) :
+                    String.Format (Catalog.GetString ("{0} kHz"), (int)Math.Round (frequencies[i] / 1000.0));
 
                 band_scales[i] = new EqualizerBandScale (i, range[1] * 10, range[0] * 10, range[2] * 10, label);
                 band_scales[i].ValueChanged += OnEqualizerValueChanged;
