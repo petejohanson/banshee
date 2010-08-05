@@ -272,7 +272,7 @@ namespace Lastfm
                 case StationError.AuthenticationFailed:
                 case StationError.SubscriptionError:
                 case StationError.SubscriptionRequired:
-                    return Catalog.GetString ("This station is only available to subscribers.");
+                    return Catalog.GetString ("Stations are only available to paying Last.fm subscribers.");
                 case StationError.InvalidFormat:
                     return Catalog.GetString ("This station is not available.");
                 case StationError.InvalidParameters:
