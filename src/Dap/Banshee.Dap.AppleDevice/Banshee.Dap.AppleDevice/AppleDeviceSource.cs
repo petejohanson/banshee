@@ -86,9 +86,14 @@ namespace Banshee.Dap.AppleDevice
             Initialize ();
 
             // FIXME: Properly parse the device, color and generation and don't use the fallback strings
-            AddDapProperty (Catalog.GetString ("Device"), Device.IpodInfo.ModelString);
+
+            // IpodInfo is null on Macos formated ipods. I don't think we can really do anything with them
+            // but they get loaded as UMS devices if we throw an NRE here.
+            if (Device.IpodInfo != null) {
+                AddDapProperty (Catalog.GetString ("Device"), Device.IpodInfo.ModelString);
+                AddDapProperty (Catalog.GetString ("Generation"), Device.IpodInfo.GenerationString);
+            }
             AddDapProperty (Catalog.GetString ("Color"), "black");
-            AddDapProperty (Catalog.GetString ("Generation"), Device.IpodInfo.GenerationString);
             AddDapProperty (Catalog.GetString ("Capacity"), string.Format ("{0:0.00}GB", BytesCapacity));
             AddDapProperty (Catalog.GetString ("Avaiable"), string.Format ("{0:0.00}GB", BytesAvailable));
             AddDapProperty (Catalog.GetString ("Serial number"), Volume.Serial);
@@ -175,9 +180,11 @@ namespace Banshee.Dap.AppleDevice
             foreach (var ipod_track in MediaDatabase.Tracks) {
                 try {
                     var track = new AppleDeviceTrackInfo (ipod_track);
-                    track.PrimarySource = this;
-                    track.Save (false);
-                    tracks_map.Add (track.TrackId, track);
+                    if (!tracks_map.ContainsKey (track.TrackId)) {
+                        track.PrimarySource = this;
+                        track.Save (false);
+                        tracks_map.Add (track.TrackId, track);
+                    }
                 } catch (Exception e) {
                     Log.Exception (e);
                     Console.WriteLine (e);

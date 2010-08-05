@@ -159,8 +159,9 @@ namespace Banshee.Hardware.Gio
                 Volume.Eject (MountUnmountFlags.Force, null, (s, result) =>
                 {
                     try {
-                        if (!Volume.EjectWithOperationFinish (result))
+                        if (!Volume.EjectWithOperationFinish (result)) {
                             Hyena.Log.ErrorFormat ("Failed to eject {0}", Volume.Name);
+                        }
                     } catch (Exception e) {
                         Hyena.Log.Exception (e);
                     }
@@ -226,8 +227,13 @@ namespace Banshee.Hardware.Gio
             get { return "Product Not Implemented"; }
         }
 
+        // This is a hack. I put a set here because when we eject a volume
+        // there's no useful uuid so instead I'm going to store it, and set it
+        // based on device name. Horrible, I know.
+        private string uuid;
         public override string Uuid {
-            get { return UdevMetadata.Uuid; }
+            get { return uuid ?? UdevMetadata.Uuid; }
+            set { uuid = value; }
         }
 
         public RawBlockDevice Parent {

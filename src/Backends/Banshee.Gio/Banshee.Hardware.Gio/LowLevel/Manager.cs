@@ -43,52 +43,20 @@ namespace Banshee.Hardware.Gio
 
         private Client client;
         private VolumeMonitor monitor;
+        private Dictionary<string, string> device_uuids;
 
         public event EventHandler<MountArgs> DeviceAdded;
         public event EventHandler<MountArgs> DeviceRemoved;
 
         public Manager ()
         {
+            device_uuids = new Dictionary<string, string> ();
             client = new Client (subsystems);
             monitor = VolumeMonitor.Default;
             monitor.MountAdded += HandleMonitorMountAdded;
             monitor.MountRemoved += HandleMonitorMountRemoved;
+            monitor.VolumeRemoved += HandleMonitorVolumeRemoved;
         }
-//
-//        void HandleClientUevent (object o, UeventArgs args)
-//        {
-//            if (args.Action == "add")
-//                TryAddUdevDevice (args.Device);
-//            else if (args.Action == "remove")
-//                TryRemoveUdevDevice (args.Device);
-//            else
-//                Console.WriteLine ("Unknown action: {0}", args.Action);
-//        }
-//
-//        void TryAddUdevDevice (GUdev.Device device)
-//        {
-//            // We only want to match MTP devices for the moment. GIO should be able
-//            // to discover everything else.
-//            if (device.GetPropertyAsInt ("ID_GPHOTO2") == 1 &&
-//                device.GetPropertyAsInt ("ID_MEDIA_PLAYER") == 1) {
-//                var h = DeviceAdded;
-//                if (h != null) {
-//                    var v = new UsbDevice (new UDevDevice (this,
-//                                              null,
-//                                              new UdevMetadataSource (device)));
-//                    h (this, new MountArgs (v));
-//                }
-//            }
-//        }
-//
-//        void TryRemoveUdevDevice (GUdev.Device device)
-//        {
-//            if (device.GetPropertyAsInt ("ID_GPHOTO2") == 1 &&
-//                device.GetPropertyAsInt ("ID_MEDIA_PLAYER") == 1) {
-//
-//            }
-//        }
-//
 
 #region IDisposable
         public void Dispose ()
@@ -113,6 +81,7 @@ namespace Banshee.Hardware.Gio
                                           new GioVolumeMetadataSource (mount.Volume),
                                           new UdevMetadataSource (device));
                 h (this, new MountArgs (HardwareManager.Resolve (new Device (v))));
+                device_uuids [mount.Volume.Name] = v.Uuid;
             }
         }
 
@@ -120,15 +89,39 @@ namespace Banshee.Hardware.Gio
         {
             // Manually get the mount as gio-sharp translates it to the wrong managed object
             var mount = GLib.MountAdapter.GetObject ((GLib.Object) args.Args [0]);
-            if (mount.Volume == null || mount.Root.Path == null)
+            if (mount.Volume == null || mount.Root == null || mount.Root.Path == null) {
                 return;
+            }
 
+            VolumeRemoved (mount.Volume);
+        }
+
+        void HandleMonitorVolumeRemoved (object o, VolumeRemovedArgs args)
+        {
+            var volume = GLib.VolumeAdapter.GetObject ((GLib.Object) args.Args [0]);
+            if (volume == null) {
+                return;
+            }
+
+            VolumeRemoved (volume);
+        }
+
+
+        void VolumeRemoved (GLib.Volume volume)
+        {
             var h = DeviceRemoved;
             if (h != null) {
-                var v = new RawVolume (mount.Volume,
+                var device = GudevDeviceFromGioVolume (volume);
+                var v = new RawVolume (volume,
                                           this,
-                                          new GioVolumeMetadataSource (mount.Volume),
-                                          new UdevMetadataSource (null));
+                                          new GioVolumeMetadataSource (volume),
+                                          new UdevMetadataSource (device));
+
+                if (device_uuids.ContainsKey (volume.Name)) {
+                    v.Uuid = device_uuids [volume.Name];
+                    device_uuids.Remove (volume.Name);
+                }
+
                 h (this, new MountArgs (new Device (v)));
             }
         }

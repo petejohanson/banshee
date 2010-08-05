@@ -119,7 +119,6 @@ namespace Banshee.Dap
                     Log.Exception (e);
                 }
             });
-
             return true;
         }
 

@@ -206,7 +206,8 @@ namespace Banshee.Dap
 
                         source = service.FindDeviceSource (device);
                         if (source != null) {
-                            Log.DebugFormat ("Found DAP support ({0}) for device {1}", source.GetType ().FullName, source.Name);
+                            Log.DebugFormat ("Found DAP support ({0}) for device {1} and Uuid {2}", source.GetType ().FullName,
+                                             source.Name, device.Uuid);
                             service.sources.Add (device.Uuid, source);
                         }
                     } catch (Exception e) {

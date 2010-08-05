@@ -120,6 +120,7 @@ namespace Banshee.Hardware.Gio
          
          public override string Uuid {
             get { return UdevMetadata.Uuid; }
+            set { throw new NotSupportedException (); }
          }
          
          
