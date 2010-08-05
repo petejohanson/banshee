@@ -94,6 +94,9 @@ namespace Banshee.Lastfm.Audioscrobbler
             LastfmCore.AudioscrobblerQueue = queue;
             connection = LastfmCore.Audioscrobbler;
 
+            // Initialize with a reasonable value in case we miss the first StartOfStream event
+            song_start_time = DateTime.Now;
+
             Network network = ServiceManager.Get<Network> ();
             connection.UpdateNetworkState (network.Connected);
             network.StateChanged += HandleNetworkStateChanged;
