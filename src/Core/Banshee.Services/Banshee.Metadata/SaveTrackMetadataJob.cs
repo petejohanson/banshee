@@ -59,15 +59,15 @@ namespace Banshee.Metadata
 
             string range = String.Join (",", db_ids);
 
-            CountCommand = new HyenaSqliteCommand (String.Format (
-                @"SELECT COUNT(*) FROM CoreTracks
-                  WHERE DateUpdatedStamp > LastSyncedStamp
-                  AND PrimarySourceID IN ({0})", range)
-            );
+            //FIXME: should we add the case in which LastSyncedStamp IS NULL?
+            string condition = String.Format (
+                @"DateUpdatedStamp > LastSyncedStamp
+                  AND PrimarySourceID IN ({0})", range);
 
-            SelectCommand = DatabaseTrackInfo.Provider.CreateFetchCommand (String.Format (
-                "DateUpdatedStamp > LastSyncedStamp AND PrimarySourceID IN ({0})", range)
-            );
+            CountCommand = new HyenaSqliteCommand (
+                "SELECT COUNT(*) FROM CoreTracks WHERE " + condition);
+
+            SelectCommand = DatabaseTrackInfo.Provider.CreateFetchCommand (condition);
         }
 
         public bool WriteMetadataEnabled { get; set; }
