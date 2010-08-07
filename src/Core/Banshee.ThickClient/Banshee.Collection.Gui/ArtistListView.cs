@@ -39,6 +39,8 @@ namespace Banshee.Collection.Gui
 {
     public class ArtistListView : TrackFilterListView<ArtistInfo>
     {
+        protected ArtistListView (IntPtr ptr) : base () {}
+
         public ArtistListView () : base ()
         {
             column_controller.Add (new Column ("Artist", new ColumnCellText ("DisplayName", true), 1.0));
