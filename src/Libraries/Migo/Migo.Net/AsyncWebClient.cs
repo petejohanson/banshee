@@ -560,7 +560,10 @@ namespace Migo.Net
                     err = we;
 
                     HttpWebResponse response = we.Response as HttpWebResponse;
-                    if (response != null && response.StatusCode == HttpStatusCode.BadRequest && response.ResponseUri != request.RequestUri) {
+                    if (response != null
+                        && (response.StatusCode == HttpStatusCode.BadRequest
+                            || response.StatusCode == HttpStatusCode.NotAcceptable)
+                        && response.ResponseUri != request.RequestUri) {
                         Hyena.Log.DebugFormat ("Identified Content-Length: 0 redirection bug for {0}; trying to get {1} directly", request.RequestUri, response.ResponseUri);
                         redirect_workaround = true;
                         uri = response.ResponseUri;
