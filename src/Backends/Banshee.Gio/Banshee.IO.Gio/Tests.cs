@@ -34,7 +34,7 @@ using System.Linq;
 using NUnit.Framework;
 using GLib;
 
-using Banshee.Base;
+using Hyena;
 
 namespace Banshee.IO.Gio
 {

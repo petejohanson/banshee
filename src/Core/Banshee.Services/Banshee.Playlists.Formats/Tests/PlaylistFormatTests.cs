@@ -34,9 +34,9 @@ using System.Collections.Generic;
 
 using NUnit.Framework;
 
-using Banshee.Base;
 using Banshee.Playlists.Formats;
 
+using Hyena;
 using Hyena.Tests;
 
 namespace Banshee.Playlists.Formats.Tests

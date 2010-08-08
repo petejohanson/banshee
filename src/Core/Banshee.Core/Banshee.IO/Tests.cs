@@ -34,11 +34,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 
-using Banshee.Base;
 using Banshee.Collection;
 using Banshee.Streaming;
 using Banshee.Configuration.Schema;
 
+using Hyena;
 using Hyena.Tests;
 
 namespace Banshee.IO
