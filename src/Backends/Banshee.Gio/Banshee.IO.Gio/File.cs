@@ -29,7 +29,7 @@
 using System;
 using GLib;
 
-using Banshee.Base;
+using Hyena;
 
 namespace Banshee.IO.Gio
 {
