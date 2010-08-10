@@ -69,16 +69,12 @@ namespace Banshee.Fixup
                 return null;
 
             ret = ret.ToLower ()
-               .Replace (" and ", " & ")
-               .Replace (Catalog.GetString (" and "), " & ")
-               .Replace (", the", "")
-               .Replace (Catalog.GetString (", the"), "")
-               .Replace ("the ", "")
-               .Replace (Catalog.GetString ("the "), "")
-               .Trim ();
+                     .RemovePrefixedArticles ()
+                     .RemoveSuffixedArticles ()
+                     .NormalizeConjunctions ();
 
-            // Stips whitespace, punctuation, accents, and lower-cases
-            ret = Hyena.StringUtil.SearchKey (ret);
+            // Strip extra whitespace, punctuation, and accents, lower-case, etc
+            ret = Hyena.StringUtil.SearchKey (ret).Trim ();
             return ret + artist;
         }
 

@@ -63,7 +63,7 @@ namespace Banshee.Fixup
             };
             combo.Active = 0;
 
-            var apply_button = new Hyena.Widgets.ImageButton ("Apply Selected Fixes", "gtk-apply");
+            var apply_button = new Hyena.Widgets.ImageButton (Catalog.GetString ("Apply Selected Fixes"), "gtk-apply");
             apply_button.Clicked += (o, a) => problem_model.Fix ();
             problem_model.Reloaded += (o, a) => apply_button.Sensitive = problem_model.SelectedCount > 0;
 

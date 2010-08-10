@@ -51,7 +51,7 @@ namespace Banshee.Fixup
                 String.Format (
                     @"(Name IS NOT NULL AND ArtistID IN (SELECT DISTINCT(ArtistID) FROM CoreTracks WHERE PrimarySourceID = {0})
                         OR ArtistID IN (SELECT DISTINCT(a.ArtistID) FROM CoreTracks t, CoreAlbums a WHERE t.AlbumID = a.AlbumID AND t.PrimarySourceID = {0}))",
-                    ServiceManager.SourceManager.MusicLibrary.DbId
+                    EnableUnitTests ? 0 : ServiceManager.SourceManager.MusicLibrary.DbId
                 ),
                 "HYENA_BINARY_FUNCTION ('dupe-artist', Name, NULL)"
             );
@@ -65,23 +65,31 @@ namespace Banshee.Fixup
             BinaryFunction.Remove (Id);
         }
 
-        private object NormalizeArtistName (object name, object null_arg)
+        private string comma = ", ";
+        private string [] comma_ary = new string [] { ", " };
+
+        internal object NormalizeArtistName (object name, object null_arg)
         {
             var ret = name as string;
             if (ret == null)
                 return null;
 
-            ret = ret.ToLower ()
-               .Replace (" and ", " & ")
-               .Replace (Catalog.GetString (" and "), " & ")
-               .Replace (", the", "")
-               .Replace (Catalog.GetString (", the"), "")
-               .Replace ("the ", "")
-               .Replace (Catalog.GetString ("the "), "")
-               .Trim ();
+            // If has only one comma, split on it and reverse the order
+            // eg Matthews, Dave => Dave Matthews
+            int i = ret.IndexOf (comma);
+            if (i != -1 && i == ret.LastIndexOf (comma)) {
+                ret = ret.Split (comma_ary, StringSplitOptions.None)
+                         .Reverse ()
+                         .Join (" ");
+            }
 
-            // Stips whitespace, punctuation, accents, and lower-cases
-            ret = Hyena.StringUtil.SearchKey (ret);
+            ret = ret.ToLower ()
+                     .RemovePrefixedArticles ()
+                     .RemoveSuffixedArticles ()
+                     .NormalizeConjunctions ();
+
+            // Strip extra whitespace, punctuation, and accents, lower-case, etc
+            ret = Hyena.StringUtil.SearchKey (ret).Trim ();
             return ret;
         }
 

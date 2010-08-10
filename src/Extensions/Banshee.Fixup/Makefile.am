@@ -13,6 +13,7 @@ SOURCES =  \
 	Banshee.Fixup/Problem.cs \
 	Banshee.Fixup/ProblemModel.cs \
 	Banshee.Fixup/Solver.cs \
+	Banshee.Fixup/Tests.cs \
 	Banshee.Fixup/View.cs
 
 RESOURCES =  \

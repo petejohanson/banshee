@@ -49,6 +49,9 @@ namespace Banshee.Fixup
         {
         }
 
+        // Total hack to work make unit tests work
+        internal static bool EnableUnitTests;
+
         public string Id {
             get { return id; }
             set {
@@ -57,7 +60,9 @@ namespace Banshee.Fixup
                 }
 
                 id = value;
-                Generation = DatabaseConfigurationClient.Client.Get<int> ("MetadataFixupGeneration", id, 0);
+                if (!EnableUnitTests) {
+                    Generation = DatabaseConfigurationClient.Client.Get<int> ("MetadataFixupGeneration", id, 0);
+                }
             }
         }
 
@@ -141,6 +146,7 @@ namespace Banshee.Fixup
 
         protected override void IdentifyCore ()
         {
+            // Prune artists and albums that are no longer used
             ServiceManager.DbConnection.Execute (@"
                 DELETE FROM CoreAlbums WHERE AlbumID NOT IN (SELECT DISTINCT(AlbumID) FROM CoreTracks);
                 DELETE FROM CoreArtists WHERE
@@ -152,6 +158,57 @@ namespace Banshee.Fixup
                 ServiceManager.DbConnection.Execute (cmd, Generation);
             }
         }
+
+    }
+
+    public static class FixupExtensions
+    {
+        public static string NormalizeConjunctions (this string input)
+        {
+            return input.Replace (" & ", " and ");
+        }
+
+        public static string RemovePrefixedArticles (this string input)
+        {
+            foreach (var prefix in article_prefixes) {
+                if (input.StartsWith (prefix)) {
+                    input = input.Substring (prefix.Length, input.Length - prefix.Length);
+                }
+            }
+            return input;
+        }
+
+        public static string RemoveSuffixedArticles (this string input)
+        {
+            foreach (var suffix in article_suffixes) {
+                if (input.EndsWith (suffix)) {
+                    input = input.Substring (0, input.Length - suffix.Length);
+                }
+            }
+            return input;
+        }
+
+        static string [] article_prefixes;
+        static string [] article_suffixes;
+        static FixupExtensions ()
+        {
+            // Translators: These are articles that might be prefixed or suffixed
+            // on artist names or album titles.  You can add as many as you need,
+            // separated by a pipe (|)
+            var articles = (Catalog.GetString ("a|an|the") + "|a|an|the").Split ('|').Distinct ();
+
+            // Translators: This is the format commonly used in your langauge for
+            // suffixing an article, eg in English: ", The"
+            var suffix_format = Catalog.GetString (", {0}");
+
+            article_prefixes = articles.Select (a => a + " ")
+                                       .ToArray ();
+
+            article_suffixes = articles.SelectMany (a =>
+                new string [] { String.Format (suffix_format, a), ", " +  a }
+            ).Distinct ().ToArray ();
+        }
+
     }
 
     /*public class CompilationSolver : Solver

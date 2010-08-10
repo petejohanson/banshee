@@ -14,6 +14,7 @@ TEST_ASSEMBLIES = \
 	Banshee.Core.dll \
 	Banshee.Gnome.dll \
 	Banshee.Services.dll \
+	Banshee.Fixup.dll \
 	Banshee.Dap.Mtp.dll
 
 if ENABLE_GIO
