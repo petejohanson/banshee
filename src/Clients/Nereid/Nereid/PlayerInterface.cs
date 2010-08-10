@@ -473,11 +473,14 @@ namespace Nereid
 
                 case "FilterQuery":
                     var source = ServiceManager.SourceManager.ActiveSource;
-                    ThreadAssist.ProxyToMain (delegate {
-                        view_container.SearchEntry.Ready = false;
-                        view_container.SearchEntry.Query = source.FilterQuery;
-                        view_container.SearchEntry.Ready = true;
-                    });
+                    var search_entry = source.Properties.Get<SearchEntry> ("Nereid.SearchEntry") ?? view_container.SearchEntry;
+                    if (!search_entry.HasFocus) {
+                        ThreadAssist.ProxyToMain (delegate {
+                            view_container.SearchEntry.Ready = false;
+                            view_container.SearchEntry.Query = source.FilterQuery;
+                            view_container.SearchEntry.Ready = true;
+                        });
+                    }
                     break;
             }
         }
