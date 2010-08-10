@@ -4,7 +4,6 @@ LINK = $(REF_DAP_APPLEDEVICE)
 INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
-	Banshee.Dap.AppleDevice/AppleDeviceProvider.cs \
 	Banshee.Dap.AppleDevice/AppleDeviceSource.cs \
 	Banshee.Dap.AppleDevice/AppleDeviceTrackInfo.cs
 
