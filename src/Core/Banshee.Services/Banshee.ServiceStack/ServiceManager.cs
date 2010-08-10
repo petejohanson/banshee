@@ -253,8 +253,12 @@ namespace Banshee.ServiceStack
             lock (self_mutex) {
                 if (!delayed_initialized) {
                     have_client = true;
+                    var initialized = new HashSet <string> ();
                     foreach (IService service in services.Values) {
-                        DelayedInitialize (service);
+                        if (!initialized.Contains (service.ServiceName)) {
+                            DelayedInitialize (service);
+                            initialized.Add (service.ServiceName);
+                        }
                     }
                     delayed_initialized = true;
                 }
@@ -389,10 +393,6 @@ namespace Banshee.ServiceStack
 
         public static int StartupServiceCount {
             get { return service_types.Count + (extension_nodes == null ? 0 : extension_nodes.Count) + 1; }
-        }
-
-        public static int ServiceCount {
-            get { return services.Count; }
         }
 
         public static bool IsInitialized {
