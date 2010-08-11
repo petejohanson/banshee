@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 
@@ -251,7 +252,8 @@ namespace Banshee.ServiceStack
                 if (!delayed_initialized) {
                     have_client = true;
                     var initialized = new HashSet <string> ();
-                    foreach (IService service in services.Values) {
+                    var to_initialize = services.Values.ToList ();
+                    foreach (IService service in to_initialize) {
                         if (!initialized.Contains (service.ServiceName)) {
                             DelayedInitialize (service);
                             initialized.Add (service.ServiceName);
@@ -340,13 +342,15 @@ namespace Banshee.ServiceStack
 
         public static T Get<T> () where T : class, IService
         {
-            Type type = typeof (T);
-            T service = Get (type.Name) as T;
-            if (service == null && type.GetInterface ("Banshee.ServiceStack.IRegisterOnDemandService") != null) {
-                return RegisterService (type) as T;
-            }
+            lock (self_mutex) {
+                Type type = typeof (T);
+                T service = Get (type.Name) as T;
+                if (service == null && type.GetInterface ("Banshee.ServiceStack.IRegisterOnDemandService") != null) {
+                    return RegisterService (type) as T;
+                }
 
-            return service;
+                return service;
+            }
         }
 
         private static void Add (IService service)
