@@ -329,8 +329,10 @@ namespace Banshee.ServiceStack
 
         public static IService Get (string serviceName)
         {
-            if (services.ContainsKey (serviceName)) {
-                return services[serviceName];
+            lock (self_mutex) {
+                if (services.ContainsKey (serviceName)) {
+                    return services[serviceName];
+                }
             }
 
             return null;
