@@ -92,7 +92,8 @@ namespace Banshee.Gui
                     Catalog.GetString ("_Help"), null, null, null),
 
                 new ActionEntry ("UserHelp", Gtk.Stock.Help,
-                    null, null, null, delegate { Banshee.ServiceStack.Application.DisplayHelp (null); }),
+                    Catalog.GetString ("_Contents"), "F1", null,
+                    delegate { Banshee.ServiceStack.Application.DisplayHelp (null); }),
 
                 new ActionEntry ("WebMenuAction", null,
                     Catalog.GetString ("_Web Resources"), null, null, null),
