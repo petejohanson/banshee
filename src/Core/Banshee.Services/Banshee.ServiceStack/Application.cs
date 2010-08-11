@@ -169,6 +169,33 @@ namespace Banshee.ServiceStack
             }
         }
 
+        [DllImport ("libglib-2.0-0.dll")]
+        static extern IntPtr g_get_language_names ();
+
+        public static void DisplayHelp (string page)
+        {
+            DisplayHelp ("banshee", page);
+        }
+
+        private static void DisplayHelp (string project, string page)
+        {
+            bool shown = false;
+
+            foreach (var lang in GLib.Marshaller.NullTermPtrToStringArray (g_get_language_names (), false)) {
+                string path = String.Format ("{0}/gnome/help/{1}/{2}",
+                    Paths.InstalledApplicationDataRoot, project, lang);
+
+                if (System.IO.Directory.Exists (path)) {
+                    shown = Banshee.Web.Browser.Open (String.Format ("ghelp:/{0}", path), false);
+                    break;
+                }
+            }
+
+            if (!shown) {
+                Banshee.Web.Browser.Open (String.Format ("http://library.gnome.org/users/{0}/{1}/", project, Version));
+            }
+        }
+
         private static bool OnShutdownRequested ()
         {
             ShutdownRequestHandler handler = ShutdownRequested;

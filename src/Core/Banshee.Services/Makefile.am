@@ -230,3 +230,5 @@ module_DATA = Banshee.Services.addins
 
 include $(top_srcdir)/build/build.mk
 
+EXTRA_DIST += Banshee.Services.dll.config
+module_SCRIPTS += Banshee.Services.dll.config
