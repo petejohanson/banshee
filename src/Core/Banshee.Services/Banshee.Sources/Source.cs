@@ -271,7 +271,11 @@ namespace Banshee.Sources
 
                     int i = 0;
                     foreach (Source child in child_sources) {
-                        child.Order = i++;
+                        // Leave children with negative orders alone, so they can be manually
+                        // placed at the top
+                        if (child.Order >= 0) {
+                            child.Order = i++;
+                        }
                     }
                 }
             }

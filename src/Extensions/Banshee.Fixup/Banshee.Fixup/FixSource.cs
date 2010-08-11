@@ -45,7 +45,7 @@ namespace Banshee.Fixup
     {
         ProblemModel problem_model = new ProblemModel ();
 
-        public FixSource () : base (Catalog.GetString ("Metadata Fixer"), Catalog.GetString ("Metadata Fixer"), 0)
+        public FixSource () : base (Catalog.GetString ("Metadata Fixer"), Catalog.GetString ("Metadata Fixer"), -1)
         {
             TypeUniqueId = "fixes";
 
