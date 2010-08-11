@@ -34,6 +34,41 @@ namespace Banshee.ServiceStack
 {
     public class JobScheduler : Scheduler, IRequiredService
     {
+        class StartupJob : Job
+        {
+            public StartupJob ()
+            {
+                Title = "Startup Job";
+                PriorityHints = PriorityHints.SpeedSensitive;
+                SetResources (Resource.Cpu, Resource.Disk, Resource.Database);
+                IsBackground = true;
+            }
+
+            public void Finish ()
+            {
+                OnFinished ();
+            }
+        }
+
+        StartupJob startup_job = new StartupJob ();
+
+        public JobScheduler ()
+        {
+            // This startup job blocks any other jobs from starting
+            // until we're up and running.
+            Add (startup_job);
+            Application.ClientStarted += OnClientStarted;
+        }
+
+        private void OnClientStarted (Client client)
+        {
+            Application.ClientStarted -= OnClientStarted;
+            Application.RunTimeout (1000, delegate {
+                startup_job.Finish ();
+                return false;
+            });
+        }
+
         string IService.ServiceName {
             get { return "JobScheduler"; }
         }
