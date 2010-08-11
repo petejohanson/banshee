@@ -62,7 +62,9 @@ namespace Banshee.Database
             Execute ("PRAGMA temp_store = MEMORY");
             Execute ("PRAGMA count_changes = OFF");
 
-            // don't want this on because it breaks searching/smart playlists.  See BGO #526371
+            // TODO didn't want this on b/c smart playlists used to rely on it, but
+            // now they shouldn't b/c we have smart custom functions we use for sorting/searching.
+            // See BGO #603665 for discussion about turning this back on.
             //Execute ("PRAGMA case_sensitive_like=ON");
 
             Log.DebugFormat ("Opened SQLite (version {1}) connection to {0}", db_path, ServerVersion);
