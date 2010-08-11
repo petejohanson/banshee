@@ -45,7 +45,7 @@ using Banshee.Streaming;
 
 namespace Banshee.Library
 {
-    public class LibraryImportManager : DatabaseImportManager, IService
+    public class LibraryImportManager : DatabaseImportManager, IRegisterOnDemandService
     {
         public LibraryImportManager () : this (false)
         {

@@ -43,7 +43,7 @@ using Banshee.MediaProfiles;
 
 namespace Banshee.MediaEngine
 {
-    public class TranscoderService : IService
+    public class TranscoderService : IRegisterOnDemandService
     {
         public delegate void TrackTranscodedHandler (TrackInfo track, SafeUri uri);
         public delegate void TranscodeCancelledHandler ();

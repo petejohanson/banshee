@@ -95,10 +95,7 @@ namespace Banshee.ServiceStack
             RegisterService<SourceManager> ();
             RegisterService<MediaProfileManager> ();
             RegisterService<PlayerEngineService> ();
-            RegisterService<TranscoderService> ();
             RegisterService<PlaybackControllerService> ();
-            RegisterService<ImportSourceManager> ();
-            RegisterService<LibraryImportManager> ();
             RegisterService<JobScheduler> ();
             RegisterService<Banshee.Hardware.HardwareManager> ();
             RegisterService<Banshee.Collection.Indexer.CollectionIndexerService> ();

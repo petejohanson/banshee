@@ -35,7 +35,7 @@ using Banshee.ServiceStack;
 
 namespace Banshee.Library
 {
-    public class ImportSourceManager : IService, IEnumerable<IImportSource>
+    public class ImportSourceManager : IRegisterOnDemandService, IEnumerable<IImportSource>
     {
         private HomeDirectoryImportSource home_source = new HomeDirectoryImportSource ();
 
