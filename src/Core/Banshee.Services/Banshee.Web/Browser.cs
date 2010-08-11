@@ -49,6 +49,11 @@ namespace Banshee.Web
 
         public static bool Open (string url)
         {
+            return Open (url, true);
+        }
+
+        public static bool Open (string url, bool showErrors)
+        {
             try {
                 url = Uri.EscapeUriString (url);
                 if (open_handler != null) {
@@ -58,9 +63,11 @@ namespace Banshee.Web
                     return true;
                 }
             } catch(Exception e) {
-                Log.Warning (Catalog.GetString ("Could not launch URL"),
-                    String.Format (Catalog.GetString ("{0} could not be opened: {1}\n\n " +
-                        "Check your 'Preferred Applications' settings."), url, e.Message), true);
+                if (showErrors) {
+                    Log.Warning (Catalog.GetString ("Could not launch URL"),
+                        String.Format (Catalog.GetString ("{0} could not be opened: {1}\n\n " +
+                            "Check your 'Preferred Applications' settings."), url, e.Message), true);
+                }
                 return false;
             }
         }
