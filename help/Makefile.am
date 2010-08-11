@@ -22,4 +22,8 @@ DOC_PAGES = \
 
 DOC_LINGUAS = de
 dist-hook: doc-dist-hook
+
+all:
+	mkdir -p $(top_builddir)/bin/share/gnome/help/$(DOC_ID) && cp -R C/ $(DOC_LINGUAS) $(top_builddir)/bin/share/gnome/help/$(DOC_ID)/
+
 endif
