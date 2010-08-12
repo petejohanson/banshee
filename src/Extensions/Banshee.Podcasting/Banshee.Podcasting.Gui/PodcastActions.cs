@@ -68,13 +68,13 @@ namespace Banshee.Podcasting.Gui
             AddImportant (
                 new ActionEntry (
                     "PodcastUpdateAllAction", Stock.Refresh,
-                     Catalog.GetString ("Check for New Episodes"), null,//"<control><shift>U",
-                     Catalog.GetString ("Refresh All Podcasts"),
+                     Catalog.GetString ("Refresh"), null,//"<control><shift>U",
+                     Catalog.GetString ("Check all podcasts for new episodes"),
                      OnPodcastUpdateAll
                 ),
                 new ActionEntry (
                     "PodcastAddAction", Stock.Add,
-                     Catalog.GetString ("Subscribe to Podcast..."),"<control><shift>F",
+                     Catalog.GetString ("Add Podcast..."),"<control><shift>F",
                      Catalog.GetString ("Subscribe to a new podcast"),
                      OnPodcastAdd
                 )
@@ -158,7 +158,7 @@ namespace Banshee.Podcasting.Gui
                 )
             );
 
-            this["PodcastAddAction"].ShortLabel = Catalog.GetString ("Subscribe to Podcast");
+            this["PodcastAddAction"].ShortLabel = Catalog.GetString ("Add Podcast");
 
             actions_id = Actions.UIManager.AddUiFromResource ("GlobalUI.xml");
             Actions.AddActionGroup (this);
