@@ -45,6 +45,7 @@ namespace Banshee.Library
             MediaTypes = TrackMediaAttributes.VideoStream;
             NotMediaTypes = TrackMediaAttributes.Podcast;
             Properties.SetStringList ("Icon.Name", "video-x-generic", "video", "source-library");
+            Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search your videos"));
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
                 <column-controller>
                   <add-all-defaults />

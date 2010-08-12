@@ -92,6 +92,7 @@ namespace Banshee.Widgets
             entry = new FramelessEntry(this);
             filter_button = new HoverImageButton(IconSize.Menu, new string [] { "edit-find", Stock.Find });
             clear_button = new HoverImageButton(IconSize.Menu, new string [] { "edit-clear", Stock.Clear });
+            clear_button.TooltipText = Mono.Unix.Catalog.GetString ("Clear search");
 
             box.PackStart(filter_button, false, false, 0);
             box.PackStart(entry, true, true, 0);

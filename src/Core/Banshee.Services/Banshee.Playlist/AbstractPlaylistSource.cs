@@ -157,6 +157,7 @@ namespace Banshee.Playlist
             DatabaseTrackModel.JoinColumn = "TrackID";
             DatabaseTrackModel.CachesJoinTableEntries = CachesJoinTableEntries;
             DatabaseTrackModel.AddCondition (String.Format (TrackCondition, dbid));
+            Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search this playlist"));
             base.AfterInitialized ();
         }
 

@@ -429,6 +429,11 @@ namespace Nereid
                 view_container.SearchEntry.Ready = false;
                 view_container.SearchEntry.CancelSearch ();
 
+                /* Translators: this is a verb (command), not a noun (things) */
+                var msg = source.Properties.Get<string> ("SearchEntryDescription") ?? Catalog.GetString ("Search");
+                view_container.SearchEntry.EmptyMessage = msg;
+                view_container.SearchEntry.TooltipText = msg;
+
                 if (source.FilterQuery != null) {
                     view_container.SearchEntry.Query = source.FilterQuery;
                     view_container.SearchEntry.ActivateFilter ((int)source.FilterType);

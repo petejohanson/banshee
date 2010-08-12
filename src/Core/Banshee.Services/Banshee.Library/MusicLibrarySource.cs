@@ -62,6 +62,8 @@ namespace Banshee.Library
             NotMediaTypes = TrackMediaAttributes.Podcast | TrackMediaAttributes.VideoStream | TrackMediaAttributes.AudioBook;
             Properties.SetStringList ("Icon.Name", "audio-x-generic", "source-library");
 
+            Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search your music"));
+
             // Migrate the old library-location schema, if necessary
             if (DatabaseConfigurationClient.Client.Get<int> ("MusicLibraryLocationMigrated", 0) != 1) {
                 string old_location = OldLocationSchema.Get ();

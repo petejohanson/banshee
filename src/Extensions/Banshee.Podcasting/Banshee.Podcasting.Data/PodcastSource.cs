@@ -106,6 +106,7 @@ namespace Banshee.Podcasting.Gui
             TrackModel.Reloaded += OnReloaded;
 
             Properties.SetString ("Icon.Name", "podcast");
+            Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search your podcasts"));
 
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);

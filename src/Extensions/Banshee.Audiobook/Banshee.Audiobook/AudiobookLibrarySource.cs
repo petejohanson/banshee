@@ -72,6 +72,7 @@ namespace Banshee.Audiobook
             SupportsPlaylists = false;
 
             Properties.SetStringList ("Icon.Name", "audiobook", "source-library");
+            Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search your audiobooks"));
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
                 <column-controller>
                   <add-all-defaults />

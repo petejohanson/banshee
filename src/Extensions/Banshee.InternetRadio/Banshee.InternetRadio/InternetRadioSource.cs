@@ -78,6 +78,7 @@ namespace Banshee.InternetRadio
             Properties.Set<bool> ("Nereid.SourceContentsPropagate", true);
             Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<InternetRadioSourceContents> ());
 
+            Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search your stations"));
             Properties.SetString ("TrackEditorActionLabel", Catalog.GetString ("Edit Station"));
             Properties.Set<InvokeHandler> ("TrackEditorActionHandler", delegate {
                 ITrackModelSource active_track_model_source =
