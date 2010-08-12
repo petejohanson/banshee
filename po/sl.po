@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&component=general\n"
-"POT-Creation-Date: 2010-08-07 09:50+0000\n"
-"PO-Revision-Date: 2010-08-07 13:17+0100\n"
+"POT-Creation-Date: 2010-08-11 20:02+0000\n"
+"PO-Revision-Date: 2010-08-12 10:28+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -843,14 +843,14 @@ msgid "GStreamer# 0.10"
 msgstr "Uporabljen Gstreamer 0.10."
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:91
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:131
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:132
 msgid "_Close"
 msgstr "_Zapri"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:92
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:224
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:79
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:132
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:133
 msgid "Close"
 msgstr "Zapri"
 
@@ -1410,7 +1410,7 @@ msgstr "Postopek uvažanja je v teku. Ali ga želite zaustaviti?"
 msgid "Importing {0} of {1}"
 msgstr "Uvažanje {0} od {1}"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/RescanPipeline.cs:78
+#: ../src/Core/Banshee.Services/Banshee.Collection/RescanPipeline.cs:79
 #, csharp-format
 msgid "Rescanning {0} of {1}"
 msgstr "Ponovno preiskovanje {0} od {1}"
@@ -2020,7 +2020,7 @@ msgstr "kvantizacija"
 #. Translators: noun
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:169
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:363
-#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:666
+#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:670
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:89
 msgid "Name"
 msgstr "Ime"
@@ -2403,7 +2403,7 @@ msgstr "drm"
 #. Translators: These are unique strings for playback errors. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:64
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:66
-#: ../src/Core/Banshee.Services/Banshee.ServiceStack/Application.cs:327
+#: ../src/Core/Banshee.Services/Banshee.ServiceStack/Application.cs:354
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:208
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:210
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:212
@@ -2533,15 +2533,15 @@ msgstr "Dodajanje {0} od {1} k {2}"
 msgid "Deleting {0} of {1} From {2}"
 msgstr "Brisanje {0} od {1} iz {2}"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:671
+#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:675
 msgid "Size Ascending"
 msgstr "Velikost; naraščajoče"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:676
+#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:680
 msgid "Size Descending"
 msgstr "Velikost; padajoče"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:765
+#: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:769
 #, csharp-format
 msgid "{0:N0} item"
 msgid_plural "{0:N0} items"
@@ -2563,11 +2563,11 @@ msgstr "Pretoka ali seznama predvajanja ni mogoče odpreti"
 msgid "Problem parsing playlist"
 msgstr "Težava med razčlenjevanjem seznama predvajanja"
 
-#: ../src/Core/Banshee.Services/Banshee.Web/Browser.cs:61
+#: ../src/Core/Banshee.Services/Banshee.Web/Browser.cs:67
 msgid "Could not launch URL"
 msgstr "Naslova URL ni mogoče zagnati"
 
-#: ../src/Core/Banshee.Services/Banshee.Web/Browser.cs:62
+#: ../src/Core/Banshee.Services/Banshee.Web/Browser.cs:68
 #, csharp-format
 msgid ""
 "{0} could not be opened: {1}\n"
@@ -2921,55 +2921,59 @@ msgid "_Help"
 msgstr "Pomo_č"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:95
+msgid "_Contents"
+msgstr "_Vsebina"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:99
 msgid "_Web Resources"
 msgstr "_Spletni viri"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:98
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:102
 msgid "Banshee _User Guide (Wiki)"
 msgstr "Banshee _uporabniški vodič (Wiki)"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:99
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:103
 msgid "Learn about how to use Banshee"
 msgstr "Naučite se kako uporabljati Banshee"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:104
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:108
 msgid "Advanced Collection Searching"
 msgstr "Napredno iskanje po zbirki"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:105
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:109
 msgid "Learn advanced ways to search your media collection"
 msgstr "Učenje naprednih načinov iskanja po svoji zbirki večpredstavnostnih datotek"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:110
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:114
 msgid "Banshee _Home Page"
 msgstr "_Domača stran Banshee"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:111
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:115
 msgid "Visit the Banshee Home Page"
 msgstr "Obiščite domačo stran programa Banshee"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:116
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:120
 msgid "_Get Involved"
 msgstr "_Vključite se"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:117
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:121
 msgid "Become a contributor to Banshee"
 msgstr "Sodelujte pri projektu Banshee"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:122
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:126
 msgid "_Version Information"
 msgstr "_Podrobnosti različice"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:123
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:127
 msgid "View detailed version and configuration information"
 msgstr "Pogled podrobnosti različice in nastavitev"
 
 #. Prompt user for location of the playlist.
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:180
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:184
 msgid "Import Playlist"
 msgstr "Uvozi seznam predvajanja"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:181
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:185
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:559
 msgid "Playlists"
 msgstr "Seznami predvajanja"
@@ -3722,7 +3726,7 @@ msgstr "{0}od{1} {2} {0}od{1} {3}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Album Title;
 #. e.g. 'from Killing with a Smile'
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:584
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:521
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:522
 #, csharp-format
 msgid "{0}from{1} {2}"
 msgstr "{0}od{1} {2}"
@@ -3730,7 +3734,7 @@ msgstr "{0}od{1} {2}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Artist Name;
 #. e.g. 'by Parkway Drive'
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:588
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:525
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:526
 #, csharp-format
 msgid "{0}by{1} {2}"
 msgstr "{0}od{1} {2}"
@@ -4914,22 +4918,6 @@ msgstr "Podvoji albume"
 msgid "Displayed are albums that should likely be merged.  For each row, click the desired title to make it bold, or uncheck it to take no action."
 msgstr "Prikazani so albumi, ki jih je verjetno treba združiti. Za vsako vrstico kliknite na želeno ime da postane krepko ali odstranite oznako, če ne želite storiti ničesar."
 
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:73
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:76
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:77
-msgid " and "
-msgstr "in"
-
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:75
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:78
-msgid ", the"
-msgstr ", "
-
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:77
-#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:80
-msgid "the "
-msgstr " "
-
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:46
 msgid "Duplicate Artists"
 msgstr "Podvoji izvajalce"
@@ -4950,6 +4938,10 @@ msgstr "Popravljalnik metapodatkov"
 msgid "Problem Type:"
 msgstr "Vrsta težave:"
 
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:66
+msgid "Apply Selected Fixes"
+msgstr "Uveljavi izbrane popravke"
+
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:46
 msgid "Duplicate Genres"
 msgstr "Podvojene zvrsti"
@@ -4957,6 +4949,24 @@ msgstr "Podvojene zvrsti"
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:47
 msgid "Displayed are genres that should likely be merged.  For each row, click the desired genre to make it bold, or uncheck it to take no action."
 msgstr "Prikazane so zvrsti, ki jih je verjetno treba združiti. Za vsako vrstico kliknite na želeno zvrst da postane krepka ali odstranite oznako, če ne želite storiti ničesar."
+
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:77
+msgid " and "
+msgstr "in"
+
+#. Translators: These are articles that might be prefixed or suffixed
+#. on artist names or album titles.  You can add as many as you need,
+#. separated by a pipe (|)
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/Solver.cs:198
+msgid "a|an|the"
+msgstr " "
+
+#. Translators: This is the format commonly used in your langauge for
+#. suffixing an article, eg in English: ", The"
+#: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/Solver.cs:202
+#, csharp-format
+msgid ", {0}"
+msgstr ", {0}"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/View.cs:76
 msgid "Fix?"
@@ -6002,34 +6012,34 @@ msgstr "Iskanje podcastov"
 msgid "Search for Video Podcasts"
 msgstr "Iskanje video podcastov"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:138
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:139
 msgid "_Show Notifications"
 msgstr "_Prikaži obvestila"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:139
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:140
 msgid "Show notifications when item changes"
 msgstr "Prikaz obvestil ob spremembi predmeta"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:343
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:344
 msgid "Still Running"
 msgstr "Še vedno teče"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:344
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:345
 msgid "Banshee was closed to the notification area. Use the <i>Quit</i> option to end your session."
 msgstr "Program Banshee je skrit v obvestilnem področju. Uporabite možnost <i>Končaj</i> za končanje programa."
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:479
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:480
 msgid "Skip this item"
 msgstr "Preskoči predmet"
 
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:483
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:484
 msgid "Cannot show notification"
 msgstr "Obvestil ni mogoče prikazati"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Artist Name and Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
-#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:517
+#: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:518
 #, csharp-format
 msgid ""
 "{0}by{1} {2}\n"
@@ -6508,6 +6518,10 @@ msgstr "Povezano z Last.fm "
 msgid "Unknown Podcast"
 msgstr "Neznan Podcast"
 
+#~ msgid ", the"
+#~ msgstr ", "
+#~ msgid "the "
+#~ msgstr " "
 #~ msgid "open context menu"
 #~ msgstr "odpri vsebinski meni"
 #~ msgid "click"
