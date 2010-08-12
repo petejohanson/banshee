@@ -88,6 +88,7 @@ namespace Banshee.Fixup
                 var winner_id = problem.ObjectIds [Array.IndexOf (problem.SolutionOptions, problem.SolutionValue)];
                 var losers = problem.ObjectIds.Where (id => id != winner_id).ToArray ();
 
+                // FIXME update MetadataHash as well
                 ServiceManager.DbConnection.Execute (
                     "UPDATE CoreTracks SET AlbumID = ?, DateUpdatedStamp = ? WHERE AlbumID IN (?)",
                     winner_id, DateTime.Now, losers
