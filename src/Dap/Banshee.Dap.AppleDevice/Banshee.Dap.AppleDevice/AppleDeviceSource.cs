@@ -75,9 +75,6 @@ namespace Banshee.Dap.AppleDevice
             base.DeviceInitialize (device);
 
             Device = new GPod.Device (Volume.MountPoint);
-
-            // FIXME: Set name properly using libgpod.
-            // FIXME: How do we detect if playlists are supported?
             Name = Volume.Name;
             SupportsPlaylists = true;
             SupportsPodcasts = Device.SupportsPodcast;
