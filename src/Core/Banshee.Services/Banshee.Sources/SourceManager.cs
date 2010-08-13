@@ -133,10 +133,12 @@ namespace Banshee.Sources
                     if (add_source) {
                         AddSource (source);
                     }
+                    Log.DebugFormat ("Extension source loaded: {0}", source.Name);
                 } else if (args.Change == ExtensionChange.Remove && extension_sources.ContainsKey (node.Id)) {
                     Source source = extension_sources[node.Id];
                     extension_sources.Remove (node.Id);
                     RemoveSource (source, true);
+                    Log.DebugFormat ("Extension source unloaded: {0}", source.Name);
                 }
             }
         }

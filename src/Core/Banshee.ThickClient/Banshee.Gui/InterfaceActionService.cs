@@ -121,13 +121,13 @@ namespace Banshee.Gui
                         ActionGroup group = (ActionGroup)node.CreateInstance (typeof (ActionGroup));
                         extension_actions[node.Id] = group;
                         AddActionGroup (group);
-                        Log.DebugFormat ("Extension actions loaded: {0}", node.Id);
+                        Log.DebugFormat ("Extension actions loaded: {0}", group.Name);
                     }
                 } else if (args.Change == ExtensionChange.Remove) {
                     if (extension_actions.ContainsKey (node.Id)) {
                         extension_actions[node.Id].Dispose ();
+                        Log.DebugFormat ("Extension actions unloaded: {0}", extension_actions[node.Id].Name);
                         extension_actions.Remove (node.Id);
-                        Log.DebugFormat ("Extension actions unloaded: {0}", node.Id);
                     }
                 }
             } catch (Exception e) {
