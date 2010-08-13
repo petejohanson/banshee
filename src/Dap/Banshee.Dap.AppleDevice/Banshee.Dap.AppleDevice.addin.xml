@@ -16,10 +16,6 @@
     <Addin id="Banshee.Dap" version="1.0"/>
   </Dependencies>
 
-  <Extension path="/Banshee/Platform/HardwareDeviceProvider">
-    <HardwareDeviceProvider class="Banshee.Dap.AppleDevice.AppleDeviceProvider"/>
-  </Extension>
-  
   <Extension path="/Banshee/Dap/DeviceClass">
     <DeviceClass class="Banshee.Dap.AppleDevice.AppleDeviceSource" priority="10"/>
   </Extension>
