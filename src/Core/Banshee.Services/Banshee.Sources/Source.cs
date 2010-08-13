@@ -361,8 +361,7 @@ namespace Banshee.Sources
             }
         }
 
-
-        protected virtual void PushMessage (SourceMessage message)
+        public void PushMessage (SourceMessage message)
         {
             lock (this) {
                 messages.Insert (0, message);
@@ -372,7 +371,7 @@ namespace Banshee.Sources
             OnMessageNotify ();
         }
 
-        protected virtual SourceMessage PopMessage ()
+        protected SourceMessage PopMessage ()
         {
             try {
                 lock (this) {
@@ -390,7 +389,7 @@ namespace Banshee.Sources
             }
         }
 
-        protected virtual void ClearMessages ()
+        protected void ClearMessages ()
         {
             lock (this) {
                 if (messages.Count > 0) {
@@ -443,7 +442,7 @@ namespace Banshee.Sources
             });
         }
 
-        protected virtual void RemoveMessage (SourceMessage message)
+        public void RemoveMessage (SourceMessage message)
         {
             lock (this) {
                 if (messages.Remove (message)) {
@@ -554,7 +553,7 @@ namespace Banshee.Sources
         public string UniqueId {
             get {
                 if (unique_id == null && type_unique_id == null) {
-                    Log.ErrorFormat ("Creating Source.UniqueId for {0}, but TypeUniqueId is null; trace is {1}", this.Name, System.Environment.StackTrace);
+                    Log.ErrorFormat ("Creating Source.UniqueId for {0} (type {1}), but TypeUniqueId is null; trace is {2}", this.Name, GetType ().Name, System.Environment.StackTrace);
                 }
                 return unique_id ?? (unique_id = String.Format ("{0}-{1}", this.GetType ().Name, TypeUniqueId));
             }
