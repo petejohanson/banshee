@@ -496,7 +496,9 @@ namespace Banshee.Gui
         {
             if (current_source != null) {
                 foreach (TrackInfo track in current_source.TrackModel.SelectedItems) {
-                    ActiveSource.FilterQuery = BansheeQuery.ArtistField.ToTermString (":", track.ArtistName);
+                    if (!String.IsNullOrEmpty (track.ArtistName)) {
+                        ActiveSource.FilterQuery = BansheeQuery.ArtistField.ToTermString (":", track.ArtistName);
+                    }
                     break;
                 }
             }
@@ -506,7 +508,9 @@ namespace Banshee.Gui
         {
             if (current_source != null) {
                 foreach (TrackInfo track in current_source.TrackModel.SelectedItems) {
-                    ActiveSource.FilterQuery = BansheeQuery.AlbumField.ToTermString (":", track.AlbumTitle);
+                    if (!String.IsNullOrEmpty (track.AlbumTitle)) {
+                        ActiveSource.FilterQuery = BansheeQuery.AlbumField.ToTermString (":", track.AlbumTitle);
+                    }
                     break;
                 }
             }
