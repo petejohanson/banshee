@@ -55,7 +55,7 @@ namespace Banshee.Gui
         private static readonly string [] require_selection_actions = new string [] {
             "TrackContextMenuAction", "TrackPropertiesAction", "AddToPlaylistAction",
             "RemoveTracksAction", "RemoveTracksFromLibraryAction", "OpenContainingFolderAction",
-            "DeleteTracksFromDriveAction", "RateTracksAction", "SelectNoneAction"
+            "DeleteTracksFromDriveAction", "RateTracksAction", "SelectNoneAction", "PlayTrack"
         };
 
         public event EventHandler SelectionChanged;
@@ -81,6 +81,10 @@ namespace Banshee.Gui
                 new ActionEntry ("TrackPropertiesAction", Stock.Properties,
                     Catalog.GetString ("Properties"), null,
                     Catalog.GetString ("View information on selected tracks"), OnTrackProperties),
+
+                new ActionEntry ("PlayTrack", null,
+                    Catalog.GetString ("_Play"), null,
+                    Catalog.GetString ("Play the selected item"), OnPlayTrack),
 
                 new ActionEntry ("AddToPlaylistAction", null,
                     Catalog.GetString ("Add _to Playlist"), null,
@@ -130,6 +134,7 @@ namespace Banshee.Gui
             ServiceManager.SourceManager.ActiveSourceChanged += HandleActiveSourceChanged;
 
             this["AddToPlaylistAction"].HideIfEmpty = false;
+            this["PlayTrack"].StockId = Gtk.Stock.MediaPlay;
         }
 
 #region State Event Handlers
@@ -323,6 +328,20 @@ namespace Banshee.Gui
         {
             if (current_source != null && !RunSourceOverrideHandler ("TrackEditorActionHandler")) {
                 TrackEditor.TrackEditorDialog.RunEdit (current_source.TrackModel);
+            }
+        }
+
+        private void OnPlayTrack (object o, EventArgs args)
+        {
+            var source = ServiceManager.SourceManager.ActiveSource as ITrackModelSource;
+            if (source != null) {
+                var track = source.TrackModel [source.TrackModel.Selection.FocusedIndex];
+                if (track.HasAttribute (TrackMediaAttributes.ExternalResource)) {
+                    System.Diagnostics.Process.Start (track.Uri);
+                } else {
+                    ServiceManager.PlaybackController.Source = source;
+                    ServiceManager.PlayerEngine.OpenPlay (track);
+                }
             }
         }
 

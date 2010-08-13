@@ -170,6 +170,8 @@
   </popup>
 
   <popup name="TrackContextMenu" action="TrackContextMenuAction">
+    <menuitem action="PlayTrack"/>
+    <separator/>
     <placeholder name="AboveAddToPlaylist"/>
     <menu name="AddToPlaylist" action="AddToPlaylistAction"></menu>
     <placeholder name="BelowAddToPlaylist"/>
