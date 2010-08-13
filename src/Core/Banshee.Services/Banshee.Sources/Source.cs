@@ -765,7 +765,8 @@ namespace Banshee.Sources
                 return String.Empty;
             }
 
-            builder.AppendFormat (Catalog.GetPluralString ("{0:N0} item", "{0:N0} items", count), count);
+            var count_str = String.Format ("{0:N0}", count);
+            builder.AppendFormat (GetPluralItemCountString (count), count_str);
 
             if (this is IDurationAggregator && StatusFormatsCount > 0) {
                 var duration = ((IDurationAggregator)this).Duration;
@@ -784,6 +785,11 @@ namespace Banshee.Sources
             }
 
             return builder.ToString ();
+        }
+
+        protected virtual string GetPluralItemCountString (int count)
+        {
+            return Catalog.GetPluralString ("{0} item", "{0} items", count);
         }
 
 #endregion

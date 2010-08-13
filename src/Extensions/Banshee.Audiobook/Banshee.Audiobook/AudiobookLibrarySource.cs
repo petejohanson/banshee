@@ -139,6 +139,11 @@ namespace Banshee.Audiobook
                 true);
         }
 
+        protected override string GetPluralItemCountString (int count)
+        {
+            return Catalog.GetPluralString ("{0} book", "{0} books", count);
+        }
+
         private void OnPlaybackSourceChanged (object o, EventArgs args)
         {
             if (ServiceManager.PlaybackController.Source == this) {
@@ -370,6 +375,14 @@ namespace Banshee.Audiobook
 
         public override int FilteredCount {
             get { return books_model.Count; }
+        }
+
+        public override TimeSpan Duration {
+            get { return DatabaseTrackModel.UnfilteredDuration; }
+        }
+
+        public override long FileSize {
+            get { return DatabaseTrackModel.UnfilteredFileSize; }
         }
 
         public override bool ShowBrowser {

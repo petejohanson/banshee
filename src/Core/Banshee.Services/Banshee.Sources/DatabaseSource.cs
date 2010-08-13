@@ -230,11 +230,11 @@ namespace Banshee.Sources
             get { return DatabaseTrackModel.Count; }
         }
 
-        public TimeSpan Duration {
+        public virtual TimeSpan Duration {
             get { return DatabaseTrackModel.Duration; }
         }
 
-        public long FileSize {
+        public virtual long FileSize {
             get { return DatabaseTrackModel.FileSize; }
         }
 
