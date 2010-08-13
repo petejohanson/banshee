@@ -54,6 +54,7 @@ namespace Banshee.Hardware
             foreach (var node in extensions) {
                 try {
                     manager = (IHardwareManager)node.CreateInstance (typeof (IHardwareManager));
+                    Log.DebugFormat ("Loaded HardwareManager backend: {0}", node.Id);
                     break;
                 } catch (Exception e) {
                     Log.Exception ("Hardware manager extension failed to load", e);
