@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using Mono.Unix;
 
 using Mono.Addins;
@@ -42,11 +43,28 @@ using Banshee.PlaybackController;
 
 namespace Banshee.MiroGuide
 {
-    public class MiroGuideSource : Banshee.WebSource.WebSource
+    public class MiroGuideSource : Banshee.WebSource.WebSource, IDisposable
     {
+        private SourceMessage teaser;
+
         public MiroGuideSource () : base (Catalog.GetString ("Miro Guide"), 160, "miro-guide")
         {
             Properties.SetString ("Icon.Name", "miro-guide-source");
+
+            if (!MaybeShowTeaserInPodcasts ()) {
+                ServiceManager.SourceManager.SourceAdded += OnSourceAdded;
+            }
+        }
+
+        public void Dispose ()
+        {
+            if (teaser != null) {
+                var podcast_src = ServiceManager.SourceManager.Sources.FirstOrDefault (s => s.UniqueId == "PodcastSource-PodcastLibrary");
+                if (podcast_src != null) {
+                    podcast_src.RemoveMessage (teaser);
+                }
+                teaser = null;
+            }
         }
 
         protected override Banshee.WebSource.WebBrowserShell GetWidget ()
@@ -56,6 +74,45 @@ namespace Banshee.MiroGuide
             view.Shell = shell;
             view.UpdateSearchText ();
             return shell;
+        }
+
+        private void OnSourceAdded (SourceAddedArgs args)
+        {
+            if (args.Source.UniqueId == "PodcastSource-PodcastLibrary") {
+                MaybeShowTeaserInPodcasts ();
+                ServiceManager.SourceManager.SourceAdded -= OnSourceAdded;
+            }
+        }
+
+        private bool MaybeShowTeaserInPodcasts ()
+        {
+            var manager = ServiceManager.SourceManager;
+            var podcast_src = manager.Sources.FirstOrDefault (s => s.UniqueId == "PodcastSource-PodcastLibrary");
+
+            if (podcast_src != null) {
+                var show = CreateSchema<bool> ("show_miro_guide_teaser_in_podcasts", true, null, null);
+                if (show.Get ()) {
+                    var msg = new SourceMessage (podcast_src) {
+                        CanClose = true,
+                        Text = Catalog.GetString ("Browse, preview, and subscribe to interesting podcasts in the Miro Guide podcast directory.")
+                    };
+                    msg.SetIconName ("miro-guide-source");
+                    msg.AddAction (new MessageAction (Catalog.GetString ("Open Miro Guide"),
+                        delegate { manager.SetActiveSource (this); }
+                    ));
+                    msg.Updated += delegate {
+                        if (msg.IsHidden) {
+                            show.Set (false);
+                        }
+                    };
+
+                    teaser = msg;
+                    podcast_src.PushMessage (msg);
+                }
+                return true;
+            }
+
+            return false;
         }
     }
 }
