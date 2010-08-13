@@ -14,15 +14,17 @@ EXTRA_BUNDLE = $(LIBGPODSHARP_ASSEMBLIES)
 if ENABLE_APPLEDEVICE
 include $(top_srcdir)/build/build.mk
 
-install-data-hook:
+define EXTRA_INSTALL_DATA_HOOK
 	for ASM in $(LIBGPODSHARP_ASSEMBLIES); do \
 		$(INSTALL) -m 0755 $$ASM $(DESTDIR)$(moduledir); \
 	done;
+endef
 
-uninstall-hook:
+define EXTRA_UNINSTALL_HOOK
 	for ASM in $(LIBGPODSHARP_ASSEMBLIES); do \
 		rm -f $(DESTDIR)$(moduledir)/`basename $$ASM`; \
 	done;
+endef
 
 else
 EXTRA_DIST = $(SOURCES) $(RESOURCES)
