@@ -70,6 +70,7 @@ namespace Banshee.Sources
         {
             public GroupSource (string name, int order) : base (name, name, order)
             {
+                TypeUniqueId = order.ToString ();
             }
         }
 
