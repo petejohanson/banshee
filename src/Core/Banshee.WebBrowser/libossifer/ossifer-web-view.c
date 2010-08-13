@@ -350,6 +350,20 @@ ossifer_web_view_reload (OssiferWebView *ossifer)
 }
 
 void
+ossifer_web_view_set_zoom (OssiferWebView *ossifer, gfloat zoomLevel)
+{
+    g_return_if_fail (OSSIFER_WEB_VIEW (ossifer));
+    return webkit_web_view_set_zoom_level (WEBKIT_WEB_VIEW (ossifer), zoomLevel);
+}
+
+gfloat
+ossifer_web_view_get_zoom (OssiferWebView *ossifer)
+{
+    g_return_val_if_fail (OSSIFER_WEB_VIEW (ossifer), 1);
+    return webkit_web_view_get_zoom_level (WEBKIT_WEB_VIEW (ossifer));
+}
+
+void
 ossifer_web_view_reload_bypass_cache (OssiferWebView *ossifer)
 {
     g_return_if_fail (OSSIFER_WEB_VIEW (ossifer));

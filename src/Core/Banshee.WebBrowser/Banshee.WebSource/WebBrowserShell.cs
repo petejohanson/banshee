@@ -47,6 +47,8 @@ namespace Banshee.WebSource
 
         public SearchEntry SearchEntry { get { return search_entry; } }
 
+        public WebView View { get { return view; } }
+
         public WebBrowserShell (string name, WebView view) : base (2, 4, false)
         {
             this.name = name;

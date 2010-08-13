@@ -54,6 +54,7 @@ namespace Banshee.WebBrowser
         private Callbacks callbacks;
 
         public event EventHandler LoadStatusChanged;
+        public event Action<float> ZoomChanged;
 
         [DllImport (LIBOSSIFER)]
         private static extern IntPtr ossifer_web_view_get_type ();
@@ -234,6 +235,23 @@ namespace Banshee.WebBrowser
         public virtual void GoBack ()
         {
             ossifer_web_view_go_back (Handle);
+        }
+
+        [DllImport (LIBOSSIFER)]
+        private static extern void ossifer_web_view_set_zoom (IntPtr ossifer, float zoomLevel);
+
+        [DllImport (LIBOSSIFER)]
+        private static extern float ossifer_web_view_get_zoom (IntPtr ossifer);
+
+        public float Zoom {
+            get { return ossifer_web_view_get_zoom (Handle); }
+            set {
+                ossifer_web_view_set_zoom (Handle, value);
+                var handler = ZoomChanged;
+                if (handler != null) {
+                    handler (value);
+                }
+            }
         }
 
         [DllImport (LIBOSSIFER)]

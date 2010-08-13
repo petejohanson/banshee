@@ -27,10 +27,14 @@
 using System;
 using Mono.Unix;
 
+using Gtk;
+
 using Hyena;
 
 using Banshee.Sources;
 using Banshee.Sources.Gui;
+using Banshee.Gui;
+using Banshee.Configuration;
 using Banshee.WebBrowser;
 
 namespace Banshee.WebSource
@@ -38,20 +42,67 @@ namespace Banshee.WebSource
     public abstract class WebSource : Source
     {
         private WebSourceContents source_contents;
+        private WebView view;
+        private BansheeActionGroup actions;
 
         public WebSource (string name, int order, string id) : base (name, name, order, id)
         {
             TypeUniqueId = id;
             Properties.Set<bool> ("Nereid.SourceContents.HeaderVisible", false);
+
+            actions = new BansheeActionGroup (id);
+            actions.Add (
+                new ActionEntry ("ZoomIn"  + id, Stock.ZoomIn,  null, "<control>plus", null, (o, a) => view.ZoomIn ()),
+                new ActionEntry ("ZoomOut" + id, Stock.ZoomOut, null, "<control>minus", null, (o, a) => view.ZoomOut ()),
+                new ActionEntry ("Zoom100" + id, Stock.Zoom100, null, "<control>0", null, (o, a) => view.Zoom = 1f)
+            );
+
+            Properties.Set<BansheeActionGroup> ("ActiveSourceActions", actions);
         }
 
         public override void Activate ()
         {
             if (source_contents == null) {
                 var shell = GetWidget ();
+
+                // float isn't supported by gconf apparently
+                var zoom_conf = CreateSchema<double> ("webview_zoom", 1f, null, null);
+                shell.View.Zoom = (float)zoom_conf.Get ();
+                shell.View.ZoomChanged += z => zoom_conf.Set (z);
+                view = shell.View;
+
                 Properties.Set<ISourceContents> ("Nereid.SourceContents",
                     source_contents = new WebSourceContents (this, shell));
                 Properties.Set<Banshee.Widgets.SearchEntry> ("Nereid.SearchEntry", shell.SearchEntry);
+
+                actions.AddUiFromString (String.Format (@"
+                    <ui>
+                      <menubar name=""MainMenu"" action=""MainMenuAction"">
+                        <menu name=""ViewMenu"" action=""ViewMenuAction"">
+                          <placeholder name=""ViewMenuAdditions"">
+                            <separator/>
+                            <menuitem action=""ZoomIn{0}""/>
+                            <menuitem action=""ZoomOut{0}""/>
+                            <menuitem action=""Zoom100{0}""/>
+                            <separator/>
+                          </placeholder>
+                        </menu>
+                      </menubar>
+                    </ui>", TypeUniqueId
+                ));
+
+                // Add additional menu item keybindings
+                var item = actions.ActionManager.UIManager.GetWidget ("/MainMenu/ViewMenu/ViewMenuAdditions/ZoomIn" + TypeUniqueId);
+                item.AddAccelerator ("activate", actions.ActionManager.UIManager.AccelGroup,
+                    (uint) Gdk.Key.KP_Add, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible);
+                item.AddAccelerator ("activate", actions.ActionManager.UIManager.AccelGroup,
+                    (uint) Gdk.Key.equal, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible);
+
+                item = actions.ActionManager.UIManager.GetWidget ("/MainMenu/ViewMenu/ViewMenuAdditions/ZoomOut" + TypeUniqueId);
+                item.AddAccelerator ("activate", actions.ActionManager.UIManager.AccelGroup,
+                    (uint) Gdk.Key.KP_Subtract, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible);
+                item.AddAccelerator ("activate", actions.ActionManager.UIManager.AccelGroup,
+                    (uint) Gdk.Key.underscore, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible);
             }
 
             base.Activate ();
@@ -66,9 +117,9 @@ namespace Banshee.WebSource
         private class WebSourceContents : ISourceContents
         {
             private WebSource source;
-            private Gtk.Widget widget;
+            private Widget widget;
 
-            public WebSourceContents (WebSource source, Gtk.Widget widget)
+            public WebSourceContents (WebSource source, Widget widget)
             {
                 this.source = source;
                 this.widget = widget;
@@ -83,7 +134,7 @@ namespace Banshee.WebSource
             {
             }
 
-            public Gtk.Widget Widget {
+            public Widget Widget {
                 get { return widget; }
             }
 
