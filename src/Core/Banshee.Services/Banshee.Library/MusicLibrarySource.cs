@@ -87,7 +87,7 @@ namespace Banshee.Library
             ));
         }
 
-        protected override string GetPluralItemCountString (int count)
+        public override string GetPluralItemCountString (int count)
         {
             return Catalog.GetPluralString ("{0} song", "{0} songs", count);
         }

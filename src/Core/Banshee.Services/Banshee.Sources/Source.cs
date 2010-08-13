@@ -787,7 +787,7 @@ namespace Banshee.Sources
             return builder.ToString ();
         }
 
-        protected virtual string GetPluralItemCountString (int count)
+        public virtual string GetPluralItemCountString (int count)
         {
             return Catalog.GetPluralString ("{0} item", "{0} items", count);
         }

@@ -139,7 +139,7 @@ namespace Banshee.Audiobook
                 true);
         }
 
-        protected override string GetPluralItemCountString (int count)
+        public override string GetPluralItemCountString (int count)
         {
             return Catalog.GetPluralString ("{0} book", "{0} books", count);
         }

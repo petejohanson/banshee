@@ -150,6 +150,11 @@ namespace Banshee.InternetRadio
             }
         }
 
+        public override string GetPluralItemCountString (int count)
+        {
+            return Catalog.GetPluralString ("{0} station", "{0} stations", count);
+        }
+
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
         {
             DatabaseQueryFilterModel<string> genre_model = new DatabaseQueryFilterModel<string> (src, src.DatabaseTrackModel, ServiceManager.DbConnection,

@@ -184,6 +184,11 @@ namespace Banshee.Podcasting.Gui
             get { return false; }
         }
 
+        public override string GetPluralItemCountString (int count)
+        {
+            return Catalog.GetPluralString ("{0} episode", "{0} episodes", count);
+        }
+
         public override bool AcceptsInputFromSource (Source source)
         {
             return false;

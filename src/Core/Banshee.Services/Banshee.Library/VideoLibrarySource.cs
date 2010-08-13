@@ -65,7 +65,7 @@ namespace Banshee.Library
             ", Catalog.GetString ("Produced By")));
         }
 
-        protected override string GetPluralItemCountString (int count)
+        public override string GetPluralItemCountString (int count)
         {
             return Catalog.GetPluralString ("{0} video", "{0} videos", count);
         }

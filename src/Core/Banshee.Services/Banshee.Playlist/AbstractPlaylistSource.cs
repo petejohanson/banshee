@@ -161,6 +161,11 @@ namespace Banshee.Playlist
             base.AfterInitialized ();
         }
 
+        public override string GetPluralItemCountString (int count)
+        {
+            return Parent == null ? base.GetPluralItemCountString (count) : Parent.GetPluralItemCountString (count);
+        }
+
         public override void Rename (string newName)
         {
             base.Rename (newName);
