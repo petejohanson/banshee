@@ -65,7 +65,7 @@ namespace Banshee.Audiobook
     {
         AudiobookLibrarySource library;
 
-        Label title_label;
+        WrapLabel title_label;
         BookCover cover;
         ImageButton resume_button;
         RatingEntry rating_entry;
@@ -185,10 +185,7 @@ namespace Banshee.Audiobook
             );
 
             // Title
-            title_label = new Label () {
-                Xalign = 0,
-                Yalign = 0
-            };
+            title_label = new WrapLabel ();
 
             resume_button = new ImageButton ("", null, IconSize.LargeToolbar);
             resume_button.ImageWidget.Stock = Stock.MediaPlay;
