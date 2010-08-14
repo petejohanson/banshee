@@ -91,20 +91,27 @@ namespace Banshee.Dap.Mtp
 
             IVolume volume = device as IVolume;
             foreach (var v in devices) {
-                if (v.BusNumber == busnum && v.DeviceNumber == devnum) {
-                    if (volume != null)
+                // Using the HAL hardware backend, HAL says the busnum is 2, but libmtp says it's 0, so disabling that check
+                //if (v.BusNumber == busnum && v.DeviceNumber == devnum) {
+                if (v.DeviceNumber == devnum) {
+                    // If gvfs-gphoto has it mounted, unmount it
+                    if (volume != null) {
                         volume.Unmount ();
+                    }
+
                     for (int i = 5; i > 0 && mtp_device == null; i--) {
                         try {
                             mtp_device = MtpDevice.Connect (v);
-                        } catch (Exception){
-                            Log.Debug (string.Format ("Failed to connect to mtp device. Trying {0} more times...", i - i));
-                        }
-                        if (mtp_device == null)
+                        } catch (Exception) {}
+
+                        if (mtp_device == null) {
+                            Log.DebugFormat ("Failed to connect to mtp device. Trying {0} more times...", i - 1);
                             Thread.Sleep (2000);
+                        }
                     }
                 }
             }
+
             if (mtp_device == null) {
                 throw new InvalidDeviceException ();
             }
