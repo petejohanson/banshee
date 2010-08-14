@@ -57,6 +57,7 @@ namespace Banshee.Dap.AppleDevice
                 IpodTrack = ((AppleDeviceTrackInfo)track).IpodTrack;
                 LoadFromIpodTrack ();
             } else {
+                IsCompilation = track.IsCompilation ;
                 AlbumArtist = track.AlbumArtist;
                 AlbumTitle = track.AlbumTitle;
                 ArtistName = track.ArtistName;
@@ -74,7 +75,6 @@ namespace Banshee.Dap.AppleDevice
                 FileSize = track.FileSize;
                 Genre = track.Genre;
                 Grouping = track.Grouping;
-                IsCompilation = track.IsCompilation ;
                 LastPlayed = track.LastPlayed;
                 LastSkipped = track.LastSkipped;
                 PlayCount = track.PlayCount;
@@ -109,6 +109,7 @@ namespace Banshee.Dap.AppleDevice
 
             ExternalId = (long) track.DBID;
 
+            IsCompilation = track.Compilation;
             AlbumArtist = track.AlbumArtist;
             AlbumTitle = String.IsNullOrEmpty (track.Album) ? null : track.Album;
             ArtistName = String.IsNullOrEmpty (track.Artist) ? null : track.Artist;
@@ -124,7 +125,6 @@ namespace Banshee.Dap.AppleDevice
             FileSize = track.Size;
             Genre = String.IsNullOrEmpty (track.Genre) ? null : track.Genre;
             Grouping = track.Grouping;
-            IsCompilation = track.Compilation;
             LastPlayed = track.TimePlayed;
             PlayCount = (int) track.PlayCount;
             TrackCount = track.Tracks;
@@ -181,6 +181,7 @@ namespace Banshee.Dap.AppleDevice
             }
 
             var track = IpodTrack;
+            track.Compilation = IsCompilation;
             track.AlbumArtist = AlbumArtist;
             track.Bitrate = BitRate;
             track.Samplerate= (ushort)SampleRate;
@@ -193,7 +194,6 @@ namespace Banshee.Dap.AppleDevice
             track.TrackLength = (int) Duration.TotalMilliseconds;
             track.Size = (int)FileSize;
             track.Grouping = Grouping;
-            track.Compilation = IsCompilation;
             track.TimePlayed = LastPlayed;
             track.PlayCount = (uint) PlayCount;
             track.Tracks = TrackCount;
