@@ -26,6 +26,11 @@ AC_DEFUN([BANSHEE_CHECK_GIO_SHARP],
 			PKG_CHECK_MODULES(GKEYFILE_SHARP,
 				gkeyfile-sharp-1.0 >= 0.1,
 				enable_gio_hardware="$enable_gio_hardware", enable_gio_hardware=no)
+
+			if test "x$enable_gio_hardware" = "xno"; then
+				GUDEV_SHARP_LIBS=''
+				GKEYFILE_SHARP_LIBS=''
+			fi
 		fi
 
 		AM_CONDITIONAL(ENABLE_GIO, test "x$enable_gio" = "xyes")
