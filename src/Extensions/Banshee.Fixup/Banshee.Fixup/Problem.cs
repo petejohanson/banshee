@@ -54,6 +54,14 @@ namespace Banshee.Fixup
         [DatabaseColumn]
         public bool Selected { get; set; }
 
+        public bool SavedSelected {
+            get { return Selected; }
+            set {
+                Selected = value;
+                Provider.Save (this);
+            }
+        }
+
         [DatabaseColumn]
         public string SolutionValue { get; set; }
 
@@ -105,7 +113,7 @@ namespace Banshee.Fixup
 
         public override string ToString ()
         {
-            return String.Format ("<Problem Id={2} Type={0}>", Id, ProblemType);
+            return String.Format ("<Problem Id={0} Type={1} Selected={2} SolutionValue={3}>", Id, ProblemType, Selected, SolutionValue);
         }
 
         public static void Initialize ()

@@ -72,7 +72,8 @@ namespace Banshee.Fixup
                 SetModel (model);
                 ColumnController = new ColumnController ();
 
-                var selected = new ColumnCellCheckBox ("Selected", true);
+                var selected = new ColumnCellCheckBox ("SavedSelected", true);
+                selected.Toggled += (o, a) => model.Reload ();
                 ColumnController.Add (new Column (Catalog.GetString ("Fix?"), selected, 0));
 
                 var summary = new ColumnCellSolutionOptions ();
