@@ -245,6 +245,10 @@ ossifer_web_view_init (OssiferWebView *ossifer)
         "enable-default-context-menu", FALSE,
         NULL);
 
+    g_object_set (ossifer,
+        "full-content-zoom", TRUE,
+        NULL);
+
     g_signal_connect (ossifer, "mime-type-policy-decision-requested",
         G_CALLBACK (ossifer_web_view_mime_type_policy_decision_requested), NULL);
 
