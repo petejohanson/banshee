@@ -175,7 +175,6 @@ namespace Banshee.Dap.AppleDevice
         public void CommitToIpod (GPod.ITDB database)
         {
             bool addTrack = IpodTrack == null;
-            Console.WriteLine ("Committing a track to {0}", database);
             if (IpodTrack == null) {
                 IpodTrack = new GPod.Track ();
             }
@@ -255,7 +254,6 @@ namespace Banshee.Dap.AppleDevice
                 database.MasterPlaylist.Tracks.Add (IpodTrack);
                 database.CopyTrackToIPod (track, Uri.LocalPath);
                 ExternalId = (long) IpodTrack.DBID;
-                Console.WriteLine ("The ipod path is now: {0}", IpodTrack.IpodPath);
             }
 //            if (CoverArtSpec.CoverExists (ArtworkId)) {
 //                SetIpodCoverArt (device, track, CoverArtSpec.GetPath (ArtworkId));

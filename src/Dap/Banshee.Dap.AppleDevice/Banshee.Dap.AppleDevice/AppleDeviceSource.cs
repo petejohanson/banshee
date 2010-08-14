@@ -356,12 +356,10 @@ namespace Banshee.Dap.AppleDevice
 
         public override bool AcceptsInputFromSource (Source source)
         {
-            Console.WriteLine ("AcceptsInputFromSource: {0}", base.AcceptsInputFromSource(source));
             return base.AcceptsInputFromSource (source);
         }
         public override bool CanAddTracks {
             get {
-                Console.WriteLine ("Can add: {0}", base.CanAddTracks);
                 return base.CanAddTracks;
             }
         }
@@ -528,15 +526,13 @@ namespace Banshee.Dap.AppleDevice
                 try {
                     if (track.IpodTrack != null) {
                         OnIpodDatabaseSaveProgressChanged (this, EventArgs.Empty);
-                        Console.WriteLine ("Removing them from the list");
                         foreach (var playlist in MediaDatabase.Playlists)
                             playlist.Tracks.Remove (track.IpodTrack);
                         MediaDatabase.MasterPlaylist.Tracks.Remove (track.IpodTrack);
                         MediaDatabase.Tracks.Remove (track.IpodTrack);
                         Banshee.IO.File.Delete (new SafeUri (GPod.ITDB.GetLocalPath (MountPoint, track.IpodTrack)));
-                        Console.WriteLine ("Removed them from the list");
                     } else {
-                        Console.WriteLine ("The ipod track was null. Darn!");
+                        Log.Error ("The ipod track was null");
                     }
                 } catch (Exception e) {
                     Log.Exception ("Cannot remove track from iPod", e);
@@ -575,7 +571,7 @@ namespace Banshee.Dap.AppleDevice
 //                ipod_device.TrackDatabase.SaveEnded += OnIpodDatabaseSaveEnded;
 //                ipod_device.TrackDatabase.SaveProgressChanged += OnIpodDatabaseSaveProgressChanged;
                 MediaDatabase.Write ();
-                Console.WriteLine ("Wrote database");
+                Log.Information ("Wrote iPod database");
             } catch (Exception e) {
                 Log.Exception ("Failed to save iPod database", e);
             } finally {
