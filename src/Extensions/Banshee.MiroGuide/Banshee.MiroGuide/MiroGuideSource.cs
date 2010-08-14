@@ -94,7 +94,7 @@ namespace Banshee.MiroGuide
                 if (show.Get ()) {
                     var msg = new SourceMessage (podcast_src) {
                         CanClose = true,
-                        Text = Catalog.GetString ("Browse, preview, and subscribe to interesting podcasts in the Miro Guide podcast directory.")
+                        Text = Catalog.GetString ("Discover interesting podcasts in the Miro Guide podcast directory!")
                     };
                     msg.SetIconName ("miro-guide-source");
                     msg.AddAction (new MessageAction (Catalog.GetString ("Open Miro Guide"),
