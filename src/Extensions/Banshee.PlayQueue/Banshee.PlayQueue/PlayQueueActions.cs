@@ -56,22 +56,25 @@ namespace Banshee.PlayQueue
                 new ActionEntry ("RefreshPlayQueueAction", Stock.Refresh,
                     Catalog.GetString ("Refresh"), null,
                     Catalog.GetString ("Refresh random tracks in the play queue"),
-                    OnRefreshPlayQueue)
-            );
+                    OnRefreshPlayQueue),
 
-            AddImportant (
+                new ActionEntry ("ShufflePlayQueue", null,
+                    Catalog.GetString ("Shuffle"), null,
+                    Catalog.GetString ("Randomize the playback order of items in the play queue"),
+                    OnShufflePlayQueue),
+
                 new ActionEntry ("AddPlayQueueTracksAction", Stock.Add,
                     Catalog.GetString ("Add More"), null,
                     Catalog.GetString ("Add more random tracks to the play queue"),
-                    OnAddPlayQueueTracks)
-            );
+                    OnAddPlayQueueTracks),
 
-            AddImportant (
                 new ActionEntry ("ClearPlayQueueAction", Stock.Clear,
                     Catalog.GetString ("Clear"), null,
                     Catalog.GetString ("Remove all tracks from the play queue"),
                     OnClearPlayQueue)
             );
+
+            this["ShufflePlayQueue"].IconName = "media-playlist-shuffle";
 
             Add (new ToggleActionEntry [] {
                 new ToggleActionEntry ("ClearPlayQueueOnQuitAction", null,
@@ -119,6 +122,11 @@ namespace Banshee.PlayQueue
             playqueue.AddMoreRandomTracks ();
         }
 
+        private void OnShufflePlayQueue (object o, EventArgs args)
+        {
+            playqueue.Shuffle ();
+        }
+
         private void OnClearPlayQueueOnQuit (object o, EventArgs args)
         {
             ToggleAction action = this["ClearPlayQueueOnQuitAction"] as Gtk.ToggleAction;
@@ -144,6 +152,7 @@ namespace Banshee.PlayQueue
                 DatabaseSource db_source = source as DatabaseSource ?? source.Parent as DatabaseSource;
                 UpdateAction ("RefreshPlayQueueAction", playqueue.Populate);
                 UpdateAction ("AddPlayQueueTracksAction", playqueue.Populate);
+                UpdateAction ("ShufflePlayQueue", !playqueue.Populate, playqueue.Count > 1);
                 UpdateAction ("ClearPlayQueueAction", !playqueue.Populate, playqueue.Count > 0);
                 UpdateAction ("ClearPlayQueueOnQuitAction", !playqueue.Populate);
                 UpdateAction ("AddToPlayQueueAction", db_source != null && db_source != playqueue, true);

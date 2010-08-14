@@ -167,6 +167,54 @@ namespace Banshee.PlayQueue
             return header_widget;
         }
 
+        // Randomizes the ViewOrder of all the enabled, unplayed/playing songs
+        public void Shuffle ()
+        {
+            if (!Populate) {
+                if (current_track == null)
+                    return;
+
+                int enabled_count = EnabledCount;
+                int first_view_order = (int)CurrentTrackViewOrder;
+                int last_view_order = first_view_order + enabled_count;
+
+                // If the current track is playing, don't shuffle it
+                if (ServiceManager.PlayerEngine.IsPlaying (current_track))
+                    first_view_order++;
+
+                // Nothing to do if less than 2 tracks
+                if (last_view_order - first_view_order < 2)
+                    return;
+
+                // Save the current_track index, so we can update the current track
+                // to be whatever one is at that position after we shuffle them -- assuming
+                // the current_track isn't already playing.
+                int current_index = TrackModel.IndexOf (current_track);
+
+                // Setup a function that will return a random ViewOrder in the range we want
+                var rand = new Random ();
+                var func_id = "play-queue-shuffle-order-" + rand.NextDouble ().ToString ();
+                var view_orders = Enumerable.Range (first_view_order, last_view_order)
+                                            .OrderBy (a => rand.NextDouble ())
+                                            .ToList ();
+                int i = 0;
+                BinaryFunction.Add (func_id, (f, b) => view_orders[i++]);
+
+                ServiceManager.DbConnection.Execute (
+                    "UPDATE CorePlaylistEntries SET ViewOrder = HYENA_BINARY_FUNCTION (?, NULL, NULL) WHERE PlaylistID = ? AND ViewOrder >= ?",
+                    func_id, DbId, first_view_order
+                );
+
+                BinaryFunction.Remove (func_id);
+                Reload ();
+
+                // Update the current track unless it was playing (and therefore wasn't moved)
+                if (!ServiceManager.PlayerEngine.IsPlaying (current_track)) {
+                    SetCurrentTrack (TrackModel[current_index] as DatabaseTrackInfo);
+                }
+            }
+        }
+
 #region IPlayQueue, IDBusExportable
 
         public void EnqueueUri (string uri)
@@ -253,6 +301,23 @@ namespace Banshee.PlayQueue
             get { return "PlayQueue"; }
         }
 
+        private long CurrentTrackViewOrder {
+            get {
+                // Get the ViewOrder of the current_track
+                return current_track == null
+                    ? ServiceManager.DbConnection.Query<long> (@"
+                        SELECT MAX(ViewOrder) + 1
+                        FROM CorePlaylistEntries
+                        WHERE PlaylistID = ?",
+                        DbId)
+                    : ServiceManager.DbConnection.Query<long> (@"
+                        SELECT ViewOrder
+                        FROM CorePlaylistEntries
+                        WHERE PlaylistID = ? AND EntryID = ?",
+                        DbId, Convert.ToInt64 (current_track.CacheEntryId));
+            }
+        }
+
 #endregion
 
         public override bool AddSelectedTracks (Source source)
@@ -263,20 +328,7 @@ namespace Banshee.PlayQueue
                     return false;
                 }
 
-                // Get the ViewOrder of the current_track
-                long current_view_order = current_track == null ?
-                    ServiceManager.DbConnection.Query<long> (@"
-                        SELECT MAX(ViewOrder) + 1
-                        FROM CorePlaylistEntries
-                        WHERE PlaylistID = ?",
-                        DbId
-                    ) :
-                    ServiceManager.DbConnection.Query<long> (@"
-                        SELECT ViewOrder
-                        FROM CorePlaylistEntries
-                        WHERE PlaylistID = ? AND EntryID = ?",
-                        DbId, Convert.ToInt64 (current_track.CacheEntryId)
-                );
+                long current_view_order = CurrentTrackViewOrder;
 
                 // If the current_track is not playing, insert before it.
                 int index = -1;
@@ -664,17 +716,6 @@ namespace Banshee.PlayQueue
             current_track = track;
         }
 
-        public long Offset {
-            get { return offset; }
-            protected set {
-                if (value != offset) {
-                    offset = value;
-                    DatabaseConfigurationClient.Client.Set (CurrentOffsetSchema, (int)offset);
-                    Reload ();
-                }
-            }
-        }
-
         public void Refresh ()
         {
             int index = current_track == null ? Count : TrackModel.IndexOf (current_track);
@@ -686,22 +727,11 @@ namespace Banshee.PlayQueue
 
             if (index + 1 < Count) {
                 // Get the ViewOrder of the current_track
-                long current_view_order = current_track == null ?
-                    ServiceManager.DbConnection.Query<long> (@"
-                        SELECT MAX(ViewOrder) + 1
-                        FROM CorePlaylistEntries
-                        WHERE PlaylistID = ?",
-                        DbId
-                    ) :
-                    ServiceManager.DbConnection.Query<long> (@"
-                        SELECT ViewOrder
-                        FROM CorePlaylistEntries
-                        WHERE PlaylistID = ? AND EntryID = ?",
-                        DbId, Convert.ToInt64 (current_track.CacheEntryId)
-                );
+                long current_view_order = CurrentTrackViewOrder;
+
                 // Get the list of generated tracks.
                 var generated = new HashSet<long> ();
-                foreach(long trackID in ServiceManager.DbConnection.QueryEnumerable<long> ( @"
+                foreach (long trackID in ServiceManager.DbConnection.QueryEnumerable<long> ( @"
                     SELECT TrackID
                     FROM CorePlaylistEntries
                     WHERE PlaylistID = ? AND Generated = 1 AND ViewOrder >= ?",
@@ -727,8 +757,7 @@ namespace Banshee.PlayQueue
                 if (removed) {
                     OnTracksRemoved ();
                 }
-            }
-            else if (Count == 0 || current_track == null) {
+            } else if (Count == 0 || current_track == null) {
                 UpdatePlayQueue ();
             }
         }
@@ -768,6 +797,17 @@ namespace Banshee.PlayQueue
             }
         }
 
+        public long Offset {
+            get { return offset; }
+            protected set {
+                if (value != offset) {
+                    offset = value;
+                    DatabaseConfigurationClient.Client.Set (CurrentOffsetSchema, (int)offset);
+                    Reload ();
+                }
+            }
+        }
+
         public override int EnabledCount {
             get {
                 return current_track == null ? 0 : Count - TrackModel.IndexOf (current_track);
@@ -775,9 +815,7 @@ namespace Banshee.PlayQueue
         }
 
         public override int FilteredCount {
-            get {
-                return EnabledCount;
-            }
+            get { return EnabledCount; }
         }
 
         public override bool CanRename {
