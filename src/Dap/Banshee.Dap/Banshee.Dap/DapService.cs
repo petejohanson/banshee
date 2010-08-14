@@ -30,6 +30,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Mono.Unix;
 using Mono.Addins;
 
@@ -46,11 +48,20 @@ namespace Banshee.Dap
 {
     public class DapService : IExtensionService, IDelayedInitializeService, IDisposable
     {
+        private static SourceManager.GroupSource dap_group;
         private Dictionary<string, DapSource> sources;
         private List<DeviceCommand> unhandled_device_commands;
         private List<DapPriorityNode> supported_dap_types;
         private bool initialized;
         private object sync = new object ();
+
+        static DapService ()
+        {
+            // This group source gives us a seperator for DAPs in the source view.
+            // We add it when we get our first dap source, and then remove it when
+            //we lose the last one.
+            dap_group = new SourceManager.GroupSource ("Device", 400);
+        }
 
         public void Initialize ()
         {
@@ -217,6 +228,10 @@ namespace Banshee.Dap
 
                 if (source != null) {
                     ThreadAssist.ProxyToMain (delegate {
+                        if (!ServiceManager.SourceManager.ContainsSource (dap_group)) {
+                            ServiceManager.SourceManager.AddSource (dap_group);
+                        }
+
                         ServiceManager.SourceManager.AddSource (source);
                         source.NotifyUser ();
 
@@ -259,6 +274,9 @@ namespace Banshee.Dap
                     source.Dispose ();
                     ThreadAssist.ProxyToMain (delegate {
                         ServiceManager.SourceManager.RemoveSource (source);
+                        if (ServiceManager.SourceManager.FindSources<DapSource> ().Count () < 1) {
+                            ServiceManager.SourceManager.RemoveSource (dap_group);
+                        }
                     });
                 } catch (Exception e) {
                     Log.Exception (e);
