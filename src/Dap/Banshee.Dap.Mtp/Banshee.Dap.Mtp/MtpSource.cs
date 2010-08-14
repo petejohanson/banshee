@@ -70,7 +70,7 @@ namespace Banshee.Dap.Mtp
                 throw new InvalidDeviceException ();
             }
 
-            int busnum = portInfo.BusNumber;
+            //int busnum = portInfo.BusNumber;
             int devnum = portInfo.DeviceNumber;
 
             List<RawMtpDevice> devices = null;
