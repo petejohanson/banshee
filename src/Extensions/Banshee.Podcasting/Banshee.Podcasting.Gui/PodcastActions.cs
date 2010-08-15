@@ -445,7 +445,9 @@ namespace Banshee.Podcasting.Gui
         private void OnPodcastUpdateAll (object sender, EventArgs e)
         {
             foreach (Feed feed in Feed.Provider.FetchAll ()) {
-                feed.Update ();
+                if (feed.IsSubscribed) {
+                    feed.Update ();
+                }
             }
         }
 

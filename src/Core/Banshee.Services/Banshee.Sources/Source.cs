@@ -454,6 +454,10 @@ namespace Banshee.Sources
 
         private void HandleMessageUpdated (object o, EventArgs args)
         {
+            if (CurrentMessage == o && CurrentMessage.IsHidden) {
+                PopMessage ();
+            }
+
             OnMessageNotify ();
         }
 

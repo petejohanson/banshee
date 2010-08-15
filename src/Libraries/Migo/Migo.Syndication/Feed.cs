@@ -144,9 +144,11 @@ namespace Migo.Syndication
             protected set { dbid = value; }
         }
 
+        public static string UnknownPodcastTitle = Catalog.GetString ("Unknown Podcast");
+
         [DatabaseColumn]
         public string Title {
-            get { return title ?? Catalog.GetString ("Unknown Podcast"); }
+            get { return title ?? UnknownPodcastTitle; }
             set { title = value; }
         }
 

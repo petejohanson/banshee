@@ -121,7 +121,7 @@ namespace Migo.Syndication
             try {
                 wc = new AsyncWebClient ();
                 wc.Timeout = (30 * 1000); // 30 Seconds
-                if (feed.LastDownloadTime != DateTime.MinValue) {
+                if (feed.LastDownloadError == FeedDownloadError.None && feed.LastDownloadTime != DateTime.MinValue) {
                     wc.IfModifiedSince = feed.LastDownloadTime.ToUniversalTime ();
                 }
                 wc.DownloadStringCompleted += OnDownloadDataReceived;
@@ -187,9 +187,7 @@ namespace Migo.Syndication
                 }
 
                 feed.LastDownloadError = error;
-                if (error == FeedDownloadError.None) {
-                    feed.LastDownloadTime = DateTime.Now;
-                }
+                feed.LastDownloadTime = DateTime.Now;
 
                 feed.Save (notify_on_save);
 

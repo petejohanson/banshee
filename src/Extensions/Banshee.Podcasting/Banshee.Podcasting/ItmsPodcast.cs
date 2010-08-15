@@ -45,13 +45,16 @@ namespace Banshee.Podcasting
 
             feed_url = GetString ("feedURL");
 
-            // <key>podcastName</key>
-            // <string>This Week in Django - MP3 Edition</string>
+            try {
+                Title = GetString ("podcastName");
+            } catch (Exception) {}
         }
 
         public string FeedUrl {
             get { return feed_url; }
         }
+
+        public string Title { get; private set; }
 
         private void Fetch (string url, int tries)
         {

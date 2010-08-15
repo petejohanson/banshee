@@ -27,6 +27,7 @@
  */
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Gtk;
@@ -92,6 +93,110 @@ namespace Banshee.Podcasting.Gui
 
         public override string PreferencesPageId {
             get { return UniqueId; }
+        }
+
+        class FeedMessage : SourceMessage
+        {
+            public Feed Feed { get; set; }
+
+            public bool Valid { get; private set; }
+
+            public FeedMessage (Source src, Feed feed) : base (src)
+            {
+                Feed = feed;
+                Update ();
+            }
+
+            public void Update ()
+            {
+                ClearActions ();
+                CanClose = Feed.LastDownloadError != FeedDownloadError.None;
+                IsSpinning = !CanClose;
+
+                var title = Feed.Title == Feed.UnknownPodcastTitle ? Feed.Url : Feed.Title;
+
+                if (CanClose) {
+                    Text = String.Format (GetErrorText (), title);
+                    SetIconName ("dialog-error");
+
+                    AddAction (new MessageAction (Catalog.GetString ("Remove Podcast"), delegate {
+                        Feed.Delete (true);
+                        IsHidden = true;
+                    }));
+
+                    AddAction (new MessageAction (Catalog.GetString ("Disable Auto Updates"), delegate {
+                        Feed.IsSubscribed = false;
+                        Feed.Save ();
+                        IsHidden = true;
+                    }));
+                } else {
+                    Text = String.Format (Catalog.GetString ("Loading {0}"), title);
+                }
+
+                // TODO Avoid nagging about an error more than once
+                Valid = true;//Feed.LastDownloadTime == DateTime.MinValue || Feed.LastDownloadTime > last_feed_nag;
+            }
+
+            private string GetErrorText ()
+            {
+                switch (Feed.LastDownloadError) {
+                    case FeedDownloadError.DoesNotExist:
+                    case FeedDownloadError.DownloadFailed:
+                        return Catalog.GetString ("Network error updating {0}");
+
+                    case FeedDownloadError.InvalidFeedFormat:
+                    case FeedDownloadError.NormalizationFailed:
+                    case FeedDownloadError.UnsupportedMsXml:
+                    case FeedDownloadError.UnsupportedDtd:
+                        return Catalog.GetString ("Parsing error updating {0}");
+
+                    case FeedDownloadError.UnsupportedAuth:
+                        return Catalog.GetString ("Authentication error updating {0}");
+
+                    default:
+                        return Catalog.GetString ("Error updating {0}");
+                }
+            }
+        }
+
+        //private static DateTime last_feed_nag = DateTime.MinValue;
+        private List<FeedMessage> feed_messages = new List<FeedMessage> ();
+        public void UpdateFeedMessages ()
+        {
+            Console.WriteLine ("Updating feed msgs");
+            var feeds = Feed.Provider.FetchAllMatching (
+                "IsSubscribed = 1 AND (LastDownloadTime = 0 OR LastDownloadError != 0) ORDER BY LastDownloadTime ASC").ToList ();
+
+            lock (feed_messages) {
+                var msgs = new List<FeedMessage> ();
+
+                var cur = CurrentMessage as FeedMessage;
+                if (cur != null && feeds.Contains (cur.Feed)) {
+                    cur.Update ();
+                    feeds.Remove (cur.Feed);
+                    feed_messages.Remove (cur);
+                    msgs.Add (cur);
+                }
+
+                feed_messages.ForEach (RemoveMessage);
+                feed_messages.Clear ();
+
+                foreach (var feed in feeds) {
+                    var msg = new FeedMessage (this, feed);
+                    if (msg.Valid) {
+                        msgs.Add (msg);
+                        PushMessage (msg);
+                    }
+                }
+
+                feed_messages = msgs;
+                //last_feed_nag = DateTime.Now;
+
+                // If there's at least one new message, notify the user
+                if (msgs.Count > ((cur != null) ? 1 : 0)) {
+                    NotifyUser ();
+                }
+            }
         }
 
 #region Constructors

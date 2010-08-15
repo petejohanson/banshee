@@ -79,16 +79,22 @@ namespace Migo.Syndication
 
         public Feed CreateFeed (string url, FeedAutoDownload autoDownload)
         {
-            return CreateFeed (url, autoDownload, true);
+            return CreateFeed (url, null, autoDownload, true);
         }
 
-        public Feed CreateFeed (string url, FeedAutoDownload autoDownload, bool is_subscribed)
+        public Feed CreateFeed (string url, string title, FeedAutoDownload autoDownload)
+        {
+            return CreateFeed (url, title, autoDownload, true);
+        }
+
+        public Feed CreateFeed (string url, string title, FeedAutoDownload autoDownload, bool is_subscribed)
         {
             Feed feed = null;
             url = url.Trim ().TrimEnd ('/');
 
             if (!Feed.Exists (url)) {
                 feed = new Feed (url, autoDownload);
+                feed.Title = title;
                 feed.IsSubscribed = is_subscribed;
                 feed.Save ();
                 feed.Update ();
