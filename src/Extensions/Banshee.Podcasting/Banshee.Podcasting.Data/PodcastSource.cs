@@ -163,7 +163,6 @@ namespace Banshee.Podcasting.Gui
         private List<FeedMessage> feed_messages = new List<FeedMessage> ();
         public void UpdateFeedMessages ()
         {
-            Console.WriteLine ("Updating feed msgs");
             var feeds = Feed.Provider.FetchAllMatching (
                 "IsSubscribed = 1 AND (LastDownloadTime = 0 OR LastDownloadError != 0) ORDER BY LastDownloadTime ASC").ToList ();
 
