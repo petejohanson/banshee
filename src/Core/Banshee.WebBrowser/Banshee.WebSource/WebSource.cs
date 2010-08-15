@@ -57,6 +57,22 @@ namespace Banshee.WebSource
                 new ActionEntry ("Zoom100" + id, Stock.Zoom100, null, "<control>0", null, (o, a) => view.Zoom = 1f)
             );
 
+            Properties.Set<string> ("ActiveSourceUIString", String.Format (@"
+                <ui>
+                  <menubar name=""MainMenu"" action=""MainMenuAction"">
+                    <menu name=""ViewMenu"" action=""ViewMenuAction"">
+                      <placeholder name=""ViewMenuAdditions"">
+                        <separator/>
+                        <menuitem action=""ZoomIn{0}""/>
+                        <menuitem action=""ZoomOut{0}""/>
+                        <menuitem action=""Zoom100{0}""/>
+                        <separator/>
+                      </placeholder>
+                    </menu>
+                  </menubar>
+                </ui>", TypeUniqueId
+            ));
+
             Properties.Set<BansheeActionGroup> ("ActiveSourceActions", actions);
         }
 
@@ -74,22 +90,6 @@ namespace Banshee.WebSource
                 Properties.Set<ISourceContents> ("Nereid.SourceContents",
                     source_contents = new WebSourceContents (this, shell));
                 Properties.Set<Banshee.Widgets.SearchEntry> ("Nereid.SearchEntry", shell.SearchEntry);
-
-                actions.AddUiFromString (String.Format (@"
-                    <ui>
-                      <menubar name=""MainMenu"" action=""MainMenuAction"">
-                        <menu name=""ViewMenu"" action=""ViewMenuAction"">
-                          <placeholder name=""ViewMenuAdditions"">
-                            <separator/>
-                            <menuitem action=""ZoomIn{0}""/>
-                            <menuitem action=""ZoomOut{0}""/>
-                            <menuitem action=""Zoom100{0}""/>
-                            <separator/>
-                          </placeholder>
-                        </menu>
-                      </menubar>
-                    </ui>", TypeUniqueId
-                ));
 
                 // Add additional menu item keybindings
                 var item = actions.ActionManager.UIManager.GetWidget ("/MainMenu/ViewMenu/ViewMenuAdditions/ZoomIn" + TypeUniqueId);
