@@ -132,7 +132,6 @@ namespace Banshee.Hardware.Gio
 #endregion
         private class GMpiFileInfo
         {
-            private const string Seperator = ";";
             private const string MediaGroup = "Media";
             private const string DeviceGroup = "Device";
             private const string VendorGroup = "Vendor";
@@ -145,7 +144,6 @@ namespace Banshee.Hardware.Gio
             {
                 try {
                     mpi_file = new GKeyFile ();
-                    mpi_file.ListSeparator = Seperator;
                     mpi_file.LoadFromDirs (String.Format ("{0}.mpi", mediaPlayerId),
                                            new string [] {"/usr/share/media-player-info",
                                                           "/usr/local/share/media-player-info"},
@@ -215,6 +213,7 @@ namespace Banshee.Hardware.Gio
 
                     if (mpi_file.HasKey (MediaGroup, "OutputFormats")) {
                         OutputFormats = mpi_file.GetStringList (MediaGroup, "OutputFormats");
+                        OutputFormats = OutputFormats[0].Split (';');
                     }
                 }
 
