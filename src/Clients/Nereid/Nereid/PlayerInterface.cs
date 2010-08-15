@@ -92,6 +92,13 @@ namespace Nereid
         {
         }
 
+        private void SetSimple (bool simple)
+        {
+            main_menu.Visible = !simple;
+            source_box.Visible = !simple;
+            footer_toolbar.Visible = !simple;
+        }
+
         public PlayerInterface () : base (Catalog.GetString ("Banshee Media Player"), "player_window", 1024, 700)
         {
             // if (PlatformDetection.IsMeeGo) {
@@ -464,6 +471,8 @@ namespace Nereid
 
                 UpdateSourceInformation ();
                 view_container.SearchEntry.Ready = true;
+
+                SetSimple (source.Properties.Get<bool> ("Nereid.SimpleUI"));
             });
         }
 
@@ -486,6 +495,9 @@ namespace Nereid
                             view_container.SearchEntry.Ready = true;
                         });
                     }
+                    break;
+                case "Nereid.SimpleUI":
+                    SetSimple (ServiceManager.SourceManager.ActiveSource.Properties.Get<bool> ("Nereid.SimpleUI"));
                     break;
             }
         }

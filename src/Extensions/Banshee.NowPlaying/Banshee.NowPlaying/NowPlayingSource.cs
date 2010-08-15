@@ -53,6 +53,17 @@ namespace Banshee.NowPlaying
             Properties.Set<bool> ("Nereid.SourceContents.HeaderVisible", false);
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
 
+            var actions = new BansheeActionGroup ("NowPlaying");
+            actions.AddImportant (new ToggleActionEntry ("SimplifyNowPlaying", null, Catalog.GetString ("Simplify"),
+                "F9", Catalog.GetString ("Simplify the Now Playing interface by hiding the source list and more"),
+                delegate {
+                    bool simple = !Properties.Get<bool> ("Nereid.SimpleUI");
+                    Properties.Set<bool> ("Nereid.SimpleUI", simple);
+                    (actions["SimplifyNowPlaying"] as ToggleAction).Active = simple;
+                }, false)
+            );
+            Properties.Set<BansheeActionGroup> ("ActiveSourceActions", actions);
+
             ServiceManager.SourceManager.AddSource (this);
 
             ServiceManager.PlaybackController.Transition += OnPlaybackControllerTransition;
