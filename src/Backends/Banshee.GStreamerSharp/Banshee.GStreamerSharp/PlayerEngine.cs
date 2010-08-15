@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -61,12 +62,94 @@ namespace Banshee.GStreamerSharp
             playbin = new PlayBin2 ();
             pipeline.Add (playbin);
 
+            pipeline.Bus.AddWatch (OnBusMessage);
+
             Banshee.ServiceStack.Application.RunTimeout (200, delegate {
                 OnEventChanged (PlayerEvent.Iterate);
                 return true;
             });
 
             OnStateChanged (PlayerState.Ready);
+        }
+
+        private bool OnBusMessage (Bus bus, Message msg)
+        {
+            switch (msg.Type) {
+                case MessageType.Eos:
+                    Close (false);
+                    OnEventChanged (PlayerEvent.EndOfStream);
+                    OnEventChanged (PlayerEvent.RequestNextTrack);
+                    break;
+                case MessageType.StateChanged:
+                    State old_state, new_state, pending_state;
+                    msg.ParseStateChanged (out old_state, out new_state, out pending_state);
+
+                    HandleStateChange (old_state, new_state, pending_state);
+
+                    break;
+                case MessageType.Buffering:
+                    int buffer_percent;
+                    msg.ParseBuffering (out buffer_percent);
+
+                    HandleBuffering (buffer_percent);
+                    break;
+                case MessageType.Tag:
+                    Pad pad;
+                    TagList tag_list;
+                    msg.ParseTag (out pad, out tag_list);
+
+                    HandleTag (pad, tag_list);
+
+                    break;
+                case MessageType.Error:
+                    Enum error_type;
+                    string err_msg, debug;
+                    msg.ParseError (out error_type, out err_msg, out debug);
+
+                    // TODO: What to do with the error?
+
+                    break;
+            }
+
+            return true;
+        }
+
+        private void HandleBuffering (int buffer_percent)
+        {
+            OnEventChanged (new PlayerEventBufferingArgs (buffer_percent / 100.0));
+        }
+
+        private void HandleStateChange (State old_state, State new_state, State pending_state)
+        {
+            if (CurrentState != PlayerState.Loaded && old_state == State.Ready && new_state == State.Paused && pending_state == State.Playing) {
+                OnStateChanged (PlayerState.Loaded);
+            } else if (old_state == State.Paused && new_state == State.Playing && pending_state == State.VoidPending) {
+                if (CurrentState == PlayerState.Loaded) {
+                    OnEventChanged (PlayerEvent.StartOfStream);
+                }
+                OnStateChanged (PlayerState.Playing);
+            } else if (CurrentState == PlayerState.Playing && old_state == State.Playing && new_state == State.Paused) {
+                OnStateChanged (PlayerState.Paused);
+            }
+        }
+
+        private void HandleTag (Pad pad, TagList tag_list)
+        {
+            foreach (string tag in tag_list.Tags) {
+                if (String.IsNullOrEmpty (tag)) {
+                    continue;
+                }
+
+                if (tag_list.GetTagSize (tag) < 1) {
+                    continue;
+                }
+
+                List tags = tag_list.GetTag (tag);
+
+                foreach (object o in tags) {
+                    OnTagFound (new StreamTag () { Name = tag, Value = o });
+                }
+            }
         }
 
         protected override void OpenUri (SafeUri uri)
