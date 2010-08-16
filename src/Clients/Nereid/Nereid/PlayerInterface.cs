@@ -67,8 +67,10 @@ namespace Nereid
         private HPaned views_pane;
         private ViewContainer view_container;
         private VBox source_box;
+        private Widget track_info_container;
         private CoverArtDisplay cover_art_display;
         private Widget cover_art_container;
+        private ConnectedSeekSlider seek_slider;
 
         // Major Interaction Components
         private SourceView source_view;
@@ -92,11 +94,16 @@ namespace Nereid
         {
         }
 
+        private int? original_seek_width;
         private void SetSimple (bool simple)
         {
-            main_menu.Visible = !simple;
-            source_box.Visible = !simple;
-            footer_toolbar.Visible = !simple;
+            main_menu.Visible =
+            source_box.Visible =
+            footer_toolbar.Visible =
+            track_info_container.Visible = !simple;
+
+            original_seek_width = original_seek_width ?? seek_slider.SeekSlider.WidthRequest;
+            seek_slider.SeekSlider.WidthRequest = original_seek_width.Value + (simple ? 100 : 0);
         }
 
         public PlayerInterface () : base (Catalog.GetString ("Banshee Media Player"), "player_window", 1024, 700)
@@ -207,15 +214,15 @@ namespace Nereid
             next_button.Show ();
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/NextArrowButton", next_button);
 
-            ConnectedSeekSlider seek_slider = new ConnectedSeekSlider ();
+            seek_slider = new ConnectedSeekSlider ();
             seek_slider.Show ();
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/SeekSlider", seek_slider);
 
             var track_info_display = new ClassicTrackInfoDisplay ();
             track_info_display.Show ();
-            var editable = TrackInfoDisplay.GetEditable (track_info_display);
-            editable.Show ();
-            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/TrackInfoDisplay", editable, true);
+            track_info_container = TrackInfoDisplay.GetEditable (track_info_display);
+            track_info_container.Show ();
+            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/TrackInfoDisplay", track_info_container, true);
 
             if (PlatformDetection.IsMeeGo) {
                 track_info_display.ArtworkSpacing = 5;
