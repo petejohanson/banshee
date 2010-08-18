@@ -54,6 +54,7 @@ namespace Banshee.Streaming
                 }
                 return file;
             } catch (Exception e) {
+                Hyena.Log.DebugFormat ("Encountered a problem processing: {0}", uri.AbsoluteUri);
                 Hyena.Log.DebugException (e);
                 return null;
             }
