@@ -148,23 +148,6 @@ namespace Banshee.Dap.AppleDevice
             OnTracksAdded ();
         }
 
-        private int CountMusicFiles ()
-        {
-            return 0;
-//            try {
-//                int file_count = 0;
-//
-//                DirectoryInfo m_dir = new DirectoryInfo (Path.Combine (ipod_device.ControlPath, "Music"));
-//                foreach (DirectoryInfo f_dir in m_dir.GetDirectories ()) {
-//                    file_count += f_dir.GetFiles().Length;
-//                }
-//
-//                return file_count;
-//            } catch {
-//                return 0;
-//            }
-        }
-
         private void LoadFromDevice (bool refresh)
         {
             tracks_map.Clear ();
@@ -213,12 +196,6 @@ namespace Banshee.Dap.AppleDevice
             /*if(previous_database_supported != database_supported) {
                 OnPropertiesChanged();
             }*/
-        }
-
-        private void OnRebuildDatabaseRefresh (object o, EventArgs args)
-        {
-            ServiceManager.SourceManager.SetActiveSource (MusicGroupSource);
-            base.LoadDeviceContents ();
         }
 
 //        private void DestroyUnsupportedView ()
