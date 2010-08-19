@@ -54,13 +54,7 @@ namespace Banshee.Dap.AppleDevice
             get; set;
         }
 
-        string MountPoint {
-            get { return Device.Mountpoint; }
-        }
-
         private Dictionary<int, AppleDeviceTrackInfo> tracks_map = new Dictionary<int, AppleDeviceTrackInfo> (); // FIXME: EPIC FAIL
-
-        //private UnsupportedDatabaseView unsupported_view;
 
 #region Device Setup/Dispose
 
@@ -68,13 +62,18 @@ namespace Banshee.Dap.AppleDevice
         {
             Volume = device as IVolume;
 
-            if (Volume == null || !(Volume.FileSystem == "afc" || GPod.ITDB.GetControlPath (Volume.MountPoint) != null)) {
+            if (Volume == null) {
+                throw new InvalidDeviceException ();
+            }
+
+            Device = new GPod.Device (Volume.MountPoint);
+
+            if (GPod.ITDB.GetControlPath (Device) == null) {
                 throw new InvalidDeviceException ();
             }
 
             base.DeviceInitialize (device);
 
-            Device = new GPod.Device (Volume.MountPoint);
             Name = Volume.Name;
             SupportsPlaylists = true;
             SupportsPodcasts = Device.SupportsPodcast;
@@ -173,7 +172,7 @@ namespace Banshee.Dap.AppleDevice
                 if (MediaDatabase != null)
                     MediaDatabase.Dispose ();
 
-                MediaDatabase = new GPod.ITDB (MountPoint);
+                MediaDatabase = new GPod.ITDB (Device.Mountpoint);
             }
 
             foreach (var ipod_track in MediaDatabase.Tracks) {
@@ -369,7 +368,7 @@ namespace Banshee.Dap.AppleDevice
 
         public override void Import ()
         {
-            Banshee.ServiceStack.ServiceManager.Get<LibraryImportManager> ().Enqueue (GPod.ITDB.GetMusicPath (MountPoint));
+            Banshee.ServiceStack.ServiceManager.Get<LibraryImportManager> ().Enqueue (GPod.ITDB.GetMusicPath (Device));
         }
 
         public override void CopyTrackTo (DatabaseTrackInfo track, SafeUri uri, BatchUserJob job)
@@ -530,7 +529,7 @@ namespace Banshee.Dap.AppleDevice
                             playlist.Tracks.Remove (track.IpodTrack);
                         MediaDatabase.MasterPlaylist.Tracks.Remove (track.IpodTrack);
                         MediaDatabase.Tracks.Remove (track.IpodTrack);
-                        Banshee.IO.File.Delete (new SafeUri (GPod.ITDB.GetLocalPath (MountPoint, track.IpodTrack)));
+                        Banshee.IO.File.Delete (new SafeUri (GPod.ITDB.GetLocalPath (Device, track.IpodTrack)));
                     } else {
                         Log.Error ("The ipod track was null");
                     }
