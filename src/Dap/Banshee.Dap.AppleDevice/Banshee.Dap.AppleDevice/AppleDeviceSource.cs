@@ -168,7 +168,6 @@ namespace Banshee.Dap.AppleDevice
                     }
                 } catch (Exception e) {
                     Log.Exception (e);
-                    Console.WriteLine (e);
                 }
             }
 

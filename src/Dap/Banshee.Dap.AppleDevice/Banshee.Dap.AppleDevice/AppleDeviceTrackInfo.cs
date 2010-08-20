@@ -103,7 +103,7 @@ namespace Banshee.Dap.AppleDevice
             try {
                 Uri = new SafeUri (System.IO.Path.Combine (track.ITDB.Mountpoint, track.IpodPath.Replace (":", System.IO.Path.DirectorySeparatorChar.ToString ()).Substring (1)));
             } catch (Exception ex) {
-                Console.WriteLine (ex);
+                Log.Exception (ex);
                 Uri = null;
             }
 
