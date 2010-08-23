@@ -42,8 +42,10 @@ EXTRA_DIST = \
 	AddinXmlStringExtractor.cs \
 	GObjectIntPtrCtorVerifier.cs \
 	dll-map-makefile-verifier \
-	gconf-schema-rules
+	gconf-schema-rules \
+	gnome-doc-utils.make
 
+DISTCLEANFILES = gnome-doc-utils.make
 CLEANFILES = *.exe *.mdb
 MAINTAINERCLEANFILES = Makefile.in
 
