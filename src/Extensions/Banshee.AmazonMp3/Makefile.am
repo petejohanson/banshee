@@ -22,10 +22,6 @@ mime_DATA = banshee-amz.xml
 bamz: bamz.in
 	@echo '  GEN   $@'; sed 's,@bansheedir@,$(pkglibdir),g' < $< > $@
 
-define EXTRA_INSTALL_DATA_HOOK
-	test "$(top_srcdir)" = "$(top_builddir)" && update-mime-database -V $(DESTDIR)$(datadir)/mime || :
-endef
-
 include $(top_srcdir)/build/build.mk
 
 CLEANFILES += bamz
