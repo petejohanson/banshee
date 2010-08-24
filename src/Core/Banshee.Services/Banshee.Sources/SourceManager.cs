@@ -125,16 +125,18 @@ namespace Banshee.Sources
                 TypeExtensionNode node = (TypeExtensionNode)args.ExtensionNode;
 
                 if (args.Change == ExtensionChange.Add && !extension_sources.ContainsKey (node.Id)) {
-                    Source source = (Source)node.CreateInstance ();
-                    extension_sources.Add (node.Id, source);
-                    bool add_source = true;
-                    if (source.Properties.Contains ("AutoAddSource")) {
-                        add_source = source.Properties.GetBoolean ("AutoAddSource");
-                    }
-                    if (add_source) {
-                        AddSource (source);
-                    }
-                    Log.DebugFormat ("Extension source loaded: {0}", source.Name);
+                    try {
+                        Source source = (Source)node.CreateInstance ();
+                        extension_sources.Add (node.Id, source);
+                        bool add_source = true;
+                        if (source.Properties.Contains ("AutoAddSource")) {
+                            add_source = source.Properties.GetBoolean ("AutoAddSource");
+                        }
+                        if (add_source) {
+                            AddSource (source);
+                        }
+                        Log.DebugFormat ("Extension source loaded: {0}", source.Name);
+                    } catch {}
                 } else if (args.Change == ExtensionChange.Remove && extension_sources.ContainsKey (node.Id)) {
                     Source source = extension_sources[node.Id];
                     extension_sources.Remove (node.Id);
