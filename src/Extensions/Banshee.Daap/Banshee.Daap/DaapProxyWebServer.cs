@@ -217,7 +217,7 @@ namespace Banshee.Daap
         private static string GetHtmlFooter()
         {
             return String.Format("<hr /><address>Generated on {0} by " +
-                "Banshee DAAP Extension (<a href=\"http://banshee-project.org\">http://banshee-project.org</a>)",
+                "Banshee DAAP Extension (<a href=\"http://banshee.fm\">http://banshee.fm</a>)",
                 DateTime.Now.ToString());
         }
 

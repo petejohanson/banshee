@@ -87,7 +87,7 @@ namespace Banshee.Dap.Ipod
                     link.Markup = String.Format("<u>{0}</u>", GLib.Markup.EscapeText(Catalog.GetString(
                         "Learn more about Banshee's iPod support")));
 
-                    link.Clicked += delegate { Banshee.Web.Browser.Open ("http://banshee-project.org/IpodAndItunes"); };
+                    link.Clicked += delegate { Banshee.Web.Browser.Open ("http://banshee.fm/IpodAndItunes"); };
 
                     link.Show();
                     pane.Append(link, Gtk.AttachOptions.Expand | Gtk.AttachOptions.Fill, 0, true);

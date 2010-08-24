@@ -22,7 +22,7 @@ uninstall-hook:
 
 dist-hook:
 	@( \
-	  echo "`date +%Y-%m-%d`  The Banshee Project  <http://banshee-project.org>"; \
+	  echo "`date +%Y-%m-%d`  The Banshee Project  <http://banshee.fm>"; \
 	  echo; \
 	  echo "@Banshee $(VERSION)"; \
 	  echo; \

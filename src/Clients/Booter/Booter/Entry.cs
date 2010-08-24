@@ -255,7 +255,7 @@ namespace Booter
 
         private static void ShowVersion ()
         {
-            Console.WriteLine ("Banshee {0} ({1}) http://banshee-project.org", Application.DisplayVersion, Application.Version);
+            Console.WriteLine ("Banshee {0} ({1}) http://banshee.fm", Application.DisplayVersion, Application.Version);
             Console.WriteLine ("Copyright 2005-{0} Novell, Inc. and Contributors.", DateTime.Now.Year);
         }
     }

@@ -100,7 +100,7 @@ namespace Banshee.Gui.Dialogs
                 "Copyright \u00a9 2005 Aaron Bockover"
             ), "2010");
 
-            Website = "http://banshee-project.org/";
+            Website = "http://banshee.fm/";
             WebsiteLabel = Catalog.GetString ("Banshee Website");
 
             Authors = authors.ToArray ();
