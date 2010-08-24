@@ -29,6 +29,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Hyena
 {
@@ -110,13 +111,19 @@ namespace Hyena
             if (type != LogEntryType.Information || (type == LogEntryType.Information && !showUser)) {
                 switch (type) {
                     case LogEntryType.Error: ConsoleCrayon.ForegroundColor = ConsoleColor.Red; break;
-                    case LogEntryType.Warning: ConsoleCrayon.ForegroundColor = ConsoleColor.Yellow; break;
+                    case LogEntryType.Warning: ConsoleCrayon.ForegroundColor = ConsoleColor.DarkYellow; break;
                     case LogEntryType.Information: ConsoleCrayon.ForegroundColor = ConsoleColor.Green; break;
                     case LogEntryType.Debug: ConsoleCrayon.ForegroundColor = ConsoleColor.Blue; break;
                 }
 
-                Console.Write ("[{0} {1:00}:{2:00}:{3:00}.{4:000}]", TypeString (type), DateTime.Now.Hour,
-                    DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond);
+                var thread_name = String.Empty;
+                if (Debugging) {
+                    var thread = Thread.CurrentThread;
+                    thread_name = String.Format ("{0} ", thread.ManagedThreadId);
+                }
+
+                Console.Write ("[{5}{0} {1:00}:{2:00}:{3:00}.{4:000}]", TypeString (type), DateTime.Now.Hour,
+                    DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond, thread_name);
 
                 ConsoleCrayon.ResetColor ();
 
@@ -242,7 +249,7 @@ namespace Hyena
             TimeSpan duration = finish - timers[id];
             string d_message;
             if (duration.TotalSeconds < 60) {
-                d_message = String.Format ("{0}s", duration.TotalSeconds);
+                d_message = duration.TotalSeconds.ToString ();
             } else {
                 d_message = duration.ToString ();
             }
@@ -370,6 +377,13 @@ namespace Hyena
 
         #region Public Exception Methods
 
+        internal static void DebugException (Exception e)
+        {
+            if (Debugging) {
+                Exception (e);
+            }
+        }
+
         internal static void Exception (Exception e)
         {
             Exception (null, e);
@@ -387,7 +401,7 @@ namespace Hyena
 
             while (exception_chain.Count > 0) {
                 e = exception_chain.Pop ();
-                builder.AppendFormat ("{0} (in `{1}')", e.Message, e.Source).AppendLine ();
+                builder.AppendFormat ("{0}: {1} (in `{2}')", e.GetType (), e.Message, e.Source).AppendLine ();
                 builder.Append (e.StackTrace);
                 if (exception_chain.Count > 0) {
                     builder.AppendLine ();
