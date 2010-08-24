@@ -75,6 +75,13 @@ namespace Banshee.ServiceStack
                 ? new ConsoleProgressStatus (true)
                 : null;
 
+            AddinManager.AddinLoadError += (o, a) => {
+                try {
+                    AddinManager.Registry.DisableAddin (a.AddinId);
+                } catch {}
+                Log.Exception (a.Message, a.Exception);
+            };
+
             if (ApplicationContext.Debugging) {
                 AddinManager.Registry.Rebuild (monitor);
             } else {
