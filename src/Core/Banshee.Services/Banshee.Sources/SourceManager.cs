@@ -128,11 +128,7 @@ namespace Banshee.Sources
                     try {
                         Source source = (Source)node.CreateInstance ();
                         extension_sources.Add (node.Id, source);
-                        bool add_source = true;
-                        if (source.Properties.Contains ("AutoAddSource")) {
-                            add_source = source.Properties.GetBoolean ("AutoAddSource");
-                        }
-                        if (add_source) {
+                        if (source.Properties.Get<bool> ("AutoAddSource", true)) {
                             AddSource (source);
                         }
                         Log.DebugFormat ("Extension source loaded: {0}", source.Name);
