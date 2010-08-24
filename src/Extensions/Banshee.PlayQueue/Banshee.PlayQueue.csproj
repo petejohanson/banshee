@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <ProjectGuid>{74B2E4CC-2701-4C8B-A11D-6E4443F4B21B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
@@ -90,6 +90,10 @@
     <ProjectReference Include="..\..\Hyena\Hyena.Gui\Hyena.Gui.csproj">
       <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
       <Name>Hyena.Gui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hyena\Mono.Data.Sqlite\Mono.Data.Sqlite.csproj">
+      <Project>{BB1D1D81-7A74-4183-B7B1-3E78B32D42F1}</Project>
+      <Name>Mono.Data.Sqlite</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
