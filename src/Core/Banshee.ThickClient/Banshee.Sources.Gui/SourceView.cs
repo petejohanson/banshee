@@ -341,6 +341,10 @@ namespace Banshee.Sources.Gui
             }
 
             UpdateView ();
+
+            if (args.Source.Properties.Get<bool> ("NotifyWhenAdded")) {
+                args.Source.NotifyUser ();
+            }
         }
 
         private void OnSourceRowRemoved (object o, SourceRowEventArgs args)

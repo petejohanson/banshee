@@ -367,8 +367,12 @@ namespace Banshee.SmartPlaylist
         private bool refreshed = false;
         public override void Reload ()
         {
-            if (!refreshed)
+            if (!refreshed) {
                 Refresh ();
+            } else {
+                // Don't set this on the first refresh
+                Properties.Set<bool> ("NotifyWhenAdded", IsHiddenWhenEmpty);
+            }
 
             base.Reload ();
 
