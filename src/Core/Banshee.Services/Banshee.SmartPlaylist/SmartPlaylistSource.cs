@@ -177,6 +177,8 @@ namespace Banshee.SmartPlaylist
             }
         }
 
+        public bool IsHiddenWhenEmpty { get; private set; }
+
         public override bool HasDependencies {
             get { return dependencies.Count > 0; }
         }
@@ -200,19 +202,25 @@ namespace Banshee.SmartPlaylist
         }
 
         public SmartPlaylistSource (string name, QueryNode condition, QueryOrder order, QueryLimit limit, IntegerQueryValue limit_value, PrimarySource parent)
+            : this (name, condition, order, limit, limit_value, false, parent)
+        {
+        }
+
+        public SmartPlaylistSource (string name, QueryNode condition, QueryOrder order, QueryLimit limit, IntegerQueryValue limit_value, bool hiddenWhenEmpty, PrimarySource parent)
             : this (name, parent)
         {
             ConditionTree = condition;
             QueryOrder = order;
             Limit = limit;
             LimitValue = limit_value;
+            IsHiddenWhenEmpty = hiddenWhenEmpty;
 
             SetProperties ();
             UpdateDependencies ();
         }
 
         // For existing smart playlists that we're loading from the database
-        protected SmartPlaylistSource (int dbid, string name, string condition_xml, string order_by, string limit_number, string limit_criterion, PrimarySource parent, int count, bool is_temp) :
+        protected SmartPlaylistSource (int dbid, string name, string condition_xml, string order_by, string limit_number, string limit_criterion, PrimarySource parent, int count, bool is_temp, bool hiddenWhenEmpty) :
             base (generic_name, name, dbid, -1, 0, parent, is_temp)
         {
             ConditionXml = condition_xml;
@@ -221,6 +229,7 @@ namespace Banshee.SmartPlaylist
             LimitValue = new IntegerQueryValue ();
             LimitValue.ParseUserQuery (limit_number);
             SavedCount = count;
+            IsHiddenWhenEmpty = hiddenWhenEmpty;
 
             SetProperties ();
             UpdateDependencies ();
@@ -288,19 +297,23 @@ namespace Banshee.SmartPlaylist
                 PrimarySource.TracksChanged += HandleTracksChanged;
                 PrimarySource.TracksDeleted += HandleTracksDeleted;
             }
+
+            if (IsHiddenWhenEmpty) {
+                RefreshAndReload ();
+            }
         }
 
         protected override void Create ()
         {
             DbId = ServiceManager.DbConnection.Execute (new HyenaSqliteCommand (@"
                 INSERT INTO CoreSmartPlaylists
-                    (Name, Condition, OrderBy, LimitNumber, LimitCriterion, PrimarySourceID, IsTemporary)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (Name, Condition, OrderBy, LimitNumber, LimitCriterion, PrimarySourceID, IsTemporary, IsHiddenWhenEmpty)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 Name, ConditionXml,
                 IsLimited ? QueryOrder.Name : null,
                 IsLimited ? LimitValue.ToSql () : null,
                 IsLimited ? Limit.Name : null,
-                PrimarySourceId, IsTemporary
+                PrimarySourceId, IsTemporary, IsHiddenWhenEmpty
             ));
             UpdateDependencies ();
         }
@@ -315,13 +328,14 @@ namespace Banshee.SmartPlaylist
                         LimitNumber = ?,
                         LimitCriterion = ?,
                         CachedCount = ?,
-                        IsTemporary = ?
+                        IsTemporary = ?,
+                        IsHiddenWhenEmpty = ?
                     WHERE SmartPlaylistID = ?",
                 Name, ConditionXml,
                 IsLimited ? QueryOrder.Name : null,
                 IsLimited ? LimitValue.ToSql () : null,
                 IsLimited ? Limit.Name : null,
-                Count, IsTemporary, DbId
+                Count, IsTemporary, IsHiddenWhenEmpty, DbId
             ));
             UpdateDependencies ();
         }
@@ -357,6 +371,17 @@ namespace Banshee.SmartPlaylist
                 Refresh ();
 
             base.Reload ();
+
+            if (IsHiddenWhenEmpty && Parent != null) {
+                bool contains_me = Parent.ContainsChildSource (this);
+                int count = Count;
+
+                if (count == 0 && contains_me) {
+                    Parent.RemoveChildSource (this);
+                } else if (count > 0 && !contains_me) {
+                    Parent.AddChildSource (this);
+                }
+            }
         }
 
         public void Refresh ()
@@ -491,7 +516,7 @@ namespace Banshee.SmartPlaylist
         {
             ClearTemporary ();
             using (HyenaDataReader reader = new HyenaDataReader (ServiceManager.DbConnection.Query (
-                @"SELECT SmartPlaylistID, Name, Condition, OrderBy, LimitNumber, LimitCriterion, PrimarySourceID, CachedCount, IsTemporary
+                @"SELECT SmartPlaylistID, Name, Condition, OrderBy, LimitNumber, LimitCriterion, PrimarySourceID, CachedCount, IsTemporary, IsHiddenWhenEmpty
                     FROM CoreSmartPlaylists WHERE PrimarySourceID = ?", parent.DbId))) {
                 while (reader.Read ()) {
                     SmartPlaylistSource playlist = null;
@@ -500,7 +525,8 @@ namespace Banshee.SmartPlaylist
                             reader.Get<int> (0), reader.Get<string> (1),
                             reader.Get<string> (2), reader.Get<string> (3),
                             reader.Get<string> (4), reader.Get<string> (5),
-                            parent, reader.Get<int> (7), reader.Get<bool> (8)
+                            parent, reader.Get<int> (7), reader.Get<bool> (8),
+                            reader.Get<bool> (9)
                         );
                     } catch (Exception e) {
                         Log.Warning ("Ignoring Smart Playlist", String.Format ("Caught error: {0}", e), false);

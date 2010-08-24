@@ -43,9 +43,15 @@ namespace Banshee.SmartPlaylist
         public readonly QueryOrder Order;
         public readonly QueryLimit Limit;
         public readonly IntegerQueryValue LimitNumber;
+        public readonly bool HiddenWhenEmpty;
 
         public SmartPlaylistDefinition (string name, string description, string condition)
-            : this (name, description, condition, 0, (QueryLimit)null, null)
+            : this (name, description, condition, 0, (QueryLimit)null, null, false)
+        {
+        }
+
+        public SmartPlaylistDefinition (string name, string description, string condition, bool hiddenWhenEmpty)
+            : this (name, description, condition, 0, (QueryLimit)null, null, hiddenWhenEmpty)
         {
         }
 
@@ -56,7 +62,12 @@ namespace Banshee.SmartPlaylist
         }
 
         public SmartPlaylistDefinition (string name, string description, string condition,
-            int limit_number, QueryLimit limit, QueryOrder order)
+            int limit_number, QueryLimit limit, QueryOrder order) : this (name, description, condition, limit_number, limit, order, false)
+        {
+        }
+
+        public SmartPlaylistDefinition (string name, string description, string condition,
+            int limit_number, QueryLimit limit, QueryOrder order, bool hiddenWhenEmpty)
         {
             Name = name;
             Description = description;
@@ -65,6 +76,7 @@ namespace Banshee.SmartPlaylist
             LimitNumber.SetValue (limit_number);
             Limit = limit;
             Order = order;
+            HiddenWhenEmpty = hiddenWhenEmpty;
         }
 
         public SmartPlaylistSource ToSmartPlaylistSource (PrimarySource primary_source)
@@ -72,7 +84,7 @@ namespace Banshee.SmartPlaylist
             return new SmartPlaylistSource (
                 Name,
                 UserQueryParser.Parse (Condition, BansheeQuery.FieldSet),
-                Order, Limit, LimitNumber,
+                Order, Limit, LimitNumber, HiddenWhenEmpty,
                 primary_source
             );
         }

@@ -56,7 +56,7 @@ namespace Banshee.Database
         // NOTE: Whenever there is a change in ANY of the database schema,
         //       this version MUST be incremented and a migration method
         //       MUST be supplied to match the new version number
-        protected const int CURRENT_VERSION = 42;
+        protected const int CURRENT_VERSION = 43;
         protected const int CURRENT_METADATA_VERSION = 7;
 
 #region Migration Driver
@@ -940,6 +940,12 @@ namespace Banshee.Database
             return true;
         }
 
+        [DatabaseVersion (43)]
+        private bool Migrate_43 ()
+        {
+            Execute ("ALTER TABLE CoreSmartPlaylists ADD COLUMN IsHiddenWhenEmpty INTEGER");
+            return true;
+        }
 
 #pragma warning restore 0169
 
@@ -1120,7 +1126,8 @@ namespace Banshee.Database
                     LimitNumber         TEXT,
                     LimitCriterion      TEXT,
                     CachedCount         INTEGER,
-                    IsTemporary         INTEGER DEFAULT 0
+                    IsTemporary         INTEGER DEFAULT 0,
+                    IsHiddenWhenEmpty   INTEGER DEFAULT 0
                 )
             ");
 
