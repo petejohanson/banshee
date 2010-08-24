@@ -113,25 +113,26 @@ namespace Banshee.Library
             new SmartPlaylistDefinition (
                 Catalog.GetString ("Favorites"),
                 Catalog.GetString ("Songs rated four and five stars"),
-                "rating>=4"),
+                "rating>=4", true),
 
             new SmartPlaylistDefinition (
                 Catalog.GetString ("Recent Favorites"),
                 Catalog.GetString ("Songs listened to often in the past week"),
-                "played<\"1 week ago\" playcount>3"),
+                "played<\"1 week ago\" playcount>3", true),
 
             new SmartPlaylistDefinition (
                 Catalog.GetString ("Recently Added"),
                 Catalog.GetString ("Songs imported within the last week"),
-                "added<\"1 week ago\""),
+                "added<\"1 week ago\"", true),
 
             new SmartPlaylistDefinition (
                 Catalog.GetString ("Unheard"),
                 Catalog.GetString ("Songs that have not been played or skipped"),
-                "playcount:0 skips:0"),
+                "playcount:0 skips:0", true),
         };
 
         private static SmartPlaylistDefinition [] non_default_smart_playlists = new SmartPlaylistDefinition [] {
+
             new SmartPlaylistDefinition (
                 Catalog.GetString ("Neglected Favorites"),
                 Catalog.GetString ("Favorites not played in over two months"),
