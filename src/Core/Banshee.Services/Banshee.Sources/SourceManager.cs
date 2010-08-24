@@ -230,7 +230,11 @@ namespace Banshee.Sources
 
             ThreadAssist.ProxyToMain (delegate {
                 if(source == active_source) {
-                    SetActiveSource(default_source);
+                    if (source.Parent != null && source.Parent.CanActivate) {
+                        SetActiveSource(source.Parent);
+                    } else {
+                        SetActiveSource(default_source);
+                    }
                 }
 
                 SourceEventHandler handler = SourceRemoved;
