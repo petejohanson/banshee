@@ -1,8 +1,9 @@
 // 
 // NavigationControl.cs
 // 
-// Author:
+// Authors:
 //   Aaron Bockover <abockover@novell.com>
+//   Gabriel Burt <gburt@novell.com>
 // 
 // Copyright 2010 Novell, Inc.
 // 
@@ -28,6 +29,7 @@ using System;
 
 using Gtk;
 using Hyena.Gui;
+using Hyena.Widgets;
 
 namespace Banshee.WebBrowser
 {
@@ -37,6 +39,8 @@ namespace Banshee.WebBrowser
         private Button forward_button = new Button (new Image (Stock.GoForward, IconSize.Button)) { Relief = ReliefStyle.None };
         private Button reload_button = new Button (new Image (Stock.Refresh, IconSize.Button)) { Relief = ReliefStyle.None };
         private Button home_button = new Button (new Image (Stock.Home, IconSize.Button)) { Relief = ReliefStyle.None };
+        private Menu shortcut_menu = new Menu ();
+        private MenuButton shortcut_menu_button;
 
         public event EventHandler GoHomeEvent;
 
@@ -67,14 +71,39 @@ namespace Banshee.WebBrowser
                 }
             };
 
+            shortcut_menu_button = new MenuButton (home_button, shortcut_menu, true);
+
             UpdateNavigation ();
 
             PackStart (back_button, false, false, 0);
             PackStart (forward_button, false, false, 0);
             PackStart (reload_button, false, false, 5);
-            PackStart (home_button, false, false, 0);
+            PackStart (shortcut_menu_button, false, false, 0);
 
             ShowAll ();
+            ClearLinks ();
+        }
+
+        public void ClearLinks ()
+        {
+            while (shortcut_menu.Children.Length > 0) {
+                shortcut_menu.Remove (shortcut_menu.Children[0]);
+            }
+
+            shortcut_menu_button.ArrowVisible = false;
+        }
+
+        public MenuItem AddLink (string name, string url)
+        {
+            var link = new MenuItem (name) { Visible = true };
+
+            if (url != null) {
+                link.Activated += (o, a) => WebView.LoadUri (url);
+            }
+
+            shortcut_menu.Append (link);
+            shortcut_menu_button.ArrowVisible = true;
+            return link;
         }
 
         private OssiferWebView web_view;

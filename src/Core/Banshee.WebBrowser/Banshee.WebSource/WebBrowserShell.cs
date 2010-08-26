@@ -49,7 +49,9 @@ namespace Banshee.WebSource
 
         public WebView View { get { return view; } }
 
-        public WebBrowserShell (string name, WebView view) : base (2, 4, false)
+        protected NavigationControl NavigationControl { get { return navigation_control; } }
+
+        public WebBrowserShell (string name, WebView view) : base (2, 3, false)
         {
             this.name = name;
             this.view = view;
@@ -82,7 +84,7 @@ namespace Banshee.WebSource
                 0, 0);
 
             title.Xalign = 0.0f;
-            title.Xpad = 20;
+            title.Xpad = 6;
             title.Ellipsize = Pango.EllipsizeMode.End;
 
             Attach (title, 1, 2, 0, 1,
@@ -103,7 +105,7 @@ namespace Banshee.WebSource
                 view.HasFocus = true;
                 search_clear_on_navigate_state = 1;
             };
-            Attach (search_entry, 3, 4, 0, 1,
+            Attach (search_entry, 2, 3, 0, 1,
                 AttachOptions.Fill,
                 AttachOptions.Shrink,
                 0, 0);
@@ -111,7 +113,7 @@ namespace Banshee.WebSource
             view_scroll.Add (view);
             view_scroll.ShadowType = ShadowType.In;
 
-            Attach (view_scroll, 0, 4, 1, 2,
+            Attach (view_scroll, 0, 3, 1, 2,
                 AttachOptions.Expand | AttachOptions.Fill,
                 AttachOptions.Expand | AttachOptions.Fill,
                 0, 0);
