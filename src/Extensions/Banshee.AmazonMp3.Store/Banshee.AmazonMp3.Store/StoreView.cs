@@ -1,7 +1,7 @@
 //
 // StoreView.cs
 //
-// Author:
+// Authors:
 //   Aaron Bockover <abockover@novell.com>
 //   Gabriel Burt <gburt@novell.com>
 //
@@ -139,24 +139,26 @@ namespace Banshee.AmazonMp3.Store
 
         public override void GoHome ()
         {
-            LoadUri ("http://integrated-services.banshee.fm/amz/redirect.do/" + Country + "/home/");
+            LoadUri (GetActionUrl ("home/"));
         }
 
         public override void GoSearch (string query)
         {
-            LoadUri (new Uri ("http://integrated-services.banshee.fm/amz/redirect.do/" + Country + "/search/" + query).AbsoluteUri);
+            LoadUri (new Uri (GetActionUrl ("search/" + query)).AbsoluteUri);
         }
 
         public void SignOut ()
         {
-            foreach (var name in new [] { "at-main", "x-main", "session-id",
+            // Shouldn't just clear these cookies; going to Amazon's signout page is more secure,
+            // since it will invalidate the session itself.
+            /*foreach (var name in new [] { "at-main", "x-main", "session-id",
                 "session-id-time", "session-token", "uidb-main", "pf"}) {
                 foreach (var domain in domains) {
                     OssiferSession.DeleteCookie (name, ".amazon." + domain, "/");
                 }
-            }
+            }*/
 
-            FullReload ();
+            LoadUri (GetActionUrl ("sign_out/"));
         }
 
         private void CheckSignIn ()
@@ -178,6 +180,11 @@ namespace Banshee.AmazonMp3.Store
             if (handler != null) {
                 handler (this, EventArgs.Empty);
             }
+        }
+
+        public string GetActionUrl (string action)
+        {
+            return "http://integrated-services.banshee.fm/amz/redirect.do/" + Country + "/" + action;
         }
     }
 }

@@ -2,6 +2,7 @@
 //
 // Authors:
 //   Aaron Bockover <abockover@novell.com>
+//   Gabriel Burt <gburt@novell.com>
 //
 // Copyright 2010 Novell, Inc.
 //
@@ -45,7 +46,8 @@ main (gint argc, gchar **argv)
     gchar *domain;
     gchar *affiliate_code;
     gchar *p;
-    gchar *dest_url;
+    gchar *dest_url = NULL;
+    gboolean direct_url = FALSE;
 
     country = NULL;
     input = NULL;
@@ -96,19 +98,28 @@ main (gint argc, gchar **argv)
         affiliate_code = "banshee-20";
     }
 
-    if (input == NULL || action == NULL || strcmp (action, "home") == 0) {
-        dest_url = g_strdup_printf ("http://www.amazon.%s/mp3/", domain);
-    } else if (strcmp (action, "search") == 0) {
+    if (strcmp (action, "search") == 0) {
         dest_url = g_strdup_printf ("http://www.amazon.%s/s/ref=nb_sb_noss?url=search-alias%%3Ddigital-music&field-keywords=%s", domain, input);
-    } else {
-        return 1;
+    } else if (strcmp (action, "sign_out") == 0) {
+        dest_url = g_strdup_printf ("http://www.amazon.%s/gp/help/customer/sign-out.html/ref=ya__lo?ie=UTF8&returnPath=%%2Fmp3", domain);
+    } else if (strcmp (action, "about") == 0) {
+        dest_url = g_strdup ("http://banshee.fm/about/revenue/");
+        direct_url = TRUE;
     }
 
-    printf ("Location: http://www.amazon.%s/gp/redirect.html?ie=UTF8&location=%s&tag=%s" "\n\n",
-        domain,
-        g_uri_escape_string (dest_url, NULL, TRUE),
-        affiliate_code
-    );
+    if (dest_url == NULL) {
+        dest_url = g_strdup_printf ("http://www.amazon.%s/mp3/", domain);
+    }
+
+    if (direct_url) {
+        printf ("Location: %s" "\n\n", dest_url);
+    } else {
+        printf ("Location: http://www.amazon.%s/gp/redirect.html?ie=UTF8&location=%s&tag=%s" "\n\n",
+            domain,
+            g_uri_escape_string (dest_url, NULL, TRUE),
+            affiliate_code
+        );
+    }
 
     return 0;
 }

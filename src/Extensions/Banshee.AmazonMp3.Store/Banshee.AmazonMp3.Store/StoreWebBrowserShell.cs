@@ -1,8 +1,9 @@
 //
 // StoreWebBrowserShell.cs
 //
-// Author:
+// Authors:
 //   Aaron Bockover <abockover@novell.com>
+//   Gabriel Burt <gburt@novell.com>
 //
 // Copyright 2010 Novell, Inc.
 //
@@ -39,12 +40,14 @@ namespace Banshee.AmazonMp3.Store
         {
             StoreView = store_view;
 
-            Attach (new SignOutButton (StoreView) { Relief = ReliefStyle.None }, 2, 3, 0, 1,
-                AttachOptions.Shrink,
-                AttachOptions.Shrink,
-                0, 0);
-
             SearchEntry.EmptyMessage = String.Format (Catalog.GetString ("Search the Amazon MP3 Store"));
+
+            NavigationControl.AddLink (Catalog.GetString ("How Your Purchases Support GNOME"), StoreView.GetActionUrl ("about/"));
+
+            var signout = NavigationControl.AddLink ("Sign out of Amazon", null);
+            store_view.SignInChanged += (o, a) => signout.Visible = store_view.IsSignedIn;
+            signout.Activated += (o, a) => store_view.SignOut ();
+            signout.Visible = store_view.IsSignedIn;
 
             ShowAll ();
         }
