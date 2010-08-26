@@ -53,8 +53,8 @@ namespace Banshee.MiroGuide
         public void UpdateSearchText ()
         {
             Shell.SearchEntry.EmptyMessage = LastPageWasAudio
-                ? Catalog.GetString ("Search for Podcasts")
-                : Catalog.GetString ("Search for Video Podcasts");
+                ? Catalog.GetString ("Search for podcasts")
+                : Catalog.GetString ("Search for video podcasts");
         }
 
         protected override void OnLoadStatusChanged (OssiferLoadStatus status)
@@ -120,20 +120,18 @@ namespace Banshee.MiroGuide
 
         public override void GoHome ()
         {
-            var uri = LastPageWasAudio
-                ? "http://integrated-services.banshee.fm/miro/audio/home/"
-                : "http://integrated-services.banshee.fm/miro/video/home/";
-
-            LoadUri (uri);
+            LoadUri (GetActionUrl (LastPageWasAudio, "home/"));
         }
 
         public override void GoSearch (string query)
         {
-            var uri = LastPageWasAudio
-                ? "http://integrated-services.banshee.fm/miro/audio/search/"
-                : "http://integrated-services.banshee.fm/miro/video/search/";
-
+            var uri = GetActionUrl (LastPageWasAudio, "search/");
             LoadUri (new Uri (uri + query).AbsoluteUri);
+        }
+
+        private string GetActionUrl (bool audio, string action)
+        {
+            return "http://integrated-services.banshee.fm/miro/" + (audio ? "audio/" : "video/") + action;
         }
 
         // The download and add-to-sidebar buttons take the user to a page that then redirects to the
