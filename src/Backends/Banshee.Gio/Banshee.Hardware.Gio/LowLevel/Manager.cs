@@ -43,19 +43,22 @@ namespace Banshee.Hardware.Gio
 
         private Client client;
         private VolumeMonitor monitor;
-        private Dictionary<string, string> device_uuids;
+        // When a device is unplugged we need to be able to map the Gio.Volume to the
+        // GUDev.Device as the device will already be gone from udev. We use the native
+        // handle for the Gio volume as the key to link it to the correct gudev device.
+        private Dictionary<IntPtr, GUdev.Device> volume_device_map;
 
         public event EventHandler<MountArgs> DeviceAdded;
         public event EventHandler<MountArgs> DeviceRemoved;
 
         public Manager ()
         {
-            device_uuids = new Dictionary<string, string> ();
             client = new Client (subsystems);
             monitor = VolumeMonitor.Default;
             monitor.MountAdded += HandleMonitorMountAdded;
             monitor.MountRemoved += HandleMonitorMountRemoved;
             monitor.VolumeRemoved += HandleMonitorVolumeRemoved;
+            volume_device_map= new Dictionary<IntPtr, GUdev.Device> ();
         }
 
 #region IDisposable
@@ -74,6 +77,7 @@ namespace Banshee.Hardware.Gio
                 return;
 
             var device = GudevDeviceFromGioMount (mount);
+            volume_device_map [mount.Volume.Handle] = device;
             var h = DeviceAdded;
             if (h != null) {
                 var v = new RawVolume (mount.Volume,
@@ -81,7 +85,6 @@ namespace Banshee.Hardware.Gio
                                           new GioVolumeMetadataSource (mount.Volume),
                                           new UdevMetadataSource (device));
                 h (this, new MountArgs (HardwareManager.Resolve (new Device (v))));
-                device_uuids [mount.Volume.Name] = v.Uuid;
             }
         }
 
@@ -111,16 +114,12 @@ namespace Banshee.Hardware.Gio
         {
             var h = DeviceRemoved;
             if (h != null) {
-                var device = GudevDeviceFromGioVolume (volume);
+                GUdev.Device device;
+                volume_device_map.TryGetValue (volume.Handle, out device);
                 var v = new RawVolume (volume,
                                           this,
                                           new GioVolumeMetadataSource (volume),
                                           new UdevMetadataSource (device));
-
-                if (device_uuids.ContainsKey (volume.Name)) {
-                    v.Uuid = device_uuids [volume.Name];
-                    device_uuids.Remove (volume.Name);
-                }
 
                 h (this, new MountArgs (new Device (v)));
             }
@@ -134,6 +133,7 @@ namespace Banshee.Hardware.Gio
                     continue;
                 }
 
+                volume_device_map [vol.Handle] = device;
                 var raw = new RawVolume (vol,
                                          this,
                                          new GioVolumeMetadataSource (vol),

@@ -123,7 +123,7 @@ namespace Banshee.Hardware.Gio
 
         public string MountPoint {
             get {
-                return Volume.MountInstance.Root.Path;
+                return Volume.MountInstance == null ? null : Volume.MountInstance.Root.Path;
             }
         }
 
@@ -227,13 +227,8 @@ namespace Banshee.Hardware.Gio
             get { return "Product Not Implemented"; }
         }
 
-        // This is a hack. I put a set here because when we eject a volume
-        // there's no useful uuid so instead I'm going to store it, and set it
-        // based on device name. Horrible, I know.
-        private string uuid;
         public override string Uuid {
-            get { return uuid ?? UdevMetadata.Uuid; }
-            set { uuid = value; }
+            get { return Volume.Uuid ?? UdevMetadata.Uuid; }
         }
 
         public RawBlockDevice Parent {

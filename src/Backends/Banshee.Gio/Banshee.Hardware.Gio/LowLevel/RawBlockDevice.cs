@@ -115,9 +115,6 @@ namespace Banshee.Hardware.Gio
            get {
                return UdevMetadata.Uuid;
            }
-           set {
-               throw new NotSupportedException (); 
-           }
         }
 
         public override string Vendor {

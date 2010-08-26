@@ -100,7 +100,6 @@ namespace Banshee.Hardware.Gio
 
         public abstract string Uuid {
             get;
-            set;
         }
 
         public abstract string Vendor {
