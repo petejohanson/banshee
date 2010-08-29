@@ -482,6 +482,7 @@ namespace Banshee.Dap.AppleDevice
                                                Catalog.GetString ("Preparing to synchronize..."), GetIconNames ());
             progressUpdater.Register ();
 
+            MediaDatabase.StartSync ();
             message = Catalog.GetString ("Adding track {0} of {1}");
             total = tracks_to_add.Count;
             while (tracks_to_add.Count > 0) {
