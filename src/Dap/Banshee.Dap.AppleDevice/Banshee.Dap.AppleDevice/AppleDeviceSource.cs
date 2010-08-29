@@ -468,9 +468,22 @@ namespace Banshee.Dap.AppleDevice
             }
         }
 
+        private void UpdateProgress (UserJob job, string message, int completed, int total)
+        {
+            job.Status = string.Format (message, completed, total);
+            job.Progress = completed / (double) total;
+        }
+
         private void PerformSyncThreadCycle ()
         {
-            OnIpodDatabaseSaveStarted (this, EventArgs.Empty);
+            string message;
+            int total;
+            var progressUpdater = new UserJob (Catalog.GetString ("Syncing iPod"),
+                                               Catalog.GetString ("Preparing to synchronize..."), GetIconNames ());
+            progressUpdater.Register ();
+
+            message = Catalog.GetString ("Adding track {0} of {1}");
+            total = tracks_to_add.Count;
             while (tracks_to_add.Count > 0) {
                 AppleDeviceTrackInfo track = null;
                 lock (sync_mutex) {
@@ -478,7 +491,7 @@ namespace Banshee.Dap.AppleDevice
                 }
 
                 try {
-                    OnIpodDatabaseSaveProgressChanged (this, EventArgs.Empty);
+                    UpdateProgress (progressUpdater, message, total - tracks_to_add.Count, total);
                     track.CommitToIpod (MediaDatabase);
                     tracks_map[track.TrackId] = track;
                 } catch (Exception e) {
@@ -487,7 +500,8 @@ namespace Banshee.Dap.AppleDevice
             }
 
             // TODO sync updated metadata to changed tracks
-
+            message = Catalog.GetString ("Removing track {0} of {1}");
+            total = tracks_to_remove.Count;
             while (tracks_to_remove.Count > 0) {
                 AppleDeviceTrackInfo track = null;
                 lock (sync_mutex) {
@@ -500,7 +514,7 @@ namespace Banshee.Dap.AppleDevice
 
                 try {
                     if (track.IpodTrack != null) {
-                        OnIpodDatabaseSaveProgressChanged (this, EventArgs.Empty);
+                        UpdateProgress (progressUpdater, message, total - tracks_to_remove.Count, total);
                         foreach (var playlist in MediaDatabase.Playlists)
                             playlist.Tracks.Remove (track.IpodTrack);
                         MediaDatabase.MasterPlaylist.Tracks.Remove (track.IpodTrack);
@@ -542,56 +556,14 @@ namespace Banshee.Dap.AppleDevice
 //            }
 
             try {
-//                ipod_device.TrackDatabase.SaveStarted += OnIpodDatabaseSaveStarted;
-//                ipod_device.TrackDatabase.SaveEnded += OnIpodDatabaseSaveEnded;
-//                ipod_device.TrackDatabase.SaveProgressChanged += OnIpodDatabaseSaveProgressChanged;
+                message = Catalog.GetString ("Writing media database");
+                UpdateProgress (progressUpdater, message, 1, 1);
                 MediaDatabase.Write ();
                 Log.Information ("Wrote iPod database");
             } catch (Exception e) {
                 Log.Exception ("Failed to save iPod database", e);
-            } finally {
-                OnIpodDatabaseSaveEnded (this, EventArgs.Empty);
-//                ipod_device.TrackDatabase.SaveStarted -= OnIpodDatabaseSaveStarted;
-//                ipod_device.TrackDatabase.SaveEnded -= OnIpodDatabaseSaveEnded;
-//                ipod_device.TrackDatabase.SaveProgressChanged -= OnIpodDatabaseSaveProgressChanged;
             }
-        }
-
-        private UserJob sync_user_job;
-
-        private void OnIpodDatabaseSaveStarted (object o, EventArgs args)
-        {
-            DisposeSyncUserJob ();
-
-            sync_user_job = new UserJob (Catalog.GetString ("Syncing iPod"),
-                Catalog.GetString ("Preparing to synchronize..."), GetIconNames ());
-            sync_user_job.Register ();
-        }
-
-        private void OnIpodDatabaseSaveEnded (object o, EventArgs args)
-        {
-            DisposeSyncUserJob ();
-        }
-
-        private void DisposeSyncUserJob ()
-        {
-            if (sync_user_job != null) {
-                sync_user_job.Finish ();
-                sync_user_job = null;
-            }
-        }
-
-        private void OnIpodDatabaseSaveProgressChanged (object o, EventArgs args)
-        {
-            string message = string.Format ("Copying track {0} of {1}", 1, tracks_to_add.Count + tracks_to_remove.Count);
-            double progress = 1.0 / (tracks_to_add.Count + tracks_to_remove.Count);
-             if (progress >= 0.99) {
-                 sync_user_job.Status = Catalog.GetString ("Flushing to disk...");
-                 sync_user_job.Progress = 0;
-             } else {
-                 sync_user_job.Status = message;
-                 sync_user_job.Progress = progress;
-             }
+            progressUpdater.Finish ();
         }
 
         public bool SyncNeeded {
