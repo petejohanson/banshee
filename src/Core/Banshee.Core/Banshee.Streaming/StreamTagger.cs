@@ -284,13 +284,6 @@ namespace Banshee.Streaming
 
         public static bool SaveToFile (TrackInfo track, bool write_metadata, bool write_rating_and_play_count)
         {
-            // FIXME taglib# does not seem to handle writing metadata to video files well at all atm
-            // so not allowing
-            if ((track.MediaAttributes & TrackMediaAttributes.VideoStream) != 0) {
-                Hyena.Log.DebugFormat ("Avoiding 100% cpu bug with taglib# by not writing metadata to video file {0}", track);
-                return false;
-            }
-
             // Note: this should be kept in sync with the metadata read in StreamTagger.cs
             TagLib.File file = ProcessUri (track.Uri);
             if (file == null) {
