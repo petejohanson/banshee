@@ -255,34 +255,15 @@ namespace Banshee.Dap.AppleDevice
                 database.CopyTrackToIPod (track, Uri.LocalPath);
                 ExternalId = (long) IpodTrack.DBID;
             }
-//            if (CoverArtSpec.CoverExists (ArtworkId)) {
-//                SetIpodCoverArt (device, track, CoverArtSpec.GetPath (ArtworkId));
-//            }
-        }
 
-        // FIXME: No reason for this to use GdkPixbuf - the file is on disk already in
-        // the artwork cache as a JPEG, so just shove the bytes from disk into the track
-        public static void SetIpodCoverArt (GPod.Device device, GPod.Track track, string path)
-        {
-//            try {
-//                Gdk.Pixbuf pixbuf = null;
-//                foreach (IPod.ArtworkFormat format in device.LookupArtworkFormats (IPod.ArtworkUsage.Cover)) {
-//                    if (!track.HasCoverArt (format)) {
-//                        // Lazily load the pixbuf
-//                        if (pixbuf == null) {
-//                            pixbuf = new Gdk.Pixbuf (path);
-//                        }
-//
-//                        track.SetCoverArt (format, IPod.ArtworkHelpers.ToBytes (format, pixbuf));
-//                    }
-//                }
-//
-//                if (pixbuf != null) {
-//                    pixbuf.Dispose ();
-//                }
-//            } catch (Exception e) {
-//                Log.Exception (String.Format ("Failed to set cover art on iPod from {0}", path), e);
-//            }
+            if (CoverArtSpec.CoverExists (ArtworkId)) {
+                string path = CoverArtSpec.GetPath (ArtworkId);
+                if (!track.ThumbnailsSet (path)) {
+                    Log.Error (String.Format ("Could not set cover art for {0}.", path));
+                }
+            } else {
+                track.ThumbnailsRemoveAll ();
+            }
         }
     }
 }
