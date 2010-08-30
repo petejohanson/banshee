@@ -68,16 +68,6 @@ if git --help &>/dev/null; then
 	git submodule update --init
 fi
 
-if pkg-config --modversion gnome-doc-utils 2>/dev/null; then
-	run gnome-doc-prepare --automake --force --copy
-	mv gnome-doc-utils.make build/gnome-doc-utils.make
-else
-	echo "AC_DEFUN([GNOME_DOC_INIT], [AC_MSG_NOTICE([])])" > build/m4/gnome-doc-utils.m4
-	ACLOCAL_FLAGS="-I build/m4 $ACLOCAL_FLAGS"
-	rm -f build/gnome-doc-utils.make
-	touch build/gnome-doc-utils.make
-fi
-
 run intltoolize --force --copy
 run $LIBTOOLIZE --force --copy --automake
 run aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave $ACLOCAL_FLAGS
