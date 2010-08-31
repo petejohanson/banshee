@@ -352,6 +352,7 @@ src/Extensions/Banshee.LibraryWatcher/Makefile
 src/Extensions/Banshee.MiniMode/Makefile
 src/Extensions/Banshee.MiroGuide/Makefile
 src/Extensions/Banshee.MeeGo/Makefile
+src/Extensions/Banshee.Mpris/Makefile
 src/Extensions/Banshee.MultimediaKeys/Makefile
 src/Extensions/Banshee.NotificationArea/Makefile
 src/Extensions/Banshee.NowPlaying/Makefile
