@@ -155,7 +155,16 @@ namespace Banshee.Dap.AppleDevice
                 if (MediaDatabase != null)
                     MediaDatabase.Dispose ();
 
-                MediaDatabase = new GPod.ITDB (Device.Mountpoint);
+                try {
+                    MediaDatabase = new GPod.ITDB (Device.Mountpoint);
+                } catch (GLib.GException) {
+                    Log.Information ("No iPod database could be loaded, creating a new one");
+                    GPod.ITDB.InitIpod (Volume.MountPoint, null, Volume.Name);
+                    // this may throw again. In the future we need to implement some kind of alert
+                    // mechanism to let the user know that something more serious is wrong with their
+                    // apple device a la the other iPod extension.
+                    MediaDatabase = new GPod.ITDB (Device.Mountpoint);
+                }
             }
 
             foreach (var ipod_track in MediaDatabase.Tracks) {
