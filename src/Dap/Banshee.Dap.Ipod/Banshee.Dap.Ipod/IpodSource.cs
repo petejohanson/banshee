@@ -468,11 +468,12 @@ namespace Banshee.Dap.Ipod
                     throw new Exception (Catalog.GetString ("Track duration is zero"));
                 }
 
-                IpodTrackInfo ipod_track = new IpodTrackInfo (track);
-                ipod_track.Uri = fromUri;
-                ipod_track.PrimarySource = this;
-                ipod_track.Save (false);
+                var ipod_track = new IpodTrackInfo (track) {
+                    Uri = fromUri,
+                    PrimarySource = this,
+                };
 
+                ipod_track.Save (false);
                 tracks_to_add.Enqueue (ipod_track);
             }
         }

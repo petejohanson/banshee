@@ -75,16 +75,15 @@ namespace Banshee.Metadata
                 WriteMetadataEnabled.ValueChanged += OnEnabledChanged;
                 WriteRatingsAndPlayCountsEnabled.ValueChanged += OnEnabledChanged;
                 RenameEnabled.ValueChanged += OnEnabledChanged;
+
                 foreach (var source in ServiceManager.SourceManager.Sources) {
                     AddPrimarySource (source);
                 }
-                ServiceManager.SourceManager.SourceAdded += (args) => {
-                    AddPrimarySource (args.Source);
-                };
-                ServiceManager.SourceManager.SourceRemoved += (args) => {
-                    RemovePrimarySource(args.Source);
-                };
+
+                ServiceManager.SourceManager.SourceAdded += (a) => AddPrimarySource (a.Source);
+                ServiceManager.SourceManager.SourceRemoved += (a) => RemovePrimarySource (a.Source);
                 Save ();
+
                 inited = true;
                 return false;
             });
@@ -133,14 +132,15 @@ namespace Banshee.Metadata
 
             lock (sync) {
                 if (job != null) {
-                    job.WriteMetadataEnabled  = WriteMetadataEnabled.Value;
+                    job.WriteMetadataEnabled = WriteMetadataEnabled.Value;
                     job.WriteRatingsAndPlayCountsEnabled = WriteRatingsAndPlayCountsEnabled.Value;
                     job.RenameEnabled = RenameEnabled.Value;
                 } else {
-                    var new_job = new SaveTrackMetadataJob ();
-                    new_job.WriteMetadataEnabled  = WriteMetadataEnabled.Value;
-                    new_job.WriteRatingsAndPlayCountsEnabled = WriteRatingsAndPlayCountsEnabled.Value;
-                    new_job.RenameEnabled = RenameEnabled.Value;
+                    var new_job = new SaveTrackMetadataJob () {
+                        WriteMetadataEnabled = WriteMetadataEnabled.Value,
+                        WriteRatingsAndPlayCountsEnabled = WriteRatingsAndPlayCountsEnabled.Value,
+                        RenameEnabled = RenameEnabled.Value
+                    };
                     new_job.Finished += delegate { lock (sync) { job = null; } };
                     job = new_job;
                     job.Register ();
