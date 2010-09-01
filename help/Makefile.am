@@ -9,16 +9,25 @@ DOC_PAGES = \
 	add-podcast.page \
 	add-radio.page \
 	advanced.page \
+	amazon.page \
+	emusic.page \
+	extensions.page \
 	import.page \
 	index.page \
+	introduction.page \
+	itunes-import.page \
+	keyboardshortcuts.page \
+	lastfm.page \
 	manage-coverart.page \
 	manage-playlists.page \
 	manage-tags.page \
 	play-queue.page \
 	play.page \
+	rb-import.page \
 	search.page \
 	sort.page \
-	sync.page
+	sync.page \
+	ui.page
 
 DOC_LINGUAS = de
 dist-hook: doc-dist-hook
