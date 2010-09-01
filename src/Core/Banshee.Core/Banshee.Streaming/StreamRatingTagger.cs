@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections;
+using System.Globalization;
 
 using Banshee.Collection;
 
@@ -197,7 +198,8 @@ namespace Banshee.Streaming
         private static int OggToBanshee (string ogg_rating_str)
         {
             double ogg_rating;
-            if (Double.TryParse (ogg_rating_str, out ogg_rating)) {
+            if (Double.TryParse (ogg_rating_str, NumberStyles.Number,
+                    CultureInfo.InvariantCulture, out ogg_rating)) {
                 // Quod Libet Ogg ratings are stored as a value
                 // between 0.0 and 1.0 inclusive, where unrated = 0.5.
                 if (ogg_rating == 0.5)// unrated
