@@ -26,7 +26,7 @@ AC_DEFUN([BANSHEE_CHECK_GIO_SHARP],
 
 		if test "x$enable_gio_hardware" = "xyes"; then
 			PKG_CHECK_MODULES(GUDEV_SHARP,
-				gudev-sharp >= 0.1,
+				gudev-sharp-1.0 >= 0.1,
 				enable_gio_hardware="$enable_gio", enable_gio_hardware=no)
 
 			PKG_CHECK_MODULES(GKEYFILE_SHARP,
