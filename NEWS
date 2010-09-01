@@ -33,7 +33,7 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
         based backend is the future.  This is its first release, so it should be
         considered beta quality; please file bugs!
 
-      * MPRIS support (Ubuntu Sound Indicator, etc)
+      * MPRIS v2 support (Ubuntu Sound Menu, etc)
 
       * Audiobooks and Miro Guide extensions enabled by default
 
@@ -133,10 +133,12 @@ DEPENDENCIES
         gdata-sharp-youtube >= 1.4
       * Amazon MP3 Store, Wikipedia Context Pane, and Miro Guide require
         webkit-1.0 >= 1.2.2
+      * GIO/udev-based hardware backend requires glib >= 2.22, gio-sharp,
+        gtk-sharp-beans, gudev-sharp and gkeyfile-sharp
+      * Apple Devices backend requires libgpod-sharp
 
     * Run-time requirements for default feature stack:
-      * HAL
-      * PodSleuth >= 0.6.7
+      * GIO/udev
       * Brasero >= 0.8.1
       * Avahi
       * gst-plugins-bad (providing the bpmdetect GStreamer plugin)
@@ -184,15 +186,16 @@ Contributors For This Release
     The following people directly contributed to the release of this version
     of Banshee. Without their help, there would be no release!
 
-      Aaron Bockover, Alexander Kojevnikov, Andrés G. Aragoneses,
-      Benjamín Valero Espinosa, Bertrand Lorentz, David Nielsen, Gabriel Burt,
-      Paul Cutler, Ruben Vermeersch
+      Aaron Bockover, Alan McGovern, Alex Launi, Bertrand Lorentz,
+      David Nielsen, Gabriel Burt, Jensen Somers, Paul Cutler, Pete Johanson
 
     The following people contributed updated translations to this release.
     Without them, our project's reach would be much more limited.
 
-      Andrej Žnidaršič, Aron Xu, Benjamín Valero Espinosa, Cheng-Chia Tseng,
-      Mario Blättermann, Petr Kovar, Ville-Pekka Vainio
+      A S Alam, Andrej Žnidaršič, Benjamín Valero Espinosa, Daniel S. Koda,
+      Emmanouel Kapernaros, Fran Diéguez, Kentaro KAZUHAMA, Mario Blättermann,
+      Petr Kovar, Βασίλης Κοντογιάννης
+
 
 Contributors In Past Releases
 -----------------------------
@@ -202,13 +205,13 @@ Contributors In Past Releases
     Alp Toker, Anders Petersson, Andrea Cimitan, Andreas Neustifter,
     Andreas Nilsson, Andrew Conkling, Andrés G. Aragoneses, Andy Midgette,
     Arthur Carli, Arun Raghavan, Aurélien Mino, Aydemir Ulaş Şahin,
-    Ben Maurer, Benjamín Valero Espinosa, Bertrand Lorentz, Bertrand Lorentz,
-    Bill Dawson, Bob Copeland, Bojan Rajkovic, Brad Taylor, Brandon Perry,
-    Brian Lucas, Brian Nickel, Brian Teague, Chow Loong Jin, Chris Howie,
-    Chris Jones, Chris Lahey, Chris Toshok, Chris Turchin, Christian Hergert,
+    Ben Maurer, Benjamín Valero Espinosa, Bertrand Lorentz, Bill Dawson,
+    Bob Copeland, Bojan Rajkovic, Brad Taylor, Brandon Perry, Brian Lucas,
+    Brian Nickel, Brian Teague, Chow Loong Jin, Chris Howie, Chris Jones,
+    Chris Lahey, Chris Toshok, Chris Turchin, Christian Hergert,
     Christian Krause, Christoph Burgdorf, Christopher James Halse Rogers,
     Claude Paroz, Cody Russell, Cosmin Banu, Dan Wilson, Dan Winship,
-    Daniel Munkton, Daniel Siegel, David Spreen, David Stone,
+    Daniel Munkton, Daniel Siegel, David Nielsen, David Spreen, David Stone,
     Diego E. Pettenò, Eitan Isaacson, Elena Grassi, Eoin Hennessy,
     Eric Butler, Erik Schmidt, Fabian Jost, Felipe Almeida Lessa,
     Fernando Casanova, Florent Thoumie, Fredrik Hedberg, Félix Velasco,
@@ -226,9 +229,9 @@ Contributors In Past Releases
     Nathan Palmer, Neil Loknath, Nicholas Doyle, Nicholas Parker,
     Nicolò Chieffo, Nils Naumann, Oben Sonne, Olivier Duff, Oscar Forero,
     Pacho Ramos, Patrick van Staveren, Paul Cutler, Paul Lange, Pavel Antonov,
-    Pepijn van de Geer, Peter de Kraker, Pratik Patel, Przemysław Grzegorczyk,
-    Robin Stocker, Roderich Schupp, Romain Tartière, Ruben Vermeersch,
-    Ryan Collier, Sandy Armstrong, Scott Peterson, Sebastian Dröge,
-    Shaun McCance, Tim Yamin, Tobias Mueller, Todd Berman, Travis Glenn Hansen,
-    Travis Reitter, Trey Ethridge, Valentin Sawadski, Will Farrington,
-    William Pettersson, Wouter Bolsterlee
+    Pepijn van de Geer, Pete Johanson, Peter de Kraker, Pratik Patel,
+    Przemysław Grzegorczyk, Robin Stocker, Roderich Schupp, Romain Tartière,
+    Ruben Vermeersch, Ryan Collier, Sandy Armstrong, Scott Peterson,
+    Sebastian Dröge, Shaun McCance, Tim Yamin, Tobias Mueller, Todd Berman,
+    Travis Glenn Hansen, Travis Reitter, Trey Ethridge, Valentin Sawadski,
+    Will Farrington, William Pettersson, Wouter Bolsterlee
