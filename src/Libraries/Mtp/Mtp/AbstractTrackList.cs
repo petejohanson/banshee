@@ -7,7 +7,7 @@ namespace Mtp
     public abstract class AbstractTrackList
     {
         private bool saved;
-        private List<int> track_ids;
+        private List<uint> track_ids;
         private MtpDevice device;
 
         public abstract uint Count { get; protected set; }
@@ -20,14 +20,14 @@ namespace Mtp
         public bool Saved { get { return saved; } }
         protected MtpDevice Device { get { return device; } }
 
-        public IList<int> TrackIds {
+        public IList<uint> TrackIds {
             get { return track_ids; }
         }
 
         public AbstractTrackList (MtpDevice device, string name)
         {
             this.device = device;
-            track_ids = new List<int> ();
+            track_ids = new List<uint> ();
         }
 
         internal AbstractTrackList (MtpDevice device, IntPtr tracks, uint count)
@@ -36,20 +36,20 @@ namespace Mtp
             this.saved = true;
 
             if (tracks != IntPtr.Zero) {
-                int [] vals = new int [count];
-                Marshal.Copy ((IntPtr)tracks, (int[])vals, 0, (int)count);
-                track_ids = new List<int> (vals);
+                var vals = new uint [count];
+                Marshal.Copy ((IntPtr)tracks, (int[])(object)vals, 0, (int)count);
+                track_ids = new List<uint> (vals);
             } else {
-                track_ids = new List<int> ();
+                track_ids = new List<uint> ();
             }
         }
 
         public void AddTrack (Track track)
         {
-            AddTrack ((int)track.FileId);
+            AddTrack (track.FileId);
         }
 
-        public void AddTrack (int track_id)
+        public void AddTrack (uint track_id)
         {
             track_ids.Add (track_id);
             Count++;
@@ -57,10 +57,10 @@ namespace Mtp
 
         public void RemoveTrack (Track track)
         {
-            RemoveTrack ((int)track.FileId);
+            RemoveTrack (track.FileId);
         }
 
-        public void RemoveTrack (int track_id)
+        public void RemoveTrack (uint track_id)
         {
             track_ids.Remove (track_id);
             Count--;
@@ -84,8 +84,8 @@ namespace Mtp
             if (Count == 0) {
                 TracksPtr = IntPtr.Zero;
             } else {
-                TracksPtr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (int)) * (int)Count);
-                Marshal.Copy (track_ids.ToArray (), 0, TracksPtr, (int)Count);
+                TracksPtr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (uint)) * (int)Count);
+                Marshal.Copy ((int[])(object)track_ids.ToArray (), 0, TracksPtr, (int)Count);
             }
 
             if (saved) {

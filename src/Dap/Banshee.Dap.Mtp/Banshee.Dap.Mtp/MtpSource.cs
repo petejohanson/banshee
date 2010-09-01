@@ -193,7 +193,7 @@ namespace Banshee.Dap.Mtp
                             PlaylistSource pl_src = new PlaylistSource (playlist.Name, this);
                             pl_src.Save ();
                             // TODO a transaction would make sense here (when the threading issue is fixed)
-                            foreach (int id in playlist.TrackIds) {
+                            foreach (uint id in playlist.TrackIds) {
                                 ServiceManager.DbConnection.Execute (insert_cmd, pl_src.DbId, this.DbId, id);
                             }
                             pl_src.UpdateCounts ();
@@ -240,7 +240,7 @@ namespace Banshee.Dap.Mtp
                     PlaylistSource from = child as PlaylistSource;
                     if (from != null && from.Count > 0) {
                         MTP.Playlist playlist = new MTP.Playlist (mtp_device, from.Name);
-                        foreach (int track_id in ServiceManager.DbConnection.QueryEnumerable<int> (String.Format (
+                        foreach (uint track_id in ServiceManager.DbConnection.QueryEnumerable<uint> (String.Format (
                             "SELECT CoreTracks.ExternalID FROM {0} WHERE {1}",
                             from.DatabaseTrackModel.ConditionFromFragment, from.DatabaseTrackModel.Condition)))
                         {
