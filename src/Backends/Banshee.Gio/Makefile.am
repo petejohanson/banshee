@@ -37,8 +37,22 @@ SOURCES =  \
 
 RESOURCES = Banshee.Gio.addin.xml
 
+EXTRA_BUNDLE = $(GIOSHARP_ASSEMBLIES)
+
 if ENABLE_GIO
 include $(top_srcdir)/build/build.mk
+
+define EXTRA_INSTALL_DATA_HOOK
+	for ASM in $(GIOSHARP_ASSEMBLIES); do \
+		$(INSTALL) -m 0755 $$ASM $(DESTDIR)$(moduledir); \
+	done;
+endef
+
+define EXTRA_UNINSTALL_HOOK
+	for ASM in $(GIOSHARP_ASSEMBLIES); do \
+		rm -f $(DESTDIR)$(moduledir)/`basename $$ASM`; \
+	done;
+endef
 else
 EXTRA_DIST = $(SOURCES) $(RESOURCES)
 endif
