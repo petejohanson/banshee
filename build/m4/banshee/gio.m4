@@ -17,6 +17,7 @@ AC_DEFUN([BANSHEE_CHECK_GIO_SHARP],
 		asms="`$PKG_CONFIG --variable=Libraries gio-sharp-2.0` `$PKG_CONFIG --variable=Libraries gtk-sharp-beans-2.0`"
 		for asm in $asms; do
 			GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm"
+			[[ -r "$asm.config" ]] && GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm.config"
 		done
 		AC_SUBST(GIOSHARP_ASSEMBLIES)
 
