@@ -74,7 +74,7 @@ namespace Banshee.AmazonMp3
         public void DownloadAmz (string path)
         {
             try {
-                new UserJobDownloadManager (path);
+                new AmazonDownloadManager (path);
                 Log.Information ("Downloading Amazon MP3 purchase", path);
             } catch (Exception e) {
                 Log.Exception ("Invalid .amz file: " + path, e);
