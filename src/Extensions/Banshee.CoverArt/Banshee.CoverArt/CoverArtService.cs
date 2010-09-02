@@ -50,10 +50,7 @@ namespace Banshee.CoverArt
 {
     public class CoverArtService : IExtensionService
     {
-        private InterfaceActionService action_service;
-        private ActionGroup actions;
         private bool disposed;
-        private uint ui_manager_id;
 
         private CoverArtJob job;
 
@@ -72,8 +69,6 @@ namespace Banshee.CoverArt
                     )");
             }
 
-            action_service = ServiceManager.Get<InterfaceActionService> ();
-
             if (!ServiceStartup ()) {
                 ServiceManager.SourceManager.SourceAdded += OnSourceAdded;
             }
@@ -88,7 +83,7 @@ namespace Banshee.CoverArt
 
         private bool ServiceStartup ()
         {
-            if (action_service == null || ServiceManager.SourceManager.MusicLibrary == null) {
+            if (ServiceManager.SourceManager.MusicLibrary == null) {
                 return false;
             }
 
@@ -99,23 +94,6 @@ namespace Banshee.CoverArt
 
         private void Initialize ()
         {
-            ThreadAssist.AssertInMainThread ();
-            actions = new ActionGroup ("CoverArt");
-
-            ActionEntry[] action_list = new ActionEntry [] {
-                new ActionEntry ("CoverArtAction", null,
-                    Catalog.GetString ("_Cover Art"), null,
-                    Catalog.GetString ("Manage cover art"), null),
-				new ActionEntry ("FetchCoverArtAction", null,
-                    Catalog.GetString ("_Download Cover Art"), null,
-                    Catalog.GetString ("Download cover art for all tracks"), OnFetchCoverArt)
-            };
-
-            actions.Add (action_list);
-
-            action_service.UIManager.InsertActionGroup (actions, 0);
-            ui_manager_id = action_service.UIManager.AddUiFromResource ("CoverArtMenu.xml");
-
             ServiceManager.SourceManager.MusicLibrary.TracksAdded += OnTracksAdded;
             ServiceManager.SourceManager.MusicLibrary.TracksChanged += OnTracksChanged;
         }
@@ -126,24 +104,10 @@ namespace Banshee.CoverArt
                 return;
             }
 
-            ThreadAssist.ProxyToMain (delegate {
-                Gtk.Action fetch_action = action_service.GlobalActions["FetchCoverArtAction"];
-                if (fetch_action != null) {
-                    action_service.GlobalActions.Remove (fetch_action);
-                }
+            ServiceManager.SourceManager.MusicLibrary.TracksAdded -= OnTracksAdded;
+            ServiceManager.SourceManager.MusicLibrary.TracksChanged -= OnTracksChanged;
 
-                action_service.RemoveActionGroup ("CoverArt");
-                action_service.UIManager.RemoveUi (ui_manager_id);
-
-                actions.Dispose ();
-                actions = null;
-                action_service = null;
-
-                ServiceManager.SourceManager.MusicLibrary.TracksAdded -= OnTracksAdded;
-                ServiceManager.SourceManager.MusicLibrary.TracksChanged -= OnTracksChanged;
-
-                disposed = true;
-            });
+            disposed = true;
         }
 
         public void FetchCoverArt ()
@@ -181,11 +145,6 @@ namespace Banshee.CoverArt
                 };
                 job.Start ();
             }
-        }
-
-        private void OnFetchCoverArt (object o, EventArgs args)
-        {
-            FetchCoverArt (true);
         }
 
         private void OnTracksAdded (Source sender, TrackEventArgs args)

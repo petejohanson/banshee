@@ -7,8 +7,6 @@ SOURCES =  \
 	Banshee.CoverArt/CoverArtJob.cs \
 	Banshee.CoverArt/CoverArtService.cs
 
-RESOURCES =  \
-	Banshee.CoverArt.addin.xml \
-	Resources/CoverArtMenu.xml
+RESOURCES = Banshee.CoverArt.addin.xml
 
 include $(top_srcdir)/build/build.mk
