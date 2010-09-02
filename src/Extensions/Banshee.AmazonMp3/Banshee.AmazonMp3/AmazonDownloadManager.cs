@@ -66,6 +66,7 @@ namespace Banshee.AmazonMp3
                 Status = Catalog.GetString ("Contacting..."),
                 IconNames = new string [] { "amazon-mp3-source" }
             };
+            job.Finished += delegate { ServiceManager.SourceManager.MusicLibrary.NotifyUser (); };
 
             ServiceManager.Get<JobScheduler> ().Add (job);
 
