@@ -222,14 +222,14 @@ namespace Banshee.Sources.Gui
                 if (i > 0 && !last_even_filter) {
                     Paned new_pane = GetPane (top);
                     current_pane.Pack2 (new_pane, true, false);
-                    current_pane.Position = 350;
+                    current_pane.Position = top ? 180 : 350;
                     PersistentPaneController.Control (current_pane, ControllerName (top, i));
                     current_pane = new_pane;
                 }
 
                 if (last_even_filter) {
                     current_pane.Pack2 (window, true, false);
-                    current_pane.Position = 350;
+                    current_pane.Position = top ? 180 : 350;
                     PersistentPaneController.Control (current_pane, ControllerName (top, i));
                 } else {
                     current_pane.Pack1 (window, false, false);
@@ -241,7 +241,7 @@ namespace Banshee.Sources.Gui
             container.Pack2 (main_scrolled_window, true, false);
             browser_container = filter_box;
 
-            container.Position = top ? 175 : 275;
+            container.Position = top ? 375 : 275;
             PersistentPaneController.Control (container, ControllerName (top, -1));
             ShowPack ();
         }
@@ -385,7 +385,7 @@ namespace Banshee.Sources.Gui
 
         public static readonly SchemaEntry<string> BrowserPosition = new SchemaEntry<string> (
             "browser", "position",
-            "left",
+            "top",
             "Artist/Album Browser Position",
             "The position of the Artist/Album browser; either 'top' or 'left'"
         );

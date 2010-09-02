@@ -323,7 +323,7 @@ namespace Banshee.ContextPane
 
         internal static readonly SchemaEntry<bool> ShowSchema = new SchemaEntry<bool>(
             "interface", "show_context_pane",
-            true,
+            false,
             "Show context pane",
             "Show context pane for the currently playing track"
         );
