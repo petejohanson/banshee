@@ -63,12 +63,12 @@
     <Folder Include="Banshee.AmazonMp3\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banshee.AmazonMp3\AmazonDownloadManager.cs" />
     <Compile Include="Banshee.AmazonMp3\AmazonMp3DownloaderService.cs" />
     <Compile Include="Banshee.AmazonMp3\AmzMp3Downloader.cs" />
     <Compile Include="Banshee.AmazonMp3\AmzXspfPlaylist.cs" />
     <Compile Include="Banshee.AmazonMp3\ConsoleTool.cs" />
     <Compile Include="Banshee.AmazonMp3\ImportSource.cs" />
-    <Compile Include="Banshee.AmazonMp3\UserJobDownloadManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

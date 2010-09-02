@@ -1,5 +1,5 @@
 //
-// UserJobDownloadManager.cs
+// AmazonDownloadManager.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -41,21 +41,18 @@ using Banshee.Base;
 
 namespace Banshee.AmazonMp3
 {
-    public class UserJobDownloadManager : DownloadManager
+    public class AmazonDownloadManager : DownloadManager
     {
-        private UserJob user_job;
-        private int total_count;
-        private int finished_count;
+        private DownloadManagerJob job;
         private LibraryImportManager import_manager;
 
         private int mp3_count;
         private List<TrackInfo> mp3_imported_tracks = new List<TrackInfo> ();
         private Queue<AmzMp3Downloader> non_mp3_queue = new Queue<AmzMp3Downloader> ();
 
-        public UserJobDownloadManager (string path)
+        public AmazonDownloadManager (string path)
         {
             var playlist = new AmzXspfPlaylist (path);
-            total_count = playlist.DownloadableTrackCount;
             foreach (var track in playlist.DownloadableTracks) {
                 var downloader = new AmzMp3Downloader (track);
                 if (downloader.FileExtension == "mp3") {
@@ -64,9 +61,13 @@ namespace Banshee.AmazonMp3
                 QueueDownloader (downloader);
             }
 
-            user_job = new UserJob (Catalog.GetString ("Amazon MP3 Purchases"),
-                Catalog.GetString ("Contacting..."), "amazon-mp3-source");
-            user_job.Register ();
+            job = new DownloadManagerJob (this) {
+                Title = Catalog.GetString ("Amazon MP3 Purchases"),
+                Status = Catalog.GetString ("Contacting..."),
+                IconNames = new string [] { "amazon-mp3-source" }
+            };
+
+            ServiceManager.Get<JobScheduler> ().Add (job);
 
             import_manager = new LibraryImportManager (true) {
                 KeepUserJobHidden = true
@@ -155,41 +156,6 @@ namespace Banshee.AmazonMp3
             Log.InformationFormat ("Starting to download \"{0}\" by {1}", track.Title, track.Creator);
         }
 
-        protected override void OnDownloaderProgress (HttpDownloader downloader)
-        {
-            lock (SyncRoot) {
-                double weight = 1.0 / total_count;
-                double progress = finished_count * weight;
-                double speed = 0;
-                int count = 0;
-                foreach (var active_downloader in ActiveDownloaders) {
-                    progress += weight * active_downloader.State.PercentComplete;
-                    speed = active_downloader.State.TransferRate;
-                    count++;
-                }
-                user_job.Progress = progress;
-
-                var human_speed = new Hyena.Query.FileSizeQueryValue ((long)Math.Round (speed)).ToUserQuery ();
-                if (PendingDownloadCount == 0) {
-                    user_job.Status = String.Format (
-                        Catalog.GetPluralString (
-                            "{0} download at {1}/s",
-                            "{0} downloads at {1}/s",
-                            count),
-                        count, human_speed
-                    );
-                } else {
-                    user_job.Status = String.Format (
-                        Catalog.GetPluralString (
-                            "{0} download at {1}/s ({2} pending)",
-                            "{0} downloads at {1}/s ({2} pending)",
-                            count),
-                        count, human_speed, PendingDownloadCount
-                    );
-                }
-            }
-        }
-
         protected override void OnDownloaderFinished (HttpDownloader downloader)
         {
             base.OnDownloaderFinished (downloader);
@@ -211,14 +177,6 @@ namespace Banshee.AmazonMp3
             }
 
             Log.InformationFormat ("Finished downloading \"{0}\" by {1}", track.Title, track.Creator);
-
-            lock (SyncRoot) {
-                finished_count++;
-
-                if (TotalDownloadCount <= 0) {
-                    user_job.Finish ();
-                }
-            }
         }
     }
 }

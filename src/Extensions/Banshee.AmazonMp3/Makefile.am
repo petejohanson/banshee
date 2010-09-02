@@ -4,12 +4,12 @@ LINK = $(REF_EXTENSION_AMAZONMP3)
 INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES =  \
+	Banshee.AmazonMp3/AmazonDownloadManager.cs \
 	Banshee.AmazonMp3/AmazonMp3DownloaderService.cs \
 	Banshee.AmazonMp3/AmzMp3Downloader.cs \
 	Banshee.AmazonMp3/AmzXspfPlaylist.cs \
 	Banshee.AmazonMp3/ConsoleTool.cs \
-	Banshee.AmazonMp3/ImportSource.cs \
-	Banshee.AmazonMp3/UserJobDownloadManager.cs 
+	Banshee.AmazonMp3/ImportSource.cs
 
 RESOURCES = Banshee.AmazonMp3.addin.xml
 
