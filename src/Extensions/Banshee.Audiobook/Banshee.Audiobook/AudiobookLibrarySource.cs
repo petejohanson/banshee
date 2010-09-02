@@ -107,7 +107,8 @@ namespace Banshee.Audiobook
             Properties.Set<System.Action> ("ActivationAction", delegate { SwitchToGridView (); });
 
             title_switcher = new Gtk.HBox () { Spacing = 0 };
-            var b = new Gtk.Button () { Label = this.Name, Relief = Gtk.ReliefStyle.None };
+            var title_label = new Gtk.Label () { Markup = String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (this.Name)) };
+            var b = new Gtk.Button (title_label) { Relief = Gtk.ReliefStyle.None };
             b.Clicked += delegate { SwitchToGridView (); };
             title_switcher.PackStart (b);
 
