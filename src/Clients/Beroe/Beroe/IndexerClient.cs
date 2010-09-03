@@ -44,20 +44,20 @@ using Banshee.Collection.Indexer;
 namespace Beroe
 {
     [DBusExportable (ServiceName = "CollectionIndexer")]
-    public class IndexerClient : Client, IIndexerClient, IDBusExportable
+    public class IndexerClient : Client, IIndexerClient, IRemoteExportable
     {
         public static void Main ()
         {
-            if (!DBusConnection.Enabled) {
+            if (!RemoteServiceManager.Enabled) {
                 Log.Error ("All commands ignored, DBus support is disabled");
                 return;
             } else if (ApplicationContext.CommandLine.Contains ("client")) {
                 ActAsRemoteClient ();
                 return;
-            } else if (DBusConnection.ApplicationInstanceAlreadyRunning) {
+            } else if (ApplicationInstance.AlreadyRunning) {
                 Log.Error ("Banshee is already running");
                 return;
-            } else if (DBusConnection.NameHasOwner ("CollectionIndexer")) {
+            } else if (RemoteServiceManager.ServiceNameHasOwner ("CollectionIndexer")) {
                 Log.Error ("Another indexer is already running");
                 return;
             }
@@ -93,12 +93,12 @@ namespace Beroe
 
         public void Run ()
         {
-            ServiceManager.Get<CollectionIndexerService> ().ShutdownHandler = DBusConnection.QuitMainLoop;
+            ServiceManager.Get<CollectionIndexerService> ().ShutdownHandler = ApplicationInstance.QuitMainLoop;
 
             ServiceManager.SourceManager.AddSource (new Banshee.Library.MusicLibrarySource ());
             ServiceManager.SourceManager.AddSource (new Banshee.Library.VideoLibrarySource ());
 
-            DBusConnection.RunMainLoop ();
+            ApplicationInstance.RunMainLoop ();
 
             ServiceManager.Shutdown ();
 
@@ -112,8 +112,8 @@ namespace Beroe
 
                 // FIXME: Using Process.Start sucks, but DBus doesn't let you specify
                 // extra command line arguments
-                DBusConnection.Disconnect ("CollectionIndexer");
-                Process.Start ("banshee-1", builder.ToString ());
+                RemoteServiceManager.Disconnect ("CollectionIndexer");
+                Process.Start (Application.ApplicationPath, builder.ToString ());
                 // Bus.Session.StartServiceByName (DBusConnection.DefaultBusName);
                 // Bus.Session.Iterate ();
             }
@@ -137,7 +137,7 @@ namespace Beroe
             }
         }
 
-        IDBusExportable IDBusExportable.Parent {
+        IRemoteExportable IRemoteExportable.Parent {
             get { return null; }
         }
 

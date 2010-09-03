@@ -35,7 +35,7 @@ using Banshee.ServiceStack;
 namespace Banshee.MediaEngine
 {
     [Interface("org.bansheeproject.Banshee.PlayerEngine")]
-    public interface IPlayerEngineService : IDBusExportable
+    public interface IPlayerEngineService : IRemoteExportable
     {
         event DBusPlayerEventHandler EventChanged;
         event DBusPlayerStateHandler StateChanged;

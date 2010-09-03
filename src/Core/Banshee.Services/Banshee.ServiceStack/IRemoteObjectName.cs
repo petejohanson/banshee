@@ -1,5 +1,5 @@
 //
-// IDBusObjectName.cs
+// IRemoteObjectName.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -30,7 +30,7 @@ using System;
 
 namespace Banshee.ServiceStack
 {
-    public interface IDBusObjectName : IDBusExportable
+    public interface IRemoteObjectName : IRemoteExportable
     {
         string ExportObjectName { get; }
     }

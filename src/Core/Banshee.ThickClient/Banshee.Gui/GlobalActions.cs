@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
 
@@ -40,7 +41,7 @@ using Banshee.Playlist;
 
 namespace Banshee.Gui
 {
-    public class GlobalActions : BansheeActionGroup, IGlobalUIActions
+    public class GlobalActions : BansheeActionGroup, IGlobalUIActions, IRemoteExportableProvider
     {
         public GlobalActions () : base ("Global")
         {
@@ -251,12 +252,18 @@ namespace Banshee.Gui
             Gtk.Application.Invoke (OnPreferences);
         }
 
-        IDBusExportable IDBusExportable.Parent {
-            get { return null; }
-        }
+#endregion
 
-        string IService.ServiceName {
-            get { return "GlobalUIActions"; }
+#region IRemoteExportableProvider Members
+
+        private RemoteGlobalUIActions remote_actions;
+        IEnumerable<IRemoteExportable> IRemoteExportableProvider.Exportables {
+            get {
+                if (remote_actions == null)
+                    remote_actions = new RemoteGlobalUIActions ("GlobalUIActions", this);
+
+                return new IRemoteExportable[] { remote_actions };
+            }
         }
 
 #endregion

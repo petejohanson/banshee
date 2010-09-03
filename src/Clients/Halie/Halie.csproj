@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <ProjectGuid>{B574AEB0-59F1-4FB7-A91A-8E5A651970CE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
@@ -55,6 +55,10 @@
       <Name>Banshee.Core</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Banshee.ThickClient\Banshee.ThickClient.csproj">
+      <Project>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</Project>
+      <Name>Banshee.ThickClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Hyena\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
       <Name>Hyena.Data.Sqlite</Name>
@@ -84,5 +88,6 @@
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>
+    <VisualStudio />
   </ProjectExtensions>
 </Project>

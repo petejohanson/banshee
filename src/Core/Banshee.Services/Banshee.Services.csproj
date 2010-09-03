@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin</OutputPath>
+    <DefineConstants>NET_2_0, WIN32</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,6 +44,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Package>glib-sharp-2.0</Package>
     </Reference>
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml" />
     <Reference Include="NDesk.DBus">
       <SpecificVersion>False</SpecificVersion>
@@ -78,6 +80,10 @@
       <Project>{A7566CDC-6033-4A16-9E9D-87D05A627066}</Project>
       <Name>Mono.Media</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\MusicBrainz\MusicBrainz.csproj">
+      <Project>{C5DD02DE-4F0E-4DC0-ABC7-035A8217CD50}</Project>
+      <Name>MusicBrainz</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Banshee.Core\Banshee.Core.csproj">
       <Project>{2ADB831A-A050-47D0-B6B9-9C19D60233BB}</Project>
       <Name>Banshee.Core</Name>
@@ -112,7 +118,6 @@
     <Compile Include="Banshee.Collection.Database\RandomByAlbum.cs" />
     <Compile Include="Banshee.Collection.Database\RandomByTrack.cs" />
     <Compile Include="Banshee.Collection.Database\RandomByRating.cs" />
-    <Compile Include="Banshee.Networking\DotNetNetworking.cs" />
     <Compile Include="Banshee.Sources\Source.cs" />
     <Compile Include="Banshee.Sources\SourceManager.cs" />
     <Compile Include="Banshee.Sources\DatabaseSource.cs" />
@@ -124,8 +129,16 @@
     <Compile Include="Banshee.ServiceStack\ServiceManager.cs" />
     <Compile Include="Banshee.Sources\ISourceManager.cs" />
     <Compile Include="Banshee.ServiceStack\DBusServiceManager.cs" />
-    <Compile Include="Banshee.ServiceStack\IDBusExportable.cs" />
+    <Compile Include="Banshee.ServiceStack\IRemoteExportable.cs" />
     <Compile Include="Banshee.ServiceStack\IService.cs" />
+    <Compile Include="Banshee.ServiceStack\ApplicationInstance.cs" />
+    <Compile Include="Banshee.ServiceStack\DBusApplicationInstance.cs" />
+    <Compile Include="Banshee.ServiceStack\IApplicationInstance.cs" />
+    <Compile Include="Banshee.ServiceStack\IRemoteExportableProvider.cs" />
+    <Compile Include="Banshee.ServiceStack\IpcRemotingApplicationInstance.cs" />
+    <Compile Include="Banshee.ServiceStack\IpcRemoteServiceManager.cs" />
+    <Compile Include="Banshee.ServiceStack\IRemoteServiceManager.cs" />
+    <Compile Include="Banshee.ServiceStack\RemoteServiceManager.cs" />
     <Compile Include="Banshee.Sources\ISource.cs" />
     <Compile Include="Banshee.ServiceStack\ServiceStartedHandler.cs" />
     <Compile Include="Banshee.MediaEngine\PlayerEngine.cs" />
@@ -180,6 +193,7 @@
     <Compile Include="Banshee.Metadata.MusicBrainz\MusicBrainzQueryJob.cs" />
     <Compile Include="Banshee.Metadata.Rhapsody\RhapsodyMetadataProvider.cs" />
     <Compile Include="Banshee.Metadata.Rhapsody\RhapsodyQueryJob.cs" />
+    <Compile Include="Banshee.Networking\DotNetNetworking.cs" />
     <Compile Include="Banshee.Networking\Network.cs" />
     <Compile Include="Banshee.Networking\State.cs" />
     <Compile Include="Banshee.Networking\NetworkManager.cs" />
@@ -264,7 +278,7 @@
     <Compile Include="Banshee.Collection\IFilterListModel.cs" />
     <Compile Include="Banshee.ServiceStack\DBusConnection.cs" />
     <Compile Include="Banshee.ServiceStack\DBusCommandService.cs" />
-    <Compile Include="Banshee.ServiceStack\IDBusObjectName.cs" />
+    <Compile Include="Banshee.ServiceStack\IRemoteObjectName.cs" />
     <Compile Include="Banshee.Metadata.LastFM\LastFMMetadataProvider.cs" />
     <Compile Include="Banshee.Metadata.LastFM\LastFMQueryJob.cs" />
     <Compile Include="Banshee.Hardware\IDiscDuplicator.cs" />

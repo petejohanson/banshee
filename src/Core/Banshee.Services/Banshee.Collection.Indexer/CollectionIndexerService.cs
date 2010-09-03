@@ -42,7 +42,8 @@ using Banshee.Collection.Database;
 namespace Banshee.Collection.Indexer
 {
     [DBusExportable (ServiceName = "CollectionIndexer")]
-    public class CollectionIndexerService : ICollectionIndexerService, IDBusExportable, IDisposable
+    [NDesk.DBus.IgnoreMarshalByRefObjectBaseClass]
+    public class CollectionIndexerService : MarshalByRefObject, ICollectionIndexerService, IRemoteExportable, IDisposable
     {
         private List<LibrarySource> libraries = new List<LibrarySource> ();
         private string [] available_export_fields;
@@ -108,15 +109,15 @@ namespace Banshee.Collection.Indexer
         internal void DisposeIndexer (CollectionIndexer indexer)
         {
             lock (this) {
-                ServiceManager.DBusServiceManager.UnregisterObject (indexer);
+                RemoteServiceManager.UnregisterObject (indexer);
                 open_indexers--;
             }
         }
 
-        ObjectPath ICollectionIndexerService.CreateIndexer ()
+        string ICollectionIndexerService.CreateIndexer ()
         {
             lock (this) {
-                ObjectPath path = ServiceManager.DBusServiceManager.RegisterObject (new CollectionIndexer (this));
+                string path = RemoteServiceManager.RegisterObject (new CollectionIndexer (this));
                 open_indexers++;
                 return path;
             }
@@ -240,7 +241,7 @@ namespace Banshee.Collection.Indexer
             }
         }
 
-        IDBusExportable IDBusExportable.Parent {
+        IRemoteExportable IRemoteExportable.Parent {
             get { return null; }
         }
 

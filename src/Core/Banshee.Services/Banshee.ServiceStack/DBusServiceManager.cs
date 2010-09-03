@@ -49,7 +49,7 @@ namespace Banshee.ServiceStack
         }
     }
 
-    public class DBusServiceManager : IService
+    public class DBusServiceManager : IService, IRemoteServiceManager
     {
         public const string ObjectRoot = "/org/bansheeproject/Banshee";
         private Dictionary<object, ObjectPath> registered_objects = new Dictionary<object, ObjectPath> ();
@@ -59,7 +59,7 @@ namespace Banshee.ServiceStack
             return str == null ? String.Empty : Regex.Replace (str, @"[^A-Za-z0-9]*", String.Empty);
         }
 
-        public static string MakeObjectPath (IDBusExportable o)
+        public static string MakeObjectPath (IRemoteExportable o)
         {
             StringBuilder object_path = new StringBuilder ();
 
@@ -68,7 +68,7 @@ namespace Banshee.ServiceStack
 
             Stack<string> paths = new Stack<string> ();
 
-            IDBusExportable p = o.Parent;
+            IRemoteExportable p = o.Parent;
 
             while (p != null) {
                 paths.Push (String.Format ("{0}/", GetObjectName (p)));
@@ -84,42 +84,67 @@ namespace Banshee.ServiceStack
             return object_path.ToString ();
         }
 
-        private static string GetObjectName (IDBusExportable o)
+        private static string GetObjectName (IRemoteExportable o)
         {
-            return o is IDBusObjectName ? ((IDBusObjectName)o).ExportObjectName : o.ServiceName;
+            return o is IRemoteObjectName ? ((IRemoteObjectName)o).ExportObjectName : o.ServiceName;
         }
 
-        public static string [] MakeObjectPathArray<T> (IEnumerable<T> collection) where T : IDBusExportable
+        public static string [] MakeObjectPathArray<T> (IEnumerable<T> collection) where T : IRemoteExportable
         {
             List<string> paths = new List<string> ();
 
-            foreach (IDBusExportable item in collection) {
+            foreach (IRemoteExportable item in collection) {
                 paths.Add (MakeObjectPath (item));
             }
 
             return paths.ToArray ();
         }
 
-        public ObjectPath RegisterObject (IDBusExportable o)
+        public bool Enabled {
+            get { return DBusConnection.Enabled; }
+        }
+
+        public bool ServiceNameHasOwner (string serviceName)
+        {
+            return DBusConnection.NameHasOwner (serviceName);
+        }
+
+        public void Disconnect (string serviceName)
+        {
+            DBusConnection.Disconnect (serviceName);
+        }
+
+        public string RegisterObject (IRemoteExportable o)
         {
             return RegisterObject (DBusConnection.DefaultServiceName, o);
         }
 
-        public ObjectPath RegisterObject (string serviceName, IDBusExportable o)
+        public string RegisterObject (string serviceName, IRemoteExportable o)
         {
             return RegisterObject (serviceName, o, MakeObjectPath (o));
         }
 
-        public ObjectPath RegisterObject (object o, string objectName)
+        public string RegisterObject (object o, string objectName)
         {
             return RegisterObject (DBusConnection.DefaultServiceName, o, objectName);
         }
 
-        public ObjectPath RegisterObject (string serviceName, object o, string objectName)
+        public string RegisterObject (string serviceName, object o, string objectName)
         {
             ObjectPath path = null;
 
+            if (!DBusConnection.ConnectTried) {
+                DBusConnection.Connect ();
+            }
+
             if (DBusConnection.Enabled && Bus.Session != null) {
+                IRemoteExportableProvider exportable_provider = o as IRemoteExportableProvider;
+                if (exportable_provider != null) {
+                    foreach (IRemoteExportable e in exportable_provider.Exportables) {
+                        RegisterObject (e);
+                    }
+                }
+
                 object [] attrs = o.GetType ().GetCustomAttributes (typeof (DBusExportableAttribute), true);
                 if (attrs != null && attrs.Length > 0) {
                     DBusExportableAttribute dbus_attr = (DBusExportableAttribute)attrs[0];
@@ -139,9 +164,11 @@ namespace Banshee.ServiceStack
                 #pragma warning disable 0618
                 Bus.Session.Register (bus_name, path, o);
                 #pragma warning restore 0618
+
+                Log.DebugFormat ("Registered remote object {0} ({1}) on {2}", path, o.GetType (), bus_name);
             }
 
-            return path;
+            return path != null ? path.ToString () : null;
         }
 
         public void UnregisterObject (object o)
@@ -160,12 +187,12 @@ namespace Banshee.ServiceStack
             Bus.Session.Unregister (path);
         }
 
-        public static T FindInstance<T> (string objectPath) where T : class
+        public T FindInstance<T> (string objectPath) where T : class
         {
             return FindInstance<T> (DBusConnection.DefaultBusName, true, objectPath);
         }
 
-        public static T FindInstance<T> (string serviceName, string objectPath) where T : class
+        public T FindInstance<T> (string serviceName, string objectPath) where T : class
         {
             return FindInstance<T> (serviceName, false, objectPath);
         }

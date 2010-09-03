@@ -55,7 +55,7 @@ namespace Banshee.Collection
             Selection = selection;
         }
 
-        public FilterListModel (IDBusExportable parent) : base (parent)
+        public FilterListModel (IRemoteExportable parent) : base (parent)
         {
             var selection = new SelectAllSelection ();
             selection.SelectAll ();

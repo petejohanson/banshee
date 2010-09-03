@@ -310,8 +310,8 @@ namespace Banshee.ServiceStack
             lock (self_mutex) {
                 Add (service);
 
-                if(service is IDBusExportable) {
-                    DBusServiceManager.RegisterObject ((IDBusExportable)service);
+                if(service is IRemoteExportable) {
+                    RemoteServiceManager.RegisterObject ((IRemoteExportable)service);
                 }
             }
         }

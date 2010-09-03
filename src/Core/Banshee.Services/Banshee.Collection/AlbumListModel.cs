@@ -42,7 +42,7 @@ namespace Banshee.Collection
             Selection.SelectAll ();
         }
 
-        public AlbumListModel(IDBusExportable parent) : base(parent)
+        public AlbumListModel(IRemoteExportable parent) : base(parent)
         {
             Selection = new SelectAllSelection ();
             Selection.SelectAll ();

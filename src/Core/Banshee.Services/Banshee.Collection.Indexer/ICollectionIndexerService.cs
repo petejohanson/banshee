@@ -41,7 +41,7 @@ namespace Banshee.Collection.Indexer
 
         void Hello ();
         void Shutdown ();
-        ObjectPath CreateIndexer ();
+        string CreateIndexer ();
         string [] GetAvailableExportFields ();
         bool HasCollectionCountChanged (int count);
         bool HasCollectionLastModifiedChanged (long time);

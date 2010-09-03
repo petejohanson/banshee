@@ -36,15 +36,15 @@ using Banshee.ServiceStack;
 
 namespace Banshee.Collection
 {
-    public abstract class BansheeListModel<T> : BaseListModel<T>, IDBusExportable
+    public abstract class BansheeListModel<T> : BaseListModel<T>, IRemoteExportable
     {
-        private IDBusExportable parent;
+        private IRemoteExportable parent;
 
         public BansheeListModel ()
         {
         }
 
-        public BansheeListModel (IDBusExportable parent)
+        public BansheeListModel (IRemoteExportable parent)
         {
             Parent = parent;
         }
@@ -53,7 +53,7 @@ namespace Banshee.Collection
             get { return GetType().Name; }
         }
 
-        public virtual IDBusExportable Parent {
+        public virtual IRemoteExportable Parent {
             set { parent = value; }
             get { return parent; }
         }

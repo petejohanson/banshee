@@ -30,7 +30,8 @@ using System;
 
 namespace Banshee.ServiceStack
 {
-    public abstract class Client : IDisposable
+    [NDesk.DBus.IgnoreMarshalByRefObjectBaseClass]
+    public abstract class Client : MarshalByRefObject, IDisposable
     {
         public event Action<Client> Started;
 

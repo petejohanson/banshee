@@ -52,7 +52,8 @@ namespace Banshee.Sources
         public int Position;
     }
 
-    public class SourceManager : /*ISourceManager,*/ IInitializeService, IRequiredService, IDBusExportable, IDisposable
+    [NDesk.DBus.IgnoreMarshalByRefObjectBaseClass]
+    public class SourceManager : MarshalByRefObject, /*ISourceManager,*/ IInitializeService, IRequiredService, IRemoteExportable, IDisposable
     {
         private List<Source> sources = new List<Source>();
         private Dictionary<string, Source> extension_sources = new Dictionary<string, Source> ();
@@ -176,9 +177,9 @@ namespace Banshee.Sources
                 Source = source
             });
 
-            IDBusExportable exportable = source as IDBusExportable;
+            IRemoteExportable exportable = source as IRemoteExportable;
             if (exportable != null) {
-                ServiceManager.DBusServiceManager.RegisterObject (exportable);
+                RemoteServiceManager.RegisterObject (exportable);
             }
 
             List<Source> children = new List<Source> (source.Children);
@@ -216,9 +217,9 @@ namespace Banshee.Sources
                 RemoveSource (child_source, recursivelyDispose);
             }
 
-            IDBusExportable exportable = source as IDBusExportable;
+            IRemoteExportable exportable = source as IRemoteExportable;
             if (exportable != null) {
-                ServiceManager.DBusServiceManager.UnregisterObject (exportable);
+                RemoteServiceManager.UnregisterObject (exportable);
             }
 
             if (recursivelyDispose) {
@@ -385,7 +386,7 @@ namespace Banshee.Sources
             get { return DBusServiceManager.MakeObjectPathArray<Source>(sources); }
         }*/
 
-        IDBusExportable IDBusExportable.Parent {
+        IRemoteExportable IRemoteExportable.Parent {
             get { return null; }
         }
 

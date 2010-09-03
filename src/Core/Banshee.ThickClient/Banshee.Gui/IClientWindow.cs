@@ -34,7 +34,7 @@ using Banshee.ServiceStack;
 namespace Banshee.Gui
 {
     [Interface ("org.bansheeproject.Banshee.ClientWindow")]
-    public interface IClientWindow : IDBusExportable
+    public interface IClientWindow : IRemoteExportable
     {
         void Present ();
         void Hide ();

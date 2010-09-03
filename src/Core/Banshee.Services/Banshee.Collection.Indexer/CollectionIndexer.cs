@@ -43,7 +43,8 @@ using Banshee.Collection.Database;
 namespace Banshee.Collection.Indexer
 {
     [DBusExportable (ServiceName = "CollectionIndexer")]
-    public class CollectionIndexer : ICollectionIndexer, IService, IDBusExportable, IDisposable
+    [NDesk.DBus.IgnoreMarshalByRefObjectBaseClass]
+    public class CollectionIndexer : MarshalByRefObject, ICollectionIndexer, IService, IRemoteExportable, IDisposable
     {
         private static int instance_count = 0;
 
@@ -253,7 +254,7 @@ namespace Banshee.Collection.Indexer
             get { return service_name; }
         }
 
-        IDBusExportable IDBusExportable.Parent {
+        IRemoteExportable IRemoteExportable.Parent {
             get { return service; }
         }
     }
