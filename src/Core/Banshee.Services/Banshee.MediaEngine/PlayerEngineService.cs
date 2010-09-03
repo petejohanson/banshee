@@ -47,7 +47,9 @@ namespace Banshee.MediaEngine
 {
     public delegate bool TrackInterceptHandler (TrackInfo track);
 
-    public class PlayerEngineService : IInitializeService, IDelayedInitializeService,
+    [DBus.IgnoreMarshalByRefObjectBaseClass]
+    public class PlayerEngineService :
+        MarshalByRefObject, IInitializeService, IDelayedInitializeService,
         IRequiredService, IPlayerEngineService, IDisposable
     {
         private List<PlayerEngine> engines = new List<PlayerEngine> ();
@@ -816,7 +818,7 @@ namespace Banshee.MediaEngine
             get { return "PlayerEngine"; }
         }
 
-        IDBusExportable IDBusExportable.Parent {
+        IRemoteExportable IRemoteExportable.Parent {
             get { return null; }
         }
 

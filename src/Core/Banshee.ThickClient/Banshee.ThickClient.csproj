@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <ProjectGuid>{AC839523-7BDF-4AB6-8115-E17921B96EC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
@@ -158,6 +158,8 @@
     <Compile Include="Banshee.Collection.Gui\ArtistListView.cs" />
     <Compile Include="Banshee.Collection.Gui\AlbumListView.cs" />
     <Compile Include="Banshee.Collection.Gui\DataViewChildAlbum.cs" />
+    <Compile Include="Banshee.Gui\RemoteClientWindow.cs" />
+    <Compile Include="Banshee.Gui\RemoteGlobalUIActions.cs" />
     <Compile Include="Banshee.Sources.Gui\SourceView.cs" />
     <Compile Include="Banshee.Sources.Gui\SourceSwitcherEntry.cs" />
     <Compile Include="Banshee.Gui.DragDrop\DragDropTarget.cs" />
@@ -323,5 +325,6 @@
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>
+    <VisualStudio />
   </ProjectExtensions>
 </Project>

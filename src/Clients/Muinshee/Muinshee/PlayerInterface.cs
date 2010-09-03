@@ -57,7 +57,7 @@ using Banshee.PlayQueue;
 
 namespace Muinshee
 {
-    public class PlayerInterface : BaseClientWindow, IClientWindow, IDBusObjectName, IService, IDisposable
+    public class PlayerInterface : BaseClientWindow, IClientWindow, IRemoteExportableProvider, IService, IDisposable
     {
         // Major Layout Components
         private VBox content_vbox;
@@ -275,12 +275,19 @@ namespace Muinshee
 
 #endregion
 
-        IDBusExportable IDBusExportable.Parent {
-            get { return null; }
+        private RemoteClientWindow remote_window;
+        IEnumerable<IRemoteExportable> IRemoteExportableProvider.Exportables {
+            get
+            {
+                if (remote_window == null)
+                    remote_window = new RemoteClientWindow ("MuinsheeClientWindow", this);
+
+                return new IRemoteExportable[] { remote_window };
+            }
         }
 
-        string IDBusObjectName.ExportObjectName {
-            get { return "MuinsheeClientWindow"; }
+        IRemoteExportable IRemoteExportable.Parent {
+            get { return null; }
         }
 
         string IService.ServiceName {

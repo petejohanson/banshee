@@ -101,9 +101,7 @@ namespace Banshee.ServiceStack
             Catalog.Init (Application.InternalName, System.IO.Path.Combine (
                 Hyena.Paths.InstalledApplicationDataRoot, "locale"));
 
-            if (!DBusConnection.ConnectTried) {
-                DBusConnection.Connect ();
-            }
+            ApplicationInstance.Create ();
 
             ServiceManager.Run ();
 
@@ -286,6 +284,18 @@ namespace Banshee.ServiceStack
             get { return "media-player-banshee"; }
         }
 
+        public static string ApplicationPath {
+            get
+            {
+#if WIN32
+                // TODO: Full installation path using registry key.
+                return "Banshee.exe";
+#else
+                return "banshee-1";
+#endif // WIN32
+            }
+        }
+
         private static string api_version;
         public static string ApiVersion {
             get {
@@ -346,6 +356,10 @@ namespace Banshee.ServiceStack
                     BuildVendor, BuildHostOperatingSystem, BuildHostCpu, BuildTime);
                 return build_display_info;
             }
+        }
+
+        internal static bool IsMSDotNet {
+            get { try { return Type.GetType ("Mono.Runtime") == null; } catch { return true; } }
         }
 
         private static string GetVersion (string versionName)

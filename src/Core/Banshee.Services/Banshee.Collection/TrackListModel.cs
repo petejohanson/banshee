@@ -44,7 +44,7 @@ namespace Banshee.Collection
             Selection = new Selection ();
         }
 
-        public TrackListModel(IDBusExportable parent) : base(parent)
+        public TrackListModel(IRemoteExportable parent) : base(parent)
         {
             Selection = new Selection ();
         }

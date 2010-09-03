@@ -46,7 +46,8 @@ using Banshee.ServiceStack;
 
 namespace Banshee.Sources
 {
-    public abstract class Source : ISource
+    [DBus.IgnoreMarshalByRefObjectBaseClass]
+    public abstract class Source : MarshalByRefObject, ISource
     {
         private Source parent;
         private PropertyStore properties = new PropertyStore ();
@@ -800,7 +801,7 @@ namespace Banshee.Sources
             get { return String.Format ("{0}{1}", DBusServiceManager.MakeDBusSafeString (Name), "Source"); }
         }*/
 
-        // FIXME: Replace ISource with IDBusExportable when it's enabled again
+        // FIXME: Replace ISource with IRemoteExportable when it's enabled again
         ISource ISource.Parent {
             get {
                 if (Parent != null) {

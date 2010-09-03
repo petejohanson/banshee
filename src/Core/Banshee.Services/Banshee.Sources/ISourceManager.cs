@@ -36,7 +36,7 @@ using Banshee.ServiceStack;
 namespace Banshee.Sources
 {
     [Interface("org.bansheeproject.Banshee.SourceManager")]
-    public interface ISourceManager : IDBusExportable
+    public interface ISourceManager : IRemoteExportable
     {
         //event SourceEventHandler SourceUpdated;
         ISource ActiveSource { get; set; }

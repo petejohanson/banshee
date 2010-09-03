@@ -53,7 +53,7 @@ using Banshee.Sources;
 
 namespace Banshee.PlayQueue
 {
-    public class PlayQueueSource : PlaylistSource, IBasicPlaybackController, IPlayQueue, IDBusExportable, IDisposable
+    public class PlayQueueSource : PlaylistSource, IBasicPlaybackController, IPlayQueue, IRemoteExportable, IDisposable
     {
         private static string special_playlist_name = Catalog.GetString ("Play Queue");
 
@@ -215,7 +215,7 @@ namespace Banshee.PlayQueue
             }
         }
 
-#region IPlayQueue, IDBusExportable
+#region IPlayQueue, IRemoteExportable
 
         public void EnqueueUri (string uri)
         {
@@ -291,7 +291,7 @@ namespace Banshee.PlayQueue
             NotifyUser ();
         }
 
-        IDBusExportable IDBusExportable.Parent {
+        IRemoteExportable IRemoteExportable.Parent {
             get { return ServiceManager.SourceManager; }
         }
 

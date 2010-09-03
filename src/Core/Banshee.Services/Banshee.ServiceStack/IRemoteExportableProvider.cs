@@ -1,10 +1,10 @@
-// 
-// IGlobalUIActions.cs
+﻿// 
+// IRemoteExportableProvider.cs
 // 
 // Author:
-//   Aaron Bockover <abockover@novell.com>
+//   Pete Johanson <peter@peterjohanson.com>
 // 
-// Copyright 2010 Novell, Inc.
+// Copyright 2010 Pete Johanson
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,18 +25,16 @@
 // THE SOFTWARE.
 
 using System;
-using DBus;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-using Banshee.ServiceStack;
-
-namespace Banshee.Gui
+namespace Banshee.ServiceStack
 {
-    [Interface ("org.bansheeproject.Banshee.GlobalUIActions")]
-    public interface IGlobalUIActions
+    public interface IRemoteExportableProvider
     {
-        void ShowImportDialog ();
-        void ShowAboutDialog ();
-        void ShowOpenLocationDialog ();
-        void ShowPreferencesDialog ();
+        IEnumerable<IRemoteExportable> Exportables {
+            get;
+        }
     }
 }

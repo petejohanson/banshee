@@ -1,5 +1,5 @@
 //
-// IDBusExportable.cs
+// IRemoteExportable.cs
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -28,8 +28,8 @@
 
 namespace Banshee.ServiceStack
 {
-    public interface IDBusExportable : IService
+    public interface IRemoteExportable : IService
     {
-        IDBusExportable Parent { get; }
+        IRemoteExportable Parent { get; }
     }
 }

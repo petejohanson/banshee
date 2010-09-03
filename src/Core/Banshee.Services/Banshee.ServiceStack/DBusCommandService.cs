@@ -34,7 +34,8 @@ namespace Banshee.ServiceStack
     public delegate void DBusCommandHandler (string argument, object value, bool isFile);
 
     [Interface ("org.bansheeproject.Banshee.CommandService")]
-    public class DBusCommandService : MarshalByRefObject, IDBusExportable
+    [DBus.IgnoreMarshalByRefObjectBaseClass]
+    public class DBusCommandService : MarshalByRefObject, IRemoteExportable
     {
         public event DBusCommandHandler ArgumentPushed;
 
@@ -60,7 +61,7 @@ namespace Banshee.ServiceStack
             }
         }
 
-        IDBusExportable IDBusExportable.Parent {
+        IRemoteExportable IRemoteExportable.Parent {
             get { return null; }
         }
 

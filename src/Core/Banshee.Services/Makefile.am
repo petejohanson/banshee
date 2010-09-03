@@ -177,22 +177,30 @@ SOURCES =  \
 	Banshee.Query/SmartPlaylistQueryValue.cs \
 	Banshee.Query/YearQueryValue.cs \
 	Banshee.ServiceStack/Application.cs \
+	Banshee.ServiceStack/ApplicationInstance.cs \
 	Banshee.ServiceStack/BatchUserJob.cs \
 	Banshee.ServiceStack/Client.cs \
 	Banshee.ServiceStack/DbIteratorJob.cs \
+	Banshee.ServiceStack/DBusApplicationInstance.cs \
 	Banshee.ServiceStack/DBusCommandService.cs \
 	Banshee.ServiceStack/DBusConnection.cs \
 	Banshee.ServiceStack/DBusServiceManager.cs \
-	Banshee.ServiceStack/IDBusExportable.cs \
-	Banshee.ServiceStack/IDBusObjectName.cs \
+	Banshee.ServiceStack/IApplicationInstance.cs \
+	Banshee.ServiceStack/IRemoteExportable.cs \
+	Banshee.ServiceStack/IRemoteExportableProvider.cs \
+	Banshee.ServiceStack/IRemoteObjectName.cs \
 	Banshee.ServiceStack/IDelayedInitializeService.cs \
 	Banshee.ServiceStack/IExtensionService.cs \
 	Banshee.ServiceStack/IInitializeService.cs \
+	Banshee.ServiceStack/IpcRemoteServiceManager.cs \
+	Banshee.ServiceStack/IpcRemotingApplicationInstance.cs \
 	Banshee.ServiceStack/IRegisterOnDemandService.cs \
+	Banshee.ServiceStack/IRemoteServiceManager.cs \
 	Banshee.ServiceStack/IRequiredService.cs \
 	Banshee.ServiceStack/IService.cs \
 	Banshee.ServiceStack/IUserJob.cs \
 	Banshee.ServiceStack/JobScheduler.cs \
+	Banshee.ServiceStack/RemoteServiceManager.cs \
 	Banshee.ServiceStack/ServiceManager.cs \
 	Banshee.ServiceStack/ServiceStartedHandler.cs \
 	Banshee.ServiceStack/TestUserJob.cs \

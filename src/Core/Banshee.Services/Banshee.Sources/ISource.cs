@@ -35,7 +35,7 @@ using Banshee.ServiceStack;
 namespace Banshee.Sources
 {
     //[Interface("org.bansheeproject.Banshee.Sources.Source")]
-    public interface ISource /* : IDBusExportable */
+    public interface ISource /* : IRemoteExportable */
     {
         void Activate();
         void Deactivate();

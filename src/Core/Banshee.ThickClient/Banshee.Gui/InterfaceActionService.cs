@@ -72,7 +72,7 @@ namespace Banshee.Gui
 
             AddinManager.AddExtensionNodeHandler ("/Banshee/ThickClient/ActionGroup", OnExtensionChanged);
 
-            ServiceManager.DBusServiceManager.RegisterObject (global_actions);
+            RemoteServiceManager.RegisterObject (global_actions);
         }
 
         private void OnActiveSourceChanged (SourceEventArgs args)

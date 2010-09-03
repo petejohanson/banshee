@@ -39,7 +39,9 @@ using Banshee.MediaEngine;
 
 namespace Banshee.PlaybackController
 {
-    public class PlaybackControllerService : IRequiredService, ICanonicalPlaybackController,
+    [DBus.IgnoreMarshalByRefObjectBaseClass]
+    public class PlaybackControllerService :
+	MarshalByRefObject, IRequiredService, ICanonicalPlaybackController,
         IPlaybackController, IPlaybackControllerService
     {
         private enum Direction
@@ -557,7 +559,7 @@ namespace Banshee.PlaybackController
             get { return "PlaybackController"; }
         }
 
-        IDBusExportable IDBusExportable.Parent {
+        IRemoteExportable IRemoteExportable.Parent {
             get { return null; }
         }
     }

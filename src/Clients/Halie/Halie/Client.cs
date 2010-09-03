@@ -39,48 +39,35 @@ using Banshee.MediaEngine;
 using Banshee.PlaybackController;
 using Banshee.Collection.Indexer;
 
+// Note: We want this client to be as thin as possible,
+// so we only import the specific interfaces that are remoted
+// for remote control use.
+using IClientWindow = Banshee.Gui.IClientWindow;
+using IGlobalUIActions = Banshee.Gui.IGlobalUIActions;
+
 namespace Halie
 {
     public static class Client
     {
-        // NOTE: Interfaces are copied from Banshee.ThickClient/Banshee.Gui
-        // since we don't want to link against any GUI assemblies for this
-        // client. It's a simple interface
-        [Interface ("org.bansheeproject.Banshee.ClientWindow")]
-        public interface IClientWindow
-        {
-            void Present ();
-            void Hide ();
-            void Fullscreen ();
-        }
-
-        [Interface ("org.bansheeproject.Banshee.GlobalUIActions")]
-        public interface IGlobalUIActions
-        {
-            void ShowImportDialog ();
-            void ShowAboutDialog ();
-            void ShowOpenLocationDialog ();
-            void ShowPreferencesDialog ();
-        }
-
+        
         private static bool hide_field;
         private static DBusCommandService command;
 
         public static void Main ()
         {
-            if (!DBusConnection.ConnectTried) {
-                DBusConnection.Connect ();
+            if (!ApplicationInstance.ConnectTried) {
+                ApplicationInstance.Connect ();
             }
 
-            if (!DBusConnection.Enabled) {
-                Error ("All commands ignored, DBus support is disabled");
+            if (!RemoteServiceManager.Enabled) {
+                Error ("All commands ignored, remote support is disabled");
                 return;
-            } else if (!DBusConnection.ApplicationInstanceAlreadyRunning) {
+            } else if (!ApplicationInstance.AlreadyRunning) {
                 Error ("Banshee does not seem to be running");
                 return;
             }
 
-            command = DBusServiceManager.FindInstance<DBusCommandService> ("/DBusCommandService");
+            command = RemoteServiceManager.FindInstance<DBusCommandService> ("/DBusCommandService");
             hide_field = ApplicationContext.CommandLine.Contains ("hide-field");
 
             bool present =
@@ -93,7 +80,7 @@ namespace Halie
 
         private static void HandleWindowCommands (bool present)
         {
-            IClientWindow window = DBusServiceManager.FindInstance<IClientWindow> ("/ClientWindow");
+            IClientWindow window = RemoteServiceManager.FindInstance<IClientWindow> ("/ClientWindow");
             if (window == null) {
                 return;
             }
@@ -129,7 +116,7 @@ namespace Halie
 
         private static bool HandleGlobalUIActions ()
         {
-            var global_ui_actions = DBusServiceManager.FindInstance<IGlobalUIActions> ("/GlobalUIActions");
+            var global_ui_actions = RemoteServiceManager.FindInstance<IGlobalUIActions> ("/GlobalUIActions");
             var handled = false;
 
             if (ApplicationContext.CommandLine.Contains ("show-import-media")) {
@@ -157,8 +144,8 @@ namespace Halie
 
         private static bool HandlePlayerCommands ()
         {
-            IPlayerEngineService player = DBusServiceManager.FindInstance<IPlayerEngineService> ("/PlayerEngine");
-            IPlaybackControllerService controller = DBusServiceManager.FindInstance<IPlaybackControllerService> ("/PlaybackController");
+            IPlayerEngineService player = RemoteServiceManager.FindInstance<IPlayerEngineService> ("/PlayerEngine");
+            IPlaybackControllerService controller = RemoteServiceManager.FindInstance<IPlaybackControllerService> ("/PlaybackController");
             IDictionary<string, object> track = null;
             int handled_count = 0;
 

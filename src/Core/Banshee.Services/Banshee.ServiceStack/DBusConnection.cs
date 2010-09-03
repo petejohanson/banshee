@@ -65,7 +65,7 @@ namespace Banshee.ServiceStack
             get { return connect_tried; }
         }
 
-        public static bool ApplicationInstanceAlreadyRunning {
+        internal static bool ApplicationInstanceAlreadyRunning {
             get {
                 try {
                     return Bus.Session.NameHasOwner (DefaultBusName);
@@ -140,7 +140,7 @@ namespace Banshee.ServiceStack
 
         private static GLib.MainLoop mainloop;
 
-        public static void RunMainLoop ()
+        internal static void RunMainLoop ()
         {
             if (mainloop == null) {
                 mainloop = new GLib.MainLoop ();
@@ -151,7 +151,7 @@ namespace Banshee.ServiceStack
             }
         }
 
-        public static void QuitMainLoop ()
+        internal static void QuitMainLoop ()
         {
             if (mainloop != null && mainloop.IsRunning) {
                 mainloop.Quit ();

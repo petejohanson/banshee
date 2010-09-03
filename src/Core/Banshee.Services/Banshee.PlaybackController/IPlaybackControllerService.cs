@@ -36,7 +36,7 @@ namespace Banshee.PlaybackController
     public delegate void PlaybackControllerStoppedHandler ();
 
     [Interface ("org.bansheeproject.Banshee.PlaybackController")]
-    public interface IPlaybackControllerService : IDBusExportable
+    public interface IPlaybackControllerService : IRemoteExportable
     {
         // FIXME: IPlaybackControllerExportable : IPlaybackController
         // but DBus-Sharp has a design flaw where it only exports

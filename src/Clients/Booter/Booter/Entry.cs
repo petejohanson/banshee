@@ -79,13 +79,13 @@ namespace Booter
                 return;
             }
 
-            if (DBusConnection.ApplicationInstanceAlreadyRunning) {
+            if (ApplicationInstance.AlreadyRunning) {
                 // DBus Command/Query/File Proxy Client
                 BootClient ("Halie");
                 NotifyStartupComplete ();
-            } else if (DBusConnection.NameHasOwner ("CollectionIndexer")) {
+            } else if (RemoteServiceManager.ServiceNameHasOwner ("CollectionIndexer")) {
                 // Tell the existing indexer to start Banshee when it's done
-                IIndexerClient indexer = DBusServiceManager.FindInstance<IIndexerClient> ("CollectionIndexer", "/IndexerClient");
+                IIndexerClient indexer = RemoteServiceManager.FindInstance<IIndexerClient> ("CollectionIndexer", "/IndexerClient");
                 try {
                     indexer.Hello ();
                     indexer.RebootWhenFinished (Environment.GetCommandLineArgs ());
