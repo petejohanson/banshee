@@ -45,6 +45,7 @@ namespace Banshee.Gui.Widgets
         private SeekSlider seek_slider;
         private StreamPositionLabel stream_position_label;
         private Box box;
+        private GrabHandle grabber;
 
         public ConnectedSeekSlider () : this (SeekSliderLayout.Vertical)
         {
@@ -64,6 +65,7 @@ namespace Banshee.Gui.Widgets
                 PlayerEvent.StateChange);
 
             ServiceManager.PlayerEngine.TrackIntercept += OnTrackIntercept;
+            SizeAllocated += delegate { QueueDraw (); };
 
             seek_slider.SeekRequested += OnSeekRequested;
 
@@ -97,6 +99,7 @@ namespace Banshee.Gui.Widgets
 
         private void BuildSeekSlider (SeekSliderLayout layout)
         {
+            var hbox = new HBox () { Spacing = 2 };
             seek_slider = new SeekSlider ();
             stream_position_label = new StreamPositionLabel (seek_slider);
 
@@ -108,14 +111,80 @@ namespace Banshee.Gui.Widgets
                 box = new VBox ();
             }
 
-            seek_slider.SetSizeRequest (125, -1);
+            seek_slider.SetSizeRequest (175, -1);
 
             box.PackStart (seek_slider, true, true, 0);
             box.PackStart (stream_position_label, false, false, 0);
 
-            box.ShowAll ();
+            hbox.PackStart (box, true, true, 0);
 
-            Add (box);
+            grabber = new GrabHandle (5, 28);
+            grabber.MotionNotifyEvent += (o, a) => {
+                var x = a.Event.X;
+                var w = Math.Min (1024, Math.Max (125, seek_slider.WidthRequest + x));
+                seek_slider.WidthRequest = (int)w;
+            };
+
+            hbox.PackStart (grabber, true, true, 0);
+            hbox.ShowAll ();
+            Resizable = false;
+
+            Add (hbox);
+        }
+
+        public bool Resizable {
+            get { return grabber.Visible; }
+            set {
+                grabber.Visible = value;
+                // grabber is 5 + 2 spacing, do reduce right padding to 3
+                RightPadding = value ? (uint)3 : (uint)10;
+            }
+        }
+
+        private class GrabHandle : EventBox
+        {
+            Gtk.DrawingArea da;
+
+            public GrabHandle (int w, int h)
+            {
+                da = new DrawingArea ();
+                da.SetSizeRequest (w, h);
+                Orientation = Gtk.Orientation.Vertical;
+
+                Child = da;
+                ShowAll ();
+
+                ButtonPressEvent += (o, a) => Dragging = true;
+                ButtonReleaseEvent += (o, a) => Dragging = false;
+                EnterNotifyEvent += (o, a) => Inside = true;
+                LeaveNotifyEvent += (o, a) => Inside = false;
+
+                da.ExposeEvent += (o, a) => {
+                    if (da.IsDrawable) {
+                        Gtk.Style.PaintHandle (da.Style, da.GdkWindow, da.State, ShadowType.In,
+                            a.Event.Area, this, "entry", 0, 0, da.Allocation.Width, da.Allocation.Height, Orientation);
+                    }
+                };
+            }
+
+            public Gtk.Orientation Orientation { get; set; }
+
+            private bool inside, dragging;
+            private bool Inside {
+                set {
+                    inside = value;
+                    GdkWindow.Cursor = dragging || inside ? resize_cursor : null;
+                }
+            }
+
+            private bool Dragging {
+                set {
+                    dragging = value;
+                    GdkWindow.Cursor = dragging || inside ? resize_cursor : null;
+                }
+            }
+
+            private static Gdk.Cursor resize_cursor = new Gdk.Cursor (Gdk.CursorType.SbHDoubleArrow);
         }
 
         private bool transitioning = false;

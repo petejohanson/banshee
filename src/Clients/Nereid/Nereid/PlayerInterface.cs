@@ -94,16 +94,12 @@ namespace Nereid
         {
         }
 
-        private int? original_seek_width;
         private void SetSimple (bool simple)
         {
             main_menu.Visible =
             source_box.Visible =
             footer_toolbar.Visible =
             track_info_container.Visible = !simple;
-
-            original_seek_width = original_seek_width ?? seek_slider.SeekSlider.WidthRequest;
-            seek_slider.SeekSlider.WidthRequest = original_seek_width.Value + (simple ? 100 : 0);
         }
 
         public PlayerInterface () : base (Catalog.GetString ("Banshee Media Player"), "player_window", 1024, 700)
@@ -214,8 +210,12 @@ namespace Nereid
             next_button.Show ();
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/NextArrowButton", next_button);
 
-            seek_slider = new ConnectedSeekSlider ();
-            seek_slider.Show ();
+            seek_slider = new ConnectedSeekSlider () { Resizable = ShowSeekSliderResizer.Get () };
+            seek_slider.SeekSlider.WidthRequest = SeekSliderWidth.Get ();
+            seek_slider.SeekSlider.SizeAllocated += (o, a) => {
+                SeekSliderWidth.Set (seek_slider.SeekSlider.Allocation.Width);
+            };
+            seek_slider.ShowAll ();
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/SeekSlider", seek_slider);
 
             var track_info_display = new ClassicTrackInfoDisplay ();
@@ -768,6 +768,16 @@ namespace Nereid
             false,
             "Show cover art",
             "Show cover art below source view if available"
+        );
+
+        private static readonly SchemaEntry<bool> ShowSeekSliderResizer = new SchemaEntry<bool> (
+            "player_window", "show_seek_slider_resizer",
+            true, "Show seek slider resize grip", ""
+        );
+
+        private static readonly SchemaEntry<int> SeekSliderWidth = new SchemaEntry<int> (
+            "player_window", "seek_slider_width",
+            175, "Width of seek slider in px", ""
         );
 
 #endregion
