@@ -16,9 +16,13 @@ AC_DEFUN([BANSHEE_CHECK_GIO_SHARP],
 
 		asms="`$PKG_CONFIG --variable=Libraries gio-sharp-2.0` `$PKG_CONFIG --variable=Libraries gtk-sharp-beans-2.0`"
 		for asm in $asms; do
-			GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm"
-			[[ -r "$asm.config" ]] && GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm.config"
-			[[ -r "$asm.mdb" ]] && GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm.mdb"
+			FILENAME=`basename $asm`
+			if [[ "`echo $SEENBEFORE | grep $FILENAME`" = "" ]]; then
+				GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm"
+				[[ -r "$asm.config" ]] && GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm.config"
+				[[ -r "$asm.mdb" ]] && GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm.mdb"
+				SEENBEFORE="$SEENBEFORE $FILENAME"
+			fi
 		done
 		AC_SUBST(GIOSHARP_ASSEMBLIES)
 
