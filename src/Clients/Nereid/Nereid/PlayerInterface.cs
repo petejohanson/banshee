@@ -166,6 +166,11 @@ namespace Nereid
             BuildViews ();
             BuildFooter ();
 
+            var box = new Alignment (1.0f, 0.5f, 0f, 0f);
+            box.Child = view_container.SearchEntry;
+            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/SearchEntry", box);
+            box.ShowAll ();
+
             primary_vbox.Show ();
             Add (primary_vbox);
         }
@@ -439,7 +444,6 @@ namespace Nereid
                     return;
                 }
 
-                view_container.Title = source.Name;
                 view_container.SearchEntry.Ready = false;
                 view_container.SearchEntry.CancelSearch ();
 
@@ -550,10 +554,10 @@ namespace Nereid
                 source.Properties.Set<IListView<TrackInfo>>  ("Track.IListView", track_content.TrackView);
             }
 
-            view_container.Header.Visible = source.Properties.Contains ("Nereid.SourceContents.HeaderVisible") ?
-                source.Properties.Get<bool> ("Nereid.SourceContents.HeaderVisible") : true;
-
-            view_container.SetTitleWidget (source.Properties.Get<Widget> ("Nereid.SourceContents.TitleWidget"));
+            var title_widget = source.Properties.Get<Widget> ("Nereid.SourceContents.TitleWidget");
+            if (title_widget != null) {
+                Hyena.Log.Warning ("Nereid.SourceContents.TitleWidget is no longer used (from {0})", source.Name);
+            }
 
             Widget header_widget = null;
             if (source.Properties.Contains ("Nereid.SourceContents.HeaderWidget")) {
@@ -579,7 +583,6 @@ namespace Nereid
             if (args.Source == ServiceManager.SourceManager.ActiveSource) {
                 ThreadAssist.ProxyToMain (delegate {
                     UpdateSourceInformation ();
-                    view_container.Title = args.Source.Name;
                 });
             }
         }

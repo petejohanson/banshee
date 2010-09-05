@@ -44,13 +44,9 @@ namespace Nereid
     public class ViewContainer : VBox
     {
         private SearchEntry search_entry;
-        private HBox header;
-        private Alignment header_align;
-        private EventBox header_box;
+        private Alignment source_actions_align;
+        private EventBox source_actions_box;
 
-        private EventBox default_title_box;
-        private Label title_label;
-        private HBox custom_title_box;
         private Banshee.ContextPane.ContextPane context_pane;
         private VBox footer;
 
@@ -66,43 +62,22 @@ namespace Nereid
 
         private void BuildHeader ()
         {
-            header_align = new Alignment (0.0f, 0.5f, 1.0f, 1.0f);
+            source_actions_align = new Gtk.Alignment (0f, .5f, 1f, 0f) {
+                RightPadding = 0,
+                LeftPadding = 0,
+                NoShowAll = true
+            };
+
             if (Hyena.PlatformDetection.IsMeeGo) {
-                header_align.RightPadding = 5;
-                header_align.TopPadding = 5;
+                source_actions_align.RightPadding = 5;
+                source_actions_align.TopPadding = 5;
             }
 
-            header = new HBox ();
             footer = new VBox ();
 
-            default_title_box = new EventBox ();
-            title_label = new Label ();
-            title_label.Xalign = 0.0f;
-            title_label.Ellipsize = Pango.EllipsizeMode.End;
-
-            default_title_box.Add (title_label);
-
-            // Show the source context menu when the title is right clicked
-            default_title_box.PopupMenu += delegate {
-                ServiceManager.Get<InterfaceActionService> ().SourceActions ["SourceContextMenuAction"].Activate ();
-            };
-
-            default_title_box.ButtonPressEvent += delegate (object o, ButtonPressEventArgs press) {
-                if (press.Event.Button == 3) {
-                    ServiceManager.Get<InterfaceActionService> ().SourceActions ["SourceContextMenuAction"].Activate ();
-                }
-            };
-
-            header_box = new EventBox ();
-
-            custom_title_box = new HBox () { Visible = false };
+            source_actions_box = new EventBox () { Visible = true };
 
             BuildSearchEntry ();
-
-            header.PackStart (default_title_box, true, true, 0);
-            header.PackStart (custom_title_box, true, true, 0);
-            header.PackStart (header_box, false, false, 0);
-            header.PackStart (search_entry, false, false, 0);
 
             InterfaceActionService uia = ServiceManager.Get<InterfaceActionService> ();
             if (uia != null) {
@@ -119,20 +94,22 @@ namespace Nereid
                 }
             }
 
-            header_align.Add (header);
-            header_align.ShowAll ();
+            source_actions_box.ShowAll ();
+            source_actions_align.Add (source_actions_box);
+            source_actions_align.Hide ();
             search_entry.Show ();
 
-            PackStart (header_align, false, false, 0);
-            PackEnd (footer, false, false, 0);
 
             context_pane = new Banshee.ContextPane.ContextPane ();
             context_pane.ExpandHandler = b => {
                 SetChildPacking (content.Widget, !b, true, 0, PackType.Start);
                 SetChildPacking (context_pane, b, b, 0, PackType.End);
             };
-            PackEnd (context_pane, false, false, 0);
 
+            // Top to bottom, their order is reverse of this:
+            PackEnd (footer, false, false, 0);
+            PackEnd (context_pane, false, false, 0);
+            PackEnd (source_actions_align, false, false, 0);
             PackEnd (new ConnectedMessageBar (), false, true, 0);
         }
 
@@ -201,17 +178,17 @@ namespace Nereid
         public void SetHeaderWidget (Widget widget)
         {
             if (widget != null) {
-                header_box.Add (widget);
+                source_actions_box.Add (widget);
                 widget.Show ();
-                header_box.Show ();
+                source_actions_align.Show ();
             }
         }
 
         public void ClearHeaderWidget ()
         {
-            header_box.Hide ();
-            if (header_box.Child != null) {
-                header_box.Remove (header_box.Child);
+            source_actions_align.Hide ();
+            if (source_actions_box.Child != null) {
+                source_actions_box.Remove (source_actions_box.Child);
             }
         }
 
@@ -233,32 +210,19 @@ namespace Nereid
         }
 
         public Alignment Header {
-            get { return header_align; }
+            get { return source_actions_align; }
         }
 
         public SearchEntry SearchEntry {
             get { return search_entry; }
         }
 
+        [Obsolete]
         public void SetTitleWidget (Widget widget)
         {
-            var child = custom_title_box.Children.Length == 0 ? null : custom_title_box.Children[0];
-            if (widget == child) {
-                return;
-            }
-
-            if (child != null) {
-                custom_title_box.Remove (child);
-            }
-
             if (widget != null) {
-                widget.HeightRequest = search_entry.Allocation.Height;
-                widget.Show ();
-                custom_title_box.PackStart (widget, false, false, 0);
+                Hyena.Log.Warning ("Nereid.SourceContents.TitleWidget is no longer used (from {0})", ServiceManager.SourceManager.ActiveSource.Name);
             }
-
-            custom_title_box.Visible = widget != null;
-            default_title_box.Visible = widget == null;
         }
 
         public ISourceContents Content {
@@ -288,8 +252,9 @@ namespace Nereid
             }
         }
 
+        [Obsolete]
         public string Title {
-            set { title_label.Markup = String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (value)); }
+            set {}
         }
 
         public bool SearchSensitive {
