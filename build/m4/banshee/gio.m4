@@ -18,6 +18,7 @@ AC_DEFUN([BANSHEE_CHECK_GIO_SHARP],
 		for asm in $asms; do
 			GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm"
 			[[ -r "$asm.config" ]] && GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm.config"
+			[[ -r "$asm.mdb" ]] && GIOSHARP_ASSEMBLIES="$GIOSHARP_ASSEMBLIES $asm.mdb"
 		done
 		AC_SUBST(GIOSHARP_ASSEMBLIES)
 
