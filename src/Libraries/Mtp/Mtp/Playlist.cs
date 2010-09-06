@@ -40,9 +40,11 @@ namespace Mtp
             List<Playlist> playlists = new List<Playlist> ();
             IntPtr ptr = Playlist.LIBMTP_Get_Playlist_List (device.Handle);
             while (ptr != IntPtr.Zero) {
+                // Destroy the struct *after* we use it to ensure we don't access freed memory
+                // for the 'tracks' variable
                 PlaylistStruct d = (PlaylistStruct)Marshal.PtrToStructure(ptr, typeof(PlaylistStruct));
-                LIBMTP_destroy_playlist_t (ptr);
                 playlists.Add (new Playlist (device, d));
+                LIBMTP_destroy_playlist_t (ptr);
                 ptr = d.next;
             }
             return playlists;
@@ -68,14 +70,16 @@ namespace Mtp
         public Playlist (MtpDevice device, string name) : base (device, name)
         {
             this.playlist = new PlaylistStruct ();
-            TracksPtr = IntPtr.Zero;
             Name = name;
             Count = 0;
         }
 
         internal Playlist (MtpDevice device, PlaylistStruct playlist) : base (device, playlist.tracks, playlist.no_tracks)
         {
+            // Once we've loaded the tracks, set the TracksPtr to NULL as it
+            // will be freed when the Playlist constructor is finished.
             this.playlist = playlist;
+            TracksPtr = IntPtr.Zero;
         }
 
         protected override int Create ()

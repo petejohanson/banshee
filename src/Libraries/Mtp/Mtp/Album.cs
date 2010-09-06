@@ -41,9 +41,11 @@ namespace Mtp
 
             IntPtr ptr = LIBMTP_Get_Album_List (device.Handle);
             while (ptr != IntPtr.Zero) {
+                // Destroy the struct *after* we use it to ensure we don't access freed memory
+                // for the 'tracks' variable
                 AlbumStruct d = (AlbumStruct)Marshal.PtrToStructure(ptr, typeof(AlbumStruct));
-                LIBMTP_destroy_album_t (ptr);
                 albums.Add (new Album (device, d));
+                LIBMTP_destroy_album_t (ptr);
                 ptr = d.next;
             }
 
@@ -103,12 +105,14 @@ namespace Mtp
             Genre = genre;
             Composer = composer;
             Count = 0;
-            TracksPtr = IntPtr.Zero;
         }
 
         internal Album (MtpDevice device, AlbumStruct album) : base (device, album.tracks, album.no_tracks)
         {
+            // Once we've loaded the tracks, set the TracksPtr to NULL as it
+            // will be freed when the Album constructor is finished.
             this.album = album;
+            TracksPtr = IntPtr.Zero;
         }
 
         public override void Save ()
@@ -169,9 +173,12 @@ namespace Mtp
             if (ptr == IntPtr.Zero) {
                 return null;
             } else {
+                // Destroy the struct after we use it to prevent accessing freed memory
+                // in the 'tracks' variable
                 AlbumStruct album = (AlbumStruct) Marshal.PtrToStructure(ptr, typeof (AlbumStruct));
+                var ret = new Album (device, album);
                 LIBMTP_destroy_album_t (ptr);
-                return new Album (device, album);
+                return ret;
             }
         }
 

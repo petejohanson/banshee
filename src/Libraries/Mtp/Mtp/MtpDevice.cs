@@ -190,9 +190,10 @@ namespace Mtp
             List<Track> tracks = new List<Track>();
             
             while (ptr != IntPtr.Zero) {
+                // Destroy the struct after we use it to avoid potential referencing of freed memory.
                 TrackStruct track = (TrackStruct)Marshal.PtrToStructure(ptr, typeof(TrackStruct));
-                Track.DestroyTrack (ptr);
                 tracks.Add (new Track (track, this));
+                Track.DestroyTrack (ptr);
                 ptr = track.next;
             }
             

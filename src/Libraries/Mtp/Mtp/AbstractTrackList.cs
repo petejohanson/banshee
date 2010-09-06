@@ -34,13 +34,11 @@ namespace Mtp
         {
             this.device = device;
             this.saved = true;
+            this.track_ids = new List<uint> ();
 
             if (tracks != IntPtr.Zero) {
-                var vals = new uint [count];
-                Marshal.Copy ((IntPtr)tracks, (int[])(object)vals, 0, (int)count);
-                track_ids = new List<uint> (vals);
-            } else {
-                track_ids = new List<uint> ();
+                for (int i = 0; i < (int) count; i++)
+                    track_ids.Add ((uint) Marshal.ReadInt32 (tracks, sizeof (int) * i));
             }
         }
 
@@ -76,27 +74,26 @@ namespace Mtp
         {
             Count = (uint) track_ids.Count;
 
-            if (TracksPtr != IntPtr.Zero) {
-                Marshal.FreeHGlobal (TracksPtr);
-                TracksPtr = IntPtr.Zero;
-            }
+            if (TracksPtr != IntPtr.Zero)
+                throw new InvalidOperationException ("TracksPtr must be NULL when Save is called");
 
-            if (Count == 0) {
-                TracksPtr = IntPtr.Zero;
-            } else {
-                TracksPtr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (uint)) * (int)Count);
-                Marshal.Copy ((int[])(object)track_ids.ToArray (), 0, TracksPtr, (int)Count);
-            }
+            try {
+                if (Count > 0) {
+                    TracksPtr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (uint)) * (int)Count);
+                    for (int i = 0; i < track_ids.Count; i ++)
+                        Marshal.WriteInt32 (TracksPtr, i * sizeof (int), (int) track_ids [i]);
+                }
 
-            if (saved) {
-                saved = Update () == 0;
-            } else {
-                saved = Create () == 0;
-            }
-
-            if (TracksPtr != IntPtr.Zero) {
-                Marshal.FreeHGlobal (TracksPtr);
-                TracksPtr = IntPtr.Zero;
+                if (saved) {
+                    saved = Update () == 0;
+                } else {
+                    saved = Create () == 0;
+                }
+            } finally {
+                if (TracksPtr != IntPtr.Zero) {
+                    Marshal.FreeHGlobal (TracksPtr);
+                    TracksPtr = IntPtr.Zero;
+                }
             }
         }
     }
