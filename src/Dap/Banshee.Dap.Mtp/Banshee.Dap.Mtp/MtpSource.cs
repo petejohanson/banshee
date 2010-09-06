@@ -368,10 +368,10 @@ namespace Banshee.Dap.Mtp
 
         private Folder GetFolderForTrack (TrackInfo track)
         {
-            if (track.HasAttribute (TrackMediaAttributes.Podcast)) {
-                return mtp_device.PodcastFolder;
-            } else if (track.HasAttribute (TrackMediaAttributes.VideoStream)) {
+            if (track.HasAttribute (TrackMediaAttributes.VideoStream)) {
                 return mtp_device.VideoFolder;
+            } else if (track.HasAttribute (TrackMediaAttributes.Podcast)) {
+                return mtp_device.PodcastFolder;
             } else {
                 return mtp_device.MusicFolder;
             }
