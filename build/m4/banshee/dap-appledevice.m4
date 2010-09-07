@@ -17,6 +17,7 @@ AC_DEFUN([BANSHEE_CHECK_DAP_APPLEDEVICE],
 	if test "x$enable_appledevice" = "xyes"; then
 		asm="`$PKG_CONFIG --variable=Libraries libgpod-sharp`"
 		LIBGPODSHARP_ASSEMBLIES="$LIBGPODSHARP_ASSEMBLIES $asm"
+		[[ -r "$asm.config" ]] && LIBGPODSHARP_ASSEMBLIES="$LIBGPODSHARP_ASSEMBLIES $asm.config"
 		[[ -r "$asm.mdb" ]] && LIBGPODSHARP_ASSEMBLIES="$LIBGPODSHARP_ASSEMBLIES $asm.mdb"
 		AC_SUBST(LIBGPODSHARP_ASSEMBLIES)
 	fi
