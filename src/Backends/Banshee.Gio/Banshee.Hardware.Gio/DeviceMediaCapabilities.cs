@@ -132,7 +132,7 @@ namespace Banshee.Hardware.Gio
 #endregion
         private class GMpiFileInfo
         {
-            private const string Seperator = ";";
+            private const char Seperator = ';';
             private const string MediaGroup = "Media";
             private const string DeviceGroup = "Device";
             private const string VendorGroup = "Vendor";
