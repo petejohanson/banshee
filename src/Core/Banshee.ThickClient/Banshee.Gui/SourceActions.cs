@@ -177,7 +177,7 @@ namespace Banshee.Gui
             playlist.Save ();
             playlist.PrimarySource.AddChildSource (playlist);
             playlist.NotifyUser ();
-            //SourceView.BeginRenameSource (playlist);
+            SourceView.BeginRenameSource (playlist);
         }
 
 
