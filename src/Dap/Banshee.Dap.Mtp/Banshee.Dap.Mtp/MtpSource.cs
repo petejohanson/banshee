@@ -116,7 +116,13 @@ namespace Banshee.Dap.Mtp
                 throw new InvalidDeviceException ();
             }
 
-            Name = mtp_device.Name;
+            // libmtp sometimes returns '?????'. I assume this is if the device does
+            // not supply a friendly name. In this case show the model name.
+            if (string.IsNullOrEmpty (mtp_device.Name) || mtp_device.Name == "?????")
+                Name = mtp_device.ModelName;
+            else
+                Name = mtp_device.Name;
+
             Initialize ();
 
             List<string> mimetypes = new List<string> ();
