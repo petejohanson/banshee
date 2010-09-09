@@ -352,7 +352,7 @@ namespace Banshee.ServiceStack
             lock (self_mutex) {
                 Type type = typeof (T);
                 T service = Get (type.Name) as T;
-                if (service == null && type.GetInterface ("Banshee.ServiceStack.IRegisterOnDemandService") != null) {
+                if (service == null && typeof(IRegisterOnDemandService).IsAssignableFrom (type)) {
                     return RegisterService (type) as T;
                 }
 
