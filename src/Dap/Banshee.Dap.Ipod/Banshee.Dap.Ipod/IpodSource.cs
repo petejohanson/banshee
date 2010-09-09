@@ -560,6 +560,8 @@ namespace Banshee.Dap.Ipod
 
         private void PerformSyncThreadCycle ()
         {
+            Hyena.Log.Debug ("Starting iPod sync thread cycle");
+
             while (tracks_to_add.Count > 0) {
                 IpodTrackInfo track = null;
                 lock (sync_mutex) {
@@ -639,6 +641,7 @@ namespace Banshee.Dap.Ipod
                 ipod_device.TrackDatabase.SaveStarted -= OnIpodDatabaseSaveStarted;
                 ipod_device.TrackDatabase.SaveEnded -= OnIpodDatabaseSaveEnded;
                 ipod_device.TrackDatabase.SaveProgressChanged -= OnIpodDatabaseSaveProgressChanged;
+                Hyena.Log.Debug ("Ending iPod sync thread cycle");
             }
         }
 

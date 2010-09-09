@@ -211,6 +211,8 @@ namespace Banshee.Dap
                     throw new PossibleUserErrorException (to_remove.Count);
                 }
 
+                Hyena.Log.Debug ("Starting DAP sync");
+
                 sync.Dap.DeleteAllTracks (to_remove);
                 sync.Dap.AddAllTracks (to_add);
 
@@ -243,6 +245,8 @@ namespace Banshee.Dap
                         }
                     }
                 }
+
+                Hyena.Log.Debug ("Ending DAP sync");
 
                 CalculateSync ();
                 sync.OnUpdated ();

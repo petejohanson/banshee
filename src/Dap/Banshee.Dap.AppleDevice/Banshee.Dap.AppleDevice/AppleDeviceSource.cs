@@ -485,6 +485,8 @@ namespace Banshee.Dap.AppleDevice
 
         private void PerformSyncThreadCycle ()
         {
+            Hyena.Log.Debug ("Starting AppleDevice sync thread cycle");
+
             string message;
             int total;
             var progressUpdater = new UserJob (Catalog.GetString ("Syncing iPod"),
@@ -573,6 +575,8 @@ namespace Banshee.Dap.AppleDevice
                 Log.Exception ("Failed to save iPod database", e);
             }
             progressUpdater.Finish ();
+
+            Hyena.Log.Debug ("Ending AppleDevice sync thread cycle");
         }
 
         public bool SyncNeeded {
