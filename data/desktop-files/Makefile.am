@@ -17,7 +17,7 @@ endif
 @INTLTOOL_DESKTOP_RULE@
 
 install-data-hook:
-	test "$(top_srcdir)" = "$(top_builddir)" && update-desktop-database $(DESTDIR)$(datadir)/applications || :
+	test -z $(DESTDIR) && update-desktop-database $(DESTDIR)$(datadir)/applications || :
 
 EXTRA_DIST = \
 	$(desktop_in_files) \
