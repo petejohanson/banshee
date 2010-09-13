@@ -224,7 +224,9 @@ namespace Banshee.Hardware.Gio
         }
 
         public override string Product {
-            get { return "Product Not Implemented"; }
+            get {
+                return UdevMetadata.Model;
+            }
         }
 
         public override string Uuid {
