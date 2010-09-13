@@ -92,8 +92,8 @@ namespace Banshee.Dap.AppleDevice
 
             // FIXME
             //AddDapProperty (Catalog.GetString ("Color"), "black");
-            AddDapProperty (Catalog.GetString ("Capacity"), string.Format ("{0:0.00}GB", BytesCapacity));
-            AddDapProperty (Catalog.GetString ("Available"), string.Format ("{0:0.00}GB", BytesAvailable));
+            AddDapProperty (Catalog.GetString ("Capacity"), string.Format ("{0:0.00}GB", BytesCapacity / 1024.0 / 1024.0 / 1024.0));
+            AddDapProperty (Catalog.GetString ("Available"), string.Format ("{0:0.00}GB", BytesAvailable / 1024.0 / 1024.0 / 1024.0));
             AddDapProperty (Catalog.GetString ("Serial number"), Volume.Serial);
             //AddDapProperty (Catalog.GetString ("Produced on"), ipod_device.ProductionInfo.DisplayDate);
             //AddDapProperty (Catalog.GetString ("Firmware"), ipod_device.FirmwareVersion);
