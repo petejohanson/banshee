@@ -337,7 +337,11 @@ namespace Banshee.Dap.Mtp
                 if (!video) {
                     string key = MakeAlbumKey (track.AlbumArtist, track.AlbumTitle);
                     if (!album_cache.ContainsKey (key)) {
-                        Album album = new Album (mtp_device, track.AlbumTitle, track.AlbumArtist, track.Genre, track.Composer);
+                        // LIBMTP 1.0.3 BUG WORKAROUND
+                        // In libmtp.c the 'LIBMTP_Create_New_Album' function invokes 'create_new_abstract_list'.
+                        // The latter calls strlen on the 'name' parameter without null checking. If AlbumTitle is
+                        // null, this causes a sigsegv. Lets be safe and always pass non-null values.
+                        Album album = new Album (mtp_device, track.AlbumTitle ?? "", track.AlbumArtist ?? "", track.Genre ?? "", track.Composer ?? "");
                         album.AddTrack (mtp_track);
 
                         if (supports_jpegs && can_sync_albumart) {
