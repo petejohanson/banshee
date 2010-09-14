@@ -189,25 +189,14 @@ namespace Banshee.Dap.Ipod
 
         public void CommitToIpod (IPod.Device device)
         {
-            bool update = (track != null);
-            if (!update) {
-                try {
-                    track = device.TrackDatabase.CreateTrack (Uri.AbsolutePath);
-                } catch (Exception e) {
-                    Log.Exception ("Failed to create iPod track with Uri " + Uri.AbsoluteUri, e);
-                    device.TrackDatabase.RemoveTrack (track);
-                    return;
-                }
-            }
-
+            track = track ?? device.TrackDatabase.CreateTrack ();
             ExternalId = track.Id;
 
-            //if the track was not in the ipod already, the CreateTrack(uri)
-            //method updates the Uri property with the path of the new file
-            //so we need to save it on Banshee db to be properly synced
-            if (!update) {
-                Uri = new SafeUri (track.Uri);
-                Save ();
+            try {
+                track.Uri = new Uri (Uri.AbsoluteUri);
+            } catch (Exception e) {
+                Log.Exception ("Failed to create System.Uri for iPod track", e);
+                device.TrackDatabase.RemoveTrack (track);
             }
 
             track.AlbumArtist = AlbumArtist;
