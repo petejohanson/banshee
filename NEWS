@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.7.5 - Expected Release Date: September 1, 2010
+WELCOME TO BANSHEE 1.7.6 - Released September 15, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -10,64 +10,27 @@ WELCOME TO BANSHEE 1.7.5 - Expected Release Date: September 1, 2010
     experience automatic cover art fetching as you listen; and easily browse,
     search, and control your media collection."
 
-  * Learn More: http://banshee.fm/download/archives/1.7.5
+  * Learn More: http://banshee.fm/download/archives/1.7.6
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.7.5 is part of the 1.7 active development series, leading up to a
+    Banshee 1.7.6 is part of the 1.7 active development series, leading up to a
     stable 1.8 release in the fall.
 
-    New Features Since 1.7.4:
+    New Features Since 1.7.5:
 
-      * GIO/udev-based hardware backend
-
-        Our old HAL-based backend still works, but HAL has been deprecated and 
-        even removed from some distributions; GIO/udev are the future.
-
-      * Apple Devices backend with support for iPod/iOS devices
-
-        Our ipod-sharp/podsleuth-based backend still exists, but this libgpod
-        based backend is the future.  This is its first release, so it should be
-        considered beta quality; please file bugs!
-
-      * MPRIS v2 support (Ubuntu Sound Menu, etc)
-
-      * Audiobooks and Miro Guide extensions enabled by default
+      * 
 
     Enhancements/API Additions:
 
-      * Play menu item in track context menu
-      * Amazon affiliate codes for all supported countries
-      * "Amazon MP3s" Music smart playlist
-      * Miro Guide teaser in Podcasts
-      * Zoom support in Amazon MP3 Store and Miro Guide
-      * Now Playing simplify mode that declutters the UI
-      * Play Queue shuffle action
-      * Podcast errors shown to user
-      * Better MTP device detection
-      * Default smart playlists hidden when empty, for new users
-      * New and improved user documentation
+      * 
 
-      * Developers: Our new gstreamer-sharp based media engine backend has seen
-                    some recent improvements.  It's alpha quality, but is usable
-                    and ready for hacking.  Our libbanshee-based backend is still
-                    the only one recommended for end-users.
+    Notable Bugs Fixed ( fixed since 1.7.5):
 
-      * Packagers: You may need to call update-mime-database in a post-install
-                   package hook for the AmazonMp3 extension.
-
-    Notable Bugs Fixed (48 fixed since 1.7.4):
-
-      * bgo#626786: Prevent crash in search-for-artist when blank
-      * bgo#628388: Fix overflow bug with MTP playlists
-      * bgo#625683: Fixup checkboxes now clickable
-      * bgo#626928: Fetch podcast artwork asap
-      * bgo#626791: Catch crashes caused by missing extensions
-      * bgo#528383: Re-enable writing video metadata to file
-      * bgo#626803: Fix Ogg rating parsing in non-English locales
+      * bgo#: 
 
 
 ===============================================================================
@@ -77,9 +40,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.7.5 Tarballs:
-      http://download.banshee.fm/banshee/unstable/1.7.5/banshee-1-1.7.5.tar.bz2
-      http://download.banshee.fm/banshee/unstable/1.7.5/banshee-1-1.7.5.tar.gz
+    * Banshee 1.7.6 Tarballs:
+      http://download.banshee.fm/banshee/unstable/1.7.6/banshee-1-1.7.6.tar.bz2
+      http://download.banshee.fm/banshee/unstable/1.7.6/banshee-1-1.7.6.tar.gz
 
 Packages
 --------
@@ -101,8 +64,8 @@ Packages
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee.fm/banshee/unstable/1.7.5/banshee-1-1.7.5.changes
-    * http://download.banshee.fm/banshee/unstable/1.7.5/banshee-1-1.7.5.sha256sum
+    * http://download.banshee.fm/banshee/unstable/1.7.6/banshee-1-1.7.6.changes
+    * http://download.banshee.fm/banshee/unstable/1.7.6/banshee-1-1.7.6.sha256sum
 
 
 ===============================================================================
@@ -174,7 +137,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee.fm/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.7.5
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.7.6
 
 
 ===============================================================================
@@ -187,15 +150,14 @@ Contributors For This Release
     The following people directly contributed to the release of this version
     of Banshee. Without their help, there would be no release!
 
-      Aaron Bockover, Alan McGovern, Alex Launi, Bertrand Lorentz,
-      David Nielsen, Gabriel Burt, Jensen Somers, Paul Cutler, Pete Johanson
+      Alan McGovern, Alex Launi, Alexander Kojevnikov, Andrés G. Aragoneses,
+      Bertrand Lorentz, Christian Krause, Gabriel Burt, Iain Lane, Zhou Ting
 
     The following people contributed updated translations to this release.
     Without them, our project's reach would be much more limited.
 
-      A S Alam, Andrej Žnidaršič, Benjamín Valero Espinosa, Daniel S. Koda,
-      Emmanouel Kapernaros, Fran Diéguez, Kentaro KAZUHAMA, Mario Blättermann,
-      Petr Kovar, Βασίλης Κοντογιάννης
+      A S Alam, Andrej Žnidaršič, António Lima, Bruno Brouard, Gabor Kelemen,
+      Joe Hansen, Jordi Mas, Mario Blättermann
 
 
 Contributors In Past Releases
@@ -235,4 +197,4 @@ Contributors In Past Releases
     Ruben Vermeersch, Ryan Collier, Sandy Armstrong, Scott Peterson,
     Sebastian Dröge, Shaun McCance, Tim Yamin, Tobias Mueller, Todd Berman,
     Travis Glenn Hansen, Travis Reitter, Trey Ethridge, Valentin Sawadski,
-    Will Farrington, William Pettersson, Wouter Bolsterlee
+    Will Farrington, William Pettersson, Wouter Bolsterlee, Zhou Ting
