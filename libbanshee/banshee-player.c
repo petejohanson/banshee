@@ -275,39 +275,28 @@ bp_audiosink_has_volume (BansheePlayer *player)
 P_INVOKE void
 bp_set_volume (BansheePlayer *player, gdouble volume)
 {
+    GParamSpec *volume_spec;
+    GValue value = { 0, };
+
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
-    g_return_if_fail (GST_IS_ELEMENT (player->playbin));
+    g_return_if_fail (GST_IS_ELEMENT(player->volume));
 
-    if (bp_supports_stream_volume (player)) {
-        #if BANSHEE_CHECK_GST_VERSION(0,10,25)
-        gst_stream_volume_set_volume (GST_STREAM_VOLUME (player->playbin),
-            GST_STREAM_VOLUME_FORMAT_CUBIC, volume);
-        #endif
-    } else {
-        g_object_set (player->playbin, "volume", CLAMP (volume, 0.0, 1.0), NULL);
-    }
+    player->current_volume = CLAMP (volume, 0.0, 1.0);
+    volume_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (player->volume), "volume");
+    g_value_init (&value, G_TYPE_DOUBLE);
+    g_value_set_double (&value, player->current_volume);
+    g_param_value_validate (volume_spec, &value);
 
-    _bp_rgvolume_print_volume (player);
+    g_object_set_property (G_OBJECT (player->volume), "volume", &value);
+    g_value_unset (&value);
+    _bp_rgvolume_print_volume(player);
 }
 
 P_INVOKE gdouble
 bp_get_volume (BansheePlayer *player)
 {
-    gdouble volume;
-
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), 0.0);
-    g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), 0.0);
-
-    if (bp_supports_stream_volume (player)) {
-        #if BANSHEE_CHECK_GST_VERSION(0,10,25)
-        volume = gst_stream_volume_get_volume (GST_STREAM_VOLUME (player->playbin),
-            GST_STREAM_VOLUME_FORMAT_CUBIC);
-        #endif
-    } else {
-        g_object_get (player->playbin, "volume", &volume, NULL);
-    }
-
-    return volume;
+    return player->current_volume;
 }
 
 P_INVOKE void

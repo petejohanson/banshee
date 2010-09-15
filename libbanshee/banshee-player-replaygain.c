@@ -169,14 +169,12 @@ void _bp_rgvolume_print_volume(BansheePlayer *player)
     g_return_if_fail (IS_BANSHEE_PLAYER (player));
     if (player->replaygain_enabled && (player->rgvolume != NULL)) {
         gdouble scale;
-        gdouble volume;
 
         g_object_get (G_OBJECT (player->rgvolume), "result-gain", &scale, NULL);
-        g_object_get (G_OBJECT (player->playbin), "volume", &volume, NULL);
 
         bp_debug4 ("scaled volume: %.2f (ReplayGain) * %.2f (User) = %.2f",
-                  bp_replaygain_db_to_linear (scale), volume,
-                  bp_replaygain_db_to_linear (scale) * volume);
+                  bp_replaygain_db_to_linear (scale), player->current_volume,
+                  bp_replaygain_db_to_linear (scale) * player->current_volume);
     }
 }
 

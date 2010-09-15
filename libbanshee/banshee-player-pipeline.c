@@ -358,7 +358,11 @@ _bp_pipeline_construct (BansheePlayer *player)
     // Our audio sink is a tee, so plugins can attach their own pipelines
     player->audiotee = gst_element_factory_make ("tee", "audiotee");
     g_return_val_if_fail (player->audiotee != NULL, FALSE);
-    
+
+    // Create a volume control with low latency
+    player->volume = gst_element_factory_make ("volume", NULL);
+    g_return_val_if_fail (player->volume != NULL, FALSE);
+
     audiosinkqueue = gst_element_factory_make ("queue", "audiosinkqueue");
     g_return_val_if_fail (audiosinkqueue != NULL, FALSE);
 
@@ -371,7 +375,7 @@ _bp_pipeline_construct (BansheePlayer *player)
     }
     
     // Add elements to custom audio sink
-    gst_bin_add_many (GST_BIN (player->audiobin), player->audiotee, audiosinkqueue, audiosink, NULL);
+    gst_bin_add_many (GST_BIN (player->audiobin), player->audiotee, player->volume, audiosinkqueue, audiosink, NULL);
     
     if (player->equalizer != NULL) {
         gst_bin_add_many (GST_BIN (player->audiobin), eq_audioconvert, eq_audioconvert2, player->equalizer, player->preamp, NULL);
@@ -386,15 +390,13 @@ _bp_pipeline_construct (BansheePlayer *player)
     if (player->equalizer != NULL) {
         // link in equalizer, preamp and audioconvert.
         gst_element_link_many (audiosinkqueue, eq_audioconvert, player->preamp, 
-            player->equalizer, eq_audioconvert2, audiosink, NULL);
-        player->before_rgvolume = eq_audioconvert;
-        player->after_rgvolume = player->preamp;
+            player->equalizer, eq_audioconvert2, player->volume, audiosink, NULL);
     } else {
         // link the queue with the real audio sink
-        gst_element_link (audiosinkqueue, audiosink);
-        player->before_rgvolume = audiosinkqueue;
-        player->after_rgvolume = audiosink;
+        gst_element_link_many (audiosinkqueue, player->volume, audiosink, NULL);
     }
+    player->before_rgvolume = player->volume;
+    player->after_rgvolume = audiosink;
     player->rgvolume_in_pipeline = FALSE;
     _bp_replaygain_pipeline_rebuild (player);
 
