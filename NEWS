@@ -20,18 +20,19 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
     Banshee 1.7.6 is part of the 1.7 active development series, leading up to a
     stable 1.8 release in the fall.
 
-    New Features Since 1.7.5:
+    Enhancements:
 
-      * 
+      * Decrease the latency in changing playback volume
+      * Begin editing the name of newly added playlists
+      * Put all videos in the video folder on MTP devices
 
-    Enhancements/API Additions:
+    Notable Bugs Fixed (26 fixed since 1.7.5):
 
-      * 
-
-    Notable Bugs Fixed ( fixed since 1.7.5):
-
-      * bgo#: 
-
+      * bgo#629314: [AppleDevice] Correct capacity/free values
+      * bgo#628992: [AppleDevice]Bundle libgpod-sharp.dll.config fixing crash
+      * bgo#628832: [MTP] Fix MTP-device memory issues breaking Playlists, Albums
+      * bgo#629095: [MTP] Fix MTP devices being named '???'
+      * bgo#629373: [MTP] Workaround MTP sigsegv bug
 
 ===============================================================================
 SOURCES / PACKAGES
