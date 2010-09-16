@@ -653,8 +653,9 @@ namespace Nereid
                 }
             }
 
-            disable_keybindings &= ((GtkUtilities.NoImportantModifiersAreSet () &&
-                evnt.Key != Gdk.Key.Control_L && evnt.Key != Gdk.Key.Control_R));
+            // Don't disable them if ctrl is pressed
+            disable_keybindings &= (evnt.State & Gdk.ModifierType.ControlMask) == 0 &&
+                evnt.Key != Gdk.Key.Control_L && evnt.Key != Gdk.Key.Control_R;
 
             if (disable_keybindings) {
                 if (accel_group_active) {
