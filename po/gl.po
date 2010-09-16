@@ -10,9 +10,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: banshee-master-po-gl-3484\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-26 15:48+0200\n"
-"PO-Revision-Date: 2010-08-26 15:48+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=banshee&component=general\n"
+"POT-Creation-Date: 2010-09-01 21:37+0000\n"
+"PO-Revision-Date: 2010-09-16 02:38+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -64,8 +65,8 @@ msgstr ""
 msgid ""
 "Backend providers for the OSX platform. Includes general OSX integration."
 msgstr ""
-"Fornecedores de «backend» para a plataforma OSX. Inclúe integración xeral con "
-"OSX."
+"Fornecedores de «backend» para a plataforma OSX. Inclúe integración xeral "
+"con OSX."
 
 #. ../src/Backends/Banshee.Unix/Banshee.Unix.addin.xml
 #: ../data/addin-xml-strings.cs:29
@@ -191,7 +192,7 @@ msgstr "Organizar audiolibreso, conferencias, etc."
 
 #: ../data/addin-xml-strings.cs:82 ../data/addin-xml-strings.cs:87
 #: ../data/addin-xml-strings.cs:117 ../data/addin-xml-strings.cs:132
-#: ../data/addin-xml-strings.cs:185 ../data/addin-xml-strings.cs:190
+#: ../data/addin-xml-strings.cs:190 ../data/addin-xml-strings.cs:195
 msgid "Core"
 msgstr "Núcleo"
 
@@ -217,8 +218,8 @@ msgstr "Personalizar e estender Banshee con scripts na linguaxe Boo."
 #: ../data/addin-xml-strings.cs:102 ../data/addin-xml-strings.cs:107
 #: ../data/addin-xml-strings.cs:122 ../data/addin-xml-strings.cs:147
 #: ../data/addin-xml-strings.cs:156 ../data/addin-xml-strings.cs:166
-#: ../data/addin-xml-strings.cs:171 ../data/addin-xml-strings.cs:180
-#: ../data/addin-xml-strings.cs:209
+#: ../data/addin-xml-strings.cs:171 ../data/addin-xml-strings.cs:176
+#: ../data/addin-xml-strings.cs:185 ../data/addin-xml-strings.cs:214
 msgid "Utilities"
 msgstr "Ferramentas"
 
@@ -354,32 +355,41 @@ msgstr "Directorio de podcasts de Miro Guide"
 msgid "Browse and subscribe to thousands of audio and video podcasts."
 msgstr "Explorar e subscribirse a milleiros de podcast de son e vídeo."
 
-#. ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
+#. ../src/Extensions/Banshee.Mpris/Banshee.Mpris.addin.xml
 #: ../data/addin-xml-strings.cs:164
+msgid "MPRIS D-Bus interface"
+msgstr "Interface D-Bus de MPRIS"
+
+#: ../data/addin-xml-strings.cs:165
+msgid "Control Banshee using the MPRIS D-Bus interface."
+msgstr "Controle Banshee usando a interface D-Bus de MPRIS"
+
+#. ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
+#: ../data/addin-xml-strings.cs:169
 msgid "Multimedia Keys"
 msgstr "Teclas multimedia"
 
-#: ../data/addin-xml-strings.cs:165
+#: ../data/addin-xml-strings.cs:170
 msgid "Control playback via the multimedia keys on your keyboard."
 msgstr "Controlar a reprodución mediante as teclas multimedia do teclado."
 
 #. ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea.addin.xml
-#: ../data/addin-xml-strings.cs:169
+#: ../data/addin-xml-strings.cs:174
 msgid "Notification Area Icon"
 msgstr "Icona na área de notificación"
 
-#: ../data/addin-xml-strings.cs:170
+#: ../data/addin-xml-strings.cs:175
 msgid "Display an icon in the notification area for controlling Banshee."
 msgstr "Mostra unha icona na área de notificación para controlar Banshee."
 
 #. ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying.addin.xml
-#: ../data/addin-xml-strings.cs:174
+#: ../data/addin-xml-strings.cs:179
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:164
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:50
 msgid "Now Playing"
 msgstr "Reproducindo agora"
 
-#: ../data/addin-xml-strings.cs:175
+#: ../data/addin-xml-strings.cs:180
 msgid ""
 "Provides a source that displays embedded video and provides fullscreen video "
 "playback and controls."
@@ -388,108 +398,108 @@ msgstr ""
 "de vídeo a pantalla completa."
 
 #. ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration.addin.xml
-#: ../data/addin-xml-strings.cs:178
+#: ../data/addin-xml-strings.cs:183
 msgid "Importers for Amarok, Rhythmbox and iTunes"
 msgstr "Importadores para Amarok, Rhythmbox e iTunes."
 
-#: ../data/addin-xml-strings.cs:179
+#: ../data/addin-xml-strings.cs:184
 msgid "Import your library from Amarok, Rhythmbox or iTunes."
 msgstr "Importar a súa colección música desde Amarok, Rhythmbox ou iTunes."
 
 #. ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue.addin.xml
-#: ../data/addin-xml-strings.cs:183
+#: ../data/addin-xml-strings.cs:188
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:58
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:79
 msgid "Play Queue"
 msgstr "Reproducir cola"
 
-#: ../data/addin-xml-strings.cs:184
+#: ../data/addin-xml-strings.cs:189
 msgid "Queue tracks in an ad-hoc playlist, or let the Auto DJ take over."
 msgstr ""
 "Engadir as pisas a unha lista de reprodución ad hoc ou deixar que o faga "
 "Auto DJ."
 
 #. ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.addin.xml
-#: ../data/addin-xml-strings.cs:188
+#: ../data/addin-xml-strings.cs:193
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/PodcastGroupSource.cs:38
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:107
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:203
 msgid "Podcasts"
 msgstr "Podcasts"
 
-#: ../data/addin-xml-strings.cs:189
+#: ../data/addin-xml-strings.cs:194
 msgid "Subscribe to podcasts and stream or download episodes."
 msgstr "Subscribirse a podcasts e escoitar ou descargar episodios."
 
 #. ../src/Extensions/Banshee.RemoteAudio/Banshee.RemoteAudio.addin.xml
-#: ../data/addin-xml-strings.cs:193
+#: ../data/addin-xml-strings.cs:198
 msgid "Remote Audio"
 msgstr "Son remoto"
 
-#: ../data/addin-xml-strings.cs:194
+#: ../data/addin-xml-strings.cs:199
 msgid "Provides support for remote speakers like the Airport Express"
 msgstr ""
 "Fornece compatibilidade para altoparlantes remotos como os Airpot Express"
 
 #. ../src/Extensions/Banshee.Sample/Banshee.Sample.addin.xml
-#: ../data/addin-xml-strings.cs:197
+#: ../data/addin-xml-strings.cs:202
 #: ../src/Extensions/Banshee.Sample/Banshee.Sample/SampleSource.cs:40
 msgid "Sample"
 msgstr "Mostra"
 
-#: ../data/addin-xml-strings.cs:198
+#: ../data/addin-xml-strings.cs:203
 msgid "A sample source useful to developers."
 msgstr "Código de mostra útil para desenvolvedores."
 
-#: ../data/addin-xml-strings.cs:199
+#: ../data/addin-xml-strings.cs:204
 msgid "Sources"
 msgstr "Recursos"
 
 #. ../src/Extensions/Banshee.SqlDebugConsole/Banshee.SqlDebugConsole.addin.xml
-#: ../data/addin-xml-strings.cs:202
+#: ../data/addin-xml-strings.cs:207
 msgid "SQL Debug Console"
 msgstr "Consola de depuración SQL"
 
-#: ../data/addin-xml-strings.cs:203
+#: ../data/addin-xml-strings.cs:208
 msgid "Provides a UI for monitoring Banshee's SQL usage, and running queries."
 msgstr ""
 "Fornece unha interface para monitorizar o uso de SQL de Banshee e para "
 "executar solicitudes."
 
-#: ../data/addin-xml-strings.cs:204
+#: ../data/addin-xml-strings.cs:209
 msgid "Debug"
 msgstr "Depuración"
 
 #. ../src/Extensions/Banshee.Torrent/Banshee.Torrent.addin.xml
-#: ../data/addin-xml-strings.cs:207
+#: ../data/addin-xml-strings.cs:212
 msgid "Torrent Downloader"
 msgstr "Descargador de Torrent"
 
-#: ../data/addin-xml-strings.cs:208
+#: ../data/addin-xml-strings.cs:213
 msgid "Support downloading BitTorrent files from podcasts."
 msgstr "Compatibilidade para descargar ficheiros de BitTorrent dese podcasts."
 
 #. ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia.addin.xml
-#: ../data/addin-xml-strings.cs:212
+#: ../data/addin-xml-strings.cs:217
 #: ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia/ContextPage.cs:44
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: ../data/addin-xml-strings.cs:213
+#: ../data/addin-xml-strings.cs:218
 msgid "View artist information from Wikipedia in the context pane."
 msgstr "Ver información da Wikipedia sobre o artista no panel contextual."
 
-#: ../data/addin-xml-strings.cs:214 ../data/addin-xml-strings.cs:219
+#: ../data/addin-xml-strings.cs:219 ../data/addin-xml-strings.cs:224
 msgid "Context Pane"
 msgstr "Panel contextual"
 
 #. ../src/Extensions/Banshee.YouTube/Banshee.YouTube.addin.xml
-#: ../data/addin-xml-strings.cs:217
+#: ../data/addin-xml-strings.cs:222
 #: ../src/Extensions/Banshee.YouTube/Banshee.YouTube/ContextPage.cs:44
 msgid "YouTube"
 msgstr "YouTube"
 
-#: ../data/addin-xml-strings.cs:218
+#: ../data/addin-xml-strings.cs:223
 msgid "Show related YouTube videos in the context pane"
 msgstr "Mostrar vídeos relacionados de YouTube no panel contextual"
 
@@ -4126,7 +4136,7 @@ msgstr "Mostrar o examinador"
 msgid "Show or hide the artist/album browser"
 msgstr "Mostrar ou ocultar o examinador de artista/álbum"
 
-#: ../src/Core/Banshee.WebBrowser/Banshee.WebSource/WebBrowserShell.cs:119
+#: ../src/Core/Banshee.WebBrowser/Banshee.WebSource/WebBrowserShell.cs:121
 #, csharp-format
 msgid "Loading {0}..."
 msgstr "Cargando {0}..."
@@ -4214,25 +4224,38 @@ msgstr "Permite portadas"
 msgid "Supports photos"
 msgstr "Permite imaxes"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:379
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:388
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:468
 msgid "Track duration is zero"
 msgstr "A duración da pista é cero"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:566
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:650
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:490
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:651
 msgid "Syncing iPod"
 msgstr "Sincronizando iPod"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:567
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:651
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:491
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:652
 msgid "Preparing to synchronize..."
 msgstr "Preparándose para sincronizar..."
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:589
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:676
-msgid "Flushing to disk..."
-msgstr "Descargando ao disco..."
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:494
+#, csharp-format
+#| msgid "Adding {0} of {1} to {2}"
+msgid "Adding track {0} of {1}"
+msgstr "Engadindo a pista {0} de{1}"
+
+#. TODO sync updated metadata to changed tracks
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:512
+#, csharp-format
+#| msgid "Importing {0} of {1}"
+msgid "Removing track {0} of {1}"
+msgstr "Eliminando a pista {0} de{1}"
+
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:568
+#| msgid "Saving new database..."
+msgid "Writing media database"
+msgstr "Escribindo a base de datos multimedia"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:131
 #, csharp-format
@@ -4453,17 +4476,21 @@ msgstr "Firmware"
 msgid "Capabilities"
 msgstr "Prestacións"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:634
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:635
 msgid "Out of space on device"
 msgstr "Sen espazo no dispositivo"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:634
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:635
 msgid "Please manually remove some songs"
 msgstr "Elimine algunhas cancións manualmente"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:672
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:673
 msgid "Updating..."
 msgstr "Actualizando..."
+
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:677
+msgid "Flushing to disk..."
+msgstr "Descargando ao disco..."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:61
 msgid "Unable to read your iPod"
@@ -4638,12 +4665,8 @@ msgid_plural "{0} downloads at {1}/s ({2} pending)"
 msgstr[0] "{0} descarga a {1}/s ({2} pendentes)"
 msgstr[1] "{0} descargas a {1}/s ({2} pendentes)"
 
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/SignOutButton.cs:38
-msgid "Sign out of Amazon"
-msgstr "Desconectarse de Amazon"
-
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:42
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:38
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:39
 msgid "Amazon MP3 Store"
 msgstr "Tenda de MP3 de Amazon"
 
@@ -4679,10 +4702,14 @@ msgstr "Reino Unido (amazon.co.uk)"
 msgid "United States (amazon.com)"
 msgstr "Estados Unidos (amazon.com)"
 
-#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:47
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:43
 #, csharp-format
 msgid "Search the Amazon MP3 Store"
 msgstr "Buscar na Tenda de MP3 de Amazon"
+
+#: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:45
+msgid "How Your Purchases Support GNOME"
+msgstr "Como poden as súas compras apoiar a GNOME"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:55
 msgid "Open Book"
@@ -6302,12 +6329,14 @@ msgid "Open Miro Guide"
 msgstr "Abrir Miro Guide"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/View.cs:56
-msgid "Search for Podcasts"
+#| msgid "Search for Podcasts"
+msgid "Search for podcasts"
 msgstr "Buscar podcasts"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/View.cs:57
-msgid "Search for Video Podcasts"
-msgstr "Buscar podcasts de vídeo"
+#| msgid "Search for Video Podcasts"
+msgid "Search for video podcasts"
+msgstr "q"
 
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:139
 msgid "_Show Notifications"
@@ -6360,7 +6389,8 @@ msgstr "Simplificar"
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:60
 msgid "Simplify the Now Playing interface by hiding the source list and more"
 msgstr ""
-"Simplificar a interface de «En reprodución» agochando a lista de fontes e máis"
+"Simplificar a interface de «En reprodución» agochando a lista de fontes e "
+"máis"
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:144
 #, csharp-format
@@ -6888,6 +6918,9 @@ msgstr "Conectado a Last.fm."
 #: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:100
 msgid "Unknown Podcast"
 msgstr "Podcast descoñecido"
+
+#~ msgid "Sign out of Amazon"
+#~ msgstr "Desconectarse de Amazon"
 
 #~ msgid "MTP Support Ignoring Device"
 #~ msgstr "A compatibilidade con MTP ignora o dispositivo"
