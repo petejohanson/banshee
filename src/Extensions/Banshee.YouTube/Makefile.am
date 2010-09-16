@@ -18,3 +18,8 @@ include $(top_srcdir)/build/build.mk
 else
 EXTRA_DIST = $(SOURCES) $(RESOURCES)
 endif
+
+if HAVE_GDATASHARP_1_5
+GMCS_FLAGS += "-define:HAVE_GDATASHARP_1_5"
+endif
+

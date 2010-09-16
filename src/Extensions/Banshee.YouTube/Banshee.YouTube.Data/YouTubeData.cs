@@ -53,6 +53,7 @@ namespace Banshee.YouTube.Data
     public class DataCore
     {
         private Feed<Video> video_results;
+        private YouTubeRequestSettings yt_request_settings;
         private YouTubeRequest yt_request;
         private const string app_name = "Banshee.YouTube";
         private const string client_id = "ytapi-KevinDuffus-BansheeMediaPlay-11toa30i-0";
@@ -60,7 +61,11 @@ namespace Banshee.YouTube.Data
 
         public bool InitYouTubeRequest ()
         {
-            YouTubeRequestSettings yt_request_settings = new YouTubeRequestSettings (app_name, client_id, developer_key);
+#if HAVE_GDATASHARP_1_5
+            yt_request_settings = new YouTubeRequestSettings (app_name, developer_key);
+#else
+            yt_request_settings = new YouTubeRequestSettings (app_name, client_id, developer_key);
+#endif
             this.yt_request = new YouTubeRequest (yt_request_settings);
 
             if (this.yt_request != null && yt_request_settings != null) {
