@@ -4,7 +4,7 @@
 # Marco Carvalho <marcocarvalho89@yahoo.com.br>, 2005.
 # Evandro Fernandes Giovanini <evandrofg@ig.com.br>, 2006.
 # Vladimir Melo <vladimirmelo.psi@gmail.com>, 2007-2008.
-# Og Maciel <ogmaciel@gnome.org>, 2007-2008.
+# Og Maciel <ogmaciel@gnome.org>, 2007-2008, 2010.
 # Daniel Abreu <dlabreu@gmail.com>, 2007.
 # Rodrigo Flores <rodrigomarquesflores@gmail.com>, 2008.
 # Fabrício Godoy <skarllot@gmail.com>, 2008.
@@ -24,20 +24,20 @@ msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-19 13:17-0300\n"
-"PO-Revision-Date: 2010-07-25 09:57-0300\n"
-"Last-Translator: Daniel S. Koda <danielskoda@gmail.com>\n"
+"PO-Revision-Date: 2010-09-17 12:19-0000\n"
+"Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-Bookmarks: -1,1229,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #. ../src/Backends/Banshee.Gio/Banshee.Gio.addin.xml
 #: ../data/addin-xml-strings.cs:8
-#, fuzzy
 msgid "GIO IO and Hardware backends"
-msgstr "Retaguarda (backend) de E/S do GIO"
+msgstr "Backends de GIO IO e Hardware"
 
 #. ../src/Backends/Banshee.Gnome/Banshee.Gnome.addin.xml
 #: ../data/addin-xml-strings.cs:11
@@ -102,14 +102,12 @@ msgstr "Fornece utilidades e serviços GUI."
 
 #. ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice.addin.xml
 #: ../data/addin-xml-strings.cs:41
-#, fuzzy
 msgid "Apple device Support"
-msgstr "Suporte a dispositivos"
+msgstr "Suporte a dispositivos da Apple"
 
 #: ../data/addin-xml-strings.cs:42
-#, fuzzy
 msgid "Support for most iPod/iPhone/iPad devices."
-msgstr "Suporte para a maioria dos dispositivos iPod."
+msgstr "Suporte para a maioria dos dispositivos iPod/iPhone/iPad."
 
 #: ../data/addin-xml-strings.cs:43 ../data/addin-xml-strings.cs:48
 #: ../data/addin-xml-strings.cs:53 ../data/addin-xml-strings.cs:58
@@ -1698,9 +1696,8 @@ msgid "Music"
 msgstr "Música"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:65
-#, fuzzy
 msgid "Search your music"
-msgstr "Pesquisar por podcasts"
+msgstr "Pesquisar sua música"
 
 #. Misc section
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:79
@@ -1713,11 +1710,11 @@ msgid "_Sort an artist's albums by year, not title"
 msgstr "_Ordenar um album de artísta pelo ano, não pelo título"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:92
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} song"
 msgid_plural "{0} songs"
-msgstr[0] "{0} segundo"
-msgstr[1] "{0} segundos"
+msgstr[0] "{0} música"
+msgstr[1] "{0} músicas"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:114
 #: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:91
@@ -1810,20 +1807,19 @@ msgid "Videos"
 msgstr "Vídeos"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:48
-#, fuzzy
 msgid "Search your videos"
-msgstr "Procurar por podcasts de vídeo"
+msgstr "Pesquisar seus vídeo"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:65
 msgid "Produced By"
 msgstr "Produzido por"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:70
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} video"
 msgid_plural "{0} videos"
-msgstr[0] "{0} revisor"
-msgstr[1] "{0} Revisores, avg {1}"
+msgstr[0] "{0} vídeo"
+msgstr[1] "{0} vídeos"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:92
 msgid "Videos rated four and five stars"
@@ -1953,9 +1949,8 @@ msgstr ""
 "ou a busca por arte de capa"
 
 #: ../src/Core/Banshee.Services/Banshee.Playlist/AbstractPlaylistSource.cs:160
-#, fuzzy
 msgid "Search this playlist"
-msgstr "Lista de reprodução inteligente"
+msgstr "Pesquisar esta lista de reprodução"
 
 #: ../src/Core/Banshee.Services/Banshee.Playlist/AbstractPlaylistSource.cs:229
 msgid "The track's rating was set differently on the device and in Banshee"
@@ -2709,11 +2704,11 @@ msgid "Size Descending"
 msgstr "Tamanho descendente"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/Source.cs:796
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} item"
 msgid_plural "{0} items"
-msgstr[0] "{0:N0} item"
-msgstr[1] "{0:N0} itens"
+msgstr[0] "{0} item"
+msgstr[1] "{0} itens"
 
 #: ../src/Core/Banshee.Services/Banshee.Streaming/RadioTrackInfo.cs:82
 #: ../src/Core/Banshee.Services/Banshee.Streaming/RadioTrackInfo.cs:91
@@ -2808,9 +2803,8 @@ msgid "Protected"
 msgstr "Protegido"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:228
-#, fuzzy
 msgid "External Document"
-msgstr "Processamento adicional"
+msgstr "Documento externo"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/CoverArtEditor.cs:80
 msgid "Choose New Cover Art..."
@@ -2870,22 +2864,22 @@ msgstr "Carregando..."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerView.cs:74
 msgid "Preamp"
-msgstr ""
+msgstr "Pré-amplificação"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerView.cs:100
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "+{0} dB"
-msgstr "{0} MB"
+msgstr "+{0} dB"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerView.cs:102
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} dB"
-msgstr "{0} MB"
+msgstr "{0} dB"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerView.cs:124
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} kHz"
-msgstr "{0} Hz"
+msgstr "{0} kHz"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerWindow.cs:53
 msgid "Equalizer"
@@ -3100,9 +3094,8 @@ msgid "_Help"
 msgstr "Aj_uda"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:95
-#, fuzzy
 msgid "_Contents"
-msgstr "Concertos"
+msgstr "_Conteúdo"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:99
 msgid "_Web Resources"
@@ -3381,9 +3374,8 @@ msgid "View information on selected tracks"
 msgstr "Vê informação nas faixas selecionadas"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:87
-#, fuzzy
 msgid "Play the selected item"
-msgstr "Reproduz o próximo item"
+msgstr "Reproduzir o item selecionado"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:90
 msgid "Add _to Playlist"
@@ -4171,9 +4163,8 @@ msgstr ""
 "disco"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/SearchEntry.cs:95
-#, fuzzy
 msgid "Clear search"
-msgstr "Hie_rarquia de pastas"
+msgstr "Limpar pesquisa"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/SeekSlider.cs:58
 msgid "Seek"
@@ -4222,9 +4213,8 @@ msgid "Capacity"
 msgstr "Capacidade"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:97
-#, fuzzy
 msgid "Available"
-msgstr "Fluxo disponível"
+msgstr "Disponível"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:98
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:105
@@ -4499,7 +4489,6 @@ msgid "Unable to read your iPod"
 msgstr "Não foi possível ler o seu iPod"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:77
-#, fuzzy
 msgid ""
 "You have used this iPod with a version of iTunes that saves a version of the "
 "song database for your iPod that is too new for Banshee to recognize.\n"
@@ -4509,11 +4498,13 @@ msgid ""
 "and iTunes with the same iPod is not recommended."
 msgstr ""
 "Você usou este iPod com uma versão do iTunes que salva a versão do banco de "
-"dados de músicas para o seu iPod que é muito novo para o Banshee "
+"dados de músicas para o seu iPod que é muito nova para o Banshee "
 "reconhecer.\n"
 "\n"
-"O Banshee pode reconstruir o banco de dados, mas algumas configurações podem "
-"ser perdidas. Não é recomendado usar o Banshee e iTunes com o mesmo iPod."
+"O Banshee pode reconstruir o seu banco de dados, mas é possível que você "
+"perca suas configurações e todo o conteúdo do dispositivo (faça uma cópia de "
+"segurança primeiro). Não é recomendado usar o Banshee e iTunes com o mesmo "
+"iPod."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:88
 msgid "Learn more about Banshee's iPod support"
@@ -4767,16 +4758,15 @@ msgid "Audiobooks, etc"
 msgstr "Livros de áudio, etc"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:75
-#, fuzzy
 msgid "Search your audiobooks"
-msgstr "_Reiniciar livro falado"
+msgstr "Pesquisar seus livros de áudio"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:144
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} book"
 msgid_plural "{0} books"
-msgstr[0] "{0} atrás"
-msgstr[1] "{0} atrás"
+msgstr[0] "{0} livro"
+msgstr[1] "{0} livros"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/BookView.cs:114
 msgid "Resume Playback"
@@ -5224,24 +5214,21 @@ msgid "Problem Type:"
 msgstr "Tipo do problema:"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:66
-#, fuzzy
 msgid "Apply Selected Fixes"
-msgstr "Selecionar arquivos"
+msgstr "Aplicar os reparos selecionados"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:46
-#, fuzzy
 msgid "Duplicate Genres"
-msgstr "Artistas duplicados"
+msgstr "Gêneros duplicados"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:47
-#, fuzzy
 msgid ""
 "Displayed are genres that should likely be merged.  For each row, click the "
 "desired genre to make it bold, or uncheck it to take no action."
 msgstr ""
-"São mostrados artistas que muito provavelmente deveriam estar mesclados. "
-"Para cada linha, clique no nome desejado para torná-lo em negrito, ou "
-"desmarque-o para não executar nenhuma ação."
+"Os gêneros mostrados provavelmente deveriam ser mesclados. Para cada linha, "
+"clique no gênero desejado para torná-lo em negrito, ou desmarque-o para não "
+"executar nenhuma ação."
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:77
 msgid " and "
@@ -5252,14 +5239,14 @@ msgstr " e "
 #. separated by a pipe (|)
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/Solver.cs:198
 msgid "a|an|the"
-msgstr ""
+msgstr "um|uma|o|a"
 
 #. Translators: This is the format commonly used in your langauge for
 #. suffixing an article, eg in English: ", The"
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/Solver.cs:202
-#, fuzzy, csharp-format
+#, csharp-format
 msgid ", {0}"
-msgstr "{0}:"
+msgstr ", {0}"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/View.cs:77
 msgid "Fix?"
@@ -5795,9 +5782,8 @@ msgid "Add a new Internet Radio station or playlist"
 msgstr "Adiciona uma nova estação de rádio na internet ou lista de reprodução"
 
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:81
-#, fuzzy
 msgid "Search your stations"
-msgstr "Pesquisar por podcasts"
+msgstr "Pesquisar suas estações"
 
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:82
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationEditor.cs:60
@@ -5809,11 +5795,11 @@ msgid "Station"
 msgstr "Estação"
 
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:155
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} station"
 msgid_plural "{0} stations"
-msgstr[0] "{0} segundo"
-msgstr[1] "{0} segundos"
+msgstr[0] "{0} estação"
+msgstr[1] "{0} estações"
 
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:241
 msgid "Please provide a valid station URI"
@@ -6321,12 +6307,11 @@ msgstr "Miro Guide"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideSource.cs:97
 msgid "Discover interesting podcasts in the Miro Guide podcast directory!"
-msgstr ""
+msgstr "Descubra podcasts interesantes no diretório de podcasts do Guia Miro!"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideSource.cs:100
-#, fuzzy
 msgid "Open Miro Guide"
-msgstr "Miro Guide"
+msgstr "Abrir o Guia Miro"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/View.cs:56
 msgid "Search for Podcasts"
@@ -6382,11 +6367,11 @@ msgstr "Banshee"
 
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:59
 msgid "Simplify"
-msgstr ""
+msgstr "Simplificar"
 
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:60
 msgid "Simplify the Now Playing interface by hiding the source list and more"
-msgstr ""
+msgstr "Simplificar a interface Reproduzindo agora ocultando a lista fonte e outras coisas"
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:144
 #, csharp-format
@@ -6498,9 +6483,8 @@ msgid "Refresh random tracks in the play queue"
 msgstr "Atualiza as faixas aleatórias da fila de reprodução"
 
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:63
-#, fuzzy
 msgid "Randomize the playback order of items in the play queue"
-msgstr "Atualiza as faixas aleatórias da fila de reprodução"
+msgstr "Reproduzir de forma aleatória os itens na fila de reprodução"
 
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:67
 msgid "Add More"
@@ -6542,38 +6526,36 @@ msgid "All Podcasts ({0})"
 msgstr "Todos os podcasts ({0})"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:122
-#, fuzzy
 msgid "Remove Podcast"
-msgstr "Excluir o Podcast?"
+msgstr "Excluir podcast"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:127
 msgid "Disable Auto Updates"
-msgstr ""
+msgstr "Desabilitar atualização automática"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:145
 #, csharp-format
 msgid "Network error updating {0}"
-msgstr ""
+msgstr "Erro de erro na atualização {0}"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:151
 #, csharp-format
 msgid "Parsing error updating {0}"
-msgstr ""
+msgstr "Erro de análise na atualização {0}"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:154
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "Authentication error updating {0}"
-msgstr "Autenticação requerida"
+msgstr "Erro de autenticação na atualização {0}"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:157
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "Error updating {0}"
-msgstr "Editando {0}"
+msgstr "Erro de atualização {0}"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:213
-#, fuzzy
 msgid "Search your podcasts"
-msgstr "Pesquisar por podcasts"
+msgstr "Pesquisar seus podcasts"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:270
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:88
@@ -6591,11 +6573,11 @@ msgid "Downloaded"
 msgstr "Baixado"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:293
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} episode"
 msgid_plural "{0} episodes"
-msgstr[0] "{0} pasta:"
-msgstr[1] "{0} pasta:"
+msgstr[0] "{0} \t"
+msgstr[1] "{0} episódios"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:58
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellUnheard.cs:58
@@ -6643,14 +6625,12 @@ msgstr "Cancelar o download de todos podcasts?"
 
 #. "<control><shift>U",
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:72
-#, fuzzy
 msgid "Check all podcasts for new episodes"
-msgstr "Verificar novos episódios"
+msgstr "Verificar todos os podcasrs por novos episódios"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:77
-#, fuzzy
 msgid "Add Podcast..."
-msgstr "Podcast"
+msgstr "Adicionar podcast..."
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:78
 msgid "Subscribe to a new podcast"
@@ -6698,9 +6678,8 @@ msgid "Visit Website"
 msgstr "Visitar o website"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:161
-#, fuzzy
 msgid "Add Podcast"
-msgstr "Podcast"
+msgstr "Adicionar podcast"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:325
 msgid "Invalid URL"
@@ -6834,9 +6813,8 @@ msgid "This service does not exist."
 msgstr "Este serviço não existe."
 
 #: ../src/Libraries/Lastfm/Lastfm/RadioConnection.cs:275
-#, fuzzy
 msgid "Stations are only available to paying Last.fm subscribers."
-msgstr "Esta estação é somente disponível para assinantes."
+msgstr "Estações só estão disponível para assinantes do Last.fm."
 
 #: ../src/Libraries/Lastfm/Lastfm/RadioConnection.cs:277
 msgid "This station is not available."
