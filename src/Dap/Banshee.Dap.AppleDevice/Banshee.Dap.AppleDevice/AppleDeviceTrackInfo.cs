@@ -187,19 +187,26 @@ namespace Banshee.Dap.AppleDevice
             track.BPM = (short)Bpm;
             track.Comment = Comment;
             track.Composer = Composer;
-            track.TimeAdded = DateAdded;
+            track.TimeAdded = DateTime.Now;
             track.CDs = DiscCount;
             track.CDNumber = DiscNumber;
             track.TrackLength = (int) Duration.TotalMilliseconds;
             track.Size = (int)FileSize;
             track.Grouping = Grouping;
-            track.TimePlayed = LastPlayed;
+            try {
+                track.TimePlayed = LastPlayed;
+            } catch {
+                Hyena.Log.InformationFormat ("Couldn't set TimePlayed to '{0}'", LastPlayed);
+            }
             track.PlayCount = (uint) PlayCount;
             track.Tracks = TrackCount;
             track.TrackNumber = TrackNumber;
             track.Year = Year;
-            track.TimeReleased = ReleaseDate;
-
+            try {
+                track.TimeReleased = ReleaseDate;
+            } catch {
+                Hyena.Log.InformationFormat ("Couldn't set TimeReleased to '{0}'", ReleaseDate);
+            }
             track.Album = AlbumTitle;
             track.Artist = ArtistName;
             track.Title = TrackTitle;
