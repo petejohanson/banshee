@@ -34,6 +34,7 @@ namespace Banshee.Hardware
     {
         string DeviceNode { get; }
         string MountPoint { get; }
+        bool IsMounted { get; }
         bool IsReadOnly { get; }
         ulong Capacity { get; }
         long Available { get; }
@@ -44,6 +45,9 @@ namespace Banshee.Hardware
 
         bool CanEject { get; }
         void Eject ();
+
+        bool CanMount { get; }
+        void Mount ();
 
         bool CanUnmount { get; }
         void Unmount ();

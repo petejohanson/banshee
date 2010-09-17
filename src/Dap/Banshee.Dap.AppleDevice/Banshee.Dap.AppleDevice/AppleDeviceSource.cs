@@ -66,6 +66,11 @@ namespace Banshee.Dap.AppleDevice
                 throw new InvalidDeviceException ();
             }
 
+            if (!Volume.IsMounted) {
+                Hyena.Log.Information ("Found potential unmounted iDevice, trying to mount it now");
+                Volume.Mount ();
+            }
+
             Device = new GPod.Device (Volume.MountPoint);
 
             if (GPod.ITDB.GetControlPath (Device) == null) {

@@ -257,6 +257,11 @@ namespace Banshee.Dap.Ipod
             get { return volume.Name; }
         }
 
+        public void Mount ()
+        {
+            return volume.Mount ();
+        }
+
         public void Unmount ()
         {
             volume.Unmount ();
@@ -290,6 +295,10 @@ namespace Banshee.Dap.Ipod
             get { return volume.MountPoint; }
         }
 
+        public bool IsMounted {
+            get { return volume.IsMounted; }
+        }
+
         public bool IsReadOnly {
             get { return volume.IsReadOnly; }
         }
@@ -318,6 +327,10 @@ namespace Banshee.Dap.Ipod
             get { return volume.CanEject; }
         }
 
+        public bool CanMount {
+            get { return volume.CanMount; }
+        }
+        
         public bool CanUnmount {
             get { return volume.CanEject; }
         }

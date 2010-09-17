@@ -157,8 +157,18 @@ namespace Banshee.HalBackend
             }
         }
 
+        public bool CanMount {
+            get { return Array.IndexOf <string>(method_names, "Mount") >= 0; }
+        }
+
         public bool CanUnmount {
             get { return Array.IndexOf<string> (method_names, "Unmount") >= 0; }
+        }
+
+        public void Mount ()
+        {
+            if (CanMount && HalDevice.IsVolume)
+                HalDevice.Volume.Mount ();
         }
 
         public void Unmount ()

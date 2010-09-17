@@ -206,8 +206,12 @@ namespace Banshee.Hardware.Gio
 
         public void Mount ()
         {
-            if (CanMount)
-                Volume.Mount (MountMountFlags.None, null, null, null);
+            if (CanMount) {
+                ManualResetEvent handle = new ManualResetEvent (false);
+                Volume.Mount (MountMountFlags.None, null, null, delegate { handle.Set (); });
+                if (!handle.WaitOne (TimeSpan.FromSeconds (5)))
+                    Hyena.Log.Information ("Timed out trying to mount {0}", Name);
+            }
         }
 
         public void Unmount ()
@@ -215,7 +219,8 @@ namespace Banshee.Hardware.Gio
             if (CanUnmount) {
                 ManualResetEvent handle = new ManualResetEvent (false);
                 Volume.MountInstance.UnmountWithOperation (MountUnmountFlags.Force, null, null, delegate { handle.Set (); });
-                handle.WaitOne (TimeSpan.FromSeconds (5));
+                if (!handle.WaitOne (TimeSpan.FromSeconds (5)))
+                    Hyena.Log.Information ("Timed out trying to unmount {0}", Name);
             }
         }
 
