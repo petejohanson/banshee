@@ -259,7 +259,7 @@ namespace Banshee.Dap.Ipod
 
         public void Mount ()
         {
-            return volume.Mount ();
+            volume.Mount ();
         }
 
         public void Unmount ()
