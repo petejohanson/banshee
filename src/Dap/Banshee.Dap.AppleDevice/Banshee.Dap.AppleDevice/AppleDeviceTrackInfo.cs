@@ -260,6 +260,7 @@ namespace Banshee.Dap.AppleDevice
                 database.Tracks.Add (IpodTrack);
                 database.MasterPlaylist.Tracks.Add (IpodTrack);
                 database.CopyTrackToIPod (track, Uri.LocalPath);
+                Uri = new SafeUri (GPod.ITDB.GetLocalPath (database.Device, track));
                 ExternalId = (long) IpodTrack.DBID;
             }
 

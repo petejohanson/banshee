@@ -396,7 +396,6 @@ namespace Banshee.Dap.AppleDevice
                 AppleDeviceTrackInfo ipod_track = new AppleDeviceTrackInfo (track);
                 ipod_track.Uri = fromUri;
                 ipod_track.PrimarySource = this;
-                ipod_track.Save (false);
 
                 tracks_to_add.Enqueue (ipod_track);
             }
@@ -509,10 +508,15 @@ namespace Banshee.Dap.AppleDevice
                 try {
                     UpdateProgress (progressUpdater, message, total - tracks_to_add.Count, total);
                     track.CommitToIpod (MediaDatabase);
+                    track.Save (false);
                     tracks_map[track.TrackId] = track;
                 } catch (Exception e) {
                     Log.Exception ("Cannot save track to iPod", e);
                 }
+            }
+            if (total > 0) {
+                OnTracksAdded ();
+                OnUserNotifyUpdated ();
             }
 
             // TODO sync updated metadata to changed tracks
