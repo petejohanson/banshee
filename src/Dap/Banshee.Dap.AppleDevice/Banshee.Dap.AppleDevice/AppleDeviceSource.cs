@@ -492,7 +492,7 @@ namespace Banshee.Dap.AppleDevice
             Hyena.Log.Debug ("Starting AppleDevice sync thread cycle");
 
             string message;
-            int total;
+            int total, i = 0;
             var progressUpdater = new UserJob (Catalog.GetString ("Syncing iPod"),
                                                Catalog.GetString ("Preparing to synchronize..."), GetIconNames ());
             progressUpdater.Register ();
@@ -502,11 +502,12 @@ namespace Banshee.Dap.AppleDevice
             while (tracks_to_add.Count > 0) {
                 AppleDeviceTrackInfo track = null;
                 lock (sync_mutex) {
+                    total = tracks_to_add.Count + i;
                     track = tracks_to_add.Dequeue ();
                 }
 
                 try {
-                    UpdateProgress (progressUpdater, message, total - tracks_to_add.Count, total);
+                    UpdateProgress (progressUpdater, message, ++i, total);
                     track.CommitToIpod (MediaDatabase);
                     track.Save (false);
                     tracks_map[track.TrackId] = track;
