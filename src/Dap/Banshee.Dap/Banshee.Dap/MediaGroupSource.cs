@@ -43,7 +43,7 @@ namespace Banshee.Dap
 {
     public abstract class MediaGroupSource : SmartPlaylistSource
     {
-        private DapSource parent;
+        protected DapSource parent;
 
         public MediaGroupSource (DapSource parent, string name) : base (name, parent)
         {
@@ -118,6 +118,11 @@ namespace Banshee.Dap
 
         public long BytesUsed {
             get { return DatabaseTrackModel.UnfilteredFileSize; }
+        }
+
+        public override bool HasEditableTrackProperties {
+            // not be able to sync metadata by default, override if needed
+            get { return false; }
         }
     }
 }

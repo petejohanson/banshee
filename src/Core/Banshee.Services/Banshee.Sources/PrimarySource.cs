@@ -316,6 +316,10 @@ namespace Banshee.Sources
             );
         }
 
+        public virtual void UpdateMetadata (DatabaseTrackInfo track)
+        {
+        }
+
         public virtual void CopyTrackTo (DatabaseTrackInfo track, SafeUri uri, BatchUserJob job)
         {
             Log.WarningFormat ("CopyTrackTo not implemented for source {0}", this);

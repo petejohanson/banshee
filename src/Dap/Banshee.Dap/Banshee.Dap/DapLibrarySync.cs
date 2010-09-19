@@ -224,7 +224,7 @@ namespace Banshee.Dap
                         if (from.Count == 0) {
                             continue;
                         }
-                        PlaylistSource to = new PlaylistSource (from.Name, sync.Dap);
+                        var to = new SyncPlaylist (from.Name, sync.Dap, this);
                         to.Save ();
 
                         ServiceManager.DbConnection.Execute (

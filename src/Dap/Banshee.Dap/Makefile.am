@@ -22,6 +22,7 @@ SOURCES =  \
 	Banshee.Dap/MusicGroupSource.cs \
 	Banshee.Dap/PodcastGroupSource.cs \
 	Banshee.Dap/RemovableSource.cs \
+	Banshee.Dap/SyncPlaylist.cs \
 	Banshee.Dap/VideoGroupSource.cs
 
 RESOURCES =  \

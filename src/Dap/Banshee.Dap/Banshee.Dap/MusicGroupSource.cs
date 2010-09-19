@@ -30,6 +30,7 @@ using System;
 using Mono.Unix;
 
 using Banshee.Collection;
+using Banshee.ServiceStack;
 
 namespace Banshee.Dap
 {
@@ -40,6 +41,25 @@ namespace Banshee.Dap
             Properties.Remove ("Icon.Name");
             Properties.SetStringList ("Icon.Name", Banshee.ServiceStack.ServiceManager.SourceManager.MusicLibrary.Properties.GetStringList ("Icon.Name"));
             ConditionSql = Banshee.ServiceStack.ServiceManager.SourceManager.MusicLibrary.AttributesCondition;
+        }
+
+        public override bool HasEditableTrackProperties {
+            get {
+                // dap capabilities dictate first
+                if (!parent.HasEditableTrackProperties) {
+                    return false;
+                }
+
+                // we only allow editing in Manual Sync Mode
+                // (Auto Sync Mode will require to edit the original tracks)
+                foreach (var libsync in parent.Sync.Libraries) {
+                    if (libsync.Library.Equals (ServiceManager.SourceManager.MusicLibrary)) {
+                        return !libsync.Enabled;
+                    }
+                }
+
+                return false;
+            }
         }
     }
 }

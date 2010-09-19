@@ -59,9 +59,9 @@ namespace Banshee.Metadata
 
             string range = String.Join (",", db_ids);
 
-            //FIXME: should we add the case in which LastSyncedStamp IS NULL?
             string condition = String.Format (
-                @"DateUpdatedStamp > LastSyncedStamp
+                @"(DateUpdatedStamp > LastSyncedStamp OR
+                  (DateUpdatedStamp IS NOT NULL AND LastSyncedStamp IS NULL))
                   AND PrimarySourceID IN ({0})", range);
 
             CountCommand = new HyenaSqliteCommand (
