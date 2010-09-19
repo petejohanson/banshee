@@ -61,10 +61,19 @@ namespace Banshee.Dap.Ipod
 
         public IpodTrackInfo (TrackInfo track)
         {
+            CanSaveToDatabase = true;
+
             if (track is IpodTrackInfo) {
                 this.track = ((IpodTrackInfo)track).IpodTrack;
                 LoadFromIpodTrack ();
             } else {
+                UpdateInfo (track);
+            }
+        }
+
+        public void UpdateInfo (TrackInfo track)
+        {
+            if (!(track is IpodTrackInfo)) {
                 AlbumArtist = track.AlbumArtist;
                 AlbumTitle = track.AlbumTitle;
                 ArtistName = track.ArtistName;
@@ -100,9 +109,9 @@ namespace Banshee.Dap.Ipod
                     description = podcast_info.Description;
                     ReleaseDate = podcast_info.ReleaseDate;
                 }
+            } else {
+                throw new ArgumentException ("Shouldn't update an IpodTrackInfo from an IpodTrackInfo");
             }
-
-            CanSaveToDatabase = true;
         }
 
         private void LoadFromIpodTrack ()

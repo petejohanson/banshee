@@ -35,6 +35,7 @@ using Mono.Unix;
 using IPod;
 
 using Hyena;
+using Hyena.Query;
 using Banshee.Base;
 using Banshee.ServiceStack;
 using Banshee.Sources;
@@ -401,6 +402,27 @@ namespace Banshee.Dap.Ipod
 
 #region Syncing
 
+        public override void UpdateMetadata (DatabaseTrackInfo track)
+        {
+            lock (sync_mutex) {
+                IpodTrackInfo ipod_track;
+                if (!tracks_map.TryGetValue (track.TrackId, out ipod_track)) {
+                    return;
+                }
+
+                ipod_track.UpdateInfo (track);
+                tracks_to_update.Enqueue (ipod_track);
+            }
+        }
+
+        protected override void OnTracksChanged (params QueryField[] fields)
+        {
+            if (tracks_to_update.Count > 0 && !Sync.Syncing) {
+                QueueSync ();
+            }
+            base.OnTracksChanged (fields);
+        }
+
         protected override void OnTracksAdded ()
         {
             if (!IsAdding && tracks_to_add.Count > 0 && !Sync.Syncing) {
@@ -418,6 +440,7 @@ namespace Banshee.Dap.Ipod
         }
 
         private Queue<IpodTrackInfo> tracks_to_add = new Queue<IpodTrackInfo> ();
+        private Queue<IpodTrackInfo> tracks_to_update = new Queue<IpodTrackInfo> ();
         private Queue<IpodTrackInfo> tracks_to_remove = new Queue<IpodTrackInfo> ();
 
         private uint sync_timeout_id = 0;
@@ -586,7 +609,18 @@ namespace Banshee.Dap.Ipod
                 OnUserNotifyUpdated ();
             }
 
-            // TODO sync updated metadata to changed tracks
+            while (tracks_to_update.Count > 0) {
+                IpodTrackInfo track = null;
+                lock (sync_mutex) {
+                    track = tracks_to_update.Dequeue ();
+                }
+
+                try {
+                    track.CommitToIpod (ipod_device);
+                } catch (Exception e) {
+                    Log.Exception ("Cannot save track to iPod", e);
+                }
+            }
 
             while (tracks_to_remove.Count > 0) {
                 IpodTrackInfo track = null;
@@ -702,8 +736,19 @@ namespace Banshee.Dap.Ipod
         public bool SyncNeeded {
             get {
                 lock (sync_mutex) {
-                    return tracks_to_add.Count > 0 || tracks_to_remove.Count > 0;
+                    return tracks_to_add.Count > 0 ||
+                        tracks_to_update.Count > 0 ||
+                        tracks_to_remove.Count > 0;
+
                 }
+            }
+        }
+
+        public override bool HasEditableTrackProperties {
+            get {
+                // we want child sources to be able to edit metadata and the
+                // savetrackmetadataservice to take in account this source
+                return true;
             }
         }
 
