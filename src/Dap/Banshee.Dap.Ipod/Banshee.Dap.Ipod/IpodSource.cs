@@ -690,13 +690,13 @@ namespace Banshee.Dap.Ipod
                     ? Catalog.GetString ("Updating...")
                     : String.Format ("{0} - {1}", artist, title);
 
-             if (progress >= 0.99) {
-                 sync_user_job.Status = Catalog.GetString ("Flushing to disk...");
-                 sync_user_job.Progress = 0;
-             } else {
-                 sync_user_job.Status = message;
-                 sync_user_job.Progress = progress;
-             }
+            if (progress >= 0.99) {
+                sync_user_job.Status = Catalog.GetString ("Flushing to disk...");
+                sync_user_job.Progress = 0;
+            } else {
+                sync_user_job.Status = message;
+                sync_user_job.Progress = progress;
+            }
         }
 
         public bool SyncNeeded {
