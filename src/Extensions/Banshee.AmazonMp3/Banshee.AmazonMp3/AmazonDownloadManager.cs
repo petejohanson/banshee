@@ -45,6 +45,7 @@ namespace Banshee.AmazonMp3
     {
         private DownloadManagerJob job;
         private LibraryImportManager import_manager;
+        private System.Threading.ManualResetEvent import_event = new System.Threading.ManualResetEvent (true);
 
         private int mp3_count;
         private List<TrackInfo> mp3_imported_tracks = new List<TrackInfo> ();
@@ -52,15 +53,6 @@ namespace Banshee.AmazonMp3
 
         public AmazonDownloadManager (string path)
         {
-            var playlist = new AmzXspfPlaylist (path);
-            foreach (var track in playlist.DownloadableTracks) {
-                var downloader = new AmzMp3Downloader (track);
-                if (downloader.FileExtension == "mp3") {
-                    mp3_count++;
-                }
-                QueueDownloader (downloader);
-            }
-
             job = new DownloadManagerJob (this) {
                 Title = Catalog.GetString ("Amazon MP3 Purchases"),
                 Status = Catalog.GetString ("Contacting..."),
@@ -74,6 +66,15 @@ namespace Banshee.AmazonMp3
                 KeepUserJobHidden = true
             };
             import_manager.ImportResult += OnImportManagerImportResult;
+
+            var playlist = new AmzXspfPlaylist (path);
+            foreach (var track in playlist.DownloadableTracks) {
+                var downloader = new AmzMp3Downloader (track);
+                if (downloader.FileExtension == "mp3") {
+                    mp3_count++;
+                }
+                QueueDownloader (downloader);
+            }
         }
 
         private static TResult MostCommon<T, TResult> (IEnumerable<T> collection, Func<T, TResult> map)
@@ -89,11 +90,18 @@ namespace Banshee.AmazonMp3
         private void OnImportManagerImportResult (object o, DatabaseImportResultArgs args)
         {
             mp3_imported_tracks.Add (args.Track);
+            TryToFixNonMp3Metadata ();
+            import_event.Set ();
+        }
 
-            if (mp3_imported_tracks.Count != mp3_count || non_mp3_queue.Count <= 0) {
+        private bool already_fixed;
+        private void TryToFixNonMp3Metadata ()
+        {
+            if (already_fixed || mp3_imported_tracks.Count != mp3_count || non_mp3_queue.Count <= 0) {
                 return;
             }
 
+            already_fixed = true;
             // FIXME: this is all pretty lame. Amazon doesn't have any metadata on the PDF
             // files, which is a shame. So I attempt to figure out the best common metadata
             // from the already imported tracks in the album, and then forcefully persist
@@ -154,21 +162,25 @@ namespace Banshee.AmazonMp3
         protected override void OnDownloaderStarted (HttpDownloader downloader)
         {
             var track = ((AmzMp3Downloader)downloader).Track;
+            base.OnDownloaderStarted (downloader);
             Log.InformationFormat ("Starting to download \"{0}\" by {1}", track.Title, track.Creator);
         }
 
         protected override void OnDownloaderFinished (HttpDownloader downloader)
         {
-            base.OnDownloaderFinished (downloader);
-
             var amz_downloader = (AmzMp3Downloader)downloader;
             var track = amz_downloader.Track;
+
+            bool last_file = (TotalDownloadCount == 1);
 
             if (downloader.State.Success) {
                 switch (amz_downloader.FileExtension) {
                     case "mp3":
                     case "wmv":
                     case "mp4":
+                        if (last_file) {
+                            import_event.Reset ();
+                        }
                         import_manager.Enqueue (amz_downloader.LocalPath);
                         break;
                     default:
@@ -177,7 +189,19 @@ namespace Banshee.AmazonMp3
                 }
             }
 
-            Log.InformationFormat ("Finished downloading \"{0}\" by {1}", track.Title, track.Creator);
+            // This is the final download; ensure the non-MP3 items have their metadata
+            // updated and are imported, and wait until the import_manager is done before
+            // calling base.OnDownloaderFinished since that will make the Job finished which will
+            // mean all references to the manager are gone and it may be garbage collected.
+            if (last_file) {
+                TryToFixNonMp3Metadata ();
+                import_event.WaitOne ();
+            }
+
+            base.OnDownloaderFinished (downloader);
+
+            Log.InformationFormat ("Finished downloading \"{0}\" by {1}; Success? {2} File: {3}", track.Title, track.Creator,
+                downloader.State.Success, amz_downloader.LocalPath);
         }
     }
 }
