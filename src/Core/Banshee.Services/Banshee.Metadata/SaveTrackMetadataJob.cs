@@ -62,7 +62,8 @@ namespace Banshee.Metadata
             string condition = String.Format (
                 @"(DateUpdatedStamp > LastSyncedStamp OR
                   (DateUpdatedStamp IS NOT NULL AND LastSyncedStamp IS NULL))
-                  AND PrimarySourceID IN ({0})", range);
+                  AND PrimarySourceID IN ({0})
+                  AND Uri LIKE '{1}%'", range, "file:");
 
             CountCommand = new HyenaSqliteCommand (
                 "SELECT COUNT(*) FROM CoreTracks WHERE " + condition);
