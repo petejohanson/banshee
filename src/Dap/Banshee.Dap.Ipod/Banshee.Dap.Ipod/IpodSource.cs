@@ -473,7 +473,6 @@ namespace Banshee.Dap.Ipod
                     PrimarySource = this,
                 };
 
-                ipod_track.Save (false);
                 tracks_to_add.Enqueue (ipod_track);
             }
         }
@@ -562,18 +561,29 @@ namespace Banshee.Dap.Ipod
         {
             Hyena.Log.Debug ("Starting iPod sync thread cycle");
 
+            CreateNewSyncUserJob ();
+            var i = 0;
+            var total = tracks_to_add.Count;
             while (tracks_to_add.Count > 0) {
                 IpodTrackInfo track = null;
                 lock (sync_mutex) {
+                    total = tracks_to_add.Count + i;
                     track = tracks_to_add.Dequeue ();
                 }
+
+                ChangeSyncProgress (track.ArtistName, track.TrackTitle, ++i / total);
 
                 try {
                     track.CommitToIpod (ipod_device);
                     tracks_map[track.TrackId] = track;
+                    track.Save (false);
                 } catch (Exception e) {
                     Log.Exception ("Cannot save track to iPod", e);
                 }
+            }
+            if (total > 0) {
+                OnTracksAdded ();
+                OnUserNotifyUpdated ();
             }
 
             // TODO sync updated metadata to changed tracks
@@ -629,7 +639,6 @@ namespace Banshee.Dap.Ipod
             }
 
             try {
-                ipod_device.TrackDatabase.SaveStarted += OnIpodDatabaseSaveStarted;
                 ipod_device.TrackDatabase.SaveEnded += OnIpodDatabaseSaveEnded;
                 ipod_device.TrackDatabase.SaveProgressChanged += OnIpodDatabaseSaveProgressChanged;
                 ipod_device.Save ();
@@ -638,7 +647,6 @@ namespace Banshee.Dap.Ipod
             } catch (Exception e) {
                 Log.Exception ("Failed to save iPod database", e);
             } finally {
-                ipod_device.TrackDatabase.SaveStarted -= OnIpodDatabaseSaveStarted;
                 ipod_device.TrackDatabase.SaveEnded -= OnIpodDatabaseSaveEnded;
                 ipod_device.TrackDatabase.SaveProgressChanged -= OnIpodDatabaseSaveProgressChanged;
                 Hyena.Log.Debug ("Ending iPod sync thread cycle");
@@ -647,10 +655,8 @@ namespace Banshee.Dap.Ipod
 
         private UserJob sync_user_job;
 
-        private void OnIpodDatabaseSaveStarted (object o, EventArgs args)
+        private void CreateNewSyncUserJob ()
         {
-            DisposeSyncUserJob ();
-
             sync_user_job = new UserJob (Catalog.GetString ("Syncing iPod"),
                 Catalog.GetString ("Preparing to synchronize..."), GetIconNames ());
             sync_user_job.Register ();
@@ -671,10 +677,18 @@ namespace Banshee.Dap.Ipod
 
         private void OnIpodDatabaseSaveProgressChanged (object o, IPod.TrackSaveProgressArgs args)
         {
-            double progress = args.CurrentTrack == null ? 0.0 : args.TotalProgress;
-            string message = args.CurrentTrack == null
+            if (args.CurrentTrack == null) {
+                ChangeSyncProgress (null, null, 0.0);
+            } else {
+                ChangeSyncProgress (args.CurrentTrack.Artist, args.CurrentTrack.Title, args.TotalProgress);
+            }
+        }
+
+        private void ChangeSyncProgress (string artist, string title, double progress)
+        {
+            string message = (artist == null && title == null)
                     ? Catalog.GetString ("Updating...")
-                    : String.Format ("{0} - {1}", args.CurrentTrack.Artist, args.CurrentTrack.Title);
+                    : String.Format ("{0} - {1}", artist, title);
 
              if (progress >= 0.99) {
                  sync_user_job.Status = Catalog.GetString ("Flushing to disk...");
