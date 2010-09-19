@@ -36,6 +36,7 @@ using System.Threading;
 using Banshee.Hardware;
 using Banshee.Sources;
 using Banshee.I18n;
+using Hyena.Query;
 using Hyena;
 
 namespace Banshee.Dap.AppleDevice
@@ -317,6 +318,27 @@ namespace Banshee.Dap.AppleDevice
 
 #region Syncing
 
+        public override void UpdateMetadata (DatabaseTrackInfo track)
+        {
+            lock (sync_mutex) {
+                AppleDeviceTrackInfo ipod_track;
+                if (!tracks_map.TryGetValue (track.TrackId, out ipod_track)) {
+                    return;
+                }
+
+                ipod_track.UpdateInfo (track);
+                tracks_to_update.Enqueue (ipod_track);
+            }
+        }
+
+        protected override void OnTracksChanged (params QueryField[] fields)
+        {
+            if (tracks_to_update.Count > 0 && !Sync.Syncing) {
+                QueueSync ();
+            }
+            base.OnTracksChanged (fields);
+        }
+
         protected override void OnTracksAdded ()
         {
             if (!IsAdding && tracks_to_add.Count > 0 && !Sync.Syncing) {
@@ -334,6 +356,7 @@ namespace Banshee.Dap.AppleDevice
         }
 
         private Queue<AppleDeviceTrackInfo> tracks_to_add = new Queue<AppleDeviceTrackInfo> ();
+        private Queue<AppleDeviceTrackInfo> tracks_to_update = new Queue<AppleDeviceTrackInfo> ();
         private Queue<AppleDeviceTrackInfo> tracks_to_remove = new Queue<AppleDeviceTrackInfo> ();
 
         private uint sync_timeout_id = 0;
@@ -520,7 +543,19 @@ namespace Banshee.Dap.AppleDevice
                 OnUserNotifyUpdated ();
             }
 
-            // TODO sync updated metadata to changed tracks
+            while (tracks_to_update.Count > 0) {
+                AppleDeviceTrackInfo track = null;
+                lock (sync_mutex) {
+                    track = tracks_to_update.Dequeue ();
+                }
+
+                try {
+                    track.CommitToIpod (MediaDatabase);
+                } catch (Exception e) {
+                    Log.Exception ("Cannot save track to iPod", e);
+                }
+            }
+
             message = Catalog.GetString ("Removing track {0} of {1}");
             total = tracks_to_remove.Count;
             while (tracks_to_remove.Count > 0) {
@@ -592,10 +627,21 @@ namespace Banshee.Dap.AppleDevice
         public bool SyncNeeded {
             get {
                 lock (sync_mutex) {
-                    return tracks_to_add.Count > 0 || tracks_to_remove.Count > 0;
+                    return tracks_to_add.Count > 0 ||
+                        tracks_to_update.Count > 0 ||
+                        tracks_to_remove.Count > 0;
                 }
             }
         }
+
+        public override bool HasEditableTrackProperties {
+            get {
+                // we want child sources to be able to edit metadata and the
+                // savetrackmetadataservice to take in account this source
+                return true;
+            }
+        }
+
 #endregion
 
     }

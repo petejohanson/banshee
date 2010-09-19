@@ -53,10 +53,19 @@ namespace Banshee.Dap.AppleDevice
 
         public AppleDeviceTrackInfo (TrackInfo track)
         {
+            CanSaveToDatabase = true;
+
             if (track is AppleDeviceTrackInfo) {
                 IpodTrack = ((AppleDeviceTrackInfo)track).IpodTrack;
                 LoadFromIpodTrack ();
             } else {
+                UpdateInfo (track);
+            }
+        }
+
+        public void UpdateInfo (TrackInfo track)
+        {
+            if (!(track is AppleDeviceTrackInfo)) {
                 IsCompilation = track.IsCompilation ;
                 AlbumArtist = track.AlbumArtist;
                 AlbumTitle = track.AlbumTitle;
@@ -92,9 +101,9 @@ namespace Banshee.Dap.AppleDevice
                     //description = podcast_info.Description;
                     ReleaseDate = podcast_info.ReleaseDate;
                 }
+            } else {
+                throw new ArgumentException ("Shouldn't update an AppleDeviceTrackInfo from an AppleDeviceTrackInfo");
             }
-
-            CanSaveToDatabase = true;
         }
 
         private void LoadFromIpodTrack ()
