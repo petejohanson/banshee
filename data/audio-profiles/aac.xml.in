@@ -2,12 +2,18 @@
 <audio-profiles>
   <profiles>
     <profile id="faac-aac">
-      <_name>Advanced Audio Coding (AAC)</_name>
-      <_description>Proprietary and standardized format that is superior to MP3, but not as popular.</_description>
+      <_name>AAC (FAAC Encoder)</_name>
+      <_description>Designed to be the successor of the MP3 format, AAC generally achieves better sound quality than MP3 at many bit rates.</_description>
       <output-file-extension>m4a</output-file-extension>
-      <mimetype>audio/x-m4a</mimetype>
+      <mimetype>audio/aac</mimetype>
       <mimetype>audio/mp4</mimetype>
+      <mimetype>audio/m4a</mimetype>
+      <mimetype>audio/x-aac</mimetype>
+      <mimetype>audio/x-mp4</mimetype>
+      <mimetype>audio/x-m4a</mimetype>
+      <mimetype>taglib/aac</mimetype>
       <mimetype>taglib/mp4</mimetype>
+      <mimetype>taglib/m4a</mimetype>
       <pipeline>
         <process id="gstreamer">
         <![CDATA[
@@ -25,7 +31,10 @@
           <default-value>128</default-value>
           <possible-values>
             <value value="8">8 Kbps</value>
+            <value value="16">16 Kbps</value>
             <value value="32">32 Kbps</value>
+            <value value="48">48 Kbps</value>
+            <value value="64">64 Kbps</value>
             <value value="96">96 Kbps</value>
             <value value="128">128 Kbps</value>
             <value value="160">160 Kbps</value>
