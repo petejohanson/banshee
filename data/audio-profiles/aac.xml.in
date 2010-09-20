@@ -14,7 +14,7 @@
             (gst-construct-pipeline 
                 "audioconvert" 
                 (gst-construct-element "faac"
-                    "bitrate" (* 1024 bitrate)
+                    "bitrate" (* 1000 bitrate)
                     "outputformat" 1)
                 "ffmux_mp4")
         ]]>
