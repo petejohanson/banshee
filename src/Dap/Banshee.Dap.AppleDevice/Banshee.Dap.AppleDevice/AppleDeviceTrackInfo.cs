@@ -41,8 +41,8 @@ namespace Banshee.Dap.AppleDevice
             get; set;
         }
 
-        // Used for podcasts only
-        //private string description;
+        private string mimetype;
+        private string description; // Only used for podcasts.
 
         public AppleDeviceTrackInfo (GPod.Track track)
         {
@@ -101,9 +101,11 @@ namespace Banshee.Dap.AppleDevice
 
             var podcast_info = track.ExternalObject as IPodcastInfo;
             if (podcast_info != null) {
-                //description = podcast_info.Description;
+                description = podcast_info.Description;
                 ReleaseDate = podcast_info.ReleaseDate;
             }
+
+            mimetype = track.MimeType;
         }
 
         private void LoadFromIpodTrack ()
@@ -140,7 +142,7 @@ namespace Banshee.Dap.AppleDevice
             TrackNumber = track.TrackNumber;
             TrackTitle = String.IsNullOrEmpty (track.Title) ? null : track.Title;
             Year = track.Year;
-            //description = track.Description;
+            description = track.Description;
             ReleaseDate = track.TimeReleased;
 
             rating = track.Rating > 5 ? 0 : (int) track.Rating;
@@ -149,36 +151,34 @@ namespace Banshee.Dap.AppleDevice
                 PlaybackError = StreamPlaybackError.Drm;
             }
 
-            MediaAttributes = TrackMediaAttributes.AudioStream | TrackMediaAttributes.Music;
-
-//            switch (track.Type) {
-//                case IPod.MediaType.Audio:
-//                    MediaAttributes |= TrackMediaAttributes.Music;
-//                    break;
-//                case IPod.MediaType.AudioVideo:
-//                case IPod.MediaType.Video:
-//                    MediaAttributes |= TrackMediaAttributes.VideoStream;
-//                    break;
-//                case IPod.MediaType.MusicVideo:
-//                    MediaAttributes |= TrackMediaAttributes.Music | TrackMediaAttributes.VideoStream;
-//                    break;
-//                case IPod.MediaType.Movie:
-//                    MediaAttributes |= TrackMediaAttributes.VideoStream | TrackMediaAttributes.Movie;
-//                    break;
-//                case IPod.MediaType.TVShow:
-//                    MediaAttributes |= TrackMediaAttributes.VideoStream | TrackMediaAttributes.TvShow;
-//                    break;
-//                case IPod.MediaType.VideoPodcast:
-//                    MediaAttributes |= TrackMediaAttributes.VideoStream | TrackMediaAttributes.Podcast;
-//                    break;
-//                case IPod.MediaType.Podcast:
-//                    MediaAttributes |= TrackMediaAttributes.Podcast;
-//                    // FIXME: persist URL on the track (track.PodcastUrl)
-//                    break;
-//                case IPod.MediaType.Audiobook:
-//                    MediaAttributes |= TrackMediaAttributes.AudioBook;
-//                    break;
-//            }
+            MediaAttributes = TrackMediaAttributes.AudioStream;
+            switch (track.MediaType) {
+            case GPod.MediaType.Audio:
+                MediaAttributes |= TrackMediaAttributes.Music;
+                break;
+            case GPod.MediaType.AudioVideo:
+                MediaAttributes |= TrackMediaAttributes.VideoStream;
+                break;
+            case GPod.MediaType.MusicVideo:
+                MediaAttributes |= TrackMediaAttributes.Music | TrackMediaAttributes.VideoStream;
+                break;
+            case GPod.MediaType.Movie:
+                MediaAttributes |= TrackMediaAttributes.VideoStream | TrackMediaAttributes.Movie;
+                break;
+            case GPod.MediaType.TVShow:
+                MediaAttributes |= TrackMediaAttributes.VideoStream | TrackMediaAttributes.TvShow;
+                break;
+            case GPod.MediaType.Podcast:
+                MediaAttributes |= TrackMediaAttributes.Podcast;
+                // FIXME: persist URL on the track (track.PodcastUrl)
+                break;
+            case GPod.MediaType.Audiobook:
+                MediaAttributes |= TrackMediaAttributes.AudioBook;
+                break;
+            case GPod.MediaType.MusicTVShow:
+                MediaAttributes |= TrackMediaAttributes.Music | TrackMediaAttributes.VideoStream | TrackMediaAttributes.TvShow;
+                break;
+            }
         }
 
         public void CommitToIpod (GPod.ITDB database)
@@ -221,53 +221,53 @@ namespace Banshee.Dap.AppleDevice
             track.Title = TrackTitle;
             track.Genre = Genre;
 
-            switch (Rating) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                track.Rating = (uint) rating;
-                break;
-            default: track.Rating = 0;
-                break;
+            track.Rating = ((Rating >= 1) && (Rating <= 5)) ? (uint)Rating : 0;
+
+            if (HasAttribute (TrackMediaAttributes.Podcast)) {
+                track.Description = description;
+                track.RememberPlaybackPosition = true;
+                track.MarkUnplayed = (track.PlayCount == 0);
             }
 
-//            if (HasAttribute (TrackMediaAttributes.Podcast)) {
-//                track.DateReleased = ReleaseDate;
-//                track.Description = description;
-//                track.RememberPosition = true;
-//                track.NotPlayedMark = track.PlayCount == 0;
-//            }
-//
-//            if (HasAttribute (TrackMediaAttributes.VideoStream)) {
-//                if (HasAttribute (TrackMediaAttributes.Podcast)) {
-//                    track.Type = IPod.MediaType.VideoPodcast;
-//                } else if (HasAttribute (TrackMediaAttributes.Music)) {
-//                    track.Type = IPod.MediaType.MusicVideo;
-//                } else if (HasAttribute (TrackMediaAttributes.Movie)) {
-//                    track.Type = IPod.MediaType.Movie;
-//                } else if (HasAttribute (TrackMediaAttributes.TvShow)) {
-//                    track.Type = IPod.MediaType.TVShow;
-//                } else {
-//                    track.Type = IPod.MediaType.Video;
-//                }
-//            } else {
-//                if (HasAttribute (TrackMediaAttributes.Podcast)) {
-//                    track.Type = IPod.MediaType.Podcast;
-//                } else if (HasAttribute (TrackMediaAttributes.AudioBook)) {
-//                    track.Type = IPod.MediaType.Audiobook;
-//                } else if (HasAttribute (TrackMediaAttributes.Music)) {
-//                    track.Type = IPod.MediaType.Audio;
-//                } else {
-//                    track.Type = IPod.MediaType.Audio;
-//                }
-//            }
             track.MediaType = GPod.MediaType.Audio;
+            if (HasAttribute (TrackMediaAttributes.VideoStream)) {
+                if (HasAttribute (TrackMediaAttributes.Podcast)) {
+                    track.MediaType = GPod.MediaType.Podcast | GPod.MediaType.Movie;
+                } else if (HasAttribute (TrackMediaAttributes.Music)) {
+                    if (HasAttribute (TrackMediaAttributes.TvShow)) {
+                        track.MediaType = GPod.MediaType.MusicTVShow;
+                    } else {
+                        track.MediaType = GPod.MediaType.MusicVideo;
+                    }
+                } else if (HasAttribute (TrackMediaAttributes.Movie)) {
+                    track.MediaType = GPod.MediaType.Movie;
+                } else if (HasAttribute (TrackMediaAttributes.TvShow)) {
+                    track.MediaType = GPod.MediaType.TVShow;
+                } else {
+                    track.MediaType = GPod.MediaType.AudioVideo;
+                }
+            } else {
+                if (HasAttribute (TrackMediaAttributes.Podcast)) {
+                    track.MediaType = GPod.MediaType.Podcast;
+                } else if (HasAttribute (TrackMediaAttributes.AudioBook)) {
+                    track.MediaType = GPod.MediaType.Audiobook;
+                } else if (HasAttribute (TrackMediaAttributes.Music)) {
+                    track.MediaType = GPod.MediaType.Audio;
+                } else {
+                    track.MediaType = GPod.MediaType.Audio;
+                }
+            }
+
             if (addTrack) {
-                track.Filetype = "MP3-file";
+                track.Filetype = mimetype;
+
                 database.Tracks.Add (IpodTrack);
                 database.MasterPlaylist.Tracks.Add (IpodTrack);
+
+                if (HasAttribute (TrackMediaAttributes.Podcast)) {
+                    database.PodcastsPlaylist.Tracks.Add (IpodTrack);
+                }
+
                 database.CopyTrackToIPod (track, Uri.LocalPath);
                 Uri = new SafeUri (GPod.ITDB.GetLocalPath (database.Device, track));
                 ExternalId = (long) IpodTrack.DBID;
