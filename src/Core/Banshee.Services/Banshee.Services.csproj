@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <ProjectGuid>{B28354F0-BA87-44E8-989F-B864A3C7C09F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
@@ -117,6 +117,7 @@
     <Compile Include="Banshee.Collection.Database\RandomByAlbum.cs" />
     <Compile Include="Banshee.Collection.Database\RandomByTrack.cs" />
     <Compile Include="Banshee.Collection.Database\RandomByRating.cs" />
+    <Compile Include="Banshee.Networking\DotNetNetworking.cs" />
     <Compile Include="Banshee.Sources\Source.cs" />
     <Compile Include="Banshee.Sources\SourceManager.cs" />
     <Compile Include="Banshee.Sources\DatabaseSource.cs" />
@@ -350,5 +351,6 @@
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>
+    <VisualStudio />
   </ProjectExtensions>
 </Project>

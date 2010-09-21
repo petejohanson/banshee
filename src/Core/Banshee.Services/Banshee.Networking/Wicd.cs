@@ -89,7 +89,7 @@ namespace Banshee.Networking
         }
 
         public static bool ManagerPresent {
-            get { return Bus.System.NameHasOwner (BusName); }
+            get { try { return Bus.System.NameHasOwner (BusName); } catch { return false; } }
         }
 
         private State GetTranslatedCode (uint wicdCode)

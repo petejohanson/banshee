@@ -92,6 +92,8 @@ namespace Banshee.Networking
                 manager = new NetworkManager ();
             } else if (Wicd.ManagerPresent) {
                 manager = new Wicd ();
+            } else if (DotNetNetworking.ManagerPresent) {
+                manager = new DotNetNetworking ();
             } else {
                 throw new NetworkUnavailableException ("Neither NetworkManager nor Wicd could be found");
             }

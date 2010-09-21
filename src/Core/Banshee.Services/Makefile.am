@@ -129,6 +129,7 @@ SOURCES =  \
 	Banshee.Metadata/Tests/TaglibReadWriteTests.cs \
 	Banshee.Metrics/BansheeMetrics.cs \
 	Banshee.Metrics/Configuration.cs \
+	Banshee.Networking/DotNetNetworking.cs \
 	Banshee.Networking/INetworkAvailabilityService.cs \
 	Banshee.Networking/Network.cs \
 	Banshee.Networking/NetworkManager.cs \
