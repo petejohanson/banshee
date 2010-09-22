@@ -15,6 +15,7 @@ using Banshee.Sources;
 using Banshee.Playlists.Formats;
 using Banshee.Collection;
 using Banshee.Collection.Database;
+using Banshee.Streaming;
 
 namespace Banshee.Playlist
 {
@@ -179,7 +180,7 @@ namespace Banshee.Playlist
 
         public static void ImportPlaylistToLibrary (string path)
         {
-            ImportPlaylistToLibrary (path, ServiceManager.SourceManager.MusicLibrary, null);
+            ImportPlaylistToLibrary (path, null, null);
         }
 
         public static void ImportPlaylistToLibrary (string path, PrimarySource source, DatabaseImportManager importer)
@@ -198,10 +199,32 @@ namespace Banshee.Playlist
                         uris.Add (((Uri)element["uri"]).LocalPath);
                     }
 
-                    ImportPlaylistWorker worker = new ImportPlaylistWorker (
-                        parser.Title,
-                        uris.ToArray (), source, importer);
-                    worker.Import ();
+                    if (source == null) {
+                        if (uris.Count > 0) {
+                            // Get the media attribute of the 1st Uri in Playlist 
+                            // and then determine whether the playlist belongs to Video or Music
+                            SafeUri uri1 = new SafeUri (uris[0]);
+                            var track = new TrackInfo ();
+                            StreamTagger.TrackInfoMerge (track, uri1);
+
+                            if (track.HasAttribute (TrackMediaAttributes.VideoStream))
+                                source = ServiceManager.SourceManager.VideoLibrary;
+                            else
+                                source = ServiceManager.SourceManager.MusicLibrary;
+                        }
+                    }
+
+                    // Give source a fallback value - MusicLibrary when it's null
+                    if (source == null)
+                        source = ServiceManager.SourceManager.MusicLibrary;
+                    
+                    // Only import an non-empty playlist
+                    if (uris.Count > 0) {
+                        ImportPlaylistWorker worker = new ImportPlaylistWorker (
+                            parser.Title,
+                            uris.ToArray (), source, importer);
+                        worker.Import ();
+                    }
                 }
             } catch (Exception e) {
                 Hyena.Log.Exception (e);
