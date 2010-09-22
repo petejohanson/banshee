@@ -58,7 +58,7 @@ namespace Banshee.Gui.Widgets
         public TaskStatusIcon ()
         {
             ShowOnlyBackgroundTasks = true;
-            IntermittentVisibility = true;
+            IntermittentVisibility = false;
             IntermittentVisibleTime = 2500;
             IntermittentHiddenTime = 2 * IntermittentVisibleTime;
 
