@@ -32,7 +32,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Reflection;
 
-using NDesk.DBus;
+using DBus;
 using org.freedesktop.DBus;
 
 using Hyena;

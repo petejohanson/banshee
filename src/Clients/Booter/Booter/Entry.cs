@@ -58,7 +58,7 @@ using System.Runtime.InteropServices;
 
 using Mono.Unix;
 
-using NDesk.DBus;
+using DBus;
 
 using Hyena;
 using Hyena.CommandLine;

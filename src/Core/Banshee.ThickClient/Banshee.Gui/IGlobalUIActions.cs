@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 
 using System;
-using NDesk.DBus;
+using DBus;
 
 using Banshee.ServiceStack;
 

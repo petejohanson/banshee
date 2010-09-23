@@ -28,7 +28,7 @@
 
 using System.Collections.Generic;
 
-using NDesk.DBus;
+using DBus;
 
 using Banshee.ServiceStack;
 

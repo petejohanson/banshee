@@ -31,7 +31,7 @@
 using System;
 using System.Collections.Generic;
 
-using NDesk.DBus;
+using DBus;
 using Hyena;
 
 using Banshee.Gui;

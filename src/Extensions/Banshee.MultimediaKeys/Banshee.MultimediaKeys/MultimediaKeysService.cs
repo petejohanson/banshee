@@ -31,7 +31,7 @@
 using System;
 using Mono.Unix;
 
-using NDesk.DBus;
+using DBus;
 
 using Hyena;
 using Banshee.Base;

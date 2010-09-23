@@ -26,7 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using NDesk.DBus;
+using DBus;
 using Mono.Unix;
 
 using Banshee.PlatformServices;

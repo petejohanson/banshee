@@ -31,7 +31,7 @@ using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 
-using NDesk.DBus;
+using DBus;
 using Hyena;
 
 using Banshee.Base;

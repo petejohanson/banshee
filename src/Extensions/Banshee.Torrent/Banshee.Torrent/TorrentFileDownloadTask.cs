@@ -104,7 +104,7 @@ namespace Banshee.Torrent
             downloader.Stop ();
         }
 
-        private void OnDownloaderStateChanged (NDesk.DBus.ObjectPath path, TorrentState from, TorrentState to)
+        private void OnDownloaderStateChanged (DBus.ObjectPath path, TorrentState from, TorrentState to)
         {
             if (downloader.GetState () == TorrentState.Seeding) {
                 SetProgress (100);

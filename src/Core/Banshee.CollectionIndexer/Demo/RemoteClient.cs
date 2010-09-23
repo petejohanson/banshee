@@ -41,7 +41,7 @@ namespace RemoteClient
             client.Start ();
 
             while (true) {
-                NDesk.DBus.Bus.Session.Iterate ();
+                DBus.Bus.Session.Iterate ();
             }
         }
 

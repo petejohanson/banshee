@@ -30,7 +30,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-using NDesk.DBus;
+using DBus;
 
 using Hyena;
 using Banshee.Base;

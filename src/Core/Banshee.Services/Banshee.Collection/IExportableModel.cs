@@ -29,7 +29,7 @@
 using System.Collections.Generic;
 
 using Banshee.ServiceStack;
-using NDesk.DBus;
+using DBus;
 
 namespace Banshee.Collection
 {

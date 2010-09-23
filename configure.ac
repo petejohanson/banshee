@@ -99,8 +99,8 @@ else
 fi
 AC_SUBST(BANSHEE_DESKTOP_NAME)
 
-dnl NDesk DBus libraries
-BANSHEE_CHECK_NDESK_DBUS
+dnl DBus Sharp libraries
+BANSHEE_CHECK_DBUS_SHARP
 
 dnl Mono.Addins libraries
 BANSHEE_CHECK_MONO_ADDINS

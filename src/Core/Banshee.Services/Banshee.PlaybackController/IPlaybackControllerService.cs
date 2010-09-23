@@ -27,7 +27,7 @@
 //
 
 using System;
-using NDesk.DBus;
+using DBus;
 
 using Banshee.ServiceStack;
 
@@ -39,7 +39,7 @@ namespace Banshee.PlaybackController
     public interface IPlaybackControllerService : IDBusExportable
     {
         // FIXME: IPlaybackControllerExportable : IPlaybackController
-        // but NDesk DBus has a design flaw where it only exports
+        // but DBus-Sharp has a design flaw where it only exports
         // members of the top level interface where the [Interface]
         // attribute is applied
 

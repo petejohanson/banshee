@@ -30,7 +30,7 @@
 
 using System;
 using org.freedesktop.DBus;
-using NDesk.DBus;
+using DBus;
 using Hyena;
 using Banshee.MediaEngine;
 using Banshee.PlaybackController;
