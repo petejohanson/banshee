@@ -38,6 +38,7 @@ using Banshee.Sources;
 using Banshee.I18n;
 using Hyena.Query;
 using Hyena;
+using Banshee.Playlist;
 
 namespace Banshee.Dap.AppleDevice
 {
@@ -186,40 +187,24 @@ namespace Banshee.Dap.AppleDevice
                 }
             }
 
-//                Hyena.Data.Sqlite.HyenaSqliteCommand insert_cmd = new Hyena.Data.Sqlite.HyenaSqliteCommand (
-//                    @"INSERT INTO CorePlaylistEntries (PlaylistID, TrackID)
-//                        SELECT ?, TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND ExternalID = ?");
-//                foreach (IPod.Playlist playlist in ipod_device.TrackDatabase.Playlists) {
-//                    if (playlist.IsOnTheGo) { // || playlist.IsPodcast) {
-//                        continue;
-//                    }
-//                    PlaylistSource pl_src = new PlaylistSource (playlist.Name, this);
-//                    pl_src.Save ();
-//                    // We use the IPod.Track.Id here b/c we just shoved it into ExternalID above when we loaded
-//                    // the tracks, however when we sync, the Track.Id values may/will change.
-//                    foreach (IPod.Track track in playlist.Tracks) {
-//                        ServiceManager.DbConnection.Execute (insert_cmd, pl_src.DbId, this.DbId, track.Id);
-//                    }
-//                    pl_src.UpdateCounts ();
-//                    AddChildSource (pl_src);
-//                }
-            /*else {
-                BuildDatabaseUnsupportedWidget ();
-            }*/
+            Hyena.Data.Sqlite.HyenaSqliteCommand insert_cmd = new Hyena.Data.Sqlite.HyenaSqliteCommand (
+                @"INSERT INTO CorePlaylistEntries (PlaylistID, TrackID)
+                    SELECT ?, TrackID FROM CoreTracks WHERE PrimarySourceID = ? AND ExternalID = ?");
+            foreach (var playlist in MediaDatabase.Playlists) {
+                if (playlist.IsMaster || playlist.IsPodcast)
+                    continue;
 
-            /*if(previous_database_supported != database_supported) {
-                OnPropertiesChanged();
-            }*/
+                PlaylistSource pl_src = new PlaylistSource (playlist.Name, this);
+                pl_src.Save ();
+                // We use the IPod.Track.Id here b/c we just shoved it into ExternalID above when we loaded
+                // the tracks, however when we sync, the Track.Id values may/will change.
+                foreach (var track in playlist.Tracks) {
+                    ServiceManager.DbConnection.Execute (insert_cmd, pl_src.DbId, this.DbId, track.DBID);
+                }
+                pl_src.UpdateCounts ();
+                AddChildSource (pl_src);
+            }
         }
-
-//        private void DestroyUnsupportedView ()
-//        {
-//            if (unsupported_view != null) {
-//                unsupported_view.Refresh -= OnRebuildDatabaseRefresh;
-//                unsupported_view.Destroy ();
-//                unsupported_view = null;
-//            }
-//        }
 
 #endregion
 
@@ -592,32 +577,32 @@ namespace Banshee.Dap.AppleDevice
                 }
             }
 
-//            // Remove playlists on the device
-//            List<IPod.Playlist> device_playlists = new List<IPod.Playlist> (ipod_device.TrackDatabase.Playlists);
-//            foreach (IPod.Playlist playlist in device_playlists) {
-//                if (!playlist.IsOnTheGo) {
-//                    ipod_device.TrackDatabase.RemovePlaylist (playlist);
-//                }
-//            }
-//            device_playlists.Clear ();
-//
-//            if (SupportsPlaylists) {
-//                // Add playlists from Banshee to the device
-//                foreach (Source child in Children) {
-//                    PlaylistSource from = child as PlaylistSource;
-//                    if (from != null && from.Count > 0) {
-//                        IPod.Playlist playlist = ipod_device.TrackDatabase.CreatePlaylist (from.Name);
-//                        foreach (int track_id in ServiceManager.DbConnection.QueryEnumerable<int> (String.Format (
-//                            "SELECT CoreTracks.TrackID FROM {0} WHERE {1}",
-//                            from.DatabaseTrackModel.ConditionFromFragment, from.DatabaseTrackModel.Condition)))
-//                        {
-//                            if (tracks_map.ContainsKey (track_id)) {
-//                                playlist.AddTrack (tracks_map[track_id].IpodTrack);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            if (SupportsPlaylists) {
+                // Remove playlists on the device
+                var device_playlists = new List<GPod.Playlist> (MediaDatabase.Playlists);
+                foreach (var playlist in device_playlists) {
+                    if (!playlist.IsMaster && !playlist.IsPodcast) {
+                        MediaDatabase.Playlists.Remove (playlist);
+                    }
+                }
+
+                // Add playlists from Banshee to the device
+                foreach (Source child in Children) {
+                    PlaylistSource from = child as PlaylistSource;
+                    if (from != null && from.Count > 0) {
+                        var playlist = new GPod.Playlist (from.Name);
+                        MediaDatabase.Playlists.Add (playlist);
+                        foreach (int track_id in ServiceManager.DbConnection.QueryEnumerable<int> (String.Format (
+                            "SELECT CoreTracks.TrackID FROM {0} WHERE {1}",
+                            from.DatabaseTrackModel.ConditionFromFragment, from.DatabaseTrackModel.Condition)))
+                        {
+                            if (tracks_map.ContainsKey (track_id)) {
+                                playlist.Tracks.Add (tracks_map[track_id].IpodTrack);
+                            }
+                        }
+                    }
+                }
+            }
 
             try {
                 message = Catalog.GetString ("Writing media database");
