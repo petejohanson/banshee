@@ -264,7 +264,7 @@ namespace Banshee.Dap.AppleDevice
                 database.Tracks.Add (IpodTrack);
                 database.MasterPlaylist.Tracks.Add (IpodTrack);
 
-                if (HasAttribute (TrackMediaAttributes.Podcast)) {
+                if (HasAttribute (TrackMediaAttributes.Podcast) && database.Device.SupportsPodcast) {
                     database.PodcastsPlaylist.Tracks.Add (IpodTrack);
                 }
 

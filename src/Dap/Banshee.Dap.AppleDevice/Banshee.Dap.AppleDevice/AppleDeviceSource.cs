@@ -174,6 +174,12 @@ namespace Banshee.Dap.AppleDevice
                 }
             }
 
+            if (SupportsPodcasts && MediaDatabase.PodcastsPlaylist == null) {
+                MediaDatabase.Playlists.Add (new GPod.Playlist (Catalog.GetString ("Podcasts")) {
+                    IsPodcast = true
+                });
+            }
+
             foreach (var ipod_track in MediaDatabase.Tracks) {
                 try {
                     var track = new AppleDeviceTrackInfo (ipod_track);
@@ -561,7 +567,7 @@ namespace Banshee.Dap.AppleDevice
                             playlist.Tracks.Remove (track.IpodTrack);
                         }
 
-                        if (track.IpodTrack.MediaType == GPod.MediaType.Podcast) {
+                        if (SupportsPodcasts && track.IpodTrack.MediaType == GPod.MediaType.Podcast) {
                             MediaDatabase.PodcastsPlaylist.Tracks.Remove (track.IpodTrack);
                         }
 
