@@ -241,9 +241,9 @@ gst_transcoder_create_pipeline(GstTranscoder *transcoder,
         return FALSE;
     }
 
-    decoder_elem = gst_element_factory_make("decodebin", "decodebin");
+    decoder_elem = gst_element_factory_make("decodebin2", "decodebin2");
     if(decoder_elem == NULL) {
-        gst_transcoder_raise_error(transcoder, _("Could not create 'decodebin' plugin"), NULL);
+        gst_transcoder_raise_error(transcoder, _("Could not create 'decodebin2' plugin"), NULL);
         return FALSE;
     }
     
