@@ -164,14 +164,24 @@ namespace Banshee.Dap.AppleDevice
 
                 try {
                     MediaDatabase = new GPod.ITDB (Device.Mountpoint);
-                } catch (GLib.GException) {
-                    Log.Information ("No iPod database could be loaded, creating a new one");
-                    GPod.ITDB.InitIpod (Volume.MountPoint, null, Volume.Name);
-                    // this may throw again. In the future we need to implement some kind of alert
-                    // mechanism to let the user know that something more serious is wrong with their
-                    // apple device a la the other iPod extension.
-                    MediaDatabase = new GPod.ITDB (Device.Mountpoint);
+                } catch (GLib.GException e) {
+                    Log.Exception ("iPod database could be loaded, creating a new one", e);
+                    if (GPod.ITDB.InitIpod (Volume.MountPoint, null, Volume.Name)) {
+                        // this may throw again. In the future we need to implement some kind of alert
+                        // mechanism to let the user know that something more serious is wrong with their
+                        // apple device a la the other iPod extension.
+                        MediaDatabase = new GPod.ITDB (Device.Mountpoint);
+                    } else {
+                        Log.Error ("Failed to init iPod database");
+                        return;
+                    }
                 }
+            }
+
+            if (MediaDatabase.MasterPlaylist == null) {
+                MediaDatabase.Playlists.Add (new GPod.Playlist (Name) {
+                    IsMaster = true
+                });
             }
 
             if (SupportsPodcasts && MediaDatabase.PodcastsPlaylist == null) {
@@ -271,26 +281,16 @@ namespace Banshee.Dap.AppleDevice
 
         public override void Rename (string name)
         {
-            return;
-//            if (!CanRename) {
-//                return;
-//            }
-//
-//            try {
-//                if (name_path != null) {
-//                    Directory.CreateDirectory (Path.GetDirectoryName (name_path));
-//
-//                    using (StreamWriter writer = new StreamWriter (File.Open (name_path, FileMode.Create),
-//                        System.Text.Encoding.Unicode)) {
-//                        writer.Write (name);
-//                    }
-//                }
-//            } catch (Exception e) {
-//                Log.Exception (e);
-//            }
-//
-//            ipod_device.Name = name;
-//            base.Rename (name);
+            if (!CanRename) {
+                return;
+            }
+
+            try {
+                MediaDatabase.MasterPlaylist.Name = name;
+                base.Rename (name);
+            } catch (Exception e) {
+                Log.Exception ("Trying to change iPod name", e);
+            }
         }
 
         public override bool CanRename {
