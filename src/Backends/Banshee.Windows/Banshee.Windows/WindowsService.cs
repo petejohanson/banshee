@@ -3,6 +3,7 @@
 //
 // Authors:
 //   Gabriel Burt <gabriel.burt@gmail.com>
+//   Pete Johanson <peter@peterjohanson.com>
 //
 // Copyright 2011 Novell, Inc.
 //
@@ -27,28 +28,90 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Collections;
-using Gtk;
-using Mono.Unix;
+using System.Text;
 
 using Banshee.ServiceStack;
 using Banshee.Gui;
-using Hyena.Downloader;
 
-using GLib;
-using System.Management;
+using Windows7Support;
 
 namespace Banshee.Windows
 {
-    public class WindowsService : IExtensionService, IDisposable
+    public class WindowsService : IExtensionService
     {
         bool disposed;
+        GtkElementsService elements_service;
+        InterfaceActionService interface_action_service;
 
-        void IExtensionService.Initialize ()
+        private IList<ThumbnailToolbarButton> buttons;
+
+        bool ServiceStart ()
+        {
+            if (elements_service == null || interface_action_service == null)
+                return false;
+
+            buttons = new List<ThumbnailToolbarButton> () {
+                interface_action_service.PlaybackActions["PreviousAction"].CreateThumbnailToolbarButton (a => new Icon (GetResourceStream ("media-skip-backward.ico"))),
+                interface_action_service.PlaybackActions["PlayPauseAction"].CreateThumbnailToolbarButton (a => a.StockId == Gtk.Stock.MediaPlay ? new Icon (GetResourceStream ("media-playback-start.ico")) : new Icon (GetResourceStream ("media-playback-pause.ico"))),
+                interface_action_service.PlaybackActions["NextAction"].CreateThumbnailToolbarButton (a => new Icon (GetResourceStream ("media-skip-forward.ico"))),
+            };
+
+            ServiceManager.ServiceStarted -= OnServiceStarted;
+
+            GtkWindowThumbnailToolbarManager.Register (elements_service.PrimaryWindow, tb => { tb.Buttons = buttons; });
+
+            return true;
+        }
+
+        System.IO.Stream GetResourceStream (string resource_name)
+        {
+            string name = typeof (WindowsService).Assembly.GetManifestResourceNames ().FirstOrDefault (n => n.EndsWith (resource_name));
+
+            if (String.IsNullOrEmpty (name))
+                throw new ArgumentException (String.Format ("Resource named '{0}' not located", resource_name));
+
+            return typeof (WindowsService).Assembly.GetManifestResourceStream (name);
+        }
+
+        void OnServiceStarted (ServiceStartedArgs args)
+        {
+            if (args.Service is GtkElementsService) {
+                elements_service = (GtkElementsService)args.Service;
+                ServiceStart ();
+            } else if (args.Service is InterfaceActionService) {
+                interface_action_service = (InterfaceActionService)args.Service;
+                ServiceStart ();
+            }
+        }        
+
+        #region IExtensionService Members
+
+        public void Initialize ()
         {
             // TODO check for updates and other cool stuff
+
+            elements_service = ServiceManager.Get<GtkElementsService> ();
+            interface_action_service = ServiceManager.Get<InterfaceActionService> ();
+
+            if (!ServiceStart ()) {
+                ServiceManager.ServiceStarted += OnServiceStarted;
+            }
         }
+
+        #endregion
+
+        #region IService Members
+
+        public string ServiceName {
+            get { return "WindowsService"; }
+        }
+
+        #endregion
+
+        #region IDisposable Members
 
         public void Dispose ()
         {
@@ -59,8 +122,6 @@ namespace Banshee.Windows
             disposed = true;
         }
 
-        string IService.ServiceName {
-            get { return "WindowsService"; }
-        }
+        #endregion
     }
 }

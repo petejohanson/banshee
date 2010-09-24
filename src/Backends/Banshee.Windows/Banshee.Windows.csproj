@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <ProjectGuid>{9AA07695-3EF9-45CE-849E-A0AB9A1F4006}</ProjectGuid>
     <OutputType>Library</OutputType>
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
@@ -77,16 +77,24 @@
     <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Core">
     </Reference>
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.Windows\WindowsService.cs" />
+    <Compile Include="Banshee.Windows\ExtensionsForGtkAction.cs" />
+    <Compile Include="Banshee.Windows\GtkWindowThumbnailToolbarManager.cs" />
     <Compile Include="Banshee.Windows.Hardware\HardwareManager.cs" />
     <Compile Include="Banshee.Windows.Hardware\Device.cs" />
     <Compile Include="Banshee.Windows.Hardware\UsbDevice.cs" />
     <Compile Include="Banshee.Windows.Hardware\Volume.cs" />
+    <Compile Include="Windows7Support\TaskbarInterop.cs" />
+    <Compile Include="Windows7Support\ThumbnailToolbar.cs" />
+    <Compile Include="Windows7Support\ThumbnailToolbarButton.cs" />
+    <Compile Include="Windows7Support\ThumbnailToolbarManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Windows.addin.xml">
@@ -108,8 +116,6 @@
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>
+    <VisualStudio />
   </ProjectExtensions>
-  <ItemGroup>
-    <Folder Include="Banshee.Windows.Hardware\" />
-  </ItemGroup>
 </Project>
