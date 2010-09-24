@@ -4,7 +4,8 @@ SUBDIRS = \
    Mtp \
    MusicBrainz \
    Lastfm \
-   Lastfm.Gui
+   Lastfm.Gui \
+   Windows7Support
 
 MAINTAINERCLEANFILES = \
 	Makefile.in
