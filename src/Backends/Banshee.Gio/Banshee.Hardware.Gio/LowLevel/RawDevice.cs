@@ -70,8 +70,8 @@ namespace Banshee.Hardware.Gio
             get;
         }
 
-        public abstract IDeviceMediaCapabilities MediaCapabilities {
-            get;
+        public IDeviceMediaCapabilities MediaCapabilities {
+            get; private set;
         }
 
         public abstract string Name {
@@ -111,6 +111,8 @@ namespace Banshee.Hardware.Gio
             Manager = manager;
             GioMetadata = gioMetadata;
             UdevMetadata = udevMetadata;
+            if (!string.IsNullOrEmpty (IdMediaPlayer))
+                MediaCapabilities = new DeviceMediaCapabilities (IdMediaPlayer);
         }
 
         public bool Equals (RawDevice other)

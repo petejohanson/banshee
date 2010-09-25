@@ -224,10 +224,6 @@ namespace Banshee.Hardware.Gio
             }
         }
 
-        public override IDeviceMediaCapabilities MediaCapabilities {
-            get { return new DeviceMediaCapabilities (this); }
-        }
-
         public override string Product {
             get {
                 return UdevMetadata.Model;
