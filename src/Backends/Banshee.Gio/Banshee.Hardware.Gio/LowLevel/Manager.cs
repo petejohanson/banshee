@@ -92,7 +92,7 @@ namespace Banshee.Hardware.Gio
         {
             // Manually get the mount as gio-sharp translates it to the wrong managed object
             var mount = GLib.MountAdapter.GetObject ((GLib.Object) args.Args [0]);
-            if (mount.Volume == null || mount.Root == null || mount.Root.Path == null) {
+            if (mount.Volume == null) {
                 return;
             }
 
