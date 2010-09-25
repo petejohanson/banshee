@@ -37,6 +37,13 @@ using Banshee.PlaybackController;
 
 namespace Banshee.Collection.Database
 {
+    /// <summary>
+    /// RandomBy Basic Implementation
+    /// Implement at least GetPlaybackTrack or GetShufflerTrack
+    /// Use Label, Adverb, and Descrption for GUI Labeling
+    ///
+    /// Protected strings Select,From,Condition and OrderBy are used for ShufflerQuery (example: GetTrack(ShufflerQuery, args[]))
+    /// </summary>
     public abstract class RandomBy
     {
         protected const string RANDOM_CONDITION = "AND LastStreamError = 0 AND (LastPlayedStamp < ? OR LastPlayedStamp IS NULL) AND (LastSkippedStamp < ? OR LastSkippedStamp IS NULL)";
@@ -114,7 +121,20 @@ namespace Banshee.Collection.Database
 
         public virtual void Reset () {}
 
-        public abstract bool Next (DateTime after);
+        /// <summary>
+        /// Returns true if RandomBy Implementation has a next track, depending on parameter after
+        /// If Next returns false in the first place, it is called again with another DateTime
+        /// </summary>
+        /// <param name="after">
+        /// A <see cref="DateTime"/>
+        /// </param>
+        /// <returns>
+        /// A <see cref="System.Boolean"/>
+        /// </returns>
+        public virtual bool Next (DateTime after)
+        {
+            return true;
+        }
 
         public TrackInfo GetTrack (DateTime after)
         {
@@ -130,10 +150,36 @@ namespace Banshee.Collection.Database
             }
         }
 
-        // The playback track we choose is dependent on the current PlaybackSource, and what
-        // (if any) query/filter is active there, represented by its DatabaseTrackModel (and its underlying cache).
+        /// <summary>
+        /// Returns next Track to play in playback mode
+        /// </summary>
+        /// <param name="after">
+        /// A <see cref="DateTime"/>
+        /// </param>
+        /// <returns>
+        /// A <see cref="TrackInfo"/>
+        /// </returns>
+        /// <remarks>
+        /// When implementing this method, use Cache to query the model so user defined filters are respected
+        /// The playback track we choose is dependent on the current PlaybackSource, and what
+        /// (if any) query/filter is active there, represented by its DatabaseTrackModel (and its underlying cache).
+        ///
+        /// Remember to use RANDOM_CONDITION when using Cache, see other RandomBy Implementations for an Example
+        /// </remarks>
+        /// <see>RandomBy.Cache</see>
         public abstract TrackInfo GetPlaybackTrack (DateTime after);
 
+        /// <summary>
+        /// Returns Track to play in Shuffler Mode aka Auto-Dj
+        /// </summary>
+        /// <param name="after">
+        /// A <see cref="DateTime"/>
+        /// </param>
+        /// <returns>
+        /// A <see cref="DatabaseTrackInfo"/>
+        /// </returns>
+        /// <remarks>GetShufflerTrack should use the whole model to query a track</remarks>
+        /// <see>RandomBy.GetTrack</see>
         public abstract DatabaseTrackInfo GetShufflerTrack (DateTime after);
 
         protected DatabaseTrackInfo GetTrack (HyenaSqliteCommand cmd, params object [] args)
