@@ -66,7 +66,7 @@ namespace Banshee.IO.Gio
                 return;
             }
 
-            if ((dir.QueryFileType (FileQueryInfoFlags.None, null) & FileType.Directory) == 0) {
+            if (dir.QueryFileType (FileQueryInfoFlags.NofollowSymlinks, null) != FileType.Directory) {
                 Console.WriteLine ("{0} isn't directory", directory);
                 return;
             }
