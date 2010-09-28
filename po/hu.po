@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: banshee master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-14 02:54+0200\n"
-"PO-Revision-Date: 2010-09-14 02:54+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&component=general\n"
+"POT-Creation-Date: 2010-09-28 06:36+0000\n"
+"PO-Revision-Date: 2010-09-28 12:54+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -58,8 +58,7 @@ msgstr ""
 
 #. ../src/Backends/Banshee.Osx/Banshee.Osx.addin.xml
 #: ../data/addin-xml-strings.cs:26
-msgid ""
-"Backend providers for the OSX platform. Includes general OSX integration."
+msgid "Backend providers for the OSX platform. Includes general OSX integration."
 msgstr ""
 "Háttérprogram-szolgáltatók az OS X rendszerhez. Az általános OS X támogatást "
 "biztosítja."
@@ -204,8 +203,7 @@ msgstr "Boo parancsnyelv"
 
 #: ../data/addin-xml-strings.cs:91
 msgid "Customize and extend Banshee with Boo-language scripts."
-msgstr ""
-"A Banshee személyre szabása és kiterjesztése Boo nyelvű parancsfájlokkal."
+msgstr "A Banshee személyre szabása és kiterjesztése Boo nyelvű parancsfájlokkal."
 
 #: ../data/addin-xml-strings.cs:92 ../data/addin-xml-strings.cs:97
 #: ../data/addin-xml-strings.cs:102 ../data/addin-xml-strings.cs:107
@@ -278,8 +276,7 @@ msgstr "Internetarchívum"
 
 #: ../data/addin-xml-strings.cs:126
 msgid "Browse and search the Internet Archive's vast media collection."
-msgstr ""
-"Tallózás és keresés az internet archívumának hatalmas médiagyűjteményében."
+msgstr "Tallózás és keresés az internet archívumának hatalmas médiagyűjteményében."
 
 #. ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio.addin.xml
 #: ../data/addin-xml-strings.cs:130
@@ -408,11 +405,11 @@ msgstr "Lejátszási sor"
 
 #: ../data/addin-xml-strings.cs:189
 msgid "Queue tracks in an ad-hoc playlist, or let the Auto DJ take over."
-msgstr ""
-"Számok sorba állítása eseti lejátszólistába, vagy automata DJ használata."
+msgstr "Számok sorba állítása eseti lejátszólistába, vagy automata DJ használata."
 
 #. ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.addin.xml
 #: ../data/addin-xml-strings.cs:193
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:188
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/PodcastGroupSource.cs:38
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:107
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:203
@@ -478,8 +475,7 @@ msgstr "Wikipédia"
 
 #: ../data/addin-xml-strings.cs:218
 msgid "View artist information from Wikipedia in the context pane."
-msgstr ""
-"Előadó-információk megjelenítése a Wikipédiából a környezet ablaktáblán."
+msgstr "Előadó-információk megjelenítése a Wikipédiából a környezet ablaktáblán."
 
 #: ../data/addin-xml-strings.cs:219 ../data/addin-xml-strings.cs:224
 msgid "Context Pane"
@@ -765,8 +761,9 @@ msgid "Could not create filesrc element"
 msgstr "A „filesrc” elem létrehozása nem sikerült"
 
 #: ../libbanshee/banshee-bpmdetector.c:214
-msgid "Could not create decodebin plugin"
-msgstr "A decodebin bővítmény létrehozása nem sikerült"
+#| msgid "Could not create decodebin plugin"
+msgid "Could not create decodebin2 plugin"
+msgstr "A decodebin2 bővítmény létrehozása nem sikerült"
 
 #: ../libbanshee/banshee-bpmdetector.c:220
 msgid "Could not create audioconvert plugin"
@@ -806,8 +803,9 @@ msgid "Could not create source element"
 msgstr "A forráselem létrehozása nem sikerült"
 
 #: ../libbanshee/banshee-transcoder.c:246
-msgid "Could not create 'decodebin' plugin"
-msgstr "A „decodebin” bővítmény létrehozása nem sikerült"
+#| msgid "Could not create 'decodebin' plugin"
+msgid "Could not create 'decodebin2' plugin"
+msgstr "A „decodebin2” bővítmény létrehozása nem sikerült"
 
 #: ../libbanshee/banshee-transcoder.c:252
 msgid "Could not create sink element"
@@ -968,15 +966,13 @@ msgid "Playback Control Options"
 msgstr "Lejátszást vezérlő kapcsolói"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:160
-msgid ""
-"Play the next track, optionally restarting if the 'restart' value is set"
+msgid "Play the next track, optionally restarting if the 'restart' value is set"
 msgstr ""
 "A következő szám lejátszása, újraindítással, ha az „újraindítás” érték be "
 "van állítva"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:161
-msgid ""
-"Play the previous track, optionally restarting if the 'restart value is set"
+msgid "Play the previous track, optionally restarting if the 'restart value is set"
 msgstr ""
 "Az előző szám lejátszása, újraindítással, ha az „újraindítás” érték be van "
 "állítva"
@@ -991,8 +987,7 @@ msgstr ""
 
 #: ../src/Clients/Booter/Booter/Entry.cs:163
 msgid "Automatically start playing any tracks enqueued on the command line"
-msgstr ""
-"A parancssorban sorba állított számok lejátszásának automatikus elindítása"
+msgstr "A parancssorban sorba állított számok lejátszásának automatikus elindítása"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:164
 msgid "Start playback"
@@ -1104,7 +1099,7 @@ msgstr "Számok összesen"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:192
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:149
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:113
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:114
 msgid "Disc Number"
 msgstr "Lemezszám"
 
@@ -1112,7 +1107,7 @@ msgstr "Lemezszám"
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:165
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:113
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:177
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:77
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:78
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:132
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:77
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:92
@@ -1518,8 +1513,7 @@ msgid "Upgrading your Banshee Database"
 msgstr "A Banshee adatbázis frissítése"
 
 #: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:235
-msgid ""
-"Please wait while your old Banshee database is migrated to the new format."
+msgid "Please wait while your old Banshee database is migrated to the new format."
 msgstr "Várjon a régi Banshee adatbázis új formátumúra alakításáig."
 
 #: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1379
@@ -1633,7 +1627,7 @@ msgid "Album"
 msgstr "Album"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:108
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:72
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:73
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:127
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:76
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:97
@@ -1641,40 +1635,40 @@ msgid "Title"
 msgstr "Cím"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:119
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:83
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:84
 msgid "Count"
 msgstr "Mennyiség"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:125
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:89
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:90
 msgid "Number"
 msgstr "Szám"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:131
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:95
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:96
 msgid "Count (unsorted)"
 msgstr "Mennyiség (rendezetlen)"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:137
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:101
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:102
 msgid "Number (unsorted)"
 msgstr "Szám (rendezetlen)"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:143
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:108
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:107
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:108
 msgid "Disc Count"
 msgstr "Lemezek száma"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:155
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:206
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:119
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:120
 msgid "Grouping"
 msgstr "Csoportosítás"
 
 #. Catalog.GetString ("Music Library")
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:59
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/MusicGroupSource.cs:38
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/MusicGroupSource.cs:39
 msgid "Music"
 msgstr "Zene"
 
@@ -1844,8 +1838,7 @@ msgstr "Előkészítés"
 msgid ""
 "Files are currently being converted to another format. Would you like to "
 "stop this?"
-msgstr ""
-"Még folyamatban van fájlok átalakítása más formátumra. Le szeretné állítani?"
+msgstr "Még folyamatban van fájlok átalakítása más formátumra. Le szeretné állítani?"
 
 #: ../src/Core/Banshee.Services/Banshee.Metadata/SaveTrackMetadataJob.cs:52
 msgid "Saving Metadata to File"
@@ -1868,8 +1861,7 @@ msgstr "É_rtékelések és lejátszásszámok kiírása a fájlokba"
 msgid ""
 "Enable this option to save rating and playcount metadata inside supported "
 "audio files"
-msgstr ""
-"Értékelés és lejátszások száma metaadatok mentése a támogatott hangfájlokba"
+msgstr "Értékelés és lejátszások száma metaadatok mentése a támogatott hangfájlokba"
 
 #: ../src/Core/Banshee.Services/Banshee.Metadata/SaveTrackMetadataService.cs:60
 msgid "_Update file and folder names"
@@ -1898,8 +1890,7 @@ msgstr "_Lejátszásszámok importálása"
 #. disabled by default
 #: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:302
 msgid "Improve Banshee by sending anonymous usage data"
-msgstr ""
-"Segítsen a Banshee fejlesztésében névtelen felhasználási adatok küldésével"
+msgstr "Segítsen a Banshee fejlesztésében névtelen felhasználási adatok küldésével"
 
 #: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:52
 msgid "There is no available network connection"
@@ -1913,11 +1904,11 @@ msgstr "Nem lehet kapcsolódni a Hálózatkezelőhöz vagy a Wicd-hez"
 msgid "An available, working network connection will be assumed"
 msgstr "A program működő hálózati kapcsolat meglétét feltételezi"
 
-#: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:157
+#: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:159
 msgid "_Disable features requiring Internet access"
 msgstr "Az i_nternet-hozzáférést igénylő szolgáltatások letiltása"
 
-#: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:158
+#: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:160
 msgid ""
 "Some features require a broadband Internet connection such as Last.fm or "
 "cover art fetching"
@@ -2004,18 +1995,22 @@ msgid "items"
 msgstr "elem"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:64
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:60
 msgid "minutes"
 msgstr "perc"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:65
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:61
 msgid "hours"
 msgstr "óra"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:66
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:63
 msgid "MB"
 msgstr "MB"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:67
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:64
 msgid "GB"
 msgstr "GB"
 
@@ -2659,12 +2654,12 @@ msgstr "Mappahie_rarchia"
 msgid "File _name"
 msgstr "Fájl_név"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:689
+#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:693
 #, csharp-format
 msgid "Adding {0} of {1} to {2}"
 msgstr "{1}/{0} hozzáadása ehhez: {2}"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:708
+#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:712
 #, csharp-format
 msgid "Deleting {0} of {1} From {2}"
 msgstr "{1}/{0}. eltávolítása ebből: {2}"
@@ -3089,8 +3084,7 @@ msgstr "Speciális keresés a gyűjteményben"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:109
 msgid "Learn advanced ways to search your media collection"
-msgstr ""
-"A médiagyűjteményben keresésre szolgáló speciális módszerek megismerése"
+msgstr "A médiagyűjteményben keresésre szolgáló speciális módszerek megismerése"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:114
 msgid "Banshee _Home Page"
@@ -3442,8 +3436,7 @@ msgstr "Ellenőrizze, hogy a szám helye elérhető a rendszer számára."
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:535
 #, csharp-format
 msgid "Are you sure you want to permanently delete this item?"
-msgid_plural ""
-"Are you sure you want to permanently delete the selected {0} items?"
+msgid_plural "Are you sure you want to permanently delete the selected {0} items?"
 msgstr[0] "Biztos, hogy véglegesen törölni kívánja ezt az elemet?"
 msgstr[1] "Biztos, hogy véglegesen törölni kívánja a kijelölt {0} elemet?"
 
@@ -3459,21 +3452,17 @@ msgstr "Eltávolítja a kijelölteket innen: {0}?"
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:545
 #, csharp-format
 msgid "Are you sure you want to remove the selected item from your {1}?"
-msgid_plural ""
-"Are you sure you want to remove the selected {0} items from your {1}?"
+msgid_plural "Are you sure you want to remove the selected {0} items from your {1}?"
 msgstr[0] "Biztos, hogy véglegesen törölni kívánja ezt az elemet innen: {1}?"
-msgstr[1] ""
-"Biztos, hogy véglegesen törölni kívánja a kiválasztott {0} elemet innen: {1}?"
+msgstr[1] "Biztos, hogy véglegesen törölni kívánja a kiválasztott {0} elemet innen: {1}?"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/AlbumArtistEntry.cs:53
 msgid "Com_pilation Album Artist:"
 msgstr "_Válogatásalbum előadója:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/AlbumArtistEntry.cs:57
-msgid ""
-"Check this if this track is part of an album with tracks by various artists"
-msgstr ""
-"Jelölje be, ha ez a szám különböző előadók számait tartalmazó album része"
+msgid "Check this if this track is part of an album with tracks by various artists"
+msgstr "Jelölje be, ha ez a szám különböző előadók számait tartalmazó album része"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/AlbumArtistEntry.cs:59
 msgid ""
@@ -3745,6 +3734,7 @@ msgid "File Size:"
 msgstr "Fájlméret:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:222
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:61
 msgid "bytes"
 msgstr "bájt"
 
@@ -3915,8 +3905,7 @@ msgstr "Ez a művelet még dolgozik. Meg szeretné állítani?"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:144
 #, csharp-format
-msgid ""
-"The '{0}' operation is still performing work. Would you like to stop it?"
+msgid "The '{0}' operation is still performing work. Would you like to stop it?"
 msgstr "A(z) {0} művelet még dolgozik. Meg szeretné állítani?"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:148
@@ -4143,7 +4132,7 @@ msgid "Idle"
 msgstr "Tétlen"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:149
-#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonDownloadManager.cs:66
+#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonDownloadManager.cs:58
 msgid "Contacting..."
 msgstr "Kapcsolódás…"
 
@@ -4163,29 +4152,29 @@ msgstr "Némítva"
 msgid "Full Volume"
 msgstr "Teljes hangerő"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:89
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:101
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:96
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
 msgid "Device"
 msgstr "Eszköz"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:90
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:103
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:97
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:104
 msgid "Generation"
 msgstr "Generáció"
 
 #. FIXME
 #. AddDapProperty (Catalog.GetString ("Color"), "black");
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:95
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:104
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:102
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:105
 msgid "Capacity"
 msgstr "Kapacitás"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:96
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:103
 msgid "Available"
 msgstr "Elérhető"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:97
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:105
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:104
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:106
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:141
 msgid "Serial number"
 msgstr "Sorozatszám"
@@ -4195,43 +4184,42 @@ msgstr "Sorozatszám"
 #. string [] capabilities = new string [ipod_device.ModelInfo.Capabilities.Count];
 #. ipod_device.ModelInfo.Capabilities.CopyTo (capabilities, 0);
 #. AddDapProperty (Catalog.GetString ("Capabilities"), String.Join (", ", capabilities));
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:104
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:112
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:111
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:113
 msgid "Supports cover art"
 msgstr "Támogatja a borítókat"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:105
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:113
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:112
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:114
 msgid "Supports photos"
 msgstr "Támogatja a fényképeket"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:388
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:468
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:407
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:491
 msgid "Track duration is zero"
 msgstr "A szám időtartama nulla"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:492
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:654
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:510
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:694
 msgid "Syncing iPod"
 msgstr "iPod szinkronizálása"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:493
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:655
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:511
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:695
 msgid "Preparing to synchronize..."
 msgstr "Szinkronizálás előkészítése…"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:496
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:514
 #, csharp-format
 msgid "Adding track {0} of {1}"
 msgstr "{1}/{0} szám hozzáadása"
 
-#. TODO sync updated metadata to changed tracks
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:514
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:550
 #, csharp-format
 msgid "Removing track {0} of {1}"
 msgstr "{1}/{0} szám eltávolítása"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:570
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:614
 msgid "Writing media database"
 msgstr "Média-adatbázis írása"
 
@@ -4293,8 +4281,7 @@ msgstr "Hiba a fájl átalakításakor"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:137
 msgid "Sync when first plugged in and when the libraries change"
-msgstr ""
-"Szinkronizálás első csatlakoztatáskor, vagy a gyűjtemények változásakor"
+msgstr "Szinkronizálás első csatlakoztatáskor, vagy a gyűjtemények változásakor"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:138
 msgid ""
@@ -4313,10 +4300,8 @@ msgstr "Beállítások szinkronizálása"
 #, csharp-format
 msgid "The sync operation will remove one track from your device."
 msgid_plural "The sync operation will remove {0} tracks from your device."
-msgstr[0] ""
-"A szinkronizálási művelet el fog távolítani egy számot az eszközről."
-msgstr[1] ""
-"A szinkronizálási művelet el fog távolítani {0} számot az eszközről."
+msgstr[0] "A szinkronizálási művelet el fog távolítani egy számot az eszközről."
+msgstr[1] "A szinkronizálási művelet el fog távolítani {0} számot az eszközről."
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:369
 msgid "Are you sure you want to continue?"
@@ -4435,35 +4420,35 @@ msgstr "Új adatbázis mentése…"
 msgid "Error rebuilding iPod database"
 msgstr "Hiba az iPod adatbázis újjáépítésekor"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:103
 msgid "Color"
 msgstr "Szín"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:106
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:107
 msgid "Produced on"
 msgstr "Készült"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:107
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:108
 msgid "Firmware"
 msgstr "Firmware"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:111
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:112
 msgid "Capabilities"
 msgstr "Képességek"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:637
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:680
 msgid "Out of space on device"
 msgstr "Elfogyott a hely a lemezen"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:637
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:680
 msgid "Please manually remove some songs"
 msgstr "Távolítson el néhány számot"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:676
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:724
 msgid "Updating..."
 msgstr "Frissítés…"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:680
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:728
 msgid "Flushing to disk..."
 msgstr "Lemezre írás…"
 
@@ -4584,6 +4569,7 @@ msgstr ""
 "lásd az http://www.banshee-project.org/Guide/DAPs/MTP oldalt."
 
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:142
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/VersionInformationDialog.cs:66
 msgid "Version"
 msgstr "Verzió"
 
@@ -4599,7 +4585,7 @@ msgstr "Akkumulátor szintje"
 msgid "Loading {0} - {1} of {2}"
 msgstr "{0} – {1} betöltése, összesen {2}"
 
-#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonDownloadManager.cs:65
+#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonDownloadManager.cs:57
 msgid "Amazon MP3 Purchases"
 msgstr "Amazon MP3-vásárlások"
 
@@ -4716,11 +4702,12 @@ msgstr "Könyv címe:"
 msgid "Author"
 msgstr "Szerző"
 
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:62
+#. Translators: This means the first letter of the author's name
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:63
 msgid "Author Initial"
 msgstr "Előadó monogramja"
 
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:67
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:68
 msgid "Book Title"
 msgstr "Könyv címe"
 
@@ -5225,8 +5212,7 @@ msgstr "Elem részleteinek lekérése az internetarchívumból"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsSource.cs:148
 msgid "Timed out getting item details from the Internet Archive"
-msgstr ""
-"Az elem részleteinek lekérése az internetarchívumból túllépte az időkorlátot"
+msgstr "Az elem részleteinek lekérése az internetarchívumból túllépte az időkorlátot"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsSource.cs:149
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchSource.cs:190
@@ -5805,6 +5791,7 @@ msgid "Description:"
 msgstr "Leírás:"
 
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/StationEditor.cs:128
+#: ../src/Hyena/Hyena.Gui/Hyena.Widgets/RatingMenuItem.cs:50
 msgid "Rating:"
 msgstr "Értékelés:"
 
@@ -6260,8 +6247,7 @@ msgstr "Miro műsorújság"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideSource.cs:97
 msgid "Discover interesting podcasts in the Miro Guide podcast directory!"
-msgstr ""
-"Fedezzen fel érdekes podcastokat a Miro műsorújság podcastgyűjteményében!"
+msgstr "Fedezzen fel érdekes podcastokat a Miro műsorújság podcastgyűjteményében!"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/MiroGuideSource.cs:100
 msgid "Open Miro Guide"
@@ -6325,8 +6311,7 @@ msgstr "Egyszerűsítés"
 
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:60
 msgid "Simplify the Now Playing interface by hiding the source list and more"
-msgstr ""
-"A Most játszott felület egyszerűsítése a forráslista és egyebek elrejtésével"
+msgstr "A Most játszott felület egyszerűsítése a forráslista és egyebek elrejtésével"
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:144
 #, csharp-format
@@ -6438,8 +6423,7 @@ msgstr "Véletlen számok frissítése a lejátszási sorban"
 
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:63
 msgid "Randomize the playback order of items in the play queue"
-msgstr ""
-"A lejátszási sorban lévő elemek lejátszási sorrendjének véletlenszerűsítése"
+msgstr "A lejátszási sorban lévő elemek lejátszási sorrendjének véletlenszerűsítése"
 
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:67
 msgid "Add More"
@@ -6684,8 +6668,7 @@ msgid "Subscribe to New Podcast"
 msgstr "Feliratkozás új podcastre"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:100
-msgid ""
-"Please enter the URL of the podcast to which you would like to subscribe."
+msgid "Please enter the URL of the podcast to which you would like to subscribe."
 msgstr "Adja meg a podcast URL címét, amelyre fel kíván iratkozni."
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:112
@@ -6737,6 +6720,212 @@ msgstr "Lejátszás böngészőben…"
 #: ../src/Extensions/Banshee.YouTube/Banshee.YouTube/YouTubePane.cs:61
 msgid "No videos found"
 msgstr "Nincsenek videók"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Data.Gui/Accessibility/ColumnHeaderCellTextAccessible.cs:36
+#| msgid "Hide context pane"
+msgid "open context menu"
+msgstr "helyi menü megnyitása"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Data.Gui/Accessibility/ColumnHeaderCellTextAccessible.cs:37
+msgid "click"
+msgstr "kattintson"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Data.Gui/Accessibility/ColumnHeaderCellTextAccessible.cs:37
+#| msgid "Venue:"
+msgid "menu"
+msgstr "menü"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:612
+#, csharp-format
+msgid "Hide <i>{0}</i>"
+msgstr "<i>{0}</i> elrejtése"
+
+#. Translators: {0} is substituted with the application name
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/ExceptionDialog.cs:53
+#, csharp-format
+msgid "{0} Encountered a Fatal Error"
+msgstr "{0} végzetes hibát észlelt"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/ExceptionDialog.cs:92
+#| msgid "Episode Details"
+msgid "Error Details"
+msgstr "Hiba részletei"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/ExceptionDialog.cs:136
+msgid "An unhandled exception was thrown: "
+msgstr "Kezeletlen kivétel történt: "
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/VersionInformationDialog.cs:58
+#| msgid "_Version Information"
+msgid "Assembly Version Information"
+msgstr "Összeállítás verzióadatai"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/VersionInformationDialog.cs:64
+msgid "Assembly Name"
+msgstr "Összeállítás neve"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:62
+msgid "KB"
+msgstr "KB"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:86
+#| msgid "Con_ductor:"
+msgid "Condition:"
+msgstr "Feltétel:"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:104
+#| msgid "_Search"
+msgid "_Match"
+msgstr "Illes_zkedjen"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:111
+#| msgid "All"
+msgid "all"
+msgstr "mind"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:112
+#| msgid "Fan"
+msgid "any"
+msgstr "bármely"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:117
+msgid "of the following:"
+msgstr "a következők közül:"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryLimitBox.cs:58
+#| msgid "Similar to"
+msgid "_Limit to"
+msgstr "_Korlátozás"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryLimitBox.cs:85
+#| msgid "(none selected)"
+msgid "selected by"
+msgstr "kiválasztási szempont:"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/RelativeTimeSpanQueryValueEntry.cs:42
+#| msgid "Tag"
+msgid "ago"
+msgstr "óta"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:59
+#| msgid "{0} second"
+#| msgid_plural "{0} seconds"
+msgid "seconds"
+msgstr "másodperc"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:62
+#| msgid "plays"
+msgid "days"
+msgstr "nap"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:63
+#| msgid "Seek"
+msgid "weeks"
+msgstr "hét"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:64
+#| msgid "minutes"
+msgid "months"
+msgstr "hónap"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:65
+#| msgid "year"
+msgid "years"
+msgstr "év"
+
+#: ../src/Hyena/Hyena/Hyena.Downloader/DownloadManagerJob.cs:71
+#, csharp-format
+msgid "{0} download at {1}/s"
+msgid_plural "{0} downloads at {1}/s"
+msgstr[0] "{0} letöltése, {1}/s"
+msgstr[1] "{0} letöltése, {1}/s"
+
+#: ../src/Hyena/Hyena/Hyena.Downloader/DownloadManagerJob.cs:79
+#, csharp-format
+msgid "{0} download at {1}/s ({2} pending)"
+msgid_plural "{0} downloads at {1}/s ({2} pending)"
+msgstr[0] "{0} letöltése, {1}/s ({2} függőben)"
+msgstr[1] "{0} letöltése, {1}/s ({2} függőben)"
+
+#. public static readonly Operator Equal              = new Operator ("equals", "= {0}", "==", "=", ":");
+#. public static readonly Operator NotEqual           = new Operator ("notEqual", "!= {0}", true, "!=", "!:");
+#. public static readonly Operator LessThanEqual      = new Operator ("lessThanEquals", "<= {0}", "<=");
+#. public static readonly Operator GreaterThanEqual   = new Operator ("greaterThanEquals", ">= {0}", ">=");
+#: ../src/Hyena/Hyena/Hyena.Query/DateQueryValue.cs:47
+#| msgid "Refresh"
+msgid "before"
+msgstr "ez előtt:"
+
+#: ../src/Hyena/Hyena/Hyena.Query/DateQueryValue.cs:48
+#| msgid "Other"
+msgid "after"
+msgstr "ez után:"
+
+#: ../src/Hyena/Hyena/Hyena.Query/EnumQueryValue.cs:43
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:41
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:45
+#| msgid "Disc"
+msgid "is"
+msgstr "="
+
+#: ../src/Hyena/Hyena/Hyena.Query/EnumQueryValue.cs:44
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:42
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:46
+#| msgid "Disc Count"
+msgid "is not"
+msgstr "nem"
+
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:43
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:47
+#| msgid "artist"
+msgid "at most"
+msgstr "legfeljebb"
+
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:44
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:46
+#| msgid "Smart Playlist"
+msgid "at least"
+msgstr "legalább"
+
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:45
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:45
+msgid "less than"
+msgstr "kevesebb, mint"
+
+#. The SQL operators in these Operators are reversed from normal on purpose
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:46
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:44
+msgid "more than"
+msgstr "több, mint"
+
+#: ../src/Hyena/Hyena/Hyena.Query/NullQueryValue.cs:41
+msgid "empty"
+msgstr "üres"
+
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:90
+#, csharp-format
+#| msgid "{0} day"
+#| msgid_plural "{0} days"
+msgid "{0} ago"
+msgstr "{0} ideje"
+
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:43
+#| msgid "Container"
+msgid "contains"
+msgstr "tartalmazza"
+
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:44
+msgid "doesn't contain"
+msgstr "nem tartalmazza"
+
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:47
+#| msgid "stars"
+msgid "starts with"
+msgstr "ezzel kezdődik"
+
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:48
+msgid "ends with"
+msgstr "ezzel végződik"
 
 #: ../src/Libraries/Lastfm.Gui/Lastfm.Gui/AccountLoginDialog.cs:76
 msgid "Last.fm Account Login"
@@ -6795,8 +6984,7 @@ msgid "The API key used by this application is invalid."
 msgstr "Az alkalmazás által használt API kulcs érvénytelen."
 
 #: ../src/Libraries/Lastfm/Lastfm/RadioConnection.cs:289
-msgid ""
-"The streaming system is offline for maintenance, please try again later."
+msgid "The streaming system is offline for maintenance, please try again later."
 msgstr ""
 "A műsorszórási rendszer karbantartás miatt nem érhető el, próbálja újra "
 "később."
@@ -6854,3 +7042,4 @@ msgstr "Kapcsolódva a last.fm-hez."
 #: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:100
 msgid "Unknown Podcast"
 msgstr "Ismeretlen podcast"
+
