@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-09-01 21:37+0000\n"
-"PO-Revision-Date: 2010-09-16 22:07+0200\n"
+"POT-Creation-Date: 2010-09-28 12:41+0000\n"
+"PO-Revision-Date: 2010-09-28 16:22+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -422,6 +422,7 @@ msgstr ""
 
 #. ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.addin.xml
 #: ../data/addin-xml-strings.cs:193
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:188
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/PodcastGroupSource.cs:38
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:107
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:203
@@ -773,8 +774,8 @@ msgid "Could not create filesrc element"
 msgstr "Nelze vytvořit prvek filesrc"
 
 #: ../libbanshee/banshee-bpmdetector.c:214
-msgid "Could not create decodebin plugin"
-msgstr "Nelze vytvořit zásuvný modul decodebin"
+msgid "Could not create decodebin2 plugin"
+msgstr "Nelze vytvořit zásuvný modul decodebin2"
 
 #: ../libbanshee/banshee-bpmdetector.c:220
 msgid "Could not create audioconvert plugin"
@@ -814,8 +815,8 @@ msgid "Could not create source element"
 msgstr "Nelze vytvořit zdrojový prvek"
 
 #: ../libbanshee/banshee-transcoder.c:246
-msgid "Could not create 'decodebin' plugin"
-msgstr "Nelze vytvořit zásuvný modul „decodebin“"
+msgid "Could not create 'decodebin2' plugin"
+msgstr "Nelze vytvořit zásuvný modul „decodebin2“"
 
 #: ../libbanshee/banshee-transcoder.c:252
 msgid "Could not create sink element"
@@ -1113,7 +1114,7 @@ msgstr "Počet stop"
 
 #: ../src/Clients/Booter/Booter/Entry.cs:192
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:149
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:113
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:114
 msgid "Disc Number"
 msgstr "Číslo disku"
 
@@ -1121,7 +1122,7 @@ msgstr "Číslo disku"
 #: ../src/Clients/Nereid/Nereid/ViewContainer.cs:165
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:113
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:177
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:77
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:78
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:132
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:77
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:92
@@ -1320,72 +1321,72 @@ msgstr "Neznámé album"
 msgid "Unknown Title"
 msgstr "Neznámý název"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:186
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:191
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:91
 msgid "Various Artists"
 msgstr "Různí umělci"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:342
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:347
 msgid "Stream location not found"
 msgstr "Umístění proudu nebylo nalezeno"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:342
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:347
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:324
 msgid "File not found"
 msgstr "Soubor nenalezen"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:344
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:349
 msgid "Codec for playing this media type not available"
 msgstr "Kodek na přehrávání tohoto typu média není dostupný"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:346
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:351
 msgid "File protected by Digital Rights Management (DRM)"
 msgstr "Soubor chráněný pomocí DRM (Digital Rights Management)"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:348
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:353
 msgid "Unknown error"
 msgstr "Neznámá chyba"
 
 #. TODO turn this into a PrimarySource-owned delegate?
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:417
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:422
 msgid "_Restart Podcast"
 msgstr "_Restartovat podcast"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:418
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:423
 msgid "_Restart Audiobook"
 msgstr "_Přehrát mluvenou knihu od začátku"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:419
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:424
 msgid "_Restart Video"
 msgstr "_Přehrát video od začátku"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:420
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:425
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:86
 msgid "_Restart Song"
 msgstr "_Přehrát skladbu od začátku"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:421
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:426
 msgid "_Restart Item"
 msgstr "_Restartovat položku"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:437
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:442
 msgid "_Jump to Playing Podcast"
 msgstr "_Přejít na přehrávaný podcast"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:438
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:443
 msgid "_Jump to Playing Audiobook"
 msgstr "_Přejít na přehrávanou mluvenou knihu"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:439
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:444
 msgid "_Jump to Playing Video"
 msgstr "_Přejít na přehrávané video"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:440
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:445
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:82
 msgid "_Jump to Playing Song"
 msgstr "_Přejít na přehrávanou skladbu"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:441
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:446
 msgid "_Jump to Playing Item"
 msgstr "_Přejít na přehrávanou položku"
 
@@ -1644,7 +1645,7 @@ msgid "Album"
 msgstr "Album"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:108
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:72
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:73
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:127
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:76
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:97
@@ -1652,40 +1653,40 @@ msgid "Title"
 msgstr "Název"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:119
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:83
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:84
 msgid "Count"
 msgstr "Počet"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:125
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:89
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:90
 msgid "Number"
 msgstr "Číslo"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:131
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:95
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:96
 msgid "Count (unsorted)"
 msgstr "Počet (neseřazeno)"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:137
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:101
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:102
 msgid "Number (unsorted)"
 msgstr "Číslo (neseřazeno)"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:143
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:108
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:107
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:108
 msgid "Disc Count"
 msgstr "Počet disků"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:155
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:206
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:119
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:120
 msgid "Grouping"
 msgstr "Seskupení"
 
 #. Catalog.GetString ("Music Library")
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:59
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/MusicGroupSource.cs:38
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/MusicGroupSource.cs:39
 msgid "Music"
 msgstr "Hudba"
 
@@ -1927,11 +1928,11 @@ msgstr "Nelze se spojit s NetworkManagerem nebo Wicd"
 msgid "An available, working network connection will be assumed"
 msgstr "Bude předpokládáno dostupné a funkční síťové připojení"
 
-#: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:157
+#: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:159
 msgid "_Disable features requiring Internet access"
 msgstr "_Zakázat funkce, které vyžadují připojení k internetu"
 
-#: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:158
+#: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:160
 msgid ""
 "Some features require a broadband Internet connection such as Last.fm or "
 "cover art fetching"
@@ -2018,18 +2019,22 @@ msgid "items"
 msgstr "položky"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:64
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:60
 msgid "minutes"
 msgstr "minuty"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:65
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:61
 msgid "hours"
 msgstr "hodiny"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:66
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:63
 msgid "MB"
 msgstr "MB"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:67
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:64
 msgid "GB"
 msgstr "GB"
 
@@ -2677,12 +2682,12 @@ msgstr "Hie_rarchie složek"
 msgid "File _name"
 msgstr "Ná_zev souboru"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:689
+#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:693
 #, csharp-format
 msgid "Adding {0} of {1} to {2}"
 msgstr "Přidává se {0} z {1} do {2}"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:708
+#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:712
 #, csharp-format
 msgid "Deleting {0} of {1} From {2}"
 msgstr "Odstraňuje se {0} z {1} z {2}"
@@ -3763,6 +3768,7 @@ msgid "File Size:"
 msgstr "Velikost souboru:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:222
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:61
 msgid "bytes"
 msgstr "bajtů"
 
@@ -4101,6 +4107,10 @@ msgstr "Nový chytrý seznam skladeb"
 msgid "Playlist _Name:"
 msgstr "_Název seznamu skladeb:"
 
+#: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:108
+msgid "Predefined Smart Playlists"
+msgstr "Předdefinovaný chytrý seznam skladeb"
+
 #: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:119
 msgid "Open in editor"
 msgstr "Otevřít v editoru"
@@ -4159,7 +4169,7 @@ msgid "Idle"
 msgstr "Nečinný"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:149
-#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/UserJobDownloadManager.cs:68
+#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonDownloadManager.cs:58
 msgid "Contacting..."
 msgstr "Připojuje se…"
 
@@ -4179,30 +4189,30 @@ msgstr "Ztišeno"
 msgid "Full Volume"
 msgstr "Nejvyšší hlasitost"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:89
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:101
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:96
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
 msgid "Device"
 msgstr "Zařízení"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:90
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:103
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:97
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:104
 msgid "Generation"
 msgstr "Generace"
 
 #. FIXME
 #. AddDapProperty (Catalog.GetString ("Color"), "black");
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:95
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:104
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:102
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:105
 msgid "Capacity"
 msgstr "Kapacita"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:96
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:103
 msgid "Available"
 msgstr "Dostupných"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:97
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:105
-#: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:135
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:104
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:106
+#: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:141
 msgid "Serial number"
 msgstr "Sériové číslo"
 
@@ -4211,46 +4221,42 @@ msgstr "Sériové číslo"
 #. string [] capabilities = new string [ipod_device.ModelInfo.Capabilities.Count];
 #. ipod_device.ModelInfo.Capabilities.CopyTo (capabilities, 0);
 #. AddDapProperty (Catalog.GetString ("Capabilities"), String.Join (", ", capabilities));
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:104
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:112
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:111
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:113
 msgid "Supports cover art"
 msgstr "Podporuje přebaly alb"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:105
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:113
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:112
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:114
 msgid "Supports photos"
 msgstr "Podporuje fotografie"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:388
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:468
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:407
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:491
 msgid "Track duration is zero"
 msgstr "Délka stopy je nulová"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:490
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:651
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:510
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:694
 msgid "Syncing iPod"
 msgstr "Synchronizace s iPodem"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:491
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:652
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:511
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:695
 msgid "Preparing to synchronize..."
 msgstr "Připravuje se synchronizace…"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:494
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:514
 #, csharp-format
-#| msgid "Adding {0} of {1} to {2}"
 msgid "Adding track {0} of {1}"
 msgstr "Přidává se stopa {0} z {1}"
 
-#. TODO sync updated metadata to changed tracks
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:512
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:550
 #, csharp-format
-#| msgid "Importing {0} of {1}"
 msgid "Removing track {0} of {1}"
 msgstr "Odstraňuje se stopa {0} z {1}"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:568
-#| msgid "Saving new database..."
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:614
 msgid "Writing media database"
 msgstr "Zapisuje se databáze médií"
 
@@ -4260,7 +4266,7 @@ msgid "Sync {0}"
 msgstr "Synchronizovat {0}"
 
 #. Note to translators: {0}, {1} and {2} will be replaced with numbers.
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:256
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:260
 #, csharp-format
 msgid "{0} to add, {1} to remove, {2} to update"
 msgstr "{0} přidat, {1} odstranit, {2} aktualizovat"
@@ -4452,35 +4458,35 @@ msgstr "Ukládá se nová databáze…"
 msgid "Error rebuilding iPod database"
 msgstr "Chyba při přestavbě databáze iPodu"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:103
 msgid "Color"
 msgstr "Barva"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:106
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:107
 msgid "Produced on"
 msgstr "Vyrobeno v"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:107
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:108
 msgid "Firmware"
 msgstr "Firmware"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:111
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:112
 msgid "Capabilities"
 msgstr "Schopnosti"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:635
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:680
 msgid "Out of space on device"
 msgstr "Nedostatek místa na zařízení"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:635
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:680
 msgid "Please manually remove some songs"
 msgstr "Odstraňte prosím ručně některé skladby"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:673
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:724
 msgid "Updating..."
 msgstr "Aktualizuje se…"
 
-#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:677
+#: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:728
 msgid "Flushing to disk..."
 msgstr "Nahrává se na disk…"
 
@@ -4603,29 +4609,32 @@ msgstr ""
 "Při inicializaci podpory zařízení MTP se vyskytla chyba. Více informací "
 "naleznete na http://www.banshee-project.org/Guide/DAPs/MTP."
 
-#: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:136
+#: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:142
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/VersionInformationDialog.cs:66
 msgid "Version"
 msgstr "Verze"
 
-#: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:138
+#: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:144
 msgid "Battery level"
 msgstr "Stav nabití baterie"
 
 #. user_event.Progress = (double)current / total;
 #. Translators: {0} is the name of the MTP audio device (eg Gabe's Zen Player), {1} is the
 #. track currently being loaded, and {2} is the total # of tracks that will be loaded.
-#: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:154
+#: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:160
 #, csharp-format
 msgid "Loading {0} - {1} of {2}"
 msgstr "Načítá se {0} - {1} z {2}"
 
+#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonDownloadManager.cs:57
+msgid "Amazon MP3 Purchases"
+msgstr "Nákupy MP3 na Amazon"
+
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonMp3DownloaderService.cs:53
-#| msgid "Amazon MP3 Files"
 msgid "Amazon MP3s"
 msgstr "MP3 na Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonMp3DownloaderService.cs:54
-#| msgid "Search the Amazon MP3 Store"
 msgid "Songs purchased from the Amazon MP3 Store"
 msgstr "Skladby zakoupené v obchodě s MP3 Amazon"
 
@@ -4640,26 +4649,6 @@ msgstr "Soubory MP3 na Amazon"
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/ImportSource.cs:63
 msgid "Amazon MP3 Purchase"
 msgstr "Nákup MP3 na Amazon"
-
-#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/UserJobDownloadManager.cs:67
-msgid "Amazon MP3 Purchases"
-msgstr "Nákupy MP3 na Amazon"
-
-#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/UserJobDownloadManager.cs:176
-#, csharp-format
-msgid "{0} download at {1}/s"
-msgid_plural "{0} downloads at {1}/s"
-msgstr[0] "{0} stahování rychlostí {1}/s"
-msgstr[1] "{0} stahování rychlostí {1}/s"
-msgstr[2] "{0} stahování rychlostí {1}/s"
-
-#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/UserJobDownloadManager.cs:184
-#, csharp-format
-msgid "{0} download at {1}/s ({2} pending)"
-msgid_plural "{0} downloads at {1}/s ({2} pending)"
-msgstr[0] "{0} stahování rychlostí {1}/s ({2} čekající)"
-msgstr[1] "{0} stahování rychlostí {1}/s ({2} čekající)"
-msgstr[2] "{0} stahování rychlostí {1}/s ({2} čekající)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:42
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:39
@@ -4756,11 +4745,12 @@ msgstr "Název knihy:"
 msgid "Author"
 msgstr "Autor"
 
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:62
+#. Translators: This means the first letter of the author's name
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:63
 msgid "Author Initial"
 msgstr "Iniciály autora"
 
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:67
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:68
 msgid "Book Title"
 msgstr "Název knihy"
 
@@ -4772,7 +4762,7 @@ msgstr "Mluvené knihy atd."
 msgid "Search your audiobooks"
 msgstr "Hledat své mluvené knihy"
 
-#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:144
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:145
 #, csharp-format
 msgid "{0} book"
 msgid_plural "{0} books"
@@ -4967,22 +4957,6 @@ msgstr "Stahuje se přebal alba"
 #, csharp-format
 msgid "{0} - {1}"
 msgstr "{0} - {1}"
-
-#: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtService.cs:107
-msgid "_Cover Art"
-msgstr "_Přebal alba"
-
-#: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtService.cs:108
-msgid "Manage cover art"
-msgstr "Spravovat přebaly alb"
-
-#: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtService.cs:110
-msgid "_Download Cover Art"
-msgstr "_Stáhnout přebal alba"
-
-#: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtService.cs:111
-msgid "Download cover art for all tracks"
-msgstr "Stáhnout přebaly alb pro všechny stopy"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapContainerSource.cs:42
 msgid "Shared Music"
@@ -5866,6 +5840,7 @@ msgid "Description:"
 msgstr "Popis:"
 
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/StationEditor.cs:128
+#: ../src/Hyena/Hyena.Gui/Hyena.Widgets/RatingMenuItem.cs:50
 msgid "Rating:"
 msgstr "Hodnocení:"
 
@@ -6329,12 +6304,10 @@ msgid "Open Miro Guide"
 msgstr "Otevřít Miro Guide"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/View.cs:56
-#| msgid "Search for Podcasts"
 msgid "Search for podcasts"
 msgstr "Hledat podcasty"
 
 #: ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide/View.cs:57
-#| msgid "Search for Video Podcasts"
 msgid "Search for video podcasts"
 msgstr "Hledat video podcasty"
 
@@ -6802,6 +6775,187 @@ msgstr "Přehrát ve webovém prohlížeči…"
 msgid "No videos found"
 msgstr "Nenalezeno žádné video"
 
+#: ../src/Hyena/Hyena.Gui/Hyena.Data.Gui/Accessibility/ColumnHeaderCellTextAccessible.cs:36
+msgid "open context menu"
+msgstr "otevřít kontextovou nabídku"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Data.Gui/Accessibility/ColumnHeaderCellTextAccessible.cs:37
+msgid "click"
+msgstr "kliknout"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Data.Gui/Accessibility/ColumnHeaderCellTextAccessible.cs:37
+msgid "menu"
+msgstr "nabídka"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Data.Gui/ListView/ListView_Header.cs:612
+#, csharp-format
+msgid "Hide <i>{0}</i>"
+msgstr "Skrýt <i>{0}</i>"
+
+#. Translators: {0} is substituted with the application name
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/ExceptionDialog.cs:53
+#, csharp-format
+msgid "{0} Encountered a Fatal Error"
+msgstr "Aplikace {0} narazila na kritickou chybu"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/ExceptionDialog.cs:92
+msgid "Error Details"
+msgstr "Podrobnosti o chybě"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/ExceptionDialog.cs:136
+msgid "An unhandled exception was thrown: "
+msgstr "Nastala neošetřená výjimka: "
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/VersionInformationDialog.cs:58
+msgid "Assembly Version Information"
+msgstr "Shromážděné informace o verzích"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/VersionInformationDialog.cs:64
+msgid "Assembly Name"
+msgstr "Název sestavení"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/FileSizeQueryValueEntry.cs:62
+msgid "KB"
+msgstr "kB"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:86
+msgid "Condition:"
+msgstr "Podmínka:"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:104
+msgid "_Match"
+msgstr "_Odpovídá"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:111
+msgid "all"
+msgstr "vše"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:112
+msgid "any"
+msgstr "cokoliv"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryBox.cs:117
+msgid "of the following:"
+msgstr "z následujících:"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryLimitBox.cs:58
+msgid "_Limit to"
+msgstr "_Omezit na"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/QueryLimitBox.cs:85
+msgid "selected by"
+msgstr "vybráno podle"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/RelativeTimeSpanQueryValueEntry.cs:42
+msgid "ago"
+msgstr "před"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:59
+msgid "seconds"
+msgstr "sekund"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:62
+msgid "days"
+msgstr "dní"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:63
+msgid "weeks"
+msgstr "týdnů"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:64
+msgid "months"
+msgstr "měsíců"
+
+#: ../src/Hyena/Hyena.Gui/Hyena.Query.Gui/TimeSpanQueryValueEntry.cs:65
+msgid "years"
+msgstr "roků"
+
+#: ../src/Hyena/Hyena/Hyena.Downloader/DownloadManagerJob.cs:71
+#, csharp-format
+msgid "{0} download at {1}/s"
+msgid_plural "{0} downloads at {1}/s"
+msgstr[0] "{0} stahování rychlostí {1}/s"
+msgstr[1] "{0} stahování rychlostí {1}/s"
+msgstr[2] "{0} stahování rychlostí {1}/s"
+
+#: ../src/Hyena/Hyena/Hyena.Downloader/DownloadManagerJob.cs:79
+#, csharp-format
+msgid "{0} download at {1}/s ({2} pending)"
+msgid_plural "{0} downloads at {1}/s ({2} pending)"
+msgstr[0] "{0} stahování rychlostí {1}/s ({2} čekající)"
+msgstr[1] "{0} stahování rychlostí {1}/s ({2} čekající)"
+msgstr[2] "{0} stahování rychlostí {1}/s ({2} čekající)"
+
+#. public static readonly Operator Equal              = new Operator ("equals", "= {0}", "==", "=", ":");
+#. public static readonly Operator NotEqual           = new Operator ("notEqual", "!= {0}", true, "!=", "!:");
+#. public static readonly Operator LessThanEqual      = new Operator ("lessThanEquals", "<= {0}", "<=");
+#. public static readonly Operator GreaterThanEqual   = new Operator ("greaterThanEquals", ">= {0}", ">=");
+#: ../src/Hyena/Hyena/Hyena.Query/DateQueryValue.cs:47
+msgid "before"
+msgstr "před"
+
+#: ../src/Hyena/Hyena/Hyena.Query/DateQueryValue.cs:48
+msgid "after"
+msgstr "po"
+
+#: ../src/Hyena/Hyena/Hyena.Query/EnumQueryValue.cs:43
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:41
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:45
+msgid "is"
+msgstr "je"
+
+#: ../src/Hyena/Hyena/Hyena.Query/EnumQueryValue.cs:44
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:42
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:46
+msgid "is not"
+msgstr "není"
+
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:43
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:47
+msgid "at most"
+msgstr "nejvíce"
+
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:44
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:46
+msgid "at least"
+msgstr "nejméně"
+
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:45
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:45
+msgid "less than"
+msgstr "méně než"
+
+#. The SQL operators in these Operators are reversed from normal on purpose
+#: ../src/Hyena/Hyena/Hyena.Query/IntegerQueryValue.cs:46
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:44
+msgid "more than"
+msgstr "více než"
+
+#: ../src/Hyena/Hyena/Hyena.Query/NullQueryValue.cs:41
+msgid "empty"
+msgstr "prázdný"
+
+#: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:90
+#, csharp-format
+msgid "{0} ago"
+msgstr "před {0}"
+
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:43
+msgid "contains"
+msgstr "obsahuje"
+
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:44
+msgid "doesn't contain"
+msgstr "neobsahuje"
+
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:47
+msgid "starts with"
+msgstr "začíná na"
+
+#: ../src/Hyena/Hyena/Hyena.Query/StringQueryValue.cs:48
+msgid "ends with"
+msgstr "končí na"
+
 #: ../src/Libraries/Lastfm.Gui/Lastfm.Gui/AccountLoginDialog.cs:76
 msgid "Last.fm Account Login"
 msgstr "Přihlášení k účtu Last.fm"
@@ -6919,175 +7073,3 @@ msgstr "Připojeno k Last.fm."
 msgid "Unknown Podcast"
 msgstr "Neznámý podcast"
 
-#~ msgid "Sign out of Amazon"
-#~ msgstr "Zapsat se na Amazon"
-
-#~ msgid "MTP Support Ignoring Device"
-#~ msgstr "Podpora MTP zařízení ignoruje"
-
-#~ msgid ""
-#~ "Banshee's MTP audio player support can only handle one device at a time."
-#~ msgstr ""
-#~ "Podpora pro přehrávače MTP v Banshee umí pracovat pouze s jedním "
-#~ "zařízením zároveň."
-
-#~ msgid "Error Finding MTP Device Support"
-#~ msgstr "Chyba při pokusu nalézt podporu pro zařízení MTP"
-
-#~ msgid ""
-#~ "An MTP device was detected, but Banshee was unable to load support for it."
-#~ msgstr ""
-#~ "Zařízení MTP bylo rozpoznáno, ale Banshee není schopen pro něj načíst "
-#~ "podporu."
-
-#~ msgid ", the"
-#~ msgstr ", "
-
-#~ msgid "the "
-#~ msgstr "the "
-
-#~ msgid "Refresh All Podcasts"
-#~ msgstr "Obnovit všechny podcasty"
-
-#~ msgid "Subscribe to Podcast..."
-#~ msgstr "Přihlásit se k podcastu…"
-
-#~ msgid "Subscribe to Podcast"
-#~ msgstr "Přihlásit se k podcastu"
-
-#~ msgid "open context menu"
-#~ msgstr "otevřít kontextovou nabídku"
-
-#~ msgid "click"
-#~ msgstr "kliknout"
-
-#~ msgid "menu"
-#~ msgstr "nabídka"
-
-#~ msgid "Hide <i>{0}</i>"
-#~ msgstr "Skrýt <i>{0}</i>"
-
-#~ msgid "Banshee Encountered a Fatal Error"
-#~ msgstr "Banshee narazilo na kritickou chybu"
-
-#~ msgid "Error Details"
-#~ msgstr "Podrobnosti o chybě"
-
-#~ msgid "An unhandled exception was thrown: "
-#~ msgstr "Nastala neošetřená výjimka: "
-
-#~ msgid "Assembly Version Information"
-#~ msgstr "Shromážděné informace o verzích"
-
-#~ msgid "Assembly Name"
-#~ msgstr "Název sestavení"
-
-#~ msgid "KB"
-#~ msgstr "kB"
-
-#~ msgid "Condition:"
-#~ msgstr "Podmínka:"
-
-#~ msgid "_Match"
-#~ msgstr "_Odpovídá"
-
-#~ msgid "all"
-#~ msgstr "vše"
-
-#~ msgid "any"
-#~ msgstr "cokoliv"
-
-#~ msgid "of the following:"
-#~ msgstr "z následujících:"
-
-#~ msgid "_Limit to"
-#~ msgstr "_Omezit na"
-
-#~ msgid "selected by"
-#~ msgstr "vybráno podle"
-
-#~ msgid "ago"
-#~ msgstr "před"
-
-#~ msgid "seconds"
-#~ msgstr "sekund"
-
-#~ msgid "days"
-#~ msgstr "dní"
-
-#~ msgid "weeks"
-#~ msgstr "týdnů"
-
-#~ msgid "months"
-#~ msgstr "měsíců"
-
-#~ msgid "years"
-#~ msgstr "roků"
-
-#~ msgid "before"
-#~ msgstr "před"
-
-#~ msgid "after"
-#~ msgstr "po"
-
-#~ msgid "is"
-#~ msgstr "je"
-
-#~ msgid "is not"
-#~ msgstr "není"
-
-#~ msgid "at most"
-#~ msgstr "nejvíce"
-
-#~ msgid "at least"
-#~ msgstr "nejméně"
-
-#~ msgid "less than"
-#~ msgstr "méně než"
-
-#~ msgid "more than"
-#~ msgstr "více než"
-
-#~ msgid "empty"
-#~ msgstr "prázdný"
-
-#~ msgid "{0} ago"
-#~ msgstr "před {0}"
-
-#~ msgid "contains"
-#~ msgstr "obsahuje"
-
-#~ msgid "doesn't contain"
-#~ msgstr "neobsahuje"
-
-#~ msgid "starts with"
-#~ msgstr "začíná na"
-
-#~ msgid "ends with"
-#~ msgstr "končí na"
-
-#~ msgid "View Track Information"
-#~ msgstr "Zobrazit informace o stopě"
-
-#~ msgid "Tracks"
-#~ msgstr "Stopy"
-
-#~ msgid "Save your position in tracks so you can resume playback later."
-#~ msgstr ""
-#~ "Ukládání vaší pozice ve stopě, takže můžete v přehrávání později "
-#~ "pokračovat."
-
-#~ msgid "Could not create 'filesrc' plugin"
-#~ msgstr "Nelze vytvořit zásuvný modul „filesrc“"
-
-#~ msgid "Could not create 'filesink' plugin"
-#~ msgstr "Nelze vytvořit zásuvný modul „filesink“"
-
-#~ msgid "Authorized!"
-#~ msgstr "Ověřeno!"
-
-#~ msgid "Authorize..."
-#~ msgstr "Ověřuje se…"
-
-#~ msgid "Check if Banshee has been authorized"
-#~ msgstr "Zkontrolovat, zda byl přehrávač Banshee ověřen"
