@@ -168,6 +168,12 @@ namespace Banshee.Collection.Database
             Save (NotifySaved);
         }
 
+        public override void Update ()
+        {
+            PrimarySource.UpdateMetadata (this);
+            base.Update ();
+        }
+
         public override void UpdateLastPlayed ()
         {
             Refresh ();
@@ -177,8 +183,6 @@ namespace Banshee.Collection.Database
 
         public void Save (bool notify, params QueryField [] fields_changed)
         {
-            PrimarySource.UpdateMetadata (this);
-
             // If either the artist or album changed,
             if (ArtistId == 0 || AlbumId == 0 || artist_changed == true || album_changed == true) {
                 DatabaseArtistInfo artist = Artist;

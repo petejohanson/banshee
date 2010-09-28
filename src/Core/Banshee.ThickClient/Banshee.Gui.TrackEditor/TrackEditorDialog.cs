@@ -614,7 +614,7 @@ namespace Banshee.Gui.TrackEditor
         private void SaveTrack (EditorTrackInfo track)
         {
             TrackInfo.ExportableMerge (track, track.SourceTrack);
-            track.SourceTrack.Save ();
+            track.SourceTrack.Update ();
 
             if (track.SourceTrack.TrackEqual (ServiceManager.PlayerEngine.CurrentTrack)) {
                 TrackInfo.ExportableMerge (track, ServiceManager.PlayerEngine.CurrentTrack);
