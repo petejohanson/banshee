@@ -68,7 +68,7 @@ namespace Banshee.Dap.AppleDevice
                 throw new InvalidDeviceException ();
             }
 
-            if (!Volume.IsMounted) {
+            if (!Volume.IsMounted && MediaCapabilities != null) {
                 Hyena.Log.Information ("Found potential unmounted iDevice, trying to mount it now");
                 Volume.Mount ();
             }
