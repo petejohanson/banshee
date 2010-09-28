@@ -56,8 +56,7 @@ namespace Banshee.Hardware.Gio
             if (rawBlock == null) {
                 return null;
             } else {
-                return (BlockDevice) CdromDevice.Resolve (device)
-                    ?? (BlockDevice) DiskDevice.Resolve (device);
+                return (BlockDevice) CdromDevice.Resolve (device);
             }
         }
 
