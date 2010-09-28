@@ -62,12 +62,10 @@ namespace Banshee.IO.Gio
         private void Delete (string directory, GLib.File dir, bool recursive)
         {
             if (!dir.Exists) {
-                Console.WriteLine ("{0} doesn't exist", directory);
                 return;
             }
 
             if (dir.QueryFileType (FileQueryInfoFlags.NofollowSymlinks, null) != FileType.Directory) {
-                Console.WriteLine ("{0} isn't directory", directory);
                 return;
             }
 
