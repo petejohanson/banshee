@@ -63,6 +63,7 @@ namespace Banshee.Collection
             protected override string ProcessItem (string item)
             {
                 try {
+                    if (manager.Debug) Log.InformationFormat ("ImportElement processing {0}", item);
                     manager.OnImportRequested (item);
                 } catch (Exception e) {
                     Hyena.Log.Exception (e);
@@ -72,6 +73,11 @@ namespace Banshee.Collection
         }
 
 #endregion
+
+        public bool Debug {
+            get { return scanner_element.Debug; }
+            set { scanner_element.Debug = value; }
+        }
 
         private static NumberFormatInfo number_format = new NumberFormatInfo ();
 

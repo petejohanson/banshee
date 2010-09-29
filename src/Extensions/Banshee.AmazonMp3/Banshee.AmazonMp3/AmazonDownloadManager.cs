@@ -63,7 +63,9 @@ namespace Banshee.AmazonMp3
             ServiceManager.Get<JobScheduler> ().Add (job);
 
             import_manager = new LibraryImportManager (true) {
-                KeepUserJobHidden = true
+                KeepUserJobHidden = true,
+                Debug = true,
+                Threaded = false
             };
             import_manager.ImportResult += OnImportManagerImportResult;
 
@@ -183,7 +185,11 @@ namespace Banshee.AmazonMp3
                             import_event.Reset ();
                         }
                         Log.InformationFormat ("Finished downloading \"{0}\" by {1}; adding to import queue", track.Title, track.Creator);
+                        try {
                         import_manager.Enqueue (amz_downloader.LocalPath);
+                        } catch (Exception e) {
+                            Log.Exception ("Trying to queue amz file", e);
+                        }
                         break;
                     default:
                         non_mp3_queue.Enqueue (amz_downloader);
