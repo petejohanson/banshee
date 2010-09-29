@@ -68,11 +68,16 @@ namespace Banshee.Dap.AppleDevice
                 throw new InvalidDeviceException ();
             }
 
-            if (!Volume.IsMounted && MediaCapabilities != null) {
+            if (!Volume.IsMounted && device.MediaCapabilities != null && device.MediaCapabilities.IsType ("ipod")) {
                 Hyena.Log.Information ("Found potential unmounted iDevice, trying to mount it now");
                 Volume.Mount ();
             }
 
+            if (!Volume.IsMounted) {
+                Hyena.Log.Information ("AppleDeviceSource is ignoring unmounted volume " + Volume.Name);
+                throw new InvalidOperationException ();
+            }
+            
             Device = new GPod.Device (Volume.MountPoint);
 
             if (GPod.ITDB.GetControlPath (Device) == null) {
