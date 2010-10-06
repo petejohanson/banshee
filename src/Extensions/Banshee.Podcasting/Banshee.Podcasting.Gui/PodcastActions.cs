@@ -64,8 +64,9 @@ namespace Banshee.Podcasting.Gui
         public PodcastActions (PodcastSource source) : base (ServiceManager.Get<InterfaceActionService> (), "Podcast")
         {
             this.podcast_source = source;
+            ImportantByDefault = false;
 
-            AddImportant (
+            Add (
                 new ActionEntry (
                     "PodcastUpdateAllAction", Stock.Refresh,
                      Catalog.GetString ("Refresh"), null,//"<control><shift>U",
