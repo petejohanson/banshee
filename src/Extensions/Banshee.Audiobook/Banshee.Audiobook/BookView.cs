@@ -174,8 +174,8 @@ namespace Banshee.Audiobook
 
             // Cover art
             cover = new BookCover (this) {
-                WidthRequest = 300,
-                HeightRequest = 300
+                WidthRequest = 256,
+                HeightRequest = 256
             };
 
             var editable_cover = CoverArtEditor.For (
