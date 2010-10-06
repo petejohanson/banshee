@@ -60,12 +60,13 @@ namespace Banshee.InternetRadio
             AfterInitialized ();
 
             InterfaceActionService uia_service = ServiceManager.Get<InterfaceActionService> ();
-            uia_service.GlobalActions.AddImportant (
+            uia_service.GlobalActions.Add (
                 new ActionEntry ("AddRadioStationAction", Stock.Add,
                     Catalog.GetString ("Add Station"), null,
                     Catalog.GetString ("Add a new Internet Radio station or playlist"),
                     OnAddStation)
             );
+            uia_service.GlobalActions["AddRadioStationAction"].IsImportant = false;
 
             ui_id = uia_service.UIManager.AddUiFromResource ("GlobalUI.xml");
 
