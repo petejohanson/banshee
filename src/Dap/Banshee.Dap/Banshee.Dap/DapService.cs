@@ -60,7 +60,7 @@ namespace Banshee.Dap
             // This group source gives us a seperator for DAPs in the source view.
             // We add it when we get our first dap source, and then remove it when
             //we lose the last one.
-            dap_group = new SourceManager.GroupSource ("Device", 400);
+            dap_group = new SourceManager.GroupSource (Catalog.GetString ("Devices"), 400);
         }
 
         public void Initialize ()

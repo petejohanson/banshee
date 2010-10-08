@@ -54,13 +54,14 @@ namespace Banshee.Sources.Gui
 
     public partial class SourceView : TreeView
     {
-        private SourceRowRenderer renderer;
+        private TreeViewColumn source_column;
+        private SourceRowRenderer source_renderer;
+        private CellRendererText header_renderer;
         private Theme theme;
         private Cairo.Context cr;
 
         private Stage<TreeIter> notify_stage = new Stage<TreeIter> (2000);
 
-        private TreeViewColumn focus_column;
         private TreeIter highlight_iter = TreeIter.Zero;
         private SourceModel store;
         private int current_timeout = -1;
@@ -71,6 +72,7 @@ namespace Banshee.Sources.Gui
 
         public SourceView ()
         {
+            FixedHeightMode = false;
             BuildColumns ();
 
             store = new SourceModel ();
@@ -80,11 +82,12 @@ namespace Banshee.Sources.Gui
             Model = store;
             EnableSearch = false;
 
+            ShowExpanders = false;
+            LevelIndentation = 6;
+
             ConfigureDragAndDrop ();
             store.Refresh ();
             ConnectEvents ();
-
-            RowSeparatorFunc = RowSeparatorHandler;
 
             ResetSelection ();
         }
@@ -99,13 +102,48 @@ namespace Banshee.Sources.Gui
             AppendColumn (col);
             ExpanderColumn = col;
 
-            focus_column = new TreeViewColumn ();
-            renderer = new SourceRowRenderer ();
-            renderer.RowHeight = RowHeight.Get ();
-            renderer.Padding = RowPadding.Get ();
-            focus_column.PackStart (renderer, true);
-            focus_column.SetCellDataFunc (renderer, new CellLayoutDataFunc (SourceRowRenderer.CellDataHandler));
-            AppendColumn (focus_column);
+            source_column = new TreeViewColumn ();
+            source_column.Sizing = TreeViewColumnSizing.Autosize;
+
+            uint xpad = 2;
+
+            // Special renderer for header rows; hidden for normal source rows
+            header_renderer = new CellRendererText () {
+                Xpad = xpad,
+                Ypad = 4,
+                Ellipsize = Pango.EllipsizeMode.End,
+                Weight = (int)Pango.Weight.Bold,
+                Variant = Pango.Variant.SmallCaps
+            };
+
+            // Renderer for source rows; hidden for header rows
+            source_renderer = new SourceRowRenderer ();
+            source_renderer.Xpad = xpad;
+
+            source_column.PackStart (header_renderer, true);
+            source_column.SetCellDataFunc (header_renderer, new Gtk.CellLayoutDataFunc ((layout, cell, model, iter) => {
+                var type = (SourceModel.EntryType) model.GetValue (iter, (int)SourceModel.Columns.Type);
+                header_renderer.Visible = type == SourceModel.EntryType.Group;
+                source_renderer.Visible = type == SourceModel.EntryType.Source;
+                if (type == SourceModel.EntryType.Group) {
+                    var source = model.GetValue (iter, (int)SourceModel.Columns.Source) as Source;
+                    header_renderer.Visible = true;
+                    header_renderer.Text = source.Name;
+                } else {
+                    header_renderer.Visible = false;
+                }
+            }));
+
+            int width, height;
+            Gtk.Icon.SizeLookup (IconSize.Menu, out width, out height);
+            source_renderer.RowHeight = RowHeight.Get ();
+            source_renderer.RowHeight = height;
+
+            source_renderer.Ypad = (uint)RowPadding.Get ();
+            source_renderer.Ypad = 2;
+            source_column.PackStart (source_renderer, true);
+            source_column.SetCellDataFunc (source_renderer, new CellLayoutDataFunc (SourceRowRenderer.CellDataHandler));
+            AppendColumn (source_column);
 
             HeadersVisible = false;
         }
@@ -143,7 +181,7 @@ namespace Banshee.Sources.Gui
                 }
 
                 using (var path = store.GetPath (actor.Target) ) {
-                    Gdk.Rectangle rect = GetBackgroundArea (path, focus_column);
+                    Gdk.Rectangle rect = GetBackgroundArea (path, source_column);
                     QueueDrawArea (rect.X, rect.Y, rect.Width, rect.Height);
                 }
                 return true;
@@ -162,6 +200,9 @@ namespace Banshee.Sources.Gui
         {
             base.OnStyleSet (old_style);
             theme = Hyena.Gui.Theming.ThemeEngine.CreateTheme (this);
+
+            var light_text = Hyena.Gui.Theming.GtkTheme.GetCairoTextMidColor (this);
+            header_renderer.Foreground = CairoExtensions.ColorGetHex (light_text, false);
         }
 
         protected override bool OnButtonPressEvent (Gdk.EventButton press)
@@ -180,19 +221,23 @@ namespace Banshee.Sources.Gui
 
             Source source = store.GetSource (path);
 
-            // From F-Spot's SaneTreeView class
-            int expander_size = (int)StyleGetProperty ("expander-size");
-            int horizontal_separator = (int)StyleGetProperty ("horizontal-separator");
-            bool on_expander = press.X <= horizontal_separator * 2 + path.Depth * expander_size;
+            if (source == null || source is SourceManager.GroupSource)
+                return false;
 
-            if (on_expander) {
-                bool ret = base.OnButtonPressEvent (press);
+            // From F-Spot's SaneTreeView class
+            if (source_renderer.InExpander ((int)press.X)) {
+                if (!source.Expanded) {
+                    ExpandRow (path, false);
+                } else {
+                    CollapseRow (path);
+                }
+
                 // If the active source is a child of this source, and we are about to collapse it, switch
                 // the active source to the parent.
                 if (source == ServiceManager.SourceManager.ActiveSource.Parent && GetRowExpanded (path)) {
                     ServiceManager.SourceManager.SetActiveSource (source);
                 }
-                return ret;
+                return true;
             }
 
             // For Sources that can't be activated, when they're clicked just
@@ -252,8 +297,10 @@ namespace Banshee.Sources.Gui
                 // errors about corrupting the TreeView's internal state.
                 foreach (Source dsource in ServiceManager.SourceManager.Sources) {
                     TreeIter iter = store.FindSource (dsource);
-                    if (!TreeIter.Zero.Equals (iter) && (int)store.GetValue (iter, 1) != dsource.Order) {
-                        store.SetValue (iter, 1, dsource.Order);
+                    if (!TreeIter.Zero.Equals (iter) &&
+                        (int)store.GetValue (iter, (int)SourceModel.Columns.Order) != dsource.Order)
+                    {
+                        store.SetValue (iter, (int)SourceModel.Columns.Order, dsource.Order);
                     }
                 }
                 QueueDraw ();
@@ -307,7 +354,7 @@ namespace Banshee.Sources.Gui
                 return false;
             }
 
-            Source new_source = store.GetValue (iter, 0) as Source;
+            Source new_source = store.GetValue (iter, (int)SourceModel.Columns.Source) as Source;
             if (ServiceManager.SourceManager.ActiveSource == new_source) {
                 return false;
             }
@@ -317,11 +364,6 @@ namespace Banshee.Sources.Gui
             QueueDraw ();
 
             return false;
-        }
-
-        private bool RowSeparatorHandler (TreeModel model, TreeIter iter)
-        {
-            return (bool)store.GetValue (iter, 2);
         }
 
 #endregion
@@ -396,7 +438,7 @@ namespace Banshee.Sources.Gui
                 }
 
                 if (store.IterNChildren (iter) > 0) {
-                    ExpanderColumn = Columns[1];
+                    ExpanderColumn = source_column;
                     return true;
                 }
             }
@@ -413,7 +455,7 @@ namespace Banshee.Sources.Gui
                 return;
             }
 
-            Source source = store.GetValue (iter, 0) as Source;
+            Source source = store.GetValue (iter, (int)SourceModel.Columns.Source) as Source;
             source.Rename (text);
         }
 
@@ -424,11 +466,11 @@ namespace Banshee.Sources.Gui
                 return;
             }
 
-            renderer.Editable = true;
+            source_renderer.Editable = true;
             using (var path = store.GetPath (iter)) {
-                SetCursor (path, focus_column, true);
+                SetCursor (path, source_column, true);
             }
-            renderer.Editable = false;
+            source_renderer.Editable = false;
         }
 
         private void ResetSelection ()
@@ -462,7 +504,7 @@ namespace Banshee.Sources.Gui
                     return null;
                 }
 
-                return store.GetValue (highlight_iter, 0) as Source;
+                return store.GetValue (highlight_iter, (int)SourceModel.Columns.Source) as Source;
             }
         }
 

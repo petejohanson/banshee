@@ -72,6 +72,7 @@ namespace Banshee.InternetRadio
 
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
+            Properties.Set<bool> ("SourceView.HideCount", true);
             Properties.Set<System.Reflection.Assembly> ("ActiveSourceUIResource.Assembly", typeof(InternetRadioSource).Assembly);
 
             Properties.SetString ("GtkActionPath", "/InternetRadioContextMenu");

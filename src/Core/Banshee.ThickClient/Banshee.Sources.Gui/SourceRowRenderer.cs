@@ -45,12 +45,17 @@ namespace Banshee.Sources.Gui
         public static void CellDataHandler (CellLayout layout, CellRenderer cell, TreeModel model, TreeIter iter)
         {
             SourceRowRenderer renderer = cell as SourceRowRenderer;
-            Source source = model.GetValue (iter, 0) as Source;
-
             if (renderer == null) {
                 return;
             }
 
+            var type = (SourceModel.EntryType) model.GetValue (iter, (int)SourceModel.Columns.Type);
+            if (type != SourceModel.EntryType.Source) {
+                renderer.Visible = false;
+                return;
+            }
+
+            Source source = model.GetValue (iter, 0) as Source;
             renderer.Source = source;
             renderer.Iter = iter;
 
@@ -58,6 +63,7 @@ namespace Banshee.Sources.Gui
                 return;
             }
 
+            renderer.Visible = true;
             renderer.Text = source.Name;
             renderer.Sensitive = source.CanActivate;
         }
@@ -80,12 +86,6 @@ namespace Banshee.Sources.Gui
         public TreeIter Iter {
             get { return iter; }
             set { iter = value; }
-        }
-
-        private int padding;
-        public int Padding {
-            get { return padding; }
-            set { padding = value; }
         }
 
         private int row_height = 22;
@@ -114,6 +114,12 @@ namespace Banshee.Sources.Gui
             }
         }
 
+        private int Depth {
+            get {
+                return Source.Parent != null ? 1 : 0;
+            }
+        }
+
         public override void GetSize (Widget widget, ref Gdk.Rectangle cell_area,
             out int x_offset, out int y_offset, out int width, out int height)
         {
@@ -130,13 +136,19 @@ namespace Banshee.Sources.Gui
                 width = 0;
             }
 
-            height = (int)Math.Max (RowHeight, text_h) + Padding;
+            height = (int)Math.Max (RowHeight, text_h);
+        }
+
+        private int expander_right_x;
+        public bool InExpander (int x)
+        {
+            return x < expander_right_x;
         }
 
         protected override void Render (Gdk.Drawable drawable, Widget widget, Gdk.Rectangle background_area,
             Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, CellRendererState flags)
         {
-            if (source == null) {
+            if (source == null || source is SourceManager.GroupSource) {
                 return;
             }
 
@@ -150,8 +162,34 @@ namespace Banshee.Sources.Gui
             int count_layout_width = 0, count_layout_height = 0;
             int max_title_layout_width;
 
-            bool hide_counts = source.EnabledCount <= 0;
+            int img_padding = 6;
+            int expander_icon_spacing = 3;
+            int x = cell_area.X;
+            bool np_etc = (source.Order + Depth * 100) < 40;
+            if (!np_etc) {
+                x += Depth * img_padding + (int)Xpad;
+            } else {
+                // Don't indent NowPlaying and Play Queue as much
+                x += Math.Max (0, (int)Xpad - 2);
+            }
 
+            Gdk.GC main_gc = widget.Style.TextGC (state);
+
+            // Draw the expander if the source has children
+            double exp_h = (cell_area.Height - 2.0*Ypad) / 3.2;
+            double exp_w = exp_h * 1.6;
+            if (view != null && view.Cr != null && source.Children.Count > 0) {
+                var r = new Gdk.Rectangle (x, cell_area.Y + (int)((cell_area.Height - exp_h) / 2.0), (int)exp_w, (int)exp_h);
+                view.Theme.DrawArrow (view.Cr, r, source.Expanded ? Math.PI/2.0 : 0.0);
+            }
+
+            if (!np_etc) {
+                x += (int) exp_w;
+                x += 2; // a little spacing after the expander
+                expander_right_x = x;
+            }
+
+            // Draw icon
             Pixbuf icon = SourceIconResolver.ResolveIcon (source, RowHeight);
 
             bool dispose_icon = false;
@@ -170,6 +208,21 @@ namespace Banshee.Sources.Gui
                 icon_source.Dispose ();
             }
 
+            if (icon != null) {
+                x += expander_icon_spacing;
+                drawable.DrawPixbuf (main_gc, icon, 0, 0,
+                    x, Middle (cell_area, icon.Height),
+                    icon.Width, icon.Height, RgbDither.None, 0, 0);
+
+                x += icon.Width;
+
+                if (dispose_icon) {
+                    icon.Dispose ();
+                }
+            }
+
+            // Setup font info for the title/count, and see if we should show the count
+            bool hide_count = source.EnabledCount <= 0 || source.Properties.Get<bool> ("SourceView.HideCount");
             FontDescription fd = widget.PangoContext.FontDescription.Copy ();
             fd.Weight = (ISource)ServiceManager.PlaybackController.NextSource == (ISource)source
                 ? Pango.Weight.Bold
@@ -177,67 +230,54 @@ namespace Banshee.Sources.Gui
 
             if (view != null && source == view.NewPlaylistSource) {
                 fd.Style = Pango.Style.Italic;
-                hide_counts = true;
+                hide_count = true;
             }
 
             Pango.Layout title_layout = new Pango.Layout (widget.PangoContext);
             Pango.Layout count_layout = null;
 
-            if (!hide_counts) {
+            // If we have a count to draw, setup its fonts and see how wide it is to see if we have room
+            if (!hide_count) {
                 count_layout = new Pango.Layout (widget.PangoContext);
                 count_layout.FontDescription = fd;
                 count_layout.SetMarkup (String.Format ("<span size=\"small\">{0}</span>", source.EnabledCount));
                 count_layout.GetPixelSize (out count_layout_width, out count_layout_height);
             }
 
+            // Hide the count if the title has no space
             max_title_layout_width = cell_area.Width - (icon == null ? 0 : icon.Width) - count_layout_width - 10;
-
-            if (!hide_counts && max_title_layout_width < 0) {
-                hide_counts = true;
+            if (!hide_count && max_title_layout_width < 0) {
+                hide_count = true;
             }
 
+            // Draw the source Name
             title_layout.FontDescription = fd;
             title_layout.Width = (int)(max_title_layout_width * Pango.Scale.PangoScale);
             title_layout.Ellipsize = EllipsizeMode.End;
             title_layout.SetText (source.Name);
             title_layout.GetPixelSize (out title_layout_width, out title_layout_height);
 
-            Gdk.GC main_gc = widget.Style.TextGC (state);
-
-            drawable.DrawLayout (main_gc,
-                cell_area.X + (icon == null ? 0 : icon.Width) + 6,
-                Middle (cell_area, title_layout_height),
-                title_layout);
+            x += img_padding;
+            drawable.DrawLayout (main_gc, x, Middle (cell_area, title_layout_height), title_layout);
 
             title_layout.Dispose ();
 
-            if (icon != null) {
-                drawable.DrawPixbuf (main_gc, icon, 0, 0,
-                    cell_area.X, Middle (cell_area, icon.Height),
-                    icon.Width, icon.Height, RgbDither.None, 0, 0);
+            // Draw the count
+            if (!hide_count) {
+                if (view != null && view.Cr != null) {
+                    view.Cr.Color = state == StateType.Normal || (view != null && state == StateType.Prelight)
+                        ? view.Theme.TextMidColor
+                        : view.Theme.Colors.GetWidgetColor (GtkColorClass.Text, state);
 
-                if (dispose_icon) {
-                    icon.Dispose ();
+                    view.Cr.MoveTo (
+                        cell_area.X + cell_area.Width - count_layout_width - 2,
+                        cell_area.Y + 0.5 + (double)(cell_area.Height - count_layout_height) / 2.0);
+                    PangoCairoHelper.ShowLayout (view.Cr, count_layout);
                 }
+
+                count_layout.Dispose ();
             }
 
-            if (hide_counts) {
-                fd.Dispose ();
-                return;
-            }
-
-            if (view != null && view.Cr != null) {
-                view.Cr.Color = state == StateType.Normal || (view != null && state == StateType.Prelight)
-                    ? view.Theme.TextMidColor
-                    : view.Theme.Colors.GetWidgetColor (GtkColorClass.Text, state);
-
-                view.Cr.MoveTo (
-                    cell_area.X + cell_area.Width - count_layout_width - 2,
-                    cell_area.Y + 0.5 + (double)(cell_area.Height - count_layout_height) / 2.0);
-                PangoCairoHelper.ShowLayout (view.Cr, count_layout);
-            }
-
-            count_layout.Dispose ();
             fd.Dispose ();
         }
 
