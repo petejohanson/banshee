@@ -123,7 +123,7 @@ namespace Banshee.Podcasting.Gui
                 ),
                 new ActionEntry (
                     "PodcastItemMarkOldAction", null,
-                     Catalog.GetString ("Mark as Old"), "y", String.Empty,
+                     Catalog.GetString ("Archive"), "y", String.Empty,
                      OnPodcastItemMarkOld
                 ),
                 new ActionEntry (
