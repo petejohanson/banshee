@@ -45,7 +45,7 @@ namespace Banshee.Gui.Widgets
         private SeekSlider seek_slider;
         private StreamPositionLabel stream_position_label;
         private Box box;
-        private GrabHandle grabber;
+        private Hyena.Widgets.GrabHandle grabber;
 
         public ConnectedSeekSlider () : this (SeekSliderLayout.Vertical)
         {
@@ -118,12 +118,8 @@ namespace Banshee.Gui.Widgets
 
             hbox.PackStart (box, true, true, 0);
 
-            grabber = new GrabHandle (5, 28);
-            grabber.MotionNotifyEvent += (o, a) => {
-                var x = a.Event.X;
-                var w = Math.Min (1024, Math.Max (125, seek_slider.WidthRequest + x));
-                seek_slider.WidthRequest = (int)w;
-            };
+            grabber = new Hyena.Widgets.GrabHandle ();
+            grabber.ControlWidthOf (seek_slider, 125, 1024, true);
 
             hbox.PackStart (grabber, true, true, 0);
             hbox.ShowAll ();
@@ -139,52 +135,6 @@ namespace Banshee.Gui.Widgets
                 // grabber is 5 + 2 spacing, do reduce right padding to 3
                 RightPadding = value ? (uint)3 : (uint)10;
             }
-        }
-
-        private class GrabHandle : EventBox
-        {
-            Gtk.DrawingArea da;
-
-            public GrabHandle (int w, int h)
-            {
-                da = new DrawingArea ();
-                da.SetSizeRequest (w, h);
-                Orientation = Gtk.Orientation.Vertical;
-
-                Child = da;
-                ShowAll ();
-
-                ButtonPressEvent += (o, a) => Dragging = true;
-                ButtonReleaseEvent += (o, a) => Dragging = false;
-                EnterNotifyEvent += (o, a) => Inside = true;
-                LeaveNotifyEvent += (o, a) => Inside = false;
-
-                da.ExposeEvent += (o, a) => {
-                    if (da.IsDrawable) {
-                        Gtk.Style.PaintHandle (da.Style, da.GdkWindow, da.State, ShadowType.In,
-                            a.Event.Area, this, "entry", 0, 0, da.Allocation.Width, da.Allocation.Height, Orientation);
-                    }
-                };
-            }
-
-            public Gtk.Orientation Orientation { get; set; }
-
-            private bool inside, dragging;
-            private bool Inside {
-                set {
-                    inside = value;
-                    GdkWindow.Cursor = dragging || inside ? resize_cursor : null;
-                }
-            }
-
-            private bool Dragging {
-                set {
-                    dragging = value;
-                    GdkWindow.Cursor = dragging || inside ? resize_cursor : null;
-                }
-            }
-
-            private static Gdk.Cursor resize_cursor = new Gdk.Cursor (Gdk.CursorType.SbHDoubleArrow);
         }
 
         private bool transitioning = false;

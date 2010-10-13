@@ -166,10 +166,16 @@ namespace Nereid
             BuildViews ();
             BuildFooter ();
 
-            var box = new Alignment (1.0f, 0.5f, 0f, 0f);
-            box.Child = view_container.SearchEntry;
-            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/SearchEntry", box);
-            box.ShowAll ();
+            var align = new Alignment (1.0f, 0.5f, 0f, 0f);
+            var box = new HBox () { Spacing = 2 };
+            var grabber = new GrabHandle ();
+            grabber.ControlWidthOf (view_container.SearchEntry, 150, 350, false);
+            box.PackStart (grabber, false, false, 0);
+            box.PackStart (view_container.SearchEntry, false, false, 0);
+            align.Child = box;
+
+            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/SearchEntry", align);
+            align.ShowAll ();
 
             primary_vbox.Show ();
             Add (primary_vbox);
