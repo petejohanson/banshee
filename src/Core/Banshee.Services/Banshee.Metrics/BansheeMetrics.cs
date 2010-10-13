@@ -35,6 +35,7 @@ using Hyena.Data.Sqlite;
 
 using Banshee.Configuration;
 using Banshee.ServiceStack;
+using Banshee.Networking;
 using Banshee.Sources;
 using Banshee.PlaybackController;
 
@@ -50,8 +51,10 @@ namespace Banshee.Metrics
 
         public static void Start ()
         {
-            Log.Information ("Starting collection of anonymous usage data");
-            if (banshee_metrics == null) {
+            // Only enable collection 20% of the time
+            var one_in_five = new Random ().NextDouble () < 0.2;
+            if (one_in_five && banshee_metrics == null) {
+                Log.Information ("Starting collection of anonymous usage data");
                 try {
                     banshee_metrics = new BansheeMetrics ();
                 } catch (Exception e) {
@@ -63,8 +66,8 @@ namespace Banshee.Metrics
 
         public static void Stop ()
         {
-            Log.Information ("Stopping collection of anonymous usage data");
             if (banshee_metrics != null) {
+                Log.Information ("Stopping collection of anonymous usage data");
                 banshee_metrics.Dispose ();
                 banshee_metrics = null;
             }
@@ -113,28 +116,35 @@ namespace Banshee.Metrics
                     return false;
                 }
 
-                metrics.AddDefaults ();
-                AddMetrics ();
-
                 ThreadAssist.SpawnFromMain (delegate {
+                    metrics.AddDefaults ();
+                    AddMetrics ();
+
                     if (ApplicationContext.CommandLine.Contains ("debug-metrics")) {
                         Log.InformationFormat ("Anonymous usage data collected:\n{0}", metrics.ToJsonString ());
                         System.IO.File.WriteAllText ("usage-data.json", metrics.ToJsonString ());
                     }
 
+                    if (!ServiceManager.Get<Network> ().Connected) {
+                        return;
+                    }
+
                     // Don't post to server more than every 48 hours
                     var last_post_time = DatabaseConfigurationClient.Client.Get<DateTime> (last_post_key, DateTime.MinValue);
-                    var last_post_rel = (DateTime.Now - last_post_time).TotalHours;
-                    if (last_post_rel < 0 || last_post_rel > 48.0) {
+                    var last_post_rel = (DateTime.Now - last_post_time).TotalDays;
+                    if (last_post_rel < 0 || last_post_rel > 4.0) {
                         var poster = new HttpPoster ("http://metrics.banshee.fm/submit/", metrics);
                         bool posted = poster.Post ();
                         Log.InformationFormat ("Posted usage data? {0}", posted);
-                        if (posted) {
-                            metrics.Store.Clear ();
-                            DatabaseConfigurationClient.Client.Set<DateTime> (last_post_key, DateTime.Now);
-                        }
+
+                        // Clear the old metrics, even if we failed to post them; it might be a server-side
+                        // problem w/ the data we want to send (eg too big, out of space) and we don't want
+                        // to keep retrying to send the same data.
+                        metrics.Store.Clear ();
+                        DatabaseConfigurationClient.Client.Set<DateTime> (last_post_key, DateTime.Now);
                     }
                 });
+
                 return false;
             });
         }
