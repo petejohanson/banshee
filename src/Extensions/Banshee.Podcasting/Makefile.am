@@ -19,6 +19,9 @@ SOURCES =  \
 	Banshee.Podcasting.Gui/DownloadManager/DownloadManagerInterface.cs \
 	Banshee.Podcasting.Gui/DownloadManager/DownloadUserJob.cs \
 	Banshee.Podcasting.Gui/DownloadStatusFilterView.cs \
+	Banshee.Podcasting.Gui/Grid.cs \
+	Banshee.Podcasting.Gui/GridContent.cs \
+	Banshee.Podcasting.Gui/HeaderWidget.cs \
 	Banshee.Podcasting.Gui/Models/FilterableListModel.cs \
 	Banshee.Podcasting.Gui/Models/ListModel.cs \
 	Banshee.Podcasting.Gui/PodcastActions.cs \

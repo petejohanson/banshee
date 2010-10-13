@@ -59,6 +59,8 @@ namespace Banshee.Podcasting.Gui
     public class PodcastSource : Banshee.Library.LibrarySource
     {
         private PodcastFeedModel feed_model;
+        private PodcastUnheardFilterModel new_filter;
+        private DownloadStatusFilterModel downloaded_filter;
 
         public override string DefaultBaseDirectory {
             get {
@@ -90,6 +92,9 @@ namespace Banshee.Podcasting.Gui
         public PodcastFeedModel FeedModel {
             get { return feed_model; }
         }
+
+        public PodcastUnheardFilterModel NewFilter { get { return new_filter; } }
+        public DownloadStatusFilterModel DownloadedFilter { get { return downloaded_filter; } }
 
         public override string PreferencesPageId {
             get { return UniqueId; }
@@ -222,9 +227,14 @@ namespace Banshee.Podcasting.Gui
 
             Properties.SetString ("GtkActionPath", "/PodcastSourcePopup");
 
-            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<PodcastSourceContents> ());
+            //Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<PodcastSourceContents> ());
+            Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<GridContent> ());
             Properties.Set<bool> ("Nereid.SourceContentsPropagate", true);
             Properties.Set<bool> ("SourceView.HideCount", false);
+
+            var header_widget = new HeaderWidget (this);
+            header_widget.ShowAll ();
+            Properties.Set<Gtk.Widget> ("Nereid.SourceContents.HeaderWidget", header_widget);
 
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
                     <column-controller>
@@ -311,8 +321,8 @@ namespace Banshee.Podcasting.Gui
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
         {
             PodcastFeedModel feed_model;
-            yield return new PodcastUnheardFilterModel (src.DatabaseTrackModel);
-            yield return new DownloadStatusFilterModel (src.DatabaseTrackModel);
+            yield return new_filter = new PodcastUnheardFilterModel (src.DatabaseTrackModel);
+            yield return downloaded_filter = new DownloadStatusFilterModel (src.DatabaseTrackModel);
             yield return feed_model = new PodcastFeedModel (src, src.DatabaseTrackModel, ServiceManager.DbConnection, String.Format ("PodcastFeeds-{0}", src.UniqueId));
 
             if (src == this) {

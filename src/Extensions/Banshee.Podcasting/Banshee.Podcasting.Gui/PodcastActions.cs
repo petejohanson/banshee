@@ -85,6 +85,9 @@ namespace Banshee.Podcasting.Gui
                 new ActionEntry("PodcastFeedPopupAction", null,
                     String.Empty, null, null, OnFeedPopup),
 
+                new ActionEntry("EpisodePodcastMenu", null,
+                    Catalog.GetString ("Podcast"), null, null, null),
+
                 new ActionEntry (
                     "PodcastDeleteAction", Stock.Delete,
                      Catalog.GetString ("Unsubscribe and Delete"),

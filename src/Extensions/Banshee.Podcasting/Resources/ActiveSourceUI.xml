@@ -31,6 +31,14 @@
   <popup name="TrackContextMenu" action="TrackContextMenuAction">
     <placeholder name="BelowAddToPlaylist">
         <separator />
+        <menu action="EpisodePodcastMenu">
+            <menuitem name="PodcastUpdateFeed" action="PodcastUpdateFeedAction" />
+            <menuitem name="PodcastDownloadAll" action="PodcastDownloadAllAction"/>
+            <menuitem name="PodcastHomepage" action="PodcastHomepageAction" />
+            <menuitem name="PodcastDelete" action="PodcastDeleteAction" />
+            <separator />
+            <menuitem name="PodcastProperties" action="PodcastPropertiesAction" />
+        </menu>
         <menuitem name="PodcastItemLink" action="PodcastItemLinkAction" />
         <menuitem name="PodcastItemDownload" action="PodcastItemDownloadAction" />
         <menuitem name="PodcastItemDeleteFile" action="PodcastItemDeleteFileAction" />
