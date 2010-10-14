@@ -137,6 +137,7 @@ namespace Banshee.Sources.Gui
 
             store.SetValue (new_playlist_iter, 0, NewPlaylistSource);
             store.SetValue (new_playlist_iter, 1, 999);
+            store.SetValue (new_playlist_iter, 2, SourceModel.EntryType.Source);
             new_playlist_visible = true;
 
             UpdateView ();
