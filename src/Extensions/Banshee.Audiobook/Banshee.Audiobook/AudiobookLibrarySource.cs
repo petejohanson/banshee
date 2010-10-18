@@ -145,6 +145,10 @@ namespace Banshee.Audiobook
             return Catalog.GetPluralString ("{0} book", "{0} books", count);
         }
 
+        protected override string SectionName {
+            get { return Catalog.GetString ("Audiobooks Folder"); }
+        }
+
         private void OnPlaybackSourceChanged (object o, EventArgs args)
         {
             if (ServiceManager.PlaybackController.Source == this) {

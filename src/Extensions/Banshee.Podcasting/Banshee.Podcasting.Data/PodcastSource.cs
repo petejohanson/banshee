@@ -95,6 +95,10 @@ namespace Banshee.Podcasting.Gui
             get { return UniqueId; }
         }
 
+        protected override string SectionName {
+            get { return Catalog.GetString ("Podcasts Folder"); }
+        }
+
         class FeedMessage : SourceMessage
         {
             public Feed Feed { get; set; }

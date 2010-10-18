@@ -86,6 +86,10 @@ namespace Banshee.Library
             get { return default_smart_playlists; }
         }
 
+        protected override string SectionName {
+            get { return Catalog.GetString ("Videos Folder"); }
+        }
+
         private static SmartPlaylistDefinition [] default_smart_playlists = new SmartPlaylistDefinition [] {
             new SmartPlaylistDefinition (
                 Catalog.GetString ("Favorites"),
