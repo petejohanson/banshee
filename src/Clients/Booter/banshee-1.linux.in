@@ -46,7 +46,7 @@ if [ ! -z "$BANSHEE_CLIENT" ]; then
 fi
 
 # We are testing the SGen compacting GC
-export MONO_ENV_OPTIONS="--with-gc=sgen"
+export MONO_ENV_OPTIONS="--gc=sgen"
 
 if [ -n "$BANSHEE_DEBUG" -o -n "$BANSHEE_TRACE" -o -n "$BANSHEE_PROFILE" ]; then
     MONO_OPTIONS="$BANSHEE_DEBUG $BANSHEE_TRACE $BANSHEE_PROFILE"
