@@ -105,41 +105,9 @@ banshee_get_version_number ()
     return (guint)banshee_version;
 }
 
-typedef struct {
-    BansheeLogType type;
-    const gchar *component;
-    gchar *message;
-} BansheeLogHandlerData;
-
-static gboolean
-banshee_log_handler_proxy (gpointer user_data)
-{
-    BansheeLogHandlerData *data;
-
-    g_return_val_if_fail (user_data, FALSE);
-
-    data = user_data;
-    (banshee_log_handler) (data->type, data->component, data->message);
-    return FALSE;
-}
-
-static void
-banshee_log_handler_notify (gpointer user_data)
-{
-    BansheeLogHandlerData *data;
-
-    g_return_if_fail (user_data);
-
-    data = user_data;
-    g_free (data->message);
-    g_free (data);
-}
-
 static void
 banshee_log (BansheeLogType type, const gchar *component, const gchar *message)
 {
-    BansheeLogHandlerData *data;
-
     if (banshee_log_handler == NULL) {
         switch (type) {
             case BANSHEE_LOG_TYPE_WARNING: g_warning ("%s: %s", component, message); break;
@@ -148,12 +116,8 @@ banshee_log (BansheeLogType type, const gchar *component, const gchar *message)
         }
         return;
     }
-
-    data = g_new (BansheeLogHandlerData, 1);
-    data->type = type;
-    data->component = component;
-    data->message = g_strdup (message);
-    g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, banshee_log_handler_proxy, data, banshee_log_handler_notify);
+    
+    (banshee_log_handler) (type, component, message);
 }
 
 void
