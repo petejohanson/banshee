@@ -32,6 +32,7 @@ using System.Linq;
 using Mono.Unix;
 
 using Hyena;
+using Hyena.Gui.Canvas;
 using Hyena.Data.Gui;
 using System.Text;
 using System.Collections.Generic;
@@ -98,10 +99,10 @@ namespace Banshee.Fixup
             return -1;
         }
 
-        public bool ButtonEvent (int x, int y, bool pressed, Gdk.EventButton press)
+        public override bool ButtonEvent (Point cursor, bool pressed, uint button)
         {
-            if (press.Button == 1 && press.Type == Gdk.EventType.ButtonRelease) {
-                int sol = GetSolutionValueFor (x);
+            if (button == 1 && !pressed) {
+                int sol = GetSolutionValueFor ((int)cursor.X);
                 if (sol != -1) {
                     var problem = ((Problem)BoundObject);
                     problem.SolutionValue = problem.SolutionOptions.Skip (sol).First ();
@@ -113,13 +114,13 @@ namespace Banshee.Fixup
             return false;
         }
 
-        public bool MotionEvent (int x, int y, Gdk.EventMotion evnt)
+        public override bool CursorMotionEvent (Point cursor)
         {
             measure = true;
             return false;
         }
 
-        public bool PointerLeaveEvent ()
+        public override bool CursorLeaveEvent ()
         {
             solution_value_widths.Clear ();
             measure = false;

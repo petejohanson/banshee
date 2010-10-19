@@ -45,6 +45,10 @@ namespace Migo.Syndication
         {
         }
 
+        public MigoModelProvider (HyenaSqliteConnection connection, string table_name, bool check) : base (connection, table_name, check)
+        {
+        }
+
 #region Overrides
 
         public override T FetchSingle (long id)

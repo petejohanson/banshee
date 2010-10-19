@@ -31,22 +31,29 @@ using System.Collections.Generic;
 using Hyena;
 using Hyena.Data.Sqlite;
 
+using Migo.Syndication;
+
 using Banshee.ServiceStack;
 
 namespace Banshee.Fixup
 {
-    public class Problem : IEquatable<Problem>
+    public class Problem : MigoItem<Problem>, IEquatable<Problem>
     {
-        private static SqliteModelProvider<Problem> provider;
-        public static SqliteModelProvider<Problem> Provider {
+        private static MigoModelProvider<Problem> provider;
+        public static MigoModelProvider<Problem> Provider {
             get {
                 return provider ?? (provider =
-                    new SqliteModelProvider<Problem> (ServiceManager.DbConnection, "MetadataProblems", false));
+                    new MigoModelProvider<Problem> (ServiceManager.DbConnection, "MetadataProblems", false));
             }
         }
 
         [DatabaseColumn ("ProblemID", Constraints = DatabaseColumnConstraints.PrimaryKey)]
         public int Id { get; private set; }
+
+        public override long DbId {
+            get { return Id; }
+            protected set { Id = (int)value; }
+        }
 
         [DatabaseColumn ("ProblemType")]
         public string ProblemType { get; private set; }
