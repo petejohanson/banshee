@@ -52,7 +52,8 @@ namespace Ossifer.JavaScriptCore
         }
 
         public JSObject (JSContext context, JSClass jsClass)
-            : base (context, JSObjectMake (context.Raw, jsClass.Raw, IntPtr.Zero))
+            : base (context, JSObjectMake (context.Raw,
+                jsClass == null ? IntPtr.Zero : jsClass.Raw, IntPtr.Zero))
         {
         }
 
@@ -89,17 +90,48 @@ namespace Ossifer.JavaScriptCore
         public delegate IntPtr
         ConvertToTypeCallback (IntPtr ctx, IntPtr obj, JSType type, ref IntPtr exception);
 
-        [DllImport (JSContext.NATIVE_IMPORT)]
-        private static extern void JSObjectSetProperty (IntPtr ctx, IntPtr obj, JSString propertyName,
-            IntPtr value, JSPropertyAttribute attributes, ref IntPtr exception);
+#region Property API
 
-        public void SetProperty (JSContext context, string propertyName, JSValue value, JSPropertyAttribute attributes)
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern bool JSObjectHasProperty (IntPtr ctx, IntPtr obj, JSString propertyName);
+
+        public bool HasProperty (string propertyName)
+        {
+            var property = JSString.New (propertyName);
+            try {
+                return JSObjectHasProperty (Context.Raw, Raw, property);
+            } finally {
+                property.Release ();
+            }
+        }
+
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern IntPtr JSObjectGetProperty (IntPtr ctx, IntPtr obj, JSString propertyName, ref IntPtr exception);
+
+        public JSValue GetProperty (string propertyName)
         {
             var exception = IntPtr.Zero;
             var property = JSString.New (propertyName);
             try {
-                JSObjectSetProperty (context.Raw, Raw, property, value.Raw, attributes, ref exception);
-                JSException.Proxy (context, exception);
+                var result = JSObjectGetProperty (Context.Raw, Raw, property, ref exception);
+                JSException.Proxy (Context, exception);
+                return new JSValue (Context, result);
+            } finally {
+                property.Release ();
+            }
+        }
+
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern void JSObjectSetProperty (IntPtr ctx, IntPtr obj, JSString propertyName,
+            IntPtr value, JSPropertyAttribute attributes, ref IntPtr exception);
+
+        public void SetProperty (string propertyName, JSValue value, JSPropertyAttribute attributes)
+        {
+            var exception = IntPtr.Zero;
+            var property = JSString.New (propertyName);
+            try {
+                JSObjectSetProperty (Context.Raw, Raw, property, value.Raw, attributes, ref exception);
+                JSException.Proxy (Context, exception);
             } finally {
                 property.Release ();
             }
@@ -107,7 +139,32 @@ namespace Ossifer.JavaScriptCore
 
         public void SetProperty (string propertyName, JSValue value)
         {
-            SetProperty (Context, propertyName, value, JSPropertyAttribute.None);
+            SetProperty (propertyName, value, JSPropertyAttribute.None);
+        }
+
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern bool JSObjectDeleteProperty (IntPtr ctx, IntPtr obj, JSString propertyName, ref IntPtr exception);
+
+        public bool DeleteProperty (string propertyName)
+        {
+            var exception = IntPtr.Zero;
+            var property = JSString.New (propertyName);
+            try {
+                var result = JSObjectDeleteProperty (Context.Raw, Raw, property, ref exception);
+                JSException.Proxy (Context, exception);
+                return result;
+            } finally {
+                property.Release ();
+            }
+        }
+
+#endregion
+
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern bool JSObjectIsFunction (IntPtr ctx, IntPtr obj);
+
+        public bool IsFunction {
+            get { return JSObjectIsFunction (Context.Raw, Raw); }
         }
     }
 }

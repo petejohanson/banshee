@@ -56,7 +56,73 @@ namespace Ossifer.JavaScriptCore.Tests
         }
 
         [Test]
+        public void SetPropertyTest ()
+        {
+            var obj = new JSObject (context, null);
+            var prop = new JSValue (context, "happy days");
+
+            obj.SetProperty ("str", prop);
+            Assert.IsTrue (obj.HasProperty ("str"));
+            Assert.IsTrue (obj.GetProperty ("str").IsEqual (prop));
+            Assert.IsTrue (obj.GetProperty ("str").IsStrictEqual (prop));
+            Assert.AreEqual ("happy days", obj.GetProperty ("str").StringValue);
+
+            obj.SetProperty ("str", obj);
+            Assert.IsTrue (obj.GetProperty ("str").IsEqual (obj));
+            Assert.IsTrue (obj.GetProperty ("str").IsStrictEqual (obj));
+        }
+
+        [Test]
         public void DeletePropertyTest ()
+        {
+            var obj = new JSObject (context, null);
+            obj.SetProperty ("foo", new JSValue (context, "bar"));
+            Assert.IsTrue (obj.HasProperty ("foo"));
+            Assert.IsTrue (obj.DeleteProperty ("foo"));
+            Assert.IsFalse (obj.HasProperty ("foo"));
+            obj.SetProperty ("foo", new JSValue (context, 99));
+            Assert.IsTrue (obj.HasProperty ("foo"));
+            Assert.IsTrue (obj.DeleteProperty ("foo"));
+            Assert.IsFalse (obj.HasProperty ("foo"));
+        }
+
+        [Test]
+        public void DeleteDontDeletePropertyTest ()
+        {
+            var obj = new JSObject (context, null);
+            obj.SetProperty ("foo", new JSValue (context, "i am permanent"), JSPropertyAttribute.DontDelete);
+            Assert.IsTrue (obj.HasProperty ("foo"));
+            Assert.IsFalse (obj.DeleteProperty ("foo"));
+            Assert.IsTrue (obj.HasProperty ("foo"));
+        }
+
+        [Test]
+        public void ReadOnlyPropertyTest ()
+        {
+            var obj = new JSObject (context, null);
+            obj.SetProperty ("foo", new JSValue (context, "bar"), JSPropertyAttribute.ReadOnly);
+            Assert.AreEqual ("bar", obj.GetProperty ("foo").StringValue);
+            obj.SetProperty ("foo", new JSValue (context, "baz"));
+            Assert.AreEqual ("bar", obj.GetProperty ("foo").StringValue);
+            Assert.IsTrue (obj.DeleteProperty ("foo"));
+            Assert.IsFalse (obj.HasProperty ("foo"));
+        }
+
+        [Test]
+        public void ReadOnlyDontDeletePropertyTest ()
+        {
+            var obj = new JSObject (context, null);
+            obj.SetProperty ("foo", new JSValue (context, "bar"),
+                JSPropertyAttribute.ReadOnly | JSPropertyAttribute.DontDelete);
+            Assert.AreEqual ("bar", obj.GetProperty ("foo").StringValue);
+            obj.SetProperty ("foo", new JSValue (context, "baz"));
+            Assert.AreEqual ("bar", obj.GetProperty ("foo").StringValue);
+            Assert.IsFalse (obj.DeleteProperty ("foo"));
+            Assert.IsTrue (obj.HasProperty ("foo"));
+        }
+
+        [Test]
+        public void DeletePropertyTestScripted ()
         {
             context.GlobalObject.SetProperty ("a", new JSValue (context, "apple"));
             context.GlobalObject.SetProperty ("b", new JSValue (context, "bear"));
