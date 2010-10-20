@@ -51,7 +51,7 @@ namespace Banshee.WebBrowser
                 return;
             }
 
-            var path = System.IO.Path.Combine (Hyena.Paths.ApplicationData, "ossifer-browser-cookies");
+            var path = System.IO.Path.Combine (Hyena.Paths.ApplicationData ?? ".", "ossifer-browser-cookies");
             var path_raw = IntPtr.Zero;
             try {
                 cookie_jar_changed_callback = new CookieJarChangedCallback (HandleCookieJarChanged);
