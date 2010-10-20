@@ -15,7 +15,22 @@ SOURCES =  \
 	Banshee.WebBrowser/OssiferWebView.cs \
 	Banshee.WebSource/WebBrowserShell.cs \
 	Banshee.WebSource/WebSource.cs \
-	Banshee.WebSource/WebView.cs
+	Banshee.WebSource/WebView.cs \
+	Ossifer.JavaScriptCore/JSClass.cs \
+	Ossifer.JavaScriptCore/JSClassAttribute.cs \
+	Ossifer.JavaScriptCore/JSClassDefinition.cs \
+	Ossifer.JavaScriptCore/JSContext.cs \
+	Ossifer.JavaScriptCore/JSException.cs \
+	Ossifer.JavaScriptCore/JSObject.cs \
+	Ossifer.JavaScriptCore/JSPropertyAttribute.cs \
+	Ossifer.JavaScriptCore/JSPropertyNameAccumulator.cs \
+	Ossifer.JavaScriptCore/JSString.cs \
+	Ossifer.JavaScriptCore/JSType.cs \
+	Ossifer.JavaScriptCore/JSValue.cs \
+	Ossifer.JavaScriptCore/ManagedPropertyBagClass.cs \
+	Ossifer.JavaScriptCore/Tests/JSObjectTests.cs \
+	Ossifer.JavaScriptCore/Tests/JSStringTests.cs \
+	Ossifer.JavaScriptCore/Tests/JSValueTests.cs
 
 RESOURCES =  \
 	Resources/loading.html

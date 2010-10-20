@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;ENABLE_TESTS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>..\..\..\bin</OutputPath>
@@ -32,11 +32,9 @@
   <ItemGroup>
     <Reference Include="gtk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="gdk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="System" />
     <Reference Include="Mono.Posix">
@@ -45,12 +43,12 @@
     </Reference>
     <Reference Include="glib-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="atk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -97,6 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Banshee.WebBrowser\" />
+    <Folder Include="Ossifer.JavaScriptCore\" />
+    <Folder Include="Ossifer.JavaScriptCore\Tests\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.WebBrowser\OssiferWebView.cs" />
@@ -109,5 +109,20 @@
     <Compile Include="Banshee.WebSource\WebBrowserShell.cs" />
     <Compile Include="Banshee.WebSource\WebSource.cs" />
     <Compile Include="Banshee.WebSource\WebView.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSString.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSObject.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSValue.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSType.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSContext.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSClass.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSException.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSClassDefinition.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSClassAttribute.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSPropertyAttribute.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\ManagedPropertyBagClass.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\JSPropertyNameAccumulator.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\Tests\JSValueTests.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\Tests\JSStringTests.cs" />
+    <Compile Include="Ossifer.JavaScriptCore\Tests\JSObjectTests.cs" />
   </ItemGroup>
 </Project>
