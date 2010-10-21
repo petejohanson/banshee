@@ -122,7 +122,7 @@ namespace Ossifer.JavaScriptCore.Tests
         }
 
         [Test]
-        public void DeletePropertyTestScripted ()
+        public void DeletePropertyScriptedTest ()
         {
             context.GlobalObject.SetProperty ("a", new JSValue (context, "apple"));
             context.GlobalObject.SetProperty ("b", new JSValue (context, "bear"));
@@ -144,6 +144,45 @@ namespace Ossifer.JavaScriptCore.Tests
             context.EvaluateScript ("delete d");
 
             Assert.AreEqual ("{}", context.GlobalObject.ToJsonString (0));
+        }
+
+        [Test]
+        public void PropertyEnumerationTest ()
+        {
+            context.EvaluateScript ("this.a = 1");
+            context.EvaluateScript ("this.b = 2");
+            context.EvaluateScript ("this.c = 3");
+            context.EvaluateScript ("this.d = 4");
+            context.EvaluateScript ("this.e = 5");
+
+            Assert.AreEqual ("{\"a\":1,\"b\":2,\"c\":3,\"d\":4,\"e\":5}",
+                context.GlobalObject.ToJsonString (0));
+
+            context.GlobalObject.SetProperty ("f", new JSValue (context, 6));
+            context.GlobalObject.SetProperty ("g", new JSValue (context, 7));
+            context.GlobalObject.SetProperty ("h", new JSValue (context, 8));
+
+            var names = context.GlobalObject.PropertyNames;
+
+            Assert.AreEqual (8, names.Length);
+
+            Assert.AreEqual ("a", names[0]);
+            Assert.AreEqual ("b", names[1]);
+            Assert.AreEqual ("c", names[2]);
+            Assert.AreEqual ("d", names[3]);
+            Assert.AreEqual ("e", names[4]);
+            Assert.AreEqual ("f", names[5]);
+            Assert.AreEqual ("g", names[6]);
+            Assert.AreEqual ("h", names[7]);
+
+            Assert.AreEqual (1, context.GlobalObject.GetProperty (names[0]).NumberValue);
+            Assert.AreEqual (2, context.GlobalObject.GetProperty (names[1]).NumberValue);
+            Assert.AreEqual (3, context.GlobalObject.GetProperty (names[2]).NumberValue);
+            Assert.AreEqual (4, context.GlobalObject.GetProperty (names[3]).NumberValue);
+            Assert.AreEqual (5, context.GlobalObject.GetProperty (names[4]).NumberValue);
+            Assert.AreEqual (6, context.GlobalObject.GetProperty (names[5]).NumberValue);
+            Assert.AreEqual (7, context.GlobalObject.GetProperty (names[6]).NumberValue);
+            Assert.AreEqual (8, context.GlobalObject.GetProperty (names[7]).NumberValue);
         }
 
         private class GetPropertyClassTest : JSClassDefinition

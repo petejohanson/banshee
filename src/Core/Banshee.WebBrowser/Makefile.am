@@ -24,6 +24,7 @@ SOURCES =  \
 	Ossifer.JavaScriptCore/JSObject.cs \
 	Ossifer.JavaScriptCore/JSPropertyAttribute.cs \
 	Ossifer.JavaScriptCore/JSPropertyNameAccumulator.cs \
+	Ossifer.JavaScriptCore/JSPropertyNameArray.cs \
 	Ossifer.JavaScriptCore/JSString.cs \
 	Ossifer.JavaScriptCore/JSType.cs \
 	Ossifer.JavaScriptCore/JSValue.cs \

@@ -158,6 +158,26 @@ namespace Ossifer.JavaScriptCore
             }
         }
 
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern IntPtr JSObjectCopyPropertyNames (IntPtr ctx, IntPtr obj);
+
+        private JSPropertyNameArray CopyPropertyNames ()
+        {
+            return new JSPropertyNameArray (JSObjectCopyPropertyNames (Context.Raw, Raw));
+        }
+
+        public string [] PropertyNames {
+            get {
+                var names_native = CopyPropertyNames ();
+                var names = new string [names_native.Count];
+                for (int i = 0; i < names.Length; i++) {
+                    names[i] = names_native[i];
+                }
+                names_native.Release ();
+                return names;
+            }
+        }
+
 #endregion
 
         [DllImport (JSContext.NATIVE_IMPORT)]
