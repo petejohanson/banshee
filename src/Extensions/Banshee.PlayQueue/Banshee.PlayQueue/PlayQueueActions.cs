@@ -53,22 +53,22 @@ namespace Banshee.PlayQueue
                     OnAddToPlayQueue),
 
                 new ActionEntry ("AddToPlayQueueAfterAction", null,
-                    Catalog.GetString ("Add after"), null,
+                    Catalog.GetString ("Play After"), null,
                     Catalog.GetString ("Add selected songs after the currently playing track, album, or artist"),
                     null),
 
                 new ActionEntry ("AddToPlayQueueAfterCurrentTrackAction", null,
-                    Catalog.GetString ("Current track"), null,
+                    Catalog.GetString ("Current Track"), null,
                     Catalog.GetString ("Add selected songs to the play queue after the currently playing song"),
                     OnAddToPlayQueueAfterCurrentTrack),
 
-                new ActionEntry ("AddToPlayQueueAfterCurrentTrackAlbum", null,
-                    Catalog.GetString ("Current album"), null,
+                new ActionEntry ("AddToPlayQueueAfterCurrentAlbumAction", null,
+                    Catalog.GetString ("Current Album"), null,
                     Catalog.GetString ("Add selected songs to the play queue after the currently playing album"),
                     OnAddToPlayQueueAfterCurrentAlbum),
 
-                new ActionEntry ("AddToPlayQueueAfterCurrentTrackArtist", null,
-                    Catalog.GetString ("Current artist"), null,
+                new ActionEntry ("AddToPlayQueueAfterCurrentArtistAction", null,
+                    Catalog.GetString ("Current Artist"), null,
                     Catalog.GetString ("Add selected songs to the play queue after the currently playing artist"),
                     OnAddToPlayQueueAfterCurrentArtist)
             });
@@ -109,6 +109,7 @@ namespace Banshee.PlayQueue
             playqueue.Updated += OnUpdated;
             ServiceManager.SourceManager.ActiveSourceChanged += OnSourceUpdated;
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, PlayerEvent.StateChange);
+            ServiceManager.PlaybackController.SourceChanged += OnPlaybackSourceChanged;
 
             OnUpdated (null, null);
 
@@ -127,6 +128,17 @@ namespace Banshee.PlayQueue
         private void OnPlayerEvent (PlayerEventArgs args)
         {
             this["AddToPlayQueueAfterAction"].Sensitive = ServiceManager.PlayerEngine.IsPlaying ();
+        }
+
+        private void OnPlaybackSourceChanged (object sender, EventArgs e)
+        {
+            if (ServiceManager.PlaybackController.Source is PlayQueueSource) {
+                this["AddToPlayQueueAfterCurrentAlbumAction"].Sensitive = true;
+                this["AddToPlayQueueAfterCurrentArtistAction"].Sensitive = true;
+            } else {
+                this["AddToPlayQueueAfterCurrentAlbumAction"].Sensitive = false;
+                this["AddToPlayQueueAfterCurrentArtistAction"].Sensitive = false;
+            }
         }
 
         private void OnAddToPlayQueue (object o, EventArgs args)
@@ -184,6 +196,12 @@ namespace Banshee.PlayQueue
 
         private void OnSourceUpdated (SourceEventArgs args)
         {
+            if (ServiceManager.SourceManager.ActiveSource is PlayQueueSource) {
+                this["AddToPlayQueueAfterAction"].Visible = false;
+            } else {
+                this["AddToPlayQueueAfterAction"].Visible = true;
+            }
+            
             OnUpdated (null, null);
         }
 
