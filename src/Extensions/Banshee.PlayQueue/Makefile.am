@@ -9,7 +9,8 @@ SOURCES =  \
 	Banshee.PlayQueue/PlayQueueActions.cs \
 	Banshee.PlayQueue/PlayQueueSource.cs \
 	Banshee.PlayQueue/PlayQueueTrackListModel.cs \
-	Banshee.PlayQueue/QueueableSourceComboBox.cs
+	Banshee.PlayQueue/QueueableSourceComboBox.cs \
+	Banshee.PlayQueue/QueueMode.cs
 
 RESOURCES =  \
 	Banshee.PlayQueue.addin.xml \

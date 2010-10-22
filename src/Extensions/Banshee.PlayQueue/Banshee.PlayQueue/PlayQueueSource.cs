@@ -320,7 +320,12 @@ namespace Banshee.PlayQueue
 
 #endregion
 
-        public override bool AddSelectedTracks (Source source)
+        public override bool AddSelectedTracks (Source souce)
+        {
+            return AddSelectedTracks (souce, QueueMode.Normal);
+        }
+
+        public bool AddSelectedTracks (Source source, QueueMode mode)
         {
             if ((Parent == null || source == Parent || source.Parent == Parent) && AcceptsInputFromSource (source)) {
                 DatabaseTrackListModel model = (source as ITrackModelSource).TrackModel as DatabaseTrackListModel;
@@ -328,8 +333,10 @@ namespace Banshee.PlayQueue
                     return false;
                 }
 
+                long view_order = CalculateViewOrder (mode);
+                long max_view_order = MaxViewOrder;
                 long current_view_order = CurrentTrackViewOrder;
-
+        
                 // If the current_track is not playing, insert before it.
                 int index = -1;
                 if (current_track != null && !ServiceManager.PlayerEngine.IsPlaying (current_track)) {
@@ -337,27 +344,16 @@ namespace Banshee.PlayQueue
                     index = TrackModel.IndexOf (current_track);
                 }
 
-                // view_order will point to the last pending non-generated track in the queue
-                // or to the current_track if all tracks are generated. We want to insert tracks after it.
-                long view_order = Math.Max(current_view_order, ServiceManager.DbConnection.Query<long> (@"
-                    SELECT MAX(ViewOrder)
-                    FROM CorePlaylistEntries
-                    WHERE PlaylistID = ? AND ViewOrder > ? AND Generated = 0",
-                    DbId, current_view_order
-                ));
-
                 WithTrackSelection (model, shuffler.RecordInsertions);
 
                 // Add the tracks to the end of the queue.
                 WithTrackSelection (model, AddTrackRange);
 
-                // Shift generated tracks to the end of the queue.
-                ServiceManager.DbConnection.Execute (@"
-                    UPDATE CorePlaylistEntries
-                    SET ViewOrder = ViewOrder - ? + ?
-                    WHERE PlaylistID = ? AND ViewOrder > ? AND Generated = 1",
-                    view_order, MaxViewOrder, DbId, view_order
-                );
+                if (mode != QueueMode.Normal) {
+                    ShiftForAddedAfter (view_order, max_view_order);
+                }
+
+                ShiftGeneratedTracks (view_order);
 
                 OnTracksAdded ();
                 OnUserNotifyUpdated ();
@@ -371,6 +367,91 @@ namespace Banshee.PlayQueue
                 return true;
             }
             return false;
+        }
+
+        private long CalculateViewOrder (QueueMode mode)
+        {
+            long view_order = 0;
+            long current_view_order = CurrentTrackViewOrder;
+
+            switch (mode) {
+            case QueueMode.AfterCurrentTrack:
+                // view_order will point to the currently playing track.
+                // We want to insert tracks after this one.
+                view_order = current_view_order;
+                break;
+            case QueueMode.AfterCurrentAlbum:
+                // view order will point to the last track of the currently
+                // playing album.
+                IterateTrackModelUntilEndMatch (out view_order, true);
+                break;
+            case QueueMode.AfterCurrentArtist:
+                // view order will point to the last track of the currently
+                // playing artist.
+                IterateTrackModelUntilEndMatch (out view_order, false);
+                break;
+            case QueueMode.Normal:
+                // view_order will point to the last pending non-generated track in the queue
+                // or to the current_track if all tracks are generated. We want to insert tracks after it.
+                view_order = Math.Max(current_view_order, ServiceManager.DbConnection.Query<long> (@"
+                    SELECT MAX(ViewOrder)
+                    FROM CorePlaylistEntries
+                    WHERE PlaylistID = ? AND ViewOrder > ? AND Generated = 0",
+                    DbId, current_view_order
+                ));
+                break;
+            default:
+                throw new ArgumentException ("Handling for that QueueMode has not been defined");
+            }
+
+            return view_order;
+        }
+
+        private void IterateTrackModelUntilEndMatch (out long viewOrder, bool checkAlbum)
+        {
+            var t = TrackModel;
+            bool in_match = false;
+            long current_view_order = CurrentTrackViewOrder;
+
+            string current_album = ServiceManager.PlayerEngine.CurrentTrack.AlbumTitle;
+            string current_artist = ServiceManager.PlayerEngine.CurrentTrack.AlbumArtist;
+
+            // view order will point to the last track that has the same album and artist of the
+            // currently playing track.
+            viewOrder = current_view_order;
+            for (int i = 0; i < t.Count; i++) {
+                var track = t[i];
+                if (current_artist == track.AlbumArtist && (!checkAlbum || current_album == track.AlbumTitle)) {
+                    in_match = true;
+                    viewOrder++;
+                } else if (!in_match) {
+                    continue;
+                } else {
+                    viewOrder--;
+                    break;
+                }
+            }
+        }
+
+        private void ShiftForAddedAfter (long viewOrder, long maxViewOrder)
+        {
+            ServiceManager.DbConnection.Execute (@"
+                UPDATE CorePlaylistEntries
+                SET ViewOrder = ViewOrder - ? + ?
+                WHERE PlaylistID = ? AND ViewOrder > ? AND ViewOrder < ?",
+                viewOrder, MaxViewOrder, DbId, viewOrder, maxViewOrder
+            );
+        }
+
+        private void ShiftGeneratedTracks (long viewOrder)
+        {
+            // Shift generated tracks to the end of the queue.
+            ServiceManager.DbConnection.Execute (@"
+                UPDATE CorePlaylistEntries
+                SET ViewOrder = ViewOrder - ? + ?
+                WHERE PlaylistID = ? AND ViewOrder > ? AND Generated = 1",
+                viewOrder, MaxViewOrder, DbId, viewOrder
+            );
         }
 
         private void SetAsPlaybackSourceUnlessPlaying ()
