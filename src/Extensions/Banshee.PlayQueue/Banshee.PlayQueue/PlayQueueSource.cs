@@ -415,6 +415,7 @@ namespace Banshee.PlayQueue
             var t = TrackModel;
             bool in_match = false;
             long current_view_order = CurrentTrackViewOrder;
+            int index = Math.Max (0, TrackModel.IndexOf (current_track));
 
             string current_album = ServiceManager.PlayerEngine.CurrentTrack.AlbumTitle;
             string current_artist = ServiceManager.PlayerEngine.CurrentTrack.AlbumArtist;
@@ -422,10 +423,11 @@ namespace Banshee.PlayQueue
             // view order will point to the last track that has the same album and artist of the
             // currently playing track.
             viewOrder = current_view_order;
-            for (int i = 0; i < t.Count; i++) {
+            for (int i = index; i < t.Count; i++) {
                 var track = t[i];
                 if (current_artist == track.AlbumArtist && (!checkAlbum || current_album == track.AlbumTitle)) {
                     in_match = true;
+                    Log.DebugFormat ("{0} : {1}", track.TrackTitle, viewOrder);
                     viewOrder++;
                 } else if (!in_match) {
                     continue;
@@ -434,6 +436,7 @@ namespace Banshee.PlayQueue
                     break;
                 }
             }
+            Log.DebugFormat ("returning viewOrder {0}", viewOrder);
         }
 
         private void ShiftForAddedAfter (long viewOrder, long maxViewOrder)
