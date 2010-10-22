@@ -427,7 +427,6 @@ namespace Banshee.PlayQueue
                 var track = t[i];
                 if (current_artist == track.AlbumArtist && (!checkAlbum || current_album == track.AlbumTitle)) {
                     in_match = true;
-                    Log.DebugFormat ("{0} : {1}", track.TrackTitle, viewOrder);
                     viewOrder++;
                 } else if (!in_match) {
                     continue;
@@ -436,7 +435,6 @@ namespace Banshee.PlayQueue
                     break;
                 }
             }
-            Log.DebugFormat ("returning viewOrder {0}", viewOrder);
         }
 
         private void ShiftForAddedAfter (long viewOrder, long maxViewOrder)
