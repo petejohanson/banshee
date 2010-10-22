@@ -376,9 +376,12 @@ namespace Banshee.PlayQueue
 
             switch (mode) {
             case QueueMode.AfterCurrentTrack:
-                // view_order will point to the currently playing track.
+                // view_order will point to the currently playing track, or if we're playing from
+                // somewhere besides the play queue it will point to the very top of the queue.
                 // We want to insert tracks after this one.
-                view_order = current_view_order;
+                view_order = ServiceManager.PlaybackController.Source is PlayQueueSource
+                    ? current_view_order
+                    : current_view_order - 1;
                 break;
             case QueueMode.AfterCurrentAlbum:
                 // view order will point to the last track of the currently
