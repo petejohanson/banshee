@@ -42,34 +42,39 @@ using Banshee.ServiceStack;
 
 namespace Banshee.Collection.Gui
 {
-    public class DataViewChildAlbum : DataViewChildBox
+    public class DataViewChildAlbum : StackPanel
     {
         DataViewChildImage img;
 
         public DataViewChildAlbum ()
         {
-            Horizontal = false;
-            Padding = new Thickness (5);
+            Orientation = Hyena.Gui.Canvas.Orientation.Vertical;
+            Margin = new Thickness (5);
+            Width = 90;
+            Spacing = 2;
 
-            Add (
-                img = new DataViewChildImage (),
-
-                new ColumnCellText ("DisplayTitle", false) {
+            Children.Add (img = new DataViewChildImage ());
+            Children.Add (
+                new TextBlock () {
+                    Binder = new Hyena.Data.ObjectBinder () { Property = "DisplayTitle" },
                     EllipsizeMode = Pango.EllipsizeMode.End,
                     UseMarkup = true,
                     TextFormat = "<small>{0}</small>",
-                    Padding = new Thickness (2, 2, 2, 0)
-                },
-
-                // TODO hide for 'All Artists'
-                new ColumnCellText ("DisplayArtistName", false) {
-                    EllipsizeMode = Pango.EllipsizeMode.End,
-                    UseMarkup = true,
-                    TextFormat = "<small>{0}</small>",
-                    Padding = new Thickness (2, 0),
-                    Alpha = 0.6
                 }
             );
+            Children.Add (
+                new TextBlock () {
+                    Binder = new Hyena.Data.ObjectBinder () { Property = "DisplayArtistName" },
+                    EllipsizeMode = Pango.EllipsizeMode.End,
+                    UseMarkup = true,
+                    // TODO hide for 'All Artists'
+                    TextFormat = "<small>{0}</small>",
+                    Opacity = 0.6
+                }
+            );
+
+            // Render the prelight just on the cover art, but triggered by being anywhere over the album
+            PrelightRenderer = (cr, theme, size, o) => Prelight.Gradient (cr, theme, img.ContentAllocation, o);
         }
 
         public double ImageSize {
@@ -100,48 +105,43 @@ namespace Banshee.Collection.Gui
 
     }
 
-    public class DataViewChildImage : DataViewChild
+    public class DataViewChildImage : CanvasItem
     {
         private ArtworkManager artwork_manager;
 
         public double ImageSize { get; set; }
 
-        private bool IsGridLayout {
-            // FIXME: Cache this after implementing virtual notification
-            // on ColumnCell that ViewLayout has changed ...
-            get { return ParentLayout is DataViewLayoutGrid; }
-        }
-
         public DataViewChildImage ()
         {
+            Binder = new Hyena.Data.ObjectBinder () { Property = "ArtworkId" };
             artwork_manager = ServiceManager.Get<ArtworkManager> ();
-            HasPrelight = true;
             ImageSize = 90;
         }
 
         public override Size Measure (Size available)
         {
-            return new Size (ImageSize, ImageSize);
+            Width = Height = ImageSize;
+            return DesiredSize = new Size (Width + Margin.X, Height + Margin.Y);
         }
 
         public override void Arrange ()
         {
         }
 
-        protected override void RenderCore (CellContext context)
+        protected override void ClippedRender (CellContext context)
         {
-            var album = BoundObject as AlbumInfo;
-            if (album == null) {
+            var artwork_id = BoundObject as string;
+            if (artwork_id == null) {
                 return;
             }
 
             var image_surface = artwork_manager != null
-                ? artwork_manager.LookupScaleSurface (album.ArtworkId, (int)ImageSize, true)
+                ? artwork_manager.LookupScaleSurface (artwork_id, (int)ImageSize, true)
                 : null;
 
             ArtworkRenderer.RenderThumbnail (context.Context,
                 image_surface, false,
-                0, 0, Allocation.Width, Allocation.Height,
+                0, 0, ImageSize, ImageSize,
                 true, context.Theme.Context.Radius,
                 image_surface == null, new Color (0.8, 0.8, 0.8)
             );
