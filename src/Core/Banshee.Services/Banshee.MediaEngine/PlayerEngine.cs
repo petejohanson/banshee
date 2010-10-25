@@ -46,9 +46,7 @@ namespace Banshee.MediaEngine
         public event PlayerEventHandler EventChanged;
 
         private TrackInfo current_track;
-        private SafeUri current_uri;
         private TrackInfo pending_track;
-        private SafeUri pending_uri;
         private PlayerState current_state = PlayerState.NotReady;
         private PlayerState last_state = PlayerState.NotReady;
 
@@ -70,13 +68,12 @@ namespace Banshee.MediaEngine
         public void Reset ()
         {
             current_track = null;
-            current_uri = null;
             OnStateChanged (idle_state);
         }
 
         public virtual void Close (bool fullShutdown)
         {
-            OnStateChanged (idle_state);
+            Reset ();
         }
 
         public virtual void Dispose ()
@@ -84,45 +81,34 @@ namespace Banshee.MediaEngine
             Close (true);
         }
 
-        public void Open (TrackInfo track)
-        {
-            current_uri = track.Uri;
-            current_track = track;
-
-            HandleOpen (track.Uri);
-        }
-
         public void Open (SafeUri uri)
         {
-            current_uri = uri;
-            current_track = new UnknownTrackInfo (uri);
-
-            HandleOpen (uri);
+            HandleOpen (new UnknownTrackInfo (uri));
         }
 
-        public void SetNextTrack (TrackInfo track)
+        public void Open (TrackInfo track)
         {
-            pending_track = track;
-            pending_uri = track != null ? track.Uri : null;
-
-            HandleNextTrack (pending_uri);
+            HandleOpen (track);
         }
 
         public void SetNextTrack (SafeUri uri)
         {
-            pending_uri = uri;
-            pending_track = new UnknownTrackInfo (uri);
-
-            HandleNextTrack (uri);
+            SetNextTrack (new UnknownTrackInfo (uri));
         }
 
-        private void HandleNextTrack (SafeUri uri)
+        public void SetNextTrack (TrackInfo track)
         {
+            HandleNextTrack (track);
+        }
+
+        private void HandleNextTrack (TrackInfo track)
+        {
+            pending_track = track;
             if (current_state != PlayerState.Playing) {
                 // Pre-buffering the next track only makes sense when we're currently playing
                 // Instead, just open.
-                if (uri != null) {
-                    HandleOpen (uri);
+                if (track.Uri != null) {
+                    HandleOpen (track);
                     Play ();
                 }
                 return;
@@ -130,19 +116,21 @@ namespace Banshee.MediaEngine
 
             try {
                 // Setting the next track doesn't change the player state.
-                SetNextTrackUri (uri);
+                SetNextTrackUri (track.Uri);
             } catch (Exception e) {
                 Log.Exception ("Failed to pre-buffer next track", e);
             }
         }
 
-        private void HandleOpen (SafeUri uri)
+        private void HandleOpen (TrackInfo track)
         {
+            var uri = track.Uri;
             if (current_state != PlayerState.Idle && current_state != PlayerState.NotReady && current_state != PlayerState.Contacting) {
                 Close (false);
             }
 
             try {
+                current_track = track;
                 OnStateChanged (PlayerState.Loading);
                 OpenUri (uri);
             } catch (Exception e) {
@@ -217,9 +205,7 @@ namespace Banshee.MediaEngine
                 Log.DebugFormat ("OnEventChanged called with StartOfStream.  Replacing current_track with pending_track: \"{0}\"",
                                  pending_track.DisplayTrackTitle);
                 current_track = pending_track;
-                current_uri = pending_uri;
                 pending_track = null;
-                pending_uri = null;
             }
 
             if (ThreadAssist.InMainThread) {
@@ -271,7 +257,7 @@ namespace Banshee.MediaEngine
         }
 
         public SafeUri CurrentUri {
-            get { return current_uri; }
+            get { return current_track == null ? null : current_track.Uri; }
         }
 
         public PlayerState CurrentState {

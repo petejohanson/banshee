@@ -455,7 +455,6 @@ namespace Banshee.MediaEngine
         public void Close (bool fullShutdown)
         {
             IncrementLastPlayed ();
-            active_engine.Reset ();
             active_engine.Close (fullShutdown);
         }
 
@@ -785,7 +784,11 @@ namespace Banshee.MediaEngine
                 LinkedListNode<PlayerEventHandlerSlot> node = event_handlers.First;
                 while (node != null) {
                     if ((node.Value.EventMask & args.Event) == args.Event) {
-                        node.Value.Handler (args);
+                        try {
+                            node.Value.Handler (args);
+                        } catch (Exception e) {
+                            Log.Exception (String.Format ("Error running PlayerEngine handler for {0}", args.Event), e);
+                        }
                     }
                     node = node.Next;
                 }
