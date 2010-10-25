@@ -230,7 +230,7 @@ namespace Ossifer.JavaScriptCore.Tests
         [Test]
         public void JsonRoundTrip ()
         {
-            Assert.AreEqual ("[1,2,3]", JSValue.FromJson (context, "[1,2,3]").ToJsonString ());
+            Assert.AreEqual ("[1,2,3]", JSValue.FromJson (context, "[1,2,3]").ToJsonString (0));
             Assert.AreEqual ("{\n  \"x\": 4,\n  \"y\": \"z\"\n}",
                 JSValue.FromJson (context, "{\"x\":4,\"y\":\"z\"}").ToJsonString (2));
         }

@@ -31,7 +31,7 @@ namespace Ossifer.JavaScriptCore
 {
     public class JSValue
     {
-        public IntPtr Raw { get; private set; }
+        public IntPtr Raw { get; protected set; }
         public JSContext Context { get; private set; }
 
         public JSValue (IntPtr raw)
@@ -254,7 +254,7 @@ namespace Ossifer.JavaScriptCore
 
         public string ToJsonString ()
         {
-            return ToJsonString (0);
+            return ToJsonString (2);
         }
 
         [DllImport (JSContext.NATIVE_IMPORT)]
@@ -275,7 +275,7 @@ namespace Ossifer.JavaScriptCore
 
         public override string ToString ()
         {
-            return ToJsonString (2);
+            return IsObject ? ToJsonString (0) ?? StringValue : StringValue;
         }
     }
 }
