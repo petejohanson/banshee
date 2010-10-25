@@ -21,6 +21,7 @@ SOURCES =  \
 	Ossifer.JavaScriptCore/JSClassDefinition.cs \
 	Ossifer.JavaScriptCore/JSContext.cs \
 	Ossifer.JavaScriptCore/JSException.cs \
+	Ossifer.JavaScriptCore/JSFunction.cs \
 	Ossifer.JavaScriptCore/JSObject.cs \
 	Ossifer.JavaScriptCore/JSPropertyAttribute.cs \
 	Ossifer.JavaScriptCore/JSPropertyNameAccumulator.cs \
@@ -29,6 +30,7 @@ SOURCES =  \
 	Ossifer.JavaScriptCore/JSType.cs \
 	Ossifer.JavaScriptCore/JSValue.cs \
 	Ossifer.JavaScriptCore/ManagedPropertyBagClass.cs \
+	Ossifer.JavaScriptCore/Tests/JSFunctionTests.cs \
 	Ossifer.JavaScriptCore/Tests/JSObjectTests.cs \
 	Ossifer.JavaScriptCore/Tests/JSStringTests.cs \
 	Ossifer.JavaScriptCore/Tests/JSValueTests.cs

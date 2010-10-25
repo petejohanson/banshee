@@ -186,5 +186,27 @@ namespace Ossifer.JavaScriptCore
         public bool IsFunction {
             get { return JSObjectIsFunction (Context.Raw, Raw); }
         }
+
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern IntPtr JSObjectCallAsFunction (IntPtr ctx, IntPtr obj, IntPtr thisObject,
+            IntPtr argumentCount, IntPtr [] arguments, ref IntPtr exception);
+
+        public JSValue CallAsFunction (JSObject thisObject, JSValue [] args)
+        {
+            var exception = IntPtr.Zero;
+            var args_native = new IntPtr[args.Length];
+
+            for (int i = 0; i < args.Length; i++) {
+                args_native[i] = args[i].Raw;
+            }
+
+            var result = new JSValue (Context.Raw, JSObjectCallAsFunction (Context.Raw, Raw,
+                thisObject == null ? IntPtr.Zero : thisObject.Raw, new IntPtr (args.Length),
+                args_native, ref exception));
+
+            JSException.Proxy (Context, exception);
+
+            return result;
+        }
     }
 }
