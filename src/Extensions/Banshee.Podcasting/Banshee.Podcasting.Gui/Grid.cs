@@ -51,13 +51,14 @@ namespace Banshee.Podcasting.Gui
         {
             var layout = new DataViewLayoutGrid () {
                 ChildAllocator = () => {
+                    DataViewChildImage img = new DataViewChildImage ();
                     return new StackPanel () {
                         Margin = new Thickness (5),
                         Width = 350,
                         Height = 150,
-                        Spacing = 10,
+                        Spacing = 5,
                         Children = {
-                            new DataViewChildImage (),
+                            img,
                             new TextBlock () {
                                 UseMarkup = true,
                                 TextWrap = TextWrap.WordChar,
@@ -74,7 +75,9 @@ namespace Banshee.Podcasting.Gui
                                     return "";
                                 }
                             }
-                        }
+                        }//,
+                        // Render the prelight just on the cover art, but triggered by being anywhere over the album
+                        //PrelightRenderer = (cr, theme, size, o) => Prelight.Gradient (cr, theme, img.ContentAllocation, o)
                     };
                 },
                 View = this
