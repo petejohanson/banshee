@@ -1,5 +1,5 @@
-// 
-// JSPropertyNameAccumulator.cs
+//
+// JSClass.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -27,21 +27,15 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore
 {
-    public struct JSPropertyNameAccumulator
+    public class JSClass
     {
-        #pragma warning disable 0169
-        private IntPtr raw;
-        #pragma warning restore 0169
+        public IntPtr Raw { get; private set; }
 
-        [DllImport (JSContext.NATIVE_IMPORT)]
-        private static extern void JSPropertyNameAccumulatorAddName (
-            JSPropertyNameAccumulator accumulator, JSString propertyName);
-
-        public void AddName (string propertyName)
+        public JSClass (IntPtr raw)
         {
-            JSPropertyNameAccumulatorAddName (this, JSString.New (propertyName));
+            Raw = raw;
         }
     }
 }

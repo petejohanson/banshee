@@ -27,7 +27,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore
 {
     public struct JSPropertyNameArray
     {

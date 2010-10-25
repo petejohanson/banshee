@@ -28,7 +28,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore
 {
     public class JSClassDefinition
     {

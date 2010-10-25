@@ -30,7 +30,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Ossifer.JavaScriptCore.Tests
+namespace JavaScriptCore.Tests
 {
     [TestFixture]
     public class JSFunctionTests

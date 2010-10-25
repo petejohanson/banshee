@@ -1,5 +1,5 @@
 // 
-// JSType.cs
+// JSPropertyNameAccumulator.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -25,16 +25,23 @@
 // THE SOFTWARE.
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore
 {
-    public enum JSType
+    public struct JSPropertyNameAccumulator
     {
-        Undefined,
-        Null,
-        Boolean,
-        Number,
-        String,
-        Object
+        #pragma warning disable 0169
+        private IntPtr raw;
+        #pragma warning restore 0169
+
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern void JSPropertyNameAccumulatorAddName (
+            JSPropertyNameAccumulator accumulator, JSString propertyName);
+
+        public void AddName (string propertyName)
+        {
+            JSPropertyNameAccumulatorAddName (this, JSString.New (propertyName));
+        }
     }
 }

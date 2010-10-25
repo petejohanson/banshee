@@ -27,7 +27,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore
 {
     public class ManagedPropertyBagClass : JSClassDefinition
     {

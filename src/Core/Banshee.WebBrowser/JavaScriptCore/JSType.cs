@@ -1,5 +1,5 @@
 // 
-// JSClassAttribute.cs
+// JSType.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -26,12 +26,15 @@
 
 using System;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore
 {
-    [Flags]
-    public enum JSClassAttribute
+    public enum JSType
     {
-        None = 0,
-        NoAutomaticPrototype = 1 << 1
+        Undefined,
+        Null,
+        Boolean,
+        Number,
+        String,
+        Object
     }
 }

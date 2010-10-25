@@ -1,5 +1,5 @@
-//
-// JSClass.cs
+// 
+// JSClassAttribute.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -25,17 +25,13 @@
 // THE SOFTWARE.
 
 using System;
-using System.Runtime.InteropServices;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore
 {
-    public class JSClass
+    [Flags]
+    public enum JSClassAttribute
     {
-        public IntPtr Raw { get; private set; }
-
-        public JSClass (IntPtr raw)
-        {
-            Raw = raw;
-        }
+        None = 0,
+        NoAutomaticPrototype = 1 << 1
     }
 }

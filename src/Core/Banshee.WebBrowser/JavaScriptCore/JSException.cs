@@ -1,5 +1,5 @@
 // 
-// JSPropertyAttribute.cs
+// JSException.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -26,14 +26,28 @@
 
 using System;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore
 {
-    [Flags]
-    public enum JSPropertyAttribute
+    public class JSException : Exception
     {
-        None = 0,
-        ReadOnly = 1 << 1,
-        DontEnum = 1 << 2,
-        DontDelete = 1 << 3
+        public JSContext Context { get; private set; }
+
+        internal JSException (JSContext context, string message)
+            : base (message)
+        {
+            Context = context;
+        }
+
+        internal JSException (JSContext context, IntPtr exception)
+            : this (context, "JSON: " + new JSValue (context, exception).ToJsonString ())
+        {
+        }
+
+        internal static void Proxy (JSContext ctx, IntPtr exception)
+        {
+            if (!exception.Equals (IntPtr.Zero)) {
+                throw new JSException (ctx, exception);
+            }
+        }
     }
 }

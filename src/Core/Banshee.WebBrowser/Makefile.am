@@ -16,24 +16,24 @@ SOURCES =  \
 	Banshee.WebSource/WebBrowserShell.cs \
 	Banshee.WebSource/WebSource.cs \
 	Banshee.WebSource/WebView.cs \
-	Ossifer.JavaScriptCore/JSClass.cs \
-	Ossifer.JavaScriptCore/JSClassAttribute.cs \
-	Ossifer.JavaScriptCore/JSClassDefinition.cs \
-	Ossifer.JavaScriptCore/JSContext.cs \
-	Ossifer.JavaScriptCore/JSException.cs \
-	Ossifer.JavaScriptCore/JSFunction.cs \
-	Ossifer.JavaScriptCore/JSObject.cs \
-	Ossifer.JavaScriptCore/JSPropertyAttribute.cs \
-	Ossifer.JavaScriptCore/JSPropertyNameAccumulator.cs \
-	Ossifer.JavaScriptCore/JSPropertyNameArray.cs \
-	Ossifer.JavaScriptCore/JSString.cs \
-	Ossifer.JavaScriptCore/JSType.cs \
-	Ossifer.JavaScriptCore/JSValue.cs \
-	Ossifer.JavaScriptCore/ManagedPropertyBagClass.cs \
-	Ossifer.JavaScriptCore/Tests/JSFunctionTests.cs \
-	Ossifer.JavaScriptCore/Tests/JSObjectTests.cs \
-	Ossifer.JavaScriptCore/Tests/JSStringTests.cs \
-	Ossifer.JavaScriptCore/Tests/JSValueTests.cs
+	JavaScriptCore/JSClass.cs \
+	JavaScriptCore/JSClassAttribute.cs \
+	JavaScriptCore/JSClassDefinition.cs \
+	JavaScriptCore/JSContext.cs \
+	JavaScriptCore/JSException.cs \
+	JavaScriptCore/JSFunction.cs \
+	JavaScriptCore/JSObject.cs \
+	JavaScriptCore/JSPropertyAttribute.cs \
+	JavaScriptCore/JSPropertyNameAccumulator.cs \
+	JavaScriptCore/JSPropertyNameArray.cs \
+	JavaScriptCore/JSString.cs \
+	JavaScriptCore/JSType.cs \
+	JavaScriptCore/JSValue.cs \
+	JavaScriptCore/ManagedPropertyBagClass.cs \
+	JavaScriptCore/Tests/JSFunctionTests.cs \
+	JavaScriptCore/Tests/JSObjectTests.cs \
+	JavaScriptCore/Tests/JSStringTests.cs \
+	JavaScriptCore/Tests/JSValueTests.cs
 
 RESOURCES =  \
 	Resources/loading.html

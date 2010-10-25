@@ -1,5 +1,5 @@
-// 
-// JSException.cs
+//
+// JSStringTests.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -24,30 +24,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if ENABLE_TESTS
+
 using System;
+using NUnit.Framework;
 
-namespace Ossifer.JavaScriptCore
+namespace JavaScriptCore.Tests
 {
-    public class JSException : Exception
+    [TestFixture]
+    public class JSStringTests
     {
-        public JSContext Context { get; private set; }
-
-        internal JSException (JSContext context, string message)
-            : base (message)
+        [Test]
+        public void Equality ()
         {
-            Context = context;
+            var a_m = "A simple greeting";
+            var a_j = JSString.New (a_m);
+            Assert.AreEqual (a_m, a_j.Value);
+
+            var b_m = a_j.Value;
+            var b_j = JSString.New (b_m);
+            Assert.IsTrue (a_j.IsEqual (b_j));
         }
 
-        internal JSException (JSContext context, IntPtr exception)
-            : this (context, "JSON: " + new JSValue (context, exception).ToJsonString ())
+        [Test]
+        public void LengthAndEquality ()
         {
-        }
-
-        internal static void Proxy (JSContext ctx, IntPtr exception)
-        {
-            if (!exception.Equals (IntPtr.Zero)) {
-                throw new JSException (ctx, exception);
-            }
+            var a_m = "Hello World";
+            var a_j = JSString.New (a_m);
+            var b_j = JSString.New (a_j.Value);
+            Assert.AreEqual (a_m.Length, a_j.Length);
+            Assert.AreEqual (a_j.Length, b_j.Length);
+            Assert.AreEqual (a_m, a_j.Value);
+            Assert.AreEqual (a_j.Value, b_j.Value);
+            Assert.IsTrue (a_j.IsEqual (b_j));
         }
     }
 }
+
+#endif

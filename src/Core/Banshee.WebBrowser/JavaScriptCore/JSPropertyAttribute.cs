@@ -1,5 +1,5 @@
-//
-// JSStringTests.cs
+// 
+// JSPropertyAttribute.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -24,41 +24,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if ENABLE_TESTS
-
 using System;
-using NUnit.Framework;
 
-namespace Ossifer.JavaScriptCore.Tests
+namespace JavaScriptCore
 {
-    [TestFixture]
-    public class JSStringTests
+    [Flags]
+    public enum JSPropertyAttribute
     {
-        [Test]
-        public void Equality ()
-        {
-            var a_m = "A simple greeting";
-            var a_j = JSString.New (a_m);
-            Assert.AreEqual (a_m, a_j.Value);
-
-            var b_m = a_j.Value;
-            var b_j = JSString.New (b_m);
-            Assert.IsTrue (a_j.IsEqual (b_j));
-        }
-
-        [Test]
-        public void LengthAndEquality ()
-        {
-            var a_m = "Hello World";
-            var a_j = JSString.New (a_m);
-            var b_j = JSString.New (a_j.Value);
-            Assert.AreEqual (a_m.Length, a_j.Length);
-            Assert.AreEqual (a_j.Length, b_j.Length);
-            Assert.AreEqual (a_m, a_j.Value);
-            Assert.AreEqual (a_j.Value, b_j.Value);
-            Assert.IsTrue (a_j.IsEqual (b_j));
-        }
+        None = 0,
+        ReadOnly = 1 << 1,
+        DontEnum = 1 << 2,
+        DontDelete = 1 << 3
     }
 }
-
-#endif

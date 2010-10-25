@@ -29,7 +29,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Ossifer.JavaScriptCore.Tests
+namespace JavaScriptCore.Tests
 {
     [TestFixture]
     public class JSValueTests
