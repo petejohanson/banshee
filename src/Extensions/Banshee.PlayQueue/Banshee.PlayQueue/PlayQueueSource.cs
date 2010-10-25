@@ -632,6 +632,7 @@ namespace Banshee.PlayQueue
         private void OnPlayerEvent (PlayerEventArgs args)
         {
             if (args.Event == PlayerEvent.EndOfStream) {
+                // If EoS is for the last track in the play queue
                 if (this == ServiceManager.PlaybackController.Source &&
                     TrackModel.IndexOf (current_track) == Count - 1) {
                     SetCurrentTrack (null);
@@ -639,11 +640,14 @@ namespace Banshee.PlayQueue
                     if (was_playing) {
                         ServiceManager.PlaybackController.PriorTrack = prior_playback_track;
                     } else {
+                        // Stop playback; nothing was playing before the play queue, so it doesn't
+                        // make sense to continue playback.
                         ServiceManager.PlaybackController.StopWhenFinished = true;
                     }
                 }
+
                 if (ServiceManager.PlaybackController.StopWhenFinished) {
-                    if (current_track != null && ServiceManager.PlayerEngine.CurrentTrack == current_track) {
+                    if (current_track != null && this == ServiceManager.PlaybackController.Source) {
                         int index = TrackModel.IndexOf (current_track) + 1;
                         SetCurrentTrack (index < Count ? TrackModel[index] as DatabaseTrackInfo : null);
                     }
@@ -733,8 +737,7 @@ namespace Banshee.PlayQueue
                     FROM CorePlaylistEntries
                     WHERE PlaylistID = ?", DbId
                 );
-            }
-            else {
+            } else {
                 view_order = ServiceManager.DbConnection.Query<long> (@"
                     SELECT ViewOrder
                     FROM CorePlaylistEntries
