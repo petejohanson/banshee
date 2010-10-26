@@ -303,6 +303,10 @@ namespace Banshee.Podcasting.Gui
             get { return false; }
         }
 
+        public override bool HasEditableTrackProperties {
+            get { return false; }
+        }
+
         public override string GetPluralItemCountString (int count)
         {
             return Catalog.GetPluralString ("{0} episode", "{0} episodes", count);
@@ -313,9 +317,11 @@ namespace Banshee.Podcasting.Gui
             return false;
         }
 
+        public PodcastTrackListModel PodcastTrackModel { get; private set; }
+
         protected override DatabaseTrackListModel CreateTrackModelFor (DatabaseSource src)
         {
-            return new PodcastTrackListModel (ServiceManager.DbConnection, DatabaseTrackInfo.Provider, src);
+            return PodcastTrackModel = new PodcastTrackListModel (ServiceManager.DbConnection, DatabaseTrackInfo.Provider, src);
         }
 
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
