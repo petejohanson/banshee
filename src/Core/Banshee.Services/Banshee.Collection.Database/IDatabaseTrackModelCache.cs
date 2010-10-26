@@ -39,6 +39,7 @@ namespace Banshee.Collection.Database
         void Clear ();
         void SaveSelection ();
         void UpdateAggregates ();
+        void UpdateSelectionAggregates (Action<IDataReader> handler);
         void RestoreSelection ();
         long Count { get; }
         void Reload ();
