@@ -57,7 +57,6 @@ namespace Banshee.Collection.Gui
             Children.Add (
                 new TextBlock () {
                     Binder = new Hyena.Data.ObjectBinder () { Property = "DisplayTitle" },
-                    EllipsizeMode = Pango.EllipsizeMode.End,
                     UseMarkup = true,
                     TextFormat = "<small>{0}</small>",
                 }
@@ -65,7 +64,6 @@ namespace Banshee.Collection.Gui
             Children.Add (
                 new TextBlock () {
                     Binder = new Hyena.Data.ObjectBinder () { Property = "DisplayArtistName" },
-                    EllipsizeMode = Pango.EllipsizeMode.End,
                     UseMarkup = true,
                     // TODO hide for 'All Artists'
                     TextFormat = "<small>{0}</small>",
