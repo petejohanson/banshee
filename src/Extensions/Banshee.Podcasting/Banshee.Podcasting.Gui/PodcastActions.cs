@@ -132,7 +132,7 @@ namespace Banshee.Podcasting.Gui
                 new ActionEntry (
                     "PodcastItemDownloadAction", Stock.Save,
                      /* Translators: this is a verb used as a button name, not a noun*/
-                     Catalog.GetString ("Download Podcast(s)"),
+                     Catalog.GetString ("Download"),
                      "<control><shift>D", String.Empty,
                      OnPodcastItemDownload
                 ),
@@ -144,7 +144,7 @@ namespace Banshee.Podcasting.Gui
                 ),
                 new ActionEntry (
                     "PodcastItemDeleteFileAction", Stock.Remove,
-                     Catalog.GetString ("Remove Downloaded File(s)"),
+                     "",
                      null, String.Empty,
                      OnPodcastItemDeleteFile
                 ),
@@ -248,10 +248,24 @@ namespace Banshee.Podcasting.Gui
         private void UpdateItemActions ()
         {
             if (IsPodcastSource) {
-                bool has_single_selection = ActiveDbSource.TrackModel.Selection.Count == 1;
-                UpdateActions (true, has_single_selection,
-                   "PodcastItemLinkAction"
-                );
+                int count = ActiveDbSource.TrackModel.Selection.Count;
+
+                //bool has_single_podcast = podcast_source.PodcastTrackModel.SelectionPodcastCount == 1;
+
+                UpdateAction ("PodcastItemLinkAction", true, count == 1);
+
+                int downloaded = podcast_source.PodcastTrackModel.SelectionDownloadedCount;
+                UpdateAction ("PodcastItemDownloadAction", downloaded != count, true);
+                UpdateAction ("PodcastItemDeleteFileAction", downloaded > 0, true);
+                // Translators: {0} is available for your use, containing the number of files to delete
+                this["PodcastItemDeleteFileAction"].Label = String.Format (Catalog.GetPluralString (
+                    "Delete File", "Delete Files", downloaded), downloaded);
+
+                int unheard = podcast_source.PodcastTrackModel.SelectionUnheardCount;
+                UpdateAction ("PodcastItemMarkNewAction", unheard != count, true);
+                UpdateAction ("PodcastItemMarkOldAction", unheard > 0, true);
+
+                Actions["Track.SearchMenuAction"].Visible = false;
             }
         }
 

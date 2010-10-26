@@ -65,7 +65,18 @@ namespace Banshee.Podcasting.Gui
                 "CoreTracks.PrimarySourceID = {3} AND {0}.FeedID = {1}.FeedID AND CoreTracks.ExternalID = {1}.ItemID AND {1}.ItemID = {2}.ItemID",
                 Feed.Provider.TableName, FeedItem.Provider.TableName, FeedEnclosure.Provider.TableName, podcast_library_dbid
             ));
+
+            SelectAggregates += ",COUNT(NULLIF(CoreTracks.Uri LIKE 'file:%', 0)), COUNT(NULLIF(CoreTracks.PlayCount = 0, 0)), COUNT(DISTINCT(CoreTracks.AlbumID))";
+            SelectionAggregatesHandler = (reader) => {
+                SelectionDownloadedCount = Convert.ToInt32 (reader[3]);
+                SelectionUnheardCount = Convert.ToInt32 (reader[4]);
+                SelectionPodcastCount = Convert.ToInt32 (reader[5]);
+            };
         }
+
+        public int SelectionDownloadedCount { get; private set; }
+        public int SelectionUnheardCount { get; private set; }
+        public int SelectionPodcastCount { get; private set; }
 
         protected override void GenerateSortQueryPart ()
         {
