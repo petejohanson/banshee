@@ -75,9 +75,11 @@ namespace Banshee.Podcasting.Gui
                                     return "";
                                 }
                             }
-                        }//,
+                        },
                         // Render the prelight just on the cover art, but triggered by being anywhere over the album
-                        //PrelightRenderer = (cr, theme, size, o) => Prelight.Gradient (cr, theme, img.ContentAllocation, o)
+                        PrelightRenderer = (cr, theme, size, o) => {
+                            Prelight.Gradient (cr, theme, new Rect (img.ContentAllocation.X, img.ContentAllocation.Y, img.ImageSize, img.ImageSize), o);
+                        }
                     };
                 },
                 View = this
