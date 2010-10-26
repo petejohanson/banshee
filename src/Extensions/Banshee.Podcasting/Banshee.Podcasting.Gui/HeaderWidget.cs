@@ -33,6 +33,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Hyena;
+using Hyena.Data;
+using Migo.Syndication;
+
 using Banshee.PlaybackController;
 using Banshee.Sources;
 using Banshee.Collection.Database;
@@ -40,6 +43,47 @@ using Banshee.Widgets;
 
 namespace Banshee.Podcasting.Gui
 {
+    public class ModelComboBox<T> : DictionaryComboBox<T>
+    {
+        private IListModel<T> model;
+        private Func<T, string> text_func;
+
+        public ModelComboBox (IListModel<T> model, Func<T, string> text_func)
+        {
+            this.model = model;
+            this.text_func = text_func;
+
+            Changed += delegate {
+                model.Selection.Clear (false);
+                model.Selection.Select (Active);
+            }; 
+
+            model.Reloaded += delegate { ThreadAssist.ProxyToMain (Reload); };
+            Reload ();
+        }
+
+        private void Reload ()
+        {
+            var active = ActiveValue;
+            Clear ();
+
+            bool set_active = false;
+            for (int i = 0; i < model.Count; i++) {
+                var item = model[i];
+                Add (text_func (item), item);
+
+                if (item.Equals (active)) {
+                    ActiveValue = item;
+                    set_active = true;
+                }
+            }
+
+            if (!set_active) {
+                Active = 0;
+            }
+        }
+    }
+
     public class HeaderWidget : HBox
     {
         public HeaderWidget (PodcastSource source)
@@ -48,14 +92,8 @@ namespace Banshee.Podcasting.Gui
             Spacing = 6;
 
             var podcast_label = new Label (Catalog.GetString ("_Limit to episodes from"));
-            var podcast_combo = new DictionaryComboBox<string> ();
-            podcast_combo.Add ("All Podcasts", "bar");
-            podcast_combo.Add ("Foo", "bar");
-            podcast_combo.Add ("Baz", "lkjer");
-            podcast_combo.Active = 0;
-
+            var podcast_combo = new ModelComboBox<Feed> (source.FeedModel, feed => feed.Title);
             podcast_label.MnemonicWidget = podcast_combo;
-            //podcast_combo.Changed += OnModeComboChanged;
 
             var new_check = new CheckButton ("new") { Active = true };
             new_check.Toggled += (o, a) => {
@@ -77,6 +115,7 @@ namespace Banshee.Podcasting.Gui
             PackStart (new_check, false, false, 0);
             PackStart (downloaded_check, false, false, 0);
         }
+
 
         /*private void OnModeComboChanged (object o, EventArgs args)
         {
