@@ -107,7 +107,7 @@ namespace Banshee.MediaEngine
             if (current_state != PlayerState.Playing) {
                 // Pre-buffering the next track only makes sense when we're currently playing
                 // Instead, just open.
-                if (track.Uri != null) {
+                if (track != null && track.Uri != null) {
                     HandleOpen (track);
                     Play ();
                 }
@@ -116,7 +116,7 @@ namespace Banshee.MediaEngine
 
             try {
                 // Setting the next track doesn't change the player state.
-                SetNextTrackUri (track.Uri);
+                SetNextTrackUri (track == null ? null : track.Uri);
             } catch (Exception e) {
                 Log.Exception ("Failed to pre-buffer next track", e);
             }
