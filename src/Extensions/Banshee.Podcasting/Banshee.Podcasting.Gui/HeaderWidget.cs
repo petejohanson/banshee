@@ -43,7 +43,7 @@ using Banshee.Widgets;
 
 namespace Banshee.Podcasting.Gui
 {
-    public class ModelComboBox<T> : DictionaryComboBox<T>
+    public class ModelComboBox<T> : DictionaryComboBox<T> where T : class
     {
         private IListModel<T> model;
         private Func<T, string> text_func;
@@ -53,13 +53,18 @@ namespace Banshee.Podcasting.Gui
             this.model = model;
             this.text_func = text_func;
 
-            Changed += delegate {
-                model.Selection.Clear (false);
-                model.Selection.Select (Active);
-            }; 
-
             model.Reloaded += delegate { ThreadAssist.ProxyToMain (Reload); };
             Reload ();
+
+            var last_active = ActiveValue;
+
+            Changed += delegate {
+                if (last_active != ActiveValue) {
+                    model.Selection.Clear (false);
+                    model.Selection.Select (Active);
+                    last_active = ActiveValue;
+                }
+            };
         }
 
         private void Reload ()

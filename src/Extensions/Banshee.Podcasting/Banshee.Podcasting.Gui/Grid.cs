@@ -58,7 +58,15 @@ namespace Banshee.Podcasting.Gui
                         Height = 150,
                         Spacing = 5,
                         Children = {
-                            img,
+                            new StackPanel () {
+                                Orientation = Orientation.Vertical,
+                                Width = 90,
+                                Spacing = 5,
+                                Children = {
+                                    img,
+                                    new ColumnCellPodcastStatusIndicator (null)
+                                }
+                            },
                             new TextBlock () {
                                 UseMarkup = true,
                                 TextWrap = TextWrap.WordChar,
