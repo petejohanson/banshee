@@ -79,10 +79,6 @@ namespace Banshee.Gui
                     Catalog.GetString ("_Preferences"), null,
                     Catalog.GetString ("Modify your personal preferences"), OnPreferences),
 
-                new ActionEntry ("ExtensionsAction", null,
-                    Catalog.GetString ("Manage _Extensions"), null,
-                    Catalog.GetString ("Manage extensions to add new features to Banshee"), OnExtensions),
-
                 // Tools menu
                 new ActionEntry ("ToolsMenuAction", null,
                     Catalog.GetString ("_Tools"), null, null, null),
@@ -128,8 +124,6 @@ namespace Banshee.Gui
 
                 new ActionEntry("AboutAction", "gtk-about", OnAbout)
             });
-
-            this["ExtensionsAction"].Visible = false;
 
             GLib.Timeout.Add (500, delegate {
                 if (ApplicationContext.CommandLine.Contains ("show-import-media")) {
@@ -223,11 +217,6 @@ namespace Banshee.Gui
                 dialog.Destroy ();
             } catch (ApplicationException) {
             }
-        }
-
-        private void OnExtensions (object o, EventArgs args)
-        {
-            Mono.Addins.Gui.AddinManagerWindow.Run (PrimaryWindow);
         }
 
 #endregion
