@@ -49,6 +49,11 @@ namespace Migo.Syndication
         {
         }
 
+        public void ClearCache ()
+        {
+            full_cache.Clear ();
+        }
+
 #region Overrides
 
         public override T FetchSingle (long id)
