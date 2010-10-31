@@ -18,15 +18,16 @@
         <![CDATA[
             (gst-construct-pipeline
                 "audioconvert"
-                (gst-construct-element "lame"
-                    (if (= vbr_mode -1)
-                        ("preset" preset)
-                        ("mode" 4
-                         (if (= vbr_mode 0)
-                             ("bitrate" bitrate)
-                             ("vbr" vbr_mode "vbr-quality" (- 9 vbr_quality))))))
+                (gst-construct-element "lamemp3enc"
+                        (if (= encoding_mode 0)
+                                ("bitrate" bitrate "target" 1)
+                                (if (= encoding_mode 4)
+                                        ("quality" (- 9 vbr_quality) "target" 0)
+                                )
+                        )
+                )
                 (if (and 
-                    (!= vbr_mode 0) 
+                    (!= encoding_mode 0)
                     (gst-element-is-available "xingmux")) 
                         "xingmux" 
                         "")
@@ -35,15 +36,13 @@
                     "id3mux"))
         ]]>
         </process>
-        <variable id="vbr_mode">
-          <_name>VBR Mode</_name>
+        <variable id="encoding_mode">
+          <_name>Encoding Mode</_name>
           <control-type>combo</control-type>
           <default-value>0</default-value>
           <possible-values>
-            <_value value="0" disables="vbr_quality,preset" enables="bitrate" >Constant Bitrate</_value>
-            <_value value="4" disables="bitrate,preset" enables="vbr_quality">Variable Bitrate</_value>
-            <_value value="3" disables="bitrate,preset" enables="vbr_quality">Average Bitrate</_value>
-            <_value value="-1" disables="bitrate,vbr_quality" enables="preset">Preset</_value>
+            <_value value="0" disables="vbr_quality" enables="bitrate" >Constant Bitrate</_value>
+            <_value value="4" disables="bitrate" enables="vbr_quality">Variable Bitrate</_value>
           </possible-values>
         </variable>
         <variable id="vbr_quality">
@@ -54,7 +53,7 @@
           <max-value>9</max-value>
           <_max-label>Best</_max-label>
           <step-value>1</step-value>
-          <default-value>5</default-value>
+          <default-value>7</default-value>
         </variable>
         <variable id="bitrate">
           <_name>Bitrate</_name>
@@ -68,17 +67,6 @@
             <value value="192">192 Kbps</value>
             <value value="256">256 Kbps</value>
             <value value="320">320 Kbps</value>
-          </possible-values>
-        </variable>
-        <variable id="preset">
-          <_name>LAME Preset</_name>
-          <control-type>combo</control-type>
-          <default-value>standard</default-value>
-          <possible-values>
-            <_value value="medium">Medium</_value>
-            <_value value="standard">Standard</_value>
-            <_value value="extreme">Extreme</_value>
-            <_value value="insane">Insane</_value>
           </possible-values>
         </variable>
       </pipeline>
