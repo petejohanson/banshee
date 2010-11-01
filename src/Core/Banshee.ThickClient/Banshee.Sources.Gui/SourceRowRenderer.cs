@@ -245,8 +245,8 @@ namespace Banshee.Sources.Gui
             }
 
             // Hide the count if the title has no space
-            max_title_layout_width = cell_area.Width - (icon == null ? 0 : icon.Width) - count_layout_width - 10;
-            if (!hide_count && max_title_layout_width < 0) {
+            max_title_layout_width = cell_area.Width - x - count_layout_width;//(icon == null ? 0 : icon.Width) - count_layout_width - 10;
+            if (!hide_count && max_title_layout_width <= 0) {
                 hide_count = true;
             }
 
