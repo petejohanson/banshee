@@ -73,7 +73,11 @@ namespace Banshee.MediaEngine
 
         public virtual void Close (bool fullShutdown)
         {
-            Reset ();
+            if (fullShutdown) {
+                Reset ();
+            } else {
+                OnStateChanged (idle_state);
+            }
         }
 
         public virtual void Dispose ()
