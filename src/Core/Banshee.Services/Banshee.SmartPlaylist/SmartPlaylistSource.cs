@@ -575,7 +575,7 @@ namespace Banshee.SmartPlaylist
             StopTimer();
         }
 
-        public static void StartTimer (SmartPlaylistSource playlist)
+        private static void StartTimer (SmartPlaylistSource playlist)
         {
             // Check if the playlist is time-dependent, and if it is,
             // start the auto-refresh timer.
@@ -589,7 +589,7 @@ namespace Banshee.SmartPlaylist
             }
         }
 
-        public static void StopTimer ()
+        private static void StopTimer ()
         {
             // If the timer is going and there are no more time-dependent playlists,
             // stop the timer.
@@ -624,7 +624,7 @@ namespace Banshee.SmartPlaylist
             return true;
         }
 
-        public static void SortPlaylists () {
+        private static void SortPlaylists () {
             playlists.Sort (new DependencyComparer ());
         }
 
