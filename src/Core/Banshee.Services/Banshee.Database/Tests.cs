@@ -46,6 +46,7 @@ namespace Banshee.Database
         {
             Paths.ApplicationName = Application.InternalName;
 
+            int count = 0;
             foreach (string file in Directory.GetFiles (Path.Combine (TestsDir, "data"))) {
                 if (file.EndsWith (".db")) {
                     var db_file = file + ".test-tmp-copy";
@@ -58,6 +59,7 @@ namespace Banshee.Database
                         SortKeyUpdater.Disable = true;
                         ((IInitializeService)db).Initialize ();
                         Assert.IsTrue (db.ValidateSchema ());
+                        count++;
                     } catch (Exception e) {
                         Assert.Fail (String.Format ("Failed to migrate db: {0}", e));
                     } finally {
@@ -65,6 +67,7 @@ namespace Banshee.Database
                     }
                 }
             }
+            Assert.IsTrue (count > 0);
         }
     }
 }

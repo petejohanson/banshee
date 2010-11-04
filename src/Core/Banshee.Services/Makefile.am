@@ -220,6 +220,7 @@ SOURCES =  \
 	Banshee.Sources/SourceMergeType.cs \
 	Banshee.Sources/SourceMessage.cs \
 	Banshee.Sources/SourceSortType.cs \
+	Banshee.Sources/Tests.cs \
 	Banshee.Streaming/RadioTrackInfo.cs \
 	Banshee.Web/BaseHttpServer.cs \
 	Banshee.Web/Browser.cs \
