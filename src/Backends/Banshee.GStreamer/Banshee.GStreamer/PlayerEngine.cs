@@ -181,6 +181,11 @@ namespace Banshee.GStreamer
 
         protected override void Initialize ()
         {
+            if (ServiceManager.Get<Banshee.GStreamer.Service> () == null) {
+                var service = new Banshee.GStreamer.Service ();
+                ((IExtensionService)service).Initialize ();
+            }
+
             if (!bp_initialize_pipeline (handle)) {
                 bp_destroy (handle);
                 handle = new HandleRef (this, IntPtr.Zero);

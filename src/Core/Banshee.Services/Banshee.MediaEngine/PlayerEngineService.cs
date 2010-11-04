@@ -281,12 +281,12 @@ namespace Banshee.MediaEngine
 
         public void Open (SafeUri uri)
         {
-            OpenCheck (uri);
+            Open (new UnknownTrackInfo (uri));
         }
 
         void IPlayerEngineService.Open (string uri)
         {
-            OpenCheck (new SafeUri (uri));
+            Open (new SafeUri (uri));
         }
 
         public void SetNextTrack (TrackInfo track)
@@ -341,7 +341,7 @@ namespace Banshee.MediaEngine
             }
 
             try {
-                OpenCheck (track, true);
+                OpenCheck (track, play);
             } catch (Exception e) {
                 Log.Exception (e);
                 Log.Error (Catalog.GetString ("Problem with Player Engine"), e.Message, true);
@@ -552,7 +552,9 @@ namespace Banshee.MediaEngine
         }
 
         public TrackInfo CurrentTrack {
-            get { return active_engine.CurrentTrack ?? synthesized_contacting_track; }
+            get {
+                return active_engine.CurrentTrack ?? synthesized_contacting_track;
+            }
         }
 
         private Dictionary<string, object> dbus_sucks;

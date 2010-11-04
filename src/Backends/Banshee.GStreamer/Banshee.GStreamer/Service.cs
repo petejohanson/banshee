@@ -82,7 +82,10 @@ namespace Banshee.GStreamer
 
             gstreamer_initialize (debugging, native_log_handler);
 
-            ServiceManager.MediaProfileManager.Initialized += OnMediaProfileManagerInitialized;
+            var profile_manager = ServiceManager.MediaProfileManager;
+            if (profile_manager != null) {
+                profile_manager.Initialized += OnMediaProfileManagerInitialized;
+            }
         }
 
         private void OnMediaProfileManagerInitialized (object o, EventArgs args)
