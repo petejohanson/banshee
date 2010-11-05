@@ -68,6 +68,18 @@ namespace Banshee.Library.Tests
         }
 
         [Test]
+        public void TestMusicFileNamePattern()
+        {
+            var pattern = new MusicFileNamePattern ();
+            var track = new SampleTrackInfo ();
+
+            Assert.AreEqual ("The Beatles/Help!/07. Ticket to Ride", pattern.CreateFromTrackInfo (pattern.DefaultPattern, track));
+
+            track.TrackNumber = 0;
+            Assert.AreEqual ("The Beatles/Help!/Ticket to Ride", pattern.CreateFromTrackInfo (pattern.DefaultPattern, track));
+        }
+
+        [Test]
         public void CreateFromTrackInfo()
         {
             SampleTrackInfo track = new SampleTrackInfo();

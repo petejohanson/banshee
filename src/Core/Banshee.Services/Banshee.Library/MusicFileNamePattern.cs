@@ -49,7 +49,7 @@ namespace Banshee.Library
             SuggestedFolders = new string [] {
                 DefaultFolder,
                 "%album_artist%%path_sep%%album_artist% - %album%",
-                "%album_artist%%path_sep%%album% (%year%)",
+                "%album_artist%%path_sep%%album%{ (%year%)}",
                 "%album_artist% - %album%",
                 "%album%",
                 "%album_artist%"
@@ -57,10 +57,10 @@ namespace Banshee.Library
 
             SuggestedFiles   = new string [] {
                 DefaultFile,
-                "%track_number%. %track_artist% - %title%",
+                "{%track_number%. }%track_artist% - %title%",
                 "%track_artist% - %title%",
-                "%track_artist% - %track_number% - %title%",
-                "%track_artist% (%album%) - %track_number% - %title%",
+                "%track_artist% - {%track_number% - }%title%",
+                "%track_artist% (%album%) - {%track_number% - }%title%",
                 "%title%"
             };
 
