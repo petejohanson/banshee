@@ -345,9 +345,21 @@ namespace Banshee.Podcasting
             return true;
         }
 
-        private void OnCommandLineArgument (string uri, object value, bool isFile)
+        private void OnCommandLineArgument (string argument, object value, bool isFile)
         {
-            if (!isFile || String.IsNullOrEmpty (uri)) {
+            if (isFile) {
+                ProcessFile (argument, null);
+            } else if (argument == "podcast") {
+                var podcast = Hyena.Json.JsonObject.FromString (value as string);
+                if (podcast != null) {
+                    ProcessFile ((string)podcast["uri"], (string)podcast["name"]);
+                }
+            }
+        }
+
+        private void ProcessFile (string uri, string title)
+        {
+            if (String.IsNullOrEmpty (uri)) {
                 return;
             }
 
@@ -356,7 +368,7 @@ namespace Banshee.Podcasting
                 try {
                     OpmlParser opml_parser = new OpmlParser (uri, true);
                     foreach (string feed in opml_parser.Feeds) {
-                        ServiceManager.Get<DBusCommandService> ().PushFile (feed);
+                        ProcessFile (feed, title);
                     }
                 } catch (Exception e) {
                     Log.Exception (e);
@@ -369,7 +381,7 @@ namespace Banshee.Podcasting
                     uri = String.Format ("http://{0}", uri.Substring (8));
                 }
 
-                AddFeed (uri, null);
+                AddFeed (uri, title);
             } else if (uri.StartsWith ("itms://")) {
                 // Handle iTunes podcast URLs
                 System.Threading.ThreadPool.QueueUserWorkItem (delegate {
@@ -377,7 +389,7 @@ namespace Banshee.Podcasting
                         var feed = new ItmsPodcast (uri);
                         if (feed.FeedUrl != null) {
                             ThreadAssist.ProxyToMain (delegate {
-                                AddFeed (feed.FeedUrl, feed.Title);
+                                AddFeed (feed.FeedUrl, feed.Title ?? title);
                             });
                         }
                     } catch (Exception e) {

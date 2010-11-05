@@ -78,6 +78,15 @@ namespace InternetArchive
             return sb.ToString ();
         }
 
+        public string RssUrl {
+            get {
+                return String.Format (
+                    "http://www.archive.org/services/collection-rss.php?query={0}",
+                    System.Web.HttpUtility.UrlEncode (Query)
+                );
+            }
+        }
+
         public SearchResults GetResults ()
         {
             HttpWebResponse response = null;
