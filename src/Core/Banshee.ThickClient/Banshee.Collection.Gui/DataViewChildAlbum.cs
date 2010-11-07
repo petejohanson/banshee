@@ -77,7 +77,9 @@ namespace Banshee.Collection.Gui
 
         public double ImageSize {
             get { return img.ImageSize; }
-            set { img.ImageSize = value; }
+            set {
+                Width = img.ImageSize = value;
+            }
         }
 
 #if false

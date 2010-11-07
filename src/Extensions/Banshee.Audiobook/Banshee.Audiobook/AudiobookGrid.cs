@@ -76,11 +76,6 @@ namespace Banshee.Audiobook
             get { return true; }
         }
 
-        protected override Gdk.Size OnMeasureChild ()
-        {
-            return base.OnMeasureChild ();
-        }
-
         protected override bool OnPopupMenu ()
         {
             library.Actions["AudiobookBookPopup"].Activate ();
