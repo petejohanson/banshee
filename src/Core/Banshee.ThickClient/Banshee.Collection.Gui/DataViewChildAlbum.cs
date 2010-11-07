@@ -129,11 +129,7 @@ namespace Banshee.Collection.Gui
         protected override void ClippedRender (CellContext context)
         {
             var artwork_id = BoundObject as string;
-            if (artwork_id == null) {
-                return;
-            }
-
-            var image_surface = artwork_manager != null
+            var image_surface = artwork_id != null && artwork_manager != null
                 ? artwork_manager.LookupScaleSurface (artwork_id, (int)ImageSize, true)
                 : null;
 
