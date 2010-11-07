@@ -248,6 +248,10 @@ namespace Banshee.Dap
             get { return true; }
         }
 
+        public override bool CanSearch {
+            get { return false; }
+        }
+
         public override void SetStatus (string message, bool can_close, bool is_spinning, string icon_name)
         {
             base.SetStatus (message, can_close, is_spinning, icon_name);
