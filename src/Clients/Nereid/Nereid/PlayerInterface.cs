@@ -72,6 +72,7 @@ namespace Nereid
         private Widget cover_art_container;
         private ConnectedSeekSlider seek_slider;
         private TaskStatusIcon task_status;
+        private Alignment search_entry_align;
 
         // Major Interaction Components
         private SourceView source_view;
@@ -167,16 +168,16 @@ namespace Nereid
             BuildViews ();
             BuildFooter ();
 
-            var align = new Alignment (1.0f, 0.5f, 0f, 0f);
+            search_entry_align = new Alignment (1.0f, 0.5f, 0f, 0f);
             var box = new HBox () { Spacing = 2 };
             var grabber = new GrabHandle ();
             grabber.ControlWidthOf (view_container.SearchEntry, 150, 350, false);
             box.PackStart (grabber, false, false, 0);
             box.PackStart (view_container.SearchEntry, false, false, 0);
-            align.Child = box;
+            search_entry_align.Child = box;
 
-            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/SearchEntry", align);
-            align.ShowAll ();
+            ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/SearchEntry", search_entry_align);
+            search_entry_align.ShowAll ();
 
             primary_vbox.Show ();
             Add (primary_vbox);
@@ -445,7 +446,7 @@ namespace Nereid
             ThreadAssist.ProxyToMain (delegate {
                 Source source = ServiceManager.SourceManager.ActiveSource;
 
-                view_container.SearchSensitive = source != null && source.CanSearch;
+                search_entry_align.Visible = view_container.SearchSensitive = source != null && source.CanSearch;
 
                 if (source == null) {
                     return;
