@@ -116,13 +116,9 @@
 
     <menu name="HelpMenu" action="HelpMenuAction">
       <menuitem action="UserHelp"/>
-      <menu name="WebMenu" action="WebMenuAction">
-        <menuitem name="WikiGuide" action="WikiGuideAction"/>
-        <menuitem name="WikiSearchHelp" action="WikiSearchHelpAction"/>
-        <separator/>
-        <menuitem name="Wiki" action="WikiAction"/>
-        <menuitem name="WikiDeveloper" action="WikiDeveloperAction"/>
-      </menu>
+      <separator/>
+      <menuitem name="Wiki" action="WikiAction"/>
+      <menuitem name="WikiDeveloper" action="WikiDeveloperAction"/>
       <separator/>
       <menuitem name="VersionInformation" action="VersionInformationAction"/>
       <menuitem name="About" action="AboutAction"/>

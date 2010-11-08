@@ -91,15 +91,6 @@ namespace Banshee.Gui
                     Catalog.GetString ("_Contents"), "F1", null,
                     delegate { Banshee.ServiceStack.Application.DisplayHelp (null); }),
 
-                new ActionEntry ("WebMenuAction", null,
-                    Catalog.GetString ("_Web Resources"), null, null, null),
-
-                new ActionEntry ("WikiGuideAction", Stock.Help,
-                    Catalog.GetString ("Banshee _User Guide (Wiki)"), null,
-                    Catalog.GetString ("Learn about how to use Banshee"), delegate {
-                        Banshee.Web.Browser.Open ("http://banshee.fm/support/guide/");
-                    }),
-
                 new ActionEntry ("WikiSearchHelpAction", null,
                     Catalog.GetString ("Advanced Collection Searching"), null,
                     Catalog.GetString ("Learn advanced ways to search your media collection"), delegate {
