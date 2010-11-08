@@ -350,11 +350,6 @@ namespace Banshee.MediaEngine
             }
         }
 
-        private void OpenCheck (object o)
-        {
-            OpenCheck (o, false);
-        }
-
         private void OpenCheck (object o, bool play)
         {
             if (CurrentState == PlayerState.NotReady) {
