@@ -193,13 +193,6 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
             GError *error;
             gchar *debug;
             
-            // FIXME: This is to work around a bug in qtdemux in
-            // -good <= 0.10.6
-            if (message->src != NULL && message->src->name != NULL && 
-                strncmp (message->src->name, "qtdemux", 7) == 0) {
-                break;
-            }
-            
             _bp_pipeline_destroy (player);
             
             if (player->error_cb != NULL) {
