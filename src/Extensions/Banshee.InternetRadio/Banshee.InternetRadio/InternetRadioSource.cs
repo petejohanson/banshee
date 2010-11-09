@@ -83,16 +83,14 @@ namespace Banshee.InternetRadio
             Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search your stations"));
             Properties.SetString ("TrackEditorActionLabel", Catalog.GetString ("Edit Station"));
             Properties.Set<InvokeHandler> ("TrackEditorActionHandler", delegate {
-                ITrackModelSource active_track_model_source =
-                    (ITrackModelSource) ServiceManager.SourceManager.ActiveSource;
-
-                if (active_track_model_source.TrackModel.SelectedItems == null ||
-                    active_track_model_source.TrackModel.SelectedItems.Count <= 0) {
+                var track_actions = ServiceManager.Get<InterfaceActionService> ().TrackActions;
+                var tracks = track_actions.SelectedTracks;
+                if (tracks == null || tracks.Count <= 0) {
                     return;
                 }
 
-                foreach (TrackInfo track in active_track_model_source.TrackModel.SelectedItems) {
-                    DatabaseTrackInfo station_track = track as DatabaseTrackInfo;
+                foreach (var track in tracks) {
+                    var station_track = track as DatabaseTrackInfo;
                     if (station_track != null) {
                         EditStation (station_track);
                         return;

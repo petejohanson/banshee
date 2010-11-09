@@ -41,6 +41,7 @@ using Banshee.Collection.Database;
 
 using Gtk;
 using Banshee.Gui;
+using Selection = Hyena.Collections.Selection;
 
 namespace Banshee.AudioCd
 {
@@ -298,11 +299,11 @@ namespace Banshee.AudioCd
             disc_model.Reload ();
         }
 
-        public void RemoveSelectedTracks ()
+        public void RemoveTracks (Selection selection)
         {
         }
 
-        public void DeleteSelectedTracks ()
+        public void DeleteTracks (Selection selection)
         {
         }
 

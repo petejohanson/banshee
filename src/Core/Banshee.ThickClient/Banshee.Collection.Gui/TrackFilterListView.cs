@@ -48,9 +48,14 @@ namespace Banshee.Collection.Gui
 
             ForceDragSourceSet = true;
             HeaderVisible = false;
+            HasTrackContextMenu = true;
 
             RowActivated += OnRowActivated;
+
+            SelectionProxy.Changed += OnSelectionChanged;
         }
+
+        public bool HasTrackContextMenu { get; set; }
 
         protected override void OnModelReloaded ()
         {
@@ -64,25 +69,45 @@ namespace Banshee.Collection.Gui
             ServiceManager.PlaybackController.First ();
         }
 
-        // TODO add context menu for artists/albums...probably need a Banshee.Gui/ArtistActions.cs file.  Should
-        // make TrackActions.cs more generic with regards to the TrackSelection stuff, using the new properties
-        // set on the sources themselves that give us access to the IListView<T>.
-        /*protected override bool OnPopupMenu ()
+        protected override bool OnPopupMenu ()
         {
-            ServiceManager.Get<InterfaceActionService> ().TrackActions["TrackContextMenuAction"].Activate ();
+            if (!HasTrackContextMenu || (Selection is SelectAllSelection && Selection.AllSelected)) {
+                return false;
+            }
+
+            TrackActions["TrackContextMenuAction"].Activate ();
             return true;
-        }*/
+        }
 
         protected override bool OnFocusInEvent(Gdk.EventFocus evnt)
         {
-            ServiceManager.Get<InterfaceActionService> ().TrackActions.SuppressSelectActions ();
+            if (HasTrackContextMenu) {
+                TrackActions.FilterFocused = true;
+            }
             return base.OnFocusInEvent(evnt);
         }
 
         protected override bool OnFocusOutEvent(Gdk.EventFocus evnt)
         {
-            ServiceManager.Get<InterfaceActionService> ().TrackActions.UnsuppressSelectActions ();
+            if (HasTrackContextMenu) {
+                var focus = ServiceManager.Get<GtkElementsService> ().PrimaryWindow.Focus;
+                if (focus != this) {
+                    TrackActions.FilterFocused = false;
+                }
+            }
             return base.OnFocusOutEvent(evnt);
+        }
+
+        private void OnSelectionChanged (object o, EventArgs args)
+        {
+            if (HasTrackContextMenu && TrackActions.FilterFocused) {
+                TrackActions.UpdateActions ();
+            }
+        }
+
+        private TrackActions track_actions;
+        private TrackActions TrackActions {
+            get { return track_actions ?? (track_actions = ServiceManager.Get<InterfaceActionService> ().TrackActions); }
         }
 
 #region Drag and Drop

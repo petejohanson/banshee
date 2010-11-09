@@ -199,8 +199,8 @@ namespace Banshee.InternetArchive
 
         public bool HasDependencies { get { return false; } }
 
-        public void RemoveSelectedTracks () {}
-        public void DeleteSelectedTracks () {}
+        public void RemoveTracks (Selection selection) {}
+        public void DeleteTracks (Selection selection) {}
 
         public bool ConfirmRemoveTracks { get { return false; } }
 

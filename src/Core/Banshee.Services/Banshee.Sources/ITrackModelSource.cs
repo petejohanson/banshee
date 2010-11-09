@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using NDesk.DBus;
 
 using Banshee.Collection;
+using Hyena.Collections;
 
 namespace Banshee.Sources
 {
@@ -42,8 +43,8 @@ namespace Banshee.Sources
         void Reload ();
         bool HasDependencies { get; }
 
-        void RemoveSelectedTracks ();
-        void DeleteSelectedTracks ();
+        void RemoveTracks (Selection selection);
+        void DeleteTracks (Selection selection);
 
         bool CanAddTracks { get; }
         bool CanRemoveTracks { get; }

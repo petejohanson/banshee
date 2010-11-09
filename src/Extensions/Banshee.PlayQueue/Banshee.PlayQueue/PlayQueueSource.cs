@@ -320,18 +320,25 @@ namespace Banshee.PlayQueue
 
 #endregion
 
-        public override bool AddSelectedTracks (Source souce)
+        public override bool AddSelectedTracks (Source source, Selection selection)
         {
-            return AddSelectedTracks (souce, QueueMode.Normal);
+            return AddSelectedTracks (source, selection, QueueMode.Normal);
         }
 
         public bool AddSelectedTracks (Source source, QueueMode mode)
+        {
+            return AddSelectedTracks (source, null, mode);
+        }
+
+        public bool AddSelectedTracks (Source source, Selection selection, QueueMode mode)
         {
             if ((Parent == null || source == Parent || source.Parent == Parent) && AcceptsInputFromSource (source)) {
                 DatabaseTrackListModel model = (source as ITrackModelSource).TrackModel as DatabaseTrackListModel;
                 if (model == null) {
                     return false;
                 }
+
+                selection = selection ?? model.Selection;
 
                 long view_order = CalculateViewOrder (mode);
                 long max_view_order = MaxViewOrder;
@@ -344,10 +351,10 @@ namespace Banshee.PlayQueue
                     index = TrackModel.IndexOf (current_track);
                 }
 
-                WithTrackSelection (model, shuffler.RecordInsertions);
+                WithTrackSelection (model, selection, shuffler.RecordInsertions);
 
                 // Add the tracks to the end of the queue.
-                WithTrackSelection (model, AddTrackRange);
+                WithTrackSelection (model, selection, AddTrackRange);
 
                 if (mode != QueueMode.Normal) {
                     ShiftForAddedAfter (view_order, max_view_order);

@@ -36,6 +36,7 @@ using Hyena;
 using Banshee.MediaEngine;
 using Banshee.ServiceStack;
 using Banshee.Sources;
+using Banshee.Gui;
 
 namespace Banshee.PlayQueue
 {
@@ -163,7 +164,8 @@ namespace Banshee.PlayQueue
 
         private void AddSelectedToPlayQueue (QueueMode mode)
         {
-            playqueue.AddSelectedTracks (ServiceManager.SourceManager.ActiveSource, mode);
+            var track_actions = ServiceManager.Get<InterfaceActionService> ().TrackActions;
+            playqueue.AddSelectedTracks (ServiceManager.SourceManager.ActiveSource, track_actions.Selection, mode);
         }
 
         private void OnClearPlayQueue (object o, EventArgs args)

@@ -50,6 +50,7 @@ using Banshee.Collection;
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
 using Banshee.Lastfm;
+using Selection=Hyena.Collections.Selection;
 
 namespace Banshee.LastfmStreaming.Radio
 {
@@ -476,11 +477,11 @@ namespace Banshee.LastfmStreaming.Radio
             track_model.Reload ();
         }
 
-        public void RemoveSelectedTracks ()
+        public void RemoveTracks (Selection selection)
         {
         }
 
-        public void DeleteSelectedTracks ()
+        public void DeleteTracks (Selection selection)
         {
             throw new Exception ("Should not call DeleteSelectedTracks on StationSource");
         }

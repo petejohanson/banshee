@@ -244,10 +244,10 @@ namespace Banshee.Playlist
             AddTrack (track.TrackId);
         }
 
-        public override bool AddSelectedTracks (Source source)
+        public override bool AddSelectedTracks (Source source, Selection selection)
         {
             if (Parent == null || source == Parent || source.Parent == Parent) {
-                return base.AddSelectedTracks (source);
+                return base.AddSelectedTracks (source, selection);
             } else {
                 // Adding from a different primary source, so add to our primary source first
                 //PrimarySource primary = Parent as PrimarySource;
