@@ -355,15 +355,7 @@ namespace Banshee.Gui
         {
             ResetRating ();
             UpdateActions ();
-            var menu = ShowContextMenu ("/TrackContextMenu");
-            if (menu != null) {
-                menu.SelectionDone += OnMenuSelectionDone;
-            }
-        }
-
-        private void OnMenuSelectionDone (object o, EventArgs args)
-        {
-            (o as Menu).SelectionDone -= OnMenuSelectionDone;
+            ShowContextMenu ("/TrackContextMenu");
         }
 
         private bool RunSourceOverrideHandler (string sourceOverrideHandler)
