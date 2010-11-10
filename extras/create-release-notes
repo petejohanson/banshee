@@ -1,0 +1,124 @@
+#!/usr/bin/perl
+
+open (IN, '../NEWS');
+$news = '';
+while (my $line = readline(IN)) {
+    $news .= $line;
+}
+close (IN);
+
+# Parse various bits out of NEWS
+$news =~ m/WELCOME TO BANSHEE ([\S]+) -/ms;     $version = $1;
+$news =~ m/Released ([^\n]+)$/ms;               $release_date = $1;
+$news =~ m/banshee\/([^\/]+)\/$version/ms;      $stable = $1;
+
+$news =~ m/NEW AWESOME [^\n]+\n[^\n]+\n(.+)New Features Since [^:]+:(.+)Enhancements/ms;
+$desc = $1;
+
+$features = $2;
+$features =~ s!\*([^\n]+)\n([^\*]+)!<h4>$1</h4>\n<p>$2</p>\n!g;
+
+$news =~ m/Enhancements:(.+)Notable Bugs/ms;
+$enhancements = $1;
+$enhancements =~ s/ \*/ <li>/g;
+
+$news =~ m/Notable Bugs Fixed \(([^\)]+)\):\n([^=]+)==/ms;
+$bugs_since = $1;
+$bugs = $2;
+$bugs =~ s! bgo#(\d+): ([^\n]+)\n! <a href="http://bugzilla.gnome.org/show_bug.cgi?id=$1">bgo#$1</a>: $2\n!g;
+$bugs =~ s/ \*/ <li>/g;
+
+$news =~ m/there would be no release!(.+)The following people.+much more limited.(.+)Contributors In Pas.+--\n(.+)/ms;
+$contributors = $1;
+$translators = $2;
+$all_contributors = $3;
+
+$html = <<END;
+<ul>
+	<li><strong>Release Date:</strong> $release_date</li>
+	<li><strong>Source Tarball:</strong> <a href="http://download.banshee-project.org/banshee/$stable/$version/banshee-1-$version.tar.bz2">banshee-1-$version.tar.bz2</a></li>
+	<li><strong>Release Information:</strong>
+<a href="http://download.banshee-project.org/banshee/$stable/$version/banshee-1-$version.news">NEWS</a>,
+<a href="http://download.banshee-project.org/banshee/$stable/$version/banshee-1-$version.sha256sum">sha256sum</a></li>
+</ul>
+<p style="margin-left: 1.5em"><a href="/download"><img title="Download the latest Banshee!" src="/theme/css/images/download-button.png" alt="Download Now" /></a></p>
+
+<p>
+    $desc
+</p>
+
+$features
+<h3>Other Enhancements</h3>
+<ul>
+    $enhancements
+</ul>
+
+<h3>Notable Bug Fixes ($bugs_since!)</h3>
+<ul>
+    $bugs
+</ul>
+
+<h4>Banshee has a lot more to offer! Check out the previous major release notes...</h4>
+<ul>
+	<li><a href="/download/archives/1.8.0">Read about features added in Banshee 1.8.0</a></li>
+	<li><a href="/download/archives/1.7.6">Read about features added in Banshee 1.7.6</a></li>
+	<li><a href="/download/archives/1.7.5">Read about features added in Banshee 1.7.5</a></li>
+	<li><a href="/download/archives/1.7.4">Read about features added in Banshee 1.7.4</a></li>
+	<li><a href="/download/archives/1.7.3">Read about features added in Banshee 1.7.3</a></li>
+	<li><a href="/download/archives/1.7.2">Read about features added in Banshee 1.7.2</a></li>
+	<li><a href="/download/archives/1.7.1">Read about features added in Banshee 1.7.1</a></li>
+	<li><a href="/download/archives/1.7.0">Read about features added in Banshee 1.7.0</a></li>
+	<li><a href="/download/archives/1.6.0">Read about features added in Banshee 1.6.0</a></li>
+</ul>
+<h3>Dependencies</h3>
+<ul>
+	<li>Mono 1.9.1 (.NET 2.0 Profile / gmcs)</li>
+	<li>SQlite 3.4</li>
+	<li>Gtk# 2.12</li>
+	<li>GStreamer 0.10.13</li>
+	<li>NDesk DBus (ndesk-dbus) 0.5</li>
+	<li>NDesk DBus GLib (ndesk-dbus-glib) 0.3</li>
+	<li>Mono.Addins (mono-addins) 0.3.1</li>
+	<li>TagLib# (taglib-sharp) &gt;= 2.0.3.7</li>
+	<li>Required to build default feature stack:
+<ul>
+	<li>libmtp &gt;= 0.2.0</li>
+	<li>mono-zeroconf &gt;= 0.8.0</li>
+	<li>boo &gt;= 0.8.1</li>
+    <li>webkit-1.0 &gt;= 1.2.2</li>
+    <li>gdata-sharp &gt;= 1.4</li>
+    <li>glib &gt;= 2.22, gio-sharp &gt;= 2.22.2, gtk-sharp-beans &gt;= 2.14.1, gudev-sharp and gkeyfile-sharp</li>
+    <li>libgpod-sharp &gt;= 0.7.95</li>
+</ul>
+</li>
+	<li>Run-time requirements for default feature stack:
+<ul>
+	<li>GIO/udev</li>
+    <li>Brasero &gt;= 0.8.1</li>
+	<li>Avahi</li>
+    <li>gst-plugins-bad (providing the bpmdetect GStreamer plugin)</li>
+</ul>
+</li>
+</ul>
+<h3>Community</h3>
+<a name="contributors"></a>
+<h4>Contributors For This Release</h4>
+The following people directly contributed to the release of this version of Banshee. Without their help, there would be no release!
+<blockquote>
+    $contributors
+</blockquote>
+The following people contributed updated translations to this release.    Without them, our project's reach would be much more limited.
+<blockquote>
+    $translators
+</blockquote>
+<h4>Contributors In Past Releases</h4>
+<blockquote>
+    $all_contributors
+</blockquote>
+<h4>Reporting Bugs, Joining the Community</h4>
+If you encounter any bad behavior with this release, please do not hesitate to <a href="/contribute/file-bugs/">file bugs</a>!
+
+We welcome new contributors - developers, translators, artists, writers, support gurus - to join our community.  <a href="/contribute">Join us!</a>
+END
+
+print $html;
