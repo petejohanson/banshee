@@ -27,7 +27,7 @@
 //
 
 using System;
-using System.Data;
+
 using Banshee.Collection;
 using Hyena.Data.Sqlite;
 using Hyena.Query;

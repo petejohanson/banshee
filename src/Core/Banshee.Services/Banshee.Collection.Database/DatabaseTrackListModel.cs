@@ -28,7 +28,6 @@
 //
 
 using System;
-using System.Data;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -178,8 +177,8 @@ namespace Banshee.Collection.Database
 
         private void HandleCacheAggregatesUpdated (IDataReader reader)
         {
-            filtered_duration = TimeSpan.FromMilliseconds (reader.IsDBNull (1) ? 0 : Convert.ToInt64 (reader[1]));
-            filtered_filesize = reader.IsDBNull (2) ? 0 : Convert.ToInt64 (reader[2]);
+            filtered_duration = TimeSpan.FromMilliseconds (reader[1] == null ? 0 : Convert.ToInt64 (reader[1]));
+            filtered_filesize = reader[2] == null ? 0 : Convert.ToInt64 (reader[2]);
         }
 
         public override void Clear ()

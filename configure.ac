@@ -75,7 +75,6 @@ SHAMROCK_CHECK_MONO_MODULE(1.9.1)
 SHAMROCK_FIND_MONO_2_0_COMPILER
 SHAMROCK_FIND_MONO_RUNTIME
 SHAMROCK_CHECK_MONO_2_0_GAC_ASSEMBLIES([	
-	System.Data
 	Mono.Cairo
 	Mono.Posix
 	ICSharpCode.SharpZipLib
@@ -277,7 +276,6 @@ src/Hyena/Makefile
 src/Hyena/build/Makefile
 src/Hyena/build/pkg-config/Makefile
 src/Hyena/build/m4/Makefile
-src/Hyena/Mono.Data.Sqlite/Makefile
 src/Hyena/Hyena/Makefile
 src/Hyena/Hyena.Data.Sqlite/Makefile
 src/Hyena/Hyena.Gui/Makefile

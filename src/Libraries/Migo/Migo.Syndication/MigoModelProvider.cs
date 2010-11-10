@@ -69,7 +69,7 @@ namespace Migo.Syndication
             }
         }
 
-        public override T Load (System.Data.IDataReader reader)
+        public override T Load (IDataReader reader)
         {
             return GetCached (PrimaryKeyFor (reader)) ?? CacheResult (base.Load (reader));
         }

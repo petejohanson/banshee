@@ -72,7 +72,7 @@ run-perf: run-logged
 
 run-trace: $(MO_FILES)
 	(cd bin; $(MONO) \
-		--trace=$$(find . -name "*dll" | sed 's/\.\///' | sed 's/\.dll//' | sed 's/Mono.Data.Sqlite//' | sort | tr "\n" , | sed 's/,$$//') \
+		--trace=$$(find . -name "*dll" | sed 's/\.\///' | sed 's/\.dll//' | sort | tr "\n" , | sed 's/,$$//') \
 		Nereid.exe --uninstalled $(BANSHEE_DEV_OPTIONS) > ../banshee.trace)
 
 run-profile-heap: $(MO_FILES)

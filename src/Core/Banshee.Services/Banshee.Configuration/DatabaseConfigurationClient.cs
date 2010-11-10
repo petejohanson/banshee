@@ -26,7 +26,6 @@
  */
 
 using System;
-using System.Data;
 
 using Hyena.Data.Sqlite;
 
@@ -84,7 +83,7 @@ namespace Banshee.Configuration
             try {
                 using (IDataReader reader = Get (namespce, key)) {
                     if (reader.Read ()) {
-                        return (T) Convert.ChangeType (reader.GetString (0), typeof (T));
+                        return (T) Convert.ChangeType (reader[0], typeof (T));
                     } else {
                         return fallback;
                     }

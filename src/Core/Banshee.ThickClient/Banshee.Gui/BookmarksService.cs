@@ -27,7 +27,6 @@
 //
 
 using System;
-using System.Data;
 using System.Collections.Generic;
 using Gtk;
 using Mono.Unix;

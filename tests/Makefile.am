@@ -9,6 +9,7 @@ if ENABLE_TESTS
 TEST_ASSEMBLIES = \
 	Hyena.dll \
 	Hyena.Gui.dll \
+	Hyena.Data.Sqlite.dll \
 	Migo.dll \
 	Mono.Media.dll \
 	Banshee.Core.dll \
