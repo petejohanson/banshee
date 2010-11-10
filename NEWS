@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.8.0 - Released September 29, 2010
+WELCOME TO BANSHEE 1.9.0 - Released November 10, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -8,150 +8,80 @@ WELCOME TO BANSHEE 1.8.0 - Released September 29, 2010
     and video podcasts.  Sync your Android, iPod, and other devices. We think
     you'll love the new Banshee!"
 
-  * Learn More: http://banshee.fm/download/archives/1.8.0
+  * Learn More: http://banshee.fm/download/archives/1.9.0
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.8 is a stable release, the culmination of six month's work by 67
-    programmers, artists, documentation writers, and translators.  These
-    notes aggregate the highlights from the 1.7 development releases.
+    Banshee 1.9.0 is a development release, the first of the 1.9.x series
+    leading up to Banshee 2.0.
 
-    New Features Since 1.6:
+    New Features Since 1.8.0:
 
-      * Integrated AmazonMP3 Store
+      * Artist/Album Browser Track Actions
 
-            Browse, search, preview, buy, and download music straight into
-            your Banshee library from the US, UK, FR, DE, and JP AmazonMP3
-            stores.  See http://abock.org/2010/07/13/amazon-mp3-store-in-banshee
+            Track actions (play, queue, remove, delete, edit, properties)
+            now work for the artist and album browser too!  Right click an
+            artist or album to act on it, or click an album and press 'q' to
+            queue it.
 
-      * Miro Guide Podcast Directory
+      * 'Play After' Queue Options
 
-            Browse and subscribe to thousands of audio and video podcasts
-            listed on the non-profit run MiroGuide.com.
+            Want to listen to a track, album, or artist right after the playing
+            track, album, or artist?  The 'Play After' option will insert it
+            into the queue to make it happen.
 
-      * Improved Apple Device Support
+      * User Interface Improvements
 
-            iPhone, iTouch, iPad, and iPod devices are now supported via the
-            awesome libgpod library.
+            We have made several changes toward a cleaner and more usable UI.
+            We got rid of the active source's title bar.  Search is now beside
+            the volume button.  The source list has smaller icons, hidden
+            counts for the libraries, and named group-separators.  The seek
+            slider and search entry are resizable via their grips.
 
-      * Revamped Hardware Backend
-
-            Uses the latest Linux hardware stack, a combination of GIO, udev, and
-            media-player-info files, to provide support for CDs and
-            digital audio players.
-
-      * Keybinding for Switching Sources
-
-          Typing 'g' activates the source switcher, where you can type the name
-          of a source to switch to it.  You can type its acronym or a substring
-          as well. As soon as only one source matches, it will be activated.
-          For example, you can type 'g' and then 'np' to switch to Now Playing.
-
-      * Improved Audiobook Support
-
-          The Audiobooks library is now enabled by default, and audiobook
-          tracks are now better organized into books.  The last position in
-          each book is automatically saved, so you can resume playing a book
-          right from where you stopped.
-
-      * User Manual
-
-            Available via Help » Contents menu and F1.  Uses the latest
-            GNOME documentation technology, Mallard.
-
-      * Bulk Metadata Fixer
-
-            New extension for bulk metadata fixing to merge artists, albums,
-            and genres that vary only by case, '&' vs 'and', etc.
-
-      * MPRIS v2 support (Ubuntu Sound Menu, etc)
+            Podcasts episodes are now shown in a grid, with several lines of
+            description shown to help you find an appealing episode to enjoy.
 
     Enhancements:
 
-      * Now Playing simplify mode that declutters the UI
-      * Play Queue shuffle action
-      * Improve the downloading and visual refreshing of new cover art
-      * Many MeeGo specific improvements and fixes
-      * New preference to have the classic album layout instead of the grid view
-      * Support for reading and writing MusicBrainz IDs
-      * Show the TrackEditor fields as read-only mode when they are not editable
-      * Add metadata-saving support for File System Queue (bgo#609411)
-      * Decrease the latency in changing playback volume
-      * Overhaul GNOME proxy support (bmc#1920)
-      * Refresh podcast feeds when network is reconnected
-      * Miro Guide teaser in Podcasts
-      * Podcast errors shown to user
-      * Improved Last.fm authentication experience
-      * Last.fm streaming can be disabled separately from the other Last.fm
-        features.
-      * Play menu item in track context menu
-      * Wrap long strings in the Now Playing view
-      * Add visual separators in the source view between categories of sources
-      * Culturally format the status bar item count (e.g. in en_US 1,000
-        instead of the old 1000)
-      * Tweak the grid view album artwork hover effect
-      * Default smart playlists hidden when empty, for new users
-      * Begin editing the name of newly added playlists
-      * "Amazon MP3s" Music smart playlist
-      * Improved device support:
-          * Droid X, Galaxy Portal, Xperia X10, and DEXT/CLIQ device support
-          * Improved Maemo device support
-          * Better MTP device detection
-          * Put all videos in the video folder on MTP devices
+      * Album grid has tooltips for ellipsized text
+      * Subscribe to Internet Archive searches as podcasts
+      * MusicBrainz cover art search supports CDBaby and Jamendo
+      * Support Huawei Ideos Android phones
 
-    API Changes:
+    Notable Bugs Fixed (51 fixed since 1.8.0):
 
-      * DBus API additions for showing various dialogs
-      * New Banshee.WebBrowser API for creating embedded WebKit web browsers
-        and sources: used by the new Amazon MP3 store, Miro Guide, and the
-        Wikipedia context pane
-      * New Hyena.Downloader API for performing downloads and easy
-        HTTP operations: HttpFileDownloader, HttpStringDownloader
-
-    Notable Bugs Fixed (230 fixed since 1.6.0):
-
-      * Fix for fullscreen video under Mutter
-      * Fix videos playing back in a new window
-      * Fix crashes related to Gtk.Widget subclassing
-      * Fix crashes related to a11y
-      * NotificationArea fixes
-      * Cover art aspect ratio/scaling fixes
-      * Fix Youtube playback
-      * Fix deletion of Podcast metadata during modification
-      * Fix a crash related to the notification deamon
-      * Fix fetching cover for albums with several discs
-      * Several fixes for the N800 device
-      * Fix various volume-related issues
-      * bgo#621480: Fix Play Queue when using it with different locales
-      * bgo#621687: Fix the Internet Archive playback
-      * bgo#613333: Correct Play Queue track reordering
-      * bgo#624667: Fix cover art refreshing
-      * bgo#622826: Fix a slow running query to speed things up
-      * bgo#602840: Fix importing of compilation albums
-      * bgo#622028: Fix loading of libbnpx11.so on some distros
-      * bgo#621955: Wrap instead of elipsize Last.fm titles
-      * bgo#608382: Escape %20 in filenames for items without embedded metadata
-      * bgo#624531: Escape Uri value in SQL query
-      * bgo#588255: Fix notification icon transparency
-      * bgo#619036: Fix glitchy search entry
-      * bgo#624569: Fix scrolling Extensions list with keyboard
-      * bgo#553433: Fix issue that could block song scrobbling
-      * bgo#600340: Fix subscribing to certain podcasts (eg podbean.com)
-      * bgo#620826: Fix URIs of tracks synced to iPods
-      * bmc#1115:   Fix a pipeline deadlock evident on MeeGo
-      * bgo#626786: Prevent crash in search-for-artist when blank
-      * bgo#628388: Fix overflow bug with MTP playlists
-      * bgo#625683: Fixup checkboxes now clickable
-      * bgo#626928: Fetch podcast artwork asap
-      * bgo#626791: Catch crashes caused by missing extensions
-      * bgo#528383: Re-enable writing video metadata to file
-      * bgo#626803: Fix Ogg rating parsing in non-English locales
-      * bgo#628832: [MTP] Fix MTP-device memory issues breaking Playlists, Albums
-      * bgo#629095: [MTP] Fix MTP devices being named '???'
-      * bgo#629373: [MTP] Workaround MTP sigsegv bug
+      * Remove unused Mono.Addins.Gui dependency
+      * Fix checkbox hover prelight in Fixup
+      * Always grab search entry focus on ctrl+f
+      * [TrackEditor] Don't try to load metadata over HTTP
+      * [AppleDevice] Add a matching 'StopSync' call.  We had an unmatched StartSync call which meant that the Sync dialog would be displayed forever.
+      * bgo#587936: [AppleDevice] Sync the Sort* fields
+      * bgo#631172: [AppleDevice] Fix podcast support
+      * bgo#540503: Remove Jump... from context menu
+      * bgo#540525: Stop when the playing track is deleted
+      * bgo#545998: Sensitize and pluralize podcast actions appropriately
+      * bgo#609463: Equalizer distortion
+      * bgo#620010: Displaying random image for "All Albums"
+      * bgo#623441: Duplicates on import due to character encoding
+      * bgo#624734: Allow editing Radio stations again
+      * bgo#629005: Full-screen on multi-head displays
+      * bgo#629534: TaskStatusIcon missing-ctor crash
+      * bgo#630039: Concatenated and untranslatable string
+      * bgo#631277: Crash in when editing some tracks' metadata
+      * bgo#631687: Non-local tracks added to DAP without extensions
+      * bgo#631961: [Gio] Invalid cast exception
+      * bgo#632114: Hang when replaying video
+      * bgo#632246: Missing-ctor issue in SourceComboBox
+      * bgo#632420: [Booter] Use the MeeGo client if appropriate
+      * bgo#632715: [Bookmarks] UI not getting loaded
+      * bgo#633579: Fixup not getting reloaded correctly
+      * bgo#633764: [Dap] not transcoding some files when we should
+      * bgo#633841: Recognize webm as video
+      * bgo#634096: Empty track # in filename patterns
+      * bnc#642505: Insecure LD_LIBRARY_PATH
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -160,9 +90,9 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.8.0 Tarballs:
-      http://download.banshee.fm/banshee/stable/1.8.0/banshee-1-1.8.0.tar.bz2
-      http://download.banshee.fm/banshee/stable/1.8.0/banshee-1-1.8.0.tar.gz
+    * Banshee 1.9.0 Tarballs:
+      http://download.banshee.fm/banshee/stable/1.9.0/banshee-1-1.9.0.tar.bz2
+      http://download.banshee.fm/banshee/stable/1.9.0/banshee-1-1.9.0.tar.gz
 
 Packages
 --------
@@ -179,13 +109,13 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee.fm/banshee/stable/1.8.0/banshee-1-1.8.0.macosx.intel.dmg
+    * http://download.banshee.fm/banshee/stable/1.9.0/banshee-1-1.8.0.macosx.intel.dmg
 
 ChangeLogs & Checksums
 ----------------------
 
-    * http://download.banshee.fm/banshee/stable/1.8.0/banshee-1-1.8.0.changes
-    * http://download.banshee.fm/banshee/stable/1.8.0/banshee-1-1.8.0.sha256sum
+    * http://download.banshee.fm/banshee/stable/1.9.0/banshee-1-1.9.0.changes
+    * http://download.banshee.fm/banshee/stable/1.9.0/banshee-1-1.9.0.sha256sum
 
 
 ===============================================================================
@@ -256,7 +186,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee.fm/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.8.0
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.9.0
 
 
 ===============================================================================
