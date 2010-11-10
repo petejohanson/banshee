@@ -49,6 +49,7 @@ namespace Banshee.Gui
         private Gtk.Action play_pause_action;
         private PlaybackRepeatActions repeat_actions;
         private PlaybackShuffleActions shuffle_actions;
+        private PlaybackSubtitleActions subtitle_actions;
 
         public PlaybackRepeatActions RepeatActions {
             get { return repeat_actions; }
@@ -56,6 +57,10 @@ namespace Banshee.Gui
 
         public PlaybackShuffleActions ShuffleActions {
             get { return shuffle_actions; }
+        }
+
+        public PlaybackSubtitleActions SubtitleActions {
+            get { return subtitle_actions; }
         }
 
         public PlaybackActions () : base ("Playback")
@@ -116,6 +121,7 @@ namespace Banshee.Gui
 
             repeat_actions = new PlaybackRepeatActions (Actions);
             shuffle_actions = new PlaybackShuffleActions (Actions, this);
+            subtitle_actions = new PlaybackSubtitleActions (Actions);
         }
 
         private void OnPlayerEvent (PlayerEventArgs args)
@@ -144,9 +150,12 @@ namespace Banshee.Gui
             }
 
             switch (args.Current) {
+                case PlayerState.Loaded:
+                    ShowStopAction ();
+                    subtitle_actions.ReloadEmbeddedSubtitle ();
+                    break;
                 case PlayerState.Contacting:
                 case PlayerState.Loading:
-                case PlayerState.Loaded:
                 case PlayerState.Playing:
                     ShowStopAction ();
                     break;

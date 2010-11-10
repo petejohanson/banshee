@@ -691,6 +691,47 @@ namespace Banshee.GStreamer
             }
         }
 
+        public override int SubtitleCount {
+            get { return bp_get_subtitle_count (handle); }
+        }
+
+        public override int SubtitleIndex {
+            set { bp_set_subtitle (handle, value); }
+        }
+
+        public override SafeUri SubtitleUri {
+            set {
+                if (value != null) {
+                    IntPtr uri_ptr = GLib.Marshaller.StringToPtrGStrdup (value.AbsoluteUri);
+                    try {
+                        bp_set_subtitle_uri (handle, uri_ptr);
+                    } finally {
+                        GLib.Marshaller.Free (uri_ptr);
+                    }
+                }
+            }
+            get {
+                IntPtr uri_ptr = IntPtr.Zero;
+                try {
+                    uri_ptr = bp_get_subtitle_uri (handle);
+                    string uri = GLib.Marshaller.Utf8PtrToString (uri_ptr);
+                    return new SafeUri(uri);
+                } finally {
+                    GLib.Marshaller.Free (uri_ptr);
+                }
+            }
+        }
+
+        public override string GetSubtitleDescription (int index)
+        {
+            IntPtr desc_ptr = IntPtr.Zero;
+            try {
+                desc_ptr = bp_get_subtitle_description (handle, index);
+                return GLib.Marshaller.Utf8PtrToString (desc_ptr);
+            } finally {
+                GLib.Marshaller.Free (desc_ptr);
+            }
+        }
 
 #region ISupportClutter
 
@@ -949,5 +990,20 @@ namespace Banshee.GStreamer
 
         [DllImport ("libbanshee.dll")]
         private static extern IntPtr clutter_gst_video_sink_new (IntPtr texture);
-    }
+
+        [DllImport ("libbanshee.dll")]
+        private static extern int bp_get_subtitle_count (HandleRef player);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern void bp_set_subtitle (HandleRef player, int index);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern void bp_set_subtitle_uri (HandleRef player, IntPtr uri);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern IntPtr bp_get_subtitle_uri (HandleRef player);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern IntPtr bp_get_subtitle_description (HandleRef player, int index);
+   }
 }

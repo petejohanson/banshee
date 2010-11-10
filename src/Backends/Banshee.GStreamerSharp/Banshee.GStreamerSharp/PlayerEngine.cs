@@ -175,6 +175,13 @@ namespace Banshee.GStreamerSharp
             OnStateChanged (PlayerState.Paused);
         }
 
+        public override string GetSubtitleDescription (int index)
+        {
+            return playbin.GetTextTags (index)
+             .GetTag (Gst.Tag.LanguageCode)
+             .FirstOrDefault (t => t != null);
+        }
+
         public override ushort Volume {
             get { return (ushort) Math.Round (playbin.Volume * 100.0); }
             set { playbin.Volume = (value / 100.0); }
@@ -228,6 +235,23 @@ namespace Banshee.GStreamerSharp
 
         public override VideoDisplayContextType VideoDisplayContextType {
             get { return VideoDisplayContextType.Unsupported; }
+        }
+
+        public override int SubtitleCount {
+            get { return playbin.NText; }
+        }
+
+        public override int SubtitleIndex {
+            set {
+                if (value >= 0 && value < SubtitleCount) {
+                    playbin.CurrentText = value;
+                }
+            }
+        }
+
+        public override SafeUri SubtitleUri {
+            set { playbin.Suburi = value.AbsoluteUri; }
+            get { return playbin.Suburi; }
         }
     }
 }

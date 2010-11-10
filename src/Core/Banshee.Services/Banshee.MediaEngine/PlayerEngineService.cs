@@ -534,6 +534,11 @@ namespace Banshee.MediaEngine
                 CurrentState == PlayerState.Contacting;
         }
 
+        public string GetSubtitleDescription (int index)
+        {
+            return active_engine.GetSubtitleDescription (index);
+        }
+
         private void CheckPending ()
         {
             if (pending_engine != null && pending_engine != active_engine) {
@@ -624,6 +629,19 @@ namespace Banshee.MediaEngine
 
         public bool SupportsEqualizer {
             get { return ((active_engine is IEqualizer) && active_engine.SupportsEqualizer); }
+        }
+
+        public int SubtitleCount {
+            get { return active_engine.SubtitleCount; }
+        }
+
+        public int SubtitleIndex {
+            set { active_engine.SubtitleIndex = value; }
+        }
+
+        public SafeUri SubtitleUri {
+            set { active_engine.SubtitleUri = value; }
+            get { return active_engine.SubtitleUri; }
         }
 
         public VideoDisplayContextType VideoDisplayContextType {

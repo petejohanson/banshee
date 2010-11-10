@@ -41,6 +41,7 @@
 #include <gdk/gdk.h>
 #include <gst/fft/gstfftf32.h>
 #include <gst/pbutils/pbutils.h>
+#include <gst/tag/tag.h>
 
 #if defined(GDK_WINDOWING_X11)
 #  include <gdk/gdkx.h>
