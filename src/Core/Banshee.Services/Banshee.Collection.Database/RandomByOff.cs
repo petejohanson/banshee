@@ -25,6 +25,8 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
+
 using Mono.Unix;
 
 namespace Banshee.Collection.Database
@@ -43,16 +45,6 @@ namespace Banshee.Collection.Database
         public override bool Next (DateTime after)
         {
             return false;
-        }
-
-        public override TrackInfo GetPlaybackTrack (DateTime after)
-        {
-            return null;
-        }
-
-        public override DatabaseTrackInfo GetShufflerTrack (DateTime after)
-        {
-            return null;
         }
 
         #endregion

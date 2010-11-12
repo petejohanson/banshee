@@ -27,16 +27,16 @@
 //
 
 using System;
+using System.Collections.Generic;
+
+using Mono.Unix;
 
 using Banshee.PlaybackController;
-using Mono.Unix;
 
 namespace Banshee.Collection.Database
 {
     public class RandomByScore : RandomBySlot
     {
-        private static string track_condition = String.Format ("AND (CoreTracks.Score BETWEEN ? AND ? OR (? = 50 AND CoreTracks.Score = 0)) {0} ORDER BY RANDOM()", RANDOM_CONDITION);
-
         public RandomByScore () : base ("score")
         {
             Label = Catalog.GetString ("Shuffle by S_core");
@@ -47,27 +47,15 @@ namespace Banshee.Collection.Database
             OrderBy = "RANDOM()";
         }
 
-        public override TrackInfo GetPlaybackTrack (DateTime after)
+        protected override IEnumerable<object> GetConditionParameters (DateTime after)
         {
             int min = slot * 100 / Slots + 1;
             int max = (slot + 1) * 100 / Slots;
 
-            var track = !IsReady ? null : Cache.GetSingleWhere (track_condition, min, max, max, after, after);
+            yield return min;
+            yield return max;
+            yield return max;
             Reset ();
-            return track;
-        }
-
-        public override DatabaseTrackInfo GetShufflerTrack (DateTime after)
-        {
-            if (!IsReady)
-                return null;
-
-            int min = slot * 100 / Slots + 1;
-            int max = (slot + 1) * 100 / Slots;
-
-            var track = GetTrack (ShufflerQuery, min, max, max, after);
-            Reset ();
-            return track;
         }
 
         protected override int Slots {

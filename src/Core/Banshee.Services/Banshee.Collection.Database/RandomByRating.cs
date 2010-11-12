@@ -31,6 +31,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 using Banshee.PlaybackController;
 using Mono.Unix;
@@ -39,8 +40,6 @@ namespace Banshee.Collection.Database
 {
     public class RandomByRating : RandomBySlot
     {
-        private static string track_condition = String.Format ("AND (CoreTracks.Rating = ? OR (? = 3 AND CoreTracks.Rating = 0)) {0} ORDER BY RANDOM()", RANDOM_CONDITION);
-
         public RandomByRating () : base ("rating")
         {
             Label = Catalog.GetString ("Shuffle by _Rating");
@@ -51,21 +50,11 @@ namespace Banshee.Collection.Database
             OrderBy = "RANDOM()";
         }
 
-        public override TrackInfo GetPlaybackTrack (DateTime after)
+        protected override IEnumerable<object> GetConditionParameters (DateTime after)
         {
-            var track = !IsReady ? null : Cache.GetSingleWhere (track_condition, slot + 1, slot + 1, after, after);
+            yield return slot + 1;
+            yield return slot + 1;
             Reset ();
-            return track;
-        }
-
-        public override DatabaseTrackInfo GetShufflerTrack (DateTime after)
-        {
-            if (!IsReady)
-                return null;
-
-            var track = GetTrack (ShufflerQuery, slot + 1, slot + 1, after);
-            Reset ();
-            return track;
         }
 
         protected override int Slots {

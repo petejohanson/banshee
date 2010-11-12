@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 using Hyena;
 using Hyena.Data;
@@ -40,8 +41,6 @@ namespace Banshee.Collection.Database
 {
     public class RandomByTrack : RandomBy
     {
-        private static string track_condition = String.Format ("{0} ORDER BY RANDOM()", RANDOM_CONDITION);
-
         public RandomByTrack () : base ("song")
         {
             Label = Catalog.GetString ("Shuffle by _Song");
@@ -55,16 +54,6 @@ namespace Banshee.Collection.Database
         public override bool Next (DateTime after)
         {
             return true;
-        }
-
-        public override TrackInfo GetPlaybackTrack (DateTime after)
-        {
-            return Cache.GetSingleWhere (track_condition, after, after);
-        }
-
-        public override DatabaseTrackInfo GetShufflerTrack (DateTime after)
-        {
-            return GetTrack (ShufflerQuery, after);
         }
     }
 }

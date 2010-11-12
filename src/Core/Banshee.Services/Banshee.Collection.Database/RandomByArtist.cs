@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 using Hyena;
 using Hyena.Data;
@@ -40,7 +41,6 @@ namespace Banshee.Collection.Database
 {
     public class RandomByArtist : RandomBy
     {
-        private static string track_condition = String.Format ("AND CoreAlbums.ArtistID = ? {0} ORDER BY CoreTracks.Year, CoreTracks.AlbumID ASC, Disc ASC, TrackNumber ASC", RANDOM_CONDITION);
         private HyenaSqliteCommand query;
         private int? id;
 
@@ -79,17 +79,9 @@ namespace Banshee.Collection.Database
             return IsReady;
         }
 
-        public override TrackInfo GetPlaybackTrack (DateTime after)
+        protected override IEnumerable<object> GetConditionParameters (DateTime after)
         {
-            return id == null ? null : Cache.GetSingleWhere (track_condition, (int)id, after, after);
-        }
-
-        public override DatabaseTrackInfo GetShufflerTrack (DateTime after)
-        {
-            if (id == null)
-                return null;
-
-            return GetTrack (ShufflerQuery, (int)id, after);
+            yield return id == null ? (int)0 : (int)id;
         }
 
         private HyenaSqliteCommand Query {

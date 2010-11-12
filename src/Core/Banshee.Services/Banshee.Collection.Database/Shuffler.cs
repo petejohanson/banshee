@@ -71,16 +71,16 @@ namespace Banshee.Collection.Database
 
         public IList<RandomBy> RandomModes { get { return random_modes; } }
 
-        private Shuffler ()
-        {
-            random_modes = new List<RandomBy> ();
-            AddinManager.AddExtensionNodeHandler ("/Banshee/PlaybackController/ShuffleModes", OnExtensionChanged);
-        }
-
         public Shuffler (string id) : this ()
         {
             Id = id;
             LoadOrCreate ();
+        }
+
+        private Shuffler ()
+        {
+            random_modes = new List<RandomBy> ();
+            AddinManager.AddExtensionNodeHandler ("/Banshee/PlaybackController/ShuffleModes", OnExtensionChanged);
         }
 
         private void OnExtensionChanged (object o, ExtensionNodeEventArgs args)
