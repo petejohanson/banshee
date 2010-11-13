@@ -49,7 +49,7 @@ namespace Banshee.Collection.Database
 
     public class Shuffler
     {
-        public static readonly Shuffler Playback = new Shuffler () { Id = "playback", DbId = 0 };
+        public static readonly Shuffler Playback = new Shuffler (true);
 
         private static string shuffles_sql = "INSERT OR REPLACE INTO CoreShuffles (ShufflerID, LastShuffledAt, TrackID) ";
         private static string modify_sql   = "INSERT OR REPLACE INTO CoreShuffleModifications (ShufflerID, LastModifiedAt, ModificationType, TrackID) ";
@@ -62,6 +62,7 @@ namespace Banshee.Collection.Database
         private List<RandomBy> random_modes;
         private Dictionary<TypeExtensionNode, RandomBy> node_map = new Dictionary<TypeExtensionNode, RandomBy> ();
         private DatabaseTrackListModel model;
+        private TrackInfo last_track;
 
         public string Id { get; private set; }
         public int DbId { get; private set; }
@@ -70,6 +71,18 @@ namespace Banshee.Collection.Database
         public Action<RandomBy> RandomModeRemoved;
 
         public IList<RandomBy> RandomModes { get { return random_modes; } }
+
+        private Shuffler (bool playback) : this ()
+        {
+            Id = "playback";
+            DbId = 0;
+            ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent, Banshee.MediaEngine.PlayerEvent.StartOfStream);
+        }
+
+        private void OnPlayerEvent (Banshee.MediaEngine.PlayerEventArgs args)
+        {
+            last_track = ServiceManager.PlayerEngine.CurrentTrack;
+        }
 
         public Shuffler (string id) : this ()
         {
@@ -203,6 +216,10 @@ namespace Banshee.Collection.Database
 
             var random = random_modes.FirstOrDefault (r => r.Id == mode);
             if (random != null) {
+                if (last_track != null && !resetSinceTime) {
+                    random.SetLastTrack (last_track);
+                }
+
                 if (!random.IsReady) {
                     if (!random.Next (random_began_at) && repeat) {
                         random_began_at = last_random;

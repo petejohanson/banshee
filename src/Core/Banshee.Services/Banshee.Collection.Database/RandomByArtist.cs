@@ -79,6 +79,17 @@ namespace Banshee.Collection.Database
             return IsReady;
         }
 
+        public override void SetLastTrack (TrackInfo track)
+        {
+            var dbtrack = track as DatabaseTrackInfo;
+            if (dbtrack != null) {
+                var new_id = dbtrack.Album.ArtistId;
+                if (new_id != id) {
+                    id = new_id;
+                }
+            }
+        }
+
         protected override IEnumerable<object> GetConditionParameters (DateTime after)
         {
             yield return id == null ? (int)0 : (int)id;

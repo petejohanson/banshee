@@ -193,6 +193,10 @@ namespace Banshee.Collection.Database
             };
         }
 
+        public virtual void SetLastTrack (TrackInfo track)
+        {
+        }
+
         protected virtual IEnumerable<object> GetConditionParameters (DateTime after)
         {
             yield break;
