@@ -287,6 +287,7 @@ namespace Banshee.Tests
         {
             Gtk.Application.Init ();
             ThreadAssist.InitializeMainThread ();
+            ThreadAssist.ProxyToMainHandler = Banshee.ServiceStack.Application.Invoke;
             Application.PushClient (client);
             Application.Run ();
 
