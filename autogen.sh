@@ -90,7 +90,7 @@ fi
 
 { cat <<EOF
 #!/usr/bin/env bash
-./autogen.sh $@
+./autogen.sh $@ \$@
 EOF
 } > reautogen.sh
 chmod +x reautogen.sh
