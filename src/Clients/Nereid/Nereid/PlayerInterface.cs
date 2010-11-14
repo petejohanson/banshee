@@ -285,9 +285,15 @@ namespace Nereid
                 Gdk.Colormap.System.AllocColor (ref color, true, true);
                 source_view.ModifyBase (StateType.Normal, color);
             } else {
-                var hyena_source_scroll = new Hyena.Widgets.ScrolledWindow ();
-                hyena_source_scroll.AddWithFrame (source_view);
-                source_scroll = hyena_source_scroll;
+                Hyena.Widgets.ScrolledWindow window;
+                if (ApplicationContext.CommandLine.Contains ("smooth-scroll")) {
+                    window = new Hyena.Widgets.SmoothScrolledWindow ();
+                } else {
+                    window = new Hyena.Widgets.ScrolledWindow ();
+                }
+
+                window.AddWithFrame (source_view);
+                source_scroll = window;
             }
 
             composite_view.TrackView.HeaderVisible = false;
