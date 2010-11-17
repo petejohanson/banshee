@@ -260,8 +260,10 @@ namespace Nereid
         public bool SearchSensitive {
             get { return search_entry.Sensitive; }
             set {
-                search_entry.Sensitive = value;
-                search_entry.Visible = value;
+                if (search_entry.Visible != value) {
+                    search_entry.Sensitive = value;
+                    search_entry.Visible = value;
+                }
             }
         }
     }

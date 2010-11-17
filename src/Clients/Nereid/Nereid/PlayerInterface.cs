@@ -138,7 +138,6 @@ namespace Nereid
 
             ActionService.SourceActions.SourceView = this;
             composite_view.TrackView.HasFocus = true;
-            OnActiveSourceChanged (null);
 
             Log.DebugTimerPrint (timer, "Constructed Nereid interface: {0}");
 
@@ -177,6 +176,7 @@ namespace Nereid
             search_entry_align.Child = box;
 
             ActionService.PopulateToolbarPlaceholder (header_toolbar, "/HeaderToolbar/SearchEntry", search_entry_align);
+            search_entry_align.Visible = view_container.SearchSensitive = true;
             search_entry_align.ShowAll ();
 
             primary_vbox.Show ();
