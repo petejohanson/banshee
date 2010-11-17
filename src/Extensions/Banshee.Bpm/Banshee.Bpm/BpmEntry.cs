@@ -85,6 +85,7 @@ namespace Banshee.Bpm
             bpm_entry.Digits = 0;
             bpm_entry.Numeric = true;
             bpm_entry.ValueChanged += OnChanged;
+            bpm_entry.Output += OnOutput;
             Add (bpm_entry);
 
             if (detector != null) {
@@ -184,6 +185,18 @@ namespace Banshee.Bpm
                 Gtk.ActionGroup actions = ServiceManager.Get<InterfaceActionService> ().PlaybackActions;
                 (actions["StopWhenFinishedAction"] as Gtk.ToggleAction).Active = true;
             }
+        }
+
+        private void OnOutput (object o, OutputArgs args)
+        {
+            SpinButton entry = (SpinButton) o;
+
+            if (0 == entry.ValueAsInt) {
+                entry.Text = "";
+            } else {
+                entry.Text = entry.ValueAsInt.ToString();
+            }
+            args.RetVal = true;
         }
     }
 }

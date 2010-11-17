@@ -74,6 +74,8 @@ namespace Banshee.Gui.TrackEditor
 
             from_entry.ValueChanged += OnChanged;
             to_entry.ValueChanged += OnChanged;
+            from_entry.Output += OnOutput;
+            to_entry.Output += OnOutput;
         }
 
         public void SetAsReadOnly ()
@@ -84,6 +86,17 @@ namespace Banshee.Gui.TrackEditor
 
         protected override bool OnMnemonicActivated (bool group_cycling) {
             return from_entry.MnemonicActivate(group_cycling);
+        }
+
+        protected void OnOutput (object o, OutputArgs args) {
+            SpinButtonEntry entry = (SpinButtonEntry) o;
+
+            if (0 == entry.ValueAsInt) {
+                entry.Text = "";
+            } else {
+                entry.Text = entry.ValueAsInt.ToString();
+            }
+            args.RetVal = true;
         }
 
         private class AutoOrderButton : Button
