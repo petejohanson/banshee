@@ -118,7 +118,7 @@ namespace Banshee.Gui.Widgets
 
             hbox.PackStart (box, true, true, 0);
 
-            grabber = new Hyena.Widgets.GrabHandle ();
+            grabber = new Hyena.Widgets.GrabHandle () { NoShowAll = true };
             grabber.ControlWidthOf (seek_slider, 125, 1024, true);
 
             hbox.PackStart (grabber, true, true, 0);
