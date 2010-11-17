@@ -136,8 +136,9 @@ namespace Banshee.Bpm
             set { bpm_entry.Value = value; }
         }
 
-        protected override bool OnMnemonicActivated (bool group_cycling) {
-            return bpm_entry.MnemonicActivate(group_cycling);
+        protected override bool OnMnemonicActivated (bool group_cycling)
+        {
+            return bpm_entry.MnemonicActivate (group_cycling);
         }
 
         private void OnChanged (object o, EventArgs args)
@@ -194,7 +195,7 @@ namespace Banshee.Bpm
             if (0 == entry.ValueAsInt) {
                 entry.Text = "";
             } else {
-                entry.Text = entry.ValueAsInt.ToString();
+                entry.Text = entry.ValueAsInt.ToString ();
             }
             args.RetVal = true;
         }
