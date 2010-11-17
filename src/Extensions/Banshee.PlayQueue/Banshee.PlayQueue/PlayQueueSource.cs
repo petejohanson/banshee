@@ -497,6 +497,14 @@ namespace Banshee.PlayQueue
 
         private void Clear (bool disposing)
         {
+            if (Populate) {
+                if (disposing) {
+                    PopulateModeSchema.Set ("off");
+                } else {
+                    header_widget.SetManual ();
+                }
+            }
+
             ServiceManager.DbConnection.Execute (@"
                 DELETE FROM CorePlaylistEntries
                 WHERE PlaylistID = ?", DbId
@@ -536,7 +544,7 @@ namespace Banshee.PlayQueue
                 header_widget = null;
             }
 
-            if (!Populate && ClearOnQuitSchema.Get ()) {
+            if (ClearOnQuitSchema.Get ()) {
                 Clear (true);
             }
         }

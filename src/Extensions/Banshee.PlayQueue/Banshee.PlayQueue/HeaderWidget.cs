@@ -99,6 +99,11 @@ namespace Banshee.PlayQueue
             shuffler.RandomModeRemoved += (r) => mode_combo.Remove (r);
         }
 
+        public void SetManual () {
+            ThreadAssist.AssertInMainThread ();
+            mode_combo.ActiveValue = mode_combo.Default;
+        }
+
         private void OnModeComboChanged (object o, EventArgs args)
         {
             var random_by = mode_combo.ActiveValue;

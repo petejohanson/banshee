@@ -220,8 +220,7 @@ namespace Banshee.PlayQueue
                 UpdateAction ("RefreshPlayQueueAction", playqueue.Populate);
                 UpdateAction ("AddPlayQueueTracksAction", playqueue.Populate);
                 UpdateAction ("ShufflePlayQueue", !playqueue.Populate, playqueue.Count > 1);
-                UpdateAction ("ClearPlayQueueAction", !playqueue.Populate, playqueue.Count > 0);
-                UpdateAction ("ClearPlayQueueOnQuitAction", !playqueue.Populate);
+                UpdateAction ("ClearPlayQueueAction", true, playqueue.Count > 0);
                 UpdateAction ("AddToPlayQueueAction", db_source != null && db_source != playqueue, true);
             }
         }
