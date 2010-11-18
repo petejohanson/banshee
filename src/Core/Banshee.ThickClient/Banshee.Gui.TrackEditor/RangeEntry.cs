@@ -98,7 +98,7 @@ namespace Banshee.Gui.TrackEditor
             } else {
                 entry.Text = entry.ValueAsInt.ToString ();
             }
-            args.RetVal = true;
+            args.RetVal = 1;
         }
 
         private class AutoOrderButton : Button

@@ -197,7 +197,7 @@ namespace Banshee.Bpm
             } else {
                 entry.Text = entry.ValueAsInt.ToString ();
             }
-            args.RetVal = true;
+            args.RetVal = 1;
         }
     }
 }
