@@ -87,9 +87,10 @@ bp_next_track_starting (BansheePlayer *player)
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
     g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), FALSE);
 
-    // Work around BGO #602437 - gapless transition between tracks with 
+    // FIXME: Work around BGO #602437 - gapless transition between tracks with 
     // video streams results in broken behaviour - most obviously, huge A/V
     // sync issues.
+    // Will be in GStreamer 0.10.31
     has_video = bp_stream_has_video (player->playbin);
     if (player->in_gapless_transition && has_video) {
         gchar *uri;
