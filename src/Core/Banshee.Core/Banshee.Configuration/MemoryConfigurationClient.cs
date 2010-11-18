@@ -35,38 +35,9 @@ namespace Banshee.Configuration
     {
         private Dictionary<string, object> config = new Dictionary<string, object> ();
 
-#region Helper Overrides
-
-        public T Get<T> (SchemaEntry<T> entry)
-        {
-            return Get (entry.Namespace, entry.Key, entry.DefaultValue);
-        }
-
-        public T Get<T> (SchemaEntry<T> entry, T fallback)
-        {
-            return Get (entry.Namespace, entry.Key, fallback);
-        }
-
-        public T Get<T> (string key, T fallback)
-        {
-            return Get (null, key, fallback);
-        }
-
-        public void Set<T> (SchemaEntry<T> entry, T value)
-        {
-            Set (entry.Namespace, entry.Key, value);
-        }
-
-        public void Set<T> (string key, T value)
-        {
-            Set (null, key, value);
-        }
-
-#endregion
-
 #region Implementation
 
-        public T Get<T> (string namespce, string key, T fallback)
+        public bool TryGet<T> (string namespce, string key, out T result)
         {
             lock (this) {
                 string fq_key = MakeKey (namespce, key);
@@ -74,13 +45,16 @@ namespace Banshee.Configuration
 
                 if (config.TryGetValue (fq_key, out value)) {
                     if (value == null) {
-                        return default (T);
+                        result = default (T);
+                        return true;
                     } else if (value.GetType () == typeof (T)) {
-                        return (T)value;
+                        result = (T)value;
+                        return true;
                     }
                 }
 
-                return fallback;
+                result = default (T);
+                return false;
             }
         }
 

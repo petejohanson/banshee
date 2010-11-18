@@ -102,25 +102,11 @@ namespace Banshee.GnomeBackend
             }
         }
 
-        public T Get<T> (SchemaEntry<T> entry)
-        {
-            return Get<T> (entry.Namespace, entry.Key, entry.DefaultValue);
-        }
-
-        public T Get<T> (SchemaEntry<T> entry, T fallback)
-        {
-            return Get<T> (entry.Namespace, entry.Key, fallback);
-        }
-
-        public T Get<T> (string key, T fallback)
-        {
-            return Get<T> (null, key, fallback);
-        }
-
-        public T Get<T> (string @namespace, string key, T fallback)
+        public bool TryGet<T> (string @namespace, string key, out T result)
         {
             if (DisableGConf || key == null) {
-                return fallback;
+                result = default (T);
+                return false;
             }
 
             if (client == null) {
@@ -128,23 +114,15 @@ namespace Banshee.GnomeBackend
             }
 
             try {
-                return (T)client.Get (CreateKey (@namespace, key));
+                result = (T)client.Get (CreateKey (@namespace, key));
+                return true;
             } catch (GConf.NoSuchKeyException) {
-                return fallback;
             } catch (Exception e) {
                 Log.Exception (String.Format ("Could no read GConf key {0}.{1}", @namespace, key), e);
-                return fallback;
             }
-        }
 
-        public void Set<T> (SchemaEntry<T> entry, T value)
-        {
-            Set<T> (entry.Namespace, entry.Key, value);
-        }
-
-        public void Set<T> (string key, T value)
-        {
-            Set<T> (null, key, value);
+            result = default (T);
+            return false;
         }
 
         public void Set<T> (string @namespace, string key, T value)

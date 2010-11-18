@@ -78,34 +78,40 @@ namespace Banshee.Configuration
             }
         }
 
-        public static T Get<T> (SchemaEntry<T> entry)
+        public static T Get<T>(SchemaEntry<T> entry)
         {
-            return Client.Get<T> (entry);
+            return Get<T>(entry.Namespace, entry.Key, entry.DefaultValue);
         }
 
-        public static T Get<T> (SchemaEntry<T> entry, T fallback)
+        public static T Get<T>(SchemaEntry<T> entry, T fallback)
         {
-            return Client.Get<T> (entry, fallback);
+            return Get<T>(entry.Namespace, entry.Key, fallback);
         }
 
-        public static T Get<T> (string key, T fallback)
+        public static T Get<T>(string key, T fallback)
         {
-            return Client.Get<T> (key, fallback);
+            return Get<T>(null, key, fallback);
         }
 
-        public static T Get<T> (string @namespace, string key, T fallback)
+        public static T Get<T>(string namespce, string key, T fallback)
         {
-            return Client.Get<T> (@namespace, key, fallback);
+            T result;
+            return TryGet<T> (namespce, key, out result) ? result : fallback;
+        }
+
+        public static bool TryGet<T> (string @namespace, string key, out T result)
+        {
+            return Client.TryGet<T> (@namespace, key, out result);
         }
 
         public static void Set<T> (SchemaEntry<T> entry, T value)
         {
-            Client.Set<T> (entry, value);
+            Set (entry.Namespace, entry.Key, value);
         }
 
         public static void Set<T> (string key, T value)
         {
-            Client.Set<T> (key, value);
+            Set (null, key, value);
         }
 
         public static void Set<T> (string @namespace, string key, T value)
