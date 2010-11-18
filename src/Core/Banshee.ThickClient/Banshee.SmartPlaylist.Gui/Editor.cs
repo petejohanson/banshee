@@ -310,7 +310,6 @@ namespace Banshee.SmartPlaylist
                     SmartPlaylistSource pl = def.ToSmartPlaylistSource (primary_source);
                     pl.Save ();
                     pl.PrimarySource.AddChildSource (pl);
-                    pl.RefreshAndReload ();
                     //SmartPlaylistCore.Instance.StartTimer (pl);
                 }
             }
