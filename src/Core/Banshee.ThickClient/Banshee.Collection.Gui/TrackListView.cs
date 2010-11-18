@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using Mono.Unix;
 using Gtk;
 
@@ -57,7 +58,8 @@ namespace Banshee.Collection.Gui
             //Console.WriteLine ("TrackListView.SetModel for {0} with vpos {1}", value, vpos);
 
             if (value != null) {
-                Source source = ServiceManager.SourceManager.ActiveSource;
+                Source active_source = ServiceManager.SourceManager.ActiveSource;
+                Source source = active_source;
                 ColumnController controller = null;
 
                 // Get the controller from this source, or its parent(s) if it doesn't have one
@@ -79,7 +81,21 @@ namespace Banshee.Collection.Gui
                 PersistentColumnController persistent_controller = controller as PersistentColumnController;
                 if (persistent_controller != null) {
                     //Hyena.Log.InformationFormat ("Setting controller source to {0}", ServiceManager.SourceManager.ActiveSource.Name);
-                    persistent_controller.Source = ServiceManager.SourceManager.ActiveSource;
+                    persistent_controller.Source = active_source;
+                }
+
+                var sort_field = active_source.Properties.Get<string> ("TrackListSortField");
+                if (sort_field != null) {
+                    var column = controller.FirstOrDefault (c => {
+                        var s = c as SortableColumn;
+                        return s != null && s.Field.Name == sort_field;
+                    }) as SortableColumn;
+
+                    if (column != null) {
+                        column.Visible = true;
+                        column.SortType = active_source.Properties.Get<bool> ("TrackListSortAscending") ? Hyena.Data.SortType.Ascending : Hyena.Data.SortType.Descending;
+                        controller.DefaultSortColumn = column;
+                    }
                 }
 
                 ColumnController = controller;

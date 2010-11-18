@@ -34,6 +34,7 @@ using Mono.Unix;
 
 using Banshee.Base;
 using Banshee.Collection;
+using Banshee.Query;
 using Banshee.SmartPlaylist;
 using Banshee.Preferences;
 using Banshee.Configuration;
@@ -127,7 +128,12 @@ namespace Banshee.Library
             new SmartPlaylistDefinition (
                 Catalog.GetString ("Recently Added"),
                 Catalog.GetString ("Songs imported within the last week"),
-                "added<\"1 week ago\"", true),
+                "added<\"1 week ago\"", true) { Order = BansheeQuery.FindOrder (BansheeQuery.DateAddedField, false) },
+
+            new SmartPlaylistDefinition (
+                Catalog.GetString ("Recently Played"),
+                Catalog.GetString ("Recently played songs"),
+                "played<\"2 weeks ago\" plays>0", true) { Order = BansheeQuery.FindOrder (BansheeQuery.LastPlayedField, false) },
 
             new SmartPlaylistDefinition (
                 Catalog.GetString ("Unheard"),

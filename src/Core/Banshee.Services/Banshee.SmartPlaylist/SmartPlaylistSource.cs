@@ -149,7 +149,16 @@ namespace Banshee.SmartPlaylist
 
         public QueryOrder QueryOrder {
             get { return query_order; }
-            set { query_order = value; }
+            set {
+                query_order = value;
+                if (value != null) {
+                    Properties.Set<string> ("TrackListSortField", value.Field.Name);
+                    Properties.Set<bool> ("TrackListSortAscending", value.Ascending);
+                } else {
+                    Properties.Remove ("TrackListSortField");
+                    Properties.Remove ("TrackListSortAscending");
+                }
+            }
         }
 
         public IntegerQueryValue LimitValue {
@@ -163,7 +172,7 @@ namespace Banshee.SmartPlaylist
         }
 
         protected string OrderSql {
-            get { return QueryOrder == null ? null : QueryOrder.ToSql (); }
+            get { return !IsLimited || QueryOrder == null ? null : QueryOrder.ToSql (); }
         }
 
         protected string LimitSql {
@@ -214,7 +223,6 @@ namespace Banshee.SmartPlaylist
             LimitValue = limit_value;
             IsHiddenWhenEmpty = hiddenWhenEmpty;
 
-            SetProperties ();
             UpdateDependencies ();
         }
 
@@ -309,7 +317,7 @@ namespace Banshee.SmartPlaylist
                     (Name, Condition, OrderBy, LimitNumber, LimitCriterion, PrimarySourceID, IsTemporary, IsHiddenWhenEmpty)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 Name, ConditionXml,
-                IsLimited ? QueryOrder.Name : null,
+                QueryOrder != null ? QueryOrder.Name : null,
                 IsLimited ? LimitValue.ToSql () : null,
                 IsLimited ? Limit.Name : null,
                 PrimarySourceId, IsTemporary, IsHiddenWhenEmpty
