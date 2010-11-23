@@ -185,6 +185,7 @@ namespace Banshee.Gui
             FilterFocused = false;
 
             if (current_source != null && current_source.TrackModel != null) {
+                current_source.TrackModel.Reloaded -= OnReloaded;
                 current_source.TrackModel.Selection.Changed -= HandleSelectionChanged;
                 current_source = null;
             }
@@ -192,11 +193,19 @@ namespace Banshee.Gui
             ITrackModelSource new_source = ActiveSource as ITrackModelSource;
             if (new_source != null) {
                 new_source.TrackModel.Selection.Changed += HandleSelectionChanged;
+                new_source.TrackModel.Reloaded += OnReloaded;
                 current_source = new_source;
                 Selection = new_source.TrackModel.Selection;
             }
 
             ThreadAssist.ProxyToMain (UpdateActions);
+        }
+
+        private void OnReloaded (object sender, EventArgs args)
+        {
+            ThreadAssist.ProxyToMain (delegate {
+                UpdateActions ();
+            });
         }
 
         private void HandleActionsChanged (object sender, EventArgs args)
@@ -269,6 +278,7 @@ namespace Banshee.Gui
                 if (FilterFocused) {
                     if (Selection == filter_selection) {
                         filter_selection.MaxIndex = track_source.TrackModel.Selection.MaxIndex;
+                        filter_selection.Clear (false);
                         filter_selection.SelectAll ();
                     } else {
                         Log.Error ("Filter focused, but selection is not filter selection!");
