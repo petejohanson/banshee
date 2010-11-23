@@ -44,8 +44,7 @@ namespace Banshee.Podcasting.Gui
     public enum OldNewFilter
     {
         Both,
-        New,
-        Old
+        New
     }
 
     public class PodcastUnheardFilterModel : FilterListModel<OldNewFilter>
@@ -71,7 +70,6 @@ namespace Banshee.Podcasting.Gui
             get {
                 switch (index) {
                     case 1:    return OldNewFilter.New;
-                    case 2:    return OldNewFilter.Old;
                     case 0:
                     default:   return OldNewFilter.Both;
                 }
@@ -79,7 +77,7 @@ namespace Banshee.Podcasting.Gui
         }
 
         public override int Count {
-            get { return 3; }
+            get { return 2; }
         }
 
         public override string GetSqlFilter ()

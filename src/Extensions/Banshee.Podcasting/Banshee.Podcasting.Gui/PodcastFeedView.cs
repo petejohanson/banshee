@@ -49,14 +49,12 @@ namespace Banshee.Podcasting.Gui
 {
     public class PodcastFeedView : TrackFilterListView<Feed>
     {
-        private ColumnCellPodcast renderer;
+        private ColumnCellText renderer;
 
         public PodcastFeedView () : base ()
         {
-            renderer = new ColumnCellPodcast ();
-            column_controller.Add (new Column ("Podcast", renderer, 1.0));
-            //column_controller.Add (new Column (null, "Activity", new FeedActivityColumnCell ("Activity"), 0.00, true, 26, 26));
-
+            renderer = new ColumnCellText ("Title", true);
+            column_controller.Add (new Column ("Title", renderer, 1.0));
             ColumnController = column_controller;
         }
 
@@ -65,82 +63,5 @@ namespace Banshee.Podcasting.Gui
             ServiceManager.Get<InterfaceActionService> ().FindAction ("Podcast.PodcastFeedPopupAction").Activate ();
             return true;
         }
-
-        protected override Gdk.Size OnMeasureChild ()
-        {
-            return ViewLayout != null
-                ? base.OnMeasureChild ()
-                : new Gdk.Size (0, renderer.ComputeRowHeight (this));
-        }
     }
-
-    /*public class PodcastFeedView : ListView<Feed>
-    {
-        private ColumnController columnController;
-
-        public PodcastFeedView () : base ()
-        {
-            columnController = new ColumnController ();
-
-            SortableColumn podcastFeedTitleColumn = new SortableColumn (
-                    Catalog.GetString ("Podcasts"),
-                    new ColumnCellText ("Title", true), 0.97,
-                    PodcastSortKeys.Title, true
-            );
-
-            columnController.AddRange (
-                new Column (null, "Activity", new FeedActivityColumnCell ("Activity"), 0.00, true, 26, 26),
-                podcastFeedTitleColumn
-            );
-
-            RulesHint = true;
-            podcastFeedTitleColumn.SortType = Hyena.Data.SortType.Descending;
-            columnController.DefaultSortColumn = podcastFeedTitleColumn;
-            ColumnController = columnController;
-        }
-
-        private Menu allPopup;
-        private Menu popupMenu;
-        private MenuItem homepageItem;
-        private MenuItem propertiesItem;
-        private MenuItem updateAllItem;
-
-        protected override bool OnPopupMenu ()
-        {
-            if (popupMenu == null) {
-                UIManager uiManager = ServiceManager.Get<InterfaceActionService> ().UIManager;
-
-                allPopup = uiManager.GetWidget ("/PodcastSourcePopup") as Menu;
-                popupMenu = uiManager.GetWidget ("/PodcastFeedViewPopup") as Menu;
-
-                updateAllItem = uiManager.GetWidget ("/PodcastFeedViewPopup/PodcastUpdateAll") as MenuItem;
-                propertiesItem = uiManager.GetWidget ("/PodcastFeedViewPopup/PodcastProperties") as MenuItem;
-                homepageItem = uiManager.GetWidget ("/PodcastFeedViewPopup/PodcastHomepage") as MenuItem;
-            }
-
-            Menu popup;
-            PodcastFeedModel model = Model as PodcastFeedModel;
-
-            ReadOnlyCollection<Feed> feeds = model.CopySelectedItems ();
-
-            if (feeds.Count == 0) {
-                popup = allPopup;
-            } else {
-                if (feeds.Count > 1) {
-                    homepageItem.Hide ();
-                    propertiesItem.Hide ();
-                } else {
-                    homepageItem.Show ();
-                    propertiesItem.Show ();
-                }
-
-                popup = popupMenu;
-            }
-
-            updateAllItem.Hide ();
-
-            popup.Popup (null, null, null, 0, Gtk.Global.CurrentEventTime);
-            return true;
-        }
-    }*/
 }

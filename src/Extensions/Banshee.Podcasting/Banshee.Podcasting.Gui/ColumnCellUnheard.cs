@@ -56,7 +56,6 @@ namespace Banshee.Podcasting.Gui
             switch (val) {
                 case OldNewFilter.New:    return Catalog.GetString ("New Items");
                 case OldNewFilter.Both:   return Catalog.GetString ("All Items");
-                case OldNewFilter.Old:    return Catalog.GetString ("Old Items");
             }
             return String.Empty;
         }
