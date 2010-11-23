@@ -49,9 +49,9 @@ namespace Banshee.Fixup
             UseMarkup = true;
         }
 
-        public override void Render (CellContext context, Gtk.StateType state, double cellWidth, double cellHeight)
+        public override void Render (CellContext context, double cellWidth, double cellHeight)
         {
-            base.Render (context, state, cellWidth, cellHeight);
+            base.Render (context, cellWidth, cellHeight);
 
             if (measure) {
                 solution_value_widths.Clear ();
