@@ -20,6 +20,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>..\..\..\bin</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,6 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="gtk-sharp">
@@ -97,6 +99,8 @@
     <Folder Include="Banshee.WebBrowser\" />
     <Folder Include="JavaScriptCore\" />
     <Folder Include="JavaScriptCore\Tests\" />
+    <Folder Include="JavaScriptCore.Bridge\" />
+    <Folder Include="JavaScriptCore.Bridge\Tests\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.WebBrowser\OssiferWebView.cs" />
@@ -127,5 +131,12 @@
     <Compile Include="JavaScriptCore\JSPropertyNameArray.cs" />
     <Compile Include="JavaScriptCore\JSFunction.cs" />
     <Compile Include="JavaScriptCore\Tests\JSFunctionTests.cs" />
+    <Compile Include="JavaScriptCore.Bridge\Runtime.cs" />
+    <Compile Include="JavaScriptCore.Bridge\Tests\RuntimeTests.cs" />
+    <Compile Include="JavaScriptCore\JSError.cs" />
+    <Compile Include="JavaScriptCore\JSErrorException.cs" />
+    <Compile Include="JavaScriptCore\JSStaticFunction.cs" />
+    <Compile Include="JavaScriptCore\JSStaticFunctionAttribute.cs" />
+    <Compile Include="JavaScriptCore\Tests\JSClassTests.cs" />
   </ItemGroup>
 </Project>

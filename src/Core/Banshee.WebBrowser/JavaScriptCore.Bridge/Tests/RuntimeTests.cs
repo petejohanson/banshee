@@ -1,5 +1,5 @@
 // 
-// JSException.cs
+// RuntimeTests.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -24,37 +24,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if ENABLE_TESTS
+
 using System;
+using NUnit.Framework;
 
-namespace JavaScriptCore
+using JavaScriptCore.Bridge;
+
+namespace JavaScriptCore.Bridge.Tests
 {
-    public class JSException : Exception
+    [TestFixture]
+    public class RuntimeTests
     {
-        public JSContext Context { get; private set; }
-        public JSValue Error { get; private set; }
+        private JSContext context;
 
-        internal JSException (JSContext context, JSValue error)
-            : base ("JSON: " + error.ToString ())
+        [TestFixtureSetUp]
+        public void Init ()
         {
-            Error = error;
-            Context = context;
+            context = new JSContext ();
+            context.BindManagedRuntime ();
         }
 
-        internal JSException (JSContext context, string message) : base (message)
+        [Test]
+        public void TestExceptionBoundaryJsCatch ()
         {
-            Context = context;
+            context.EvaluateScript ("try { mjsc.import = 'foo'; } catch (e) { this.p = e.toString (); }");
+            Assert.AreEqual ("IllegalOperationError: Setting properties on this object is not allowed",
+                context.GlobalObject.GetProperty ("p").StringValue);
         }
 
-        internal JSException (JSContext context, IntPtr exception)
-            : this (context, new JSValue (context, exception))
+        [Test]
+        public void TestExceptionBoundaryRoundTrip ()
         {
-        }
-
-        internal static void Proxy (JSContext ctx, IntPtr exception)
-        {
-            if (!exception.Equals (IntPtr.Zero)) {
-                throw new JSException (ctx, exception);
+            try {
+                context.EvaluateScript ("mjsc.import = 'foo'");
+            } catch (JSException e) {
+                Assert.AreEqual ("IllegalOperationError: Setting properties on this object is not allowed",
+                    e.Error.StringValue);
             }
         }
     }
 }
+
+#endif

@@ -26,6 +26,7 @@
 
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace JavaScriptCore
@@ -41,7 +42,7 @@ namespace JavaScriptCore
             public IntPtr parent_class;
 
             public IntPtr /* JSStaticValue[] */ static_values;
-            public IntPtr /* JSStaticFunction[] */ static_functions;
+            public IntPtr static_functions;
 
             public JSObject.InitializeCallback initialize;
             public JSObject.FinalizeCallback finalize;
@@ -57,6 +58,7 @@ namespace JavaScriptCore
         }
 
         private JSClassDefinitionNative raw;
+        private Dictionary<string, MethodInfo> static_methods;
 
         public virtual string ClassName {
             get { return GetType ().FullName.Replace (".", "_"); }
@@ -67,6 +69,12 @@ namespace JavaScriptCore
             raw = new JSClassDefinitionNative ();
             raw.class_name = Marshal.StringToHGlobalAnsi (ClassName);
 
+            InstallClassOverrides ();
+            InstallStaticMethods ();
+        }
+
+        private void InstallClassOverrides ()
+        {
             Override ("OnInitialize", () => raw.initialize = new JSObject.InitializeCallback (JSInitialize));
             Override ("OnFinalize", () => raw.finalize = new JSObject.FinalizeCallback (JSFinalize));
             Override ("OnJSHasProperty", () => raw.has_property = new JSObject.HasPropertyCallback (JSHasProperty));
@@ -74,6 +82,68 @@ namespace JavaScriptCore
             Override ("OnJSSetProperty", () => raw.set_property = new JSObject.SetPropertyCallback (JSSetProperty));
             Override ("OnJSDeleteProperty", () => raw.delete_property = new JSObject.DeletePropertyCallback (JSDeleteProperty));
             Override ("OnJSGetPropertyNames", () => raw.get_property_names = new JSObject.GetPropertyNamesCallback (JSGetPropertyNames));
+        }
+
+        private void InstallStaticMethods ()
+        {
+            List<JSStaticFunction> methods = null;
+
+            foreach (var method in GetType ().GetMethods (
+                BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic)) {
+                foreach (var _attr in method.GetCustomAttributes (typeof (JSStaticFunctionAttribute), false)) {
+                    var attr = (JSStaticFunctionAttribute)_attr;
+                    var p = method.GetParameters ();
+
+                    if (method.ReturnType != typeof (JSValue) || p.Length != 3 &&
+                        p[0].ParameterType != typeof (JSObject) ||
+                        p[1].ParameterType != typeof (JSObject) ||
+                        p[2].ParameterType != typeof (JSValue [])) {
+                        throw new Exception (String.Format ("Invalid signature for method annotated " +
+                            "with JSStaticFunctionAttribute: {0}:{1} ('{2}'); signature should be " +
+                            "'JSValue:JSFunction,JSObject,JSValue[]'",
+                                GetType ().FullName, method.Name, attr.Name));
+                    }
+
+                    if (static_methods == null) {
+                        static_methods = new Dictionary<string, MethodInfo> ();
+                    } else if (static_methods.ContainsKey (attr.Name)) {
+                        throw new Exception ("Class already contains static method named '" + attr.Name  + "'");
+                    }
+
+                    static_methods.Add (attr.Name, method);
+
+                    if (methods == null) {
+                        methods = new List<JSStaticFunction> ();
+                    }
+
+                    methods.Add (new JSStaticFunction () {
+                        Name = attr.Name,
+                        Attributes = attr.Attributes,
+                        Callback = OnStaticFunctionCallback
+                    });
+                }
+            }
+
+            if (methods != null && methods.Count > 0) {
+                var size = Marshal.SizeOf (typeof (JSStaticFunction));
+                var ptr = Marshal.AllocHGlobal (size * (methods.Count + 1));
+
+                Console.WriteLine ("ALLOC {0} bytes ({1}b x {2}) @ {3}",
+                    size * (methods.Count + 1), size, methods.Count + 1, ptr);
+
+                for (int i = 0; i < methods.Count; i++) {
+                    Console.WriteLine ("STRUCT [{0}] @ {1}",
+                        methods[i].Name, new IntPtr (ptr.ToInt64 () + size * i));
+                    Marshal.StructureToPtr (methods[i],
+                        new IntPtr (ptr.ToInt64 () + size * i), false);
+                }
+
+                Console.WriteLine ("EMPTY @ {0}", new IntPtr (ptr.ToInt64 () + size * methods.Count));
+                Marshal.StructureToPtr (new JSStaticFunction (),
+                    new IntPtr (ptr.ToInt64 () + size * methods.Count), false);
+
+                raw.static_functions = ptr;
+            }
         }
 
         private void Override (string methodName, Action handler)
@@ -90,6 +160,29 @@ namespace JavaScriptCore
         public JSClass CreateClass ()
         {
             return new JSClass (JSClassCreate (ref raw));
+        }
+
+        private IntPtr OnStaticFunctionCallback (IntPtr ctx, IntPtr function, IntPtr thisObject,
+            IntPtr argumentCount, IntPtr arguments, ref IntPtr exception)
+        {
+            var context = new JSContext (ctx);
+            var fn = new JSObject (ctx, function);
+
+            MethodInfo method = null;
+            if (!static_methods.TryGetValue (fn.GetProperty ("name").StringValue, out method)) {
+                return IntPtr.Zero;
+            }
+
+            var args = new JSValue[argumentCount.ToInt32 ()];
+
+            for (int i = 0; i < args.Length; i++) {
+                args[i] = new JSValue (context, Marshal.ReadIntPtr (arguments, i * IntPtr.Size));
+            }
+
+            var result = method.Invoke (null, new object [] { fn, new JSObject (context, thisObject), args });
+            return result == null
+                ? JSValue.NewUndefined (context).Raw
+                : ((JSValue)result).Raw;
         }
 
         private void JSInitialize (IntPtr ctx, IntPtr obj)
@@ -136,7 +229,12 @@ namespace JavaScriptCore
             IntPtr value, ref IntPtr exception)
         {
             var context = new JSContext (ctx);
-            return OnJSSetProperty (new JSObject (context, obj), propertyName.Value, new JSValue (context, value));
+            try {
+                return OnJSSetProperty (new JSObject (context, obj), propertyName.Value, new JSValue (context, value));
+            } catch (JSErrorException e) {
+                exception = e.Error.Raw;
+                return false;
+            }
         }
 
         protected virtual bool OnJSSetProperty (JSObject obj, string propertyName, JSValue value)

@@ -1,5 +1,5 @@
 // 
-// JSException.cs
+// JSStaticFunctionAttribute.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -23,38 +23,27 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 
 namespace JavaScriptCore
 {
-    public class JSException : Exception
+    public class JSStaticFunctionAttribute : Attribute
     {
-        public JSContext Context { get; private set; }
-        public JSValue Error { get; private set; }
-
-        internal JSException (JSContext context, JSValue error)
-            : base ("JSON: " + error.ToString ())
-        {
-            Error = error;
-            Context = context;
-        }
-
-        internal JSException (JSContext context, string message) : base (message)
-        {
-            Context = context;
-        }
-
-        internal JSException (JSContext context, IntPtr exception)
-            : this (context, new JSValue (context, exception))
+        public string Name { get; set; }
+        public JSPropertyAttribute Attributes { get; set; }
+        
+        public JSStaticFunctionAttribute () : this (null, JSPropertyAttribute.None)
         {
         }
 
-        internal static void Proxy (JSContext ctx, IntPtr exception)
+        public JSStaticFunctionAttribute (string name) : this (name, JSPropertyAttribute.None)
         {
-            if (!exception.Equals (IntPtr.Zero)) {
-                throw new JSException (ctx, exception);
-            }
+        }
+
+        public JSStaticFunctionAttribute (string name, JSPropertyAttribute attributes)
+        {
+            Name = name;
+            Attributes = attributes;
         }
     }
 }

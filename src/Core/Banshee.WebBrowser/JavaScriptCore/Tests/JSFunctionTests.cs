@@ -83,7 +83,7 @@ namespace JavaScriptCore.Tests
             Assert.AreEqual (42, go.NumberValue);
         }
 
-        private JSValue Fib_1 (JSFunction function, JSObject @this, JSValue [] args)
+        private JSValue Fib_1 (JSObject function, JSObject @this, JSValue [] args)
         {
             return args[0].NumberValue <= 1 ? new JSValue (@this.Context, 1) : new JSValue (@this.Context,
                 Fib_1 (function, @this, new [] { new JSValue (@this.Context, args[0].NumberValue - 1) }).NumberValue +

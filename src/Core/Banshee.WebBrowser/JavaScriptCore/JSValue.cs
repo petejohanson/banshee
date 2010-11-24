@@ -236,7 +236,7 @@ namespace JavaScriptCore
                 var exception = IntPtr.Zero;
                 var result = JSValueToObject (Context.Raw, Raw, ref exception);
                 JSException.Proxy (Context, exception);
-                return new JSObject (result);
+                return new JSObject (Context, result);
             }
         }
 

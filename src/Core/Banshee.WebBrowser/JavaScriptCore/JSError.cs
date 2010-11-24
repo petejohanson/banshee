@@ -1,5 +1,5 @@
 // 
-// JSException.cs
+// JSError.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -25,35 +25,28 @@
 // THE SOFTWARE.
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace JavaScriptCore
 {
-    public class JSException : Exception
+    public class JSError : JSObject
     {
-        public JSContext Context { get; private set; }
-        public JSValue Error { get; private set; }
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern IntPtr JSObjectMakeError (IntPtr ctx,
+            IntPtr argumentCount, IntPtr args, ref IntPtr exception);
 
-        internal JSException (JSContext context, JSValue error)
-            : base ("JSON: " + error.ToString ())
+        public JSError (JSContext context, string name, string message) : base (context, IntPtr.Zero)
         {
-            Error = error;
-            Context = context;
-        }
+            var exception = IntPtr.Zero;
+            Raw = JSObjectMakeError (context.Raw, IntPtr.Zero, IntPtr.Zero, ref exception);
+            JSException.Proxy (context, exception);
 
-        internal JSException (JSContext context, string message) : base (message)
-        {
-            Context = context;
-        }
+            if (name != null) {
+                SetProperty ("name", new JSValue (context, name));
+            }
 
-        internal JSException (JSContext context, IntPtr exception)
-            : this (context, new JSValue (context, exception))
-        {
-        }
-
-        internal static void Proxy (JSContext ctx, IntPtr exception)
-        {
-            if (!exception.Equals (IntPtr.Zero)) {
-                throw new JSException (ctx, exception);
+            if (message != null) {
+                SetProperty ("message", new JSValue (context, message));
             }
         }
     }

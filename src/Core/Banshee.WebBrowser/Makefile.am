@@ -16,20 +16,27 @@ SOURCES =  \
 	Banshee.WebSource/WebBrowserShell.cs \
 	Banshee.WebSource/WebSource.cs \
 	Banshee.WebSource/WebView.cs \
+	JavaScriptCore.Bridge/Runtime.cs \
+	JavaScriptCore.Bridge/Tests/RuntimeTests.cs \
 	JavaScriptCore/JSClass.cs \
 	JavaScriptCore/JSClassAttribute.cs \
 	JavaScriptCore/JSClassDefinition.cs \
 	JavaScriptCore/JSContext.cs \
+	JavaScriptCore/JSError.cs \
+	JavaScriptCore/JSErrorException.cs \
 	JavaScriptCore/JSException.cs \
 	JavaScriptCore/JSFunction.cs \
 	JavaScriptCore/JSObject.cs \
 	JavaScriptCore/JSPropertyAttribute.cs \
 	JavaScriptCore/JSPropertyNameAccumulator.cs \
 	JavaScriptCore/JSPropertyNameArray.cs \
+	JavaScriptCore/JSStaticFunction.cs \
+	JavaScriptCore/JSStaticFunctionAttribute.cs \
 	JavaScriptCore/JSString.cs \
 	JavaScriptCore/JSType.cs \
 	JavaScriptCore/JSValue.cs \
 	JavaScriptCore/ManagedPropertyBagClass.cs \
+	JavaScriptCore/Tests/JSClassTests.cs \
 	JavaScriptCore/Tests/JSFunctionTests.cs \
 	JavaScriptCore/Tests/JSObjectTests.cs \
 	JavaScriptCore/Tests/JSStringTests.cs \

@@ -1,5 +1,5 @@
 // 
-// JSException.cs
+// JSStaticFunction.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -25,36 +25,15 @@
 // THE SOFTWARE.
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace JavaScriptCore
 {
-    public class JSException : Exception
+    [StructLayout (LayoutKind.Sequential)]
+    public struct JSStaticFunction
     {
-        public JSContext Context { get; private set; }
-        public JSValue Error { get; private set; }
-
-        internal JSException (JSContext context, JSValue error)
-            : base ("JSON: " + error.ToString ())
-        {
-            Error = error;
-            Context = context;
-        }
-
-        internal JSException (JSContext context, string message) : base (message)
-        {
-            Context = context;
-        }
-
-        internal JSException (JSContext context, IntPtr exception)
-            : this (context, new JSValue (context, exception))
-        {
-        }
-
-        internal static void Proxy (JSContext ctx, IntPtr exception)
-        {
-            if (!exception.Equals (IntPtr.Zero)) {
-                throw new JSException (ctx, exception);
-            }
-        }
+        public string Name;
+        public JSObject.CallAsFunctionCallback Callback;
+        public JSPropertyAttribute Attributes;
     }
 }

@@ -1,5 +1,5 @@
 // 
-// JSException.cs
+// JSErrorException.cs
 // 
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -28,33 +28,13 @@ using System;
 
 namespace JavaScriptCore
 {
-    public class JSException : Exception
+    public class JSErrorException : Exception
     {
-        public JSContext Context { get; private set; }
-        public JSValue Error { get; private set; }
+        public JSError Error { get; set; }
 
-        internal JSException (JSContext context, JSValue error)
-            : base ("JSON: " + error.ToString ())
+        public JSErrorException (JSContext context, string name, string message)
         {
-            Error = error;
-            Context = context;
-        }
-
-        internal JSException (JSContext context, string message) : base (message)
-        {
-            Context = context;
-        }
-
-        internal JSException (JSContext context, IntPtr exception)
-            : this (context, new JSValue (context, exception))
-        {
-        }
-
-        internal static void Proxy (JSContext ctx, IntPtr exception)
-        {
-            if (!exception.Equals (IntPtr.Zero)) {
-                throw new JSException (ctx, exception);
-            }
+            Error = new JSError (context, name, message);
         }
     }
 }

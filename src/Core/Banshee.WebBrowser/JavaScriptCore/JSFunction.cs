@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 
 namespace JavaScriptCore
 {
-    public delegate JSValue JSFunctionHandler (JSFunction function, JSObject thisObject, JSValue [] args);
+    public delegate JSValue JSFunctionHandler (JSObject function, JSObject thisObject, JSValue [] args);
 
     public class JSFunction : JSObject
     {

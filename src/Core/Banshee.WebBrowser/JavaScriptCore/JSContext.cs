@@ -65,7 +65,7 @@ namespace JavaScriptCore
                 thisObject == null ? IntPtr.Zero : thisObject.Raw,
                 sourceUrl, startingLineNumber, ref exception);
             JSException.Proxy (this, exception);
-            return new JSValue (result);
+            return new JSValue (this, result);
         }
 
         public JSValue EvaluateScript (string script, JSObject thisObject, string sourceUrl, int startingLineNumber)
