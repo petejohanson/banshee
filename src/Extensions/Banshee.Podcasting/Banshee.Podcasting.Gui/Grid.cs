@@ -50,12 +50,13 @@ namespace Banshee.Podcasting.Gui
         public Grid ()
         {
             var layout = new DataViewLayoutGrid () {
+                Fill = true,
                 ChildAllocator = () => {
                     DataViewChildImage img = new DataViewChildImage ();
                     return new StackPanel () {
                         Margin = new Thickness (5),
-                        Width = 350,
-                        Height = 150,
+                        Width = 300,
+                        Height = 125,
                         Spacing = 5,
                         Children = {
                             new StackPanel () {
