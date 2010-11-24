@@ -33,10 +33,8 @@ namespace JavaScriptCore.Bridge
 {
     public static class Runtime
     {
-        private class RuntimeClassDefinition : JSClassDefinition
+        public class RuntimeClassDefinition : JSClassDefinition
         {
-            private Dictionary<JSObject, JSValue> import_objects = new Dictionary<JSObject, JSValue> ();
-
             public override string ClassName {
                 get { return "ManagedJavaScriptCore"; }
             }
@@ -52,6 +50,12 @@ namespace JavaScriptCore.Bridge
                 throw new JSErrorException (obj.Context, "IllegalOperationError",
                     "Setting properties on this object is not allowed");
             }
+
+            [JSStaticFunction ("import")]
+            public static JSValue Import (JSObject function, JSObject thisObject, JSValue [] args)
+            {
+                return null;
+            }
         }
 
         private static RuntimeClassDefinition js_class_definition;
@@ -65,12 +69,12 @@ namespace JavaScriptCore.Bridge
 
         public static void BindManagedRuntime (this JSContext context)
         {
-            if (context.GlobalObject.HasProperty ("mjsc")) {
+            if (context.GlobalObject.HasProperty ("mjs")) {
                 throw new ApplicationException ("Cannot bind runtime to JSContext: " +
                     "mjsc property already exists on context's global object.");
             }
 
-            context.GlobalObject.SetProperty ("mjsc", new JSObject (context, js_class),
+            context.GlobalObject.SetProperty ("mjs", new JSObject (context, js_class),
                 JSPropertyAttribute.DontDelete);
         }
     }
