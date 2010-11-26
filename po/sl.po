@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&component=general\n"
-"POT-Creation-Date: 2010-11-18 19:36+0000\n"
-"PO-Revision-Date: 2010-11-19 10:10+0100\n"
+"POT-Creation-Date: 2010-11-26 01:28+0000\n"
+"PO-Revision-Date: 2010-11-26 14:43+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -371,7 +371,7 @@ msgstr "Prikaz ikone za nadzor Banshee v obvestilnem področju."
 
 #. ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying.addin.xml
 #: ../data/addin-xml-strings.cs:179
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:164
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:168
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:50
 msgid "Now Playing"
 msgstr "Predvaja se"
@@ -405,7 +405,7 @@ msgstr "Daj skladbe v ad-hoc seznam predvajanja, ali pusti prevzem samodejnemu D
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:193
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/PodcastGroupSource.cs:38
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:107
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:212
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:210
 msgid "Podcasts"
 msgstr "Podcasti"
 
@@ -492,7 +492,7 @@ msgid "AAC (Novell Encoder)"
 msgstr "AAC (Nov kodirnik)"
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:3
-#: ../data/audio-profiles/mp3-lame.xml.in.h:4
+#: ../data/audio-profiles/mp3-lame.xml.in.h:3
 #: ../data/audio-profiles/mp3-xing.xml.in.h:2
 #: ../data/audio-profiles/wavpack.xml.in.h:3
 #: ../data/audio-profiles/wma.xml.in.h:4
@@ -549,61 +549,33 @@ msgid "A proprietary and older, but also popular, lossy audio format that produc
 msgstr "Priljubljeni starejši zakonsko zaščiteni zvočni zapis, ki kodira zvok v večje datoteke s slabšo kakovostjo."
 
 #: ../data/audio-profiles/mp3-lame.xml.in.h:2
-msgid "Average Bitrate"
-msgstr "Povprečna bitna hitrost"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:3
 #: ../data/audio-profiles/vorbis.xml.in.h:2
 #: ../data/audio-profiles/wavpack.xml.in.h:2
 #: ../data/audio-profiles/wma.xml.in.h:3
 msgid "Best"
 msgstr "Najboljše"
 
-#: ../data/audio-profiles/mp3-lame.xml.in.h:5
+#: ../data/audio-profiles/mp3-lame.xml.in.h:4
 msgid "Constant Bitrate"
 msgstr "Stalna bitna hitrost"
 
+#: ../data/audio-profiles/mp3-lame.xml.in.h:5
+msgid "Encoding Mode"
+msgstr "Način kodiranja"
+
 #: ../data/audio-profiles/mp3-lame.xml.in.h:6
-msgid "Extreme"
-msgstr "Skrajno"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:7
-msgid "Insane"
-msgstr "Noro"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:8
-msgid "LAME Preset"
-msgstr "LAME prednastavljene"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:9
 msgid "MP3 (LAME Encoder)"
 msgstr "MP3 (kodirnik LAME)"
 
-#: ../data/audio-profiles/mp3-lame.xml.in.h:10
-msgid "Medium"
-msgstr "Srednje"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:11
-msgid "Preset"
-msgstr "Prednastavljene"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:12
-msgid "Standard"
-msgstr "Običajno"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:13
-msgid "VBR Mode"
-msgstr "Način VBR"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:14
+#: ../data/audio-profiles/mp3-lame.xml.in.h:7
 msgid "VBR Quality"
 msgstr "Kakovost VBR"
 
-#: ../data/audio-profiles/mp3-lame.xml.in.h:15
+#: ../data/audio-profiles/mp3-lame.xml.in.h:8
 msgid "Variable Bitrate"
 msgstr "Spremenljiva bitna hitrost"
 
-#: ../data/audio-profiles/mp3-lame.xml.in.h:16
+#: ../data/audio-profiles/mp3-lame.xml.in.h:9
 #: ../data/audio-profiles/vorbis.xml.in.h:5
 #: ../data/audio-profiles/wavpack.xml.in.h:15
 #: ../data/audio-profiles/wma.xml.in.h:7
@@ -1820,11 +1792,6 @@ msgstr "Uvozi _ocene"
 msgid "Import play _counts"
 msgstr "Uvozi _števila predvajanj"
 
-#. disabled by default
-#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:312
-msgid "Improve Banshee by sending anonymous usage data"
-msgstr "Izboljšajte Banshee s pošiljanjem anonimnih podatkov o uporabi"
-
 #: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:52
 msgid "There is no available network connection"
 msgstr "Na voljo ni delujoče omrežne povezave"
@@ -1871,7 +1838,7 @@ msgstr "Izbriši seznam predvajanja"
 #: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:391
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:176
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:135
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:452
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:462
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:542
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView_DragAndDrop.cs:214
 msgid "New Playlist"
@@ -1918,6 +1885,10 @@ msgstr "Pravila datotek"
 #: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:58
 msgid "Co_py files to media folders when importing"
 msgstr "_Kopiraj datoteke v večpredstavnostne mape med uvažanjem"
+
+#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:69
+msgid "Improve Banshee by sending anonymous usage data"
+msgstr "Izboljšajte Banshee s pošiljanjem anonimnih podatkov o uporabi"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:63
 msgid "items"
@@ -3336,20 +3307,20 @@ msgstr "Po skladanju z _izvajalcem"
 msgid "Search all songs of this artist"
 msgstr "Iskanje vseh skladb izvajalca"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:312
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:322
 #, csharp-format
 msgid "_Delete From \"{0}\""
 msgstr "_Izbriši iz \"{0}\""
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:532
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:542
 msgid "The folder could not be found."
 msgstr "Mape ni mogoče najti."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:533
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:543
 msgid "Please check that the track's location is accessible by the system."
 msgstr "Preverite, če lahko sistem dostopa do mesta skladbe."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:610
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:620
 #, csharp-format
 msgid "Are you sure you want to permanently delete this item?"
 msgid_plural "Are you sure you want to permanently delete the selected {0} items?"
@@ -3358,16 +3329,16 @@ msgstr[1] "Ali ste prepričani, da želite trajno izbrisati {0} izbran predmet?"
 msgstr[2] "Ali ste prepričani, da želite trajno izbrisati {0} izbrana predmeta?"
 msgstr[3] "Ali ste prepričani, da želite trajno izbrisati {0} izbrane predmete?"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:614
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:624
 msgid "If you delete the selection, it will be permanently lost."
 msgstr "Izbris izbora bo trajen."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:617
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:627
 #, csharp-format
 msgid "Remove selection from {0}?"
 msgstr "Odstranitev izbora iz {0}?"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:620
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:630
 #, csharp-format
 msgid "Are you sure you want to remove the selected item from your {1}?"
 msgid_plural "Are you sure you want to remove the selected {0} items from your {1}?"
@@ -4160,7 +4131,7 @@ msgid "Vendor"
 msgstr "Ponudnik"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:284
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:142
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:140
 #, csharp-format
 msgid "Loading {0}"
 msgstr "Nalaganje {0}"
@@ -4888,11 +4859,11 @@ msgstr "Prijava"
 msgid "Connecting to {0}"
 msgstr "Povezovanje z {0}"
 
-#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:178
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:187
 msgid "Add Remote DAAP Server"
 msgstr "Dodajte oddaljen strežnik DAAP"
 
-#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:179
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:188
 msgid "Add a new remote DAAP server"
 msgstr "Doda nov oddaljen strežnik DAAP"
 
@@ -5117,7 +5088,7 @@ msgstr "Napaka med pridobivanjem podrobnosti iz spletnega arhiva"
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:130
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:66
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:136
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:286
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:279
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:89
 msgid "Description"
 msgstr "Opis"
@@ -6080,15 +6051,15 @@ msgstr "lastfm:// URL"
 msgid "lastfm://"
 msgstr "lastfm://"
 
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:109
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:113
 msgid "Media"
 msgstr "Večpredstavnostna datoteka"
 
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:119
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:123
 msgid "Library"
 msgstr "Knjižnica"
 
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:131
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:135
 msgid "Launch the Banshee Media Player"
 msgstr "Zaženi predvajalnik večpredstavnostnih datotek Banshee"
 
@@ -6348,7 +6319,7 @@ msgid "Number of _upcoming songs to show"
 msgstr "Število _prihajajočih skladb za prikaz"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastFeedModel.cs:47
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:285
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:278
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:89
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:86
 msgid "Podcast"
@@ -6359,58 +6330,57 @@ msgstr "Podcast"
 msgid "All Podcasts ({0})"
 msgstr "Vsi podcasti ({0})"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:104
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:102
 msgid "Podcasts Folder"
 msgstr "Mapa podcastov"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:131
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:129
 msgid "Remove Podcast"
 msgstr "Odstrani podcast"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:136
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:134
 msgid "Disable Auto Updates"
 msgstr "Onemogoči samodejne posodobitve"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:154
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:152
 #, csharp-format
 msgid "Network error updating {0}"
 msgstr "Napaka omrežja med posodabljanjem {0}"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:160
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:158
 #, csharp-format
 msgid "Parsing error updating {0}"
 msgstr "Napaka razčlenjevanja med posodabljanjem {0}"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:163
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:161
 #, csharp-format
 msgid "Authentication error updating {0}"
 msgstr "Napaka overitve med posodabljanjem {0}"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:166
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:164
 #, csharp-format
 msgid "Error updating {0}"
 msgstr "Napaka med posodabljanjem {0}"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:222
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:220
 msgid "Search your podcasts"
 msgstr "Iščite po svojih podcastih"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:285
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:278
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:88
 msgid "Published"
 msgstr "Objavljeno"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:285
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:278
 msgid "New"
 msgstr "Novo"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:286
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:57
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:279
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellPodcastStatusIndicator.cs:66
 msgid "Downloaded"
 msgstr "Prejeto"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:312
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:305
 #, csharp-format
 msgid "{0} episode"
 msgid_plural "{0} episodes"
@@ -6418,15 +6388,6 @@ msgstr[0] "{0} epizod"
 msgstr[1] "{0} epizoda"
 msgstr[2] "{0} epizodi"
 msgstr[3] "{0} epizode"
-
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:58
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellUnheard.cs:58
-msgid "All Items"
-msgstr "Vsi predmeti"
-
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:59
-msgid "Not Downloaded"
-msgstr "Ne prejeto"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellPodcast.cs:113
 msgid "Never updated"
@@ -6450,9 +6411,9 @@ msgstr "Prejemanje"
 msgid "New Items"
 msgstr "Novi predmeti"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellUnheard.cs:59
-msgid "Old Items"
-msgstr "Stari predmeti"
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellUnheard.cs:58
+msgid "All Items"
+msgstr "Vsi predmeti"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/DownloadManager/DownloadUserJob.cs:50
 msgid "Downloading Podcast(s)"
@@ -6461,10 +6422,6 @@ msgstr "Prejemanje podcast-a/ov"
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/DownloadManager/DownloadUserJob.cs:52
 msgid "Cancel all podcast downloads?"
 msgstr "Ali naj bodo vsa prejemanja podcastov preklicana?"
-
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/HeaderWidget.cs:99
-msgid "_Limit to episodes from"
-msgstr "_Omeji na epizode od"
 
 #. "<control><shift>U",
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:73
@@ -6919,6 +6876,28 @@ msgstr "Povezano z Last.fm "
 msgid "Unknown Podcast"
 msgstr "Neznan Podcast"
 
+#~ msgid "Average Bitrate"
+#~ msgstr "Povprečna bitna hitrost"
+#~ msgid "Extreme"
+#~ msgstr "Skrajno"
+#~ msgid "Insane"
+#~ msgstr "Noro"
+#~ msgid "LAME Preset"
+#~ msgstr "LAME prednastavljene"
+#~ msgid "Medium"
+#~ msgstr "Srednje"
+#~ msgid "Preset"
+#~ msgstr "Prednastavljene"
+#~ msgid "Standard"
+#~ msgstr "Običajno"
+#~ msgid "VBR Mode"
+#~ msgstr "Način VBR"
+#~ msgid "Not Downloaded"
+#~ msgstr "Ne prejeto"
+#~ msgid "Old Items"
+#~ msgstr "Stari predmeti"
+#~ msgid "_Limit to episodes from"
+#~ msgstr "_Omeji na epizode od"
 #~ msgid "Home Folder"
 #~ msgstr "Domača mapa"
 #~ msgid "Videos From Photos Folder"
