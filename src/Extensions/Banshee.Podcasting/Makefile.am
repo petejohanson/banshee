@@ -27,8 +27,8 @@ SOURCES =  \
 	Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastPropertiesDialog.cs \
 	Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs \
 	Banshee.Podcasting.Gui/PodcastManager/Dialog/SyncPreferenceComboBox.cs \
-	Banshee.Podcasting.Gui/PodcastUnheardFilterView.cs \
 	Banshee.Podcasting.Gui/PodcastSourceContents.cs \
+	Banshee.Podcasting.Gui/PodcastUnheardFilterView.cs \
 	Banshee.Podcasting/ItmsPodcast.cs \
 	Banshee.Podcasting/PodcastImageFetchJob.cs \
 	Banshee.Podcasting/PodcastImportManager.cs \
