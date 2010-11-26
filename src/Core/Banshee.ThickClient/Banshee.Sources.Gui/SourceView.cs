@@ -89,6 +89,14 @@ namespace Banshee.Sources.Gui
             store.Refresh ();
             ConnectEvents ();
 
+            Selection.SelectFunction = (selection, model, path, selected) => {
+                Source source = store.GetSource (path);
+                if (source == null || source is SourceManager.GroupSource) {
+                    return false;
+                }
+                return true;
+            };
+
             ResetSelection ();
         }
 
@@ -205,6 +213,29 @@ namespace Banshee.Sources.Gui
             header_renderer.Foreground = CairoExtensions.ColorGetHex (light_text, false);
         }
 
+        // While scrolling the source view with the keyboard, we want to
+        // just skip group sources and jump to the next source in the view.
+        protected override bool OnKeyPressEvent (Gdk.EventKey press)
+        {
+            TreeIter iter;
+            bool movedCursor = false;
+
+            Selection.GetSelected (out iter);
+            TreePath path = store.GetPath (iter);
+
+            // Move the path to the next source in line as we need to check if it's a group
+            IncrementPathForKeyPress (press, path);
+
+            Source source = store.GetSource (path);
+            while (source is SourceManager.GroupSource && IncrementPathForKeyPress (press, path)) {
+                source = store.GetSource (path);
+                SetCursor (path, source_column, false);
+                movedCursor = true;
+            }
+
+            return movedCursor ? true : base.OnKeyPressEvent (press);
+        }
+
         protected override bool OnButtonPressEvent (Gdk.EventButton press)
         {
             TreePath path;
@@ -221,8 +252,9 @@ namespace Banshee.Sources.Gui
 
             Source source = store.GetSource (path);
 
-            if (source == null || source is SourceManager.GroupSource)
+            if (source == null || source is SourceManager.GroupSource) {
                 return false;
+            }
 
             // From F-Spot's SaneTreeView class
             if (source_renderer.InExpander ((int)press.X)) {
@@ -320,6 +352,22 @@ namespace Banshee.Sources.Gui
             }
         }
 
+        private bool IncrementPathForKeyPress (Gdk.EventKey press, TreePath path)
+        {
+            switch (press.Key) {
+            case Gdk.Key.Up:
+            case Gdk.Key.KP_Up:
+                return path.Prev ();
+
+            case Gdk.Key.Down:
+            case Gdk.Key.KP_Down:
+                path.Next ();
+                return true;
+            }
+
+            return false;
+        }
+
 #endregion
 
 #region Gtk.TreeView Overrides
@@ -355,6 +403,7 @@ namespace Banshee.Sources.Gui
             }
 
             Source new_source = store.GetValue (iter, (int)SourceModel.Columns.Source) as Source;
+
             if (ServiceManager.SourceManager.ActiveSource == new_source) {
                 return false;
             }
