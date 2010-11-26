@@ -45,6 +45,7 @@ namespace Banshee.Gui
 {
     public class PlaybackActions : BansheeActionGroup
     {
+        private string play_tooltip;
         private Gtk.Action play_pause_action;
         private PlaybackRepeatActions repeat_actions;
         private PlaybackShuffleActions shuffle_actions;
@@ -60,11 +61,12 @@ namespace Banshee.Gui
         public PlaybackActions () : base ("Playback")
         {
             ImportantByDefault = false;
+            play_tooltip = Catalog.GetString ("Play the current item");
 
             Add (new ActionEntry [] {
                 new ActionEntry ("PlayPauseAction", null,
                     Catalog.GetString ("_Play"), "space",
-                    Catalog.GetString ("Play or pause the current item"), OnPlayPauseAction),
+                    play_tooltip, OnPlayPauseAction),
 
                 new ActionEntry ("NextAction", null,
                     Catalog.GetString ("_Next"), "N",
@@ -189,12 +191,14 @@ namespace Banshee.Gui
         {
             play_pause_action.Label = Catalog.GetString ("_Pause");
             play_pause_action.StockId = Gtk.Stock.MediaPause;
+            play_pause_action.Tooltip = Catalog.GetString ("Pause the current item");
         }
 
         private void ShowPlay ()
         {
             play_pause_action.Label = Catalog.GetString ("_Play");
             play_pause_action.StockId = Gtk.Stock.MediaPlay;
+            play_pause_action.Tooltip = play_tooltip;
         }
 
         private void ShowStop ()
