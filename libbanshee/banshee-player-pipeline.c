@@ -273,6 +273,7 @@ static void bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, B
 gboolean 
 _bp_pipeline_construct (BansheePlayer *player)
 {
+    GValue value = {0};
     GstBus *bus;
     GstPad *teepad;
     GstElement *audiosink;
@@ -403,26 +404,19 @@ _bp_pipeline_construct (BansheePlayer *player)
     // Connect to the bus to get messages
     bus = gst_pipeline_get_bus (GST_PIPELINE (player->playbin));    
     gst_bus_add_watch (bus, bp_pipeline_bus_callback, player);
+
     
+    GstPad *sinkpad = gst_element_get_pad (audiosinkqueue, "sink");
+    g_value_init (&value, G_OBJECT_TYPE (sinkpad));
+    g_value_set_instance (&value, sinkpad);
+    g_object_set_property (G_OBJECT (player->audiotee), "alloc-pad", &value);
+    g_value_unset (&value);
+
+    // Link the first tee pad to the primary audio sink queue
+    gst_pad_link (gst_element_get_request_pad (player->audiotee, "src0"), sinkpad);
     // Now allow specialized pipeline setups
     _bp_cdda_pipeline_setup (player);
     _bp_video_pipeline_setup (player, bus);
-
-    // This call must be the last one in the pipeline setup to work around a
-    // GStreamer 0.10.21-0.10.22 algorithm that causes the last-allocated pad
-    // to be the one used for buffer allocations.  If the visualization one
-    // winds up being used for that then the pipeline will freeze when
-    // visualizations are disabled.
-    //
-    // When 0.10.23 is more mainstream we can use the new alloc-pad property to
-    // force selection of this pad for allocation.  Until then we just have to
-    // make sure it's the last one allocated.
-    //
-    // -- Chris Howie <cdhowie@gmail.com>
-
-    // Link the first tee pad to the primary audio sink queue
-    gst_pad_link (gst_element_get_request_pad (player->audiotee, "src0"),
-        gst_element_get_pad (audiosinkqueue, "sink"));
 
     return TRUE;
 }
