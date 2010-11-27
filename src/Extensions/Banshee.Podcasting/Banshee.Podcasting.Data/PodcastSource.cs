@@ -229,7 +229,6 @@ namespace Banshee.Podcasting.Gui
 
             Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<PodcastSourceContents> ());
             Properties.Set<bool> ("Nereid.SourceContentsPropagate", true);
-            Properties.Set<bool> ("SourceView.HideCount", false);
 
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
                     <column-controller>
