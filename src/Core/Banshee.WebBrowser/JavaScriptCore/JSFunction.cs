@@ -56,18 +56,10 @@ namespace JavaScriptCore
             IntPtr argumentCount, IntPtr arguments, ref IntPtr exception)
         {
             var context = new JSContext (ctx);
-
-            if (handler == null) {
-                return JSValue.NewUndefined (context).Raw;
-            }
-
-            var args = new JSValue[argumentCount.ToInt32 ()];
-
-            for (int i = 0; i < args.Length; i++) {
-                args[i] = new JSValue (context, Marshal.ReadIntPtr (arguments, i * IntPtr.Size));
-            }
-
-            return handler (this, new JSObject (context, thisObject), args).Raw;
+            return handler == null
+                ? JSValue.NewUndefined (context).Raw
+                : handler (this, new JSObject (context, thisObject),
+                    JSValue.MarshalArray (ctx, arguments, argumentCount)).Raw;
         }
     }
 }
