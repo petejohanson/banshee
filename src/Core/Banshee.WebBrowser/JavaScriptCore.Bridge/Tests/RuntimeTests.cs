@@ -48,7 +48,7 @@ namespace JavaScriptCore.Bridge.Tests
         [Test]
         public void TestExceptionBoundaryJsCatch ()
         {
-            context.EvaluateScript ("try { mjsc.import = 'foo'; } catch (e) { this.p = e.toString (); }");
+            context.EvaluateScript ("try { mjs.import = 'foo'; } catch (e) { this.p = e.toString (); }");
             Assert.AreEqual ("IllegalOperationError: Setting properties on this object is not allowed",
                 context.GlobalObject.GetProperty ("p").StringValue);
         }
@@ -57,7 +57,7 @@ namespace JavaScriptCore.Bridge.Tests
         public void TestExceptionBoundaryRoundTrip ()
         {
             try {
-                context.EvaluateScript ("mjsc.import = 'foo'");
+                context.EvaluateScript ("mjs.import = 'foo'");
             } catch (JSException e) {
                 Assert.AreEqual ("IllegalOperationError: Setting properties on this object is not allowed",
                     e.Error.StringValue);

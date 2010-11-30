@@ -59,6 +59,7 @@ namespace JavaScriptCore
 
         private JSClassDefinitionNative raw;
         private Dictionary<string, MethodInfo> static_methods;
+        private JSObject.CallAsFunctionCallback static_function_callback;
 
         public virtual string ClassName {
             get { return GetType ().FullName.Replace (".", "_"); }
@@ -82,6 +83,7 @@ namespace JavaScriptCore
             Override ("OnJSSetProperty", () => raw.set_property = new JSObject.SetPropertyCallback (JSSetProperty));
             Override ("OnJSDeleteProperty", () => raw.delete_property = new JSObject.DeletePropertyCallback (JSDeleteProperty));
             Override ("OnJSGetPropertyNames", () => raw.get_property_names = new JSObject.GetPropertyNamesCallback (JSGetPropertyNames));
+            Override ("OnCallAsConstructor", () => raw.call_as_constructor = new JSObject.CallAsConstructorCallback (JSCallAsConstructor));
         }
 
         private void InstallStaticMethods ()
@@ -116,10 +118,14 @@ namespace JavaScriptCore
                         methods = new List<JSStaticFunction> ();
                     }
 
+                    if (static_function_callback == null) {
+                        static_function_callback = new JSObject.CallAsFunctionCallback (OnStaticFunctionCallback);
+                    }
+
                     methods.Add (new JSStaticFunction () {
                         Name = attr.Name,
                         Attributes = attr.Attributes,
-                        Callback = OnStaticFunctionCallback
+                        Callback = static_function_callback
                     });
                 }
             }
@@ -128,17 +134,11 @@ namespace JavaScriptCore
                 var size = Marshal.SizeOf (typeof (JSStaticFunction));
                 var ptr = Marshal.AllocHGlobal (size * (methods.Count + 1));
 
-                Console.WriteLine ("ALLOC {0} bytes ({1}b x {2}) @ {3}",
-                    size * (methods.Count + 1), size, methods.Count + 1, ptr);
-
                 for (int i = 0; i < methods.Count; i++) {
-                    Console.WriteLine ("STRUCT [{0}] @ {1}",
-                        methods[i].Name, new IntPtr (ptr.ToInt64 () + size * i));
                     Marshal.StructureToPtr (methods[i],
                         new IntPtr (ptr.ToInt64 () + size * i), false);
                 }
 
-                Console.WriteLine ("EMPTY @ {0}", new IntPtr (ptr.ToInt64 () + size * methods.Count));
                 Marshal.StructureToPtr (new JSStaticFunction (),
                     new IntPtr (ptr.ToInt64 () + size * methods.Count), false);
 
@@ -167,19 +167,25 @@ namespace JavaScriptCore
         {
             var context = new JSContext (ctx);
             var fn = new JSObject (ctx, function);
+            string fn_name = null;
+            if (fn.HasProperty ("name")) {
+                var prop = fn.GetProperty ("name");
+                if (prop != null && prop.IsString) {
+                    fn_name = prop.StringValue;
+                }
+            }
 
             MethodInfo method = null;
-            if (!static_methods.TryGetValue (fn.GetProperty ("name").StringValue, out method)) {
-                return IntPtr.Zero;
+            if (fn_name == null || !static_methods.TryGetValue (fn_name, out method)) {
+                return JSValue.NewUndefined (context).Raw;
             }
 
-            var args = new JSValue[argumentCount.ToInt32 ()];
+            var result = method.Invoke (null, new object [] {
+                fn,
+                new JSObject (context, thisObject),
+                JSValue.MarshalArray (ctx, arguments, argumentCount)
+            });
 
-            for (int i = 0; i < args.Length; i++) {
-                args[i] = new JSValue (context, Marshal.ReadIntPtr (arguments, i * IntPtr.Size));
-            }
-
-            var result = method.Invoke (null, new object [] { fn, new JSObject (context, thisObject), args });
             return result == null
                 ? JSValue.NewUndefined (context).Raw
                 : ((JSValue)result).Raw;
@@ -259,6 +265,21 @@ namespace JavaScriptCore
 
         protected virtual void OnJSGetPropertyNames (JSObject obj, JSPropertyNameAccumulator propertyNames)
         {
+        }
+
+        private IntPtr JSCallAsConstructor (IntPtr ctx, IntPtr constructor,
+            IntPtr argumentCount, IntPtr arguments, ref IntPtr exception)
+        {
+            var result = OnJSCallAsConstructor (new JSObject (ctx, constructor),
+                JSValue.MarshalArray (ctx, arguments, argumentCount));
+            return result == null
+                ? JSValue.NewUndefined (new JSContext (ctx)).Raw
+                : ((JSValue)result).Raw;
+        }
+
+        protected virtual JSObject OnJSCallAsConstructor (JSObject constructor, JSValue [] args)
+        {
+            return null;
         }
     }
 }

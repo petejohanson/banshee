@@ -277,5 +277,14 @@ namespace JavaScriptCore
         {
             return IsObject ? ToJsonString (0) ?? StringValue : StringValue;
         }
+
+        public static JSValue [] MarshalArray (IntPtr context, IntPtr items, IntPtr itemCount)
+        {
+            var array = new JSValue[itemCount.ToInt32 ()];
+            for (int i = 0; i < array.Length; i++) {
+                array[i] = new JSValue (context, Marshal.ReadIntPtr (items, i * IntPtr.Size));
+            }
+            return array;
+        }
     }
 }

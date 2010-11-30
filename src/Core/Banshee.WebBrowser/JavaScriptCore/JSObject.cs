@@ -181,6 +181,17 @@ namespace JavaScriptCore
 #endregion
 
         [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern void JSObjectSetPrivate (IntPtr obj, IntPtr data);
+
+        [DllImport (JSContext.NATIVE_IMPORT)]
+        private static extern IntPtr JSObjectGetPrivate (IntPtr obj);
+
+        public IntPtr UnmanagedPrivate {
+            get { return JSObjectGetPrivate (Raw); }
+            set { JSObjectSetPrivate (Raw, value); }
+        }
+
+        [DllImport (JSContext.NATIVE_IMPORT)]
         private static extern bool JSObjectIsFunction (IntPtr ctx, IntPtr obj);
 
         public bool IsFunction {

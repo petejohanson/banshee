@@ -36,7 +36,14 @@ namespace JavaScriptCore.Tests
     {
         private JSContext context;
 
-        private class JSClassTest : JSClassDefinition
+        [TestFixtureSetUp]
+        public void Init ()
+        {
+            context = new JSContext ();
+            context.GlobalObject.SetProperty ("x", new JSObject (context, new JSTestStaticClass ().CreateClass ()));
+        }
+
+        private class JSTestStaticClass : JSClassDefinition
         {
             [JSStaticFunction ("return_managed_null")]
             private static JSValue ReturnManagedNull (JSObject function, JSObject thisObject, JSValue [] args)
@@ -96,13 +103,6 @@ namespace JavaScriptCore.Tests
             }
         }
 
-        [TestFixtureSetUp]
-        public void Init ()
-        {
-            context = new JSContext ();
-            context.GlobalObject.SetProperty ("x", new JSObject (context, new JSClassTest ().CreateClass ()));
-        }
-
         [Test]
         public void TestEnsureJavaScriptCoreVoidReturnIsUndefined ()
         {
@@ -149,6 +149,15 @@ namespace JavaScriptCore.Tests
         public void TestStaticArgs ()
         {
             context.EvaluateScript ("x.args (true, 42, 'banshee', x.args, null, undefined)");
+        }
+
+        private class JSTestInstanceClass : JSClassDefinition
+        {
+            protected override JSObject OnJSCallAsConstructor (JSObject constructor, JSValue[] args)
+            {
+                Console.WriteLine ("HELLO!");
+                return null;
+            }
         }
     }
 }
