@@ -62,7 +62,7 @@ namespace JavaScriptCore
         private JSObject.CallAsFunctionCallback static_function_callback;
 
         public virtual string ClassName {
-            get { return GetType ().FullName.Replace (".", "_"); }
+            get { return GetType ().FullName.Replace (".", "_").Replace ("+", "_"); }
         }
 
         public JSClassDefinition ()
@@ -83,7 +83,7 @@ namespace JavaScriptCore
             Override ("OnJSSetProperty", () => raw.set_property = new JSObject.SetPropertyCallback (JSSetProperty));
             Override ("OnJSDeleteProperty", () => raw.delete_property = new JSObject.DeletePropertyCallback (JSDeleteProperty));
             Override ("OnJSGetPropertyNames", () => raw.get_property_names = new JSObject.GetPropertyNamesCallback (JSGetPropertyNames));
-            Override ("OnCallAsConstructor", () => raw.call_as_constructor = new JSObject.CallAsConstructorCallback (JSCallAsConstructor));
+            Override ("OnJSCallAsConstructor", () => raw.call_as_constructor = new JSObject.CallAsConstructorCallback (JSCallAsConstructor));
         }
 
         private void InstallStaticMethods ()
@@ -156,6 +156,11 @@ namespace JavaScriptCore
 
         [DllImport (JSContext.NATIVE_IMPORT)]
         private static extern IntPtr JSClassCreate (ref JSClassDefinition.JSClassDefinitionNative definition);
+
+        private JSClass class_handle;
+        public JSClass ClassHandle {
+            get { return class_handle ?? (class_handle = CreateClass ()); }
+        }
 
         public JSClass CreateClass ()
         {

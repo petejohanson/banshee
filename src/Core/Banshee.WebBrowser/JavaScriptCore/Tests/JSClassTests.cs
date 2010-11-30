@@ -35,12 +35,18 @@ namespace JavaScriptCore.Tests
     public class JSClassTests
     {
         private JSContext context;
+        private JSTestStaticClass static_class;
+        private JSTestInstanceClass instance_class;
 
         [TestFixtureSetUp]
         public void Init ()
         {
             context = new JSContext ();
-            context.GlobalObject.SetProperty ("x", new JSObject (context, new JSTestStaticClass ().CreateClass ()));
+            static_class = new JSTestStaticClass ();
+            instance_class = new JSTestInstanceClass ();
+
+            context.GlobalObject.SetProperty ("x", new JSObject (context, static_class.ClassHandle));
+            context.GlobalObject.SetProperty ("y", new JSObject (context, instance_class.ClassHandle));
         }
 
         private class JSTestStaticClass : JSClassDefinition
@@ -153,11 +159,18 @@ namespace JavaScriptCore.Tests
 
         private class JSTestInstanceClass : JSClassDefinition
         {
-            protected override JSObject OnJSCallAsConstructor (JSObject constructor, JSValue[] args)
+            protected override JSObject OnJSCallAsConstructor (JSObject constructor, JSValue [] args)
             {
-                Console.WriteLine ("HELLO!");
-                return null;
+                var o = new JSObject (constructor.Context, ClassHandle);
+                o.SetProperty ("hello", new JSValue (constructor.Context, "world"));
+                return o;
             }
+        }
+
+        [Test]
+        public void TestConstructor ()
+        {
+            Assert.AreEqual ("world", context.EvaluateScript ("new y ().hello").StringValue);
         }
     }
 }
