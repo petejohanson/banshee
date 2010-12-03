@@ -62,7 +62,7 @@ namespace Banshee.Gui
                     Catalog.GetString ("Subtitle"), null,
                     Catalog.GetString ("Subtitle"), null),
                 new ActionEntry ("LoadSubtitleAction", null,
-                    Catalog.GetString ("Load subtitle"), null,
+                    Catalog.GetString ("Load File..."), null,
                     Catalog.GetString ("Load subtitle file"), OnLoadSubtitleAction)
             });
 
@@ -76,7 +76,7 @@ namespace Banshee.Gui
         private void OnLoadSubtitleAction (object o, EventArgs args)
         {
             var chooser = new Banshee.Gui.Dialogs.FileChooserDialog (
-                Catalog.GetString ("Load Subtitle"),
+                Catalog.GetString ("Load Subtitle File"),
                 ServiceManager.Get<Banshee.Gui.GtkElementsService> ().PrimaryWindow,
                 FileChooserAction.Open
             );

@@ -121,7 +121,7 @@ namespace Banshee.Gui
 
             repeat_actions = new PlaybackRepeatActions (Actions);
             shuffle_actions = new PlaybackShuffleActions (Actions, this);
-            subtitle_actions = new PlaybackSubtitleActions (Actions);
+            subtitle_actions = new PlaybackSubtitleActions (Actions) { Sensitive = false };
         }
 
         private void OnPlayerEvent (PlayerEventArgs args)
@@ -152,6 +152,7 @@ namespace Banshee.Gui
             switch (args.Current) {
                 case PlayerState.Loaded:
                     ShowStopAction ();
+                    subtitle_actions.Sensitive = ServiceManager.PlayerEngine.CurrentTrack.HasAttribute (TrackMediaAttributes.VideoStream);
                     subtitle_actions.ReloadEmbeddedSubtitle ();
                     break;
                 case PlayerState.Contacting:
@@ -163,6 +164,7 @@ namespace Banshee.Gui
                     ShowPlay ();
                     break;
                 case PlayerState.Idle:
+                    subtitle_actions.Sensitive = false;
                     ShowPlay ();
                     break;
                 default:
