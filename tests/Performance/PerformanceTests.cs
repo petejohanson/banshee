@@ -271,6 +271,7 @@ namespace Banshee.Tests
                 "--uninstalled",
                 Environment.GetEnvironmentVariable ("BANSHEE_DEV_OPTIONS") }, 0);
             Log.Debugging = false;
+            Paths.ApplicationName = Application.InternalName;
 
             Application.TimeoutHandler = RunTimeout;
             Application.IdleHandler = RunIdle;
@@ -285,23 +286,28 @@ namespace Banshee.Tests
 
         private void RunBanshee ()
         {
-            Gtk.Application.Init ();
-            ThreadAssist.InitializeMainThread ();
-            ThreadAssist.ProxyToMainHandler = Banshee.ServiceStack.Application.Invoke;
-            Application.PushClient (client);
-            Application.Run ();
+            try {
+                Gtk.Application.Init ();
+                ThreadAssist.InitializeMainThread ();
+                ThreadAssist.ProxyToMainHandler = Banshee.ServiceStack.Application.Invoke;
+                Application.PushClient (client);
+                Application.Run ();
 
-            music_library = ServiceManager.SourceManager.MusicLibrary;
+                music_library = ServiceManager.SourceManager.MusicLibrary;
 
-            var provider = DatabaseTrackInfo.Provider;
-            select_single_command = String.Format (
-                    "SELECT {0} FROM {1} WHERE {2}{3}{4} = ?",
-                    provider.Select, provider.From, provider.Where,
-                    (String.IsNullOrEmpty (provider.Where) ? String.Empty : " AND "),
-                    provider.PrimaryKey
-            );
+                var provider = DatabaseTrackInfo.Provider;
+                select_single_command = String.Format (
+                        "SELECT {0} FROM {1} WHERE {2}{3}{4} = ?",
+                        provider.Select, provider.From, provider.Where,
+                        (String.IsNullOrEmpty (provider.Where) ? String.Empty : " AND "),
+                        provider.PrimaryKey
+                );
 
-            client.Start ();
+                client.Start ();
+            } catch (Exception e) {
+                Console.WriteLine (e);
+                throw;
+            }
         }
 
         [TestFixtureTearDown]
