@@ -1,19 +1,21 @@
 #
-# This file is distributed under the same license as the banshee package.
-# (c) 2010 Jordi Mas i Hernandez
+# Copyright (C) 2010 Jordi Mas i Hernàndez, jmas@softcatala.org
+# Traducció de la documentació del Banshee al català
 #
 # N.T.: 
+#
+# Veure notes les de la traducció del programa Banshee
 #
 # 1) Atès que "Reproducció ara" és un nom d'una extensió li dono tractament de nom propi
 #
 # 2) Els operadors de consulta (OR, NOT) al programa Banshee no es tradueixen. Cal emprar els termes en anglès
-#
-# TODO: Al Banshee, neteja la cua -> buida la cua
+# 
+# 3) Noms dels connectors en majúscula ja que són noms propis 
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: banshee-help.master\n"
-"POT-Creation-Date: 2010-11-16 23:39+0000\n"
+"POT-Creation-Date: 2010-11-22 07:26+0000\n"
 "PO-Revision-Date: 2010-11-15 10:48+0200\n"
 "Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
 "Language-Team: Catalan\n"
@@ -188,7 +190,7 @@ msgid ""
 "Banshee supports almost all modern portable music players and smartphones "
 "with the notable exception of the Apple iPhone, iPad and iPod Touch."
 msgstr ""
-"El Banshee es compatible amb la majoria de reproductors de música moderns i "
+"El Banshee es compatible amb la majoria de reproductors de música portables moderns i "
 "telèfons intel·ligents amb les excepcions de l'iPhone, l'iPad i l'iPod Touch "
 "d'Apple."
 
@@ -200,7 +202,7 @@ msgid ""
 msgstr ""
 "Quan connecteu un dispositiu, el Banshee el mostrarà al menú esquerre. Al "
 "pressionar la icona del dispositiu anireu a la pàgina inicial del dispositiu "
-"mostrant les preferències de sincronització."
+"mostrant-se les preferències de sincronització."
 
 #: C/sync.page:50(title)
 msgid "Sync Your Music"
@@ -311,7 +313,7 @@ msgstr ""
 
 #: C/sync.page:127(title)
 msgid "Play Music From Your Portable Music Player"
-msgstr "Reproducció de la música des del reproductor portable"
+msgstr "Reproducció de la música des del reproductor de música portable"
 
 #: C/sync.page:128(p)
 msgid ""
@@ -323,7 +325,7 @@ msgstr ""
 
 #: C/sync.page:135(title)
 msgid "Remove Music From your Portable Music Player"
-msgstr "Suprimeix la música des del reproductor portable"
+msgstr "Suprimeix la música des del reproductor de música portable"
 
 #: C/sync.page:136(p)
 msgid ""
@@ -412,7 +414,7 @@ msgid ""
 "quickly and easily with basic search terms or perform detailed searches with "
 "Banshee's advanced search terminology."
 msgstr ""
-"El Banshee disposa d'un llenguatge de cerca potent. Podeu cercar la "
+"El Banshee disposa d'un llenguatge de cerca potent. Podeu cercar a la "
 "biblioteca de forma ràpida i senzilla utilitzant termes de cerca bàsics o bé "
 "realitzant cerques detallades amb la terminologia de cerca avançada del "
 "Banshee."
@@ -459,9 +461,9 @@ msgid ""
 "default, there is no explicit AND operator."
 msgstr ""
 "Els operadors poden col·locar-se entre dues paraules de cerca o col·locar-se "
-"abans d'una paraula de cerca. L'operació per defecte és <gui>i</gui> i "
+"abans d'una paraula de cerca. L'operació per defecte és <gui>AND</gui> i "
 "s'utilitza quan cap altre operador es emprat entre dos termes de cerca. Atès "
-"que és el predeterminat, no existeix l'operador I explícitament."
+"que és el predeterminat, l'operador AND no existeix explícitament."
 
 #: C/search.page:49(p)
 msgid ""
@@ -469,7 +471,7 @@ msgid ""
 "these three operations can yield very powerful queries to help you search "
 "your media."
 msgstr ""
-"Altres operadors bàsics inclouen l'<gui>OR</gui> i el <gui>NOT</gui>. Junts, "
+"Altres operadors bàsics són l'<gui>OR</gui> i el <gui>NOT</gui>. Junts, "
 "aquests tres operadors permeten consultes molt potents per ajudar-vos a "
 "cercar als elements multimèdia."
 
@@ -541,7 +543,7 @@ msgid ""
 "<em>matthews</em>."
 msgstr ""
 "Retorna com a resultat de la cerca qualsevol cançó que contingui <em>lluís</"
-"em>i <em>llach</em> (ambdós) en qualsevol dels camps."
+"em> i <em>llach</em> (ambdós) en qualsevol dels camps."
 
 #: C/search.page:92(p)
 msgid "dave, matthews"
@@ -629,7 +631,8 @@ msgid ""
 msgstr ""
 "Per començar a reproduir una cançó, utilitzeu el ratolí fent doble clic al "
 "nom de la cançó, premeu la tecla <key>barra espaiadora</key>, o escolliu "
-"<guiseq><gui>Reprodueix</gui><gui>Reprodueix</gui></guiseq> des del menú del Banshee."
+"<guiseq><gui>Reprodueix</gui><gui>Reprodueix</gui></guiseq> des del menú del "
+"Banshee."
 
 #: C/play.page:42(p)
 msgid ""
@@ -640,8 +643,8 @@ msgid ""
 msgstr ""
 "Podeu començar a reproduir un àlbum escollint-lo al navegador d'àlbums i "
 "fent clic amb el ratolí al nom de la cançó, prement la tecla <key>barra "
-"espaiadora</key>, o seleccionant <guiseq><gui>Reprodueix</gui><gui>Reprodueix</gui> "
-"guiseq> des del menú del Banshee."
+"espaiadora</key>, o seleccionant <guiseq><gui>Reprodueix"
+"</gui><gui>Reprodueix</gui> </guiseq> des del menú del Banshee."
 
 #: C/play.page:48(p)
 msgid ""
@@ -649,8 +652,8 @@ msgid ""
 "press the <key>Spacebar</key>, or choose <guiseq><gui>Playback</"
 "gui><gui>Play</gui></guiseq> from the Banshee menu."
 msgstr ""
-"Per a reproduir totes les cançons d'un artista, escolliu l'artista al navegador "
-"d'artistes i premeu la <key>barra espaiadora</key>, o escolliu "
+"Per a reproduir totes les cançons d'un artista, escolliu l'artista al "
+"navegador d'artistes i premeu la <key>barra espaiadora</key>, o escolliu "
 "<guiseq><gui>Reprodueix</gui><gui>Reprodueix</gui> des del menú del Banshee."
 
 #: C/play.page:53(p)
@@ -659,13 +662,13 @@ msgid ""
 "Favorites, Recently Added and Unheard music. Choose the one you wish to "
 "listen to and you can play songs from each."
 msgstr ""
-"El Banshee també mostra els àlbums favorits (els que més reproduïu), els últims "
-"favorits, o els àlbums recentment afegits o sense escoltar. Escolliu l'àlbum "
-"que voleu escoltar i seleccioneu les cançons a reproduir."
+"El Banshee també mostra els àlbums favorits (els que més reproduïu), els "
+"últims elements favorits, o els àlbums recentment afegits o sense escoltar. Escolliu "
+"l'àlbum que voleu escoltar i seleccioneu les cançons a reproduir."
 
 #: C/play.page:61(title)
 msgid "Play a video"
-msgstr "Reproducció d'un vídeo"
+msgstr "Reproducció de vídeo"
 
 #: C/play.page:63(p)
 msgid ""
@@ -674,17 +677,18 @@ msgid ""
 "choose <guiseq><gui>Playback</gui><gui>Play</gui></guiseq> from the Banshee "
 "menu."
 msgstr ""
-"Els vídeos importats es mostren alfabèticament. Per a reproduir un vídeo, escolliu "
-"de la llista el vídeo que voleu reproduir i premeu la <key>barra espaiadora</key>, o "
-"escolliu <guiseq><gui>Reprodueix</gui><gui>Reprodueix</gui> des del menú del Banshee."
+"Els vídeos importats es mostren alfabèticament. Per a reproduir un vídeo, "
+"escolliu de la llista el vídeo que voleu reproduir i premeu la <key>barra "
+"espaiadora</key>, o escolliu <guiseq><gui>Reprodueix</gui><gui>Reprodueix"
+"</gui></guiseq> des del menú del Banshee."
 
 #: C/play.page:68(p)
 msgid ""
 "Banshee also shows your Favorite videos (those you watch the most) and "
 "Unwatched videos. Choose one and you can play a video from the list."
 msgstr ""
-"El Banshee també mostra els vídeos favorits (els que més reproduïu) i els vídeos "
-"no reproduïts. Escolliu el vídeo que voleu reproduir de la llista."
+"El Banshee també mostra els vídeos favorits (els que més reproduïu) i els "
+"vídeos no reproduïts. Escolliu el vídeo que voleu reproduir de la llista."
 
 #: C/play.page:74(title)
 msgid "Play a Podcast"
@@ -697,8 +701,8 @@ msgid ""
 "first."
 msgstr ""
 "Podcasts mostra tots els Podcasts als que esteu subscrits, tots els Podcasts "
-"disponibles. El navegador de Podcast mostra tots els Podcast ordenats pels més recents."
-""
+"disponibles. El navegador de Podcast mostra tots els Podcast ordenats pels "
+"més recents."
 
 #: C/play.page:80(p)
 msgid ""
@@ -706,8 +710,9 @@ msgid ""
 "press the <key>Spacebar</key>, or choose <guiseq><gui>Playback</"
 "gui><gui>Play</gui></guiseq> from the Banshee menu."
 msgstr ""
-"Per a reproduir un Podcast, escolliu de la llista el que voleu reproduir i premeu la <key>barra espaiadora</key>, o "
-"escolliu <guiseq><gui>Reprodueix</gui><gui>Reprodueix</gui> des del menú del Banshee."	
+"Per a reproduir un Podcast, escolliu de la llista el que voleu reproduir i "
+"premeu la <key>barra espaiadora</key>, o escolliu <guiseq><gui>Reprodueix</"
+"gui><gui>Reprodueix</gui></guiseq> des del menú del Banshee."
 
 #: C/play.page:88(title)
 msgid "Play an internet radio station"
@@ -718,7 +723,8 @@ msgid ""
 "The Radio source shows you all internet radio stations you have added to "
 "Banshee alphabetically."
 msgstr ""
-"La fonts de ràdio mostra ordenades alfabèticament totes les emissores Internet que heu afegit al Banshee."
+"La fonts de ràdio mostra ordenades alfabèticament totes les emissores "
+"Internet que heu afegit al Banshee."
 
 #: C/play.page:94(p)
 msgid ""
@@ -726,8 +732,9 @@ msgid ""
 "from the list and press the <key>Spacebar</key>, or choose "
 "<guiseq><gui>Playback</gui><gui>Play</gui></guiseq> from the Banshee menu."
 msgstr ""
-"Per a reproduir una emissora de ràdio, escolliu de la llista l'emissora que voleu escoltar i premeu la <key>barra espaiadora</key>, o "
-"escolliu <guiseq><gui>Reprodueix</gui><gui>Reprodueix</gui> des del menú del Banshee."	
+"Per a reproduir una emissora de ràdio, escolliu de la llista l'emissora que "
+"voleu escoltar i premeu la <key>barra espaiadora</key>, o escolliu "
+"<guiseq><gui>Reprodueix</gui><gui>Reprodueix</gui></guiseq> des del menú del Banshee."
 
 #: C/play-queue.page:9(desc)
 msgid "Add media to your play queue."
@@ -743,9 +750,10 @@ msgid ""
 "order. You can add many tracks to let you listen to hours of music non-stop. "
 "You can add individual tracks or entire albums, and sort or re-order them."
 msgstr ""
-"La <gui>cua de reproducció</gui> us permet afegir música a reproduir en ordre seqüencial. "
-"Podeu afegir moltes cançons, el que us permetrà escoltar hores de música sense parar. "
-"Podeu afegir cançons individuals o àlbums sencers, i ordenar-los després."
+"La <gui>cua de reproducció</gui> us permet afegir música per reproduir en "
+"ordre seqüencial. Podeu afegir moltes cançons, el que us permetrà escoltar "
+"hores de música sense parar. Podeu afegir cançons individuals o àlbums "
+"sencers, i ordenar-los després."
 
 #: C/play-queue.page:26(title)
 msgid "Add Music to the Play Queue"
@@ -756,8 +764,8 @@ msgid ""
 "From your music library, you will need to select the music tracks or albums "
 "you want to add to the play queue."
 msgstr ""
-"Des de la biblioteca de música, heu d'escollir les cançons o àlbums que voleu "
-"afegir a la llista de reproducció."
+"Des de la biblioteca de música, heu d'escollir les cançons o àlbums que "
+"voleu afegir a la llista de reproducció."
 
 #: C/play-queue.page:32(p)
 msgid ""
@@ -766,8 +774,8 @@ msgid ""
 "window pane."
 msgstr ""
 "Per afegir un àlbum sencer a la llista de reproducció, utilitzeu el ratolí "
-"prement sobre l'àlbum i deixeu-lo anar sobre <gui>la cua de reproducció</gui> a la subfinestra "
-"de l'esquerra."
+"prement sobre l'àlbum i deixeu-lo anar sobre <gui>la cua de reproducció</"
+"gui> a la subfinestra de l'esquerra."
 
 #: C/play-queue.page:37(p)
 msgid ""
@@ -776,10 +784,10 @@ msgid ""
 "the far left window pane, or right click the track and choose <gui>Add to "
 "Play Queue</gui>."
 msgstr ""
-"Podeu afegir cançons a la cua de reproducció individualment o com a grup. "
-"Per a afegir un únic fitxer, arrossegueu i deixeu anar el fitxer sobre <gui>la cua de "
-"reproducció</gui> en la subfinestra de l'esquerra, o feu clic a la pista "
-"i escolliu <gui>Afegeix a la cua de reproducció</gui>."
+"Podeu afegir cançons a la cua de reproducció individualment o en grup. "
+"Per a afegir un únic fitxer, arrossegueu i deixeu anar el fitxer sobre "
+"<gui>la cua de reproducció</gui> en la subfinestra de l'esquerra, o feu clic "
+"a la pista i escolliu <gui>Afegeix a la cua de reproducció</gui>."
 
 #: C/play-queue.page:43(p)
 msgid ""
@@ -791,9 +799,10 @@ msgid ""
 msgstr ""
 "Podeu escollir múltiples fitxer usant el ratolí i prement <key>Control</key> "
 "i escollint cada fitxer amb el ratolí o seleccionat un rang de fitxers "
-"prement la <key>tecla de majúscules</key> dos cops per seleccionar un rang de fitxers. "
-"Llavors podeu arrossegar i deixar anar sobre la <gui>qua de reproducció</gui> a la subfinestra de "
-"l'esquerra o fent clic amb el botó dret i escollint <gui>Afegeix a la cua de reproducció</gui>."
+"prement la <key>tecla de majúscules</key> dos cops per seleccionar un rang "
+"de fitxers. Llavors podeu arrossegar i deixar anar sobre la <gui>qua de "
+"reproducció</gui> a la subfinestra de l'esquerra o fent clic amb el botó "
+"dret i escollint <gui>Afegeix a la cua de reproducció</gui>."
 
 #: C/play-queue.page:56(title)
 msgid "Organize Your Play Queue"
@@ -808,12 +817,12 @@ msgid ""
 "order with your mouse and release your mouse over the number or place in the "
 "list you wish those files to be in the queue."
 msgstr ""
-"La cua de reproducció s'organitza amb l'ordre que s'afegeixen les cançons. Les "
-"primeres cançons o àlbums que afegiu a la cua seran els primers en ser reproduïts. "
-"Podeu tornar a ordenar la vostra cua de reproducció utilitzant el ratolí per "
-"arrossegar i deixar anar una cançó o cançons a la llista. Escolliu la cançó o cançons "
-"que voleu tornar a ordenar, i deixeu-les anar sobre el número o lloc que voleu "
-"que les cançons tinguin a la cua."
+"La cua de reproducció s'organitza per l'ordre que s'afegeixen les cançons. "
+"Les primeres cançons o àlbums que afegiu a la cua seran els primers en ser "
+"reproduïts. Podeu tornar a ordenar la vostra cua de reproducció utilitzant "
+"el ratolí per arrossegar i deixar anar una cançó o cançons a la llista. "
+"Escolliu la cançó o cançons que voleu tornar a ordenar, i deixeu-les anar "
+"sobre el número o lloc que voleu que les cançons tinguin a la cua."
 
 #: C/play-queue.page:70(title)
 msgid "Removing Tracks from the Play Queue"
@@ -824,23 +833,24 @@ msgid ""
 "You can remove an individual track, a group of tracks, or clear your entire "
 "play queue."
 msgstr ""
-"Podeu suprimir una cançó individual, un grup de cançons, o buidar la qua de reproducció completament."
+"Podeu suprimir una cançó individual, un grup de cançons, o buidar la cua de "
+"reproducció completament."
 
 #: C/play-queue.page:76(p)
 msgid ""
 "To remove an individual track or group of tracks, select the track with your "
 "mouse and then press <key>Delete</key>."
 msgstr ""
-"Per a suprimir una cançó o un grup de cançons, escolliu la cançó amb el ratolí "
-"i llavors premeu la <key>tecla de supressió</key>."
+"Per a suprimir una cançó o un grup de cançons, escolliu la cançó amb el "
+"ratolí i llavors premeu la <key>tecla de supressió</key>."
 
 #: C/play-queue.page:80(p)
 msgid ""
 "To clear your entire Play Queue, press the <gui>Clear</gui> button in the "
 "upper right hand corner of the Play Queue."
 msgstr ""
-"Per buidar completament la cua de reproducció, premeu el botó <gui>Buida</gui>"
-"a la part superior dreta de la cua de reproducció."
+"Per buidar completament la cua de reproducció, premeu el botó <gui>Buida</"
+"gui> a la part superior dreta de la cua de reproducció."
 
 #: C/manage-tags.page:10(desc)
 msgid "Edit and change music tags and metadata."
@@ -931,11 +941,11 @@ msgid ""
 "finished with each song. When you have completed editing all metadata, press "
 "<gui>Save</gui>."
 msgstr ""
-"Actualitzeu la informació de la cançó. Si heu escollit múltiples cançons per a "
-"editar premeu la icona de la fletxa dreta a la dreta del camp <gui>Títol de la cançó</gui> "
-"o premeu el botó <gui>Endavant</gui> a la part superior de la capsa de diàleg quan hageu finalitzat "
-"amb cada cançó. Un cop hageu completat l'edició de totes les metadades, premeu "
-"<gui>Desa</gui>."
+"Actualitzeu la informació de la cançó. Si heu escollit múltiples cançons per "
+"a editar premeu la icona de la fletxa dreta a la dreta del camp <gui>Títol "
+"de la cançó</gui> o premeu el botó <gui>Endavant</gui> a la part superior de "
+"la capsa de diàleg quan hageu finalitzat amb cada cançó. Un cop hageu "
+"completat l'edició de totes les metadades, premeu <gui>Desa</gui>."
 
 #: C/manage-playlists.page:10(desc)
 msgid "Create and manage playlists."
@@ -953,11 +963,12 @@ msgid ""
 "browse through. Some portable media players even allow you to transfer the "
 "playlist so you can take it with you on the go."
 msgstr ""
-"Les llistes de reproducció us permeten crear i desar llistes de cançons per ser "
-"reproduïdes en un ordre específic. Les llistes de reproducció són una manera còmode "
-"de crear llistes amb les vostres cançons preferides o per dividir la biblioteca en llistes "
-"més petites que són més fàcils de navegar. Alguns reproductors portables multimèdia permeten "
-"transferir llistes de reproducció perquè les pugueu utilitzar en aquests dispositius."
+"Les llistes de reproducció us permeten crear i desar llistes de cançons per "
+"ser reproduïdes en un ordre específic. Les llistes de reproducció són una "
+"manera còmode de crear llistes amb les vostres cançons preferides o per "
+"dividir la biblioteca en llistes més petites més fàcils de navegar. "
+"Alguns reproductors portables multimèdia permeten transferir llistes de "
+"reproducció perquè les pugueu utilitzar en aquests dispositius."
 
 #: C/manage-playlists.page:28(p)
 msgid ""
@@ -965,9 +976,9 @@ msgid ""
 "playlist, as well as smart playlists. Smart Playlists are automatically "
 "generated playlists based on your listening habits, favorite music, or more."
 msgstr ""
-"El Banshee disposa de llistes de reproducció normals, que inclouen les cançons que afegiu. També "
-"disposa de llistes de reproducció intel·ligents, que es basen en els hàbits de reproducció, "
-"música preferida i d'altres."
+"El Banshee disposa de llistes de reproducció normals, que inclouen les "
+"cançons que afegiu. També disposa de llistes de reproducció intel·ligents, "
+"que es basen en els hàbits de reproducció, música preferida i d'altres."
 
 #: C/manage-playlists.page:34(title)
 msgid "Normal Playlists"
@@ -980,9 +991,10 @@ msgid ""
 "albums, your latest favorite songs, or an upbeat playlist to listen to while "
 "you exercise."
 msgstr ""
-"Una llista de reproducció normal és una llista de cançons a la que afegiu cançons i gestioneu "
-"manualment. Podeu crear llistes de cançons del vostre artista preferit des de "
-"múltiples àlbums, per les cançons més noves que preferiu, o per escoltar mentre feu exercici."
+"Una llista de reproducció normal és una llista de cançons a la que afegiu "
+"cançons i que gestioneu manualment. Podeu crear llistes de cançons del vostre "
+"artista preferit des de múltiples àlbums, per les cançons més noves que "
+"preferiu, o per escoltar mentre feu exercici."
 
 #: C/manage-playlists.page:42(p)
 msgid ""
@@ -1014,12 +1026,12 @@ msgid ""
 "column until the up or down arrow is no longer showing and the column is "
 "blank and then re-order the playlist."
 msgstr ""
-"Podeu canviar l'ordre a una llista de reproducció arrossegant i deixant "
-"anar la cançó a la nova posició a la llista de reproducció. Les cançons "
-"només es poden tornar a ordenar quan la llista de reproducció no està "
-"ordenada per cap columna. Per deixar d'ordenar per una columna, premeu "
-"sobre la columna fins que la fletxa d'amunt o avall no es mostri i la columna "
-"quedi en blanc, llavors torneu a ordenar la llista de reproducció."
+"Podeu canviar l'ordre a una llista de reproducció arrossegant i deixant anar "
+"la cançó a la nova posició a la llista de reproducció. Les cançons només es "
+"poden tornar a ordenar quan la llista de reproducció no està ordenada per "
+"cap columna. Per deixar d'ordenar per una columna, premeu sobre la columna "
+"fins que la fletxa d'amunt o avall no es mostri i la columna quedi en blanc, "
+"llavors torneu a ordenar la llista de reproducció."
 
 #: C/manage-playlists.page:68(p)
 msgid ""
@@ -1040,9 +1052,9 @@ msgid ""
 "a specific artist, favorites or more."
 msgstr ""
 "Les llistes de reproducció intel·ligents us permeten generar ràpidament una "
-"llista de reproducció dinàmica basada en un nombre de variables predeterminat. "
-"Podeu crear ràpidament una llista de reproducció nova basant-vos en un artista "
-"específic, en els preferits o d'altres."
+"llista de reproducció dinàmica basada en un nombre de variables "
+"predeterminat. Podeu crear ràpidament una llista de reproducció nova basant-"
+"vos en un artista específic, en els preferits o d'altres."
 
 #: C/manage-playlists.page:83(p)
 msgid ""
@@ -1086,10 +1098,11 @@ msgid ""
 "all songs from 2010 that you rated 5 stars. To create this playlist you "
 "would choose:"
 msgstr ""
-"Podeu també prémer el botó  <gui>+</gui> i afegir una consulta addicional a la "
-"llista de reproducció intel·ligent. Per exemple, podeu crear una llista de "
-"reproducció intel·ligent que inclogui cançons del 2010 i que hageu valorat amb "
-"5 estrelles. Per a crear aquesta llista de reproducció seleccionaríeu:"
+"Podeu també prémer el botó  <gui>+</gui> i afegir una consulta addicional a "
+"la llista de reproducció intel·ligent. Per exemple, podeu crear una llista "
+"de reproducció intel·ligent que inclogui cançons del 2010 i que hageu "
+"valorat amb 5 estrelles. Per a crear aquesta llista de reproducció "
+"seleccionaríeu:"
 
 #: C/manage-playlists.page:110(gui)
 msgid "2010"
@@ -1128,7 +1141,9 @@ msgstr "Preferits (cançons amb una valoració de quatre i cinc estrelles)"
 
 #: C/manage-playlists.page:133(p)
 msgid "Recent Favorites (Songs listened to often in the past week)"
-msgstr "Preferits recents (cançons que es van escoltar freqüentment la setmana passada)"
+msgstr ""
+"Preferits recents (cançons que es van escoltar freqüentment la setmana "
+"passada)"
 
 #: C/manage-playlists.page:135(p)
 msgid "Recently Added (Songs imported within the last week"
@@ -1140,7 +1155,7 @@ msgstr "No escoltats (cançons que no s'han reproduït o s'han omès)"
 
 #: C/manage-playlists.page:137(p)
 msgid "Neglected Favorites (Favorites not played in over two months)"
-msgstr ""
+msgstr "Preferits abandonats (preferits que no s'han reproduït des de fa més de dos mesos)"
 
 #: C/manage-playlists.page:139(p)
 msgid "700 MB of Favorites (A data CD worth of favorite songs)"
@@ -1180,13 +1195,14 @@ msgid ""
 "Last.fm offers multiple channels to stream, including recommended music for "
 "you based on your listening habits, your favorites and more."
 msgstr ""
-"Last.fm és un popular servei en línia que ofereix versions gratuïtes i de pagament. "
-"Last.fm ofereix informació d'artistes musicals i àlbums i si creeu un perfil d'usuari "
-"a Last.fm us permet fer un seguiment gratuïtament de la música que escolteu al Banshee. "
-"Si us subscriviu com a membre de pagament, podeu també escoltar fluxos de música "
-"de Last.Fm des de diferents clients, incloent-hi el Banshee. Last.fm ofereix múltiples "
-"canals de fluxos, incloent-hi recomanacions musicals basades en els vostres hàbits, els "
-"favorits i d'altres."
+"Last.fm és un popular servei en línia que ofereix versions gratuïtes i de "
+"pagament. Last.fm ofereix informació d'artistes musicals i àlbums i si creeu "
+"un perfil d'usuari a Last.fm us permet fer un seguiment gratuïtament de la "
+"música que escolteu al Banshee. Si us subscriviu com a membre de pagament, "
+"podeu també escoltar fluxos de música de Last.Fm des de diferents clients, "
+"incloent-hi el Banshee. Last.fm ofereix múltiples canals de fluxos, incloent-"
+"hi recomanacions musicals basades en els vostres hàbits, els favorits i "
+"d'altres."
 
 #: C/lastfm.page:35(title)
 msgid "Enable Last.fm"
@@ -1216,7 +1232,7 @@ msgstr ""
 
 #: C/lastfm.page:58(title)
 msgid "Enable Last.fm Song Reporting"
-msgstr ""
+msgstr "Habilita l'informe de cançons per a Last.Fm"
 
 #: C/lastfm.page:59(p)
 msgid ""
@@ -1232,7 +1248,7 @@ msgstr ""
 
 #: C/lastfm.page:72(title)
 msgid "Listen to Last.fm Radio"
-msgstr ""
+msgstr "Escoleu l'emissora de ràdio Last.fm"
 
 #: C/lastfm.page:73(p)
 msgid ""
@@ -1346,7 +1362,7 @@ msgstr "Y"
 
 #: C/keyboardshortcuts.page:93(p)
 msgid "Mark the selected episodes as old"
-msgstr "Marqueu els episodis seleccionats com antics"
+msgstr "Marca els episodis seleccionats com a antics"
 
 #: C/keyboardshortcuts.page:103(title)
 msgid "Interface"
@@ -1354,7 +1370,7 @@ msgstr "Interfície"
 
 #: C/keyboardshortcuts.page:110(p)
 msgid "Toggle full-screen mode"
-msgstr  "Commuta el mode de pantalla completa"
+msgstr "Commuta el mode de pantalla completa"
 
 #: C/keyboardshortcuts.page:114(key) C/keyboardshortcuts.page:118(key)
 msgid "A"
@@ -1366,11 +1382,12 @@ msgstr "Selecciona totes les cançons en la vista de la llista de reproducció"
 
 #: C/keyboardshortcuts.page:118(key)
 msgid "Shift"
-msgstr ""
+msgstr "Maj"
 
 #: C/keyboardshortcuts.page:119(p)
 msgid "Unselect all songs in playlist view"
-msgstr "Desselecciona totes les cançons en la vista de la llista de reproducció"
+msgstr ""
+"Desselecciona totes les cançons en la vista de la llista de reproducció"
 
 #: C/keyboardshortcuts.page:123(key)
 msgid "W"
@@ -1378,23 +1395,23 @@ msgstr "W"
 
 #: C/keyboardshortcuts.page:123(p)
 msgid "Hide Banshee Window (Requires Notification Area Plug-in Enabled"
-msgstr ""
+msgstr "Amaga la finestra del Banshee (requereix tenir el connector «Icona de l'àrea de notificació» habilitat)"
 
 #: C/keyboardshortcuts.page:127(key)
 msgid "Left Mouse Button"
-msgstr ""
+msgstr "Botó esquerre del ratolí"
 
 #: C/keyboardshortcuts.page:128(p)
 msgid "Play Previous Song (Requires Notification Area Plug-in Enabled"
-msgstr ""
+msgstr "Reprodueix la cançó anterior (requereix tenir el connector «Icona de l'àrea de notificació» habilitat)"
 
 #: C/keyboardshortcuts.page:132(key)
 msgid "Right Mouse Button"
-msgstr ""
+msgstr "Botó dret del ratolí"
 
 #: C/keyboardshortcuts.page:133(p)
 msgid "Play Next Song (Requires Notification Area Plug-in Enabled"
-msgstr ""
+msgstr "Reprodueix la cançó següent (requereix tenir el connector «Icona de l'àrea de notificació» habilitat)"
 
 #: C/keyboardshortcuts.page:137(key)
 msgid "Middle Mouse Button"
@@ -1402,13 +1419,16 @@ msgstr "Botó central del ratolí"
 
 #: C/keyboardshortcuts.page:138(p)
 msgid "Toggle Play / Pause (Requires Notification Area Plug-in Enabled"
-msgstr "Commuta Reprodueix o posa en pausa (requereix tenir activat el connector d'àrea de notificació)"
+msgstr ""
+"Commuta entre reproducció o pausa (requereix tenir el connector "
+"«Icona de l'àrea de notificació» habilitat)"
 
 #: C/itunes-import.page:8(desc)
 msgid ""
 "Import music and categorizations from the <app>iTunes</app> media player."
 msgstr ""
-"Importa la música i les categoritzacions del reproducció musical <app>iTunes</app>."
+"Importa la música i les categoritzacions del reproductor multimèdia "
+"<app>iTunes</app>."
 
 #: C/itunes-import.page:12(title)
 msgid "Import your <app>iTunes</app> library"
@@ -1428,12 +1448,17 @@ msgid ""
 "videos, and other media media as well sync it with portable devices to take "
 "your media on the go."
 msgstr ""
+"El <app>Banshee</app> és un reproductor multimèdia que permet reproduir música, "
+"vídeos i altres elements multimèdia així com sincronitzar-se amb dispositiu portàtils "
+"per tal de que us pugeu emportar la música."
 
 #: C/introduction.page:31(p)
 msgid ""
 "<app>Banshee</app> includes features to import your media, manage its "
 "metadata, and play your music and videos."
 msgstr ""
+"El <app>Banshee</app> permet importar elements multimèdia, gestionar les "
+"metadades, i reproduir música i vídeos."
 
 #: C/introduction.page:35(p)
 msgid ""
@@ -1453,7 +1478,7 @@ msgstr "Gestió i ordenació"
 
 #: C/index.page:32(title)
 msgid "Sync your media with a portable music player"
-msgstr ""
+msgstr "Sincronitzeu els elements multimèdia amb un reproductor de música portable"
 
 #: C/index.page:36(title)
 msgid "Add additional functionality to Banshee"
@@ -1469,7 +1494,8 @@ msgstr "Problemes comuns"
 
 #: C/import.page:8(desc)
 msgid "Add music and videos from your computer to your Banshee library."
-msgstr "Afegeix música i vídeos des del vostre ordinador a la biblioteca del Banshee."
+msgstr ""
+"Afegeix música i vídeos des del vostre ordinador a la biblioteca del Banshee."
 
 #: C/import.page:15(name)
 msgid "Shaun McCance"
@@ -1489,6 +1515,9 @@ msgid ""
 "Imported files appear in your sources and can be edited and managed like any "
 "other media in Banshee."
 msgstr ""
+"Podeu importar música i vídeos ja emmagatzemats a l'ordinador al Banshee. "
+"Els fitxers importats apareixeran a les fonts i podreu editar-los i gestionar-los "
+"com qualsevol altre element multimèdia al Banshee."
 
 #: C/import.page:27(p)
 msgid ""
@@ -1496,12 +1525,16 @@ msgid ""
 "gui><gui>Import Media</gui></guiseq>. A dialog will appear with a number of "
 "choices."
 msgstr ""
+"Per a importar fitxers de música o vídeo, escolliu <guiseq><gui>Elements multimèdia"
+"</gui><gui>Importa elements multimèdia</gui></guiseq>. Una diàleg apareixerà amb diversos opcions."
 
 #: C/import.page:31(p)
 msgid ""
 "Plugins may add additional import choices. See <link xref=\"#plugins\"/> "
 "below."
 msgstr ""
+"Els connectors poden afegir opcions d'importació addicionals. Vegeu <link xref=\"#plugins\"/> "
+"a baix."
 
 #: C/import.page:37(gui)
 msgid "Local Folders"
@@ -1523,16 +1556,20 @@ msgid ""
 "Choose this option to import only the specific file or files you select. You "
 "will be prompted with a dialog to choose the file or files to import."
 msgstr ""
+"Escolliu aquesta opció per a importar només un fitxer o fitxers específics que seleccioneu. "
+"Us apareixerà una capsa de diàleg on podreu escollir el fitxer o fitxers a importar."
 
 #: C/import.page:49(gui)
 msgid "Home Folder"
-msgstr "Carpeta de l'usuari"
+msgstr "Carpeta d'usuari"
 
 #: C/import.page:50(p)
 msgid ""
 "Choose this option to import all music and video files in your entire home "
 "folder, including files in any subfolders."
 msgstr ""
+"Escolliu aquesta opció per a importar tots els fitxers de vídeo i música de la "
+"vostra carpeta d'usuari, incloent-hi els fitxers en les subcarpetes."
 
 #: C/import.page:54(gui)
 msgid "Videos From Photos Folder"
@@ -1551,6 +1588,8 @@ msgid ""
 "You can safely import from a folder you have already imported from without "
 "worrying about duplicate entries in your library."
 msgstr ""
+"Podeu importar de forma segura una carpeta que ja heu importat sense "
+"preocupar-vos de que es produeixin entrades duplicades a la biblioteca."
 
 #: C/import.page:68(title)
 msgid "Import from a Playlist"
@@ -1573,6 +1612,8 @@ msgid ""
 "Plugins may add additional import choices. The following additional sources "
 "will be available if the appropriate plugins are enabled:"
 msgstr ""
+"Els connectors poden afegir opcions d'importació addicionals. "
+"Les següents fonts addicionals estaran disponibles si els connectors apropiats estan habilitats:"
 
 #: C/extensions.page:8(desc)
 msgid "Add additional functionality to Banshee."
@@ -1588,31 +1629,31 @@ msgstr "Extensions oficials del Banshee"
 
 #: C/extensions.page:29(title)
 msgid "Manage extensions for Banshee"
-msgstr ""
+msgstr "Gestiona les extensions pel Banshee"
 
 #: C/extensions.page:34(title)
 msgid "Community Banshee Extensions"
-msgstr ""
+msgstr "Extensions de la comunitat pel Banshee"
 
 #: C/extensions.page:36(title)
 msgid "Add community built extensions for Banshee"
-msgstr ""
+msgstr "Afegiu extensions de la comunitat pel Banshee"
 
 #: C/emusic.page:8(desc)
 msgid "Import music purchased from eMusic."
-msgstr ""
+msgstr "Importa la música comprada des d'eMusic."
 
 #: C/emusic.page:12(title)
 msgid "Import your eMusic tracks"
-msgstr ""
+msgstr "Importeu les pistes d'eMusic"
 
 #: C/amazon.page:9(desc)
 msgid "Sync and purchase music from the Amazon MP3 Store."
-msgstr ""
+msgstr "Sincronitza i compra música de la botiga Amazon MP3."
 
 #: C/amazon.page:24(title)
 msgid "Amazon MP3 Store"
-msgstr "Botiga d'Amazon MP3"
+msgstr "Botiga Amazon MP3"
 
 #: C/amazon.page:26(p)
 msgid ""
@@ -1628,10 +1669,12 @@ msgid ""
 "Banshee uses an Amazon affiliate code for all music purchases. All money "
 "made via this affiliate code is donated to the GNOME Foundation."
 msgstr ""
+"El Banshee utilitza un codi d'afiliació per totes compres de música. Totes les comissions "
+"de venda obtingudes amb el codi d'afiliació són donades a la Fundació GNOME."
 
 #: C/amazon.page:40(title)
 msgid "Purchase Amazon MP3s in your web browser"
-msgstr ""
+msgstr "Compreu música de l'Amazon MP3 des del navegador"
 
 #: C/amazon.page:42(p)
 msgid ""
@@ -1644,7 +1687,7 @@ msgstr ""
 
 #: C/amazon.page:51(title)
 msgid "Buy Amazon MP3s in Banshee"
-msgstr ""
+msgstr "Compreu d'Amazon MP3 des del Banshee"
 
 #: C/amazon.page:53(p)
 msgid ""
@@ -1658,7 +1701,7 @@ msgstr ""
 
 #: C/amazon.page:63(title)
 msgid "Import Amazon MP3s manually"
-msgstr ""
+msgstr "Importeu música d'Amazon MP3 manualment"
 
 #: C/amazon.page:65(p)
 msgid ""
@@ -1681,7 +1724,7 @@ msgstr ""
 
 #: C/advanced.page:8(desc)
 msgid "Get help for advanced actions."
-msgstr ""
+msgstr "Obtingueu ajuda per a accions avançades."
 
 #: C/advanced.page:23(title)
 msgid "Advanced Options and Help"
@@ -1689,7 +1732,7 @@ msgstr "Opcions avançades i ajuda"
 
 #: C/add-radio.page:11(desc)
 msgid "Add, remove and play internet radio stations in Banshee."
-msgstr "Afegix, suprimeix i reprodueix emissores de ràdio al Banshee."
+msgstr "Afegeix, suprimeix i reprodueix emissores de ràdio al Banshee."
 
 #: C/add-radio.page:26(title)
 msgid "Internet Radio"
@@ -1725,7 +1768,8 @@ msgid ""
 "in your web browser. In most browsers, you can right click on the link and "
 "press <gui>Copy Link</gui>."
 msgstr ""
-
+"Des de la pàgina d'Internet de l'emissora de Ràdio, copieu l'enllaç del flux a la URL "
+"del vostre navegador. A la majoria de navegadors, podeu fer clic amb el botó dret a l'enllaç i prémer <gui>Copia l'enllaç</gui>."
 #: C/add-radio.page:54(p)
 msgid ""
 "Banshee will prompt you to enter the <gui>Station Genre</gui>. Choose the "
@@ -1747,14 +1791,15 @@ msgstr ""
 msgid ""
 "Then press <gui>Save</gui> to save the internet radio station in Banshee."
 msgstr ""
+"Llavors premeu <gui>Desa</gui> per a desar l'emissora de ràdio per Internet al Banshee."
 
 #: C/add-podcast.page:11(desc)
 msgid "Add, remove and play podcasts in Banshee."
-msgstr ""
+msgstr "Afegeix, elimina i reprodueix podcasts al Banshee."
 
 #: C/add-podcast.page:29(title)
 msgid "What is a Podcast?"
-msgstr ""
+msgstr "Què és un Podcast?"
 
 #: C/add-podcast.page:31(p)
 msgid ""
@@ -1774,7 +1819,7 @@ msgstr ""
 
 #: C/add-podcast.page:44(title)
 msgid "Add a Podcast"
-msgstr ""
+msgstr "Afegiu un Podcast"
 
 #: C/add-podcast.page:46(p)
 msgid ""
@@ -1798,38 +1843,43 @@ msgid ""
 "Banshee will then allow you to choose how you want to download new podcasts "
 "from a drop down menu. Your choices include:"
 msgstr ""
+"El Banshee us permetrà escollir com voleu baixar els Podcasts nous des del menú desplegable. Les opcions inclouen:"
 
 #: C/add-podcast.page:63(p)
 msgid ""
 "Download the Most Recent Episode (This will automatically download the last "
 "episode that was released)."
 msgstr ""
+"Baixeu l'episodi més recent (es baixarà l'últim episodi que s'ha publicat)"
 
+# N.T: Trobo totalment redundant l'explicació entre parèntesis per això l'he omès
 #: C/add-podcast.page:65(p)
 msgid "Download All Episodes (This will download all episodes)."
-msgstr ""
+msgstr "Baixa tots els episodis"
 
+# N.T: Trobo totalment redundant l'explicació entre parèntesis per això l'he omès
 #: C/add-podcast.page:66(p)
 msgid ""
 "Let Me Decide Which Episodes to Download (This will allow you to choose "
 "which episodes you would like to download)."
 msgstr ""
+"Deixeu-me decidir quins episodis baixar"
 
 #: C/add-podcast.page:70(p)
 msgid "After you have added a Podcast feed, Banshee will display:"
-msgstr ""
+msgstr "Un cop hageu afegit un canal Podcast, el Banshee mostrarà:"
 
 #: C/add-podcast.page:73(p)
 msgid "<gui>Name</gui>: (Name of the specific episode)"
-msgstr ""
+msgstr "<gui>Nom</gui>: (nom de l'episodi específic)"
 
 #: C/add-podcast.page:74(p)
 msgid "<gui>Podcast</gui>: (Name of the Podcast)"
-msgstr ""
+msgstr "<gui>Podcast</gui>: (nom del Podcast)"
 
 #: C/add-podcast.page:75(p)
 msgid "<gui>Published</gui> (Date the episode was published or released)"
-msgstr ""
+msgstr "<gui>Publicat</gui> (data en que l'episodi es va publicar)"
 
 #. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
 #: C/index.page:0(None)
