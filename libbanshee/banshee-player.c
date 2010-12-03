@@ -480,8 +480,12 @@ bp_get_subtitle_description (BansheePlayer *player, int i)
             return NULL;
         }
         bp_debug ("[subtitle]: iso 639-2 subtitle code %s", code);
+#ifdef HAVE_GST_0_10_26
         desc = (gchar *) gst_tag_get_language_name ((const gchar *)&code);
         bp_debug ("[subtitle]: subtitle language: %s", desc);
+#else
+        desc = g_strdup (code);
+#endif
 
         g_free (code);
     }
