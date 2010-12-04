@@ -34,7 +34,10 @@ namespace Banshee.Gui
 {
     public static class IconThemeUtils
     {
+        private const int DEFAULT_MENU_ICON_SIZE = 22;
+
         private static Assembly executing_assembly = Assembly.GetExecutingAssembly ();
+        private static int menu_icon_size = GetIconSize (IconSize.Menu);
 
         public static bool HasIcon (string name)
         {
@@ -56,6 +59,11 @@ namespace Banshee.Gui
             }
 
             return null;
+        }
+
+        public static Gdk.Pixbuf LoadIcon (string name)
+        {
+            return LoadIcon (executing_assembly, name, menu_icon_size, true);
         }
 
         public static Gdk.Pixbuf LoadIcon (string name, int size)
@@ -114,6 +122,16 @@ namespace Banshee.Gui
             }
 
             return null;
+        }
+
+        public static int GetIconSize (IconSize icon_size)
+        {
+            int width, height;
+            if (Icon.SizeLookup (icon_size, out width, out height)) {
+                return width;
+            }
+
+            return DEFAULT_MENU_ICON_SIZE;
         }
     }
 }

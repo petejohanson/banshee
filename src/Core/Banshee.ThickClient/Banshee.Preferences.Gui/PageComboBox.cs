@@ -59,7 +59,7 @@ namespace Banshee.Preferences.Gui
 
             foreach (Page page in pages) {
                 model.AppendValues (
-                    Banshee.Gui.IconThemeUtils.LoadIcon (page.IconName, 22),
+                    Banshee.Gui.IconThemeUtils.LoadIcon (page.IconName),
                     String.Format ("<b>{0}</b>", page.Name),
                     page.Order,
                     page
