@@ -132,6 +132,8 @@ namespace Banshee.Gui.TrackEditor
             LoadModifiers ();
 
             LoadTrackToEditor ();
+
+            HideSingleTab ();
         }
 
 #region UI Building
@@ -449,6 +451,24 @@ namespace Banshee.Gui.TrackEditor
                 } else if (child != null) {
                     child.GrabFocus ();
                     child = null;
+                }
+            }
+        }
+
+        private void HideSingleTab ()
+        {
+            int visible_pages = 0;
+            foreach (ITrackEditorPage page in pages) {
+                if (page.Widget.Visible) {
+                       visible_pages++;
+                }
+            }
+            if (visible_pages == 1) {
+                notebook.ShowTabs = false;
+                notebook.ShowBorder = false;
+                var container = notebook.CurrentPageWidget as Container;
+                if (container != null) {
+                    container.BorderWidth = 0;
                 }
             }
         }
