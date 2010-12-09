@@ -77,7 +77,7 @@ namespace Migo.Syndication
         }
 
         protected override int ModelVersion {
-            get { return 3; }
+            get { return 4; }
         }
 
         protected override void MigrateTable (int old_version)
@@ -90,6 +90,10 @@ namespace Migo.Syndication
 
             if (old_version < 3) {
                 CreateIndex ("PodcastSyndicationsIndex", "IsSubscribed, Title");
+            }
+
+            if (old_version < 4) {
+                Connection.Execute (String.Format ("UPDATE {0} SET MaxItemCount=0 WHERE MaxItemCount=200", TableName));
             }
         }
     }
@@ -129,7 +133,7 @@ namespace Migo.Syndication
         private string link;
         //private string local_enclosure_path;
         private long dbid = -1;
-        private long maxItemCount = 200;
+        private long maxItemCount = 0;
         private DateTime pubDate;
         private FeedSyncSetting syncSetting;
         private string title;
