@@ -416,7 +416,7 @@ namespace Banshee.GStreamer
         {
             ready_timeout = 0;
             var uri = CurrentUri;
-            if (CurrentState == PlayerState.Loading && uri != null && uri.IsLocalPath) {
+            if (CurrentState == PlayerState.Loading && Position == 0 && uri != null && uri.IsLocalPath) {
                 // This is a dirty workaround.  I was seeing the playback get stuck on track transition,
                 // about one in 20 songs, where it would load the new track's duration, but be stuck at 0:00,
                 // but if I moved the seek slider it would unstick it, hence setting Position...
