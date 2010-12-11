@@ -50,9 +50,7 @@ namespace Banshee.UbuntuOneMusicStore
             Catalog.GetString ("Ubuntu One Music Store"),
             sort_order, "ubuntu-one-music-store")
         {
-            Pixbuf icon = new Pixbuf (System.Reflection.Assembly.GetExecutingAssembly ()
-                                      .GetManifestResourceStream ("ubuntuone.png"));
-            Properties.Set<Pixbuf> ("Icon.Pixbuf_22", icon.ScaleSimple (22, 22, InterpType.Bilinear));
+            Properties.SetString ("Icon.Name", "ubuntuone");
         }
 
         // A count of 0 will be hidden in the source TreeView

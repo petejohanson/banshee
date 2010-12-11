@@ -5,9 +5,7 @@ INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
 SOURCES = Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs
 
-RESOURCES =  \
-	Banshee.UbuntuOneMusicStore.addin.xml \
-	Resources/ubuntuone.png
+RESOURCES = Banshee.UbuntuOneMusicStore.addin.xml
 
 if ENABLE_UBUNTUONE
 include $(top_srcdir)/build/build.mk
