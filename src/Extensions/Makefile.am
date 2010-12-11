@@ -30,6 +30,7 @@ SUBDIRS = \
 	Banshee.SqlDebugConsole \
 	Banshee.Torrent \
 	Banshee.RemoteAudio \
+	Banshee.UbuntuOneMusicStore \
 	Banshee.Wikipedia \
 	Banshee.YouTube
 

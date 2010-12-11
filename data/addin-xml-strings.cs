@@ -218,6 +218,11 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Support downloading BitTorrent files from podcasts.");
         Catalog.GetString (@"Utilities");
 
+        // ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore.addin.xml
+        Catalog.GetString (@"Ubuntu One Music Store");
+        Catalog.GetString (@"This extension grants access to the Ubuntu One Music Store, powered by 7digital.");
+        Catalog.GetString (@"Online Sources");
+
         // ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia.addin.xml
         Catalog.GetString (@"Wikipedia");
         Catalog.GetString (@"View artist information from Wikipedia in the context pane.");

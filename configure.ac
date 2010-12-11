@@ -178,6 +178,9 @@ BANSHEE_CHECK_MEEGO
 dnl Sound menu integration (optional)
 BANSHEE_CHECK_SOUNDMENU
 
+dnl Ubuntu One Music Store (optional)
+BANSHEE_CHECK_UBUNTUONE
+
 dnl Gapless, if we have a new-enough playbin2
 ENABLE_GAPLESS="no"
 AC_ARG_ENABLE(gapless-playback,
@@ -365,6 +368,7 @@ src/Extensions/Banshee.SqlDebugConsole/Makefile
 src/Extensions/Banshee.Sample/Makefile
 src/Extensions/Banshee.Torrent/Makefile
 src/Extensions/Banshee.RemoteAudio/Makefile
+src/Extensions/Banshee.UbuntuOneMusicStore/Makefile
 src/Extensions/Banshee.Wikipedia/Makefile
 src/Extensions/Banshee.YouTube/Makefile
 
@@ -418,6 +422,7 @@ ${PACKAGE}-${VERSION}
     Gapless playback:  ${ENABLE_GAPLESS} (gstreamer-plugins-base > 0.10.25.2)
     YouTube extension: ${enable_youtube} (gdata-sharp >= 1.4)
     Sound menu:        ${enable_soundmenu} (indicate-sharp >= 0.4.1)
+    Ubuntu One Store:  ${enable_ubuntuone} (ubuntuone-sharp)
 
   Build/Development:
     Unit Tests:        ${do_tests} (nunit >= ${NUNIT_REQUIRED})
