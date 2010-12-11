@@ -3,8 +3,7 @@ AC_DEFUN([BANSHEE_CHECK_SOUNDMENU],
 	LIBINDICATESHARP_REQUIRED=0.4.1
 
 	AC_ARG_ENABLE([soundmenu],
-		AS_HELP_STRING([--enable-soundmenu]
-                                [Enable sound menu support]),
+		AS_HELP_STRING([--enable-soundmenu], [Enable sound menu support]),
 		enable_soundmenu=$enableval, enable_soundmenu=no
 	)
 
