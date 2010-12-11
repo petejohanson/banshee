@@ -22,6 +22,10 @@ if ENABLE_GIO
 TEST_ASSEMBLIES += Banshee.Gio.dll
 endif
 
+if ENABLE_UBUNTUONE
+TEST_ASSEMBLIES += Banshee.UbuntuOneMusicStore.dll
+endif
+
 ENV_OPTIONS = TZ=America/Chicago LC_ALL=it_IT LANG=it_IT
 NUNIT_CONSOLE = $$(echo $$(which nunit-console2 || which nunit-console))
 RUNNER = for asm in $${TEST_ASSEMBLIES}; do echo -e "\033[1mRunning tests on $${asm}...\033[0m"; $(ENV_OPTIONS) $(NUNIT_CONSOLE) -nologo -noshadow $$asm; done

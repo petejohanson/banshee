@@ -3,7 +3,9 @@ TARGET = library
 LINK = $(REF_EXTENSION_UBUNTUONEMUSICSTORE)
 INSTALL_DIR = $(EXTENSIONS_INSTALL_DIR)
 
-SOURCES = Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs
+SOURCES =  \
+	Banshee.UbuntuOneMusicStore/Tests/MusicStoreTests.cs \
+	Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs
 
 RESOURCES = Banshee.UbuntuOneMusicStore.addin.xml
 
