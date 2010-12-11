@@ -26,6 +26,7 @@ SUBDIRS = \
 	Banshee.MeeGo \
 	Banshee.Podcasting \
 	Banshee.Sample \
+	Banshee.SoundMenu \
 	Banshee.SqlDebugConsole \
 	Banshee.Torrent \
 	Banshee.RemoteAudio \

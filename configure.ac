@@ -175,6 +175,9 @@ BANSHEE_CHECK_TORRENT
 dnl MeeGo integration (optional)
 BANSHEE_CHECK_MEEGO
 
+dnl Sound menu integration (optional)
+BANSHEE_CHECK_SOUNDMENU
+
 dnl Gapless, if we have a new-enough playbin2
 ENABLE_GAPLESS="no"
 AC_ARG_ENABLE(gapless-playback,
@@ -357,6 +360,7 @@ src/Extensions/Banshee.NowPlaying/Makefile
 src/Extensions/Banshee.PlayQueue/Makefile
 src/Extensions/Banshee.PlayerMigration/Makefile
 src/Extensions/Banshee.Podcasting/Makefile
+src/Extensions/Banshee.SoundMenu/Makefile
 src/Extensions/Banshee.SqlDebugConsole/Makefile
 src/Extensions/Banshee.Sample/Makefile
 src/Extensions/Banshee.Torrent/Makefile
@@ -413,6 +417,7 @@ ${PACKAGE}-${VERSION}
     Podcasts:          ${enable_podcast}
     Gapless playback:  ${ENABLE_GAPLESS} (gstreamer-plugins-base > 0.10.25.2)
     YouTube extension: ${enable_youtube} (gdata-sharp >= 1.4)
+    Sound menu:        ${enable_soundmenu} (indicate-sharp >= 0.4.1)
 
   Build/Development:
     Unit Tests:        ${do_tests} (nunit >= ${NUNIT_REQUIRED})

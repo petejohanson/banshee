@@ -203,6 +203,11 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"A sample source useful to developers.");
         Catalog.GetString (@"Sources");
 
+        // ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu.addin.xml
+        Catalog.GetString (@"Sound Menu integration for Banshee");
+        Catalog.GetString (@"Control Banshee from the Sound Menu.");
+        Catalog.GetString (@"Utilities");
+
         // ../src/Extensions/Banshee.SqlDebugConsole/Banshee.SqlDebugConsole.addin.xml
         Catalog.GetString (@"SQL Debug Console");
         Catalog.GetString (@"Provides a UI for monitoring Banshee's SQL usage, and running queries.");
