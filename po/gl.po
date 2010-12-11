@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: banshee-master-po-gl-3484\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-09-28 06:36+0000\n"
-"PO-Revision-Date: 2010-09-28 23:46+0200\n"
+"POT-Creation-Date: 2010-12-03 19:32+0000\n"
+"PO-Revision-Date: 2010-12-11 01:00+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -384,7 +384,7 @@ msgstr "Mostra unha icona na área de notificación para controlar Banshee."
 
 #. ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying.addin.xml
 #: ../data/addin-xml-strings.cs:179
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:164
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:168
 #: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:50
 msgid "Now Playing"
 msgstr "Reproducindo agora"
@@ -421,10 +421,10 @@ msgstr ""
 
 #. ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.addin.xml
 #: ../data/addin-xml-strings.cs:193
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:188
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:193
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/PodcastGroupSource.cs:38
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:107
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:203
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:210
 msgid "Podcasts"
 msgstr "Podcasts"
 
@@ -513,7 +513,7 @@ msgid "AAC (Novell Encoder)"
 msgstr "AAC (Codificador de Novell)"
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:3
-#: ../data/audio-profiles/mp3-lame.xml.in.h:4
+#: ../data/audio-profiles/mp3-lame.xml.in.h:3
 #: ../data/audio-profiles/mp3-xing.xml.in.h:2
 #: ../data/audio-profiles/wavpack.xml.in.h:3
 #: ../data/audio-profiles/wma.xml.in.h:4
@@ -582,61 +582,34 @@ msgstr ""
 "produce ficheiros máis grandes a baixas taxas de bit."
 
 #: ../data/audio-profiles/mp3-lame.xml.in.h:2
-msgid "Average Bitrate"
-msgstr "Taxa de bits media"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:3
 #: ../data/audio-profiles/vorbis.xml.in.h:2
 #: ../data/audio-profiles/wavpack.xml.in.h:2
 #: ../data/audio-profiles/wma.xml.in.h:3
 msgid "Best"
 msgstr "Mellor"
 
-#: ../data/audio-profiles/mp3-lame.xml.in.h:5
+#: ../data/audio-profiles/mp3-lame.xml.in.h:4
 msgid "Constant Bitrate"
 msgstr "Taxa de bits constante"
 
+#: ../data/audio-profiles/mp3-lame.xml.in.h:5
+#| msgid "Syncing iPod"
+msgid "Encoding Mode"
+msgstr "Modo de codificación"
+
 #: ../data/audio-profiles/mp3-lame.xml.in.h:6
-msgid "Extreme"
-msgstr "Extremo"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:7
-msgid "Insane"
-msgstr "Demente"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:8
-msgid "LAME Preset"
-msgstr "Preconfiguración de LAME"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:9
 msgid "MP3 (LAME Encoder)"
 msgstr "MP3 (codificador LAME)"
 
-#: ../data/audio-profiles/mp3-lame.xml.in.h:10
-msgid "Medium"
-msgstr "Medio"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:11
-msgid "Preset"
-msgstr "Preconfiguración"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:12
-msgid "Standard"
-msgstr "Estándar"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:13
-msgid "VBR Mode"
-msgstr "Modo VBR"
-
-#: ../data/audio-profiles/mp3-lame.xml.in.h:14
+#: ../data/audio-profiles/mp3-lame.xml.in.h:7
 msgid "VBR Quality"
 msgstr "Calidade VBR"
 
-#: ../data/audio-profiles/mp3-lame.xml.in.h:15
+#: ../data/audio-profiles/mp3-lame.xml.in.h:8
 msgid "Variable Bitrate"
 msgstr "Taxa de bits variábel"
 
-#: ../data/audio-profiles/mp3-lame.xml.in.h:16
+#: ../data/audio-profiles/mp3-lame.xml.in.h:9
 #: ../data/audio-profiles/vorbis.xml.in.h:5
 #: ../data/audio-profiles/wavpack.xml.in.h:15
 #: ../data/audio-profiles/wma.xml.in.h:7
@@ -750,7 +723,7 @@ msgstr "Windows Media Audio"
 
 #: ../data/desktop-files/common.desktop.in.h:1
 #: ../src/Clients/Muinshee/Muinshee/PlayerInterface.cs:76
-#: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:109
+#: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:107
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/BaseClientWindow.cs:206
 #: ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode/MiniModeWindow.cs:60
 msgid "Banshee Media Player"
@@ -774,7 +747,6 @@ msgid "Could not create filesrc element"
 msgstr "Non foi posíbel crear o elemento filesrc"
 
 #: ../libbanshee/banshee-bpmdetector.c:214
-#| msgid "Could not create decodebin plugin"
 msgid "Could not create decodebin2 plugin"
 msgstr "Non foi posíbel crear o engadido decodebin2"
 
@@ -816,7 +788,6 @@ msgid "Could not create source element"
 msgstr "Non foi posíbel crear o elemento de orixe"
 
 #: ../libbanshee/banshee-transcoder.c:246
-#| msgid "Could not create 'decodebin' plugin"
 msgid "Could not create 'decodebin2' plugin"
 msgstr "Non foi posíbel crear o engadido «decodebin2»"
 
@@ -852,11 +823,11 @@ msgstr "Gravar CD..."
 msgid "Write selected tracks to an audio CD"
 msgstr "Gravar as pistas seleccionadas nun CD de son"
 
-#: ../src/Backends/Banshee.Gnome/Banshee.GnomeBackend/Brasero.cs:104
+#: ../src/Backends/Banshee.Gnome/Banshee.GnomeBackend/Brasero.cs:105
 msgid "Could not write CD"
 msgstr "Non foi posíbel gravar o CD"
 
-#: ../src/Backends/Banshee.Gnome/Banshee.GnomeBackend/Brasero.cs:105
+#: ../src/Backends/Banshee.Gnome/Banshee.GnomeBackend/Brasero.cs:106
 msgid "Brasero could not be started"
 msgstr "Non foi posíbel iniciar o Brasero"
 
@@ -877,7 +848,7 @@ msgid "Could not create BPM detection driver."
 msgstr "Non foi posíbel crear o controlador de detección de BPM."
 
 #: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:82
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:766
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:812
 msgid "Enable _gapless playback"
 msgstr "Activar a reprodución sen _saltos"
 
@@ -890,19 +861,19 @@ msgstr ""
 "álbumes conceptuales e música clásica."
 
 #: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:150
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:187
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:192
 msgid "Could not initialize GStreamer library"
 msgstr "Non foi posíbel inicializar a biblioteca de GStreamer"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:430
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:435
 msgid "Unknown Error"
 msgstr "Erro descoñecido"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:760
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:806
 msgid "_Enable ReplayGain correction"
 msgstr "_Activar a corrección ReplayGain"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:761
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:807
 msgid ""
 "For tracks that have ReplayGain data, automatically scale (normalize) "
 "playback volume"
@@ -910,7 +881,7 @@ msgstr ""
 "Para las pistas que teñen datos ReplayGain, escalar (normalizar) "
 "automaticamente o volume de reprodución"
 
-#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:767
+#: ../src/Backends/Banshee.GStreamer/Banshee.GStreamer/PlayerEngine.cs:813
 msgid ""
 "Eliminate the small playback gap on track change.  Useful for concept albums "
 "and classical music."
@@ -922,7 +893,7 @@ msgstr ""
 msgid "Could not create transcoder"
 msgstr "Non foi posíbel crear o transcodificador"
 
-#: ../src/Backends/Banshee.GStreamerSharp/Banshee.GStreamerSharp/PlayerEngine.cs:222
+#: ../src/Backends/Banshee.GStreamerSharp/Banshee.GStreamerSharp/PlayerEngine.cs:229
 msgid "GStreamer# 0.10"
 msgstr "GStreamer# 0.10"
 
@@ -932,67 +903,67 @@ msgid "_Close"
 msgstr "_Pechar"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:92
-#: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:238
+#: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:251
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:79
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:133
 msgid "Close"
 msgstr "Pechar"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:148
+#: ../src/Clients/Booter/Booter/Entry.cs:152
 msgid "Help Options"
 msgstr "Opcións de axuda"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:149
+#: ../src/Clients/Booter/Booter/Entry.cs:153
 msgid "Show this help"
 msgstr "Mostrar esta axuda"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:150
+#: ../src/Clients/Booter/Booter/Entry.cs:154
 msgid "Show options for controlling playback"
 msgstr "Mostra as opción para controlar a reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:151
+#: ../src/Clients/Booter/Booter/Entry.cs:155
 msgid "Show options for querying the playing track"
 msgstr "Mostrar as opcións para consultar a pista en reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:152
+#: ../src/Clients/Booter/Booter/Entry.cs:156
 msgid "Show options for querying the playing engine"
 msgstr "Mostra as opcións para consultar o motor de reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:153
+#: ../src/Clients/Booter/Booter/Entry.cs:157
 msgid "Show options for the user interface"
 msgstr "Mostra as opcións para a interface de usuario"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:154
+#: ../src/Clients/Booter/Booter/Entry.cs:158
 msgid "Show options for developers and debugging"
 msgstr "Mostra as opcións para desenvolvedores e depuración"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:155
+#: ../src/Clients/Booter/Booter/Entry.cs:159
 msgid "Show all option groups"
 msgstr "Mostra todos os grupos de opcións"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:156
+#: ../src/Clients/Booter/Booter/Entry.cs:160
 msgid "Show version information"
 msgstr "Mostra a información da versión"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:159
+#: ../src/Clients/Booter/Booter/Entry.cs:163
 msgid "Playback Control Options"
 msgstr "Opcións de control de reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:160
+#: ../src/Clients/Booter/Booter/Entry.cs:164
 msgid ""
 "Play the next track, optionally restarting if the 'restart' value is set"
 msgstr ""
 "Reproduce a pista seguinte, reiniciando opcionalmente se o valor 'restart' "
 "está estabelecido"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:161
+#: ../src/Clients/Booter/Booter/Entry.cs:165
 msgid ""
 "Play the previous track, optionally restarting if the 'restart value is set"
 msgstr ""
 "Reproduce a pista anterior, reiniciando opcionalmente se o valor 'restart' "
 "está estabelecido"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:162
+#: ../src/Clients/Booter/Booter/Entry.cs:166
 msgid ""
 "If the current song has been played longer than 4 seconds then restart it, "
 "otherwise the same as --previous"
@@ -1000,27 +971,27 @@ msgstr ""
 "Se a canción actual reproduciuse máis de 4 segundos reiníciaa, en caso "
 "contrario é o mesmo que --previous"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:163
+#: ../src/Clients/Booter/Booter/Entry.cs:167
 msgid "Automatically start playing any tracks enqueued on the command line"
 msgstr "Comeza a reproducir automaticamente as pistas á cola na liña de ordes"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:164
+#: ../src/Clients/Booter/Booter/Entry.cs:168
 msgid "Start playback"
 msgstr "Iniciar a reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:165
+#: ../src/Clients/Booter/Booter/Entry.cs:169
 msgid "Pause playback"
 msgstr "Pausar a reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:166
+#: ../src/Clients/Booter/Booter/Entry.cs:170
 msgid "Toggle playback"
 msgstr "Trocar a reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:167
+#: ../src/Clients/Booter/Booter/Entry.cs:171
 msgid "Completely stop playback"
 msgstr "Detén completamente a reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:169
+#: ../src/Clients/Booter/Booter/Entry.cs:173
 msgid ""
 "Enable or disable playback stopping after the currently playing track (value "
 "should be either 'true' or 'false')"
@@ -1028,98 +999,98 @@ msgstr ""
 "Activa ou desactiva a detención da reprodución trala pista actualmente en "
 "reprodución (o valor debe ser 'true' ou 'false')"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:170
+#: ../src/Clients/Booter/Booter/Entry.cs:174
 msgid "Set the playback volume (0-100), prefix with +/- for relative values"
 msgstr ""
 "Establecer o volume de reprodución (0-100), prefixando +/- para valores "
 "relativos"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:171
+#: ../src/Clients/Booter/Booter/Entry.cs:175
 msgid "Seek to a specific point (seconds, float)"
 msgstr "Salta a un punto específico (segundos, decimales)"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:172
+#: ../src/Clients/Booter/Booter/Entry.cs:176
 msgid "Set the currently played track's rating (0 to 5)"
 msgstr "Estabelecer a valoración da pista en reprodución (0 a 5)"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:175
+#: ../src/Clients/Booter/Booter/Entry.cs:179
 msgid "Player Engine Query Options"
 msgstr "Opcións de consulta do motor de reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:176
+#: ../src/Clients/Booter/Booter/Entry.cs:180
 msgid "Current player state"
 msgstr "Estado actual do reprodutor"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:177
+#: ../src/Clients/Booter/Booter/Entry.cs:181
 msgid "Last player state"
 msgstr "Último estado do reprodutor"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:178
+#: ../src/Clients/Booter/Booter/Entry.cs:182
 msgid "Query whether the player can be paused"
 msgstr "Consulta se o reprodutor pode pausarse"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:179
+#: ../src/Clients/Booter/Booter/Entry.cs:183
 msgid "Query whether the player can seek"
 msgstr "Consulta se o reprodutor pode saltar de posición"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:180
+#: ../src/Clients/Booter/Booter/Entry.cs:184
 msgid "Player volume"
 msgstr "Volume do reprodutor"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:181
+#: ../src/Clients/Booter/Booter/Entry.cs:185
 msgid "Player position in currently playing track"
 msgstr "Posición do reprodutor na pista actualmente en reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:184
+#: ../src/Clients/Booter/Booter/Entry.cs:188
 msgid "Playing Track Metadata Query Options"
 msgstr "Opcións de consulta de metadatos da pista en reprodución"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:185
+#: ../src/Clients/Booter/Booter/Entry.cs:189
 msgid "URI"
 msgstr "URI"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:186
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:161
+#: ../src/Clients/Booter/Booter/Entry.cs:190
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:138
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:89
 msgid "Artist Name"
 msgstr "Nome do artista"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:187
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:163
+#: ../src/Clients/Booter/Booter/Entry.cs:191
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:140
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:90
 msgid "Album Title"
 msgstr "Título do álbum"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:188
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:160
+#: ../src/Clients/Booter/Booter/Entry.cs:192
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:137
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:88
 msgid "Track Title"
 msgstr "Título da pista"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:189
+#: ../src/Clients/Booter/Booter/Entry.cs:193
 msgid "Duration"
 msgstr "Duración"
 
 #. Translators: noun
-#: ../src/Clients/Booter/Booter/Entry.cs:190
+#: ../src/Clients/Booter/Booter/Entry.cs:194
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:117
 msgid "Track Number"
 msgstr "Número de pista"
 
 #. Translators: noun
-#: ../src/Clients/Booter/Booter/Entry.cs:191
+#: ../src/Clients/Booter/Booter/Entry.cs:195
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:126
 msgid "Track Count"
 msgstr "Contador de pista"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:192
+#: ../src/Clients/Booter/Booter/Entry.cs:196
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:149
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:114
 msgid "Disc Number"
 msgstr "Número de disco"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:193
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:165
+#: ../src/Clients/Booter/Booter/Entry.cs:197
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:142
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:113
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:177
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:78
@@ -1129,7 +1100,7 @@ msgstr "Número de disco"
 msgid "Year"
 msgstr "Ano"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:194
+#: ../src/Clients/Booter/Booter/Entry.cs:198
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:230
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:131
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:60
@@ -1137,78 +1108,78 @@ msgstr "Ano"
 msgid "Rating"
 msgstr "Puntuación"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:195
+#: ../src/Clients/Booter/Booter/Entry.cs:199
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:322
 msgid "Score"
 msgstr "Puntuación"
 
 #. Translators: noun
-#: ../src/Clients/Booter/Booter/Entry.cs:196
+#: ../src/Clients/Booter/Booter/Entry.cs:200
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:143
 msgid "Bit Rate"
 msgstr "Taxa de bits"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:199
+#: ../src/Clients/Booter/Booter/Entry.cs:203
 msgid "User Interface Options"
 msgstr "Opcións da interface de usuario"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:200
+#: ../src/Clients/Booter/Booter/Entry.cs:204
 msgid "Present the user interface on the active workspace"
 msgstr "Mostra a interface de usuario na área de traballo activa"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:201
+#: ../src/Clients/Booter/Booter/Entry.cs:205
 msgid "Enter the full-screen mode"
 msgstr "Entrar en modo a pantalla completa"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:202
+#: ../src/Clients/Booter/Booter/Entry.cs:206
 msgid "Hide the user interface"
 msgstr "Oculta a interface de usuario"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:203
+#: ../src/Clients/Booter/Booter/Entry.cs:207
 msgid "Do not present the user interface, regardless of any other options"
 msgstr "Non mostra a interface de usuario, sen importar calquer outra opción"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:204
+#: ../src/Clients/Booter/Booter/Entry.cs:208
 msgid "Present the import media dialog box"
 msgstr "Presentar o diálogo de importación multimedia"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:205
+#: ../src/Clients/Booter/Booter/Entry.cs:209
 msgid "Present the about dialog"
 msgstr "Presentar o diálogo Sobre"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:206
+#: ../src/Clients/Booter/Booter/Entry.cs:210
 msgid "Present the open location dialog"
 msgstr "Presentar o diálogo de abrir localización"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:207
+#: ../src/Clients/Booter/Booter/Entry.cs:211
 msgid "Present the preferences dialog"
 msgstr "Presentar el diálogo de preferencias"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:210
+#: ../src/Clients/Booter/Booter/Entry.cs:214
 msgid "Debugging and Development Options"
 msgstr "Opción de desenvolvemento e depuración"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:211
+#: ../src/Clients/Booter/Booter/Entry.cs:215
 msgid "Enable general debugging features"
 msgstr "Activar as características de depuración xeral"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:212
+#: ../src/Clients/Booter/Booter/Entry.cs:216
 msgid "Enable debugging output of SQL queries"
 msgstr "Activa a saída de depuración da consultas SQL"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:213
+#: ../src/Clients/Booter/Booter/Entry.cs:217
 msgid "Enable debugging output of Mono.Addins"
 msgstr "Activa a saída de depuración de Mono.Addins"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:214
+#: ../src/Clients/Booter/Booter/Entry.cs:218
 msgid "Specify an alternate database to use"
 msgstr "Especifica unha base de datos alternativa para usar"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:215
+#: ../src/Clients/Booter/Booter/Entry.cs:219
 msgid "Specify an alternate key, default is /apps/banshee-1/"
 msgstr "Especifica unha tecla alternativa, a predeterminada é /apps/banshee-1/"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:216
+#: ../src/Clients/Booter/Booter/Entry.cs:220
 msgid ""
 "Optimize instance for running uninstalled; most notably, this will create an "
 "alternate Mono.Addins database in the working directory"
@@ -1216,16 +1187,16 @@ msgstr ""
 "Optimiza a instancia para executarse sen instalación; en particular, isto "
 "crea unha base de datos de Mono.Addins alternativa no directorio de traballo"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:218
+#: ../src/Clients/Booter/Booter/Entry.cs:222
 msgid "Disable DBus support completely"
 msgstr "Desactiva completamente a compatibilidade con DBus"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:220
+#: ../src/Clients/Booter/Booter/Entry.cs:224
 #, csharp-format
 msgid "Skip loading a custom gtkrc file ({0}) if it exists"
 msgstr "Omitir a carga dun ficheiro gtkrc personalizado ({0}) se existe"
 
-#: ../src/Clients/Booter/Booter/Entry.cs:251
+#: ../src/Clients/Booter/Booter/Entry.cs:255
 #, csharp-format
 msgid "The following help arguments are invalid: {0}"
 msgstr "Os seguintes argumentos para a axuda non son válidos: {0}"
@@ -1239,9 +1210,9 @@ msgid "En_queue"
 msgstr "Meter na _cola"
 
 #: ../src/Clients/Muinshee/Muinshee/BaseDialog.cs:86
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:66
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:196
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:86
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:73
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:210
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:126
 msgid "_Play"
 msgstr "_Reproducir"
 
@@ -1271,24 +1242,24 @@ msgid "Play Song"
 msgstr "Reproducir canción"
 
 #. Translators: this is a verb (command), not a noun (things)
-#: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:447
+#: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:465
 msgid "Search"
 msgstr "Buscar"
 
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:159
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:136
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:87
 msgid "Artist, Album, or Title"
 msgstr "Artista, álbum ou título"
 
 #. Alias for %album_artist%
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:162
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:139
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:72
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:78
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:82
 msgid "Album Artist"
 msgstr "Artista do álbum"
 
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:164
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:141
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicFileNamePattern.cs:98
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:185
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:364
@@ -1297,7 +1268,7 @@ msgid "Genre"
 msgstr "Xénero"
 
 #. Translators: noun
-#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:166
+#: ../src/Clients/Nereid/Nereid/ViewContainer.cs:143
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:214
 msgid "Comment"
 msgstr "Comentario"
@@ -1321,88 +1292,88 @@ msgstr "Álbum descoñecido"
 msgid "Unknown Title"
 msgstr "Título descoñecido"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:186
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:191
 #: ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.Recommendations/RecommendationPane.cs:91
 msgid "Various Artists"
 msgstr "Varios artistas"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:342
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:347
 msgid "Stream location not found"
 msgstr "Non se encontrou a localización do fluxo"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:342
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:324
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:347
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:328
 msgid "File not found"
 msgstr "Non se encontrou o ficheiro"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:344
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:349
 msgid "Codec for playing this media type not available"
 msgstr "O códec para reproducir este tipo de medios non está dispoñíbel"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:346
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:351
 msgid "File protected by Digital Rights Management (DRM)"
 msgstr "Ficheiro protexido con Digital Rights Management (DRM)"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:348
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:353
 msgid "Unknown error"
 msgstr "Erro descoñecido"
 
 #. TODO turn this into a PrimarySource-owned delegate?
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:417
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:422
 msgid "_Restart Podcast"
 msgstr "_Reiniciar podcast"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:418
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:423
 msgid "_Restart Audiobook"
 msgstr "_Reiniciar audiolibro"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:419
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:424
 msgid "_Restart Video"
 msgstr "_Reiniciar vídeo"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:420
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:86
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:425
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:93
 msgid "_Restart Song"
 msgstr "_Reiniciar canción"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:421
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:426
 msgid "_Restart Item"
 msgstr "_Reiniciar elemento"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:437
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:442
 msgid "_Jump to Playing Podcast"
 msgstr "_Saltar á canción do podcast"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:438
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:443
 msgid "_Jump to Playing Audiobook"
 msgstr "_Saltar ao audiolibro en reprodución"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:439
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:444
 msgid "_Jump to Playing Video"
 msgstr "_Saltar ao vídeo en reprodución"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:440
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:82
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:445
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:89
 msgid "_Jump to Playing Song"
 msgstr "_Saltar á canción en reprodución"
 
-#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:441
+#: ../src/Core/Banshee.Core/Banshee.Collection/TrackInfo.cs:446
 msgid "_Jump to Playing Item"
 msgstr "_Saltar ao elemento en reprodución"
 
 #. Translators: This is used to generate bookmark names. {0} is track title, {1} is minutes
 #. (possibly more than two digits) and {2} is seconds (between 00 and 60).
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/Bookmark.cs:173
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/Bookmark.cs:172
 #, csharp-format
 msgid "{0} ({1}:{2:00})"
 msgstr "{0} ({1}:{2:00})"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumListModel.cs:70
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumListModel.cs:69
 #, csharp-format
 msgid "All Albums ({0})"
 msgstr "Todos os álbums ({0})"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseArtistListModel.cs:69
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseArtistListModel.cs:68
 #, csharp-format
 msgid "All Artists ({0})"
 msgstr "Todos os artistas ({0})"
@@ -1412,15 +1383,15 @@ msgstr "Todos os artistas ({0})"
 msgid "Value"
 msgstr "Valor"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:50
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:49
 msgid "Shuffle by A_lbum"
 msgstr "Mesturar por á_lbum"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:51
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:50
 msgid "by album"
 msgstr "por álbum"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:52
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByAlbum.cs:51
 msgid "Play all songs from an album, then randomly choose another album"
 msgstr ""
 "Reproducir todas as cancións dun álbum, despois escoller aleatoriamente "
@@ -1440,27 +1411,27 @@ msgstr ""
 "Reproducir todas as cancións dun artista, despois escoller aleatoriamente "
 "outro artista"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:36
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:38
 msgid "Shuffle _Off"
 msgstr "N_on aleatorio"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:37
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:39
 msgid "manually"
 msgstr "manualmente"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:38
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByOff.cs:40
 msgid "Do not shuffle playlist"
 msgstr "Non mesturar a lista de reprodución"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:46
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:45
 msgid "Shuffle by _Rating"
 msgstr "Mesturar por _puntuación"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:47
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:46
 msgid "by rating"
 msgstr "por puntuación"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:48
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByRating.cs:47
 msgid "Play songs randomly, prefer higher rated songs"
 msgstr ""
 "Reproducir as cancións da lista de reprodución aleatoriamente, preferir as "
@@ -1480,65 +1451,65 @@ msgstr ""
 "Reproducir as cancións da lista de reprodución aleatoriamente, preferir as "
 "cancións con puntuación máis alta"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:47
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:46
 msgid "Shuffle by _Song"
 msgstr "Mesturar por _canción"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:48
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:47
 msgid "by song"
 msgstr "por canción"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:49
+#: ../src/Core/Banshee.Services/Banshee.Collection.Database/RandomByTrack.cs:48
 msgid "Play songs randomly from the playlist"
 msgstr "Reproducir as cancións da lista de reprodución aleatoriamente"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:132
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:138
 msgid "Scanning for media"
 msgstr "Analizando o contido multimedia"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:182
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1382
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:188
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1384
 msgid "Scanning..."
 msgstr "Analizando..."
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:198
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:204
 #, csharp-format
 msgid "Scanning ({0} files)..."
 msgstr "Analizando ({0} ficheiros)..."
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:232
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:238
 msgid "Importing Media"
 msgstr "Importando contido multimedia"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:239
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:245
 #: ../src/Core/Banshee.Services/Banshee.Library/ThreadPoolImportSource.cs:119
 msgid "The import process is currently running. Would you like to stop it?"
 msgstr "Estase executando o proceso de importación. Quere detelo?"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:245
+#: ../src/Core/Banshee.Services/Banshee.Collection/ImportManager.cs:251
 #: ../src/Core/Banshee.Services/Banshee.Library/ThreadPoolImportSource.cs:81
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdRipper.cs:185
 #, csharp-format
 msgid "Importing {0} of {1}"
 msgstr "Importando {0} de{1}"
 
-#: ../src/Core/Banshee.Services/Banshee.Collection/RescanPipeline.cs:79
+#: ../src/Core/Banshee.Services/Banshee.Collection/RescanPipeline.cs:78
 #, csharp-format
 msgid "Rescanning {0} of {1}"
 msgstr "Analizando de novo {0} de {1}"
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:234
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:232
 msgid "Upgrading your Banshee Database"
 msgstr "Actualizando a súa base de datos de Banshee"
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:235
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:233
 msgid ""
 "Please wait while your old Banshee database is migrated to the new format."
 msgstr ""
 "Espera mentras se migra a súa base de datos antiga de Banshee ao novo "
 "formato."
 
-#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1379
+#: ../src/Core/Banshee.Services/Banshee.Database/BansheeDbFormatMigrator.cs:1381
 msgid "Refreshing Metadata"
 msgstr "Actualizando os metadatos"
 
@@ -1610,16 +1581,12 @@ msgstr "Rock suave"
 msgid "Techno"
 msgstr "Tecno"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/HomeDirectoryImportSource.cs:48
-msgid "Home Folder"
-msgstr "Cartafol persoal"
-
 #: ../src/Core/Banshee.Services/Banshee.Library/LibrarySource.cs:58
 msgid "Remove From Library"
 msgstr "Eliminar da fonoteca"
 
 #. Translators: {0} is the library name, eg 'Music Library' or 'Podcasts'
-#: ../src/Core/Banshee.Services/Banshee.Library/LibrarySource.cs:65
+#: ../src/Core/Banshee.Services/Banshee.Library/LibrarySource.cs:122
 #, csharp-format
 msgid "{0} Folder"
 msgstr "Cartafol {0}"
@@ -1689,26 +1656,26 @@ msgid "Grouping"
 msgstr "Agrupación"
 
 #. Catalog.GetString ("Music Library")
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:59
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:60
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/MusicGroupSource.cs:39
 msgid "Music"
 msgstr "Música"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:65
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:66
 msgid "Search your music"
 msgstr "Buscar na súa música"
 
 #. Misc section
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:79
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:80
 #: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:65
 msgid "Miscellaneous"
 msgstr "Misceláneo"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:82
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:83
 msgid "_Sort an artist's albums by year, not title"
 msgstr "_Ordenar os albumes dun artista por ano no lugar de por título"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:92
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:93
 #, csharp-format
 msgid "{0} song"
 msgid_plural "{0} songs"
@@ -1716,78 +1683,94 @@ msgstr[0] "{0} canción"
 msgstr[1] "{0} cancións"
 
 #: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:114
-#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:91
+#| msgid "Audio Folder"
+#| msgid_plural "Audio Folders"
+msgid "Music Folder"
+msgstr "Cartafol de música"
+
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:119
+#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:95
 msgid "Favorites"
 msgstr "Favoritos"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:115
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:120
 msgid "Songs rated four and five stars"
 msgstr "Cancións puntuadas con catro ou cinco estrelas"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:119
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:124
 msgid "Recent Favorites"
 msgstr "Favoritos recentes"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:120
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:125
 msgid "Songs listened to often in the past week"
 msgstr "Cancións escoitadas a miúdo na última semana"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:124
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:129
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:95
 msgid "Recently Added"
 msgstr "Engadido recentemente"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:125
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:130
 msgid "Songs imported within the last week"
 msgstr "Cancións importadas durante a última semana"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:129
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:134
+#| msgid "Most Recently Played"
+msgid "Recently Played"
+msgstr "Reproducidas recentemente"
+
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:135
+#| msgid "Recently Played Tracks"
+msgid "Recently played songs"
+msgstr "Cancións reproducidas recentemente"
+
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:139
 msgid "Unheard"
 msgstr "Non escoitadas"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:130
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:140
 msgid "Songs that have not been played or skipped"
 msgstr "Cancións que foron omitidas ou non reproducidas"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:137
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:147
 msgid "Neglected Favorites"
 msgstr "Favoritos abandoados"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:138
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:148
 msgid "Favorites not played in over two months"
 msgstr "Favoritos non reproducidos en máis de dous meses"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:142
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:152
 msgid "Least Favorite"
 msgstr "Menos favoritos"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:143
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:153
 msgid "Songs rated one or two stars or that you have frequently skipped"
 msgstr ""
 "Cancións puntuadas cunha ou dúas estrelas ou que foron omitidas "
 "frecuentemente"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:147
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:157
 msgid "700 MB of Favorites"
 msgstr "700 MB de favoritos"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:148
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:158
 msgid "A data CD worth of favorite songs"
 msgstr "Un CD de datos cheo de cancións favoritas"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:153
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:163
 msgid "80 Minutes of Favorites"
 msgstr "80 minutos de favoritos"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:154
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:164
 msgid "An audio CD worth of favorite songs"
 msgstr "Un CD de son cheo de cancións favoritas"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:159
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:169
 msgid "Unrated"
 msgstr "Non puntuadas"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:160
+#: ../src/Core/Banshee.Services/Banshee.Library/MusicLibrarySource.cs:170
 msgid "Songs that haven't been rated"
 msgstr "Cancións que non foron puntuadas"
 
@@ -1821,15 +1804,21 @@ msgid_plural "{0} videos"
 msgstr[0] "{0} vídeo"
 msgstr[1] "{0} vídeos"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:92
+#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:90
+#| msgid "Video Folder"
+#| msgid_plural "Video Folders"
+msgid "Videos Folder"
+msgstr "Cartafol de vídeos"
+
+#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:96
 msgid "Videos rated four and five stars"
 msgstr "Vídeos puntuados con catro ou cinco estrelas"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:96
+#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:100
 msgid "Unwatched"
 msgstr "Sen ver"
 
-#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:97
+#: ../src/Core/Banshee.Services/Banshee.Library/VideoLibrarySource.cs:101
 msgid "Videos that haven't been played yet"
 msgstr "Vídeos que aínda non foron reproducidos"
 
@@ -1916,11 +1905,6 @@ msgstr "Importar _puntuacións"
 msgid "Import play _counts"
 msgstr "Importar as _contas de reprodución"
 
-#. disabled by default
-#: ../src/Core/Banshee.Services/Banshee.Metrics/BansheeMetrics.cs:302
-msgid "Improve Banshee by sending anonymous usage data"
-msgstr "Mellorar Banshee enviando datos anónimos de uso"
-
 #: ../src/Core/Banshee.Services/Banshee.Networking/Network.cs:52
 msgid "There is no available network connection"
 msgstr "Non hai ningunha conexión de rede dispoñíbel"
@@ -1945,37 +1929,37 @@ msgstr ""
 "Algunhas características requiren unha conexión a Internet, como Last.fm ou "
 "a descarga de portadas"
 
-#: ../src/Core/Banshee.Services/Banshee.Playlist/AbstractPlaylistSource.cs:160
+#: ../src/Core/Banshee.Services/Banshee.Playlist/AbstractPlaylistSource.cs:159
 msgid "Search this playlist"
 msgstr "Buscar na lista de reprodución"
 
-#: ../src/Core/Banshee.Services/Banshee.Playlist/AbstractPlaylistSource.cs:229
+#: ../src/Core/Banshee.Services/Banshee.Playlist/AbstractPlaylistSource.cs:228
 msgid "The track's rating was set differently on the device and in Banshee"
 msgstr ""
 "A cualificación da pista foi estabelecida de forma diferente no dispositivo "
 "e en Banshee"
 
-#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:59
+#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:58
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:309
 msgid "Playlist"
 msgstr "Lista de reprodución"
 
-#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:134
+#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:133
 msgid "Remove From Playlist"
 msgstr "Eliminar da lista de reprodución"
 
-#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:135
+#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:134
 msgid "Delete Playlist"
 msgstr "Eliminar a lista de reprodución"
 
 #. TODO generate name based on the track selection, or begin editing it
-#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:386
-#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:392
+#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:385
+#: ../src/Core/Banshee.Services/Banshee.Playlist/PlaylistSource.cs:391
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:176
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:95
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:394
-#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:500
-#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView_DragAndDrop.cs:213
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:135
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:462
+#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView.cs:591
+#: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/SourceView_DragAndDrop.cs:214
 msgid "New Playlist"
 msgstr "Nova lista de reprodución"
 
@@ -2020,6 +2004,10 @@ msgstr "Normativas do ficheiro"
 #: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:58
 msgid "Co_py files to media folders when importing"
 msgstr "Co_piar os ficheiros aos cartafoles ao importar"
+
+#: ../src/Core/Banshee.Services/Banshee.Preferences/PreferenceService.cs:69
+msgid "Improve Banshee by sending anonymous usage data"
+msgstr "Mellorar Banshee enviando datos anónimos de uso"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:63
 msgid "items"
@@ -2443,7 +2431,7 @@ msgid "importedon"
 msgstr "importadoen"
 
 #: ../src/Core/Banshee.Services/Banshee.Query/BansheeQuery.cs:315
-#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:66
+#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:65
 msgid "Smart Playlist"
 msgstr "Lista de reprodución intelixente"
 
@@ -2521,6 +2509,7 @@ msgstr "Engadido menos recentemente"
 #. Translators: These are unique strings for playback errors. Please, no spaces. Blank ok.
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:44
 #: ../src/Core/Banshee.Services/Banshee.Query/PlaybackErrorQueryValue.cs:46
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:146
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapInfoBar.cs:97
 msgid "None"
 msgstr "Ningún"
@@ -2577,7 +2566,7 @@ msgstr "drm"
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:208
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:210
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:212
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:383
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:389
 msgid "Unknown"
 msgstr "Descoñecido"
 
@@ -2585,21 +2574,21 @@ msgstr "Descoñecido"
 msgid "unknown"
 msgstr "descoñecido"
 
-#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/Migrator.cs:79
+#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/Migrator.cs:78
 msgid "Unable to Migrate Smart Playlists"
 msgstr "Non foi posíbel migrar as listas de reprodución intelixentes"
 
-#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/Migrator.cs:80
+#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/Migrator.cs:79
 #, csharp-format
 msgid "Please file a bug with this error: {0}"
 msgstr "Por favor, abra un bug con este erro: {0}"
 
-#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:67
+#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:66
 #: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:49
 msgid "Edit Smart Playlist"
 msgstr "Editar lista de reprodución intelixente"
 
-#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:242
+#: ../src/Core/Banshee.Services/Banshee.SmartPlaylist/SmartPlaylistSource.cs:249
 msgid "Delete Smart Playlist"
 msgstr "Eliminar a lista de reprodución intelixente"
 
@@ -2649,7 +2638,7 @@ msgid "Close Error Report"
 msgstr "Pechar o informe de erro"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/ErrorSource.cs:83
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:226
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:224
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/ErrorListDialog.cs:46
 msgid "Error"
 msgstr "Erro"
@@ -2685,12 +2674,12 @@ msgstr "_Xerarquía do cartafol"
 msgid "File _name"
 msgstr "_Nome de ficheiro"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:693
+#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:669
 #, csharp-format
 msgid "Adding {0} of {1} to {2}"
 msgstr "Engadindo {0} de{1} a {2}"
 
-#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:712
+#: ../src/Core/Banshee.Services/Banshee.Sources/PrimarySource.cs:688
 #, csharp-format
 msgid "Deleting {0} of {1} From {2}"
 msgstr "Eliminando {0} de{1} desde {2}"
@@ -2709,6 +2698,20 @@ msgid "{0} item"
 msgid_plural "{0} items"
 msgstr[0] "{0} elemento"
 msgstr[1] "{0} elementos"
+
+#. TODO should add library sources here, but requires changing quite a few
+#. things that depend on being loaded before the music library is added.
+#. AddSource (music_library = new MusicLibrarySource (), true);
+#. AddSource (video_library = new VideoLibrarySource (), false);
+#: ../src/Core/Banshee.Services/Banshee.Sources/SourceManager.cs:84
+#| msgid "Library"
+msgid "Libraries"
+msgstr "Coleccións"
+
+#: ../src/Core/Banshee.Services/Banshee.Sources/SourceManager.cs:85
+#| msgid "Online Sources"
+msgid "Online Media"
+msgstr "Multimedia en liña"
 
 #: ../src/Core/Banshee.Services/Banshee.Streaming/RadioTrackInfo.cs:82
 #: ../src/Core/Banshee.Services/Banshee.Streaming/RadioTrackInfo.cs:91
@@ -2743,7 +2746,7 @@ msgid "Show:"
 msgstr "Mostrar:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Addins.Gui/AddinView.cs:51
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:84
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:83
 msgid "All"
 msgstr "Todo"
 
@@ -2792,19 +2795,19 @@ msgstr ""
 msgid "{0} of {1}"
 msgstr "{0} de {1}"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:224
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:222
 msgid "Playing"
 msgstr "Reproducindo"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:225
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:223
 msgid "Paused"
 msgstr "Pausado"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:227
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:225
 msgid "Protected"
 msgstr "Protexido"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:228
+#: ../src/Core/Banshee.ThickClient/Banshee.Collection.Gui/ColumnCellStatusIndicator.cs:226
 msgid "External Document"
 msgstr "Documento externo"
 
@@ -2898,15 +2901,15 @@ msgstr "Nova preconfiguración"
 msgid "{0} by {1}"
 msgstr "{0} por {1}"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:87
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:86
 msgid "_Bookmarks"
 msgstr "_Marcadores"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:90
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:89
 msgid "_Add Bookmark"
 msgstr "_Engadir marcador"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:91
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/BookmarkUI.cs:90
 msgid "Bookmark the Position in the Current Track"
 msgstr "Marcar a posición na pista actual"
 
@@ -2984,7 +2987,7 @@ msgid "Make Banshee the Default"
 msgstr "Facer o Banshee o predeterminado"
 
 #. Translators: verb
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/FileChooserDialog.cs:52
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Dialogs/FileChooserDialog.cs:53
 msgid "I_mport"
 msgstr "I_mportar"
 
@@ -3077,135 +3080,121 @@ msgstr "_Preferencias"
 msgid "Modify your personal preferences"
 msgstr "Modificar as súas preferencias persoais"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:83
-msgid "Manage _Extensions"
-msgstr "Xestionar _extensións"
-
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:84
-msgid "Manage extensions to add new features to Banshee"
-msgstr "Xestionar as extensións para engadir novas características a Banshee"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:88
 msgid "_Tools"
 msgstr "_Ferramentas"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:92
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:135
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:88
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:134
 msgid "_Help"
 msgstr "_Axuda"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:95
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:91
 msgid "_Contents"
 msgstr "Índ_ice"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:99
-msgid "_Web Resources"
-msgstr "Recursos _web"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:102
-msgid "Banshee _User Guide (Wiki)"
-msgstr "_Guía do usuario de Banshee (Wiki)"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:103
-msgid "Learn about how to use Banshee"
-msgstr "Aprender como usar o Banshee"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:108
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:95
 msgid "Advanced Collection Searching"
 msgstr "Busca avanzada na colección"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:109
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:96
 msgid "Learn advanced ways to search your media collection"
 msgstr "Aprenda técnicas avanzadas para buscar na súa colección multimedia"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:114
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:101
 msgid "Banshee _Home Page"
 msgstr "_Páxina do Banshee"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:115
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:102
 msgid "Visit the Banshee Home Page"
 msgstr "Visite a páxina do Banshee"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:120
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:107
 msgid "_Get Involved"
 msgstr "_Involúcrese"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:121
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:108
 msgid "Become a contributor to Banshee"
 msgstr "Converterse en contribuidor de Banshee"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:126
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:113
 msgid "_Version Information"
 msgstr "Información de _versión"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:127
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:114
 msgid "View detailed version and configuration information"
 msgstr "Ver información detallada da versión e a configuración"
 
 #. Prompt user for location of the playlist.
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:184
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:169
 msgid "Import Playlist"
 msgstr "Importar lista de reprodución"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:185
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:559
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/GlobalActions.cs:170
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:558
 msgid "Playlists"
 msgstr "Listas de reprodución"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:67
-msgid "Play or pause the current item"
-msgstr "Reproducir ou pausar o elemento actual"
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:69
+#| msgid "Play or pause the current item"
+msgid "Play the current item"
+msgstr "Reproducir o elemento actual"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:70
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:77
 msgid "_Next"
 msgstr "_Seguinte"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:71
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:78
 msgid "Play the next item"
 msgstr "Reproducir o seguinte elemento"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:74
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:81
 msgid "Pre_vious"
 msgstr "_Anterior"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:75
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:82
 msgid "Play the previous item"
 msgstr "Reproducir o elemento anterior"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:78
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:85
 msgid "Seek _To..."
 msgstr "Ir _até..."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:79
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:86
 msgid "Seek to a specific location in current item"
 msgstr "Saltar a unha posición específica no elemento actual"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:83
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:90
 msgid "Jump to the currently playing item"
 msgstr "Saltar ao elemento actualmente en reprodución"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:87
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:94
 msgid "Restart the current item"
 msgstr "Reiniciar o elemento actual"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:92
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:99
 msgid "_Stop When Finished"
 msgstr "_Deter cando remate"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:93
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:100
 msgid "Stop playback after the current item finishes playing"
 msgstr ""
 "Detén a reprodución aleatoria cando este elemento remate de reproducirse"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:99
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:106
 msgid "_Playback"
 msgstr "_Reproducir"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:190
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:203
 msgid "_Pause"
 msgstr "_Pausar"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:202
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:205
+#| msgid "Play or pause the current item"
+msgid "Pause the current item"
+msgstr "Deter o elemento actual"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackActions.cs:217
 msgid "Sto_p"
 msgstr "_Deter"
 
@@ -3240,9 +3229,54 @@ msgstr "Repetir a canción que se está reproducindo"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:79
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackShuffleActions.cs:80
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:62
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:84
 msgid "Shuffle"
 msgstr "Aleatorio"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:62
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:63
+#| msgid "title"
+msgid "Subtitle"
+msgstr "Subtítulo"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:65
+#| msgid "Loading..."
+msgid "Load File..."
+msgstr "Cargar ficheiro..."
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:66
+msgid "Load subtitle file"
+msgstr "Cargar ficheiro de subtítulos"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:79
+#| msgid "Local Files"
+msgid "Load Subtitle File"
+msgstr "Cargar ficheiro de subtítulos"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:88
+#| msgid "Loved"
+msgid "L_oad"
+msgstr "C_argar"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:97
+#| msgid "Select Files"
+msgid "Subtitle files"
+msgstr "Ficheiros de subtítulos"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:128
+#, csharp-format
+#| msgid "Stop {0}"
+msgid "Subtitle {0}"
+msgstr "Subtítulo {0}"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:132
+#, csharp-format
+msgid "Activate embedded subtitle {0}"
+msgstr "Activar o subtítulo empotrado {0}"
+
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/PlaybackSubtitleActions.cs:147
+msgid "Hide subtitles"
+msgstr "Agochar os subtítulos"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:75
 msgid "_New Playlist"
@@ -3317,8 +3351,8 @@ msgstr "Nova lista de reprodución _intelixente"
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/SourceActions.cs:129
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:84
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/LastfmStreamingActions.cs:67
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:57
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:71
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:79
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:72
 msgid "Refresh"
 msgstr "Actualizar"
 
@@ -3340,134 +3374,134 @@ msgstr "Está seguro de que quere eliminar este {0}?"
 msgid "Separate by Type"
 msgstr "Separados por tipo"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:70
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:110
 msgid "Select _All"
 msgstr "Seleccionar _todo"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:71
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:111
 msgid "Select all tracks"
 msgstr "Seleccionar todas as pistas"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:74
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:114
 msgid "Select _None"
 msgstr "_Non seleccionar nada"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:75
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:115
 msgid "Unselect all tracks"
 msgstr "Deseleccionar todas as pistas"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:78
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:118
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:59
 msgid "_Edit Track Information"
 msgstr "_Editar información da pista"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:79
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:119
 msgid "Edit information on selected tracks"
 msgstr "Editar a información nas pistas seleccionadas"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:82
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:122
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/StatisticsPage.cs:252
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:113
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:155
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:117
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:159
 msgid "Properties"
 msgstr "Propiedades"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:83
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:123
 msgid "View information on selected tracks"
 msgstr "Ver a información das pistas seleccionadas"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:87
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:127
 msgid "Play the selected item"
 msgstr "Reproducir o elemento seleccionado"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:90
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:130
 msgid "Add _to Playlist"
 msgstr "Engadir á _lista de reprodución"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:91
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:131
 msgid "Append selected items to playlist or create new playlist from selection"
 msgstr ""
 "Engadir os elementos seleccionados á lista de reprodución ou crear unha nova "
 "desde a selección"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:96
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:136
 msgid "Create new playlist from selected tracks"
 msgstr "Crear nova lista de reprodución desde as pistas seleccionadas"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:100
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:140
 msgid "_Remove"
 msgstr "_Eliminar"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:101
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:141
 msgid "Remove selected track(s) from this source"
 msgstr "Eliminar as cancións seleccionadas desta fonte"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:104
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:144
 msgid "Remove From _Library"
 msgstr "Eliminar da _fonoteca"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:105
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:145
 msgid "Remove selected track(s) from library"
 msgstr "Eliminar as pistas seleccionadas da fonoteca"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:108
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:148
 msgid "_Open Containing Folder"
 msgstr "Abrir o _cartafol contedor"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:109
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:149
 msgid "Open the folder that contains the selected item"
 msgstr "Abrir o cartafol que contén o elemento seleccionado"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:112
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:152
 msgid "_Delete From Drive"
 msgstr "_Eliminar da unidade"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:113
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:153
 msgid "Permanently delete selected item(s) from medium"
 msgstr "Eliminar permanentemente os elementos seleccionados do medio"
 
 #. Translators: this is a verb (command), not a noun (things)
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:119
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:171
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:159
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:170
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/SearchEntry.cs:112
 #, csharp-format
 msgid "_Search"
 msgstr "_Buscar"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:120
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:160
 msgid "Search for items matching certain criteria"
 msgstr "Buscar elementos que coincidan con certo criterio"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:123
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:163
 msgid "By Matching _Album"
 msgstr "Por coincidencia de á_lbum"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:124
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:164
 msgid "Search all songs of this album"
 msgstr "Buscar todas as cancións deste álbum"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:127
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:167
 msgid "By Matching A_rtist"
 msgstr "Por coincidencia de _artista"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:128
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:168
 msgid "Search all songs of this artist"
 msgstr "Buscar todas as cancións deste artista"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:258
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:322
 #, csharp-format
 msgid "_Delete From \"{0}\""
 msgstr "_Eliminar de \"{0}\""
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:464
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:542
 msgid "The folder could not be found."
 msgstr "Non foi posíbel encontrar o cartafol."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:465
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:543
 msgid "Please check that the track's location is accessible by the system."
 msgstr "Comprobe que a localización da pista é accesíbel polo sistema."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:535
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:620
 #, csharp-format
 msgid "Are you sure you want to permanently delete this item?"
 msgid_plural ""
@@ -3477,16 +3511,16 @@ msgstr[1] ""
 "Está seguro de que quere eliminar os {0} elementos seleccionados "
 "permanentemente?"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:539
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:624
 msgid "If you delete the selection, it will be permanently lost."
 msgstr "Se borra a selección, perderase permanentemente."
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:542
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:627
 #, csharp-format
 msgid "Remove selection from {0}?"
 msgstr "Eliminar a selección da súa {0}?"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:545
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui/TrackActions.cs:630
 #, csharp-format
 msgid "Are you sure you want to remove the selected item from your {1}?"
 msgid_plural ""
@@ -3779,39 +3813,39 @@ msgstr "Tamaño de ficheiro:"
 msgid "bytes"
 msgstr "bytes"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:95
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:97
 msgid "Track Editor"
 msgstr "Editor de pistas"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:95
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:97
 msgid "Track Properties"
 msgstr "Propiedades da pista"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:147
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:149
 msgid "Show the previous track"
 msgstr "Mostrar a pista anterior"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:153
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:155
 msgid "Show the next track"
 msgstr "Mostrar a seguinte pista"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:183
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:185
 msgid "Title:"
 msgstr "Título:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:184
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:186
 msgid "Artist:"
 msgstr "Artista:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:185
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:187
 msgid "Album:"
 msgstr "Álbum:"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:309
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:311
 msgid "Sync all field _values"
 msgstr "Sincronizar todos os _valores dos campos"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:314
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:316
 msgid ""
 "Apply the values of all common fields set for this track to all of the "
 "tracks selected in this editor"
@@ -3819,23 +3853,23 @@ msgstr ""
 "Aplicar os valores dos campos comúns estabelecidos para esta pista a todas "
 "as pistas seleccionadas neste editor"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:413
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:416
 #, csharp-format
 msgid "<i>Editing {0} of {1} items</i>"
 msgstr "<i>Editando {0} de {1} elementos</i>"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:675
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:678
 #, csharp-format
 msgid "Save the changes made to the open track?"
 msgid_plural "Save the changes made to {0} of {1} open tracks?"
 msgstr[0] "Gardar os cambios feitos á pista aberta?"
 msgstr[1] "Gardar os cambios feitos ás {0} de {1} pistas abertas?"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:692
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:695
 msgid "Close _without Saving"
 msgstr "Pechar _sen gardar"
 
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:729
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:732
 #, csharp-format
 msgid "If you don't save, changes from the last {0} will be permanently lost."
 msgstr "Se non garda, os cambios das últimas {0} perderanse permanentemente."
@@ -3885,24 +3919,24 @@ msgstr[1] "Executando as tarefas activas"
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Podcast Name and Published Date, respectively;
 #. e.g. 'from BBtv published 7/26/2007'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:525
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:523
 #, csharp-format
 msgid "{0}from{1} {2} {0}published{1} {3}"
 msgstr "{0} de {1} {2} {0} publicado o {1} {3}"
 
 #. simply: "Chicago Public Radio" or whatever the artist name is
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:538
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:536
 msgid "Unknown Stream"
 msgstr "Fluxo descoñecido"
 
 #. Translators: {0} and {1} are markup so ignore them, {2} is the name of the radio station
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:541
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:539
 #, csharp-format
 msgid "{0}on{1} {2}"
 msgstr "{0} en {1} {2}"
 
 #. Translators: {0} is the "from {album} by {artist}" type string, and {1} is the "on {radio station name}" string
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:544
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:542
 #, csharp-format
 msgid "{0} {1}"
 msgstr "{0} {1}"
@@ -3910,14 +3944,14 @@ msgstr "{0} {1}"
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Artist Name and Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:580
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:578
 #, csharp-format
 msgid "{0}by{1} {2} {0}from{1} {3}"
 msgstr "{0} por {1} {2} {0} de {1} {3}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Album Title;
 #. e.g. 'from Killing with a Smile'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:584
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:582
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:522
 #, csharp-format
 msgid "{0}from{1} {2}"
@@ -3925,7 +3959,7 @@ msgstr "{0}do{1} {2}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Artist Name;
 #. e.g. 'by Parkway Drive'
-#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:588
+#: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:586
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:526
 #, csharp-format
 msgid "{0}by{1} {2}"
@@ -3980,10 +4014,9 @@ msgid "Files"
 msgstr "Ficheiros"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:63
-#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/ImportSource.cs:67
-#: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:82
-msgid "C_hoose Files"
-msgstr "_Seleccionar ficheiros"
+#| msgid "C_hoose Files"
+msgid "C_hoose Files..."
+msgstr "_Seleccionar ficheiros..."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:81
 msgid "_Files to import:"
@@ -4010,8 +4043,9 @@ msgid "Folders"
 msgstr "Cartafoles"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:57
-msgid "C_hoose Folders"
-msgstr "_Seleccionar cartafoles"
+#| msgid "C_hoose Folders"
+msgid "C_hoose Folders..."
+msgstr "_Seleccionar cartafoles..."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:75
 msgid "_Folders to import:"
@@ -4043,13 +4077,9 @@ msgstr "Non mostrar este diálogo de novo"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:130
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:82
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:385
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:384
 msgid "_Import"
 msgstr "_Importar"
-
-#: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/PhotoFolderImportSource.cs:69
-msgid "Videos From Photos Folder"
-msgstr "Vídeos do cartafol Imaxes"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.MediaProfiles.Gui/ProfileComboBox.cs:86
 msgid "No available profiles"
@@ -4194,28 +4224,28 @@ msgstr "Silencio"
 msgid "Full Volume"
 msgstr "A todo volume"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:96
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:101
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
 msgid "Device"
 msgstr "Dispositivo"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:97
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:102
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:104
 msgid "Generation"
 msgstr "Xeneración"
 
 #. FIXME
 #. AddDapProperty (Catalog.GetString ("Color"), "black");
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:102
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:107
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:105
 msgid "Capacity"
 msgstr "Capacidade"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:103
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:108
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:104
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:109
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:106
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:141
 msgid "Serial number"
@@ -4226,42 +4256,42 @@ msgstr "Número de serie"
 #. string [] capabilities = new string [ipod_device.ModelInfo.Capabilities.Count];
 #. ipod_device.ModelInfo.Capabilities.CopyTo (capabilities, 0);
 #. AddDapProperty (Catalog.GetString ("Capabilities"), String.Join (", ", capabilities));
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:111
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:116
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:113
 msgid "Supports cover art"
 msgstr "Permite portadas"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:112
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:117
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:114
 msgid "Supports photos"
 msgstr "Permite imaxes"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:407
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:412
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:491
 msgid "Track duration is zero"
 msgstr "A duración da pista é cero"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:510
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:515
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:694
 msgid "Syncing iPod"
 msgstr "Sincronizando iPod"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:511
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:516
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:695
 msgid "Preparing to synchronize..."
 msgstr "Preparándose para sincronizar..."
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:514
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:519
 #, csharp-format
 msgid "Adding track {0} of {1}"
 msgstr "Engadindo a pista {0} de{1}"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:550
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:555
 #, csharp-format
 msgid "Removing track {0} of {1}"
 msgstr "Eliminando a pista {0} de{1}"
 
-#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:614
+#: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:619
 msgid "Writing media database"
 msgstr "Escribindo a base de datos multimedia"
 
@@ -4276,6 +4306,14 @@ msgstr "Sincronizar {0}"
 msgid "{0} to add, {1} to remove, {2} to update"
 msgstr "{0} para engadir, {1} para eliminar, {2} para actualizar"
 
+#. This group source gives us a seperator for DAPs in the source view.
+#. We add it when we get our first dap source, and then remove it when
+#. we lose the last one.
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapService.cs:63
+#| msgid "Device"
+msgid "Devices"
+msgstr "Dispositivos"
+
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:176
 msgid "Device Properties"
 msgstr "Propiedades do dispositivo"
@@ -4288,23 +4326,23 @@ msgstr "Produto"
 msgid "Vendor"
 msgstr "Fabricante"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:280
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:133
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:284
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:140
 #, csharp-format
 msgid "Loading {0}"
 msgstr "Cargando {0}"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:364
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:370
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellYesNo.cs:37
 msgid "Yes"
 msgstr "Si"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:364
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:370
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellYesNo.cs:38
 msgid "No"
 msgstr "Non"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:385
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:391
 #, csharp-format
 msgid ""
 "The {0} format is not supported by the device, and no converter was found to "
@@ -4313,13 +4351,13 @@ msgstr ""
 "O formato {0} non é compatíbel co dispositivo e non se atopou ningún "
 "conversor para convertelo"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:391
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:397
 msgid "File format conversion support is not available"
 msgstr ""
 "A compatibilidade para a conversión de formatos de ficheiro non está "
 "dispoñíbel"
 
-#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:417
+#: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:423
 msgid "Error converting file"
 msgstr "Produciuse un erro ao converter o ficheiro"
 
@@ -4660,6 +4698,11 @@ msgstr "Ficheiros de Amazon MP3"
 msgid "Amazon MP3 Purchase"
 msgstr "Adquisición en Amazon MP3"
 
+#: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/ImportSource.cs:67
+#: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:81
+msgid "C_hoose Files"
+msgstr "_Seleccionar ficheiros"
+
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:42
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:39
 msgid "Amazon MP3 Store"
@@ -4764,8 +4807,9 @@ msgid "Book Title"
 msgstr "Título do libro"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:68
-msgid "Audiobooks, etc"
-msgstr "Audiolibros, etc"
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:307
+msgid "Audiobooks"
+msgstr "Audiolibros"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:75
 msgid "Search your audiobooks"
@@ -4778,6 +4822,12 @@ msgid_plural "{0} books"
 msgstr[0] "{0} libro"
 msgstr[1] "{0} libros"
 
+#: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:149
+#| msgid "Audio Folder"
+#| msgid_plural "Audio Folders"
+msgid "Audiobooks Folder"
+msgstr "Cartafol de audiolibros"
+
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/BookView.cs:114
 msgid "Resume Playback"
 msgstr "Reiniciar a reprodución"
@@ -4787,7 +4837,7 @@ msgid "No Bookmark Set"
 msgstr "Non hai marcadores estabelecidos"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdDiscModel.cs:76
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:55
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:56
 msgid "Audio CD"
 msgstr "CD de son"
 
@@ -4861,7 +4911,7 @@ msgstr ""
 "importación."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:320
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:440
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:441
 msgid "Import CD"
 msgstr "Importar CD"
 
@@ -4877,46 +4927,48 @@ msgstr "Copiar un CD"
 msgid "Duplicate this audio CD"
 msgstr "Copiar este CD de son"
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:130
-msgid "Searching for CD metadata..."
-msgstr "Buscando metadatos do CD..."
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:131
+#| msgid "Searching for CD metadata..."
+msgid "Searching for track information..."
+msgstr "Buscando información sobre a pista..."
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:163
-msgid "Could not fetch metadata for CD."
-msgstr "Non foi posíbel obter os metadatos deste CD."
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:164
+#| msgid "Could not fetch metadata for CD."
+msgid "Could not fetch track information"
+msgstr "Non foi posíbel obter información sobre a pista"
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:191
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:192
 msgid "Automatic import off since this album is already in the Music Library."
 msgstr ""
 "Desactivación automática de importación dado que este álbum xa se encontra "
 "na fonoteca."
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:214
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:215
 msgid "Could not import CD"
 msgstr "Non foi posíbel importar o CD"
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:231
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:232
 msgid "Could not duplicate audio CD"
 msgstr "Non foi posíbel copiar o CD de son"
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:363
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:364
 msgid "Ejecting audio CD..."
 msgstr "Expulsando CD de son..."
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:381
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:382
 #, csharp-format
 msgid "Could not eject audio CD: {0}"
 msgstr "Non foi posíbel expulsar o CD de son: {0}"
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:414
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:415
 msgid "Audio CD Preferences"
 msgstr "Preferencias do CD de son"
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:415
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:416
 msgid "Eject Disc"
 msgstr "Expulsar disco"
 
-#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:439
+#: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:440
 #, csharp-format
 msgid "Import ‟{0}”"
 msgstr "Importar ‟{0}”"
@@ -4925,33 +4977,33 @@ msgstr "Importar ‟{0}”"
 msgid "Detecting BPM"
 msgstr "Detectando BPM"
 
-#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:91
+#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:92
 msgid "D_etect"
 msgstr "D_etectar"
 
-#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:103
+#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:104
 msgid "T_ap"
 msgstr "T_oque"
 
-#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:111
+#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:112
 msgid "Have Banshee attempt to auto-detect the BPM of this song"
 msgstr "Tentar que Banshee autodetecte os BPM desta canción"
 
-#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:113
+#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:114
 msgid "Play this song"
 msgstr "Reproducir esta canción"
 
-#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:116
+#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:117
 msgid "Tap this button to the beat to set the BPM for this song manually"
 msgstr ""
 "Toque este botón de golpeo para estabelecer o BPM para esta canción "
 "manualmente"
 
-#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmService.cs:148
+#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmService.cs:147
 msgid "_Automatically detect BPM for all songs"
 msgstr "Detectar _automaticamente todos os BPM  de todas as cancións"
 
-#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmService.cs:149
+#: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmService.cs:148
 msgid ""
 "Detect beats per minute (BPM) for all songs that don't already have a value "
 "set"
@@ -5056,11 +5108,11 @@ msgstr "Iniciar sesión"
 msgid "Connecting to {0}"
 msgstr "Conectado a {0}"
 
-#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:178
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:187
 msgid "Add Remote DAAP Server"
 msgstr "Engadir servidor remoto DAAP"
 
-#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:179
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:188
 msgid "Add a new remote DAAP server"
 msgstr "Engadir un novo servidor remoto DAAP"
 
@@ -5131,15 +5183,15 @@ msgstr "Anulando as descargas"
 msgid "Waiting for downloads to terminate..."
 msgstr "Esperando a que as descargas finalicen..."
 
-#: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:60
+#: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:59
 msgid "Import eMusic Downloads to Library"
 msgstr "Importar descargas de eMusica á fonoteca de música"
 
-#: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:62
+#: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:61
 msgid "eMusic Files"
 msgstr "Ficheiros eMusic"
 
-#: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:78
+#: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:77
 msgid "eMusic Tracks"
 msgstr "Pistas de eMusic"
 
@@ -5149,7 +5201,7 @@ msgid "File System Queue"
 msgstr "Cola do sistema de ficheiros"
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:72
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:72
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:94
 msgid "Clear"
 msgstr "Limpar"
 
@@ -5158,7 +5210,7 @@ msgid "Remove all tracks from the file system queue"
 msgstr "Eliminar todas as pistas da cola do sistema de ficheiros"
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:79
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:81
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:103
 msgid "Clear on Quit"
 msgstr "Limpar ao saír"
 
@@ -5243,17 +5295,34 @@ msgstr ", {0}"
 msgid "Fix?"
 msgstr "Arranxar?"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:48
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:51
 msgid "View Item Details"
 msgstr "Ver os detalles do elemento"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:57
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:60
 msgid "Open Webpage"
 msgstr "Abrir páxina web"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:76
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:79
 msgid "Visit Archive.org"
 msgstr "Visitar Archive.org"
+
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:83
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:61
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:170
+msgid "Subscribe"
+msgstr "Subscribirse"
+
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:84
+#| msgid "Subscribe to a new podcast"
+msgid "Subscribe to this search as a podcast"
+msgstr "Subscribirse a esta busca como un podcast"
+
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:88
+#, csharp-format
+#| msgid "Internet Archive"
+msgid "Internet Archive: {0}"
+msgstr "Internet Archive: {0}"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsSource.cs:78
 msgid "Close Item"
@@ -5284,7 +5353,7 @@ msgstr ""
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:130
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:66
 #: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:136
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:271
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:279
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:89
 msgid "Description"
 msgstr "Descrición"
@@ -5388,16 +5457,16 @@ msgstr "{0}por{1} en {2}"
 msgid "Write your own review"
 msgstr "Escriba a súa propia revisión"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:109
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:108
 msgid "Collection:"
 msgstr "Colección:"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:118
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:117
 #, csharp-format
 msgid "Optional Query"
 msgstr "Consulta opcional"
 
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:165
+#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HeaderFilters.cs:164
 msgid "Sort by:"
 msgstr "Ordenar por:"
 
@@ -5498,10 +5567,6 @@ msgstr ""
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:151
 msgid "Visit the Internet Archive online at archive.org"
 msgstr "Visitar Internet Archive en liña archive.org"
-
-#: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:307
-msgid "Audiobooks"
-msgstr "Audiolibros"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:308
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:78
@@ -5776,11 +5841,11 @@ msgid "Add a new Internet Radio station or playlist"
 msgstr ""
 "Engadir unha emisora de radio de Internet nova ou unha lista de reprodución"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:81
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:83
 msgid "Search your stations"
 msgstr "Buscar nas súas emisoras"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:82
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:84
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationEditor.cs:60
 msgid "Edit Station"
 msgstr "Editar emisora"
@@ -6260,15 +6325,15 @@ msgstr "lastfm:// URL"
 msgid "lastfm://"
 msgstr "lastfm://"
 
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:109
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:113
 msgid "Media"
 msgstr "Multimedia"
 
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:119
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:123
 msgid "Library"
 msgstr "Fonoteca"
 
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:131
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:135
 msgid "Launch the Banshee Media Player"
 msgstr "Lanzar o reproductor multimedia Banshee"
 
@@ -6371,22 +6436,22 @@ msgstr ""
 "Simplificar a interface de «En reprodución» agochando a lista de fontes e "
 "máis"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:144
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:143
 #, csharp-format
 msgid "Unable to import track: {0}"
 msgstr "Non se pode importar a pista: {0}"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:178
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:177
 msgid "Importing from Amarok failed"
 msgstr "Fallou a importación de Amarok"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:189
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/AmarokPlayerImportSource.cs:188
 msgid "Amarok"
 msgstr "Amarok"
 
 #. TODO add Help button and dialog/tooltip
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:68
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:384
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:383
 msgid "iTunes Importer"
 msgstr "Importador de iTunes"
 
@@ -6403,24 +6468,24 @@ msgid "Import playlists"
 msgstr "Importar listas de reprodución"
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:120
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:387
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:386
 #, csharp-format
 msgid "Locate your \"{0}\" file..."
 msgstr "Localice o seu ficheiro \"{0}\"..."
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:138
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:388
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:387
 #, csharp-format
 msgid "Locate \"{0}\""
 msgstr "Localice \"{0}\""
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:167
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:389
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:388
 msgid "Locate iTunes Music Directory"
 msgstr "Localice o seu cartafol de música iTunes"
 
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:196
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:391
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:390
 #, csharp-format
 msgid ""
 "The iTunes library refers to your music directory as \"{0}\" but Banshee was "
@@ -6429,13 +6494,13 @@ msgstr ""
 "A biblioteca de iTunes refírese ao seu cartafol de música como \"{0}\" pero "
 "Banshee non foi capaz de inferir a localización neste cartafol. Localíceo."
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:75
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:393
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:74
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:392
 msgid "iTunes Media Player"
 msgstr "Reprodutor de música iTunes"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:135
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:395
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:134
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:394
 msgid ""
 "Banshee is not familiar with this version of the iTunes library format. "
 "Importing may or may not work as expected, or at all. Would you like to "
@@ -6445,17 +6510,17 @@ msgstr ""
 "importación pode ou non traballar como se espera. Quere tentar a importala "
 "de todas formas?"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:440
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:236
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:397
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportSource.cs:439
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:235
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:396
 msgid "Unable to import song."
 msgstr "Non se pode importar a pista."
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:370
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:369
 msgid "Rhythmbox Music Player"
 msgstr "Reprodutor de música Rhythmbox"
 
-#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:386
+#: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:385
 msgid "Import _playlists"
 msgstr "Importar _listas de reprodución"
 
@@ -6467,37 +6532,80 @@ msgstr "_Encher"
 msgid "f_rom"
 msgstr "de_nde"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:50
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:52
 msgid "Add to Play Queue"
 msgstr "Engadir á cola de reprodución"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:51
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:53
 msgid "Append selected songs to the play queue"
 msgstr "Engadir as cancións seleccionadas á cola de reprodución"
 
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:57
+#| msgid "after"
+msgid "Play After"
+msgstr "Reproducir despois de"
+
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:58
+#| msgid ""
+#| "Enable or disable playback stopping after the currently playing track "
+#| "(value should be either 'true' or 'false')"
+msgid "Add selected songs after the currently playing track, album, or artist"
+msgstr ""
+"Engadir as cancións seleccionadas despois da pista, álbum ou artista actual"
+
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:62
+#| msgid "Current source:"
+msgid "Current Track"
+msgstr "Pista actual"
+
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:63
+#| msgid "Append selected songs to the play queue"
+msgid "Add selected songs to the play queue after the currently playing song"
+msgstr "Engadir as cancións seleccionadas despois da canción en reprodución"
+
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:67
+#| msgid "Current source:"
+msgid "Current Album"
+msgstr "Álbum actual"
+
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:68
+#| msgid "Append selected songs to the play queue"
+msgid "Add selected songs to the play queue after the currently playing album"
+msgstr "Engadir as cancións seleccionadas despois do álbum en reprodución"
+
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:72
+#| msgid "Current player state"
+msgid "Current Artist"
+msgstr "Artista actual"
+
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:73
+#| msgid "Append selected songs to the play queue"
+msgid "Add selected songs to the play queue after the currently playing artist"
+msgstr "Engadir as cancións seleccionadas despois do artista en reprodución"
+
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:80
 msgid "Refresh random tracks in the play queue"
 msgstr "Actualizar as pistas aleatorias da cola de reprodución"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:63
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:85
 msgid "Randomize the playback order of items in the play queue"
 msgstr ""
 "Facer aleatoria a orde de reprodución dos elementos da súa cola de "
 "reprodución"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:67
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:89
 msgid "Add More"
 msgstr "Engadir máis"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:68
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:90
 msgid "Add more random tracks to the play queue"
 msgstr "Engadir máis pistas aleatorias á cola de reprodución"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:73
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:95
 msgid "Remove all tracks from the play queue"
 msgstr "Quitar todas as pistas da cola de reprodución"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:82
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:104
 msgid "Clear the play queue when quitting"
 msgstr "Limpar a cola de reprodución ao saír"
 
@@ -6505,16 +6613,17 @@ msgstr "Limpar a cola de reprodución ao saír"
 msgid "Remove From Play Queue"
 msgstr "Eliminar da cola de reprodución"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:864
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:967
 msgid "Number of _played songs to show"
 msgstr "Número de cancións _reproducidas para mostrar"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:870
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:973
 msgid "Number of _upcoming songs to show"
 msgstr "Número de cancións por _vir para mostrar"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastFeedModel.cs:47
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:270
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:278
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:89
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:86
 msgid "Podcast"
 msgstr "Podcast"
@@ -6524,68 +6633,63 @@ msgstr "Podcast"
 msgid "All Podcasts ({0})"
 msgstr "Todos os Podcast ({0})"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:122
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:102
+#| msgid "Local Folders"
+msgid "Podcasts Folder"
+msgstr "Cartafol de podcasts"
+
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:129
 msgid "Remove Podcast"
 msgstr "Podcast remoto"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:127
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:134
 msgid "Disable Auto Updates"
 msgstr "Desactivar actualizacións automáticas"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:145
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:152
 #, csharp-format
 msgid "Network error updating {0}"
 msgstr "Produciuse un erro de rede ao actualizar {0}"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:151
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:158
 #, csharp-format
 msgid "Parsing error updating {0}"
 msgstr "Produciuse un erro de análise ao actualizar {0}"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:154
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:161
 #, csharp-format
 msgid "Authentication error updating {0}"
 msgstr "Produciuse un erro de autenticación ao actualizar {0}"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:157
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:164
 #, csharp-format
 msgid "Error updating {0}"
 msgstr "Produciuse un erro ao actualizar {0}"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:213
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:220
 msgid "Search your podcasts"
 msgstr "Buscar nos seus podcasts"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:270
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:278
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:88
 msgid "Published"
 msgstr "Publicado"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:270
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellPodcastStatusIndicator.cs:66
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:278
 msgid "New"
 msgstr "Novo"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:271
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:57
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:279
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellPodcastStatusIndicator.cs:66
 msgid "Downloaded"
 msgstr "Descargado"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:293
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:305
 #, csharp-format
 msgid "{0} episode"
 msgid_plural "{0} episodes"
 msgstr[0] "{0} capítulo"
 msgstr[1] "{0} capítulos"
-
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:58
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellUnheard.cs:58
-msgid "All Items"
-msgstr "Todos os elementos"
-
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellDownloadStatus.cs:59
-msgid "Not Downloaded"
-msgstr "Non descargado"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellPodcast.cs:113
 msgid "Never updated"
@@ -6609,9 +6713,9 @@ msgstr "Descargando"
 msgid "New Items"
 msgstr "Novos elementos"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellUnheard.cs:59
-msgid "Old Items"
-msgstr "Elementos antigos"
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellUnheard.cs:58
+msgid "All Items"
+msgstr "Todos os elementos"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/DownloadManager/DownloadUserJob.cs:50
 msgid "Downloading Podcast(s)"
@@ -6622,68 +6726,74 @@ msgid "Cancel all podcast downloads?"
 msgstr "Quere anualr todas as descargas de podcasts?"
 
 #. "<control><shift>U",
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:72
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:73
 msgid "Check all podcasts for new episodes"
 msgstr "Comprobar en todos os podcasts se hai novos capítulos"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:77
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:78
 msgid "Add Podcast..."
 msgstr "Engadir podcast..."
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:78
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:79
 msgid "Subscribe to a new podcast"
 msgstr "Subscribirse a un podcast novo"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:89
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:93
 msgid "Unsubscribe and Delete"
 msgstr "Desubscribirse e eliminar"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:95
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:99
 msgid "Check for New Episodes"
 msgstr "Comprobar se hai novos episodios"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:101
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:105
 msgid "Download All Episodes"
 msgstr "Descargar todos os episodios"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:107
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:111
 msgid "Visit Podcast Homepage"
 msgstr "Visitar a web do podcast"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:119
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:123
 msgid "Mark as New"
 msgstr "Marcar como novo"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:125
-msgid "Mark as Old"
-msgstr "Marcar como antigo"
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:129
+#| msgid "Drive"
+msgid "Archive"
+msgstr "Arquivo"
 
 #. Translators: this is a verb used as a button name, not a noun
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:131
-msgid "Download Podcast(s)"
-msgstr "Descargar podcast(s)"
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:135
+#| msgid "Downloads"
+msgid "Download"
+msgstr "Descargar"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:137
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:141
 msgid "Cancel Download"
 msgstr "Anular a descarga"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:143
-msgid "Remove Downloaded File(s)"
-msgstr "Eliminar ficheiros descargados"
-
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:149
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:153
 msgid "Visit Website"
 msgstr "Visitar sitio web"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:161
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:165
 msgid "Add Podcast"
 msgstr "Engadir podcast"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:325
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:262
+#, csharp-format
+#| msgid "Select Files"
+msgid "Delete File"
+msgid_plural "Delete Files"
+msgstr[0] "Eliminar ficheiro"
+msgstr[1] "Eliminar ficheiros"
+
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:343
 msgid "Invalid URL"
 msgstr "URL inválido"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:326
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:344
 msgid "Podcast URL is invalid."
 msgstr "O URL do podcast non é válido."
 
@@ -6717,11 +6827,6 @@ msgstr "Non hai descrición dispoñíbel"
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastPropertiesDialog.cs:77
 msgid "Podcast:"
 msgstr "Podcast:"
-
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:61
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:170
-msgid "Subscribe"
-msgstr "Subscribirse"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:92
 msgid "Subscribe to New Podcast"
@@ -6802,7 +6907,6 @@ msgstr "Ocultar <i>{0}</i>"
 #. Translators: {0} is substituted with the application name
 #: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/ExceptionDialog.cs:53
 #, csharp-format
-#| msgid "Banshee Encountered a Fatal Error"
 msgid "{0} Encountered a Fatal Error"
 msgstr "Banshee encontrou un erro fatal {0} "
 
@@ -6943,8 +7047,6 @@ msgstr "baleiro"
 
 #: ../src/Hyena/Hyena/Hyena.Query/RelativeTimeSpanQueryValue.cs:90
 #, csharp-format
-#| msgid "{0} day"
-#| msgid_plural "{0} days"
 msgid "{0} ago"
 msgstr "fai {0}"
 
@@ -7080,6 +7182,70 @@ msgstr "Conectado a Last.fm."
 msgid "Unknown Podcast"
 msgstr "Podcast descoñecido"
 
+#~ msgid "Average Bitrate"
+#~ msgstr "Taxa de bits media"
+
+#~ msgid "Extreme"
+#~ msgstr "Extremo"
+
+#~ msgid "Insane"
+#~ msgstr "Demente"
+
+#~ msgid "LAME Preset"
+#~ msgstr "Preconfiguración de LAME"
+
+#~ msgid "Medium"
+#~ msgstr "Medio"
+
+#~ msgid "Preset"
+#~ msgstr "Preconfiguración"
+
+#~ msgid "Standard"
+#~ msgstr "Estándar"
+
+#~ msgid "VBR Mode"
+#~ msgstr "Modo VBR"
+
+#~ msgid "Home Folder"
+#~ msgstr "Cartafol persoal"
+
+#~ msgid "Manage _Extensions"
+#~ msgstr "Xestionar _extensións"
+
+#~ msgid "Manage extensions to add new features to Banshee"
+#~ msgstr ""
+#~ "Xestionar as extensións para engadir novas características a Banshee"
+
+#~ msgid "_Web Resources"
+#~ msgstr "Recursos _web"
+
+#~ msgid "Banshee _User Guide (Wiki)"
+#~ msgstr "_Guía do usuario de Banshee (Wiki)"
+
+#~ msgid "Learn about how to use Banshee"
+#~ msgstr "Aprender como usar o Banshee"
+
+#~ msgid "Videos From Photos Folder"
+#~ msgstr "Vídeos do cartafol Imaxes"
+
+#~ msgid "Audiobooks, etc"
+#~ msgstr "Audiolibros, etc"
+
+#~ msgid "Not Downloaded"
+#~ msgstr "Non descargado"
+
+#~ msgid "Old Items"
+#~ msgstr "Elementos antigos"
+
+#~ msgid "Mark as Old"
+#~ msgstr "Marcar como antigo"
+
+#~ msgid "Download Podcast(s)"
+#~ msgstr "Descargar podcast(s)"
+
+#~ msgid "Remove Downloaded File(s)"
+#~ msgstr "Eliminar ficheiros descargados"
+
 #~ msgid "_Cover Art"
 #~ msgstr "_Portada"
 
@@ -7196,9 +7362,6 @@ msgstr "Podcast descoñecido"
 
 #~ msgid "Edit Last.fm Settings"
 #~ msgstr "Editar a configuración de Last.fm"
-
-#~ msgid "Current source:"
-#~ msgstr "Fonte actual:"
 
 #~ msgid "Failed to Login to Last.fm"
 #~ msgstr "Fallou ao iniciar sesión en Last.fm"
