@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: banshee.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-12-11 15:15+0000\n"
-"PO-Revision-Date: 2010-12-08 21:26+0100\n"
+"POT-Creation-Date: 2010-12-11 17:20+0000\n"
+"PO-Revision-Date: 2010-12-11 20:48+0100\n"
 "Last-Translator: Benjamín Valero Espinosa <benjavalero@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -463,13 +463,11 @@ msgstr "Recursos"
 #. ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu.addin.xml
 #: ../data/addin-xml-strings.cs:207
 msgid "Sound Menu integration for Banshee"
-msgstr ""
+msgstr "Integración de Banshee con el menú de sonido"
 
 #: ../data/addin-xml-strings.cs:208
-#, fuzzy
-#| msgid "Control Banshee using the MPRIS D-Bus interface."
 msgid "Control Banshee from the Sound Menu."
-msgstr "Controlar Banshee usando la interfaz D-Bus MPRIS"
+msgstr "Controlar Banshee desde el menú de sonido."
 
 #. ../src/Extensions/Banshee.SqlDebugConsole/Banshee.SqlDebugConsole.addin.xml
 #: ../data/addin-xml-strings.cs:212
@@ -499,15 +497,17 @@ msgstr "Soporte para descargar archivos BitTorrent desde podcasts."
 #: ../data/addin-xml-strings.cs:222
 #: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:49
 #: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:50
-#: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:92
+#: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:90
 msgid "Ubuntu One Music Store"
-msgstr ""
+msgstr "Ubuntu One Music Store"
 
 #: ../data/addin-xml-strings.cs:223
 msgid ""
 "This extension grants access to the Ubuntu One Music Store, powered by "
 "7digital."
 msgstr ""
+"Esta extensión proporciona acceso a Ubuntu One Music Store, gracias a "
+"7digital."
 
 #. ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia.addin.xml
 #: ../data/addin-xml-strings.cs:227
@@ -6859,50 +6859,42 @@ msgid "_Speaker:"
 msgstr "_Altavoz:"
 
 #: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:211
-#, fuzzy
-#| msgid ""
-#| "Banshee was closed to the notification area. Use the <i>Quit</i> option "
-#| "to end your session."
 msgid ""
 "Banshee was closed to the sound menu. Use the <i>Quit</i> option to end your "
 "session."
 msgstr ""
-"Banshee se cerró en el área de notificación. Use la opción <i>Salir</i> para "
+"Banshee se cerró en el menú de sonido. Use la opción <i>Salir</i> para "
 "finalizar la sesión."
 
 #. Translators: {0} and {1} are Artist Name and
 #. Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
 #: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:257
-#, fuzzy, csharp-format
-#| msgid "{0} of {1}"
+#, csharp-format
 msgid "by '{0}' from '{1}'"
-msgstr "{0} de {1}"
+msgstr "por «{0}» de «{1}»"
 
 #. Translators: {0} is for Album Title;
 #. e.g. 'from Killing with a Smile'
 #: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:262
 #, csharp-format
 msgid "from '{0}'"
-msgstr ""
+msgstr "de «{0}»"
 
 #. Translators: {0} is for Artist Name;
 #. e.g. 'by Parkway Drive'
 #: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:267
-#, fuzzy, csharp-format
-#| msgid "Sync {0}"
+#, csharp-format
 msgid "by '{0}'"
-msgstr "Sincronizar {0}"
+msgstr "por «{0}»"
 
 #: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:376
 msgid "_Show Banshee in the sound menu"
-msgstr ""
+msgstr "_Mostrar Banshee en el menú de sonido"
 
 #: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:377
-#, fuzzy
-#| msgid "Control Banshee using the MPRIS D-Bus interface."
 msgid "Control Banshee through the sound menu"
-msgstr "Controlar Banshee usando la interfaz D-Bus MPRIS"
+msgstr "Controlar Banshee a través del menú de sonido"
 
 #: ../src/Extensions/Banshee.SqlDebugConsole/Banshee.SqlDebugConsole/SqlActions.cs:59
 msgid "Show SQL Console"
@@ -6916,11 +6908,9 @@ msgstr "Iniciar la monitorización SQL"
 msgid "Stop SQL Monitoring"
 msgstr "Parar la monitorización SQL"
 
-#: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:91
-#, fuzzy
-#| msgid "Track Properties"
+#: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:89
 msgid "Track Preview"
-msgstr "Propiedades de la pista"
+msgstr "Vista previa de la pista"
 
 #: ../src/Extensions/Banshee.YouTube/Banshee.YouTube.Gui/VideoStreamTile.cs:136
 msgid "Uploaded by"
