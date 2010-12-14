@@ -219,6 +219,8 @@ namespace Banshee.Podcasting.Gui
             Properties.SetString ("Icon.Name", "podcast");
             Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search your podcasts"));
 
+            Properties.Set<string> ("TrackPropertiesActionLabel", Catalog.GetString ("Episode Properties"));
+
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
             Properties.Set<System.Reflection.Assembly> ("ActiveSourceUIResource.Assembly", typeof(PodcastSource).Assembly);
