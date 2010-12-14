@@ -71,7 +71,7 @@ namespace Banshee.Collection.Gui
 
         protected override bool OnPopupMenu ()
         {
-            if (!HasTrackContextMenu || (Selection is SelectAllSelection && Selection.AllSelected)) {
+            if (!HasTrackContextMenu) {
                 return false;
             }
 
