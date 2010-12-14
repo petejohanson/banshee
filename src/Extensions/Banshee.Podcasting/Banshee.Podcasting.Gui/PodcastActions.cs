@@ -119,6 +119,11 @@ namespace Banshee.Podcasting.Gui
                      OnPodcastProperties
                 ),
                 new ActionEntry (
+                    "EpisodePodcastProperties", null,
+                     Catalog.GetString ("Podcast Properties"), null, String.Empty,
+                     OnEpisodePodcastProperties
+                ),
+                new ActionEntry (
                     "PodcastItemMarkNewAction", null,
                      Catalog.GetString ("Mark as New"),
                      null, String.Empty,
@@ -250,7 +255,8 @@ namespace Banshee.Podcasting.Gui
             if (IsPodcastSource) {
                 int count = ActiveDbSource.TrackModel.Selection.Count;
 
-                //bool has_single_podcast = podcast_source.PodcastTrackModel.SelectionPodcastCount == 1;
+                bool has_single_podcast = podcast_source.PodcastTrackModel.SelectionPodcastCount == 1;
+                UpdateAction ("EpisodePodcastProperties", true, has_single_podcast);
 
                 UpdateAction ("PodcastItemLinkAction", true, count == 1);
 
@@ -510,6 +516,17 @@ namespace Banshee.Podcasting.Gui
             Feed feed = ActiveFeedModel.FocusedItem;
             if (feed != null) {
                 new PodcastFeedPropertiesDialog (podcast_source, feed).Run ();
+            }
+        }
+
+        private void OnEpisodePodcastProperties (object sender, EventArgs e)
+        {
+            foreach (PodcastTrackInfo pi in PodcastTrackInfo.From (GetSelectedItems ())) {
+                var feed = pi.Feed;
+                if (feed != null) {
+                    new PodcastFeedPropertiesDialog (podcast_source, feed).Run ();
+                }
+                break;
             }
         }
 
