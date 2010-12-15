@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.9.0 - Released November 10, 2010
+WELCOME TO BANSHEE 1.9.1 - Released December 15, 2010
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -8,80 +8,56 @@ WELCOME TO BANSHEE 1.9.0 - Released November 10, 2010
     and video podcasts.  Sync your Android, iPod, and other devices. We think
     you'll love the new Banshee!"
 
-  * Learn More: http://banshee.fm/download/archives/1.9.0
+  * Learn More: http://banshee.fm/download/archives/1.9.1
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.9.0 is a development release, the first of the 1.9.x series
+    Banshee 1.9.1 is a development release, the second of the 1.9.x series
     leading up to Banshee 2.0.
 
-    New Features Since 1.8.0:
+    New Features Since 1.9.0:
 
-      * Artist/Album Browser Track Actions
+      * Ubuntu One Music Store and SoundMenu Extensions
 
-            Track actions (play, queue, remove, delete, edit, properties)
-            now work for the artist and album browser too!  Right click an
-            artist or album to act on it, or click an album and press 'q' to
-            queue it.
+            These two extensions have been moved from Banshee Community
+            Extensions and are now core Banshee extensions.
 
-      * 'Play After' Queue Options
+      * Subtitles
 
-            Want to listen to a track, album, or artist right after the playing
-            track, album, or artist?  The 'Play After' option will insert it
-            into the queue to make it happen.
-
-      * User Interface Improvements
-
-            We have made several changes toward a cleaner and more usable UI.
-            We got rid of the active source's title bar.  Search is now beside
-            the volume button.  The source list has smaller icons, hidden
-            counts for the libraries, and named group-separators.  The seek
-            slider and search entry are resizable via their grips.
-
-            Podcasts episodes are now shown in a grid, with several lines of
-            description shown to help you find an appealing episode to enjoy.
+            Added support for embedded and external subtitles.
 
     Enhancements:
 
-      * Album grid has tooltips for ellipsized text
-      * Subscribe to Internet Archive searches as podcasts
-      * MusicBrainz cover art search supports CDBaby and Jamendo
-      * Support Huawei Ideos Android phones
+      * Massively rework the podcast edit dialog
+      * Let line wrap in properties table
+      * Add 'Podcast Properties' to episode menu
+      * Show context menu even for 'All' filters
+      * Only show tabs if there is more than one
+      * Make Play/Pause action tooltip only show play or pause
+      * Add support for the LG Ally phone
+      * Add dbus method to clear the play queue
+      * Allow to clear the play queue while in Populate mode
+      * Add back podcast browser
+      * Add a new 'Recently Played' default smart playlist
+      * Remember sources' column configuration
+      * Blank track editor spin buttons when 0
+      * Remove Home and Photo folder import sources
 
-    Notable Bugs Fixed (51 fixed since 1.8.0):
+    Notable Bugs Fixed (79 fixed since 1.9.0):
 
-      * Remove unused Mono.Addins.Gui dependency
-      * Fix checkbox hover prelight in Fixup
-      * Always grab search entry focus on ctrl+f
-      * [TrackEditor] Don't try to load metadata over HTTP
-      * [AppleDevice] Add a matching 'StopSync' call.  We had an unmatched StartSync call which meant that the Sync dialog would be displayed forever.
-      * bgo#587936: [AppleDevice] Sync the Sort* fields
-      * bgo#631172: [AppleDevice] Fix podcast support
-      * bgo#540503: Remove Jump... from context menu
-      * bgo#540525: Stop when the playing track is deleted
-      * bgo#545998: Sensitize and pluralize podcast actions appropriately
-      * bgo#609463: Equalizer distortion
-      * bgo#620010: Displaying random image for "All Albums"
-      * bgo#623441: Duplicates on import due to character encoding
-      * bgo#624734: Allow editing Radio stations again
-      * bgo#629005: Full-screen on multi-head displays
-      * bgo#629534: TaskStatusIcon missing-ctor crash
-      * bgo#630039: Concatenated and untranslatable string
-      * bgo#631277: Crash in when editing some tracks' metadata
-      * bgo#631687: Non-local tracks added to DAP without extensions
-      * bgo#631961: [Gio] Invalid cast exception
-      * bgo#632114: Hang when replaying video
-      * bgo#632246: Missing-ctor issue in SourceComboBox
-      * bgo#632420: [Booter] Use the MeeGo client if appropriate
-      * bgo#632715: [Bookmarks] UI not getting loaded
-      * bgo#633579: Fixup not getting reloaded correctly
-      * bgo#633764: [Dap] not transcoding some files when we should
-      * bgo#633841: Recognize webm as video
-      * bgo#634096: Empty track # in filename patterns
-      * bnc#642505: Insecure LD_LIBRARY_PATH
+      * bgo#637202: Initialize the ipod each time we load
+      * bgo#630209: Fix podcast flag for video podcasts
+      * bgo#635780: Prevent GroupSources from being selected
+      * bgo#540394: Don't overwrite existing files when ripping
+      * bgo#635776: Ensure karma-sharp's DLLmap is copied in the build
+      * bgo#634662: Make search entry in MeeGo panel correctly show query
+      * bgo#634686: Fix streaming broken after first play
+      * bgo#635426: Ensure track filter actions updated
+      * bgo#635453: Fix regression with importing mkv
+      * bgo#608778: 'Random by' skips user-selected artist/album 
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -90,10 +66,10 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.9.0 Tarballs:
-      http://download.banshee.fm/banshee/unstable/1.9.0/banshee-1-1.9.0.tar.bz2
-      http://download.banshee.fm/banshee/unstable/1.9.0/banshee-1-1.9.0.tar.gz
-    * http://download.banshee.fm/banshee/unstable/1.9.0/banshee-1-1.9.0.sha256sum
+    * Banshee 1.9.1 Tarballs:
+      http://download.banshee.fm/banshee/unstable/1.9.1/banshee-1-1.9.1.tar.bz2
+      http://download.banshee.fm/banshee/unstable/1.9.1/banshee-1-1.9.1.tar.gz
+    * http://download.banshee.fm/banshee/unstable/1.9.1/banshee-1-1.9.1.sha256sum
 
 Packages
 --------
@@ -180,7 +156,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee.fm/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.9.0
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.9.1
 
 
 ===============================================================================
@@ -193,18 +169,16 @@ Contributors For This Release
     The following people directly contributed to the release of this version
     of Banshee. Without their help, there would be no release!
 
-      Aaron Bockover, Alan McGovern, Alex Launi, Alexander Kojevnikov,
-      Andreas Nilsson, Andrés G. Aragoneses, Aurélien Mino, Bertrand Lorentz,
-      Dougal Stanton, Gabriel Burt, Ghislain Lacroix, Kentaro KAZUHAMA,
-      Michał Sawicz, Pete Johanson, Raimo Radczewski, Tim Fisken, Zhou Ting
+      Aaron Bockover, Alex Launi, Alexander Kojevnikov, Aran Cox,
+      Bertrand Lorentz, David Nielsen, Gabriel Burt, Iain Lane, Olivier Dufour,
+      Raimo Radczewski, Rodney Dawes, Samuel Gyger, William Friesen, Zhou Ting
 
     The following people contributed updated translations to this release.
     Without them, our project's reach would be much more limited.
 
-      Andrej Žnidaršič, Benjamín Valero Espinosa, Carles Ferrando,
-      Daniel Nylander, Inaki Larranaga Murgoitio, Joe Hansen, Jorge González,
-      Kjartan Maraas, Mario Blättermann, Matej Urbančič, Maxim V. Dziumanenko,
-      Michael Kotsarinis, Petr Kovar, Takayuki KUSANO, Χάρης Κουζινόπουλος
+      Andrej Žnidaršič, Aron Xu, Benjamín Valero Espinosa, Bruno Brouard,
+      Fran Dieguez, Gabor Kelemen, Inaki Larranaga Murgoitio, Jordi Mas,
+      Jorge González, Michael Kotsarinis, Petr Kovar, Sira Nokyoongtong
 
 Contributors In Past Releases
 -----------------------------
@@ -213,35 +187,37 @@ Contributors In Past Releases
     Alex Mauer, Alexander Hixon, Alexander Kojevnikov, Alexandros Frantzis,
     Alp Toker, Anders Petersson, Andrea Cimitan, Andreas Neustifter,
     Andreas Nilsson, Andrew Conkling, Andrés G. Aragoneses, Andy Midgette,
-    Arthur Carli, Arun Raghavan, Aurélien Mino, Aydemir Ulaş Şahin,
-    Ben Maurer, Benjamín Valero Espinosa, Bertrand Lorentz, Bill Dawson,
-    Bob Copeland, Bojan Rajkovic, Brad Taylor, Brandon Perry, Brian Lucas,
-    Brian Nickel, Brian Teague, Chow Loong Jin, Chris Howie, Chris Jones,
-    Chris Lahey, Chris Toshok, Chris Turchin, Christian Hergert,
-    Christian Krause, Christoph Burgdorf, Christopher James Halse Rogers,
-    Claude Paroz, Cody Russell, Cosmin Banu, Dan Wilson, Dan Winship,
-    Daniel Munkton, Daniel Siegel, David Nielsen, David Spreen, David Stone,
-    Diego E. Pettenò, Dougal Stanton, Eitan Isaacson, Elena Grassi,
-    Eoin Hennessy, Eric Butler, Erik Schmidt, Fabian Jost,
-    Felipe Almeida Lessa, Fernando Casanova, Florent Thoumie, Fredrik Hedberg,
-    Félix Velasco, Gabriel Burt, Garrett LeSage, Ghislain Lacroix,
-    Götz Waschk, Haitao Feng, Hans Petter Jansson, Harold Schreckengost,
-    Iain Lane, Igor Guerrero Fonseca, Ilya Konstantinov, Ivan N. Zlatev,
-    Jack Deslippe, Jakub Steiner, James Willcox, Jan Arne Petersen,
-    Jason Conti, Jason Taylor, Jeff Tickle, Jeff Wheeler, Jensen Somers,
-    Jeroen Budts, Jo Shields, Johannes Kuhn, John Millikin, Jordi Mas,
-    Jorge Castro, Julien Moutte, Juri Pakaste, Ján Sokoly, Jérémie Laval,
-    K. Vishnoo Charan Reddy, Ken Vandine, Kentaro KAZUHAMA, Kevin Duffus,
-    Konstantin Oshiyko, Larry Ewing, Lauri Kotilainen, Lukas Lipka, Marijn Ros,
-    Matt Enright, Michael Kaiser, Michael Martin-Smucker, Michael Monreal,
-    Michael Monreal, Michał Sawicz, Miguel de Icaza, Mike Gemünde,
-    Mike Urbanski, Moritz Schallaböck, Nathan Palmer, Neil Loknath,
-    Nicholas Doyle, Nicholas Parker, Nicolò Chieffo, Nils Naumann, Oben Sonne,
-    Olivier Duff, Oscar Forero, Pacho Ramos, Patrick van Staveren, Paul Cutler,
-    Paul Lange, Pavel Antonov, Pepijn van de Geer, Pete Johanson,
-    Peter de Kraker, Pratik Patel, Przemysław Grzegorczyk, Raimo Radczewski,
-    Robin Stocker, Roderich Schupp, Romain Tartière, Ruben Vermeersch,
-    Ryan Collier, Sandy Armstrong, Scott Peterson, Sebastian Dröge,
+    Aran Cox, Arthur Carli, Arun Raghavan, Aurélien Mino,
+    Aydemir Ulaş Şahin, Ben Maurer, Benjamín Valero Espinosa,
+    Bertrand Lorentz, Bill Dawson, Bob Copeland, Bojan Rajkovic, Brad Taylor,
+    Brandon Perry, Brian Lucas, Brian Nickel, Brian Teague, Chow Loong Jin,
+    Chris Howie, Chris Jones, Chris Lahey, Chris Toshok, Chris Turchin,
+    Christian Hergert, Christian Krause, Christoph Burgdorf,
+    Christopher James Halse Rogers, Claude Paroz, Cody Russell, Cosmin Banu,
+    Dan Wilson, Dan Winship, Daniel Munkton, Daniel Siegel, David Nielsen,
+    David Spreen, David Stone, Diego E. Pettenò, Dougal Stanton,
+    Eitan Isaacson, Elena Grassi, Eoin Hennessy, Eric Butler, Erik Schmidt,
+    Fabian Jost, Felipe Almeida Lessa, Fernando Casanova, Florent Thoumie,
+    Fredrik Hedberg, Félix Velasco, Gabriel Burt, Garrett LeSage,
+    Ghislain Lacroix, Götz Waschk, Haitao Feng, Hans Petter Jansson,
+    Harold Schreckengost, Iain Lane, Igor Guerrero Fonseca, Ilya Konstantinov,
+    Ivan N. Zlatev, Jack Deslippe, Jakub Steiner, James Willcox,
+    Jan Arne Petersen, Jason Conti, Jason Taylor, Jeff Tickle, Jeff Wheeler,
+    Jensen Somers, Jeroen Budts, Jo Shields, Johannes Kuhn, John Millikin,
+    Jordi Mas, Jorge Castro, Julien Moutte, Juri Pakaste, Ján Sokoly,
+    Jérémie Laval, K. Vishnoo Charan Reddy, Ken Vandine, Kentaro KAZUHAMA,
+    Kevin Duffus, Konstantin Oshiyko, Larry Ewing, Lauri Kotilainen,
+    Lukas Lipka, Marijn Ros, Matt Enright, Michael Kaiser,
+    Michael Martin-Smucker, Michael Monreal, Michael Monreal, Michał Sawicz,
+    Miguel de Icaza, Mike Gemünde, Mike Urbanski, Moritz Schallaböck,
+    Nathan Palmer, Neil Loknath, Nicholas Doyle, Nicholas Parker,
+    Nicolò Chieffo, Nils Naumann, Oben Sonne, Olivier Dufour, Oscar Forero,
+    Pacho Ramos, Patrick van Staveren, Paul Cutler, Paul Lange, Pavel Antonov,
+    Pepijn van de Geer, Pete Johanson, Peter de Kraker, Pratik Patel,
+    Przemysław Grzegorczyk, Raimo Radczewski, Robin Stocker, Roderich Schupp,
+    Rodney Dawes, Romain Tartière, Ruben Vermeersch, Ryan Collier,
+    Samuel Gyger, Sandy Armstrong, Scott Peterson, Sebastian Dröge,
     Shaun McCance, Tim Fisken, Tim Yamin, Tobias Mueller, Todd Berman,
     Travis Glenn Hansen, Travis Reitter, Trey Ethridge, Valentin Sawadski,
-    Will Farrington, William Pettersson, Wouter Bolsterlee, Zhou Ting
+    Will Farrington, William Friesen, William Pettersson, Wouter Bolsterlee,
+    Zhou Ting
