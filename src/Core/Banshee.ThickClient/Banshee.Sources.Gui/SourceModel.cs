@@ -211,10 +211,13 @@ namespace Banshee.Sources.Gui
 
                 int position = source.Order;
 
-                var type = source is SourceManager.GroupSource ? EntryType.Group : EntryType.Source;
                 TreeIter iter = parent.Equals (TreeIter.Zero)
-                    ? InsertWithValues (position, source, source.Order, type)
-                    : InsertWithValues (parent, position, source, source.Order, type);
+                    ? InsertNode (position)
+                    : InsertNode (parent, position);
+
+                SetValue (iter, 0, source);
+                SetValue (iter, 1, source.Order);
+                SetValue (iter, 2, source is SourceManager.GroupSource ? EntryType.Group : EntryType.Source);
 
                 lock (source.Children) {
                     foreach (Source child in source.Children) {
