@@ -79,15 +79,20 @@ namespace Migo.Syndication
 
         public Feed CreateFeed (string url, FeedAutoDownload autoDownload)
         {
-            return CreateFeed (url, null, autoDownload, true);
+            return CreateFeed (url, autoDownload, 0);
         }
 
-        public Feed CreateFeed (string url, string title, FeedAutoDownload autoDownload)
+        public Feed CreateFeed (string url, FeedAutoDownload autoDownload, int max_items)
         {
-            return CreateFeed (url, title, autoDownload, true);
+            return CreateFeed (url, null, autoDownload, max_items, true);
         }
 
-        public Feed CreateFeed (string url, string title, FeedAutoDownload autoDownload, bool is_subscribed)
+        public Feed CreateFeed (string url, string title, FeedAutoDownload autoDownload, int max_items)
+        {
+            return CreateFeed (url, title, autoDownload, max_items, true);
+        }
+
+        public Feed CreateFeed (string url, string title, FeedAutoDownload autoDownload, int max_items, bool is_subscribed)
         {
             Feed feed = null;
             url = url.Trim ().TrimEnd ('/');
@@ -96,6 +101,7 @@ namespace Migo.Syndication
                 feed = new Feed (url, autoDownload);
                 feed.Title = title;
                 feed.IsSubscribed = is_subscribed;
+                feed.MaxItemCount = max_items;
                 feed.Save ();
                 feed.Update ();
             }
