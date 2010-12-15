@@ -194,6 +194,7 @@ namespace Banshee.Sources.Gui
 
         public void AddSource (Source source, TreeIter parent)
         {
+            ThreadAssist.AssertInMainThread ();
             lock (sync) {
                 if (Filter != null && !Filter (source)) {
                     return;
@@ -234,6 +235,7 @@ namespace Banshee.Sources.Gui
 
         public void RemoveSource (Source source)
         {
+            ThreadAssist.AssertInMainThread ();
             lock (sync) {
                 TreeIter iter = FindSource (source);
                 if (!iter.Equals (TreeIter.Zero)) {
@@ -249,6 +251,7 @@ namespace Banshee.Sources.Gui
 
         public void Refresh ()
         {
+            ThreadAssist.AssertInMainThread ();
             Clear ();
             foreach (Source source in ServiceManager.SourceManager.Sources) {
                 AddSource (source);
