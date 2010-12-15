@@ -294,9 +294,9 @@ namespace Banshee.Podcasting.Gui
             }
         }
 
-        private void SubscribeToPodcast (Uri uri, FeedAutoDownload syncPreference)
+        private void SubscribeToPodcast (Uri uri, FeedAutoDownload syncPreference, int max_items)
         {
-            FeedsManager.Instance.FeedManager.CreateFeed (uri.ToString (), syncPreference);
+            FeedsManager.Instance.FeedManager.CreateFeed (uri.ToString (), syncPreference, max_items);
         }
 
         private IEnumerable<TrackInfo> GetSelectedItems ()
@@ -329,6 +329,7 @@ namespace Banshee.Podcasting.Gui
             ResponseType response = (ResponseType) subscribeDialog.Run ();
 
             syncPreference = subscribeDialog.SyncPreference;
+            int max_items = subscribeDialog.MaxItemCount;
 
             if (response == ResponseType.Ok) {
                 url = subscribeDialog.Url.Trim ().Trim ('/');
@@ -350,7 +351,7 @@ namespace Banshee.Podcasting.Gui
                     Catalog.GetString ("Podcast URL is invalid.")
                 );
             } else {
-                SubscribeToPodcast (feedUri, syncPreference);
+                SubscribeToPodcast (feedUri, syncPreference, max_items);
             }
         }
 

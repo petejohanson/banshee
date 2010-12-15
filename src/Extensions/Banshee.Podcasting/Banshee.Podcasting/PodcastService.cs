@@ -402,7 +402,7 @@ namespace Banshee.Podcasting
         private void AddFeed (string uri, string title)
         {
             // TODO replace autodownload w/ actual default preference
-            FeedsManager.Instance.FeedManager.CreateFeed (uri, title, FeedAutoDownload.None);
+            FeedsManager.Instance.FeedManager.CreateFeed (uri, title, FeedAutoDownload.None, 0);
             source.NotifyUser ();
             source.UpdateFeedMessages ();
         }
