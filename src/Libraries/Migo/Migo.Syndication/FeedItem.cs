@@ -232,6 +232,11 @@ namespace Migo.Syndication
 
         public void Save ()
         {
+            Save (true);
+        }
+
+        internal void Save (bool notify)
+        {
             bool is_new = DbId < 1;
             Provider.Save (this);
             if (enclosure != null) {

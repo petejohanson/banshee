@@ -403,6 +403,7 @@ namespace Migo.Syndication
             }
 
             if (added_any) {
+               CheckForItemsToArchive ();
                Manager.OnFeedsChanged ();
                CheckForItemsToDownload ();
             }
@@ -560,6 +561,7 @@ namespace Migo.Syndication
         public void Save (bool notify)
         {
             Provider.Save (this);
+            CheckForItemsToArchive ();
 
             if (LastBuildDate > LastAutoDownload) {
                 CheckForItemsToDownload ();
@@ -567,6 +569,22 @@ namespace Migo.Syndication
 
             if (notify) {
                 Manager.OnFeedsChanged ();
+            }
+        }
+
+        private void CheckForItemsToArchive ()
+        {
+            if (MaxItemCount == 0)
+                return;
+
+            int i = 0;
+            foreach (var item in Items) {
+                if (!item.IsRead) {
+                    if (i++ >= MaxItemCount) {
+                        item.IsRead = true;
+                        item.Save (false);
+                    }
+                }
             }
         }
 
