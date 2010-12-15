@@ -52,7 +52,7 @@ namespace Banshee.Podcasting.Gui
                         WHERE PodcastSyndications.FeedID = PodcastItems.FeedID AND
                           PodcastItems.ItemID = CoreTracks.ExternalID AND PodcastEnclosures.ItemID = PodcastItems.ItemID AND
                           CoreCache.ModelID = {1} AND CoreCache.ItemId = {2} {3})
-                    ORDER BY lower(Title)";
+                    ORDER BY HYENA_COLLATION_KEY(Title)";
         }
 
         public override string FilterColumn {
