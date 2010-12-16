@@ -49,8 +49,8 @@ namespace Banshee.Sources.Gui
                 return;
             }
 
-            var type = (SourceModel.EntryType) model.GetValue (iter, (int)SourceModel.Columns.Type);
-            if (type != SourceModel.EntryType.Source) {
+            var type = model.GetValue (iter, (int)SourceModel.Columns.Type);
+            if (type == null || (SourceModel.EntryType) type != SourceModel.EntryType.Source) {
                 renderer.Visible = false;
                 return;
             }
