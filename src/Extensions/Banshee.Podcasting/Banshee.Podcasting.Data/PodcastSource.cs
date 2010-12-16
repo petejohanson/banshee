@@ -316,7 +316,13 @@ namespace Banshee.Podcasting.Gui
 
         protected override DatabaseTrackListModel CreateTrackModelFor (DatabaseSource src)
         {
-            return PodcastTrackModel = new PodcastTrackListModel (ServiceManager.DbConnection, DatabaseTrackInfo.Provider, src);
+            var model = new PodcastTrackListModel (ServiceManager.DbConnection, DatabaseTrackInfo.Provider, src);
+
+            if (PodcastTrackModel == null) {
+                PodcastTrackModel = model;
+            }
+
+            return model;
         }
 
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
