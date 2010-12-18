@@ -151,7 +151,7 @@ namespace Banshee.SmartPlaylist
             get { return query_order; }
             set {
                 query_order = value;
-                if (value != null) {
+                if (value != null && value.Field != null) {
                     Properties.Set<string> ("TrackListSortField", value.Field.Name);
                     Properties.Set<bool> ("TrackListSortAscending", value.Ascending);
                 } else {
