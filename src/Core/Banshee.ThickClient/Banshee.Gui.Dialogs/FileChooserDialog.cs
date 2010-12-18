@@ -71,7 +71,8 @@ namespace Banshee.Gui.Dialogs
             base (title, parent, action)
         {
             LocalOnly = Banshee.IO.Provider.LocalOnly;
-            SetCurrentFolderUri (LastFileChooserUri.Get (Environment.GetFolderPath (Environment.SpecialFolder.Personal)));
+            string fallback = SafeUri.FilenameToUri (Environment.GetFolderPath (Environment.SpecialFolder.Personal));
+            SetCurrentFolderUri (LastFileChooserUri.Get (fallback));
             WindowPosition = WindowPosition.Center;
         }
 
