@@ -120,6 +120,9 @@ namespace Banshee.SmartPlaylist
                         if (!relevant_fields.Contains (term.Field))
                             relevant_fields.Add (term.Field);
                     }
+                } else {
+                    condition_sql = null;
+                    condition_xml = null;
                 }
             }
         }
