@@ -34,6 +34,7 @@
     <Compile Include="Banshee.Mpris\MprisService.cs" />
     <Compile Include="Banshee.Mpris\IPlayer.cs" />
     <Compile Include="Banshee.Mpris\IMediaPlayer.cs" />
+    <Compile Include="Banshee.Mpris\IPlaylists.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,6 +44,7 @@
     <Reference Include="NDesk.DBus.GLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
       <Package>ndesk-dbus-glib-1.0</Package>
     </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">

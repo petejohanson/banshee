@@ -30,6 +30,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 using NDesk.DBus;
 using Hyena;
@@ -37,16 +39,20 @@ using Hyena;
 using Banshee.Gui;
 using Banshee.MediaEngine;
 using Banshee.PlaybackController;
+using Banshee.Playlist;
 using Banshee.ServiceStack;
+using Banshee.Sources;
 
 namespace Banshee.Mpris
 {
-    public class MediaPlayer : IMediaPlayer, IPlayer, IProperties
+    public class MediaPlayer : IMediaPlayer, IPlayer, IPlaylists, IProperties
     {
         private static string mediaplayer_interface_name = "org.mpris.MediaPlayer2";
         private static string player_interface_name = "org.mpris.MediaPlayer2.Player";
+        private static string playlists_interface_name = "org.mpris.MediaPlayer2.Playlists";
         private PlaybackControllerService playback_service;
         private PlayerEngineService engine_service;
+        private Dictionary<string, AbstractPlaylistSource> playlist_sources;
         private Dictionary<string, object> changed_properties;
         private List<string> invalidated_properties;
 
@@ -71,6 +77,7 @@ namespace Banshee.Mpris
         {
             playback_service = ServiceManager.PlaybackController;
             engine_service = ServiceManager.PlayerEngine;
+            playlist_sources = new Dictionary<string, AbstractPlaylistSource> ();
             changed_properties = new Dictionary<string, object> ();
             invalidated_properties = new List<string> ();
         }
@@ -317,15 +324,123 @@ namespace Banshee.Mpris
 
 #endregion
 
+#region IPlaylists
+        public uint PlaylistCount {
+            get {
+                return (uint)ServiceManager.SourceManager.FindSources<AbstractPlaylistSource> ().Count ();
+            }
+        }
+
+        private static string [] supported_playlist_orderings = { "Alphabetical", "UserDefined" };
+        public string [] Orderings {
+            get { return supported_playlist_orderings; }
+        }
+
+        private static Playlist dummy_playlist = new Playlist {
+            Id = new ObjectPath (DBusServiceManager.ObjectRoot),
+            Name = "",
+            Icon = "" };
+        public MaybePlaylist ActivePlaylist {
+            get {
+                // We want the source that is currently playing
+                var playlist_source = ServiceManager.PlaybackController.Source as AbstractPlaylistSource;
+                if (playlist_source == null) {
+                    return new MaybePlaylist { Valid = false, Playlist = dummy_playlist };
+                } else {
+                    return new MaybePlaylist { Valid = true,
+                        Playlist = BuildPlaylistFromSource (playlist_source) };
+                }
+            }
+        }
+
+        private ObjectPath MakeObjectPath (AbstractPlaylistSource playlist)
+        {
+            StringBuilder object_path_builder = new StringBuilder ();
+
+            object_path_builder.Append (DBusServiceManager.ObjectRoot);
+            object_path_builder.Append ("/Playlists/");
+
+            object_path_builder.Append (DBusServiceManager.MakeDBusSafeString (playlist.UniqueId));
+
+            string object_path = object_path_builder.ToString ();
+            playlist_sources[object_path] = playlist;
+
+            return new ObjectPath (object_path);
+        }
+
+        private string GetIconPath (Source source)
+        {
+            string icon_name = "image-missing";
+            Type icon_type = source.Properties.GetType ("Icon.Name");
+
+            if (icon_type == typeof (string)) {
+                icon_name = source.Properties.Get<string> ("Icon.Name");
+            } else if (icon_type == typeof (string [])) {
+                icon_name = source.Properties.Get<string[]> ("Icon.Name")[0];
+            }
+
+            string icon_path = Paths.Combine (Paths.GetInstalledDataDirectory ("icons"),
+                                       "hicolor", "22x22", "categories",
+                                       String.Concat (icon_name, ".png"));
+
+            return String.Concat ("file://", icon_path);
+        }
+
+        private Playlist BuildPlaylistFromSource (AbstractPlaylistSource source)
+        {
+            var mpris_playlist = new Playlist ();
+            mpris_playlist.Name = source.Name;
+            mpris_playlist.Id = MakeObjectPath (source);
+            mpris_playlist.Icon = GetIconPath (source);
+
+            return mpris_playlist;
+        }
+
+        public void ActivatePlaylist (ObjectPath playlist_id)
+        {
+            // TODO: Maybe try to find the playlist if it's not in the dictionary ?
+            var playlist = playlist_sources[playlist_id.ToString ()];
+
+            if (playlist != null) {
+                Log.DebugFormat ("MPRIS activating playlist {0}", playlist.Name);
+                ServiceManager.SourceManager.SetActiveSource (playlist);
+                ServiceManager.PlaybackController.Source = playlist;
+                ServiceManager.PlaybackController.First ();
+            }
+        }
+
+        public Playlist [] GetPlaylists (uint index, uint max_count, string order, bool reverse_order)
+        {
+            var playlist_sources = ServiceManager.SourceManager.FindSources<AbstractPlaylistSource> ();
+
+            switch (order) {
+                case "Alphabetical":
+                    playlist_sources = playlist_sources.OrderBy (p => p.Name);
+                    break;
+                case "UserDefined":
+                    playlist_sources = playlist_sources.OrderBy (p => p.Order);
+                    break;
+            }
+            if (reverse_order) {
+                playlist_sources = playlist_sources.Reverse ();
+            }
+
+            var playlists = new List<Playlist> ();
+            foreach (var pl in playlist_sources.Skip ((int)index).Take ((int)max_count)) {
+                playlists.Add (BuildPlaylistFromSource (pl));
+            }
+            return playlists.ToArray ();
+        }
+#endregion
+
 #region Signals
 
-        public void HandlePropertiesChange ()
+        private void HandlePropertiesChange (string interface_name)
         {
             PropertiesChangedHandler handler = properties_changed;
             if (handler != null) {
                 lock (changed_properties) {
-                    // Properties that trigger this signal are all on the Player interface
-                    handler (player_interface_name, changed_properties, invalidated_properties.ToArray ());
+                    handler (interface_name, changed_properties, invalidated_properties.ToArray ());
                     changed_properties.Clear ();
                     invalidated_properties.Clear ();
                 }
@@ -347,9 +462,20 @@ namespace Banshee.Mpris
                     string prop_name = prop.ToString ();
                     changed_properties[prop_name] = Get (player_interface_name, prop_name);
                 }
+                // TODO We could check if a property really has changed and only fire the event in that case
+                HandlePropertiesChange (player_interface_name);
             }
-            // TODO We could check if a property really has changed and only fire the event in that case
-            HandlePropertiesChange ();
+        }
+
+        public void AddPropertyChange (params PlaylistProperties [] properties)
+        {
+            lock (changed_properties) {
+                foreach (PlaylistProperties prop in properties) {
+                    string prop_name = prop.ToString ();
+                    changed_properties[prop_name] = Get (playlists_interface_name, prop_name);
+                }
+                HandlePropertiesChange (playlists_interface_name);
+            }
         }
 
 #endregion
@@ -362,6 +488,8 @@ namespace Banshee.Mpris
         private static string [] player_properties = { "CanControl", "CanGoNext", "CanGoPrevious", "CanPause",
             "CanPlay", "CanSeek", "LoopStatus", "MaximumRate", "Metadata", "MinimumRate", "PlaybackStatus",
             "Position", "Rate", "Shuffle", "Volume" };
+
+        private static string [] playlist_properties = { "Orderings", "PlaylistCount", "ActivePlaylist" };
 
         public object Get (string interface_name, string propname)
         {
@@ -419,6 +547,17 @@ namespace Banshee.Mpris
                     default:
                         return null;
                 }
+            } else if (interface_name == playlists_interface_name) {
+                switch (propname) {
+                    case "Orderings":
+                        return Orderings;
+                    case "PlaylistCount":
+                        return PlaylistCount;
+                    case "ActivePlaylist":
+                        return ActivePlaylist;
+                    default:
+                        return null;
+                }
             } else {
                 return null;
             }
@@ -463,6 +602,10 @@ namespace Banshee.Mpris
                 foreach (string prop in player_properties) {
                     props.Add (prop, Get (interface_name, prop));
                 }
+            } else if (interface_name == playlists_interface_name) {
+                foreach (string prop in playlist_properties) {
+                    props.Add (prop, Get (interface_name, prop));
+                }
             }
 
             return props;
@@ -471,7 +614,7 @@ namespace Banshee.Mpris
 
 #endregion
 
-    // Those are all the properties that can trigger the PropertiesChanged signal
+    // Those are all the properties from the Player interface that can trigger the PropertiesChanged signal
     // The names must match exactly the names of the properties
     public enum PlayerProperties
     {
@@ -489,5 +632,13 @@ namespace Banshee.Mpris
         PlaybackStatus,
         Metadata,
         Volume
+    }
+
+    // Those are all the properties from the Playlist interface that can trigger the PropertiesChanged signal
+    // The names must match exactly the names of the properties
+    public enum PlaylistProperties
+    {
+        PlaylistCount,
+        ActivePlaylist
     }
 }

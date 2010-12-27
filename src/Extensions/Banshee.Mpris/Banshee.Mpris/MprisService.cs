@@ -34,7 +34,9 @@ using NDesk.DBus;
 using Hyena;
 using Banshee.MediaEngine;
 using Banshee.PlaybackController;
+using Banshee.Playlist;
 using Banshee.ServiceStack;
+using Banshee.Sources;
 
 namespace Banshee.Mpris
 {
@@ -63,6 +65,10 @@ namespace Banshee.Mpris
             ServiceManager.PlaybackController.RepeatModeChanged += OnRepeatModeChanged;
             ServiceManager.PlaybackController.ShuffleModeChanged += OnShuffleModeChanged;
 
+            ServiceManager.SourceManager.SourceAdded += OnSourceCountChanged;
+            ServiceManager.SourceManager.SourceRemoved += OnSourceCountChanged;
+            ServiceManager.PlaybackController.SourceChanged += OnPlayingSourceChanged;
+
             player = new MediaPlayer();
             Bus.Session.Register (MediaPlayer.Path, player);
 
@@ -79,6 +85,10 @@ namespace Banshee.Mpris
             ServiceManager.PlayerEngine.DisconnectEvent (OnPlayerEvent);
             ServiceManager.PlaybackController.RepeatModeChanged -= OnRepeatModeChanged;
             ServiceManager.PlaybackController.ShuffleModeChanged -= OnShuffleModeChanged;
+
+            ServiceManager.SourceManager.SourceAdded -= OnSourceCountChanged;
+            ServiceManager.SourceManager.SourceRemoved -= OnSourceCountChanged;
+            ServiceManager.PlaybackController.SourceChanged -= OnPlayingSourceChanged;
 
             Bus.Session.ReleaseName (bus_name);
         }
@@ -110,6 +120,18 @@ namespace Banshee.Mpris
         private void OnShuffleModeChanged (object o, EventArgs<string> args)
         {
             player.AddPropertyChange (PlayerProperties.Shuffle);
+        }
+
+        private void OnSourceCountChanged (SourceEventArgs args)
+        {
+            if (args.Source is AbstractPlaylistSource) {
+                player.AddPropertyChange (PlaylistProperties.PlaylistCount);
+            }
+        }
+
+        private void OnPlayingSourceChanged (object o, EventArgs args)
+        {
+            player.AddPropertyChange (PlaylistProperties.ActivePlaylist);
         }
 
         string IService.ServiceName {
