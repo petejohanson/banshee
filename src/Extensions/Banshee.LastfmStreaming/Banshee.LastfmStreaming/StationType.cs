@@ -97,11 +97,11 @@ namespace Banshee.LastfmStreaming.Radio
             false
         );
 
-        public static StationType Loved = new StationType (
-            "Loved",
-            Catalog.GetString ("Loved"),
-            Catalog.GetString ("By User:"),
-            "user/{0}/loved",
+        public static StationType Mix = new StationType (
+            "Mix",
+            Catalog.GetString ("Mix"),
+            Catalog.GetString ("For User:"),
+            "user/{0}/mix",
             "emblem-favorite",
             true
         );
@@ -161,7 +161,7 @@ namespace Banshee.LastfmStreaming.Radio
         );
 
         public static StationType [] Types = new StationType [] {
-            Recommended, Personal, Loved, Neighbor, Group, Tag, Fan, Similar, LastfmUrl
+            Recommended, Personal, Mix, Neighbor, Group, Tag, Fan, Similar, LastfmUrl
         };
     }
 }
