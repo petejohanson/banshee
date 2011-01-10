@@ -123,6 +123,7 @@ namespace Banshee.SoundMenu
                 </menubar>
               </ui>
             ");
+            interface_action_service.GlobalActions.UpdateAction ("QuitAction", false);
 
             InstallPreferences ();
             server = Server.RefDefault ();
@@ -165,6 +166,7 @@ namespace Banshee.SoundMenu
             if (close_action != null) {
                 interface_action_service.GlobalActions.Remove (close_action);
             }
+            interface_action_service.GlobalActions.UpdateAction ("QuitAction", true);
 
             AddinManager.AddinLoaded -= OnAddinLoaded;
 
@@ -215,24 +217,11 @@ namespace Banshee.SoundMenu
 
         private void CloseWindow (object o, EventArgs args)
         {
-            try {
-                if (NotifyOnCloseSchema.Get ()) {
-                    Notification nf = new Notification (
-                        Catalog.GetString ("Still Running"),
-                        Catalog.GetString (
-                            "Banshee was closed to the sound menu. " +
-                            "Use the <i>Quit</i> option to end your session."),
-                            "media-player-banshee");
-                    nf.Urgency = Urgency.Low;
-                    nf.Show ();
-
-                    NotifyOnCloseSchema.Set (false);
-                }
-            } catch (Exception e) {
-                Log.Warning ("Error while trying to notify of window close.", e.Message, false);
+            if (ServiceManager.PlayerEngine.CurrentState == PlayerState.Playing) {
+                elements_service.PrimaryWindow.Visible = false;
+            } else {
+                Banshee.ServiceStack.Application.Shutdown ();
             }
-
-            elements_service.PrimaryWindow.Visible = false;
         }
 
         private void OnPlayerEvent (PlayerEventArgs args)
@@ -427,13 +416,6 @@ namespace Banshee.SoundMenu
             true,
             "Show notifications",
             "Show information notifications when item starts playing"
-        );
-
-        public static readonly SchemaEntry<bool> NotifyOnCloseSchema = new SchemaEntry<bool> (
-            "plugins.soundmenu", "notify_on_close",
-            true,
-            "Show a notification when closing main window",
-            "When the main window is closed, show a notification stating this has happened."
         );
 #endregion
 
