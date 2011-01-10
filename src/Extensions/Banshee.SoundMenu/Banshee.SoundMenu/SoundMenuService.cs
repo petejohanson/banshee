@@ -59,6 +59,7 @@ namespace Banshee.SoundMenu
         private string notify_last_artist;
         private string notify_last_title;
         private Server server;
+        private uint ui_manager_id;
 
         private const int icon_size = 42;
 
@@ -111,7 +112,17 @@ namespace Banshee.SoundMenu
                     Catalog.GetString ("_Close"), "<Control>W",
                     Catalog.GetString ("Close"), CloseWindow)
             });
-
+            ui_manager_id = interface_action_service.UIManager.AddUiFromString (@"
+              <ui>
+                <menubar name=""MainMenu"">
+                  <menu name=""MediaMenu"" action=""MediaMenuAction"">
+                    <placeholder name=""ClosePlaceholder"">
+                    <menuitem name=""Close"" action=""CloseAction""/>
+                    </placeholder>
+                  </menu>
+                </menubar>
+              </ui>
+            ");
 
             InstallPreferences ();
             server = Server.RefDefault ();
@@ -149,6 +160,7 @@ namespace Banshee.SoundMenu
 
             elements_service.PrimaryWindowClose = null;
 
+            interface_action_service.UIManager.RemoveUi (ui_manager_id);
             Gtk.Action close_action = interface_action_service.GlobalActions["CloseAction"];
             if (close_action != null) {
                 interface_action_service.GlobalActions.Remove (close_action);
