@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-11 19:26+0200\n"
-"PO-Revision-Date: 2011-01-11 22:10+0300\n"
+"PO-Revision-Date: 2011-01-12 01:09+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "Language: he\n"
@@ -3807,31 +3807,32 @@ msgid ""
 "Apply the values of all common fields set for this track to all of the "
 "tracks selected in this editor"
 msgstr ""
+"החלת הערכים של כל השדות המשותפים המוגדרים ברצועה זו לכל הרצועות שנבחרו בעורך"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:418
 #, csharp-format
 msgid "<i>Editing {0} of {1} items</i>"
-msgstr "<i>עורך {0} מתוך {1} פריטים</i>"
+msgstr "<i>נערכים {0} מתוך {1} פריטים</i>"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:698
 #, csharp-format
 msgid "Save the changes made to the open track?"
 msgid_plural "Save the changes made to {0} of {1} open tracks?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "האם לשמור את השינויים שבוצעו ברצועה שנפתחה?"
+msgstr[1] "האם לשמור את השינויים ל־{0} מתוך {1} הרצועות הפתוחות?"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:715
 msgid "Close _without Saving"
-msgstr ""
+msgstr "ל_סגור מבלי לשמור"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.TrackEditor/TrackEditorDialog.cs:752
 #, csharp-format
 msgid "If you don't save, changes from the last {0} will be permanently lost."
-msgstr ""
+msgstr "אם לא תתבצע שמירה, השינויים מ־{0} יאבדו לעד."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:62
 msgid "_View"
-msgstr "_תצוגה"
+msgstr "ת_צוגה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:65
 msgid "_Equalizer"
@@ -3839,7 +3840,7 @@ msgstr "_אקולייזר"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:66
 msgid "View the graphical equalizer"
-msgstr ""
+msgstr "הצגת האקולייזר הגרפי"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:72
 msgid "_Context Pane"
@@ -3847,24 +3848,23 @@ msgstr "_חלונית הקשר"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:73
 msgid "Show the context pane beneath the track list"
-msgstr ""
+msgstr "הצגת חלונית ההקשר מתחת לרשימת הרצועות"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:80
 msgid "_Fullscreen"
-msgstr "_מסך מלא"
+msgstr "מ_סך מלא"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:81
 msgid "Enter or leave fullscreen mode"
 msgstr "כניסה או יציאה ממצב מסך מלא"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:86
-#, fuzzy
 msgid "Show Cover _Art"
-msgstr "_עטיפת האלבום"
+msgstr "הצגת ע_טיפת האלבום"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui/ViewActions.cs:87
 msgid "Toggle display of album cover art"
-msgstr ""
+msgstr "החלפת מצב ההצגה של תמונת עטיפת האלבום"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TaskStatusIcon.cs:92
 msgid "Active Task Running"
@@ -3878,25 +3878,24 @@ msgstr[1] "משימות פעילות רצות"
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:523
 #, csharp-format
 msgid "{0}from{1} {2} {0}published{1} {3}"
-msgstr ""
+msgstr "{0}על ידי{1} {2} {0}פורסם בתאריך{1} {3}"
 
 #. simply: "Chicago Public Radio" or whatever the artist name is
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:536
-#, fuzzy
 msgid "Unknown Stream"
-msgstr "לא ידוע"
+msgstr "תזרים לא ידוע"
 
 #. Translators: {0} and {1} are markup so ignore them, {2} is the name of the radio station
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:539
 #, csharp-format
 msgid "{0}on{1} {2}"
-msgstr ""
+msgstr "{0}בתחנה{1} {2}"
 
 #. Translators: {0} is the "from {album} by {artist}" type string, and {1} is the "on {radio station name}" string
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:542
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} {1}"
-msgstr "{0} ({1}:{2:00})"
+msgstr "{0} {1}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} and {3}
 #. are Artist Name and Album Title, respectively;
@@ -3904,7 +3903,7 @@ msgstr "{0} ({1}:{2:00})"
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/TrackInfoDisplay.cs:578
 #, csharp-format
 msgid "{0}by{1} {2} {0}from{1} {3}"
-msgstr ""
+msgstr "{0}של{1} {2} {0}מהאלבום{1} {3}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Album Title;
 #. e.g. 'from Killing with a Smile'
@@ -3912,7 +3911,7 @@ msgstr ""
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:522
 #, csharp-format
 msgid "{0}from{1} {2}"
-msgstr ""
+msgstr "{0}מהאלבום{1} {2}"
 
 #. Translators: {0} and {1} are for markup so ignore them, {2} is for Artist Name;
 #. e.g. 'by Parkway Drive'
@@ -3920,26 +3919,26 @@ msgstr ""
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:526
 #, csharp-format
 msgid "{0}by{1} {2}"
-msgstr ""
+msgstr "{0}של{1} {2}"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:138
 msgid "Stop Operation"
-msgstr ""
+msgstr "עצירת הפעולה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:139
 #, csharp-format
 msgid "Stop {0}"
-msgstr "עצור את {0}"
+msgstr "עצירת {0}"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:142
 msgid "This operation is still performing work. Would you like to stop it?"
-msgstr ""
+msgstr "פעולה זו עדיין מבצעת עבודה. האם ברצונך לעצור אותה?"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:144
 #, csharp-format
 msgid ""
 "The '{0}' operation is still performing work. Would you like to stop it?"
-msgstr ""
+msgstr "הפעולה '{0}' עדיין מתבצעת. האם ברצונך לעצור אותה?"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:148
 msgid "Continue"
@@ -3948,106 +3947,93 @@ msgstr "המשך"
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:149
 #, csharp-format
 msgid "Continue {0}"
-msgstr "המשך את {0}"
+msgstr "המשך {0}"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Gui.Widgets/UserJobTile.cs:184
 msgid "Stopping..."
-msgstr "עוצר..."
+msgstr "בעצירה..."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:45
 msgid "Import Files to Library"
-msgstr "יבא קבצים לספרייה"
+msgstr "יבוא קבצים לספרייה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:48
 msgid "Media Files"
-msgstr "קבצי מדיה"
+msgstr "קובצי מדיה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:59
 msgid "Local Files"
 msgstr "קבצים מקומיים"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:59
-#, fuzzy
 msgid "Files"
-msgstr "קובץ"
+msgstr "קבצים"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:63
-#, fuzzy
 msgid "C_hoose Files..."
-msgstr "יבא קבצים..."
+msgstr "ב_חירת קבצים..."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:81
-#, fuzzy
 msgid "_Files to import:"
-msgstr "לא ניתן לייבא שיר."
+msgstr "_קבצים ליבוא:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:82
-#, fuzzy
 msgid "Select Files"
-msgstr "בחר הכל"
+msgstr "בחירת קבצים"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FileImportSource.cs:83
-#, fuzzy
 msgid "(none selected)"
-msgstr "נבחר על ידי"
+msgstr "(לא נבחר כלום)"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:43
-#, fuzzy
 msgid "Import Folders to Library"
-msgstr "יבא תיקיה לספרייה"
+msgstr "יבוא תיקיות לספרייה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:53
-#, fuzzy
 msgid "Local Folders"
-msgstr "תיקייה מקומית"
+msgstr "תיקיות מקומיות"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:53
-#, fuzzy
 msgid "Folders"
-msgstr "תיקיית {0}"
+msgstr "תיקיות"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:57
-#, fuzzy
 msgid "C_hoose Folders..."
-msgstr "יבא _תיקייה..."
+msgstr "בח_ירת תיקיות..."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:75
-#, fuzzy
 msgid "_Folders to import:"
-msgstr "לא ניתן לייבא תקליטור"
+msgstr "תי_קיות ליבוא:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/FolderImportSource.cs:76
-#, fuzzy
 msgid "Select Folders"
-msgstr "בטל בחירה"
+msgstr "בחירת תיקיות"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:73
 msgid "<big><b>Import Media to Library</b></big>"
-msgstr "<big><b>ייבוא מוזיקה לספרייה</b></big>"
+msgstr "<big><b>יבוא מדיה לספרייה</b></big>"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:79
 msgid ""
 "Your media library is empty. You may import new music and videos into your "
 "library now, or choose to do so later."
 msgstr ""
-"ספריית המדיה שלך ריקה. באפשרותך לייבא מוזיקה לספרייה שלך עכשיו, אולעשות זאת "
+"ספריית המדיה שלך ריקה. באפשרותך לייבא מוזיקה לספרייה שלך כעת, או לעשות זאת "
 "מאוחר יותר."
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:89
-#, fuzzy
 msgid "Import _from:"
-msgstr "Export Format"
+msgstr "י_בוא מהמיקום:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:99
 msgid "Do not show this dialog again"
-msgstr "אל תציג את החלון הזה שוב"
+msgstr "אין להציג תיבת דו־שיח זו שוב"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Library.Gui/ImportDialog.cs:130
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/ItunesPlayerImportDialogs.cs:82
 #: ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration/RhythmboxPlayerImportSource.cs:384
-#, fuzzy
 msgid "_Import"
-msgstr "יבוא"
+msgstr "י_בוא"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.MediaProfiles.Gui/ProfileComboBox.cs:86
 msgid "No available profiles"
@@ -4060,23 +4046,23 @@ msgstr "מתקדם"
 #: ../src/Core/Banshee.ThickClient/Banshee.MediaProfiles.Gui/ProfileConfigurationDialog.cs:175
 #, csharp-format
 msgid "Configuring {0}"
-msgstr "מגדיר את {0}"
+msgstr "{0} מוגדר"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Playlist.Gui/PlaylistExportDialog.cs:20
 msgid "Export Playlist"
-msgstr "יצא רשימת השמעה"
+msgstr "יצוא רשימת השמעה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Playlist.Gui/PlaylistExportDialog.cs:29
 msgid "Export"
-msgstr "יצא"
+msgstr "יצוא"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Playlist.Gui/PlaylistExportDialog.cs:54
 msgid "Select Format: "
-msgstr ""
+msgstr "בחירת המבנה:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:104
 msgid "Select library location"
-msgstr "בחר מיקום ספרייה"
+msgstr "בחירת מיקום הספרייה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:117
 msgid "Reset"
@@ -4085,14 +4071,14 @@ msgstr "איפוס"
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/DefaultPreferenceWidgets.cs:120
 #, csharp-format
 msgid "Reset location to default ({0})"
-msgstr ""
+msgstr "איפוס המיקום לבררת המחדל ({0})"
 
 #. FIXME this shouldn't be hard-coded to 'Source:', but this is the only
 #. user of this code atm...
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/NotebookPage.cs:76
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:245
 msgid "Source:"
-msgstr ""
+msgstr "מקור:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Preferences.Gui/PreferenceDialog.cs:55
 msgid "Could not show preferences"
@@ -4107,17 +4093,16 @@ msgid "New Smart Playlist"
 msgstr "רשימת השמעה חכמה חדשה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:96
-#, fuzzy
 msgid "Playlist _Name:"
 msgstr "_שם רשימת ההשמעה:"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:108
 msgid "Predefined Smart Playlists"
-msgstr ""
+msgstr "רשימות השמעה חכמות המוגדרות מראש"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:119
 msgid "Open in editor"
-msgstr "פתח בעורך"
+msgstr "פתיחה בעורך"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.SmartPlaylist.Gui/Editor.cs:120
 msgid "Create and save"
@@ -4125,11 +4110,11 @@ msgstr "יצירה ושמירה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/FilteredListSourceContents.cs:110
 msgid "Browser on Left"
-msgstr "דפדפן בצד שמאל"
+msgstr "דפדפן מימין"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/FilteredListSourceContents.cs:111
 msgid "Show the artist/album browser to the left of the track list"
-msgstr ""
+msgstr "הצגת דפדפן האמנים/אלבומים לימין רשימת הרצועות"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/FilteredListSourceContents.cs:114
 msgid "Browser on Top"
@@ -4137,56 +4122,53 @@ msgstr "דפדפן מלמעלה"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/FilteredListSourceContents.cs:115
 msgid "Show the artist/album browser above the track list"
-msgstr ""
+msgstr "הצגת דפדפן האמנים/אלבומים מעל לרשימת הרצועות"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/FilteredListSourceContents.cs:120
 msgid "Show Browser"
-msgstr "הצג דפדפן"
+msgstr "הצגת דפדפן"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Sources.Gui/FilteredListSourceContents.cs:121
 msgid "Show or hide the artist/album browser"
-msgstr ""
+msgstr "הצגה או הסתרה של דפדפן האמן/אלבום"
 
 #: ../src/Core/Banshee.WebBrowser/Banshee.WebSource/WebBrowserShell.cs:121
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "Loading {0}..."
-msgstr "‏{0} בטעינה"
+msgstr "‏{0} בטעינה..."
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/DiscUsageDisplay.cs:189
 msgid ""
 "Insert\n"
 "Disc"
 msgstr ""
-"הכנס\n"
+"להכניס\n"
 "תקליטור"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/SearchEntry.cs:95
-#, fuzzy
 msgid "Clear search"
-msgstr "סד_ר התיקייה"
+msgstr "ניקוי החיפוש"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/SeekSlider.cs:58
-#, fuzzy
 msgid "Seek"
-msgstr "שבועות"
+msgstr "מעבר"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:148
 msgid "Idle"
-msgstr "לא פעיל"
+msgstr "בהמתנה"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:149
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonDownloadManager.cs:58
 msgid "Contacting..."
-msgstr "יוצר קשר..."
+msgstr "נוצר קשר..."
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/StreamPositionLabel.cs:159
 msgid "Buffering"
-msgstr ""
+msgstr "באגירה"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/VolumeButton.cs:96
-#, fuzzy
 msgid "Volume"
-msgstr "ערך"
+msgstr "עצמת השמע"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/VolumeButton.cs:548
 msgid "Muted"
@@ -4194,7 +4176,7 @@ msgstr "מושתק"
 
 #: ../src/Core/Banshee.Widgets/Banshee.Widgets/VolumeButton.cs:550
 msgid "Full Volume"
-msgstr ""
+msgstr "עצמת שמע מלאה"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:102
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:102
@@ -4214,9 +4196,8 @@ msgid "Capacity"
 msgstr "קיבולת"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:109
-#, fuzzy
 msgid "Available"
-msgstr "כבה"
+msgstr "זמין"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:110
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:106
@@ -4242,17 +4223,17 @@ msgstr "תמיכה בתמונות"
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:446
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:491
 msgid "Track duration is zero"
-msgstr ""
+msgstr "משך הרצועה הוא אפס"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:549
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:694
 msgid "Syncing iPod"
-msgstr "מסנכרן iPod"
+msgstr "ה־iPod מסונכרן"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:550
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:695
 msgid "Preparing to synchronize..."
-msgstr "מתכונן לסנכרון..."
+msgstr "בהכנות לסנכרון..."
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:553
 #, fuzzy, csharp-format
@@ -5190,95 +5171,92 @@ msgstr ""
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixActions.cs:50
 msgid "Fix Music Metadata..."
-msgstr ""
+msgstr "תיקון נתוני על של קובצי מוזיקה..."
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:48
-#, fuzzy
 msgid "Metadata Fixer"
-msgstr "מטה-מידע"
+msgstr "מתקן נתוני העל"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:54
 msgid "Problem Type:"
-msgstr ""
+msgstr "סוג התקלה:"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:66
 msgid "Apply Selected Fixes"
-msgstr ""
+msgstr "החלת התיקונים הנבחרים"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:46
-#, fuzzy
 msgid "Duplicate Genres"
-msgstr "שכפול תקליטור"
+msgstr "סגנונות כפולים"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:47
 msgid ""
 "Displayed are genres that should likely be merged.  For each row, click the "
 "desired genre to make it bold, or uncheck it to take no action."
 msgstr ""
+"להלן מופיעים הסגנונות שעדיף למזג ביניהם. עבור כל שורה, יש ללחוץ על הסגנון "
+"המבוקש ולהדגיש אותו, או לבטל את הסימון כדי לא לנקוט בפעולה."
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/GenreDuplicateSolver.cs:77
 msgid " and "
-msgstr ""
+msgstr " וגם "
 
 #. Translators: These are articles that might be prefixed or suffixed
 #. on artist names or album titles.  You can add as many as you need,
 #. separated by a pipe (|)
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/Solver.cs:198
 msgid "a|an|the"
-msgstr ""
+msgstr "ה"
 
 #. Translators: This is the format commonly used in your langauge for
 #. suffixing an article, eg in English: ", The"
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/Solver.cs:202
-#, fuzzy, csharp-format
+#, csharp-format
 msgid ", {0}"
-msgstr "עצור את {0}"
+msgstr ", {0}"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/View.cs:77
 msgid "Fix?"
-msgstr ""
+msgstr "האם לתקן?"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:51
-#, fuzzy
 msgid "View Item Details"
-msgstr "פרטי הפרק"
+msgstr "צפייה בפרטי הפריט"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:60
 msgid "Open Webpage"
-msgstr ""
+msgstr "פתיחת האתר"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:79
 msgid "Visit Archive.org"
-msgstr ""
+msgstr "ביקור ב־Archive.org"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:83
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:64
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastManager/Dialog/PodcastSubscribeDialog.cs:147
 msgid "Subscribe"
-msgstr "הרשם"
+msgstr "הרשמה"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:84
-#, fuzzy
 msgid "Subscribe to this search as a podcast"
-msgstr "הירשם לפודקאסט חדש"
+msgstr "הרשמה לחיפוש זה כפודקאסט"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/Actions.cs:88
 #, csharp-format
 msgid "Internet Archive: {0}"
-msgstr ""
+msgstr "הארכיון המקוון: {0}"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsSource.cs:78
-#, fuzzy
 msgid "Close Item"
-msgstr "סגור"
+msgstr "סגירת הפריט"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsSource.cs:97
 msgid "Getting item details from the Internet Archive"
-msgstr ""
+msgstr "קבלת פרטי הפריט מהארכיון המקוון"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsSource.cs:148
 msgid "Timed out getting item details from the Internet Archive"
-msgstr ""
+msgstr "הזמן המוקצב לקבלת פרטי הפריט מהארכיון המקוון תם"
 
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsSource.cs:149
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchSource.cs:190
