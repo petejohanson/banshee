@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-11 19:26+0200\n"
-"PO-Revision-Date: 2011-01-12 01:09+0300\n"
+"PO-Revision-Date: 2011-01-12 14:49+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "Language: he\n"
@@ -2844,7 +2844,7 @@ msgid "Preamp"
 msgstr "מגבר קדם"
 
 #: ../src/Core/Banshee.ThickClient/Banshee.Equalizer.Gui/EqualizerView.cs:100
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "+{0} dB"
 msgstr "+{0} דציבל"
 
@@ -4236,19 +4236,18 @@ msgid "Preparing to synchronize..."
 msgstr "בהכנות לסנכרון..."
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:553
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "Adding track {0} of {1}"
-msgstr "מוסיף {0} מתוך {1} אל {2}"
+msgstr "נוספת רצועה {0} מתוך {1}"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:589
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "Removing track {0} of {1}"
-msgstr "מייבא {0} מתוך {1}"
+msgstr "מתבצעת הסרה של רצועה {0} מתוך {1}"
 
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:642
-#, fuzzy
 msgid "Writing media database"
-msgstr "שומר מסד נתונים חדש..."
+msgstr "מסד נתוני המדיה נכתב"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:131
 #, csharp-format
@@ -4257,21 +4256,20 @@ msgstr "סנכרון {0}"
 
 #. Note to translators: {0}, {1} and {2} will be replaced with numbers.
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapLibrarySync.cs:260
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} to add, {1} to remove, {2} to update"
-msgstr "{0} להוספה, {1} להסרה"
+msgstr "{0} להוספה, {1} להסרה, {2} לעדכון"
 
 #. This group source gives us a seperator for DAPs in the source view.
 #. We add it when we get our first dap source, and then remove it when
 #. we lose the last one.
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapService.cs:63
-#, fuzzy
 msgid "Devices"
-msgstr "התקן"
+msgstr "התקנים"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:176
 msgid "Device Properties"
-msgstr "מאפייני התקן"
+msgstr "מאפייני ההתקן"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:200
 msgid "Product"
@@ -4298,11 +4296,11 @@ msgid "No"
 msgstr "לא"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:391
-#, fuzzy, csharp-format
+#, csharp-format
 msgid ""
 "The {0} format is not supported by the device, and no converter was found to "
 "convert it"
-msgstr "סוג הקובץ {0} אינו נתמך על ידי ההתקן, ולא נמצא כל ממיר כדי להמיר אותו"
+msgstr "סוג הקובץ {0} אינו נתמך על ידי ההתקן ולא נמצא כל ממיר כדי להמיר אותו"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:397
 msgid "File format conversion support is not available"
@@ -4310,17 +4308,17 @@ msgstr "המרה בין סוגי קבצים אינה זמינה"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSource.cs:423
 msgid "Error converting file"
-msgstr "שגיאה בעת המרת הקובץ"
+msgstr "אירעה שגיאה בעת המרת הקובץ"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:137
 msgid "Sync when first plugged in and when the libraries change"
-msgstr ""
+msgstr "יש לסנכרן בעת החיבור הראשוני וכאשר הספריות משתנות"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:138
 msgid ""
 "Begin synchronizing the device as soon as the device is plugged in or the "
 "libraries change."
-msgstr ""
+msgstr "יש להתחיל ולסנכרן את ההתקן מיד עם חיבור ההתקן או כאשר הספריות משתנות."
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:141
 msgid "Sync Preferences"
@@ -4331,23 +4329,20 @@ msgstr "העדפות הסנכרון"
 #, csharp-format
 msgid "The sync operation will remove one track from your device."
 msgid_plural "The sync operation will remove {0} tracks from your device."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "פעולת הסנכרון תסיר רצועה אחת מההתקן שלך."
+msgstr[1] "פעולת הסנכרון תסיר {0} רצועות מההתקן שלך."
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:369
-#, fuzzy
 msgid "Are you sure you want to continue?"
-msgstr "אתה בטוח שברצונך למחוק לצמיתות את פריט זה?"
+msgstr "האם אכן ברצונך להמשיך?"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/DapSync.cs:377
-#, fuzzy
 msgid "Remove tracks"
-msgstr "רצועה אהובה"
+msgstr "הסרת רצועות"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapActions.cs:52
-#, fuzzy
 msgid "Sync"
-msgstr "סנכרון {0}"
+msgstr "סנכרון"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapInfoBar.cs:68
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:97
@@ -4379,7 +4374,7 @@ msgstr "שם ההתקן"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapPropertiesDialog.cs:99
 msgid "Encode to"
-msgstr ""
+msgstr "הצפנה ל־"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/DapPropertiesDialog.cs:109
 msgid "Capacity used"
@@ -4393,63 +4388,62 @@ msgstr "פרטים מתקדמים"
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:65
 #, csharp-format
 msgid "{0}:"
-msgstr ""
+msgstr "{0}:"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:70
 msgid "Manage manually"
-msgstr ""
+msgstr "ניהול ידני"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:71
 msgid "Sync entire library"
-msgstr ""
+msgstr "סנכרון כל הספרייה"
 
 #. Translators: {0} is the name of a playlist
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:124
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/LibrarySyncOptions.cs:154
 #, csharp-format
 msgid "Sync from “{0}”"
-msgstr ""
+msgstr "סנכרון מ־“{0}”"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap.Gui/PurchasedMusicActions.cs:53
 msgid "Import Purchased Music"
-msgstr "ייבוא מוזיקה שנרכשה"
+msgstr "יבוא מוזיקה שנרכשה"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/RemovableSource.cs:57
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:64
 msgid "Disconnect"
-msgstr "התנתקות"
+msgstr "ניתוק"
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/RemovableSource.cs:108
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "Disconnecting {0}..."
-msgstr "מוציא את {0}..."
+msgstr "{0} מנותק..."
 
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/RemovableSource.cs:115
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "Could not disconnect {0}: {1}"
-msgstr "לא ניתן להוציא {0}: {1}"
+msgstr "לא ניתן לנתק את {0}: {1}"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/DatabaseRebuilder.cs:92
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/DatabaseRebuilder.cs:95
 msgid "Rebuilding Database"
-msgstr "בונה מחדש את מסד הנתונים"
+msgstr "מסד הנתונים נבנה מחדש"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/DatabaseRebuilder.cs:96
 msgid "Scanning iPod..."
-msgstr "סורק iPod..."
+msgstr "ה־iPod נסרק..."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/DatabaseRebuilder.cs:131
 msgid "Processing Tracks..."
-msgstr "מעבד רצועות..."
+msgstr "הרצועות בעיבוד..."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/DatabaseRebuilder.cs:147
-#, fuzzy
 msgid "Ordering Tracks..."
-msgstr "מסדר רצועות..."
+msgstr "הרצועות מסודרות..."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/DatabaseRebuilder.cs:218
 msgid "Saving new database..."
-msgstr "שומר מסד נתונים חדש..."
+msgstr "מסד הנתונים החדש נשמר..."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/DatabaseRebuilder.cs:230
 msgid "Error rebuilding iPod database"
@@ -4465,7 +4459,7 @@ msgstr "נוצר בתאריך"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:108
 msgid "Firmware"
-msgstr "קושחה"
+msgstr "קשחה"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:112
 msgid "Capabilities"
@@ -4481,11 +4475,11 @@ msgstr "נא להסיר כמה שירים ידנית"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:724
 msgid "Updating..."
-msgstr "מעדכן..."
+msgstr "בהליכי עדכון..."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/IpodSource.cs:728
 msgid "Flushing to disk..."
-msgstr ""
+msgstr "מתרוקן לכונן..."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:61
 msgid "Unable to read your iPod"
@@ -4500,10 +4494,16 @@ msgid ""
 "the content in the device (be sure to backup your data first). Using Banshee "
 "and iTunes with the same iPod is not recommended."
 msgstr ""
+"השתמשת ב־iPod זה עם גרסה של iTunes ששומרת גרסה ישנה של מסד נתוני השירים של "
+"ה־iPod שלך ש־Banshee לא מזהה.\n"
+"\n"
+"יש באפשרות Bansלבנות את מסד הנתונים שלך מחדש, אך הגדרותיך עלולות ללכת לאיבוד "
+"לרבות תוכן ההתקן (מוטב לגבות את הנתונים שלך תחילה). השימוש ב־Banshee "
+"וב־iTunes עם אותו ה־iPod אינו מומלץ."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:88
 msgid "Learn more about Banshee's iPod support"
-msgstr ""
+msgstr "למידע נוסף על התמיכה של Banshee ב־iPod"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:96
 msgid ""
@@ -4511,6 +4511,9 @@ msgid ""
 "\n"
 "Banshee can build a new database for you."
 msgstr ""
+"לא ניתן למצוא מסד נתונים של iPod בהתקן זה.\n"
+"\n"
+"יש באפשרות Banshee לבנות מסד נתונים חדש עבורך."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:104
 msgid "What is the reason for this?"
@@ -4518,15 +4521,15 @@ msgstr "מה הסיבה לכך?"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:117
 msgid "Your iPod is mounted read only. Banshee can not restore your iPod."
-msgstr ""
+msgstr "ה־iPod שלך מעוגן לקריאה בלבד. אין באפשרות Banshee לשחזר את ה־iPod שלך."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:125
 msgid "Rebuild iPod Database..."
-msgstr ""
+msgstr "מסד הנתונים של ה־iPod נבנה מחדש..."
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:133
 msgid "Confirm Rebuild iPod Database"
-msgstr ""
+msgstr "אישור בניית מסד הנתונים של ה־iPod מחדש"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:139
 msgid ""
@@ -4535,69 +4538,73 @@ msgid ""
 "\n"
 "Are you sure you want to rebuild your iPod database?"
 msgstr ""
+"בניית מסד הנתונים של ה־iPod שלך מחדש עלולה לארוך זמן מה. כמו כן, כדאי לשים "
+"לב שכל רשימות ההשמעה שב־iPod שלך עלולות ללכת לאיבוד.\n"
+"\n"
+"האם אכן ברצונך לבנות את מסד הנתונים של ה־iPod שלך מחדש?"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:143
 msgid "Rebuild Database"
-msgstr "בנה מחדש מסד נתונים"
+msgstr "מסד הנתונים נבנה מחדש"
 
 #: ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod/UnsupportedDatabaseView.cs:157
 msgid "Rebuilding iPod Database..."
-msgstr ""
+msgstr "מסד הנתונים של iPod נבנה מחדש..."
 
 #: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/AmazonMp3GroupSource.cs:43
 msgid "Purchased Music"
 msgstr "מוזיקה שנרכשה"
 
 #: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/MassStorageDevice.cs:87
-#, fuzzy
 msgid "Rockbox Device"
-msgstr "התקן"
+msgstr "התקן Rockbox"
 
 #: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/MassStorageSource.cs:114
 #, csharp-format
 msgid "Audio Folder"
 msgid_plural "Audio Folders"
-msgstr[0] "Audio Folder"
-msgstr[1] "תיקייה מקומית"
+msgstr[0] "תיקיית מוזיקה"
+msgstr[1] "תיקיות מוזיקה"
 
 #: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/MassStorageSource.cs:121
-#, fuzzy, csharp-format
+#, csharp-format, 
 msgid "Video Folder"
 msgid_plural "Video Folders"
-msgstr[0] "Audio Folder"
-msgstr[1] "תיקייה מקומית"
+msgstr[0] "תיקיית וידאו"
+msgstr[1] "תיקיות וידאו"
 
 #: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/MassStorageSource.cs:127
 msgid "Required Folder Depth"
-msgstr ""
+msgstr "נדרש עומק תיקיות"
 
 #: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/MassStorageSource.cs:130
 msgid "Supports Playlists"
 msgstr "תמיכה ברשימות השמעה"
 
 #: ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage/WebOSDevice.cs:189
-#, fuzzy
 msgid "Ringtones"
-msgstr "דקות"
+msgstr "רינגטונים"
 
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:82
 msgid "Error Initializing MTP Device Support"
-msgstr ""
+msgstr "שגיאה בהפעלת התמיכה בהתקני MTP"
 
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:83
 msgid ""
 "There was an error intializing MTP device support.  See http://www.banshee-"
 "project.org/Guide/DAPs/MTP for more information."
 msgstr ""
+"אירעה שגיאה בהפעלת התמיכה בהתקני MTP. ניתן לעיין בעמוד שבכתובת http://www"
+".banshee-project.org/Guide/DAPs/MTP לפרטים נוספים."
 
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:142
 #: ../src/Hyena/Hyena.Gui/Hyena.Gui.Dialogs/VersionInformationDialog.cs:66
 msgid "Version"
-msgstr "גירסה"
+msgstr "גרסה"
 
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:144
 msgid "Battery level"
-msgstr "עוצמת הסוללה"
+msgstr "עצמת הסוללה"
 
 #. user_event.Progress = (double)current / total;
 #. Translators: {0} is the name of the MTP audio device (eg Gabe's Zen Player), {1} is the
@@ -4605,177 +4612,166 @@ msgstr "עוצמת הסוללה"
 #: ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp/MtpSource.cs:160
 #, csharp-format
 msgid "Loading {0} - {1} of {2}"
-msgstr ""
+msgstr "{0} נטען – {1} מתוך {2}"
 
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonDownloadManager.cs:57
 msgid "Amazon MP3 Purchases"
-msgstr ""
+msgstr "רכישות MP3 מ־Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonMp3DownloaderService.cs:53
 msgid "Amazon MP3s"
-msgstr ""
+msgstr "קובצי MP3 מ־Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/AmazonMp3DownloaderService.cs:54
 msgid "Songs purchased from the Amazon MP3 Store"
-msgstr ""
+msgstr "שירים שנרכשו מחנות ה־MP3 של Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/ImportSource.cs:40
-#, fuzzy
 msgid "Download Amazon MP3 Purchase"
-msgstr "הורדה מושהת"
+msgstr "הורדת רכישות ה־MP3 מ־Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/ImportSource.cs:42
 msgid "Amazon MP3 Files"
-msgstr ""
+msgstr "קובצי MP3 מ־Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/ImportSource.cs:63
 msgid "Amazon MP3 Purchase"
-msgstr ""
+msgstr "רכישת MP3 מ־Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3/ImportSource.cs:67
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:81
-#, fuzzy
 msgid "C_hoose Files"
-msgstr "בחר עמודות"
+msgstr "ב_חירת קבצים"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSource.cs:42
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:39
 msgid "Amazon MP3 Store"
-msgstr ""
+msgstr "חנות MP3 של Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:57
-#, fuzzy
 msgid "Country"
-msgstr "תורמים"
+msgstr "מדינה"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:60
 msgid "Which Amazon MP3 storefront to use by default."
-msgstr ""
+msgstr "באיזו חנות MP3 של Amazon יש להשתמש כבררת מחדל."
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:88
 msgid "Automatic (Geo IP detection)"
-msgstr ""
+msgstr "אוטומטית (זיהוי IP באופן גאוגרפי)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:90
 msgid "France (amazon.fr)"
-msgstr ""
+msgstr "צרפת (amazon.fr)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:91
 msgid "Germany, Switzerland, Austria (amazon.de)"
-msgstr ""
+msgstr "גרמניה, שוויץ, אוסטריה (amazon.de)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:92
 msgid "Japan (amazon.co.jp)"
-msgstr ""
+msgstr "יפן (amazon.co.jp)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:93
 msgid "United Kingdom (amazon.co.uk)"
-msgstr ""
+msgstr "בריטניה (amazon.co.uk)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreSourcePreferences.cs:94
 msgid "United States (amazon.com)"
-msgstr ""
+msgstr "ארצות הברית (amazon.com)"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:43
 #, csharp-format
 msgid "Search the Amazon MP3 Store"
-msgstr ""
+msgstr "חיפוש בחנות ה־MP3 של Amazon"
 
 #: ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store/StoreWebBrowserShell.cs:45
 msgid "How Your Purchases Support GNOME"
-msgstr ""
+msgstr "כיצד הרכישות שלך מסייעות ל־GNOME"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:55
-#, fuzzy
 msgid "Open Book"
-msgstr "פתח מיקום"
+msgstr "פתיחת ספר"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:56
 msgid "Merge Discs..."
-msgstr ""
+msgstr "מיזוג תקליטורים..."
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:61
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:65
-#, fuzzy
 msgid "Resume"
-msgstr "איפוס"
+msgstr "המשך"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:61
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:65
 msgid "Resume playback of this audiobook"
-msgstr ""
+msgstr "המשך השמעת ספר מוקלט זה"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:138
 #, csharp-format
 msgid "Merge the {0} selected discs into one book?"
 msgid_plural "Merge the {0} selected discs into one book?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "האם למזג את התקליטור שנבחר לספר אחד?"
+msgstr[1] "האם למזג את {0} התקליטורים שנבחרו לספר אחד?"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:143
 msgid ""
 "This will ensure the disc numbers are all set properly, and then set the "
 "author and book title for all tracks on all these discs to the values below"
 msgstr ""
+"פעולה זו תוודא שמספרי התקליטורים מוגדרים כראוי ואז יוגדר שם המחבר וכותרת "
+"הספר לכל הרצועות האלה בכל התקליטורים לערכים שלהלן"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:152
-#, fuzzy
 msgid "Author:"
-msgstr "יוצרים:"
+msgstr "מאת:"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/Actions.cs:159
-#, fuzzy
 msgid "Book Title:"
-msgstr "כותרת:"
+msgstr "כותרת הספר:"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:57
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:92
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:87
 msgid "Author"
-msgstr "יוצר"
+msgstr "מאת"
 
 #. Translators: This means the first letter of the author's name
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:63
-#, fuzzy
 msgid "Author Initial"
-msgstr "יוצר"
+msgstr "האות הראשונה בשם המחבר"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookFileNamePattern.cs:68
-#, fuzzy
 msgid "Book Title"
-msgstr "שם הרצועה"
+msgstr "כותרת הספר"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:68
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeView.cs:307
-#, fuzzy
 msgid "Audiobooks"
-msgstr "שמע"
+msgstr "ספרים מוקלטים"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:75
-#, fuzzy
 msgid "Search your audiobooks"
-msgstr "_חפש שירים"
+msgstr "חיפוש בין הספרים המוקלטים שלך"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:145
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "{0} book"
 msgid_plural "{0} books"
-msgstr[0] "לפני {0}"
-msgstr[1] "לפני {0}"
+msgstr[0] "ספר אחד"
+msgstr[1] "{0} ספרים"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/AudiobookLibrarySource.cs:149
-#, fuzzy
 msgid "Audiobooks Folder"
-msgstr "Audio Folder"
+msgstr "תיקיית הספרים המוקלטים"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/BookView.cs:114
 msgid "Resume Playback"
-msgstr ""
+msgstr "המשך ההשמעה"
 
 #: ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook/BookView.cs:120
-#, fuzzy
 msgid "No Bookmark Set"
-msgstr "סימניות"
+msgstr "לא הוגדרה סימנייה"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdDiscModel.cs:76
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:56
@@ -4789,22 +4785,22 @@ msgstr "רצועה {0}"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdRipper.cs:121
 msgid "Importing Audio CD"
-msgstr "מייבא תקליטור שמע"
+msgstr "תקליטור השמע מיובא"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdRipper.cs:122
 msgid "Initializing Drive"
-msgstr ""
+msgstr "הכונן מופעל"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdRipper.cs:124
 #, csharp-format
 msgid ""
 "<i>{0}</i> is still being imported into the music library. Would you like to "
 "stop it?"
-msgstr ""
+msgstr "<i>{0}</i> עדיין מיובא אל ספריית המוזיקה. האם ברצונך לעצור את התהליך?"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdRipper.cs:254
 msgid "Cannot Import CD"
-msgstr ""
+msgstr "לא ניתן לייבא תקליטור"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:233
 msgid "Audio CDs"
@@ -4812,49 +4808,52 @@ msgstr "תקליטורי שמע"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:235
 msgid "Audio CD Importing"
-msgstr ""
+msgstr "יבוא תקליטורי שמע"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:238
-#, fuzzy
 msgid "_Import format"
-msgstr "Export Format"
+msgstr "מב_נה היבוא"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:242
 msgid "_Automatically import audio CDs when inserted"
-msgstr ""
+msgstr "יבוא או_טומטי של תקליטורי שמע בעת הכנסתם"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:243
 msgid ""
 "When an audio CD is inserted, automatically begin importing it if metadata "
 "can be found and it is not already in the library."
 msgstr ""
+"כאשר מוכנס תקליטור שמע, יש לייבא אותו אוטומטית אם ניתן למצוא את נתוני העל "
+"שלו והוא לא נמצא כבר בספרייה."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:247
 msgid "_Eject when done importing"
-msgstr "הוצא בסיום הייבוא"
+msgstr "_שליפה בעת סיום היבוא"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:248
 msgid "When an audio CD has been imported, automatically eject it."
-msgstr ""
+msgstr "כאשר תקליטור השמע יובא, יש לשלוף אותו אוטומטית."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:251
 msgid "Use error correction when importing"
-msgstr ""
+msgstr "שימוש בתיקון שגיאות בעת היבוא"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:252
 msgid ""
 "Error correction tries to work around problem areas on a disc, such as "
 "surface scratches, but will slow down importing substantially."
 msgstr ""
+"התכונה לתיקון שגיאות מנסה לעקוף אזורים בעייתיים בתקליטור, כגון שריטות על פני "
+"התקליטור, אך התכונה גם מאטה את תהליך היבוא בצורה ניכרת."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:320
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:441
 msgid "Import CD"
-msgstr "יבא תקליטור"
+msgstr "יבוא תקליטור"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:321
 msgid "Import this audio CD to the library"
-msgstr ""
+msgstr "יבוא תקליטור שמע זה לספרייה"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:327
 msgid "Duplicate CD"
@@ -4862,20 +4861,19 @@ msgstr "שכפול תקליטור"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdService.cs:328
 msgid "Duplicate this audio CD"
-msgstr "שכפול את תקליטור השמע"
+msgstr "שכפול תקליטור השמע"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:131
 msgid "Searching for track information..."
-msgstr ""
+msgstr "מתבצע חיפוש אחר פרטי הרצועה..."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:164
-#, fuzzy
 msgid "Could not fetch track information"
-msgstr "_ערוך נתוני רצועה"
+msgstr "לא ניתן לשלוף את נתוני הרצועה"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:192
 msgid "Automatic import off since this album is already in the Music Library."
-msgstr ""
+msgstr "היבוא האוטומטי כבוי כיוון שאלבום זה כבר נמצא בספריית המוזיקה."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:215
 msgid "Could not import CD"
@@ -4883,16 +4881,16 @@ msgstr "לא ניתן לייבא תקליטור"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:232
 msgid "Could not duplicate audio CD"
-msgstr ""
+msgstr "לא ניתן לשכפל את תקליטור השמע"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:364
 msgid "Ejecting audio CD..."
-msgstr ""
+msgstr "תקליטור השמע נשלף..."
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:382
 #, csharp-format
 msgid "Could not eject audio CD: {0}"
-msgstr ""
+msgstr "לא ניתן לשלוף את תקליטור השמע: {0}"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:415
 msgid "Audio CD Preferences"
@@ -4900,50 +4898,50 @@ msgstr "העדפות תקליטורי שמע"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:416
 msgid "Eject Disc"
-msgstr "הוצא תקליטור"
+msgstr "שליפת התקליטור"
 
 #: ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd/AudioCdSource.cs:440
 #, csharp-format
 msgid "Import ‟{0}”"
-msgstr "יבא ‟{0}”"
+msgstr "יבוא ‟{0}”"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmDetectJob.cs:64
 msgid "Detecting BPM"
-msgstr ""
+msgstr "ה־BPM מזוהה"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:92
 msgid "D_etect"
-msgstr ""
+msgstr "_זיהוי"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:104
 msgid "T_ap"
-msgstr ""
+msgstr "_נקישה"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:112
 msgid "Have Banshee attempt to auto-detect the BPM of this song"
-msgstr ""
+msgstr "לתת ל־Banshee לנסות לזהות אוטומטית את ה־BPM של השיר הזה"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:114
 msgid "Play this song"
-msgstr "נגן את השיר"
+msgstr "השמעת השיר"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmEntry.cs:117
 msgid "Tap this button to the beat to set the BPM for this song manually"
-msgstr ""
+msgstr "יש להקיש על לחצן זה לפי הקצב כדי להגדיר את ה־BPM עבור שיר זה ידנית"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmService.cs:147
 msgid "_Automatically detect BPM for all songs"
-msgstr ""
+msgstr "זיהוי או_טומטי של BPM עבור כל השירים"
 
 #: ../src/Extensions/Banshee.Bpm/Banshee.Bpm/BpmService.cs:148
 msgid ""
 "Detect beats per minute (BPM) for all songs that don't already have a value "
 "set"
-msgstr ""
+msgstr "זיהוי מספר הפעימות בשנייה (BPM) עבור כל השירים שערכם עדיין לא מוגדר"
 
 #: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtJob.cs:58
 msgid "Downloading Cover Art"
-msgstr "מוריד את עטיפת האלבום"
+msgstr "עטיפת האלבום מתקבלת"
 
 #: ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt/CoverArtJob.cs:128
 #, csharp-format
@@ -4956,15 +4954,15 @@ msgstr "מוזיקה משותפת"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:73
 msgid "Disconnected from music share"
-msgstr ""
+msgstr "נותקת משיתוף המוזיקה"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:74
 msgid "Unable to connect to music share"
-msgstr ""
+msgstr "לא ניתן להתחבר לשיתוף המוזיקה"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:88
 msgid "Back"
-msgstr "אחורה"
+msgstr "חזרה"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:101
 msgid ""
@@ -4975,42 +4973,48 @@ msgid ""
 "an intentional limitation by Apple in iTunes® 7 and we apologize for the "
 "unfortunate inconvenience."
 msgstr ""
+"ב־iTunes® 7 הופיעו תקלות תאימות וכרגע החיבור עובד רק מול לקוחות iTunes® 7 "
+"אחרים.\n"
+"\n"
+"אף לקוח צד־שלישי לא יכול עוד להתחבר לשיתופי מוזיקה של iTunes®‎. הגבלה זו "
+"נוספה בכוונה תחילה על ידי Apple ב־iTunes® 7 ואנו מתנצלים על אי־הנוחות "
+"המצערת."
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:111
 msgid "Common reasons for connection failures:"
-msgstr ""
+msgstr "סיבות אפשרויות לתקלות התחברות:"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:117
 msgid "The provided login credentials are invalid"
-msgstr ""
+msgstr "פרטי הזיהוי לכניסה שגויים"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:118
 msgid "The login process was canceled"
-msgstr ""
+msgstr "תהליך הכניסה בוטל"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:119
 msgid "Too many users are connected to this share"
-msgstr ""
+msgstr "יותר מדי משתמשים מחוברים לשיתוף זה"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:121
 msgid "You are no longer connected to this music share"
-msgstr ""
+msgstr "חיבורך לשיתוף המוזיקה נפסק"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:125
 msgid "Try connecting again"
-msgstr ""
+msgstr "יש לנסות להתחבר שוב"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapErrorView.cs:139
 msgid "The music share is hosted by iTunes® 7"
-msgstr ""
+msgstr "שיתוף המוזיקה מתארח על גבי iTunes®7"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapLoginDialog.cs:47
 msgid "Login to Music Share"
-msgstr "התחבר לשיתוף מוזיקה"
+msgstr "כניסה לשיתוף מוזיקה"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapLoginDialog.cs:80
 msgid "Authentication Required"
-msgstr "הזדהות נדרשת"
+msgstr "נדרשת הזדהות"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapLoginDialog.cs:104
 #: ../src/Libraries/Lastfm.Gui/Lastfm.Gui/AccountLoginForm.cs:54
@@ -5019,7 +5023,7 @@ msgstr "שם משתמש:"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapLoginDialog.cs:112
 msgid "Password:"
-msgstr "סיסמה:"
+msgstr "ססמה:"
 
 #. Translators: this is a verb used as a button label, not a noun
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapLoginDialog.cs:124
@@ -5030,15 +5034,15 @@ msgstr "כניסה"
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:106
 #, csharp-format
 msgid "Connecting to {0}"
-msgstr "מחבר אל {0}"
+msgstr "מתבצעת התחברות אל {0}"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:187
 msgid "Add Remote DAAP Server"
-msgstr ""
+msgstr "הוספת שרת DAAP מרוחק"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapService.cs:188
 msgid "Add a new remote DAAP server"
-msgstr ""
+msgstr "הוספת שרת DAAP מרוחק חדש"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:60
 msgid "Music Share"
@@ -5047,26 +5051,26 @@ msgstr "שיתוף מוזיקה"
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:202
 #, csharp-format
 msgid "Logging in to {0}."
-msgstr ""
+msgstr "מתבצעת כניסה אל {0}."
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:238
 #, csharp-format
 msgid "Loading {0} track"
 msgid_plural "Loading {0} tracks"
-msgstr[0] "טוען רצועה {0}."
-msgstr[1] "טוען {0} רצועות."
+msgstr[0] "נטענת רצועה אחת"
+msgstr[1] "נטענות {0} רצועות"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/DaapSource.cs:270
 msgid "Loading playlists"
-msgstr "טוען רשימות השמעה"
+msgstr "רשימות ההשמעה נטענות"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/OpenRemoteServer.cs:45
 msgid "Open remote DAAP server"
-msgstr ""
+msgstr "פתיחת שרת DAAP מרוחק"
 
 #: ../src/Extensions/Banshee.Daap/Banshee.Daap/OpenRemoteServer.cs:50
 msgid "Enter server IP address and port:"
-msgstr ""
+msgstr "יש להזין את כתובת ה־IP ואת הפתחה של השרת:"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/DownloadManager/DownloadUserJob.cs:46
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:133
@@ -5077,97 +5081,94 @@ msgid "Downloads"
 msgstr "הורדות"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/DownloadManager/DownloadUserJob.cs:50
-#, fuzzy
 msgid "Downloading eMusic Track(s)"
-msgstr "מוריד פודקאסטים"
+msgstr "מתקבלות רצועות של eMusic"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/DownloadManager/DownloadUserJob.cs:51
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/DownloadManager/DownloadUserJob.cs:51
 msgid "Initializing..."
-msgstr "‏מאתחל..."
+msgstr "בהפעלה..."
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/DownloadManager/DownloadUserJob.cs:52
-#, fuzzy
 msgid "Cancel all eMusic downloads?"
-msgstr "לבטל הורדת כל הפודקאסטים?"
+msgstr "האם לבטל את כל הורדות ה־eMusic"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/DownloadManager/DownloadUserJob.cs:120
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/DownloadManager/DownloadUserJob.cs:120
 #, csharp-format
 msgid "Transferring {0} file at {1} KB/s"
 msgid_plural "Transferring {0} of {2} files at {1} KB/s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "קובץ אחד מועבר ב־{1} ק״ב/ש׳"
+msgstr[1] "מועבר קובץ {0} מתוך {2} קבצים ב־{1} ק״ב/ש׳"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/DownloadManager/DownloadUserJob.cs:133
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/DownloadManager/DownloadUserJob.cs:133
 msgid "Canceling Downloads"
-msgstr "מבטל הורדות"
+msgstr "ההורדות מבוטלות"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/DownloadManager/DownloadUserJob.cs:135
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/DownloadManager/DownloadUserJob.cs:135
 msgid "Waiting for downloads to terminate..."
-msgstr ""
+msgstr "בהמתנה להפסקת ההורדות..."
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:59
-#, fuzzy
 msgid "Import eMusic Downloads to Library"
-msgstr "יבא קבצים לספרייה"
+msgstr "יבוא הורדות מ־eMusic לספרייה"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:61
-#, fuzzy
 msgid "eMusic Files"
-msgstr "קבצי מדיה"
+msgstr "קובצי eMusic"
 
 #: ../src/Extensions/Banshee.Emusic/Banshee.Emusic/EmusicImport.cs:77
-#, fuzzy
 msgid "eMusic Tracks"
-msgstr "ספריית מוזיקה"
+msgstr "רצועות eMusic"
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:57
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:58
 msgid "File System Queue"
-msgstr ""
+msgstr "תור מערכת הקבצים"
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:72
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:94
 msgid "Clear"
-msgstr "נקה"
+msgstr "ניקוי"
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:73
 msgid "Remove all tracks from the file system queue"
-msgstr ""
+msgstr "הסרת כל הרצועות מתור מערכת הקבצים"
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:79
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueActions.cs:103
 msgid "Clear on Quit"
-msgstr "נקה וצא"
+msgstr "לנקות ולצאת"
 
 #: ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue/FileSystemQueueSource.cs:80
 msgid "Clear the file system queue when quitting"
-msgstr ""
+msgstr "ניקוי תור מערכת הקבצים בזמן היציאה"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:46
-#, fuzzy
 msgid "Duplicate Albums"
-msgstr "שכפול תקליטור"
+msgstr "אלבומים כפולים"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/AlbumDuplicateSolver.cs:47
 msgid ""
 "Displayed are albums that should likely be merged.  For each row, click the "
 "desired title to make it bold, or uncheck it to take no action."
 msgstr ""
+"להלן מופיעים אלבומים שעדיף למזג ביניהם. עבור כל שורה, יש ללחוץ על האלבום "
+"המבוקש ולהדגיש אותו, או לבטל את הסימון כדי לא לנקוט בפעולה."
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:46
-#, fuzzy
 msgid "Duplicate Artists"
-msgstr "שכפול תקליטור"
+msgstr "אמנים כפולים"
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/ArtistDuplicateSolver.cs:47
 msgid ""
 "Displayed are artists that should likely be merged.  For each row, click the "
 "desired name to make it bold, or uncheck it to take no action."
 msgstr ""
+"להלן מופיעים אמנים שעדיף למזג ביניהם. עבור כל שורה, יש ללחוץ על האמן המבוקש "
+"ולהדגיש אותו, או לבטל את הסימון כדי לא לנקוט בפעולה."
 
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixActions.cs:50
 msgid "Fix Music Metadata..."
