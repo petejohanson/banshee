@@ -18,17 +18,29 @@ NEW AWESOME FEATURES AND ENHANCEMENTS
     Banshee 1.9.2 is a development release, the third of the 1.9.x series
     leading up to Banshee 2.0.
 
-    New Features Since 1.9.1:
-
-      * 
-
     Enhancements:
 
-      * 
+      * Add support for Nexus S and Xperia X10 mini pro
+      * Many improvements and fixes to the F1 user guide
+      * SoundMenu: Implement the proper close/quit behavior
+      * MPRIS: Implement the Playlists interface
+      * Improved write-metadata-to-file performance
 
     Notable Bugs Fixed (33 fixed since 1.9.1):
 
-      * bgo#: 
+      * bgo#637333: MeeGo: Fix NRE at start up
+      * bgo#637350: Fix SimpleTable crash
+      * bgo#636077: Fix Podcasts selection bug w/ DAP plugged in
+      * bgo#637366: SmartPlaylistSource: Fix NRE with "selected by random"
+      * bgo#637365: SmartPlaylistSource: Clear the condition when it's not enabled
+      * bgo#637303: FileChooserDialog: Fix error message on first launch
+      * bgo#637627: FullscreenWindow: Keep fullscreen when showing volume osd
+      * bgo#634652: AppleDevice: Remove invalid tracks before syncing
+      * bgo#638477: X11NotificationArea: Enhance check for RGBA visual
+      * bgo#637991: SourceRowRenderer: Fix vertical alignment calculation
+      * bgo#611796: [Preferences] Have source list use theme icon size
+      * bgo#639044: UnknownTrackInfo: Avoid NRE if URI is null
+      * bgo#639032: LastfmStreaming: Delete the Loved stations from the database
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -127,7 +139,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee.fm/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.9.1
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.9.2
 
 
 ===============================================================================
