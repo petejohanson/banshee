@@ -612,6 +612,9 @@ namespace Banshee.LastfmStreaming.Radio
                     ServiceManager.DbConnection.Execute ("ALTER TABLE LastfmStations ADD PlayCount INTEGER");
                     ServiceManager.DbConnection.Execute ("UPDATE LastfmStations SET PlayCount = 0");
                 }
+
+                // Last.fm has discontinued the Loved station : http://www.last.fm/stationchanges2010
+                ServiceManager.DbConnection.Execute ("DELETE FROM LastfmStations WHERE Type = 'Loved'");
             }
         }
     }
