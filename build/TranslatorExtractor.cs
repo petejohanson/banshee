@@ -115,6 +115,8 @@ public class TranslatorExtractor
             case "el": language_name = "Greek"; break;
             case "gu": language_name = "Gujarati"; break;
             case "pt": language_name = "Portuguese"; break;
+            case "he": language_name = "Hebrew"; break;
+            case "id": language_name = "Indonesian"; break;
             default: break;
         }
         
