@@ -60,7 +60,11 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <ProjectReference Include="..\..\Backends\Banshee.GStreamer\Banshee.GStreamer.csproj">
+    <ProjectReference Include="..\..\Backends\Banshee.GStreamerSharp\Banshee.GStreamerSharp.csproj" Condition="'$(Configuration)' == 'Windows'">
+      <Project>{BA67DA42-F0DA-4D64-BD8B-22F30C727BAB}</Project>
+      <Name>Banshee.GStreamerSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Backends\Banshee.GStreamer\Banshee.GStreamer.csproj" Condition="'$(Configuration)' != 'Windows'">
       <Project>{6171E5DE-5B36-4AE4-8707-F6BEE0AD945B}</Project>
       <Name>Banshee.GStreamer</Name>
     </ProjectReference>
