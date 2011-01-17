@@ -179,6 +179,7 @@ namespace Banshee.GStreamerSharp
         {
             return playbin.GetTextTags (index)
              .GetTag (Gst.Tag.LanguageCode)
+             .Cast<string> ()
              .FirstOrDefault (t => t != null);
         }
 
@@ -251,7 +252,7 @@ namespace Banshee.GStreamerSharp
 
         public override SafeUri SubtitleUri {
             set { playbin.Suburi = value.AbsoluteUri; }
-            get { return new SafeUri(playbin.Suburi); }
+            get { return new SafeUri (playbin.Suburi); }
         }
     }
 }
