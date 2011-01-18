@@ -64,7 +64,6 @@ namespace Banshee.Database
             Execute ("PRAGMA cache_size = ?", cache_size);
             Execute ("PRAGMA synchronous = OFF");
             Execute ("PRAGMA temp_store = MEMORY");
-            Execute ("PRAGMA count_changes = OFF");
 
             // TODO didn't want this on b/c smart playlists used to rely on it, but
             // now they shouldn't b/c we have smart custom functions we use for sorting/searching.
