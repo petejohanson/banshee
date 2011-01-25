@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd ../..
+
+# Find all ThemeIcon PNGs and produce a Windows BAT script
+# to move them into bin/share/banshee-1/icon/hicolor, creating
+# all necessary directories
+find src/ -name *.png | \
+    grep ThemeIcon | \
+    sed 's!/!\\!g' | \
+    sed -r 's!^(.*)ThemeIcons((.*)\\.*\.png)$!000GBmkdir DEST\3\ncopy "\0" DEST\2!' | \
+    sed 's!DEST!bin\\share\\banshee-1\\icons\\hicolor!g' | \
+    sort | uniq | \
+    sed 's!000GB!!' > build/windows/post-build.bat
