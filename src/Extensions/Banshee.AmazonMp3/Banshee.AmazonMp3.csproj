@@ -49,7 +49,10 @@
     <Reference Include="atk-sharp">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="taglib-sharp" />
+    <Reference Include="taglib-sharp">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.AmazonMp3.addin.xml">
