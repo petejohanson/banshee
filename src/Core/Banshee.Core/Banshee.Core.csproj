@@ -33,6 +33,11 @@
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin</OutputPath>
     <DefineConstants>WIN32</DefineConstants>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="..\..\..\build\windows\post-build.bat" workingdir="${SolutionDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Lastfm\Lastfm.csproj">
@@ -71,18 +76,6 @@
     </None>
     <Reference Include="System.Core">
     </Reference>
-    <Reference Include="Mono.Addins">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
-    </Reference>
-    <Reference Include="NDesk.DBus">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
-    </Reference>
-    <Reference Include="taglib-sharp">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\..\Hyena\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
       <Name>Hyena.Data.Sqlite</Name>
@@ -93,6 +86,18 @@
       <Name>Hyena</Name>
       <Private>False</Private>
     </ProjectReference>
+    <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
+    </Reference>
+    <Reference Include="taglib-sharp, Version=2.0.3.7, Culture=neutral, PublicKeyToken=db62eba44689b5b0">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Posix">

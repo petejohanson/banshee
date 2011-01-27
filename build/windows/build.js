@@ -6,6 +6,9 @@ var version = "1.9.3";
 var sh = new ActiveXObject("WScript.Shell");
 var fs = new ActiveXObject("Scripting.FileSystemObject");
 
+// Build Banshee
+//build ("..\\..\\Banshee.sln");
+
 // Copy binaries into a new folder so we can generate a file list w/o .git/* being included
 if (fs.FolderExists ("dlls")) fs.DeleteFolder ("dlls");
 fs.CreateFolder ("dlls");
