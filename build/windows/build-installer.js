@@ -6,6 +6,9 @@ var version = "1.9.3";
 var sh = new ActiveXObject("WScript.Shell");
 var fs = new ActiveXObject("Scripting.FileSystemObject");
 
+// FIXME if heat isn't here, it might be at v3.x\bin
+var heat = "\"C:\\Program Files\\Windows Installer XML v3.5\\bin\\heat.exe\"";
+
 // Build Banshee
 //build ("..\\..\\Banshee.sln");
 
@@ -23,19 +26,20 @@ run ('xcopy /D ..\\..\\bin\\gst-plugins\\* dlls\\gst-plugins\\');
 if (fs.FileExists ("dlls\\Nereid.exe")) fs.DeleteFile ("dlls\\Nereid.exe");
 
 // Generate the list of binary files (managed and native .dlls and .pdb and .config files)
-run ('heat dir dlls -cg binaries -srd -scom -sreg -ag -sfrag -suid -indent 2 -var var.BinDir -dr INSTALLLOCATION -out binaries.wxi');
+run (heat + ' dir dlls -cg binaries -srd -scom -sreg -ag -sfrag -suid -indent 2 -var var.BinDir -dr INSTALLLOCATION -out generated_binaries.wxi');
+if (fs.FolderExists ("dlls")) fs.DeleteFolder ("dlls");
 
 // Heat has no option to output Include (wxi) files instead of Wix (wxs) ones, so do a little regex
-regexreplace ('binaries.wxi', /Wix xmlns/, 'Include xmlns');
-regexreplace ('binaries.wxi', /Wix>/, 'Include>');
+regexreplace ('generated_binaries.wxi', /Wix xmlns/, 'Include xmlns');
+regexreplace ('generated_binaries.wxi', /Wix>/, 'Include>');
 
 // Generate the list of files in share/ (icons, i18n, and GStreamer audio-profiles)
-run ('heat dir ..\\..\\bin\\share -cg share -scom -ag -sfrag -suid -indent 2 -var var.ShareDir -dr INSTALLLOCATION -out share.wxi');
-regexreplace ('share.wxi', /Wix xmlns/, 'Include xmlns');
-regexreplace ('share.wxi', /Wix>/, 'Include>');
+run (heat + ' dir ..\\..\\bin\\share -cg share -scom -ag -sfrag -suid -indent 2 -var var.ShareDir -dr INSTALLLOCATION -out generated_share.wxi');
+regexreplace ('generated_share.wxi', /Wix xmlns/, 'Include xmlns');
+regexreplace ('generated_share.wxi', /Wix>/, 'Include>');
 
 // Create the installer, will be outputted to bin/Debug/
-build ("WixSetup.sln")
+build ("Installer.wixproj")
 
 WScript.Echo ("Setup successfully generated");
 
