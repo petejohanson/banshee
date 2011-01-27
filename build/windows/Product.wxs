@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?define ProductShortName = "Banshee" ?>
+<?define ProductVersion = "1.9.3" ?>
+<?define ProductVersionText = "1.9.3 - PRE-ALPHA" ?>
+<?define Manufacturer = "Novell" ?>
+<?define UpgradeCode = "9134F74C-E7E3-471A-9833-F86FB45CD38E" ?>
+
+<?define BuildRoot= "..\.." ?>
+<?define BinDir= "..\..\bin" ?>
+<?define ShareDir= "..\..\bin\share" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="$(var.ProductShortName) $(var.ProductVersionText)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
+    <Package Id="*" Compressed="yes" Description="$(var.ProductShortName) $(var.ProductVersionText) ($(var.ProductVersion))" InstallerVersion="200" ShortNames="no" Manufacturer="$(var.Manufacturer)" />
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+
+    <!-- Ensure GTK# 2.12.9+ is installed -->
+    <Property Id="GTKSHARPVERSION">
+      <RegistrySearch Id="gsversion" Root="HKLM" Key="SOFTWARE\Novell\GtkSharp\Version" Type="raw" />
+    </Property>
+    <Condition Message="Gtk# version 2.12.9 or greater must be installed.">
+      <![CDATA[GTKSHARPVERSION >= "2.12" OR REMOVE ~= "ALL"]]>
+    </Condition>
+
+    <!-- Ensure .Net 3.5 is installed -->
+    <PropertyRef Id="NETFRAMEWORK35" />
+    <Condition Message="This setup requires the .NET Framework 3.5 to be installed.">
+      Installed OR NETFRAMEWORK35
+    </Condition>
+
+    <!-- Get the GTK# install directory -->
+    <Property Id="GTKSHARPPATH">
+      <RegistrySearch Id="gspath" Root="HKLM" Key="SOFTWARE\Novell\GtkSharp\InstallFolder" Type="raw" />
+    </Property>
+          
+    <!-- Major upgrade -->
+    <Upgrade Id="$(var.UpgradeCode)">
+      <UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes" Property="NEWERVERSIONDETECTED" />
+      <UpgradeVersion Minimum="0.0.0" IncludeMinimum="yes" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
+    </Upgrade>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLLOCATION" Name="Banshee" FileSource="$(var.BuildRoot)\bin">
+          <Component Id="ProductComponent" Guid="38703ED9-C1D1-4DC5-834B-31B8059BF7DF">
+            <File Name="Nereid.exe">
+              <Shortcut Id="banshee_shortcut" Directory="ProgramMenuDir" Name="$(var.ProductShortName)" WorkingDirectory="bin" Icon="Nereid.exe" IconIndex="0" Advertise="yes" />
+            </File>
+
+            <!-- Program Menu Shortcut -->
+            <RemoveFolder Id='ProgramMenuDir' Directory="ProgramMenuDir" On='uninstall' />
+                              
+            <!-- GTK# path -->
+            <RegistryValue Root='HKLM' Key='SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Nereid.exe' Type='string' Name='Path' Value='[GTKSHARPPATH]\bin' />
+
+            <!-- Place Banshee path into registry -->
+            <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Version' Value='$(var.ProductVersion)' />
+            <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Path' Value='[INSTALLLOCATION]' />
+
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="PMenu">
+        <Directory Id="ProgramMenuDir" Name='$(var.ProductShortName)' />
+      </Directory>
+    </Directory>
+
+    <Feature Id="ProductFeature" Title="Banshee" Level="1">
+      <ComponentRef Id="ProductComponent" />
+      <ComponentGroupRef Id="binaries" />
+      <ComponentGroupRef Id="share" />
+    </Feature>
+
+    <!-- Sequences -->
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallValidate" />
+    </InstallExecuteSequence>
+
+    <InstallUISequence>
+    </InstallUISequence>
+
+    <!-- This enables the license screen and where to install screen -->
+    <Property Id="WIXUI_INSTALLDIR">INSTALLLOCATION</Property>
+    <UIRef Id="WixUI_InstallDir"/>
+
+    <!-- Specify the license to display and graphics to use in our GUI -->
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="Bitmaps\bannrbmp.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="Bitmaps\dlgbmp.bmp" />
+
+    <!-- This is for the icon that is shown in the Add/Remove Programs dialog and menu shortcut -->
+    <Icon Id="Nereid.exe" SourceFile="Bitmaps\Banshee.ico" />
+    <Property Id="ARPPRODUCTICON" Value="Nereid.exe" />
+  </Product>
+
+  <?include share.wxi ?>
+  <?include binaries.wxi ?>
+</Wix>
