@@ -59,27 +59,6 @@ namespace Banshee.GStreamer
                 native_log_handler = new BansheeLogHandler (NativeLogHandler);
             }
 
-            // Setup the gst plugins/registry paths if running Windows
-            if (PlatformDetection.IsWindows) {
-                var gst_paths = new string [] {
-                    "gst-plugins"
-                };
-
-                Environment.SetEnvironmentVariable ("GST_PLUGIN_PATH", String.Join (";", gst_paths));
-                Environment.SetEnvironmentVariable ("GST_PLUGIN_SYSTEM_PATH", "");
-                Environment.SetEnvironmentVariable ("GST_DEBUG", "1");
-
-                string registry = "registry.bin";
-                if (!System.IO.File.Exists (registry)) {
-                    System.IO.File.Create (registry).Close ();
-                }
-
-                Environment.SetEnvironmentVariable ("GST_REGISTRY", registry);
-
-                //System.Environment.SetEnvironmentVariable ("GST_REGISTRY_FORK", "no");
-                Log.DebugFormat ("GST_PLUGIN_PATH = {0}", Environment.GetEnvironmentVariable ("GST_PLUGIN_PATH"));
-            }
-
             gstreamer_initialize (debugging, native_log_handler);
 
             var profile_manager = ServiceManager.MediaProfileManager;

@@ -57,6 +57,25 @@ namespace Banshee.GStreamerSharp
         public PlayerEngine ()
         {
             Console.WriteLine ("Gst# PlayerEngine ctor - completely experimental, still a WIP");
+
+            // Setup the gst plugins/registry paths if running Windows
+            if (PlatformDetection.IsWindows) {
+                var gst_paths = new string [] { "gst-plugins" };
+                Environment.SetEnvironmentVariable ("GST_PLUGIN_PATH", String.Join (";", gst_paths));
+                Environment.SetEnvironmentVariable ("GST_PLUGIN_SYSTEM_PATH", "");
+                Environment.SetEnvironmentVariable ("GST_DEBUG", "1");
+
+                string registry = "registry.bin";
+                if (!System.IO.File.Exists (registry)) {
+                    System.IO.File.Create (registry).Close ();
+                }
+
+                Environment.SetEnvironmentVariable ("GST_REGISTRY", registry);
+
+                //System.Environment.SetEnvironmentVariable ("GST_REGISTRY_FORK", "no");
+                Log.DebugFormat ("GST_PLUGIN_PATH = {0}", Environment.GetEnvironmentVariable ("GST_PLUGIN_PATH"));
+            }
+
             Gst.Application.Init ();
             pipeline = new Pipeline ();
             playbin = new PlayBin2 ();
