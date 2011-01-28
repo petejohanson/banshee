@@ -9,15 +9,16 @@
 # Andrés Herrera <andres@usr.cl>, 2008.
 # Benjamín Valero Espinosa <benjavalero@gmail.com>, 2008, 2009, 2010.
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: banshee.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-12-22 21:47+0000\n"
-"PO-Revision-Date: 2010-12-24 15:56+0100\n"
-"Last-Translator: Benjamín Valero Espinosa <benjavalero@gmail.com>\n"
+"POT-Creation-Date: 2011-01-10 21:36+0000\n"
+"PO-Revision-Date: 2011-01-28 10:41+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -928,7 +929,7 @@ msgstr "GStreamer# 0.10"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:91
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:132
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:111
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:112
 msgid "_Close"
 msgstr "_Cerrar"
 
@@ -936,7 +937,7 @@ msgstr "_Cerrar"
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:251
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:79
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:133
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:112
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:113
 msgid "Close"
 msgstr "Cerrar"
 
@@ -6272,8 +6273,8 @@ msgstr "Personal"
 
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationSource.cs:585
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationType.cs:102
-msgid "Loved"
-msgstr "Favoritas"
+msgid "Mix"
+msgstr "Mezclar"
 
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationSource.cs:586
 msgid "Banshee Group"
@@ -6286,12 +6287,9 @@ msgstr "Vecinos"
 
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationType.cs:85
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationType.cs:94
+#: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationType.cs:103
 msgid "For User:"
 msgstr "Para el usuario:"
-
-#: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationType.cs:103
-msgid "By User:"
-msgstr "Por el usuario:"
 
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationType.cs:112
 msgid "Of User:"
@@ -6404,7 +6402,6 @@ msgid "Show notifications when item changes"
 msgstr "Mostrar notificaciones al cambiar de elemento"
 
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:344
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:209
 msgid "Still Running"
 msgstr "Aún en ejecución"
 
@@ -6417,7 +6414,7 @@ msgstr ""
 "finalizar la sesión."
 
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:480
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:340
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:341
 msgid "Skip this item"
 msgstr "Saltar este elemento"
 
@@ -6906,41 +6903,33 @@ msgstr "Dejar que el usuario decida qué episodios descargar"
 msgid "_Speaker:"
 msgstr "_Altavoz:"
 
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:211
-msgid ""
-"Banshee was closed to the sound menu. Use the <i>Quit</i> option to end your "
-"session."
-msgstr ""
-"Banshee se cerró en el menú de sonido. Use la opción <i>Salir</i> para "
-"finalizar la sesión."
-
 #. Translators: {0} and {1} are Artist Name and
 #. Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:257
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:258
 #, csharp-format
 msgid "by '{0}' from '{1}'"
 msgstr "por «{0}» de «{1}»"
 
 #. Translators: {0} is for Album Title;
 #. e.g. 'from Killing with a Smile'
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:262
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:263
 #, csharp-format
 msgid "from '{0}'"
 msgstr "de «{0}»"
 
 #. Translators: {0} is for Artist Name;
 #. e.g. 'by Parkway Drive'
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:267
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:268
 #, csharp-format
 msgid "by '{0}'"
 msgstr "por «{0}»"
 
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:376
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:377
 msgid "_Show Banshee in the sound menu"
 msgstr "_Mostrar Banshee en el menú de sonido"
 
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:377
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:378
 msgid "Control Banshee through the sound menu"
 msgstr "Controlar Banshee a través del menú de sonido"
 
@@ -7274,6 +7263,19 @@ msgstr "Conectado a Last.fm"
 #: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:100
 msgid "Unknown Podcast"
 msgstr "Podcast desconocido"
+
+#~ msgid "Loved"
+#~ msgstr "Favoritas"
+
+#~ msgid "By User:"
+#~ msgstr "Por el usuario:"
+
+#~ msgid ""
+#~ "Banshee was closed to the sound menu. Use the <i>Quit</i> option to end "
+#~ "your session."
+#~ msgstr ""
+#~ "Banshee se cerró en el menú de sonido. Use la opción <i>Salir</i> para "
+#~ "finalizar la sesión."
 
 #~ msgid "Last updated:"
 #~ msgstr "Última actualización:"
