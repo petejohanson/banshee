@@ -114,9 +114,13 @@ namespace Banshee.LibraryWatcher
             lock (watchers) {
                 if (!watchers.ContainsKey (library)) {
                     try {
-                        watchers[library] = new SourceWatcher (library);
-                        Hyena.Log.DebugFormat ("Started LibraryWatcher for {0} ({1})",
-                            library.Name, library.BaseDirectoryWithSeparator);
+                        var dir = library.BaseDirectoryWithSeparator;
+                        if (!Banshee.IO.Directory.Exists (dir)) {
+                            Hyena.Log.DebugFormat ("Skipped LibraryWatcher for {0} ({1})", library.Name, dir);
+                        } else {
+                            watchers[library] = new SourceWatcher (library);
+                            Hyena.Log.DebugFormat ("Started LibraryWatcher for {0} ({1})", library.Name, dir);
+                        }
                     } catch (Exception e) {
                         Hyena.Log.Exception (e);
                     }
