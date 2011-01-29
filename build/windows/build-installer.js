@@ -6,8 +6,10 @@ var version = "1.9.3";
 var sh = new ActiveXObject("WScript.Shell");
 var fs = new ActiveXObject("Scripting.FileSystemObject");
 
+var env = sh.Environment("Process");
+
 // FIXME if heat isn't here, it might be at v3.x\bin
-var heat = "\"C:\\Program Files\\Windows Installer XML v3.5\\bin\\heat.exe\"";
+var heat = "\"" + env("WIX") + "bin\\heat.exe\"";
 
 // Build Banshee
 //build ("..\\..\\Banshee.sln");
