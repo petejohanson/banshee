@@ -29,6 +29,8 @@ using NDesk.DBus;
 
 namespace Banshee.Mpris
 {
+    public delegate void PlaylistChangedHandler (Playlist playlist);
+
     public struct Playlist
     {
         public ObjectPath Id;
@@ -45,6 +47,8 @@ namespace Banshee.Mpris
     [Interface ("org.mpris.MediaPlayer2.Playlists")]
     public interface IPlaylists
     {
+        event PlaylistChangedHandler PlaylistChanged;
+
         uint PlaylistCount { get; }
         string [] Orderings { get; }
         MaybePlaylist ActivePlaylist { get; }

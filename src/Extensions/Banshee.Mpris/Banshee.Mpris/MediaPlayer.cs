@@ -73,6 +73,12 @@ namespace Banshee.Mpris
             remove { dbus_seeked -= value; }
         }
 
+        private event PlaylistChangedHandler playlist_changed;
+        event PlaylistChangedHandler IPlaylists.PlaylistChanged {
+            add { playlist_changed += value; }
+            remove { playlist_changed -= value; }
+        }
+
         public MediaPlayer ()
         {
             playback_service = ServiceManager.PlaybackController;
@@ -452,6 +458,14 @@ namespace Banshee.Mpris
             DBusPlayerSeekedHandler dbus_handler = dbus_seeked;
             if (dbus_handler != null) {
                 dbus_handler (Position);
+            }
+        }
+
+        public void HandlePlaylistChange (AbstractPlaylistSource source)
+        {
+            PlaylistChangedHandler playlist_handler = playlist_changed;
+            if (playlist_handler != null) {
+                playlist_handler (BuildPlaylistFromSource (source));
             }
         }
 

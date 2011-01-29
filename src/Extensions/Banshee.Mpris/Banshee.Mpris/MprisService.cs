@@ -67,6 +67,7 @@ namespace Banshee.Mpris
 
             ServiceManager.SourceManager.SourceAdded += OnSourceCountChanged;
             ServiceManager.SourceManager.SourceRemoved += OnSourceCountChanged;
+            ServiceManager.SourceManager.SourceUpdated += OnSourceUpdated;
             ServiceManager.PlaybackController.SourceChanged += OnPlayingSourceChanged;
 
             player = new MediaPlayer();
@@ -88,6 +89,7 @@ namespace Banshee.Mpris
 
             ServiceManager.SourceManager.SourceAdded -= OnSourceCountChanged;
             ServiceManager.SourceManager.SourceRemoved -= OnSourceCountChanged;
+            ServiceManager.SourceManager.SourceUpdated -= OnSourceUpdated;
             ServiceManager.PlaybackController.SourceChanged -= OnPlayingSourceChanged;
 
             Bus.Session.ReleaseName (bus_name);
@@ -126,6 +128,14 @@ namespace Banshee.Mpris
         {
             if (args.Source is AbstractPlaylistSource) {
                 player.AddPropertyChange (PlaylistProperties.PlaylistCount);
+            }
+        }
+
+        private void OnSourceUpdated (SourceEventArgs args)
+        {
+            var source = args.Source as AbstractPlaylistSource;
+            if (source != null) {
+                player.HandlePlaylistChange (source);
             }
         }
 
