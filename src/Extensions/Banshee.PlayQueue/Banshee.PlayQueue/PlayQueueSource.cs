@@ -246,13 +246,11 @@ namespace Banshee.PlayQueue
             long view_order;
             if (prepend && current_track != null) {
                 // We are going to prepend the track to the play queue, which means
-                // adding it after the current_track. Now find the corresponding view_order.
-                view_order = ServiceManager.DbConnection.Query<long> (@"
-                    SELECT ViewOrder + 1
-                    FROM CorePlaylistEntries
-                    WHERE PlaylistID = ? AND EntryID = ?",
-                    DbId, Convert.ToInt64 (current_track.CacheEntryId)
-                );
+                // adding it after the current_track.
+                view_order = CurrentTrackViewOrder;
+                if (ServiceManager.PlayerEngine.IsPlaying (current_track)) {
+                    view_order++;
+                }
             } else {
                 if (generated) {
                     // view_order will point after the last track in the queue.
