@@ -12,11 +12,9 @@ AC_DEFUN([BANSHEE_CHECK_SOUNDMENU],
 		PKG_CHECK_MODULES(INDICATESHARP,
 			indicate-sharp-0.1 >= $LIBINDICATESHARP_REQUIRED,
 			has_indicatesharp=yes, has_indicatesharp=no)
-		if test "x$has_indicatesharp" = "xno"; then
-			AC_MSG_ERROR([indicate-sharp was not found or is not up to date. Please install indicate-sharp of at least version $LIBINDICATESHARP_REQUIRED, or disable sound menu support by passing --disable-soundmenu])
-		fi
 	fi
 
+	AM_CONDITIONAL(HAVE_INDICATESHARP, test "x$has_indicatesharp" = "xyes")
 	AM_CONDITIONAL(ENABLE_SOUNDMENU, test "x$enable_soundmenu" = "xyes")
 ])
 

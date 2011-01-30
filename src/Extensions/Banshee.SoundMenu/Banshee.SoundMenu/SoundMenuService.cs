@@ -44,8 +44,6 @@ using Banshee.MediaEngine;
 using Banshee.ServiceStack;
 using Banshee.Preferences;
 
-using Indicate;
-
 namespace Banshee.SoundMenu
 {
     public class SoundMenuService : IExtensionService
@@ -58,8 +56,8 @@ namespace Banshee.SoundMenu
         private InterfaceActionService interface_action_service;
         private string notify_last_artist;
         private string notify_last_title;
-        private Server server;
         private uint ui_manager_id;
+        private SoundMenuProxy sound_menu;
 
         private const int icon_size = 42;
 
@@ -126,9 +124,9 @@ namespace Banshee.SoundMenu
             interface_action_service.GlobalActions.UpdateAction ("QuitAction", false);
 
             InstallPreferences ();
-            server = Server.RefDefault ();
+            sound_menu = new SoundMenuProxy ();
             if (Enabled) {
-                Register ();
+                sound_menu.Register ();
             }
 
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
@@ -170,6 +168,7 @@ namespace Banshee.SoundMenu
 
             AddinManager.AddinLoaded -= OnAddinLoaded;
 
+            sound_menu = null;
             elements_service = null;
             interface_action_service = null;
         }
@@ -182,20 +181,6 @@ namespace Banshee.SoundMenu
             }
         }
 
-        public void Register ()
-        {
-            Log.Debug ("Registering with sound indicator");
-            server.SetType ("music.banshee");
-            string desktop_file = Paths.Combine (Paths.InstalledApplicationDataRoot,
-                                                 "applications", "banshee-1.desktop");
-            server.DesktopFile (desktop_file);
-            server.Show ();
-        }
-
-        public void Unregister ()
-        {
-            server.Hide ();
-        }
 
 #region Notifications
         private bool ActionsSupported {
@@ -393,12 +378,11 @@ namespace Banshee.SoundMenu
         public bool Enabled {
             get { return EnabledSchema.Get (); }
             set {
-                EnabledSchema.Set (value);
                 if (value) {
-                    Register ();
+                    sound_menu.Register ();
                     RegisterCloseHandler ();
                 } else {
-                    Unregister ();
+                    sound_menu.Unregister ();
                     UnregisterCloseHandler ();
                 }
             }

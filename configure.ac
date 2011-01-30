@@ -425,7 +425,7 @@ ${PACKAGE}-${VERSION}
     Podcasts:          ${enable_podcast}
     Gapless playback:  ${ENABLE_GAPLESS} (gstreamer-plugins-base > 0.10.25.2)
     YouTube extension: ${enable_youtube} (gdata-sharp >= 1.4)
-    Sound menu:        ${enable_soundmenu} (indicate-sharp >= 0.4.1)
+    Sound menu:        ${enable_soundmenu}
     Ubuntu One Store:  ${enable_ubuntuone} (ubuntuone-sharp)
 
   Build/Development:

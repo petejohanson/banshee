@@ -42,8 +42,6 @@
     </Reference>
     <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
     </Reference>
-    <Reference Include="indicate-sharp, Version=0.4.1.0, Culture=neutral, PublicKeyToken=2e8e49ba7d172cb0">
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.SoundMenu.addin.xml">
@@ -52,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.SoundMenu\SoundMenuService.cs" />
+    <Compile Include="Banshee.SoundMenu\SoundMenuProxy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
