@@ -446,7 +446,11 @@ namespace Banshee.Mpris
             PropertiesChangedHandler handler = properties_changed;
             if (handler != null) {
                 lock (changed_properties) {
-                    handler (interface_name, changed_properties, invalidated_properties.ToArray ());
+                    try {
+                        handler (interface_name, changed_properties, invalidated_properties.ToArray ());
+                    } catch (Exception e) {
+                        Log.Exception (e);
+                    }
                     changed_properties.Clear ();
                     invalidated_properties.Clear ();
                 }
@@ -465,7 +469,11 @@ namespace Banshee.Mpris
         {
             PlaylistChangedHandler playlist_handler = playlist_changed;
             if (playlist_handler != null) {
-                playlist_handler (BuildPlaylistFromSource (source));
+                try {
+                    playlist_handler (BuildPlaylistFromSource (source));
+                } catch (Exception e) {
+                    Log.Exception (e);
+                }
             }
         }
 
