@@ -251,7 +251,7 @@ namespace Banshee.Sources
             }
 
             ClearChildSources ();
-            ServiceManager.SourceManager.RemoveSource (this);
+            Remove ();
         }
 
         protected override void Initialize ()
