@@ -105,7 +105,9 @@ namespace Banshee.NowPlaying
             }
 
             if (width_scale > 0 && width_scale <= 1 && TransientFor != null) {
-                requisition.Width = (int)(TransientFor.Allocation.Width * width_scale);
+                int monitor_num = Screen.GetMonitorAtWindow (TransientFor.GdkWindow);
+                Gdk.Rectangle monitor = Screen.GetMonitorGeometry (monitor_num < 0 ? 0 : monitor_num);
+                requisition.Width = (int)(monitor.Width * width_scale);
             }
         }
 
