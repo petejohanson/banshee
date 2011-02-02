@@ -43,7 +43,9 @@ namespace Banshee.Collection.Gui
         private bool pending_changes;
         private uint timer_id = 0;
 
-        private string source_id, unique_source_id;
+        private string parent_source_ns;
+        private string source_ns;
+
         private Source source;
         public Source Source {
             get { return source; }
@@ -57,12 +59,14 @@ namespace Banshee.Collection.Gui
                 }
 
                 source = value;
-                source_id = unique_source_id = null;
+                source_ns = parent_source_ns = null;
 
                 if (source != null) {
-                    // If we have a parent, use their UniqueId so all children of a parent persist the same columns
-                    source_id = source.ParentConfigurationId;
-                    unique_source_id = source.ConfigurationId;
+                    // If we have a parent, use their UniqueId as a fallback in
+                    // case this source's column settings haven't been changed
+                    // from its parents
+                    parent_source_ns = String.Format ("{0}.{1}.", root_namespace, source.ParentConfigurationId);
+                    source_ns = String.Format ("{0}.{1}.", root_namespace, source.ConfigurationId);
                     Load ();
                 }
             }
@@ -89,10 +93,9 @@ namespace Banshee.Collection.Gui
                 int i = 0;
                 foreach (Column column in this) {
                     if (column.Id != null) {
-                        string @namespace = MakeNamespace (column.Id);
-                        column.Visible = ConfigurationClient.Get<bool> (@namespace, "visible", column.Visible);
-                        column.Width = ConfigurationClient.Get<double> (@namespace, "width", column.Width);
-                        column.OrderHint = ConfigurationClient.Get<int> (@namespace, "order", i);
+                        column.Visible = Get<bool> (column.Id, "visible", column.Visible);
+                        column.Width = Get<double> (column.Id, "width", column.Width);
+                        column.OrderHint = Get<int> (column.Id, "order", i);
                     } else {
                         column.OrderHint = -1;
                     }
@@ -101,8 +104,7 @@ namespace Banshee.Collection.Gui
 
                 Columns.Sort ((a, b) => a.OrderHint.CompareTo (b.OrderHint));
 
-                string sort_ns = String.Format ("{0}.{1}.{2}", root_namespace, unique_source_id, "sort");
-                string sort_column_id = ConfigurationClient.Get<string> (sort_ns, "column", null);
+                string sort_column_id = Get<string> ("sort", "column", null);
                 if (sort_column_id != null) {
                     ISortableColumn sort_column = null;
                     foreach (Column column in this) {
@@ -113,7 +115,7 @@ namespace Banshee.Collection.Gui
                     }
 
                     if (sort_column != null) {
-                        int sort_dir = ConfigurationClient.Get<int> (sort_ns, "direction", 0);
+                        int sort_dir = Get<int> ("sort", "direction", 0);
                         SortType sort_type = sort_dir == 0 ? SortType.None : sort_dir == 1 ? SortType.Ascending : SortType.Descending;
                         sort_column.SortType = sort_type;
                         base.SortColumn = sort_column;
@@ -167,19 +169,48 @@ namespace Banshee.Collection.Gui
                 }
 
                 if (SortColumn != null) {
-                    string ns = String.Format ("{0}.{1}.{2}", root_namespace, unique_source_id, "sort");
-                    ConfigurationClient.Set<string> (ns, "column", SortColumn.Id);
-                    ConfigurationClient.Set<int> (ns, "direction", (int)SortColumn.SortType);
+                    Set<string> ("sort", "column", SortColumn.Id);
+                    Set<int> ("sort", "direction", (int)SortColumn.SortType);
                 }
             }
         }
 
+        private void Set<T> (string ns, string key, T val)
+        {
+            string conf_ns = source_ns + ns;
+            T result;
+
+            if (source_ns != parent_source_ns) {
+                if (!ConfigurationClient.TryGet<T> (conf_ns, key, out result) &&
+                    val != null && val.Equals (ConfigurationClient.Get<T> (parent_source_ns + ns, key, default(T)))) {
+                    conf_ns = null;
+                }
+            }
+
+            if (conf_ns != null) {
+                ConfigurationClient.Set<T> (conf_ns, key, val);
+            }
+        }
+
+        private T Get<T> (string ns, string key, T fallback)
+        {
+            T result;
+            if (ConfigurationClient.TryGet<T> (source_ns + ns, key, out result)) {
+                return result;
+            }
+
+            if (source_ns != parent_source_ns) {
+                return ConfigurationClient.Get<T> (parent_source_ns + ns, key, fallback);
+            }
+
+            return fallback;
+        }
+
         private void Save (Column column, int index)
         {
-            string @namespace = MakeNamespace (column.Id);
-            ConfigurationClient.Set<int> (@namespace, "order", index);
-            ConfigurationClient.Set<bool> (@namespace, "visible", column.Visible);
-            ConfigurationClient.Set<double> (@namespace, "width", column.Width);
+            Set<int> (column.Id, "order", index);
+            Set<bool> (column.Id, "visible", column.Visible);
+            Set<double> (column.Id, "width", column.Width);
         }
 
         protected override void OnWidthsChanged ()
@@ -189,11 +220,6 @@ namespace Banshee.Collection.Gui
             }
 
             base.OnWidthsChanged ();
-        }
-
-        private string MakeNamespace (string name)
-        {
-            return String.Format ("{0}.{1}.{2}", root_namespace, source_id, name);
         }
 
         public override bool EnableColumnMenu {

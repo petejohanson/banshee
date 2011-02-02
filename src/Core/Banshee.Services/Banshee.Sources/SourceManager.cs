@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 
+using Mono.Unix;
 using Mono.Addins;
 
 using Hyena;
@@ -80,9 +81,8 @@ namespace Banshee.Sources
             // things that depend on being loaded before the music library is added.
             //AddSource (music_library = new MusicLibrarySource (), true);
             //AddSource (video_library = new VideoLibrarySource (), false);
-            AddSource (new GroupSource ("Library", 39));
-            AddSource (new GroupSource ("Online Media", 60));
-            //AddSource (new GroupSource ("Devices", 400));
+            AddSource (new GroupSource (Catalog.GetString ("Libraries"), 39));
+            AddSource (new GroupSource (Catalog.GetString ("Online Media"), 60));
         }
 
         internal void LoadExtensionSources ()

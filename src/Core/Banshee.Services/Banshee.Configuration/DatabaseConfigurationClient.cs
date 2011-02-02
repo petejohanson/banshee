@@ -26,7 +26,6 @@
  */
 
 using System;
-using System.Data;
 
 using Hyena.Data.Sqlite;
 
@@ -64,50 +63,25 @@ namespace Banshee.Configuration
                 "UPDATE {0} SET Value=? WHERE Key=?", TableName));
         }
 
-        public T Get <T> (SchemaEntry<T> entry)
-        {
-            return Get (entry.Namespace, entry.Key, entry.DefaultValue);
-        }
-
-        public T Get <T> (SchemaEntry<T> entry, T fallback)
-        {
-            return Get (entry.Namespace, entry.Key, fallback);
-        }
-
-        public T Get <T> (string key, T fallback)
-        {
-            return Get (null, key, fallback);
-        }
-
-        public T Get <T> (string namespce, string key, T fallback)
+        public bool TryGet <T> (string namespce, string key, out T result)
         {
             try {
                 using (IDataReader reader = Get (namespce, key)) {
                     if (reader.Read ()) {
-                        return (T) Convert.ChangeType (reader.GetString (0), typeof (T));
-                    } else {
-                        return fallback;
+                        result = (T) Convert.ChangeType (reader[0], typeof (T));
+                        return true;
                     }
                 }
-            } catch {
-                return fallback;
-            }
+            } catch {}
+
+            result = default (T);
+            return false;
         }
 
         private IDataReader Get (string namespce, string key)
         {
             return connection.Query (select_value_command,
                 Banshee.Configuration.MemoryConfigurationClient.MakeKey (namespce, key));
-        }
-
-        public void Set <T> (SchemaEntry<T> entry, T value)
-        {
-            Set (entry.Namespace, entry.Key, value);
-        }
-
-        public void Set <T> (string key, T value)
-        {
-            Set (null, key, value);
         }
 
         public void Set <T> (string namespce, string key, T value)

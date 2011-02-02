@@ -28,7 +28,6 @@
 //
 
 using System;
-using System.Data;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -209,10 +208,10 @@ namespace Banshee.Playlist
         }
 
         // Have our parent handle deleting tracks
-        public override void DeleteSelectedTracks ()
+        public override void DeleteTracks (DatabaseTrackListModel model, Selection selection)
         {
             if (Parent is PrimarySource) {
-                (Parent as PrimarySource).DeleteSelectedTracksFromChild (this);
+                (Parent as PrimarySource).DeleteTracks (model, selection);
             }
         }
 

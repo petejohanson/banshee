@@ -34,61 +34,67 @@ using Pango;
 
 using Migo.Syndication;
 using Banshee.Base;
+using Banshee.Collection;
 using Banshee.Podcasting.Data;
+using Banshee.Gui.TrackEditor;
+using Banshee.Collection.Gui;
+using Banshee.ServiceStack;
 
 namespace Banshee.Podcasting.Gui
 {
     internal class PodcastFeedPropertiesDialog : Dialog
     {
-        private PodcastSource source;
-        private Feed feed;
-        private SyncPreferenceComboBox new_episode_option_combo;
-        private Entry name_entry;
+        PodcastSource source;
+        Feed feed;
+        Entry name_entry;
+
+        Frame header_image_frame;
+        Image header_image;
+        FakeTrackInfo fake_track = new FakeTrackInfo ();
+
+        CheckButton subscribed_check, download_check, archive_check;
+
+        private VBox main_box;
 
         public PodcastFeedPropertiesDialog (PodcastSource source, Feed feed)
         {
             this.source = source;
             this.feed = feed;
+            fake_track.Feed = feed;
 
             Title = feed.Title;
+            HasSeparator = false;
+            BorderWidth = 12;
+            WidthRequest = 525;
             //IconThemeUtils.SetWindowIcon (this);
 
             BuildWindow ();
+
+            DefaultResponse = Gtk.ResponseType.Cancel;
+            ActionArea.Layout = Gtk.ButtonBoxStyle.End;
+
+            Response += OnResponse;
+
+            ShowAll ();
+        }
+
+
+        private FeedAutoDownload DownloadPref {
+            get { return download_check.Active ? FeedAutoDownload.All : FeedAutoDownload.None; }
+            set { download_check.Active = value != FeedAutoDownload.None; }
+        }
+
+        private int MaxItemCount {
+            get { return archive_check.Active ? 1 : 0; }
+            set { archive_check.Active = value > 0; }
         }
 
         private void BuildWindow()
         {
-            BorderWidth = 6;
             VBox.Spacing = 12;
-            HasSeparator = false;
+            main_box = VBox;
 
-            HBox box = new HBox();
-            box.BorderWidth = 6;
-            box.Spacing = 12;
-
-            Button save_button = new Button("gtk-save");
-            save_button.CanDefault = true;
-            save_button.Show();
-
-            // For later additions to the dialog.  (I.E. Feed art)
-            HBox content_box = new HBox();
-            content_box.Spacing = 12;
-
-            Table table = new Table (2, 4, false);
-            table.RowSpacing = 6;
-            table.ColumnSpacing = 12;
-
-            Label description_label = new Label (Catalog.GetString ("Description:"));
-            description_label.SetAlignment (0f, 0f);
-            description_label.Justify = Justification.Left;
-
-            Label last_updated_label = new Label (Catalog.GetString ("Last updated:"));
-            last_updated_label.SetAlignment (0f, 0f);
-            last_updated_label.Justify = Justification.Left;
-
-            Label name_label = new Label (Catalog.GetString ("Podcast Name:"));
-            name_label.SetAlignment (0f, 0f);
-            name_label.Justify = Justification.Left;
+            var save_button = new Button ("gtk-save") { CanDefault = true };
 
             name_entry = new Entry ();
             name_entry.Text = feed.Title;
@@ -96,130 +102,130 @@ namespace Banshee.Podcasting.Gui
                 save_button.Sensitive = !String.IsNullOrEmpty (name_entry.Text);
             };
 
-            Label feed_url_label = new Label (Catalog.GetString ("URL:"));
-            feed_url_label.SetAlignment (0f, 0f);
-            feed_url_label.Justify = Justification.Left;
+            subscribed_check = new CheckButton (Catalog.GetString ("Check periodically for new episodes")) {
+                TooltipText = Catalog.GetString ("If checked, Banshee will check every hour to see if this podcast has new episodes")
+            };
 
-            Label new_episode_option_label = new Label (Catalog.GetString ("When feed is updated:"));
-            new_episode_option_label.SetAlignment (0f, 0.5f);
-            new_episode_option_label.Justify = Justification.Left;
+            download_check = new CheckButton (Catalog.GetString ("Download new episodes"));
+            DownloadPref = feed.AutoDownload;
 
-            Label last_updated_text = new Label (feed.LastDownloadTime.ToString ("f"));
-            last_updated_text.Justify = Justification.Left;
-            last_updated_text.SetAlignment (0f, 0f);
+            archive_check = new CheckButton (Catalog.GetString ("Archive all episodes except the newest one"));
+            MaxItemCount = (int)feed.MaxItemCount;
 
-            Label feed_url_text = new Label (feed.Url.ToString ());
-            feed_url_text.Wrap = false;
-            feed_url_text.Selectable = true;
-            feed_url_text.SetAlignment (0f, 0f);
-            feed_url_text.Justify = Justification.Left;
-            feed_url_text.Ellipsize = Pango.EllipsizeMode.End;
+            subscribed_check.Toggled += delegate {
+                download_check.Sensitive = archive_check.Sensitive = subscribed_check.Active;
+            };
+            subscribed_check.Active = feed.IsSubscribed;
+            download_check.Sensitive = archive_check.Sensitive = subscribed_check.Active;
+
+            var last_updated_text = new Label (feed.LastDownloadTime.ToString ("f")) {
+                Justify = Justification.Left,
+                Xalign = 0f
+            };
+
+            var feed_url_text = new Label (feed.Url.ToString ()) {
+                Wrap = false,
+                Selectable = true,
+                Xalign = 0f,
+                Justify = Justification.Left,
+                Ellipsize = Pango.EllipsizeMode.End
+            };
 
             string description_string = String.IsNullOrEmpty (feed.Description) ?
                                         Catalog.GetString ("No description available") :
                                         feed.Description;
 
-            Label descrition_text = new Label (description_string);
-            descrition_text.Justify = Justification.Left;
-            descrition_text.SetAlignment (0f, 0f);
-            descrition_text.Wrap = true;
-            descrition_text.Selectable = true;
+            var header_box = new HBox () { Spacing = 6 };
 
-            Viewport description_viewport = new Viewport();
-            description_viewport.SetSizeRequest(-1, 150);
-            description_viewport.ShadowType = ShadowType.None;
-
-            ScrolledWindow description_scroller = new ScrolledWindow ();
-            description_scroller.HscrollbarPolicy = PolicyType.Never;
-            description_scroller.VscrollbarPolicy = PolicyType.Automatic;
-
-            description_viewport.Add (descrition_text);
-            description_scroller.Add (description_viewport);
-
-            new_episode_option_combo = new SyncPreferenceComboBox (feed.AutoDownload);
-
-            // First column
-            uint i = 0;
-            table.Attach (
-                name_label, 0, 1, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
+            header_image_frame = new Frame ();
+            header_image = new Image ();
+            LoadCoverArt (fake_track);
+            header_image_frame.Add (
+                CoverArtEditor.For (header_image,
+                    (x, y) => true,
+                    () => fake_track,
+                    () => LoadCoverArt (fake_track)
+                )
             );
+            header_box.PackStart (header_image_frame, false, false, 0);
 
-            table.Attach (
-                feed_url_label, 0, 1, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
-            );
+            var table = new Hyena.Widgets.SimpleTable<int> ();
+            table.XOptions[0] = AttachOptions.Fill;
+            table.XOptions[1] = AttachOptions.Expand | AttachOptions.Fill;
+            table.AddRow (0, HeaderLabel (Catalog.GetString ("Name:")), name_entry);
+            table.AddRow (1, HeaderLabel (Catalog.GetString ("Website:")),
+                new Gtk.Alignment (0f, 0f, 0f, 0f) {
+                    Child = new LinkButton (feed.Link, Catalog.GetString ("Visit")) {
+                        Image = new Gtk.Image (Gtk.Stock.JumpTo, Gtk.IconSize.Button)
+                    }
+            });
+            header_box.PackStart (table, true, true, 0);
 
-            table.Attach (
-                last_updated_label, 0, 1, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
-            );
+            main_box.PackStart (header_box, false, false, 0);
 
-            table.Attach (
-                new_episode_option_label, 0, 1, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
-            );
+            Add (Catalog.GetString ("Subscription Options"), subscribed_check, download_check, archive_check);
 
-            table.Attach (
-                description_label, 0, 1, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
-            );
+            var details = new Banshee.Gui.TrackEditor.StatisticsPage ();
+            details.AddItem (Catalog.GetString ("Feed URL:"), feed_url_text.Text);
+            details.AddItem (Catalog.GetString ("Last Refreshed:"), last_updated_text.Text);
+            details.AddItem (Catalog.GetString ("Description:"), description_string, true);
+            details.AddItem (Catalog.GetString ("Category:"), feed.Category);
+            details.AddItem (Catalog.GetString ("Keywords:"), feed.Keywords);
+            details.AddItem (Catalog.GetString ("Copyright:"), feed.Copyright);
+            details.HeightRequest = 120;
+            Add (true, Catalog.GetString ("Details"), details);
 
-            // Second column
-            i = 0;
-            table.Attach (
-                name_entry, 1, 2, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
-            );
-
-            table.Attach (
-                feed_url_text, 1, 2, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
-            );
-
-            table.Attach (
-                last_updated_text, 1, 2, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
-            );
-
-            table.Attach (
-                new_episode_option_combo, 1, 2, i, ++i,
-                AttachOptions.Fill, AttachOptions.Fill, 0, 0
-            );
-
-            table.Attach (description_scroller, 1, 2, i, ++i,
-                          AttachOptions.Expand | AttachOptions.Fill,
-                          AttachOptions.Expand | AttachOptions.Fill, 0, 0
-                         );
-
-            content_box.PackStart (table, true, true, 0);
-            box.PackStart (content_box, true, true, 0);
-
-            Button cancel_button = new Button("gtk-cancel");
-            cancel_button.CanDefault = true;
-            cancel_button.Show();
-
-            AddActionWidget (cancel_button, ResponseType.Cancel);
+            AddActionWidget (new Button ("gtk-cancel") { CanDefault = true }, ResponseType.Cancel);
             AddActionWidget (save_button, ResponseType.Ok);
+        }
 
-            DefaultResponse = Gtk.ResponseType.Cancel;
-            ActionArea.Layout = Gtk.ButtonBoxStyle.End;
+        private void Add (string header_txt, params Widget [] widgets)
+        {
+            Add (false, header_txt, widgets);
+        }
 
-            box.ShowAll ();
-            VBox.Add (box);
+        private Label HeaderLabel (string str)
+        {
+            return new Label () {
+                Markup = String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (str)),
+                Xalign = 0f
+            };
+        }
 
-            Response += OnResponse;
+        private void Add (bool filled, string header_txt, params Widget [] widgets)
+        {
+            var vbox = new VBox () { Spacing = 3 };
+
+            vbox.PackStart (HeaderLabel (header_txt), false, false, 0);
+
+            foreach (var child in widgets) {
+                var align = new Gtk.Alignment (0, 0, 1, 1) { LeftPadding = 12, Child = child };
+                vbox.PackStart (align, filled, filled, 0);
+            }
+
+            main_box.PackStart (vbox, filled, filled, 0);
         }
 
         private void OnResponse (object sender, ResponseArgs args)
         {
             if (args.ResponseId == Gtk.ResponseType.Ok) {
-                FeedAutoDownload new_sync_pref = new_episode_option_combo.ActiveSyncPreference;
-
                 bool changed = false;
-                if (feed.AutoDownload != new_sync_pref) {
-                    feed.AutoDownload = new_sync_pref;
+
+                if (feed.IsSubscribed != subscribed_check.Active) {
+                    feed.IsSubscribed = subscribed_check.Active;
                     changed = true;
+                }
+
+                if (feed.IsSubscribed) {
+                    if (feed.AutoDownload != DownloadPref) {
+                        feed.AutoDownload = DownloadPref;
+                        changed = true;
+                    }
+
+                    if (feed.MaxItemCount != MaxItemCount) {
+                        feed.MaxItemCount = MaxItemCount;
+                        changed = true;
+                    }
                 }
 
                 if (feed.Title != name_entry.Text) {
@@ -235,6 +241,43 @@ namespace Banshee.Podcasting.Gui
 
             (sender as Dialog).Response -= OnResponse;
             (sender as Dialog).Destroy();
+        }
+
+        void LoadCoverArt (TrackInfo current_track)
+        {
+            if (current_track == null || current_track.ArtworkId == null) {
+                SetDefaultCoverArt ();
+                return;
+            }
+
+            var artwork = ServiceManager.Get<ArtworkManager> ();
+            var cover_art = artwork.LookupScalePixbuf (current_track.ArtworkId, 64);
+
+            header_image.Clear ();
+            header_image.Pixbuf = cover_art;
+
+            if (cover_art == null) {
+                SetDefaultCoverArt ();
+            } else {
+                header_image_frame.ShadowType = ShadowType.In;
+                header_image.QueueDraw ();
+            }
+        }
+
+        void SetDefaultCoverArt ()
+        {
+            header_image.IconName = "podcast";
+            header_image.PixelSize = 64;
+            header_image_frame.ShadowType = ShadowType.In;
+            header_image.QueueDraw ();
+        }
+
+        class FakeTrackInfo : TrackInfo
+        {
+            public Feed Feed { get; set; }
+            public override string ArtworkId {
+                get { return Feed == null ? null : PodcastService.ArtworkIdFor (Feed); }
+            }
         }
     }
 }

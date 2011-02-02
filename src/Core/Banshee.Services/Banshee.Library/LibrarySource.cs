@@ -56,13 +56,12 @@ namespace Banshee.Library
         {
             Properties.SetString ("GtkActionPath", "/LibraryContextMenu");
             Properties.SetString ("RemoveTracksActionLabel", Catalog.GetString ("Remove From Library"));
+            Properties.Set<bool> ("SourceView.HideCount", true);
             IsLocal = true;
             base_dir_schema = CreateSchema<string> ("library-location", null, "The base directory under which files for this library are stored", null);
             AfterInitialized ();
 
-            Section library_section = PreferencesPage.Add (new Section ("library-location",
-                // Translators: {0} is the library name, eg 'Music Library' or 'Podcasts'
-                String.Format (Catalog.GetString ("{0} Folder"), Name), 2));
+            Section library_section = PreferencesPage.Add (new Section ("library-location", SectionName, 2));
 
             library_section.Add (base_dir_schema);
         }
@@ -115,6 +114,13 @@ namespace Banshee.Library
 
         public override bool Indexable {
             get { return true; }
+        }
+
+        protected virtual string SectionName {
+            get {
+                // Translators: {0} is the library name, eg 'Music Library' or 'Podcasts'
+                return String.Format (Catalog.GetString ("{0} Folder"), Name);
+            }
         }
 
         /*public override void CopyTrackTo (DatabaseTrackInfo track, SafeUri uri, UserJob job)

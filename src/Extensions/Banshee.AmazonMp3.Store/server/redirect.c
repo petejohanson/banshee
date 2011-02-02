@@ -82,7 +82,8 @@ main (gint argc, gchar **argv)
     } else if (strcmp (country, "FR") == 0) {
         domain = "fr";
         affiliate_code = "banshee-fr-21";
-    } else if (strcmp (country, "UK") == 0) {
+    } else if (strcmp (country, "UK") == 0 ||
+        strcmp (country, "GB") == 0) {
         domain = "co.uk";
         affiliate_code = "banshee-uk-21";
     } else if (strcmp (country, "DE") == 0 ||

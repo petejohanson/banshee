@@ -281,12 +281,12 @@ namespace Banshee.MediaEngine
 
         public void Open (SafeUri uri)
         {
-            OpenCheck (uri);
+            Open (new UnknownTrackInfo (uri));
         }
 
         void IPlayerEngineService.Open (string uri)
         {
-            OpenCheck (new SafeUri (uri));
+            Open (new SafeUri (uri));
         }
 
         public void SetNextTrack (TrackInfo track)
@@ -341,18 +341,13 @@ namespace Banshee.MediaEngine
             }
 
             try {
-                OpenCheck (track, true);
+                OpenCheck (track, play);
             } catch (Exception e) {
                 Log.Exception (e);
                 Log.Error (Catalog.GetString ("Problem with Player Engine"), e.Message, true);
                 Close ();
                 ActiveEngine = default_engine;
             }
-        }
-
-        private void OpenCheck (object o)
-        {
-            OpenCheck (o, false);
         }
 
         private void OpenCheck (object o, bool play)
@@ -455,7 +450,6 @@ namespace Banshee.MediaEngine
         public void Close (bool fullShutdown)
         {
             IncrementLastPlayed ();
-            active_engine.Reset ();
             active_engine.Close (fullShutdown);
         }
 
@@ -540,6 +534,11 @@ namespace Banshee.MediaEngine
                 CurrentState == PlayerState.Contacting;
         }
 
+        public string GetSubtitleDescription (int index)
+        {
+            return active_engine.GetSubtitleDescription (index);
+        }
+
         private void CheckPending ()
         {
             if (pending_engine != null && pending_engine != active_engine) {
@@ -553,7 +552,9 @@ namespace Banshee.MediaEngine
         }
 
         public TrackInfo CurrentTrack {
-            get { return active_engine.CurrentTrack ?? synthesized_contacting_track; }
+            get {
+                return active_engine.CurrentTrack ?? synthesized_contacting_track;
+            }
         }
 
         private Dictionary<string, object> dbus_sucks;
@@ -628,6 +629,19 @@ namespace Banshee.MediaEngine
 
         public bool SupportsEqualizer {
             get { return ((active_engine is IEqualizer) && active_engine.SupportsEqualizer); }
+        }
+
+        public int SubtitleCount {
+            get { return active_engine.SubtitleCount; }
+        }
+
+        public int SubtitleIndex {
+            set { active_engine.SubtitleIndex = value; }
+        }
+
+        public SafeUri SubtitleUri {
+            set { active_engine.SubtitleUri = value; }
+            get { return active_engine.SubtitleUri; }
         }
 
         public VideoDisplayContextType VideoDisplayContextType {
@@ -785,7 +799,11 @@ namespace Banshee.MediaEngine
                 LinkedListNode<PlayerEventHandlerSlot> node = event_handlers.First;
                 while (node != null) {
                     if ((node.Value.EventMask & args.Event) == args.Event) {
-                        node.Value.Handler (args);
+                        try {
+                            node.Value.Handler (args);
+                        } catch (Exception e) {
+                            Log.Exception (String.Format ("Error running PlayerEngine handler for {0}", args.Event), e);
+                        }
                     }
                     node = node.Next;
                 }

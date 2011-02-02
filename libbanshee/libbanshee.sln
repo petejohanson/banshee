@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C++ Express 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libbanshee", "libbanshee.vcproj", "{8045CB14-6CFB-4CBE-9A09-77FAD23B8F83}"
+# Visual Studio 2008
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libbanshee", "libbanshee.cproj", "{6B781836-AB65-49EF-BECD-CCC193C5D589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,17 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B781836-AB65-49EF-BECD-CCC193C5D589}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{6B781836-AB65-49EF-BECD-CCC193C5D589}.Debug|Win32.Build.0 = Debug|Any CPU
+		{6B781836-AB65-49EF-BECD-CCC193C5D589}.Release|Win32.ActiveCfg = Debug|Any CPU
+		{6B781836-AB65-49EF-BECD-CCC193C5D589}.Release|Win32.Build.0 = Debug|Any CPU
 		{8045CB14-6CFB-4CBE-9A09-77FAD23B8F83}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8045CB14-6CFB-4CBE-9A09-77FAD23B8F83}.Debug|Win32.Build.0 = Debug|Win32
 		{8045CB14-6CFB-4CBE-9A09-77FAD23B8F83}.Release|Win32.ActiveCfg = Release|Win32
 		{8045CB14-6CFB-4CBE-9A09-77FAD23B8F83}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = libbanshee.cproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,11 @@
     <popup name="TrackContextMenu" action="TrackContextMenuAction">
         <placeholder name="AboveAddToPlaylist">
             <menuitem name="AddToPlayQueue" action="AddToPlayQueueAction"></menuitem>
+            <menu name="AddToPlayQueueAfterMenu" action="AddToPlayQueueAfterAction">
+            	<menuitem name="AddToPlayQueueAfterCurrentTrack" action="AddToPlayQueueAfterCurrentTrackAction"></menuitem>
+            	<menuitem name="AddToPlayQueueAfterCurrentAlbum" action="AddToPlayQueueAfterCurrentAlbumAction"></menuitem>
+            	<menuitem name="AddToPlayQueueAfterCurrentArtist" action="AddToPlayQueueAfterCurrentArtistAction"></menuitem>
+            </menu>
         </placeholder>
     </popup>
 </ui>

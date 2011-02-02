@@ -61,6 +61,9 @@ check-bootstrap-env:
 run: check-bootstrap-env $(MO_FILES)
 	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS))
 
+run-profiled: check-bootstrap-env $(MO_FILES)
+	(cd bin; LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):/usr/local/lib $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) --profile=log:time=fast,calls,noalloc,maxframes=5 Nereid.exe --uninstalled $(BANSHEE_DEV_OPTIONS))
+
 run-logged: check-bootstrap-env $(MO_FILES)
 	(cd bin; $(MONO) --debug $(BANSHEE_DEV_MONO_OPTIONS) Nereid.exe --debug --uninstalled $(BANSHEE_DEV_OPTIONS) | tee last-run-log)
 
@@ -72,7 +75,7 @@ run-perf: run-logged
 
 run-trace: $(MO_FILES)
 	(cd bin; $(MONO) \
-		--trace=$$(find . -name "*dll" | sed 's/\.\///' | sed 's/\.dll//' | sed 's/Mono.Data.Sqlite//' | sort | tr "\n" , | sed 's/,$$//') \
+		--trace=$$(find . -name "*dll" | sed 's/\.\///' | sed 's/\.dll//' | sort | tr "\n" , | sed 's/,$$//') \
 		Nereid.exe --uninstalled $(BANSHEE_DEV_OPTIONS) > ../banshee.trace)
 
 run-profile-heap: $(MO_FILES)

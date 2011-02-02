@@ -33,6 +33,9 @@ using System.Linq;
 using Mono.Unix;
 using Gtk;
 
+using Hyena;
+using Banshee.Base;
+using Banshee.ServiceStack;
 using IA=InternetArchive;
 
 namespace Banshee.InternetArchive
@@ -75,7 +78,19 @@ namespace Banshee.InternetArchive
             AddImportant (
                 new ActionEntry ("VisitInternetArchive", Stock.JumpTo, Catalog.GetString ("Visit Archive.org"), null, null, (o, a) => {
                     Banshee.Web.Browser.Open ("http://archive.org");
-                })
+                }),
+                new ActionEntry ("SubscribeToIASearch", Stock.Add,
+                    Catalog.GetString ("Subscribe"), null,
+                    Catalog.GetString ("Subscribe to this search as a podcast"), (o, a) => {
+                        var desc = source.SearchSource.SearchDescription;
+                        var podcast = new Hyena.Json.JsonObject ();
+                        podcast["uri"] = source.SearchSource.Search.RssUrl;
+                        podcast["name"] = String.Format (Catalog.GetString ("Internet Archive: {0}"), desc.Name ?? desc.Query);
+                        Log.DebugFormat ("InternetArchive: subscribing to search: {0} ({1})", podcast["name"], podcast["uri"]);
+
+                        ServiceManager.Get<DBusCommandService> ().PushArgument ("podcast", podcast.ToString ());
+                    }
+                )
             );
 
             AddUiFromFile ("GlobalUI.xml");

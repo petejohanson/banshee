@@ -124,8 +124,16 @@ namespace Banshee.NowPlaying
             Gdk.Screen screen = Screen;
             int monitor = screen.GetMonitorAtWindow (parent.GdkWindow);
             Gdk.Rectangle bounds = screen.GetMonitorGeometry (monitor);
-            Move (bounds.X, 0);
-            SetDefaultSize (bounds.Width, bounds.Height);
+            Move (bounds.X, bounds.Y);
+            Resize (bounds.Width, bounds.Height);
+
+            if (controls != null) {
+                int width, height;
+                controls.GetSize(out width, out height);
+                if (width > bounds.Width) {
+                    controls.Resize(bounds.Width, height);
+                }
+            }
         }
 
         protected override void OnRealized ()
@@ -182,7 +190,6 @@ namespace Banshee.NowPlaying
             if (parent.IsActive) {
                 parent.GdkWindow.SkipPagerHint = false;
                 parent.GdkWindow.SkipTaskbarHint = false;
-                Hide ();
                 parent.RemoveNotification ("is-active", ParentActiveNotification);
             } else {
                 parent.GdkWindow.SkipPagerHint = true;

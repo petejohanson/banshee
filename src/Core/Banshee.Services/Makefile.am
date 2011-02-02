@@ -80,7 +80,6 @@ SOURCES =  \
 	Banshee.Hardware/UsbPortInfo.cs \
 	Banshee.Hardware/VendorProductDeviceNode.cs \
 	Banshee.Hardware/VendorProductInfo.cs \
-	Banshee.Library/HomeDirectoryImportSource.cs \
 	Banshee.Library/IImportSource.cs \
 	Banshee.Library/ImportSourceManager.cs \
 	Banshee.Library/LibraryImportManager.cs \
@@ -102,6 +101,7 @@ SOURCES =  \
 	Banshee.MediaEngine/PlayerEngine.cs \
 	Banshee.MediaEngine/PlayerEngineService.cs \
 	Banshee.MediaEngine/PlayerEvent.cs \
+	Banshee.MediaEngine/Tests.cs \
 	Banshee.MediaEngine/TranscoderService.cs \
 	Banshee.MediaEngine/VideoDisplayContextType.cs \
 	Banshee.MediaProfiles/MediaProfileManager.cs \
@@ -220,6 +220,7 @@ SOURCES =  \
 	Banshee.Sources/SourceMergeType.cs \
 	Banshee.Sources/SourceMessage.cs \
 	Banshee.Sources/SourceSortType.cs \
+	Banshee.Sources/Tests.cs \
 	Banshee.Streaming/RadioTrackInfo.cs \
 	Banshee.Web/BaseHttpServer.cs \
 	Banshee.Web/Browser.cs \

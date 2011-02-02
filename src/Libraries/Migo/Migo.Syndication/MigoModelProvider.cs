@@ -45,6 +45,15 @@ namespace Migo.Syndication
         {
         }
 
+        public MigoModelProvider (HyenaSqliteConnection connection, string table_name, bool check) : base (connection, table_name, check)
+        {
+        }
+
+        public void ClearCache ()
+        {
+            full_cache.Clear ();
+        }
+
 #region Overrides
 
         public override T FetchSingle (long id)
@@ -60,7 +69,7 @@ namespace Migo.Syndication
             }
         }
 
-        public override T Load (System.Data.IDataReader reader)
+        public override T Load (IDataReader reader)
         {
             return GetCached (PrimaryKeyFor (reader)) ?? CacheResult (base.Load (reader));
         }

@@ -29,16 +29,29 @@
   </menubar>
 
   <popup name="TrackContextMenu" action="TrackContextMenuAction">
+    <placeholder name="AboveAddToPlaylist">
+    </placeholder>
     <placeholder name="BelowAddToPlaylist">
         <separator />
-        <menuitem name="PodcastItemLink" action="PodcastItemLinkAction" />
+        <menuitem name="PodcastItemMarkOld" action="PodcastItemMarkOldAction" />
+        <menuitem name="PodcastItemMarkNew" action="PodcastItemMarkNewAction" />
         <menuitem name="PodcastItemDownload" action="PodcastItemDownloadAction" />
         <menuitem name="PodcastItemDeleteFile" action="PodcastItemDeleteFileAction" />
+        <separator />
+        <menuitem name="PodcastItemLink" action="PodcastItemLinkAction" />
+        <!--<menu action="EpisodePodcastMenu">
+            <menuitem name="PodcastUpdateFeed" action="PodcastUpdateFeedAction" />
+            <menuitem name="PodcastDownloadAll" action="PodcastDownloadAllAction"/>
+            <menuitem name="PodcastHomepage" action="PodcastHomepageAction" />
+            <menuitem name="PodcastDelete" action="PodcastDeleteAction" />
+            <separator />
+            <menuitem name="PodcastProperties" action="PodcastPropertiesAction" />
+        </menu>-->
         <!--
         <menuitem name="PodcastItemCancel" action="PodcastItemCancelAction" />-->
-        <separator />
-        <menuitem name="PodcastItemMarkNew" action="PodcastItemMarkNewAction" />
-        <menuitem name="PodcastItemMarkOld" action="PodcastItemMarkOldAction" />
+    </placeholder>
+    <placeholder name="AboveTrackProperties">
+        <menuitem action="EpisodePodcastProperties"/>
     </placeholder>
   </popup>
 </ui>

@@ -133,6 +133,11 @@ namespace Banshee.Collection
         {
         }
 
+        public virtual void Update ()
+        {
+            Save ();
+        }
+
         public virtual void UpdateLastPlayed ()
         {
             LastPlayed = DateTime.Now;

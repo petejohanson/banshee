@@ -93,5 +93,22 @@ namespace Banshee.MediaEngine
             get { return "Null Player Engine"; }
         }
 
+        public override int SubtitleCount {
+            get { return 0; }
+        }
+
+        public override int SubtitleIndex {
+            set { return; }
+        }
+
+        public override SafeUri SubtitleUri {
+            set { return; }
+            get { return null; }
+        }
+
+        public override string GetSubtitleDescription (int index)
+        {
+            return string.Empty;
+        }
     }
 }

@@ -87,9 +87,10 @@ bp_next_track_starting (BansheePlayer *player)
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
     g_return_val_if_fail (GST_IS_ELEMENT (player->playbin), FALSE);
 
-    // Work around BGO #602437 - gapless transition between tracks with 
+    // FIXME: Work around BGO #602437 - gapless transition between tracks with 
     // video streams results in broken behaviour - most obviously, huge A/V
     // sync issues.
+    // Will be in GStreamer 0.10.31
     has_video = bp_stream_has_video (player->playbin);
     if (player->in_gapless_transition && has_video) {
         gchar *uri;
@@ -193,13 +194,6 @@ bp_pipeline_bus_callback (GstBus *bus, GstMessage *message, gpointer userdata)
             GError *error;
             gchar *debug;
             
-            // FIXME: This is to work around a bug in qtdemux in
-            // -good <= 0.10.6
-            if (message->src != NULL && message->src->name != NULL && 
-                strncmp (message->src->name, "qtdemux", 7) == 0) {
-                break;
-            }
-            
             _bp_pipeline_destroy (player);
             
             if (player->error_cb != NULL) {
@@ -279,6 +273,7 @@ static void bp_volume_changed_callback (GstElement *playbin, GParamSpec *spec, B
 gboolean 
 _bp_pipeline_construct (BansheePlayer *player)
 {
+    GValue value = {0};
     GstBus *bus;
     GstPad *teepad;
     GstElement *audiosink;
@@ -302,8 +297,9 @@ _bp_pipeline_construct (BansheePlayer *player)
         player->supports_stream_volume ? "YES" : "NO");
 
 #ifdef ENABLE_GAPLESS
-    // Connect a proxy about-to-finish callback that will generate a next-track-starting callback.
+    // FIXME: Connect a proxy about-to-finish callback that will generate a next-track-starting callback.
     // This can be removed once playbin2 generates its own next-track signal.
+    // bgo#584987 - this is included in >= 0.10.26
     g_signal_connect (player->playbin, "about-to-finish", G_CALLBACK (bp_about_to_finish_callback), player);
 #endif //ENABLE_GAPLESS
 
@@ -408,26 +404,19 @@ _bp_pipeline_construct (BansheePlayer *player)
     // Connect to the bus to get messages
     bus = gst_pipeline_get_bus (GST_PIPELINE (player->playbin));    
     gst_bus_add_watch (bus, bp_pipeline_bus_callback, player);
+
     
+    GstPad *sinkpad = gst_element_get_pad (audiosinkqueue, "sink");
+    g_value_init (&value, G_OBJECT_TYPE (sinkpad));
+    g_value_set_instance (&value, sinkpad);
+    g_object_set_property (G_OBJECT (player->audiotee), "alloc-pad", &value);
+    g_value_unset (&value);
+
+    // Link the first tee pad to the primary audio sink queue
+    gst_pad_link (gst_element_get_request_pad (player->audiotee, "src0"), sinkpad);
     // Now allow specialized pipeline setups
     _bp_cdda_pipeline_setup (player);
     _bp_video_pipeline_setup (player, bus);
-
-    // This call must be the last one in the pipeline setup to work around a
-    // GStreamer 0.10.21-0.10.22 algorithm that causes the last-allocated pad
-    // to be the one used for buffer allocations.  If the visualization one
-    // winds up being used for that then the pipeline will freeze when
-    // visualizations are disabled.
-    //
-    // When 0.10.23 is more mainstream we can use the new alloc-pad property to
-    // force selection of this pad for allocation.  Until then we just have to
-    // make sure it's the last one allocated.
-    //
-    // -- Chris Howie <cdhowie@gmail.com>
-
-    // Link the first tee pad to the primary audio sink queue
-    gst_pad_link (gst_element_get_request_pad (player->audiotee, "src0"),
-        gst_element_get_pad (audiosinkqueue, "sink"));
 
     return TRUE;
 }

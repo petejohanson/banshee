@@ -38,23 +38,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="glib-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="dbus-sharp">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\dbus-sharp.dll</HintPath>
     </Reference>
     <Reference Include="dbus-sharp-glib">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\dbus-sharp-glib.dll</HintPath>
     </Reference>
     <Reference Include="taglib-sharp">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
-      <Package>taglib-sharp</Package>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <SpecificVersion>False</SpecificVersion>
@@ -67,7 +66,6 @@
     <Reference Include="Mono.Addins">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
-      <Package>mono-addins</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +77,10 @@
       <Project>{2ADB831A-A050-47D0-B6B9-9C19D60233BB}</Project>
       <Name>Banshee.Core</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\MusicBrainz\MusicBrainz.csproj">
+      <Project>{C5DD02DE-4F0E-4DC0-ABC7-035A8217CD50}</Project>
+      <Name>MusicBrainz</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Lastfm\Lastfm.csproj">
       <Project>{C1F63FC5-4B96-48B2-B7F7-5B33FCC4F2A2}</Project>
@@ -94,10 +96,6 @@
       <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
       <Name>Hyena</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Hyena\Mono.Data.Sqlite\Mono.Data.Sqlite.csproj">
-      <Project>{BB1D1D81-7A74-4183-B7B1-3E78B32D42F1}</Project>
-      <Name>Mono.Data.Sqlite</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -144,7 +142,6 @@
     <Compile Include="Banshee.Collection\ImportManager.cs" />
     <Compile Include="Banshee.Collection\ImportEventHandler.cs" />
     <Compile Include="Banshee.Library\LibraryImportManager.cs" />
-    <Compile Include="Banshee.Library\HomeDirectoryImportSource.cs" />
     <Compile Include="Banshee.Library\IImportSource.cs" />
     <Compile Include="Banshee.Library\ImportSourceManager.cs" />
     <Compile Include="Banshee.Playlists.Formats\AsxPlaylistFormat.cs" />
@@ -322,6 +319,8 @@
     <Compile Include="Banshee.Database\Tests.cs" />
     <Compile Include="Banshee.Hardware\IUsbPortInfo.cs" />
     <Compile Include="Banshee.Hardware\UsbPortInfo.cs" />
+    <Compile Include="Banshee.MediaEngine\Tests.cs" />
+    <Compile Include="Banshee.Sources\Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Services.addin.xml">

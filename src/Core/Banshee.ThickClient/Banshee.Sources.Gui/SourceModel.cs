@@ -75,7 +75,7 @@ namespace Banshee.Sources.Gui
 
         protected SourceModel (IntPtr ptr) : base (ptr) {}
 
-        public SourceModel () : base (typeof (Source), typeof (int), typeof (bool))
+        public SourceModel () : base (typeof (Source), typeof (int), typeof (EntryType))
         {
             SetSortColumnId (1, SortType.Ascending);
             ChangeSortColumn ();
@@ -182,28 +182,6 @@ namespace Banshee.Sources.Gui
             } while (IterNext (ref iter));
         }
 
-        /*private void AddRowSeparator (int order)
-        {
-            TreeIter iter = InsertNode (order);
-
-            SetValue (iter, 0, null);
-            SetValue (iter, 1, order);
-            SetValue (iter, 2, true);
-        }
-
-        private void ClearRowSeparators ()
-        {
-            Queue<TreeIter> to_remove = new Queue<TreeIter> ();
-            foreach (TreeIter iter in FindInModel (2, true)) {
-                to_remove.Enqueue (iter);
-            }
-
-            while (to_remove.Count > 0) {
-                TreeIter iter = to_remove.Dequeue ();
-                Remove (ref iter);
-            }
-        }*/
-
 #endregion
 
 
@@ -216,6 +194,7 @@ namespace Banshee.Sources.Gui
 
         public void AddSource (Source source, TreeIter parent)
         {
+            ThreadAssist.AssertInMainThread ();
             lock (sync) {
                 if (Filter != null && !Filter (source)) {
                     return;
@@ -239,7 +218,7 @@ namespace Banshee.Sources.Gui
 
                 SetValue (iter, 0, source);
                 SetValue (iter, 1, source.Order);
-                SetValue (iter, 2, source is SourceManager.GroupSource);
+                SetValue (iter, 2, source is SourceManager.GroupSource ? EntryType.Group : EntryType.Source);
 
                 lock (source.Children) {
                     foreach (Source child in source.Children) {
@@ -256,6 +235,7 @@ namespace Banshee.Sources.Gui
 
         public void RemoveSource (Source source)
         {
+            ThreadAssist.AssertInMainThread ();
             lock (sync) {
                 TreeIter iter = FindSource (source);
                 if (!iter.Equals (TreeIter.Zero)) {
@@ -271,6 +251,7 @@ namespace Banshee.Sources.Gui
 
         public void Refresh ()
         {
+            ThreadAssist.AssertInMainThread ();
             Clear ();
             foreach (Source source in ServiceManager.SourceManager.Sources) {
                 AddSource (source);
@@ -293,5 +274,15 @@ namespace Banshee.Sources.Gui
 
 #endregion
 
+        public enum Columns : int {
+            Source,
+            Order,
+            Type
+        }
+
+        public enum EntryType {
+            Source,
+            Group
+        }
     }
 }

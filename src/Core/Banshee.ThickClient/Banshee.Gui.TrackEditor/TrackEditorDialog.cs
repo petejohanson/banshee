@@ -47,6 +47,8 @@ using Banshee.Configuration.Schema;
 using Banshee.Widgets;
 using Banshee.Gui.Dialogs;
 using Banshee.Collection.Gui;
+using Hyena.Data;
+using Selection=Hyena.Collections.Selection;
 
 namespace Banshee.Gui.TrackEditor
 {
@@ -86,18 +88,18 @@ namespace Banshee.Gui.TrackEditor
 
         public event EventHandler Navigated;
 
-        private TrackEditorDialog (TrackListModel model, EditorMode mode)
-            : this (model, mode, false)
+        private TrackEditorDialog (TrackListModel model, Selection selection, EditorMode mode)
+            : this (model, selection, mode, false)
         {
         }
 
-        private TrackEditorDialog (TrackListModel model, EditorMode mode, bool readonlyTabs) : base (
+        private TrackEditorDialog (TrackListModel model, Selection selection, EditorMode mode, bool readonlyTabs) : base (
             mode == EditorMode.Edit ? Catalog.GetString ("Track Editor") : Catalog.GetString ("Track Properties"))
         {
             readonly_tabs = readonlyTabs;
             this.mode = mode;
 
-            LoadTrackModel (model);
+            LoadTrackModel (model, selection);
 
             if (mode == EditorMode.Edit || readonly_tabs) {
                 WidthRequest = 525;
@@ -130,6 +132,8 @@ namespace Banshee.Gui.TrackEditor
             LoadModifiers ();
 
             LoadTrackToEditor ();
+
+            HideSingleTab ();
         }
 
 #region UI Building
@@ -383,14 +387,15 @@ namespace Banshee.Gui.TrackEditor
         private Dictionary<TrackInfo, EditorTrackInfo> edit_map = new Dictionary<TrackInfo, EditorTrackInfo> ();
         private int current_track_index;
 
-        protected void LoadTrackModel (TrackListModel model)
+        protected void LoadTrackModel (TrackListModel model, Selection selection)
         {
             DatabaseTrackListModel db_model = model as DatabaseTrackListModel;
             if (db_model != null) {
-                db_selection = CachedList<DatabaseTrackInfo>.CreateFromModelSelection (db_model);
+                db_selection = CachedList<DatabaseTrackInfo>.CreateFromModelAndSelection (db_model, selection);
             } else {
                 memory_selection = new List<TrackInfo> ();
-                foreach (TrackInfo track in model.SelectedItems) {
+                var items = new ModelSelection<TrackInfo> (model, selection);
+                foreach (TrackInfo track in items) {
                     memory_selection.Add (track);
                 }
             }
@@ -446,6 +451,24 @@ namespace Banshee.Gui.TrackEditor
                 } else if (child != null) {
                     child.GrabFocus ();
                     child = null;
+                }
+            }
+        }
+
+        private void HideSingleTab ()
+        {
+            int visible_pages = 0;
+            foreach (ITrackEditorPage page in pages) {
+                if (page.Widget.Visible) {
+                       visible_pages++;
+                }
+            }
+            if (visible_pages == 1) {
+                notebook.ShowTabs = false;
+                notebook.ShowBorder = false;
+                var container = notebook.CurrentPageWidget as Container;
+                if (container != null) {
+                    container.BorderWidth = 0;
                 }
             }
         }
@@ -614,7 +637,7 @@ namespace Banshee.Gui.TrackEditor
         private void SaveTrack (EditorTrackInfo track)
         {
             TrackInfo.ExportableMerge (track, track.SourceTrack);
-            track.SourceTrack.Save ();
+            track.SourceTrack.Update ();
 
             if (track.SourceTrack.TrackEqual (ServiceManager.PlayerEngine.CurrentTrack)) {
                 TrackInfo.ExportableMerge (track, ServiceManager.PlayerEngine.CurrentTrack);
@@ -626,24 +649,24 @@ namespace Banshee.Gui.TrackEditor
 
 #region Static Helpers
 
-        public static void RunEdit (TrackListModel model)
+        public static void RunEdit (TrackListModel model, Selection selection)
         {
-            Run (model, EditorMode.Edit);
+            Run (model, selection, EditorMode.Edit);
         }
 
-        public static void RunView (TrackListModel model, bool readonlyTabs)
+        public static void RunView (TrackListModel model, Selection selection, bool readonlyTabs)
         {
-            Run (model, EditorMode.View, readonlyTabs);
+            Run (model, selection, EditorMode.View, readonlyTabs);
         }
 
-        public static void Run (TrackListModel model, EditorMode mode)
+        public static void Run (TrackListModel model, Selection selection, EditorMode mode)
         {
-            Run (new TrackEditorDialog (model, mode));
+            Run (new TrackEditorDialog (model, selection, mode));
         }
 
-        private static void Run (TrackListModel model, EditorMode mode, bool readonlyTabs)
+        private static void Run (TrackListModel model, Selection selection, EditorMode mode, bool readonlyTabs)
         {
-            Run (new TrackEditorDialog (model, mode, readonlyTabs));
+            Run (new TrackEditorDialog (model, selection, mode, readonlyTabs));
         }
 
         private static void Run (TrackEditorDialog track_editor)

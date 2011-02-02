@@ -37,6 +37,8 @@ namespace Banshee.IO
 {
     public class DirectoryScannerPipelineElement : QueuePipelineElement<string>
     {
+        public bool Debug { get; set; }
+
         public DirectoryScannerPipelineElement ()
         {
             SkipHiddenChildren = true;
@@ -45,6 +47,7 @@ namespace Banshee.IO
         protected override string ProcessItem (string item)
         {
             try {
+                if (Debug) Log.InformationFormat ("DirectoryScanner element processing {0}", item);
                 ScanForFiles (item, false);
             }
             finally {
@@ -68,7 +71,10 @@ namespace Banshee.IO
             try {
                 is_regular_file = Banshee.IO.File.Exists (source_uri);
                 is_directory = !is_regular_file && Banshee.IO.Directory.Exists (source);
-            } catch {
+                if (Debug) Log.InformationFormat ("  > item {0} is reg file? {1} is dir? {2}", source, is_regular_file, is_directory);
+            } catch (Exception e) {
+                if (Debug) Log.Exception ("Testing if path is file or dir", e);
+                if (Debug) Log.InformationFormat ("  > item {0} is reg file? {1} is dir? {2}", source, is_regular_file, is_directory);
                 return;
             }
 

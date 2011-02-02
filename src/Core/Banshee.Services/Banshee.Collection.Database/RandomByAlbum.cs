@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 using Hyena;
 using Hyena.Data;
@@ -40,8 +41,6 @@ namespace Banshee.Collection.Database
 {
     public class RandomByAlbum : RandomBy
     {
-        private static string last_played_condition = String.Format ("AND CoreTracks.AlbumID = ? {0} ORDER BY Disc ASC, TrackNumber ASC", RANDOM_CONDITION);
-
         private HyenaSqliteCommand album_query;
         private int? album_id;
 
@@ -65,7 +64,9 @@ namespace Banshee.Collection.Database
             album_id = null;
         }
 
-        public override bool IsReady { get { return album_id != null; } }
+        public override bool IsReady {
+            get { return album_id != null; }
+        }
 
         public override bool Next (DateTime after)
         {
@@ -80,17 +81,17 @@ namespace Banshee.Collection.Database
             return IsReady;
         }
 
-        public override TrackInfo GetPlaybackTrack (DateTime after)
+        public override void SetLastTrack (TrackInfo track)
         {
-            return album_id == null ? null : Cache.GetSingleWhere (last_played_condition, (int)album_id, after, after);
+            var dbtrack = track as DatabaseTrackInfo;
+            if (dbtrack != null && dbtrack.AlbumId != album_id) {
+                album_id = dbtrack.AlbumId;
+            }
         }
 
-        public override DatabaseTrackInfo GetShufflerTrack (DateTime after)
+        protected override IEnumerable<object> GetConditionParameters (DateTime after)
         {
-            if (album_id == null)
-                return null;
-
-            return GetTrack (ShufflerQuery, (int)album_id, after);
+            yield return album_id == null ? (int)0 : (int)album_id;
         }
 
         private HyenaSqliteCommand AlbumQuery {

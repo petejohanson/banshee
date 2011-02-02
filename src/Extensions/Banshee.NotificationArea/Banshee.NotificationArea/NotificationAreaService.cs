@@ -402,7 +402,7 @@ namespace Banshee.NotificationArea
                 return;
             }
 
-            if (ServiceManager.PlayerEngine.CurrentTrack is DatabaseTrackInfo) {
+            if (current_track is DatabaseTrackInfo) {
                 rating_menu_item.Show ();
             } else {
                 rating_menu_item.Hide ();

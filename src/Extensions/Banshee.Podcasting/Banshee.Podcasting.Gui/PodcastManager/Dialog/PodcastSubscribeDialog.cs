@@ -46,16 +46,19 @@ namespace Banshee.Podcasting.Gui
     {
         private Entry url_entry;
         private Gtk.AccelGroup accelGroup;
-        private SyncPreferenceComboBox syncCombo;
+        CheckButton download_check, archive_check;
 
         public string Url {
             get { return url_entry.Text; }
             set { url_entry.Text = value; }
         }
 
-        public FeedAutoDownload SyncPreference
-        {
-            get { return syncCombo.ActiveSyncPreference; }
+        public FeedAutoDownload SyncPreference {
+            get { return download_check.Active ? FeedAutoDownload.All : FeedAutoDownload.None; }
+        }
+
+        public int MaxItemCount {
+            get { return archive_check.Active ? 1 : 0; }
         }
 
         public PodcastSubscribeDialog () : base (Catalog.GetString("Subscribe"), null, DialogFlags.Modal | DialogFlags.NoSeparator)
@@ -95,32 +98,12 @@ namespace Banshee.Podcasting.Gui
             header.Justify = Justification.Left;
             header.SetAlignment (0.0f, 0.0f);
 
-            WrapLabel message = new WrapLabel ();
-            message.Markup = Catalog.GetString (
-                "Please enter the URL of the podcast to which you would like to subscribe."
-            );
-
-            message.Wrap = true;
-
-            VBox sync_vbox = new VBox ();
-
-            VBox expander_children = new VBox();
-            //expander_children.BorderWidth = 6;
-            expander_children.Spacing = 6;
-
-            Label sync_text = new Label (
-                Catalog.GetString ("When new episodes are available:  ")
-            );
-
-            sync_text.SetAlignment (0.0f, 0.0f);
-            sync_text.Justify = Justification.Left;
-
-            syncCombo = new SyncPreferenceComboBox ();
-
-            expander_children.PackStart (sync_text, true, true, 0);
-            expander_children.PackStart (syncCombo, true, true, 0);
-
-            sync_vbox.Add (expander_children);
+            var message = new WrapLabel () {
+                Markup = Catalog.GetString (
+                    "Please enter the URL of the podcast to which you would like to subscribe."
+                ),
+                Wrap = true
+            };
 
             url_entry = new Entry ();
             url_entry.ActivatesDefault = true;
@@ -138,31 +121,25 @@ namespace Banshee.Podcasting.Gui
                 }
             }
 
-            Table table = new Table (1, 2, false);
-            table.RowSpacing = 6;
-            table.ColumnSpacing = 12;
-
-            table.Attach (
-                new Label (Catalog.GetString ("URL:")), 0, 1, 0, 1,
-                AttachOptions.Shrink, AttachOptions.Shrink, 0, 0
-            );
-
-            table.Attach (
-                url_entry, 1, 2, 0, 1,
-                AttachOptions.Expand | AttachOptions.Fill,
-                AttachOptions.Shrink, 0, 0
-            );
-
-            table.Attach (
-                sync_vbox, 0, 2, 1, 2,
-                AttachOptions.Expand | AttachOptions.Fill,
-                AttachOptions.Shrink, 0, 0
-            );
-
             contentBox.PackStart (header, true, true, 0);
             contentBox.PackStart (message, true, true, 0);
 
-            contentBox.PackStart (table, true, true, 0);
+            var url_box = new HBox () { Spacing = 12 };
+            url_box.PackStart (new Label (Catalog.GetString ("URL:")), false, false, 0);
+            url_box.PackStart (url_entry, true, true, 0);
+            contentBox.PackStart (url_box, false, false, 0);
+
+            var options_label = new Label () {
+                Markup = String.Format ("<b>{0}</b>", GLib.Markup.EscapeText (Catalog.GetString ("Subscription Options"))),
+                Xalign = 0f
+            };
+            download_check = new CheckButton (Catalog.GetString ("Download new episodes"));
+            archive_check = new CheckButton (Catalog.GetString ("Archive all episodes except the newest one"));
+            var options_box = new VBox () { Spacing = 3 };
+            options_box.PackStart (options_label, false, false, 0);
+            options_box.PackStart (new Gtk.Alignment (0f, 0f, 0f, 0f) { LeftPadding = 12, Child = download_check }, false, false, 0);
+            options_box.PackStart (new Gtk.Alignment (0f, 0f, 0f, 0f) { LeftPadding = 12, Child = archive_check }, false, false, 0);
+            contentBox.PackStart (options_box, false, false, 0);
 
             box.PackStart (contentBox, true, true, 0);
 

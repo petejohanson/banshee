@@ -16,10 +16,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;ENABLE_TESTS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>..\..\..\bin</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,29 +29,32 @@
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="gtk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="gdk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
     <Reference Include="Mono.Posix">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..bin\Mono.Posix.dll</HintPath>
     </Reference>
     <Reference Include="glib-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="atk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -73,6 +77,10 @@
     <ProjectReference Include="..\..\Hyena\Hyena\Hyena.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E12}</Project>
       <Name>Hyena</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Banshee.Widgets\Banshee.Widgets.csproj">
+      <Project>{A3701765-E571-413D-808C-9788A22791AF}</Project>
+      <Name>Banshee.Widgets</Name>
     </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>
@@ -97,6 +105,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Banshee.WebBrowser\" />
+    <Folder Include="JavaScriptCore\" />
+    <Folder Include="JavaScriptCore\Tests\" />
+    <Folder Include="JavaScriptCore.Bridge\" />
+    <Folder Include="JavaScriptCore.Bridge\Tests\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.WebBrowser\OssiferWebView.cs" />
@@ -109,5 +121,30 @@
     <Compile Include="Banshee.WebSource\WebBrowserShell.cs" />
     <Compile Include="Banshee.WebSource\WebSource.cs" />
     <Compile Include="Banshee.WebSource\WebView.cs" />
+    <Compile Include="JavaScriptCore\JSString.cs" />
+    <Compile Include="JavaScriptCore\JSObject.cs" />
+    <Compile Include="JavaScriptCore\JSValue.cs" />
+    <Compile Include="JavaScriptCore\JSType.cs" />
+    <Compile Include="JavaScriptCore\JSContext.cs" />
+    <Compile Include="JavaScriptCore\JSClass.cs" />
+    <Compile Include="JavaScriptCore\JSException.cs" />
+    <Compile Include="JavaScriptCore\JSClassDefinition.cs" />
+    <Compile Include="JavaScriptCore\JSClassAttribute.cs" />
+    <Compile Include="JavaScriptCore\JSPropertyAttribute.cs" />
+    <Compile Include="JavaScriptCore\ManagedPropertyBagClass.cs" />
+    <Compile Include="JavaScriptCore\JSPropertyNameAccumulator.cs" />
+    <Compile Include="JavaScriptCore\Tests\JSValueTests.cs" />
+    <Compile Include="JavaScriptCore\Tests\JSStringTests.cs" />
+    <Compile Include="JavaScriptCore\Tests\JSObjectTests.cs" />
+    <Compile Include="JavaScriptCore\JSPropertyNameArray.cs" />
+    <Compile Include="JavaScriptCore\JSFunction.cs" />
+    <Compile Include="JavaScriptCore\Tests\JSFunctionTests.cs" />
+    <Compile Include="JavaScriptCore.Bridge\Runtime.cs" />
+    <Compile Include="JavaScriptCore.Bridge\Tests\RuntimeTests.cs" />
+    <Compile Include="JavaScriptCore\JSError.cs" />
+    <Compile Include="JavaScriptCore\JSErrorException.cs" />
+    <Compile Include="JavaScriptCore\JSStaticFunction.cs" />
+    <Compile Include="JavaScriptCore\JSStaticFunctionAttribute.cs" />
+    <Compile Include="JavaScriptCore\Tests\JSClassTests.cs" />
   </ItemGroup>
 </Project>

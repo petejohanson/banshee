@@ -69,16 +69,19 @@ namespace Banshee.Gui.TrackEditor
             view.HasTooltip = true;
             view.QueryTooltip += HandleQueryTooltip;
 
-            name_renderer = new CellRendererText ();
-            name_renderer.Alignment = Pango.Alignment.Right;
-            name_renderer.Weight = (int)Pango.Weight.Bold;
-            name_renderer.Xalign = 1.0f;
-            name_renderer.Scale = Pango.Scale.Small;
+            name_renderer = new CellRendererText () {
+                Alignment = Pango.Alignment.Right,
+                Weight = (int)Pango.Weight.Bold,
+                Xalign = 1.0f,
+                Yalign = 0.0f,
+                Scale = Pango.Scale.Small
+            };
 
             value_renderer = new CellRendererText ();
-            value_renderer.Ellipsize = Pango.EllipsizeMode.End;
             value_renderer.Editable = true;
             value_renderer.Scale = Pango.Scale.Small;
+            value_renderer.Ellipsize = Pango.EllipsizeMode.End;
+            value_renderer.WrapMode = Pango.WrapMode.Word;
             value_renderer.EditingStarted += delegate(object o, EditingStartedArgs args) {
                 var entry = args.Editable as Entry;
                 if (entry != null) {
@@ -86,11 +89,28 @@ namespace Banshee.Gui.TrackEditor
                 }
             };
 
+            view.SizeAllocated += delegate { UpdateWrapWidth (); };
+            view.Realized += delegate { UpdateWrapWidth (); };
+
             view.AppendColumn (Catalog.GetString ("Name"), name_renderer, "text", 0);
-            view.AppendColumn (Catalog.GetString ("Value"), value_renderer, "text", 1);
+            view.AppendColumn (Catalog.GetString ("Value"), value_renderer, "text", 1, "ellipsize", 3, "ellipsize-set", 4, "wrap-width", 5);
 
             Add (view);
             ShowAll ();
+        }
+
+        public void UpdateWrapWidth ()
+        {
+            if (view.IsRealized) {
+                var width = GetValueWidth ();
+
+                model.Foreach ((TreeModel m, TreePath path, TreeIter iter) => {
+                    if ((Pango.EllipsizeMode) model.GetValue (iter, 3) != Pango.EllipsizeMode.End) {
+                        model.SetValue (iter, 5, width);
+                    }
+                    return false;
+                });
+            }
         }
 
         public CellRendererText NameRenderer { get { return name_renderer; } }
@@ -99,6 +119,15 @@ namespace Banshee.Gui.TrackEditor
         private bool RowSeparatorFunc (TreeModel model, TreeIter iter)
         {
             return (bool)model.GetValue (iter, 2);
+        }
+
+        private int GetValueWidth ()
+        {
+            var column = view.GetColumn (1);
+            var column_width = column.Width - 2 * value_renderer.Xpad -
+                (int)view.StyleGetProperty ("horizontal-separator") -
+                2 * (int)view.StyleGetProperty ("focus-line-width");
+            return (int) column_width;
         }
 
         private void HandleQueryTooltip(object o, QueryTooltipArgs args)
@@ -117,12 +146,9 @@ namespace Banshee.Gui.TrackEditor
                         int width, height;
                         layout.GetPixelSize (out width, out height);
 
-                        var column = view.GetColumn (1);
-                        var column_width = column.Width - 2 * value_renderer.Xpad -
-                            (int)view.StyleGetProperty ("horizontal-separator") -
-                            2 * (int)view.StyleGetProperty ("focus-line-width");
-
+                        var column_width = GetValueWidth ();
                         if (width > column_width) {
+                            var column = view.GetColumn (1);
                             args.Tooltip.Text = text;
                             view.SetTooltipCell (args.Tooltip, path, column, value_renderer);
                             args.RetVal = true;
@@ -225,23 +251,28 @@ namespace Banshee.Gui.TrackEditor
         private void CreateModel ()
         {
             if (model == null) {
-                model = new ListStore (typeof (string), typeof (string), typeof (bool));
+                model = new ListStore (typeof (string), typeof (string), typeof (bool), typeof (Pango.EllipsizeMode), typeof(bool), typeof (int));
                 view.Model = model;
             }
         }
 
         public void AddItem (string name, object value)
         {
+            AddItem (name, value, false);
+        }
+
+        public void AddItem (string name, object value, bool wrapText)
+        {
             CreateModel ();
             if (name != null && value != null) {
-                model.AppendValues (name, value.ToString (), false);
+                model.AppendValues (name, value.ToString (), false, wrapText ? Pango.EllipsizeMode.None : Pango.EllipsizeMode.End, true, wrapText ? 10 : -1);
             }
         }
 
         public void AddSeparator ()
         {
             CreateModel ();
-            model.AppendValues (String.Empty, String.Empty, true);
+            model.AppendValues (String.Empty, String.Empty, true, Pango.EllipsizeMode.End, false, -1);
         }
 
         public int Order {

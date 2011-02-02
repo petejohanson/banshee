@@ -41,6 +41,9 @@ MONO_BIN="$BIN_DIR/mono"
 MONO_EXE="$LIB_DIR/banshee-1/Nereid.exe"
 MONO_OPTIONS=""
 
+# We are testing the SGen compacting GC
+export MONO_ENV_OPTIONS="--gc=sgen"
+
 for arg in $*; do
 	if [ "$arg" = --debug ]; then
 		MONO_OPTIONS="$MONO_OPTIONS --debug"

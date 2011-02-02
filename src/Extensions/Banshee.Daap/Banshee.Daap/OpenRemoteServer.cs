@@ -39,8 +39,9 @@ namespace Banshee.Daap
 {
     public class OpenRemoteServer : BansheeDialog
     {
-        private Entry address_entry;
+        private ComboBoxEntry address_entry;
         private SpinButton port_entry;
+        private List<string> history = new List<string>();
 
         public OpenRemoteServer () : base (Catalog.GetString ("Open remote DAAP server"), null)
         {
@@ -54,9 +55,9 @@ namespace Banshee.Daap
             box.Spacing = 12;
             VBox.PackStart (box, false, false, 0);
 
-            address_entry = new Entry ();
-            address_entry.Activated += OnEntryActivated;
-            address_entry.WidthChars = 30;
+            address_entry = ComboBoxEntry.NewText ();
+            address_entry.Entry.Activated += OnEntryActivated;
+            address_entry.Entry.WidthChars = 30;
             address_entry.Show ();
 
             port_entry = new SpinButton (1d, 65535d, 1d);
@@ -72,6 +73,31 @@ namespace Banshee.Daap
 
             AddStockButton (Stock.Cancel, ResponseType.Cancel);
             AddStockButton (Stock.Ok, ResponseType.Ok, true);
+
+            LoadHistory();
+        }
+
+        protected override void OnResponse (ResponseType responseId)
+        {
+            if (responseId != ResponseType.Ok) {
+                return;
+            }
+
+            var filtered_history = new List<string> ();
+
+            history.Insert (0, Address);
+            foreach (string uri in history) {
+                if (!filtered_history.Contains (uri)) {
+                    filtered_history.Add (uri);
+                }
+            }
+
+            string [] trimmed_history = new string [Math.Min (15, filtered_history.Count)];
+            for (int i = 0; i < trimmed_history.Length; i++) {
+                trimmed_history[i] = filtered_history[i];
+            }
+
+            OpenRemoteServerHistorySchema.Set (trimmed_history);
         }
 
         private void OnEntryActivated (object o, EventArgs args)
@@ -80,11 +106,31 @@ namespace Banshee.Daap
         }
 
         public string Address {
-            get { return address_entry.Text; }
+            get { return address_entry.Entry.Text; }
         }
 
         public int Port {
             get { return port_entry.ValueAsInt; }
         }
+
+        private void LoadHistory()
+        {
+            string [] history_array = OpenRemoteServerHistorySchema.Get ();
+            if (history_array == null || history_array.Length == 0) {
+                return;
+            }
+
+            foreach (string uri in history_array) {
+                history.Add (uri);
+                address_entry.AppendText (uri);
+            }
+        }
+
+        public static readonly SchemaEntry<string []> OpenRemoteServerHistorySchema = new SchemaEntry<string []>(
+            "plugins.daap", "open_remote_server_history",
+            new string [] { String.Empty },
+            "URI List",
+            "List of URIs in the history drop-down for the open remote server dialog"
+        );
     }
 }

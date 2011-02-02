@@ -53,10 +53,9 @@ namespace Banshee.Podcasting.Gui
 {
     public class PodcastSourceContents : FilteredListSourceContents, ITrackModelSourceContents
     {
-        private TrackListView track_view;
+        private Grid track_view;
         private PodcastFeedView feed_view;
         private PodcastUnheardFilterView unheard_view;
-        private DownloadStatusFilterView download_view;
 
         public PodcastSourceContents () : base ("podcast")
         {
@@ -64,9 +63,8 @@ namespace Banshee.Podcasting.Gui
 
         protected override void InitializeViews ()
         {
-            SetupMainView (track_view = new TrackListView ());
+            SetupMainView (track_view = new Grid ());
             SetupFilterView (unheard_view = new PodcastUnheardFilterView ());
-            SetupFilterView (download_view = new DownloadStatusFilterView ());
             SetupFilterView (feed_view = new PodcastFeedView ());
         }
 
@@ -75,7 +73,6 @@ namespace Banshee.Podcasting.Gui
             if (feed_view.Model != null) {
                 feed_view.Selection.Clear ();
                 unheard_view.Selection.Clear ();
-                download_view.Selection.Clear ();
             }
         }
 
@@ -84,6 +81,10 @@ namespace Banshee.Podcasting.Gui
                 DatabaseSource db_src = ServiceManager.SourceManager.ActiveSource as DatabaseSource;
                 return db_src != null && db_src.ShowBrowser;
             }
+        }
+
+        protected override string ForcePosition {
+            get { return "Left"; }
         }
 
         #region Implement ISourceContents
@@ -105,8 +106,6 @@ namespace Banshee.Podcasting.Gui
                     SetModel (feed_view, (model as IListModel<Feed>));
                 else if (model is PodcastUnheardFilterModel)
                     SetModel (unheard_view, (model as IListModel<OldNewFilter>));
-                else if (model is DownloadStatusFilterModel)
-                    SetModel (download_view, (model as IListModel<DownloadedStatusFilter>));
                 else
                     Hyena.Log.DebugFormat ("PodcastContents got non-feed filter model: {0}", model);
             }
@@ -122,7 +121,6 @@ namespace Banshee.Podcasting.Gui
             source = null;
             SetModel (track_view, null);
             SetModel (unheard_view, null);
-            SetModel (download_view, null);
             SetModel (feed_view, null);
             track_view.HeaderVisible = false;
             //Console.WriteLine ("PSC.reset_source 2");

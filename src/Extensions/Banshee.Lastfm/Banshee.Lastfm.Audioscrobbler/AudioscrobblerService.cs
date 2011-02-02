@@ -278,7 +278,8 @@ namespace Banshee.Lastfm.Audioscrobbler
                     break;
 
                 case PlayerEvent.EndOfStream:
-                    Queue (ServiceManager.PlayerEngine.CurrentTrack);
+                    Queue (last_track);
+                    last_track = null;
                     iterate_countdown = 4 * 4;
                     break;
             }

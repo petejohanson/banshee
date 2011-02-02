@@ -40,7 +40,7 @@ using Banshee.Widgets;
 
 namespace Banshee.PlayQueue
 {
-    public class HeaderWidget : HBox
+    public class HeaderWidget : Alignment
     {
         public event EventHandler<EventArgs<RandomBy>> ModeChanged;
         public event EventHandler<EventArgs<DatabaseSource>> SourceChanged;
@@ -51,10 +51,12 @@ namespace Banshee.PlayQueue
 
         public string ShuffleModeId { get { return mode_combo.ActiveValue.Id; } }
 
-        public HeaderWidget (Shuffler shuffler, string shuffle_mode_id, string source_name) : base ()
+        public HeaderWidget (Shuffler shuffler, string shuffle_mode_id, string source_name) : base (0, 0, 0, 0)
         {
             ThreadAssist.AssertInMainThread ();
-            this.Spacing = 6;
+
+            var box = new HBox ();
+            box.Spacing = 6;
 
             var fill_label = new Label (Catalog.GetString ("_Fill"));
             mode_combo = new DictionaryComboBox<RandomBy> ();
@@ -82,10 +84,12 @@ namespace Banshee.PlayQueue
                 }
             };
 
-            PackStart (fill_label, false, false, 0);
-            PackStart (mode_combo, false, false, 0);
-            PackStart (from_label, false, false, 0);
-            PackStart (source_combo_box, false, false, 0);
+            box.PackStart (fill_label, false, false, 0);
+            box.PackStart (mode_combo, false, false, 0);
+            box.PackStart (from_label, false, false, 0);
+            box.PackStart (source_combo_box, false, false, 0);
+            this.SetPadding (0, 0, 6, 6);
+            this.Add (box);
 
             // Select the saved population mode.
             var default_randomby = shuffler.RandomModes.FirstOrDefault (r => r.Id == shuffle_mode_id);
@@ -97,6 +101,11 @@ namespace Banshee.PlayQueue
 
             shuffler.RandomModeAdded   += (r) => mode_combo.Add (r.Adverb, r);
             shuffler.RandomModeRemoved += (r) => mode_combo.Remove (r);
+        }
+
+        public void SetManual () {
+            ThreadAssist.AssertInMainThread ();
+            mode_combo.ActiveValue = mode_combo.Default;
         }
 
         private void OnModeComboChanged (object o, EventArgs args)

@@ -75,12 +75,6 @@ namespace Banshee.Hardware.Gio
            }
         }
 
-        public override IDeviceMediaCapabilities MediaCapabilities {
-           get {
-               return new DeviceMediaCapabilities (this);
-           }
-        }
-
         public override string Name {
            get {
                return Drive.Name;

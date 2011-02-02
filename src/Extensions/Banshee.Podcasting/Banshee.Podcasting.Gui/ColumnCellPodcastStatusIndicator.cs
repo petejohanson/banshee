@@ -62,24 +62,27 @@ namespace Banshee.Podcasting.Gui
             StatusNames[base.PixbufCount + 0] = Catalog.GetString ("Downloading");
 
             // Podcast is Downloaded
-            Pixbufs[base.PixbufCount + 1] = IconThemeUtils.LoadIcon (PixbufSize, "podcast-new");
-            StatusNames[base.PixbufCount + 1] = Catalog.GetString ("New");
+            Pixbufs[base.PixbufCount + 1] = IconThemeUtils.LoadIcon (PixbufSize, "document-save");
+            StatusNames[base.PixbufCount + 1] = Catalog.GetString ("Downloaded");
         }
 
         protected override int GetIconIndex (TrackInfo track)
         {
+            int i = -1;
             PodcastTrackInfo podcast = PodcastTrackInfo.From (track);
-            if (track == null) {
-                return -1;
+            if (track != null) {
+                switch (podcast.Activity) {
+                    case PodcastItemActivity.Downloading:
+                    case PodcastItemActivity.DownloadPending:
+                        i = base.PixbufCount + 0;
+                        break;
+                    default:
+                        i = podcast.IsDownloaded ? base.PixbufCount + 1 : -1;
+                        break;
+                }
             }
 
-            switch (podcast.Activity) {
-                case PodcastItemActivity.Downloading:
-                case PodcastItemActivity.DownloadPending:
-                    return base.PixbufCount + 0;
-                default:
-                    return podcast.IsDownloaded ? base.PixbufCount + 1 : -1;
-            }
+            return i;
         }
 
         public override void Render (CellContext context, StateType state, double cellWidth, double cellHeight)

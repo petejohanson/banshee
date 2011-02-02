@@ -28,7 +28,7 @@
 //
 
 using System;
-using System.Data;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
@@ -515,7 +515,7 @@ namespace Banshee.Query
 
         private static QueryOrder CreateQueryOrder (string name, bool asc, string label, QueryField field)
         {
-            return new QueryOrder (CreateOrderName (name, asc), label, GetSort (name, asc), field);
+            return new QueryOrder (CreateOrderName (name, asc), label, GetSort (name, asc), field, asc);
         }
 
         public static QueryLimit FindLimit (string name)
@@ -525,6 +525,11 @@ namespace Banshee.Query
                     return limit;
             }
             return null;
+        }
+
+        public static QueryOrder FindOrder (QueryField field, bool asc)
+        {
+            return Orders.FirstOrDefault (o => o != null && o.Field == field && o.Ascending == asc);
         }
 
         public static QueryOrder FindOrder (string name, bool asc)

@@ -54,7 +54,7 @@ namespace Banshee.Library.Gui
         }
 
         public string ImportLabel {
-            get { return Catalog.GetString ("C_hoose Folders"); }
+            get { return Catalog.GetString ("C_hoose Folders..."); }
         }
 
         public string [] IconNames {

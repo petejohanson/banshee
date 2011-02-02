@@ -45,9 +45,11 @@ namespace Banshee.Gui
 {
     public class PlaybackActions : BansheeActionGroup
     {
+        private string play_tooltip;
         private Gtk.Action play_pause_action;
         private PlaybackRepeatActions repeat_actions;
         private PlaybackShuffleActions shuffle_actions;
+        private PlaybackSubtitleActions subtitle_actions;
 
         public PlaybackRepeatActions RepeatActions {
             get { return repeat_actions; }
@@ -57,14 +59,19 @@ namespace Banshee.Gui
             get { return shuffle_actions; }
         }
 
+        public PlaybackSubtitleActions SubtitleActions {
+            get { return subtitle_actions; }
+        }
+
         public PlaybackActions () : base ("Playback")
         {
             ImportantByDefault = false;
+            play_tooltip = Catalog.GetString ("Play the current item");
 
             Add (new ActionEntry [] {
                 new ActionEntry ("PlayPauseAction", null,
                     Catalog.GetString ("_Play"), "space",
-                    Catalog.GetString ("Play or pause the current item"), OnPlayPauseAction),
+                    play_tooltip, OnPlayPauseAction),
 
                 new ActionEntry ("NextAction", null,
                     Catalog.GetString ("_Next"), "N",
@@ -114,6 +121,7 @@ namespace Banshee.Gui
 
             repeat_actions = new PlaybackRepeatActions (Actions);
             shuffle_actions = new PlaybackShuffleActions (Actions, this);
+            subtitle_actions = new PlaybackSubtitleActions (Actions) { Sensitive = false };
         }
 
         private void OnPlayerEvent (PlayerEventArgs args)
@@ -142,9 +150,13 @@ namespace Banshee.Gui
             }
 
             switch (args.Current) {
+                case PlayerState.Loaded:
+                    ShowStopAction ();
+                    subtitle_actions.Sensitive = ServiceManager.PlayerEngine.CurrentTrack.HasAttribute (TrackMediaAttributes.VideoStream);
+                    subtitle_actions.ReloadEmbeddedSubtitle ();
+                    break;
                 case PlayerState.Contacting:
                 case PlayerState.Loading:
-                case PlayerState.Loaded:
                 case PlayerState.Playing:
                     ShowStopAction ();
                     break;
@@ -152,6 +164,7 @@ namespace Banshee.Gui
                     ShowPlay ();
                     break;
                 case PlayerState.Idle:
+                    subtitle_actions.Sensitive = false;
                     ShowPlay ();
                     break;
                 default:
@@ -189,12 +202,14 @@ namespace Banshee.Gui
         {
             play_pause_action.Label = Catalog.GetString ("_Pause");
             play_pause_action.StockId = Gtk.Stock.MediaPause;
+            play_pause_action.Tooltip = Catalog.GetString ("Pause the current item");
         }
 
         private void ShowPlay ()
         {
             play_pause_action.Label = Catalog.GetString ("_Play");
             play_pause_action.StockId = Gtk.Stock.MediaPlay;
+            play_pause_action.Tooltip = play_tooltip;
         }
 
         private void ShowStop ()

@@ -43,22 +43,19 @@ namespace Banshee.Hardware.Gio
 
         internal static UsbDevice ResolveRootDevice (IDevice device)
         {
-            // First check if the supplied device is an IUsbDevice itself
-            var result = Resolve (device);
-            if (result != null) {
-                return result;
-            }
-
-            // Now walk up the device tree to see if we can find one.
+            // Now walk up the device tree to see if we can find a usb device
+            // NOTE: We walk up the tree to find a UDevMetadataSource which
+            // exposes the right usb properties, but we never use it. Maybe we
+            // should be constructing and wrapping a new RawUsbDevice using the
+            // correct metadata. Maybe it doesn't matter. I'm not sure. At the
+            // moment we re-use the same RawDevice except wrap it in a UsbDevice.
             IRawDevice raw = device as IRawDevice;
             if (raw != null) {
-                var parent = raw.Device.UdevMetadata.Parent;
-                while (parent != null) {
-                    if (parent.PropertyExists (UdevUsbBusNumber) && parent.PropertyExists (UdevUsbDeviceNumber)) {
-                        return new UsbDevice (new RawUsbDevice (raw.Device.Manager, raw.Device.GioMetadata, parent));
-                    }
-                    parent = parent.Parent;
-                }
+                var metadata = ResolveUsingUsbBusAndPort (raw.Device.UdevMetadata, true);
+                if (metadata == null)
+                    metadata = ResolveUsingBusType (raw.Device.UdevMetadata, true);
+                if (metadata != null)
+                    return new UsbDevice (raw.Device);
             }
             return null;
         }
@@ -111,10 +108,30 @@ namespace Banshee.Hardware.Gio
         {
             IRawDevice raw = device as IRawDevice;
             if (raw != null) {
-                var metadata = raw.Device.UdevMetadata;
-                if (metadata.PropertyExists (UdevUsbBusNumber) && metadata.PropertyExists (UdevUsbDeviceNumber))
+                if (ResolveUsingUsbBusAndPort (raw.Device.UdevMetadata, false) != null)
+                    return new UsbDevice (raw.Device);
+                else if (ResolveUsingBusType (raw.Device.UdevMetadata, false) != null)
                     return new UsbDevice (raw.Device);
             }
+            return null;
+        }
+
+        static UdevMetadataSource ResolveUsingUsbBusAndPort (UdevMetadataSource metadata, bool recurse)
+        {
+            do {
+                if (metadata.PropertyExists (UdevUsbBusNumber) && metadata.PropertyExists (UdevUsbDeviceNumber))
+                    return metadata;
+            } while (recurse && (metadata = metadata.Parent) != null);
+            return null;
+        }
+
+        static UdevMetadataSource ResolveUsingBusType (UdevMetadataSource metadata, bool recurse)
+        {
+            var comparer = StringComparer.OrdinalIgnoreCase;
+            do {
+                if (metadata.PropertyExists ("ID_BUS") && comparer.Equals ("usb", metadata.GetPropertyString ("ID_BUS")))
+                    return metadata;
+            } while (recurse && (metadata = metadata.Parent) != null);
             return null;
         }
 

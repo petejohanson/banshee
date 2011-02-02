@@ -385,10 +385,8 @@ namespace Banshee.Gui.Widgets
             } else if (args.Event == PlayerEvent.StateChange && (incoming_track != null || incoming_image != null)) {
                 PlayerEventStateChangeArgs state = (PlayerEventStateChangeArgs)args;
                 if (state.Current == PlayerState.Idle) {
-                    if (idle_timeout_id > 0) {
-                        GLib.Source.Remove (idle_timeout_id);
-                    } else {
-                        GLib.Timeout.Add (100, IdleTimeout);
+                    if (idle_timeout_id == 0) {
+                        idle_timeout_id = GLib.Timeout.Add (100, IdleTimeout);
                     }
                 }
             }

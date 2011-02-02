@@ -41,6 +41,7 @@ using Banshee.Sources.Gui;
 using Banshee.Collection;
 using Banshee.Collection.Gui;
 using Banshee.MediaEngine;
+using Banshee.Gui;
 using Banshee.Gui.Widgets;
 
 namespace Banshee.MeeGo
@@ -81,6 +82,9 @@ namespace Banshee.MeeGo
         private void ConnectEvents ()
         {
             ServiceManager.SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
+
+            ServiceManager.Get<InterfaceActionService> ().TrackActions ["SearchForSameArtistAction"].Activated += OnProgrammaticSearch;
+            ServiceManager.Get<InterfaceActionService> ().TrackActions ["SearchForSameAlbumAction"].Activated += OnProgrammaticSearch;
 
             ServiceManager.PlayerEngine.ConnectEvent ((args) => track_info_display.Visible =
                 ServiceManager.PlayerEngine.CurrentState != PlayerState.Idle,
@@ -245,6 +249,14 @@ namespace Banshee.MeeGo
 #endregion
 
 #region Event Handlers
+
+        private void OnProgrammaticSearch (object o, EventArgs args)
+        {
+            Source source = ServiceManager.SourceManager.ActiveSource;
+            search_entry.Ready = false;
+            search_entry.Query = source.FilterQuery;
+            search_entry.Ready = true;
+        }
 
         private void OnBrowserViewSelectionChanged (object o, EventArgs args)
         {

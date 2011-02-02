@@ -3,8 +3,10 @@
 //
 // Author:
 //   Aaron Bockover <abockover@novell.com>
+//   Aurélien Mino <aurelien.mino@gmail.com>
 //
 // Copyright (C) 2006-2008 Novell, Inc.
+// Copyright (C) 2010 Aurélien Mino
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,12 +29,17 @@
 //
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Net;
 using System.Xml;
 using System.Text;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Web;
+using System.Text.RegularExpressions;
+
+using MusicBrainz;
 
 using Hyena;
 using Banshee.Base;
@@ -41,6 +48,7 @@ using Banshee.Kernel;
 using Banshee.Collection;
 using Banshee.Streaming;
 using Banshee.Networking;
+using Banshee.Collection.Database;
 
 namespace Banshee.Metadata.MusicBrainz
 {
@@ -48,16 +56,33 @@ namespace Banshee.Metadata.MusicBrainz
     {
         private static string AmazonUriFormat = "http://images.amazon.com/images/P/{0}.01._SCLZZZZZZZ_.jpg";
 
-        private string asin;
+        class CoverArtSite
+        {
+             public Regex Regex;
+             public string ImgURI;
+
+             public CoverArtSite (Regex regex, string img_URI) {
+                this.Regex = regex;
+                this.ImgURI = img_URI;
+             }
+        }
+
+        private static CoverArtSite [] CoverArtSites = new CoverArtSite [] {
+            // CDBaby
+            new CoverArtSite (
+                new Regex (@"http://(?:www\.)?cdbaby.com/cd/(\w)(\w)(\w*)"),
+                "http://cdbaby.name/{0}/{1}/{0}{1}{2}.jpg"
+            ),
+            // Jamendo
+            new CoverArtSite (
+                new Regex (@"http:\/\/(?:www\.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)"),
+                "http://www.jamendo.com/get/album/id/album/artworkurl/redirect/{0}/?artwork_size=0"
+            )
+        };
 
         public MusicBrainzQueryJob (IBasicTrackInfo track)
         {
             Track = track;
-        }
-
-        public MusicBrainzQueryJob (IBasicTrackInfo track, string asin) : this (track)
-        {
-            this.asin = asin;
         }
 
         public override void Run ()
@@ -67,6 +92,7 @@ namespace Banshee.Metadata.MusicBrainz
 
         public bool Lookup ()
         {
+
             if (Track == null || (Track.MediaAttributes & TrackMediaAttributes.Podcast) != 0) {
                 return false;
             }
@@ -81,68 +107,85 @@ namespace Banshee.Metadata.MusicBrainz
                 return false;
             }
 
-            if (asin == null) {
-                asin = FindAsin ();
-                if (asin == null) {
-                    return false;
+            DatabaseTrackInfo dbtrack;
+            dbtrack = Track as DatabaseTrackInfo;
+
+            Release release;
+
+            // If we have the MBID of the album, we can do a direct MusicBrainz lookup
+            if (dbtrack != null && dbtrack.AlbumMusicBrainzId != null) {
+
+                release = Release.Get (dbtrack.AlbumMusicBrainzId);
+                if (!String.IsNullOrEmpty (release.GetAsin ()) && SaveCover (String.Format (AmazonUriFormat, release.GetAsin ()))) {
+                    return true;
+                }
+
+            // Otherwise we do a MusicBrainz search
+            } else {
+                ReleaseQueryParameters parameters = new ReleaseQueryParameters ();
+                parameters.Title = Track.AlbumTitle;
+                parameters.Artist = Track.AlbumArtist;
+                if (dbtrack != null) {
+                    parameters.TrackCount = dbtrack.TrackCount;
+                }
+
+                Query<Release> query = Release.Query (parameters);
+                release = query.PerfectMatch ();
+
+                foreach (Release r in query.Best ()) {
+                    if (!String.IsNullOrEmpty (r.GetAsin ()) && SaveCover (String.Format (AmazonUriFormat, r.GetAsin ()))) {
+                        return true;
+                    }
                 }
             }
 
-            if (SaveHttpStreamCover (new Uri (String.Format (AmazonUriFormat, asin)), artwork_id,
-                new string [] { "image/gif" })) {
-                Log.Debug ("Downloaded cover art from Amazon", artwork_id);
-                StreamTag tag = new StreamTag ();
-                tag.Name = CommonTags.AlbumCoverId;
-                tag.Value = artwork_id;
+            if (release == null) {
+                return false;
+            }
 
-                AddTag (tag);
+            // No success with ASIN, let's try with other linked URLs
+            ReadOnlyCollection<UrlRelation> relations = release.GetUrlRelations ();
+            foreach (UrlRelation relation in relations) {
 
-                return true;
+                foreach (CoverArtSite site in CoverArtSites) {
+
+                   Match m = site.Regex.Match (relation.Target.AbsoluteUri);
+                   if (m.Success) {
+                        string [] parameters = new string [m.Groups.Count];
+                        for (int i = 1; i < m.Groups.Count; i++) {
+                            parameters[i-1] = m.Groups[i].Value;
+                        }
+
+                        String uri = String.Format (site.ImgURI, parameters);
+                        if (SaveCover (uri)) {
+                             return true;
+                        }
+                   }
+                }
+
+                if (relation.Type == "CoverArtLink" && SaveCover (relation.Target.AbsoluteUri)) {
+                   return true;
+                }
             }
 
             return false;
         }
 
-        // MusicBrainz has this new XML API, so I'm using that here
-        // instead of using the stuff in the MusicBrainz namespace
-        // which sucks and doesn't even appear to work anymore.
+        private bool SaveCover (string uri) {
 
-        private string FindAsin ()
-        {
-            string album_artist = HttpUtility.UrlEncode (Track.AlbumArtist);
-            string album_title = HttpUtility.UrlEncode (Track.AlbumTitle);
-            Uri uri = new Uri (String.Format ("http://musicbrainz.org/ws/1/release/?type=xml&artist={0}&title={1}",
-                album_artist, album_title));
+            string artwork_id = Track.ArtworkId;
 
-            HttpWebResponse response = GetHttpStream (uri);
-            if (response == null) {
-                return null;
+            if (SaveHttpStreamCover (new Uri (uri), artwork_id, null)) {
+                Log.Debug ("Downloaded cover art", artwork_id);
+                StreamTag tag = new StreamTag ();
+                tag.Name = CommonTags.AlbumCoverId;
+                tag.Value = artwork_id;
+
+                AddTag (tag);
+                return true;
             }
+            return false;
+         }
 
-            using (Stream stream = response.GetResponseStream ()) {
-                XmlTextReader reader = new XmlTextReader (stream);
-
-                bool haveMatch = false;
-
-                while (reader.Read ()) {
-                    if (reader.NodeType == XmlNodeType.Element) {
-                        switch (reader.LocalName) {
-                            case "release":
-                                haveMatch = reader["ext:score"] == "100";
-                                break;
-                            case "asin":
-                                if (haveMatch) {
-                                    return reader.ReadString ();
-                                }
-                            break;
-                        default:
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
     }
 }

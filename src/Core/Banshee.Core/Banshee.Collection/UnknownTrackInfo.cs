@@ -37,7 +37,7 @@ namespace Banshee.Collection
         public UnknownTrackInfo(SafeUri uri)
         {
             Uri = uri;
-            IsLive = true;
+            IsLive = (uri == null ? true : !uri.IsFile);
         }
     }
 }

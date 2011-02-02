@@ -27,7 +27,6 @@
 //
 
 using System;
-using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -50,6 +49,7 @@ using Banshee.Collection;
 using Banshee.ServiceStack;
 using Banshee.PlaybackController;
 using Banshee.Lastfm;
+using Selection=Hyena.Collections.Selection;
 
 namespace Banshee.LastfmStreaming.Radio
 {
@@ -476,11 +476,11 @@ namespace Banshee.LastfmStreaming.Radio
             track_model.Reload ();
         }
 
-        public void RemoveSelectedTracks ()
+        public void RemoveTracks (Selection selection)
         {
         }
 
-        public void DeleteSelectedTracks ()
+        public void DeleteTracks (Selection selection)
         {
             throw new Exception ("Should not call DeleteSelectedTracks on StationSource");
         }
@@ -582,7 +582,7 @@ namespace Banshee.LastfmStreaming.Radio
             if (stations.Count == 0) {
                 stations.Add (new StationSource (lastfm, Catalog.GetString ("Recommended"), "Recommended", creator));
                 stations.Add (new StationSource (lastfm, Catalog.GetString ("Personal"), "Personal", creator));
-                stations.Add (new StationSource (lastfm, Catalog.GetString ("Loved"), "Loved", creator));
+                stations.Add (new StationSource (lastfm, Catalog.GetString ("Mix"), "Mix", creator));
                 stations.Add (new StationSource (lastfm, Catalog.GetString ("Banshee Group"), "Group", "Banshee"));
                 stations.Add (new StationSource (lastfm, Catalog.GetString ("Neighbors"), "Neighbor", creator));
                 stations.Add (new StationSource (lastfm, Catalog.GetString ("Creative Commons"), "Tag", "creative commons"));
@@ -612,6 +612,9 @@ namespace Banshee.LastfmStreaming.Radio
                     ServiceManager.DbConnection.Execute ("ALTER TABLE LastfmStations ADD PlayCount INTEGER");
                     ServiceManager.DbConnection.Execute ("UPDATE LastfmStations SET PlayCount = 0");
                 }
+
+                // Last.fm has discontinued the Loved station : http://www.last.fm/stationchanges2010
+                ServiceManager.DbConnection.Execute ("DELETE FROM LastfmStations WHERE Type = 'Loved'");
             }
         }
     }

@@ -33,6 +33,11 @@
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin</OutputPath>
     <DefineConstants>WIN32</DefineConstants>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="..\..\..\build\windows\post-build.bat" workingdir="${SolutionDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Lastfm\Lastfm.csproj">
@@ -42,48 +47,10 @@
     </ProjectReference>
     <Reference Include="glib-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-16.png">
-      <Link>Resources\media-player-banshee-16.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-192.png">
-      <Link>Resources\media-player-banshee-192.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-22.png">
-      <Link>Resources\media-player-banshee-22.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-24.png">
-      <Link>Resources\media-player-banshee-24.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-32.png">
-      <Link>Resources\media-player-banshee-32.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\data\icon-theme-hicolor\media-player-banshee-48.png">
-      <Link>Resources\media-player-banshee-48.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Reference Include="System.Core">
-    </Reference>
-    <Reference Include="Mono.Addins">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
-      <Package>mono-addins</Package>
-    </Reference>
-    <Reference Include="dbus-sharp">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="taglib-sharp">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
-      <Package>taglib-sharp</Package>
     </Reference>
     <ProjectReference Include="..\..\Hyena\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>
@@ -95,6 +62,18 @@
       <Name>Hyena</Name>
       <Private>False</Private>
     </ProjectReference>
+    <Reference Include="Mono.Addins, Version=0.4.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="dbus-sharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\dbus-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="taglib-sharp, Version=2.0.3.7, Culture=neutral, PublicKeyToken=db62eba44689b5b0">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Posix">

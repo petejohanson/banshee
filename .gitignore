@@ -21,6 +21,7 @@ Makefile.in
 depcomp
 POTFILES
 intltool-*
+reautogen.sh
 configure
 config.guess
 config.h
@@ -66,3 +67,8 @@ help/*/*.page
 !help/C/*.page
 help/*/*.xml
 !help/C/*.xml
+
+build/windows/generated_share.wxi
+build/windows/generated_binaries.wxi
+build/windows/*.wixpdb
+build/windows/*.msi

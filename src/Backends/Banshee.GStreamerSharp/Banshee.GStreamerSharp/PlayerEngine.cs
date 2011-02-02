@@ -57,6 +57,25 @@ namespace Banshee.GStreamerSharp
         public PlayerEngine ()
         {
             Console.WriteLine ("Gst# PlayerEngine ctor - completely experimental, still a WIP");
+
+            // Setup the gst plugins/registry paths if running Windows
+            if (PlatformDetection.IsWindows) {
+                var gst_paths = new string [] { "gst-plugins" };
+                Environment.SetEnvironmentVariable ("GST_PLUGIN_PATH", String.Join (";", gst_paths));
+                Environment.SetEnvironmentVariable ("GST_PLUGIN_SYSTEM_PATH", "");
+                Environment.SetEnvironmentVariable ("GST_DEBUG", "1");
+
+                string registry = "registry.bin";
+                if (!System.IO.File.Exists (registry)) {
+                    System.IO.File.Create (registry).Close ();
+                }
+
+                Environment.SetEnvironmentVariable ("GST_REGISTRY", registry);
+
+                //System.Environment.SetEnvironmentVariable ("GST_REGISTRY_FORK", "no");
+                Log.DebugFormat ("GST_PLUGIN_PATH = {0}", Environment.GetEnvironmentVariable ("GST_PLUGIN_PATH"));
+            }
+
             Gst.Application.Init ();
             pipeline = new Pipeline ();
             playbin = new PlayBin2 ();
@@ -175,6 +194,14 @@ namespace Banshee.GStreamerSharp
             OnStateChanged (PlayerState.Paused);
         }
 
+        public override string GetSubtitleDescription (int index)
+        {
+            return playbin.GetTextTags (index)
+             .GetTag (Gst.Tag.LanguageCode)
+             .Cast<string> ()
+             .FirstOrDefault (t => t != null);
+        }
+
         public override ushort Volume {
             get { return (ushort) Math.Round (playbin.Volume * 100.0); }
             set { playbin.Volume = (value / 100.0); }
@@ -228,6 +255,23 @@ namespace Banshee.GStreamerSharp
 
         public override VideoDisplayContextType VideoDisplayContextType {
             get { return VideoDisplayContextType.Unsupported; }
+        }
+
+        public override int SubtitleCount {
+            get { return playbin.NText; }
+        }
+
+        public override int SubtitleIndex {
+            set {
+                if (value >= 0 && value < SubtitleCount) {
+                    playbin.CurrentText = value;
+                }
+            }
+        }
+
+        public override SafeUri SubtitleUri {
+            set { playbin.Suburi = value.AbsoluteUri; }
+            get { return new SafeUri (playbin.Suburi); }
         }
     }
 }

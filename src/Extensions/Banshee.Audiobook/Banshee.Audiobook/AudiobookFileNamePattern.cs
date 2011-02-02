@@ -59,6 +59,7 @@ namespace Banshee.Audiobook
                     return Escape (t == null ? (string)r : t.DisplayAlbumArtistName);
             });
 
+            // Translators: This means the first letter of the author's name
             AddConversion ("author_initial", Catalog.GetString("Author Initial"),
                 delegate (TrackInfo t, object r) {
                     return Escape (t == null ? (string)r : t.DisplayAlbumArtistName.Substring (0, 1));

@@ -88,10 +88,11 @@ namespace Banshee.GnomeBackend
                 return;
             }
 
+            var track_actions = ServiceManager.Get<InterfaceActionService> ().TrackActions;
             StringBuilder file_args = new StringBuilder ();
             file_args.Append ("-a");
 
-            foreach (TrackInfo track in source.TrackModel.SelectedItems) {
+            foreach (TrackInfo track in track_actions.SelectedTracks) {
                 if (track.Uri.IsLocalPath) {
                     file_args.AppendFormat (" \"{0}\"", track.Uri.AbsolutePath.Replace ("\"", "\\\""));
                 }
@@ -115,8 +116,8 @@ namespace Banshee.GnomeBackend
 
         private void UpdateActions ()
         {
-            InterfaceActionService uia_service = ServiceManager.Get<InterfaceActionService> ();
-            Gtk.Action action = uia_service.TrackActions["BurnDiscAction"];
+            var track_actions = ServiceManager.Get<InterfaceActionService> ().TrackActions;
+            Gtk.Action action = track_actions["BurnDiscAction"];
 
             bool visible = false;
             bool sensitive = false;
@@ -128,7 +129,7 @@ namespace Banshee.GnomeBackend
                     visible = true;
                 }
 
-                sensitive = source.TrackModel.Selection.Count > 0;
+                sensitive = track_actions.Selection.Count > 0;
             }
 
             action.Sensitive = sensitive;

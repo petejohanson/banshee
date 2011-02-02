@@ -242,7 +242,8 @@ namespace Banshee.Dap.Mtp
                 device_playlists.Clear ();
 
                 // Add playlists from Banshee to the device
-                foreach (Source child in Children) {
+                List<Source> children = new List<Source> (Children);
+                foreach (Source child in children) {
                     PlaylistSource from = child as PlaylistSource;
                     if (from != null && from.Count > 0) {
                         MTP.Playlist playlist = new MTP.Playlist (mtp_device, from.Name);

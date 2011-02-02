@@ -1,0 +1,10 @@
+Translators, intltool-update currently fails on a fresh Banshee git clone. The
+reason for this is that src/Hyena is in fact a git submodule.
+
+To fix the issue please run:
+
+% git submodule init
+% git submodule update
+
+The final solution to this problem is creating l10n infrastructure for the Hyena
+project which will happen some time after 1.8 release. See also bgo#629406.

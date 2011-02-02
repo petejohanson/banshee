@@ -248,6 +248,10 @@ namespace Banshee.Dap
             get { return true; }
         }
 
+        public override bool CanSearch {
+            get { return false; }
+        }
+
         public override void SetStatus (string message, bool can_close, bool is_spinning, string icon_name)
         {
             base.SetStatus (message, can_close, is_spinning, icon_name);
@@ -337,10 +341,12 @@ namespace Banshee.Dap
 
         protected bool TrackNeedsTranscoding (TrackInfo track)
         {
-            foreach (string mimetype in AcceptableMimeTypes) {
-                if (ServiceManager.MediaProfileManager.GetExtensionForMimeType (track.MimeType) ==
-                    ServiceManager.MediaProfileManager.GetExtensionForMimeType (mimetype)) {
-                    return false;
+            string extension = ServiceManager.MediaProfileManager.GetExtensionForMimeType (track.MimeType);
+            if (extension != null) {
+                foreach (string mimetype in AcceptableMimeTypes) {
+                    if (extension == ServiceManager.MediaProfileManager.GetExtensionForMimeType (mimetype)) {
+                        return false;
+                    }
                 }
             }
 

@@ -59,6 +59,7 @@ namespace Banshee.Podcasting.Gui
     public class PodcastSource : Banshee.Library.LibrarySource
     {
         private PodcastFeedModel feed_model;
+        private PodcastUnheardFilterModel new_filter;
 
         public override string DefaultBaseDirectory {
             get {
@@ -91,8 +92,14 @@ namespace Banshee.Podcasting.Gui
             get { return feed_model; }
         }
 
+        public PodcastUnheardFilterModel NewFilter { get { return new_filter; } }
+
         public override string PreferencesPageId {
             get { return UniqueId; }
+        }
+
+        protected override string SectionName {
+            get { return Catalog.GetString ("Podcasts Folder"); }
         }
 
         class FeedMessage : SourceMessage
@@ -212,6 +219,8 @@ namespace Banshee.Podcasting.Gui
             Properties.SetString ("Icon.Name", "podcast");
             Properties.Set<string> ("SearchEntryDescription", Catalog.GetString ("Search your podcasts"));
 
+            Properties.Set<string> ("TrackPropertiesActionLabel", Catalog.GetString ("Episode Properties"));
+
             Properties.SetString ("ActiveSourceUIResource", "ActiveSourceUI.xml");
             Properties.Set<bool> ("ActiveSourceUIResourcePropagate", true);
             Properties.Set<System.Reflection.Assembly> ("ActiveSourceUIResource.Assembly", typeof(PodcastSource).Assembly);
@@ -220,6 +229,7 @@ namespace Banshee.Podcasting.Gui
 
             Properties.Set<ISourceContents> ("Nereid.SourceContents", new LazyLoadSourceContents<PodcastSourceContents> ());
             Properties.Set<bool> ("Nereid.SourceContentsPropagate", true);
+            Properties.Set<bool> ("SourceView.HideCount", false);
 
             Properties.SetString ("TrackView.ColumnControllerXml", String.Format (@"
                     <column-controller>
@@ -288,6 +298,10 @@ namespace Banshee.Podcasting.Gui
             get { return false; }
         }
 
+        public override bool HasEditableTrackProperties {
+            get { return false; }
+        }
+
         public override string GetPluralItemCountString (int count)
         {
             return Catalog.GetPluralString ("{0} episode", "{0} episodes", count);
@@ -298,16 +312,23 @@ namespace Banshee.Podcasting.Gui
             return false;
         }
 
+        public PodcastTrackListModel PodcastTrackModel { get; private set; }
+
         protected override DatabaseTrackListModel CreateTrackModelFor (DatabaseSource src)
         {
-            return new PodcastTrackListModel (ServiceManager.DbConnection, DatabaseTrackInfo.Provider, src);
+            var model = new PodcastTrackListModel (ServiceManager.DbConnection, DatabaseTrackInfo.Provider, src);
+
+            if (PodcastTrackModel == null) {
+                PodcastTrackModel = model;
+            }
+
+            return model;
         }
 
         protected override IEnumerable<IFilterListModel> CreateFiltersFor (DatabaseSource src)
         {
             PodcastFeedModel feed_model;
-            yield return new PodcastUnheardFilterModel (src.DatabaseTrackModel);
-            yield return new DownloadStatusFilterModel (src.DatabaseTrackModel);
+            yield return new_filter = new PodcastUnheardFilterModel (src.DatabaseTrackModel);
             yield return feed_model = new PodcastFeedModel (src, src.DatabaseTrackModel, ServiceManager.DbConnection, String.Format ("PodcastFeeds-{0}", src.UniqueId));
 
             if (src == this) {

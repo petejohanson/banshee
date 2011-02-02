@@ -2,7 +2,7 @@ To make a release:
 
 Pre-release:
 * Update src/Core/Banshee.Core/Resources/contributors.xml
-* Update AUTHORS (using the `extras/create-authors` script)
+* Update AUTHORS (cd extras/ && ./create-authors > ../AUTHORS)
 * Update NEWS
 * Bump version in configure.ac (don't forget the display version)
 * Update banshee.doap
@@ -10,14 +10,16 @@ Pre-release:
 * Commit everything
 
 Release:
-* Run the `extras/make-release` script
+* Run the `extras/make-release` script (from extras/ directory)
   + Add --unstable if appropriate
   + Note that this makes the tag, adds the version to bugzilla,
     and uploads the tarballs.
 
 Post-release:
 * Update the website
-  + Copy the last release notes, update and copy from NEWS
+  + Add download/archives/$version page
+    - Use `cd extras && ./create-release-notes > foo` script
+      + By hand modify 'the previous major release notes...' section
     - Set sort order, parent, and permalink
   + Update Downloads/Archives page, adding entry for this release
   + Add a new blog post, uncategorized, tag 'news'

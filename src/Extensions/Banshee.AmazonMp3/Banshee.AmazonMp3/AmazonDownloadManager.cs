@@ -63,7 +63,9 @@ namespace Banshee.AmazonMp3
             ServiceManager.Get<JobScheduler> ().Add (job);
 
             import_manager = new LibraryImportManager (true) {
-                KeepUserJobHidden = true
+                KeepUserJobHidden = true,
+                Debug = true,
+                Threaded = false
             };
             import_manager.ImportResult += OnImportManagerImportResult;
 
@@ -89,6 +91,7 @@ namespace Banshee.AmazonMp3
 
         private void OnImportManagerImportResult (object o, DatabaseImportResultArgs args)
         {
+            Log.InformationFormat ("Amazon downloader: imported {0}", args.Track);
             mp3_imported_tracks.Add (args.Track);
             TryToFixNonMp3Metadata ();
             import_event.Set ();
@@ -181,7 +184,12 @@ namespace Banshee.AmazonMp3
                         if (last_file) {
                             import_event.Reset ();
                         }
+                        Log.InformationFormat ("Finished downloading \"{0}\" by {1}; adding to import queue", track.Title, track.Creator);
+                        try {
                         import_manager.Enqueue (amz_downloader.LocalPath);
+                        } catch (Exception e) {
+                            Log.Exception ("Trying to queue amz file", e);
+                        }
                         break;
                     default:
                         non_mp3_queue.Enqueue (amz_downloader);
@@ -194,14 +202,16 @@ namespace Banshee.AmazonMp3
             // calling base.OnDownloaderFinished since that will make the Job finished which will
             // mean all references to the manager are gone and it may be garbage collected.
             if (last_file) {
+                Log.InformationFormat ("Amazon downloader: waiting for last file to be imported");
                 TryToFixNonMp3Metadata ();
                 import_event.WaitOne ();
+                Log.InformationFormat ("Amazon downloader: last file imported; finishing");
             }
 
             base.OnDownloaderFinished (downloader);
 
-            Log.InformationFormat ("Finished downloading \"{0}\" by {1}; Success? {2} File: {3}", track.Title, track.Creator,
-                downloader.State.Success, amz_downloader.LocalPath);
+            //Log.InformationFormat ("Finished downloading \"{0}\" by {1}; Success? {2} File: {3}", track.Title, track.Creator,
+                //downloader.State.Success, amz_downloader.LocalPath);
         }
     }
 }

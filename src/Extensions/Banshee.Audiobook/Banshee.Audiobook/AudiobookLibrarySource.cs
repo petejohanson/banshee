@@ -65,7 +65,7 @@ namespace Banshee.Audiobook
 
         public Actions Actions { get; private set; }
 
-        public AudiobookLibrarySource () : base (Catalog.GetString ("Audiobooks, etc"), "AudiobookLibrary", 49)
+        public AudiobookLibrarySource () : base (Catalog.GetString ("Audiobooks"), "AudiobookLibrary", 49)
         {
             MediaTypes = TrackMediaAttributes.AudioBook;
             NotMediaTypes = TrackMediaAttributes.Podcast | TrackMediaAttributes.VideoStream | TrackMediaAttributes.Music;
@@ -143,6 +143,10 @@ namespace Banshee.Audiobook
         public override string GetPluralItemCountString (int count)
         {
             return Catalog.GetPluralString ("{0} book", "{0} books", count);
+        }
+
+        protected override string SectionName {
+            get { return Catalog.GetString ("Audiobooks Folder"); }
         }
 
         private void OnPlaybackSourceChanged (object o, EventArgs args)

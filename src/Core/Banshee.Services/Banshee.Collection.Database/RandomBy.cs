@@ -27,6 +27,8 @@
 //
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using Hyena;
 using Hyena.Data;
@@ -37,12 +39,20 @@ using Banshee.PlaybackController;
 
 namespace Banshee.Collection.Database
 {
+    /// <summary>
+    /// RandomBy Basic Implementation
+    /// Implement at least GetPlaybackTrack or GetShufflerTrack
+    /// Use Label, Adverb, and Descrption for GUI Labeling
+    ///
+    /// Protected strings Select,From,Condition and OrderBy are used for ShufflerQuery (example: GetTrack(ShufflerQuery, args[]))
+    /// </summary>
     public abstract class RandomBy
     {
-        protected const string RANDOM_CONDITION = "AND LastStreamError = 0 AND (LastPlayedStamp < ? OR LastPlayedStamp IS NULL) AND (LastSkippedStamp < ? OR LastSkippedStamp IS NULL)";
-
         protected DatabaseTrackListModel Model { get; private set; }
         protected IDatabaseTrackModelCache Cache { get; private set; }
+
+        private HyenaSqliteCommand shuffler_query;
+        private string filtered_shuffler_condition;
 
         protected Shuffler Shuffler { get; private set; }
 
@@ -72,7 +82,6 @@ namespace Banshee.Collection.Database
             Shuffler = shuffler;
         }
 
-        private HyenaSqliteCommand shuffler_query;
         protected HyenaSqliteCommand ShufflerQuery {
             get {
                 if (shuffler_query == null) {
@@ -95,6 +104,22 @@ namespace Banshee.Collection.Database
             }
         }
 
+        private string CacheCondition {
+            get {
+                if (filtered_shuffler_condition == null) {
+                    filtered_shuffler_condition = String.Format (@"
+                        AND {0}
+                        AND LastStreamError = 0
+                        AND (LastPlayedStamp < ? OR LastPlayedStamp IS NULL)
+                        AND (LastSkippedStamp < ? OR LastSkippedStamp IS NULL)
+                        ORDER BY {1}",
+                        Condition ?? "1=1", OrderBy
+                    );
+                }
+                return filtered_shuffler_condition;
+            }
+        }
+
         public void SetModelAndCache (DatabaseTrackListModel model, IDatabaseTrackModelCache cache)
         {
             if (Model != model) {
@@ -106,6 +131,7 @@ namespace Banshee.Collection.Database
             }
 
             shuffler_query = null;
+            filtered_shuffler_condition = null;
         }
 
         protected virtual void OnModelAndCacheUpdated ()
@@ -114,27 +140,67 @@ namespace Banshee.Collection.Database
 
         public virtual void Reset () {}
 
-        public abstract bool Next (DateTime after);
+        /// <summary>
+        /// Returns true if RandomBy Implementation has a next track, depending on parameter after
+        /// If Next returns false in the first place, it is called again with another DateTime
+        /// </summary>
+        /// <param name="after">
+        /// A <see cref="DateTime"/>
+        /// </param>
+        /// <returns>
+        /// A <see cref="System.Boolean"/>
+        /// </returns>
+        public virtual bool Next (DateTime after)
+        {
+            return true;
+        }
 
         public TrackInfo GetTrack (DateTime after)
         {
-            if (Shuffler == Shuffler.Playback) {
-                return GetPlaybackTrack (after);
-            } else {
-                var track = GetShufflerTrack (after);
-
-                // Record this shuffle
-                Shuffler.RecordShuffle (track);
-
-                return track;
+            if (!IsReady) {
+                return null;
             }
+
+            TrackInfo track = null;
+            using (var context = GetQueryContext (after)) {
+                var args = context.Parameters.ToList ();
+                args.Add (after);
+
+                if (Shuffler == Shuffler.Playback) {
+                    // Add a second after arg b/c we query against lastplay/lastskip stamps
+                    args.Add (after);
+                    track = Cache.GetSingle (Select, From, CacheCondition, args.ToArray ());
+                } else {
+                    track = GetTrack (ShufflerQuery, args.ToArray ());
+                }
+            }
+
+            Shuffler.RecordShuffle (track as DatabaseTrackInfo);
+            return track;
         }
 
-        // The playback track we choose is dependent on the current PlaybackSource, and what
-        // (if any) query/filter is active there, represented by its DatabaseTrackModel (and its underlying cache).
-        public abstract TrackInfo GetPlaybackTrack (DateTime after);
+        public class QueryContext : IDisposable
+        {
+            public QueryContext () {}
+            public virtual IEnumerable<object> Parameters { get; set; }
+            public virtual void Dispose () {}
+        }
 
-        public abstract DatabaseTrackInfo GetShufflerTrack (DateTime after);
+        protected virtual QueryContext GetQueryContext (DateTime after)
+        {
+            return new QueryContext () {
+                Parameters = GetConditionParameters (after)
+            };
+        }
+
+        public virtual void SetLastTrack (TrackInfo track)
+        {
+        }
+
+        protected virtual IEnumerable<object> GetConditionParameters (DateTime after)
+        {
+            yield break;
+        }
 
         protected DatabaseTrackInfo GetTrack (HyenaSqliteCommand cmd, params object [] args)
         {

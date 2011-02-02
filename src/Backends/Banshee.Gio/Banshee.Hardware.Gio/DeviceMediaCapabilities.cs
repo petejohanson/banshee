@@ -46,9 +46,9 @@ namespace Banshee.Hardware.Gio
         // the MPI file is found using the ID_MEDIA_PLAYER udev property + .mpi
         // in /usr/[local/]share/.
 
-        public DeviceMediaCapabilities (RawDevice device)
+        public DeviceMediaCapabilities (string idMediaPlayer)
         {
-            mpi = new GMpiFileInfo (device.IdMediaPlayer);
+            mpi = new GMpiFileInfo (idMediaPlayer);
         }
 
         public string[] OutputFormats {

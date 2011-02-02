@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <ProjectGuid>{46AD1892-C5D3-4696-BA40-FBF7F4CE2B39}</ProjectGuid>
     <OutputType>Library</OutputType>
     <UseParentDirectoryAsNamespace>true</UseParentDirectoryAsNamespace>
@@ -55,11 +55,9 @@
     </ProjectReference>
     <Reference Include="atk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="glib-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="Mono.Cairo">
       <SpecificVersion>False</SpecificVersion>
@@ -67,13 +65,11 @@
     </Reference>
     <Reference Include="pango-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="System" />
     <Reference Include="taglib-sharp">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
-      <Package>taglib-sharp</Package>
     </Reference>
     <Reference Include="Mono.Posix">
       <SpecificVersion>False</SpecificVersion>
@@ -96,12 +92,13 @@
   <ItemGroup>
     <Reference Include="gtk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="gdk-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +113,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banshee.Podcasting.Gui\Grid.cs" />
     <Compile Include="Banshee.Podcasting\PodcastService.cs" />
     <Compile Include="Banshee.Podcasting\PodcastService_Interface.cs" />
     <Compile Include="Banshee.Podcasting\PodcastImportManager.cs" />
@@ -143,9 +141,6 @@
     <Compile Include="Banshee.Podcasting.Data\PodcastTrackListModel.cs" />
     <Compile Include="Banshee.Podcasting\PodcastQuery.cs" />
     <Compile Include="Banshee.Podcasting.Gui\ColumnCellPodcastStatusIndicator.cs" />
-    <Compile Include="Banshee.Podcasting.Data\DownloadStatusFilterModel.cs" />
-    <Compile Include="Banshee.Podcasting.Gui\DownloadStatusFilterView.cs" />
-    <Compile Include="Banshee.Podcasting.Gui\ColumnCellDownloadStatus.cs" />
     <Compile Include="Banshee.Podcasting.Gui\ColumnCellYesNo.cs" />
     <Compile Include="Banshee.Podcasting\ItmsPodcast.cs" />
     <Compile Include="Banshee.Podcasting.Gui\PodcastEpisodePage.cs" />

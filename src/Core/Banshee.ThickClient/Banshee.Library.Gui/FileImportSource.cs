@@ -60,7 +60,7 @@ namespace Banshee.Library.Gui
         }
 
         public string ImportLabel {
-            get { return Catalog.GetString ("C_hoose Files"); }
+            get { return Catalog.GetString ("C_hoose Files..."); }
         }
 
         public string [] IconNames {

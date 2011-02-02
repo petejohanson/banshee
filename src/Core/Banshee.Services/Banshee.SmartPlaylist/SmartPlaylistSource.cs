@@ -28,7 +28,6 @@
 //
 
 using System;
-using System.Data;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -121,6 +120,9 @@ namespace Banshee.SmartPlaylist
                         if (!relevant_fields.Contains (term.Field))
                             relevant_fields.Add (term.Field);
                     }
+                } else {
+                    condition_sql = null;
+                    condition_xml = null;
                 }
             }
         }
@@ -150,7 +152,16 @@ namespace Banshee.SmartPlaylist
 
         public QueryOrder QueryOrder {
             get { return query_order; }
-            set { query_order = value; }
+            set {
+                query_order = value;
+                if (value != null && value.Field != null) {
+                    Properties.Set<string> ("TrackListSortField", value.Field.Name);
+                    Properties.Set<bool> ("TrackListSortAscending", value.Ascending);
+                } else {
+                    Properties.Remove ("TrackListSortField");
+                    Properties.Remove ("TrackListSortAscending");
+                }
+            }
         }
 
         public IntegerQueryValue LimitValue {
@@ -164,7 +175,7 @@ namespace Banshee.SmartPlaylist
         }
 
         protected string OrderSql {
-            get { return QueryOrder == null ? null : QueryOrder.ToSql (); }
+            get { return !IsLimited || QueryOrder == null ? null : QueryOrder.ToSql (); }
         }
 
         protected string LimitSql {
@@ -215,7 +226,6 @@ namespace Banshee.SmartPlaylist
             LimitValue = limit_value;
             IsHiddenWhenEmpty = hiddenWhenEmpty;
 
-            SetProperties ();
             UpdateDependencies ();
         }
 
@@ -310,7 +320,7 @@ namespace Banshee.SmartPlaylist
                     (Name, Condition, OrderBy, LimitNumber, LimitCriterion, PrimarySourceID, IsTemporary, IsHiddenWhenEmpty)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 Name, ConditionXml,
-                IsLimited ? QueryOrder.Name : null,
+                QueryOrder != null ? QueryOrder.Name : null,
                 IsLimited ? LimitValue.ToSql () : null,
                 IsLimited ? Limit.Name : null,
                 PrimarySourceId, IsTemporary, IsHiddenWhenEmpty
@@ -575,7 +585,7 @@ namespace Banshee.SmartPlaylist
             StopTimer();
         }
 
-        public static void StartTimer (SmartPlaylistSource playlist)
+        private static void StartTimer (SmartPlaylistSource playlist)
         {
             // Check if the playlist is time-dependent, and if it is,
             // start the auto-refresh timer.
@@ -589,7 +599,7 @@ namespace Banshee.SmartPlaylist
             }
         }
 
-        public static void StopTimer ()
+        private static void StopTimer ()
         {
             // If the timer is going and there are no more time-dependent playlists,
             // stop the timer.
@@ -624,7 +634,7 @@ namespace Banshee.SmartPlaylist
             return true;
         }
 
-        public static void SortPlaylists () {
+        private static void SortPlaylists () {
             playlists.Sort (new DependencyComparer ());
         }
 

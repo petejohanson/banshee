@@ -50,7 +50,7 @@ struct BansheeBpmDetector {
 
     /*
      * You can run this pipeline on the cmd line with:
-     * gst-launch -m filesrc location=/path/to/my.mp3 ! decodebin ! \
+     * gst-launch -m filesrc location=/path/to/my.mp3 ! decodebin2 ! \
      *    audioconvert ! bpmdetect ! fakesink
      */
 
@@ -209,9 +209,9 @@ bbd_pipeline_construct (BansheeBpmDetector *detector)
         return FALSE;
     }
   
-    detector->decodebin = gst_element_factory_make ("decodebin", "decodebin");
+    detector->decodebin = gst_element_factory_make ("decodebin2", "decodebin2");
     if (detector->decodebin == NULL) {
-        bbd_raise_error (detector, _("Could not create decodebin plugin"), NULL);
+        bbd_raise_error (detector, _("Could not create decodebin2 plugin"), NULL);
         return FALSE;
     }
 

@@ -432,58 +432,62 @@ namespace Banshee.Sources
             RemoveTrack (track_model.IndexOf (track));
         }
 
-        public virtual void RemoveSelectedTracks ()
+        public void RemoveTracks (Selection selection)
         {
-            RemoveSelectedTracks (track_model);
+            RemoveTracks (track_model, selection);
         }
 
-        public virtual void RemoveSelectedTracks (DatabaseTrackListModel model)
+        public void RemoveTracks (DatabaseTrackListModel model, Selection selection)
         {
-            WithTrackSelection (model, RemoveTrackRange);
+            WithTrackSelection (model, selection, RemoveTrackRange);
             OnTracksRemoved ();
         }
 
-        public virtual void DeleteSelectedTracks ()
+        public void DeleteTracks (Selection selection)
         {
-            DeleteSelectedTracks (track_model);
+            DeleteTracks (track_model, selection);
         }
 
-        protected virtual void DeleteSelectedTracks (DatabaseTrackListModel model)
+        public virtual void DeleteTracks (DatabaseTrackListModel model, Selection selection)
         {
             if (model == null)
                 return;
 
-            WithTrackSelection (model, DeleteTrackRange);
+            WithTrackSelection (model, selection, DeleteTrackRange);
             OnTracksDeleted ();
         }
 
-        public virtual bool AddSelectedTracks (Source source)
+        public bool AddSelectedTracks (Source source)
         {
-            if (!AcceptsInputFromSource (source))
+            var track_src = source as ITrackModelSource;
+            return AddSelectedTracks (source, track_src == null ? null : track_src.TrackModel.Selection);
+        }
+
+        public virtual bool AddSelectedTracks (Source source, Selection selection)
+        {
+            if (!AcceptsInputFromSource (source) || selection.Count == 0)
                 return false;
 
             DatabaseTrackListModel model = (source as ITrackModelSource).TrackModel as DatabaseTrackListModel;
             if (model == null) {
                 return false;
             }
-            WithTrackSelection (model, AddTrackRange);
+
+            WithTrackSelection (model, selection, AddTrackRange);
             OnTracksAdded ();
             OnUserNotifyUpdated ();
             return true;
         }
 
-        public virtual bool AddAllTracks (Source source)
+        public bool AddAllTracks (Source source)
         {
-            if (!AcceptsInputFromSource (source) || source.Count == 0)
-                return false;
-
-            DatabaseTrackListModel model = (source as ITrackModelSource).TrackModel as DatabaseTrackListModel;
-            lock (model) {
-                AddTrackRange (model, new RangeCollection.Range (0, source.Count));
+            var track_src = source as ITrackModelSource;
+            if (track_src != null) {
+                var selection = new Selection () { MaxIndex = track_src.TrackModel.Selection.MaxIndex };
+                selection.SelectAll ();
+                return AddSelectedTracks (source, selection);
             }
-            OnTracksAdded ();
-            OnUserNotifyUpdated ();
-            return true;
+            return false;
         }
 
         public virtual void RateSelectedTracks (int rating)
@@ -649,7 +653,11 @@ namespace Banshee.Sources
 
         protected void WithTrackSelection (DatabaseTrackListModel model, TrackRangeHandler handler)
         {
-            Selection selection = model.Selection;
+            WithTrackSelection (model, model.Selection, handler);
+        }
+
+        protected void WithTrackSelection (DatabaseTrackListModel model, Selection selection, TrackRangeHandler handler)
+        {
             if (selection.Count == 0)
                 return;
 

@@ -50,7 +50,7 @@ namespace Banshee.Configuration.Schema
 
         public static readonly SchemaEntry<string> FilePattern = new SchemaEntry<string>(
             "library", "file_pattern",
-            "%track_number%. %title%",
+            "{%track_number%. }%title%",
             "Library File Pattern",
             "Format for creating a track filename inside the library. Do not use path tokens/characters here. " +
                 "See LibraryFolderPattern. Legal tokens: %album_artist%, %track_artist%, %album%, %genre%, %title%, %track_number%, " +

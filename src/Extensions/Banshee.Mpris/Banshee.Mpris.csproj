@@ -34,15 +34,15 @@
     <Compile Include="Banshee.Mpris\MprisService.cs" />
     <Compile Include="Banshee.Mpris\IPlayer.cs" />
     <Compile Include="Banshee.Mpris\IMediaPlayer.cs" />
+    <Compile Include="Banshee.Mpris\IPlaylists.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="dbus-sharp">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="dbus-sharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
     </Reference>
-    <Reference Include="dbus-sharp-glib">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="dbus-sharp-glib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099">
     </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">

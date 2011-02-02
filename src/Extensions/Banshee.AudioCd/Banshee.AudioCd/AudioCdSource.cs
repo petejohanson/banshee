@@ -41,6 +41,7 @@ using Banshee.Collection.Database;
 
 using Gtk;
 using Banshee.Gui;
+using Selection = Hyena.Collections.Selection;
 
 namespace Banshee.AudioCd
 {
@@ -127,7 +128,7 @@ namespace Banshee.AudioCd
             query_message.FreezeNotify ();
             query_message.CanClose = false;
             query_message.IsSpinning = true;
-            query_message.Text = Catalog.GetString ("Searching for CD metadata...");
+            query_message.Text = Catalog.GetString ("Searching for track information...");
             query_message.ThawNotify ();
 
             PushMessage (query_message);
@@ -160,7 +161,7 @@ namespace Banshee.AudioCd
             query_message.FreezeNotify ();
             query_message.IsSpinning = false;
             query_message.SetIconName ("dialog-error");
-            query_message.Text = Catalog.GetString ("Could not fetch metadata for CD.");
+            query_message.Text = Catalog.GetString ("Could not fetch track information");
             query_message.CanClose = true;
             query_message.ThawNotify ();
         }
@@ -298,11 +299,11 @@ namespace Banshee.AudioCd
             disc_model.Reload ();
         }
 
-        public void RemoveSelectedTracks ()
+        public void RemoveTracks (Selection selection)
         {
         }
 
-        public void DeleteSelectedTracks ()
+        public void DeleteTracks (Selection selection)
         {
         }
 

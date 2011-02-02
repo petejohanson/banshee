@@ -1,38 +1,46 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.7.6 - Released September 15, 2010
+WELCOME TO BANSHEE 1.9.2 - Released January 12, 2011
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
 
-    "Import, organize, and discover new music with Banshee through its simple
-    and powerful interface and wide array of innovative features. Create
-    your own radio stations or listen to a friends' through Last.fm integration;
-    experience automatic cover art fetching as you listen; and easily browse,
-    search, and control your media collection."
+    "Play your music and videos. Stay entertained and up to date with podcasts
+    and video podcasts.  Sync your Android, iPod, and other devices. We think
+    you'll love the new Banshee!"
 
-  * Learn More: http://banshee.fm/download/archives/1.7.6
+  * Learn More: http://banshee.fm/download/archives/1.9.2
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.7.6 is part of the 1.7 active development series, leading up to a
-    stable 1.8 release in the fall.
+    Banshee 1.9.2 is a development release, the third of the 1.9.x series
+    leading up to Banshee 2.0.
 
     Enhancements:
 
-      * Decrease the latency in changing playback volume
-      * Begin editing the name of newly added playlists
-      * Put all videos in the video folder on MTP devices
+      * Add support for Nexus S and Xperia X10 mini pro
+      * Many improvements and fixes to the F1 user guide
+      * SoundMenu: Implement the proper close/quit behavior
+      * MPRIS: Implement the Playlists interface
+      * Improved write-metadata-to-file performance
 
-    Notable Bugs Fixed (26 fixed since 1.7.5):
+    Notable Bugs Fixed (33 fixed since 1.9.1):
 
-      * bgo#629314: [AppleDevice] Correct capacity/free values
-      * bgo#628992: [AppleDevice]Bundle libgpod-sharp.dll.config fixing crash
-      * bgo#628832: [MTP] Fix MTP-device memory issues breaking Playlists, Albums
-      * bgo#629095: [MTP] Fix MTP devices being named '???'
-      * bgo#629373: [MTP] Workaround MTP sigsegv bug
+      * bgo#637333: MeeGo: Fix NRE at start up
+      * bgo#637350: Fix SimpleTable crash
+      * bgo#636077: Fix Podcasts selection bug w/ DAP plugged in
+      * bgo#637366: SmartPlaylistSource: Fix NRE with "selected by random"
+      * bgo#637365: SmartPlaylistSource: Clear the condition when it's not enabled
+      * bgo#637303: FileChooserDialog: Fix error message on first launch
+      * bgo#637627: FullscreenWindow: Keep fullscreen when showing volume osd
+      * bgo#634652: AppleDevice: Remove invalid tracks before syncing
+      * bgo#638477: X11NotificationArea: Enhance check for RGBA visual
+      * bgo#637991: SourceRowRenderer: Fix vertical alignment calculation
+      * bgo#611796: [Preferences] Have source list use theme icon size
+      * bgo#639044: UnknownTrackInfo: Avoid NRE if URI is null
+      * bgo#639032: LastfmStreaming: Delete the Loved stations from the database
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -41,9 +49,10 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.7.6 Tarballs:
-      http://download.banshee.fm/banshee/unstable/1.7.6/banshee-1-1.7.6.tar.bz2
-      http://download.banshee.fm/banshee/unstable/1.7.6/banshee-1-1.7.6.tar.gz
+    * Banshee 1.9.2 Tarballs:
+      http://download.banshee.fm/banshee/unstable/1.9.2/banshee-1-1.9.2.tar.bz2
+      http://download.banshee.fm/banshee/unstable/1.9.2/banshee-1-1.9.2.tar.gz
+    * http://download.banshee.fm/banshee/unstable/1.9.2/banshee-1-1.9.2.sha256sum
 
 Packages
 --------
@@ -60,14 +69,7 @@ Packages
 
     Binaries for Mac OS X 10.5 and 10.6:
 
-    * http://download.banshee.fm/banshee/stable/1.5.7/banshee-1-1.5.7.macosx.intel.dmg
-
-ChangeLogs & Checksums
-----------------------
-
-    * http://download.banshee.fm/banshee/unstable/1.7.6/banshee-1-1.7.6.changes
-    * http://download.banshee.fm/banshee/unstable/1.7.6/banshee-1-1.7.6.sha256sum
-
+    * http://download.banshee.fm/banshee/stable/1.8.0/banshee-1-1.8.0.macosx.intel.dmg
 
 ===============================================================================
 DEPENDENCIES
@@ -76,7 +78,7 @@ DEPENDENCIES
     * Mono 1.9.1 (.NET 2.0 Profile / gmcs)
     * SQlite 3.4
     * Gtk# 2.12
-    * GStreamer 0.10.12
+    * GStreamer 0.10.23
 
     * NDesk DBus (ndesk-dbus) 0.5
     * NDesk DBus GLib (ndesk-dbus-glib) 0.3
@@ -88,7 +90,6 @@ DEPENDENCIES
         * Note to packagers: since libmtp has different .so files for
           different versions, you need to require in your package the same
           version of libmtp you used to build Banshee.
-      * ipod-sharp >= 0.8.5
       * mono-zeroconf >= 0.8.0
       * boo >= 0.8.1
       * GIO support requires glib >= 2.22, gio-sharp and gtk-sharp-beans
@@ -100,7 +101,7 @@ DEPENDENCIES
         webkit-1.0 >= 1.2.2
       * GIO/udev-based hardware backend requires glib >= 2.22, gio-sharp,
         gtk-sharp-beans, gudev-sharp and gkeyfile-sharp
-      * Apple Devices backend requires libgpod-sharp
+      * Apple Devices backend requires libgpod-sharp >= 0.7.95
 
     * Run-time requirements for default feature stack:
       * GIO/udev
@@ -138,7 +139,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee.fm/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.7.6
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.9.2
 
 
 ===============================================================================
@@ -151,15 +152,16 @@ Contributors For This Release
     The following people directly contributed to the release of this version
     of Banshee. Without their help, there would be no release!
 
-      Alan McGovern, Alex Launi, Alexander Kojevnikov, Andrés G. Aragoneses,
-      Bertrand Lorentz, Christian Krause, Gabriel Burt, Iain Lane, Zhou Ting
+      Alex Launi, Alexander Kojevnikov, Andrés G. Aragoneses, Bertrand Lorentz,
+      Christian Krause, Gabriel Burt, Jensen Somers, Jordi Mas,
+      Kentaro KAZUHAMA, Paul Cutler, Zhou Ting
 
     The following people contributed updated translations to this release.
     Without them, our project's reach would be much more limited.
 
-      A S Alam, Andrej Žnidaršič, António Lima, Bruno Brouard, Gabor Kelemen,
-      Joe Hansen, Jordi Mas, Mario Blättermann
-
+      Andika Triwidada, Andrej Žnidaršič, Aron Xu, Benjamín Valero Espinosa,
+      Gabor Kelemen, Gabriel F. Vilar, Joe Hansen, Jordi Mas, Mario Blättermann,
+      Petr Kovar, Ville-Pekka Vainio, Yaron Shahrabani
 
 Contributors In Past Releases
 -----------------------------
@@ -168,34 +170,37 @@ Contributors In Past Releases
     Alex Mauer, Alexander Hixon, Alexander Kojevnikov, Alexandros Frantzis,
     Alp Toker, Anders Petersson, Andrea Cimitan, Andreas Neustifter,
     Andreas Nilsson, Andrew Conkling, Andrés G. Aragoneses, Andy Midgette,
-    Arthur Carli, Arun Raghavan, Aurélien Mino, Aydemir Ulaş Şahin,
-    Ben Maurer, Benjamín Valero Espinosa, Bertrand Lorentz, Bill Dawson,
-    Bob Copeland, Bojan Rajkovic, Brad Taylor, Brandon Perry, Brian Lucas,
-    Brian Nickel, Brian Teague, Chow Loong Jin, Chris Howie, Chris Jones,
-    Chris Lahey, Chris Toshok, Chris Turchin, Christian Hergert,
-    Christian Krause, Christoph Burgdorf, Christopher James Halse Rogers,
-    Claude Paroz, Cody Russell, Cosmin Banu, Dan Wilson, Dan Winship,
-    Daniel Munkton, Daniel Siegel, David Nielsen, David Spreen, David Stone,
-    Diego E. Pettenò, Eitan Isaacson, Elena Grassi, Eoin Hennessy,
-    Eric Butler, Erik Schmidt, Fabian Jost, Felipe Almeida Lessa,
-    Fernando Casanova, Florent Thoumie, Fredrik Hedberg, Félix Velasco,
-    Gabriel Burt, Garrett LeSage, Götz Waschk, Haitao Feng,
-    Hans Petter Jansson, Harold Schreckengost, Iain Lane,
-    Igor Guerrero Fonseca, Ilya Konstantinov, Ivan N. Zlatev, Jack Deslippe,
-    Jakub Steiner, James Willcox, Jan Arne Petersen, Jason Conti, Jason Taylor,
-    Jeff Tickle, Jeff Wheeler, Jensen Somers, Jeroen Budts, Jo Shields,
-    Johannes Kuhn, John Millikin, Jordi Mas, Jorge Castro, Julien Moutte,
-    Juri Pakaste, Ján Sokoly, Jérémie Laval, K. Vishnoo Charan Reddy,
-    Ken Vandine, Kevin Duffus, Konstantin Oshiyko, Larry Ewing,
-    Lauri Kotilainen, Lukas Lipka, Marijn Ros, Matt Enright, Michael Kaiser,
+    Aran Cox, Arthur Carli, Arun Raghavan, Aurélien Mino,
+    Aydemir Ulaş Şahin, Ben Maurer, Benjamín Valero Espinosa,
+    Bertrand Lorentz, Bill Dawson, Bob Copeland, Bojan Rajkovic, Brad Taylor,
+    Brandon Perry, Brian Lucas, Brian Nickel, Brian Teague, Chow Loong Jin,
+    Chris Howie, Chris Jones, Chris Lahey, Chris Toshok, Chris Turchin,
+    Christian Hergert, Christian Krause, Christoph Burgdorf,
+    Christopher James Halse Rogers, Claude Paroz, Cody Russell, Cosmin Banu,
+    Dan Wilson, Dan Winship, Daniel Munkton, Daniel Siegel, David Nielsen,
+    David Spreen, David Stone, Diego E. Pettenò, Dougal Stanton,
+    Eitan Isaacson, Elena Grassi, Eoin Hennessy, Eric Butler, Erik Schmidt,
+    Fabian Jost, Felipe Almeida Lessa, Fernando Casanova, Florent Thoumie,
+    Fredrik Hedberg, Félix Velasco, Gabriel Burt, Garrett LeSage,
+    Ghislain Lacroix, Götz Waschk, Haitao Feng, Hans Petter Jansson,
+    Harold Schreckengost, Iain Lane, Igor Guerrero Fonseca, Ilya Konstantinov,
+    Ivan N. Zlatev, Jack Deslippe, Jakub Steiner, James Willcox,
+    Jan Arne Petersen, Jason Conti, Jason Taylor, Jeff Tickle, Jeff Wheeler,
+    Jensen Somers, Jeroen Budts, Jo Shields, Johannes Kuhn, John Millikin,
+    Jordi Mas, Jorge Castro, Julien Moutte, Juri Pakaste, Ján Sokoly,
+    Jérémie Laval, K. Vishnoo Charan Reddy, Ken Vandine, Kentaro KAZUHAMA,
+    Kevin Duffus, Konstantin Oshiyko, Larry Ewing, Lauri Kotilainen,
+    Lukas Lipka, Marijn Ros, Matt Enright, Michael Kaiser,
     Michael Martin-Smucker, Michael Monreal, Michael Monreal, Michał Sawicz,
     Miguel de Icaza, Mike Gemünde, Mike Urbanski, Moritz Schallaböck,
     Nathan Palmer, Neil Loknath, Nicholas Doyle, Nicholas Parker,
-    Nicolò Chieffo, Nils Naumann, Oben Sonne, Olivier Duff, Oscar Forero,
+    Nicolò Chieffo, Nils Naumann, Oben Sonne, Olivier Dufour, Oscar Forero,
     Pacho Ramos, Patrick van Staveren, Paul Cutler, Paul Lange, Pavel Antonov,
     Pepijn van de Geer, Pete Johanson, Peter de Kraker, Pratik Patel,
-    Przemysław Grzegorczyk, Robin Stocker, Roderich Schupp, Romain Tartière,
-    Ruben Vermeersch, Ryan Collier, Sandy Armstrong, Scott Peterson,
-    Sebastian Dröge, Shaun McCance, Tim Yamin, Tobias Mueller, Todd Berman,
+    Przemysław Grzegorczyk, Raimo Radczewski, Robin Stocker, Roderich Schupp,
+    Rodney Dawes, Romain Tartière, Ruben Vermeersch, Ryan Collier,
+    Samuel Gyger, Sandy Armstrong, Scott Peterson, Sebastian Dröge,
+    Shaun McCance, Tim Fisken, Tim Yamin, Tobias Mueller, Todd Berman,
     Travis Glenn Hansen, Travis Reitter, Trey Ethridge, Valentin Sawadski,
-    Will Farrington, William Pettersson, Wouter Bolsterlee, Zhou Ting
+    Will Farrington, William Friesen, William Pettersson, Wouter Bolsterlee,
+    Zhou Ting

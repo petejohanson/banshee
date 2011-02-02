@@ -28,7 +28,6 @@
 //
 
 using System;
-using System.Data;
 using System.IO;
 
 using Mono.Unix;
@@ -132,7 +131,7 @@ namespace Banshee.PlayerMigration
                                  created = Convert.ToInt64 (stats_reader[2]);
                                  accessed = Convert.ToInt64 (stats_reader[3]);
                              }
-                             stats_reader.Close ();
+                             stats_reader.Dispose ();
                          } catch (Exception) {}
 
                          UpdateUserJob (processed, count, artist, title);
@@ -161,7 +160,7 @@ namespace Banshee.PlayerMigration
                          // something went wrong, skip entry
                      }
                  }
-                 reader.Close ();
+                 reader.Dispose ();
                  import_manager.NotifyAllSources ();
 
                  // TODO migrating more than the podcast subscriptions (eg whether to auto sync them etc) means 1) we need to have those features

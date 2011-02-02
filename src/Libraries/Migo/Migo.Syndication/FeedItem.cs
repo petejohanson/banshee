@@ -77,10 +77,6 @@ namespace Migo.Syndication
         private DateTime pubDate;
         private string title;
 
-        public event Action<FeedItem> ItemAdded;
-        public event Action<FeedItem> ItemChanged;
-        public event Action<FeedItem> ItemRemoved;
-
 #region Database-backed Properties
 
         [DatabaseColumn ("ItemID", Constraints = DatabaseColumnConstraints.PrimaryKey)]
@@ -235,6 +231,11 @@ namespace Migo.Syndication
         }
 
         public void Save ()
+        {
+            Save (true);
+        }
+
+        internal void Save (bool notify)
         {
             bool is_new = DbId < 1;
             Provider.Save (this);

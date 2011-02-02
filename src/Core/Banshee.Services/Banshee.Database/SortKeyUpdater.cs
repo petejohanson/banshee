@@ -25,6 +25,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Globalization;
 
 using Banshee.Collection;

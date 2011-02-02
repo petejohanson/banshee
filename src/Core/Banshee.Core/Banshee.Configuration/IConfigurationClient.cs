@@ -30,13 +30,41 @@ namespace Banshee.Configuration
 {
     public interface IConfigurationClient
     {
-        T Get<T> (SchemaEntry<T> entry);
-        T Get<T> (SchemaEntry<T> entry, T fallback);
-        T Get<T> (string key, T fallback);
-        T Get<T> (string @namespace, string key, T fallback);
-
-        void Set<T> (SchemaEntry<T> entry, T value);
-        void Set<T> (string key, T value);
+        bool TryGet<T> (string @namespace, string key, out T result);
         void Set<T> (string @namespace, string key, T value);
+    }
+
+    public static class Extensions
+    {
+        public static T Get<T> (this IConfigurationClient client, SchemaEntry<T> entry)
+        {
+            return client.Get<T> (entry.Namespace, entry.Key, entry.DefaultValue);
+        }
+
+        public static T Get<T> (this IConfigurationClient client, SchemaEntry<T> entry, T fallback)
+        {
+            return client.Get<T> (entry.Namespace, entry.Key, fallback);
+        }
+
+        public static T Get<T> (this IConfigurationClient client, string key, T fallback)
+        {
+            return client.Get<T> (null, key, fallback);
+        }
+
+        public static T Get<T> (this IConfigurationClient client, string namespce, string key, T fallback)
+        {
+            T result;
+            return client.TryGet<T> (namespce, key, out result) ? result : fallback;
+        }
+
+        public static void Set<T> (this IConfigurationClient client, SchemaEntry<T> entry, T value)
+        {
+            client.Set (entry.Namespace, entry.Key, value);
+        }
+
+        public static void Set<T> (this IConfigurationClient client, string key, T value)
+        {
+            client.Set (null, key, value);
+        }
     }
 }

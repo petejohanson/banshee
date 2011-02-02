@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 #
 # test-perf
@@ -150,6 +150,7 @@ foreach my $rev_name (@ordered_revisions) {
     #foreach my $asm (glob("*.dll"))
     foreach my $asm (glob("Performance.dll")) {
         for (my $i = 0; $i < $RUNS_PER_TEST; $i++) {
+            print "    - Run $i\n";
             `$ENV_OPTIONS nunit-console2 -nologo -noshadow -xml=$rev_dir/$i-$asm.xml $asm 2>/dev/null`;
             `cp ~/.config/banshee-1/banshee.db.bak ~/.config/banshee-1/banshee.db`;
         }

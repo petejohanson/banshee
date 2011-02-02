@@ -48,6 +48,9 @@ namespace Banshee.Gui.Widgets
             ((PlaybackShuffleActions)interface_service.FindActionGroup ("PlaybackShuffle")).AttachSubmenu (
                 "/MainMenu/PlaybackMenu/ShuffleMenu");
 
+            ((PlaybackSubtitleActions)interface_service.FindActionGroup ("PlaybackSubtitle")).AttachSubmenu (
+                "/MainMenu/PlaybackMenu/SubtitleMenu");
+
             menu.Show ();
             PackStart (menu, true, true, 0);
         }

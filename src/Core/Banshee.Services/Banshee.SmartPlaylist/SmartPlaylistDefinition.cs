@@ -35,12 +35,12 @@ using Banshee.Sources;
 
 namespace Banshee.SmartPlaylist
 {
-    public struct SmartPlaylistDefinition
+    public class SmartPlaylistDefinition
     {
         public readonly string Name;
         public readonly string Description;
         public readonly string Condition;
-        public readonly QueryOrder Order;
+        public QueryOrder Order;
         public readonly QueryLimit Limit;
         public readonly IntegerQueryValue LimitNumber;
         public readonly bool HiddenWhenEmpty;

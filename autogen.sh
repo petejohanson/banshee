@@ -87,5 +87,12 @@ if [ $# = 0 ]; then
 	echo "WARNING: I am going to run configure without any arguments."
 fi
 
-run ./configure --enable-maintainer-mode $@
 
+{ cat <<EOF
+#!/usr/bin/env bash
+./autogen.sh $@ \$@
+EOF
+} > reautogen.sh
+chmod +x reautogen.sh
+
+run ./configure --enable-maintainer-mode $@

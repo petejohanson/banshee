@@ -27,7 +27,7 @@
 //
 
 using System;
-using System.Data;
+
 using Banshee.Collection;
 using Hyena.Data.Sqlite;
 using Hyena.Query;
@@ -39,6 +39,7 @@ namespace Banshee.Collection.Database
         void Clear ();
         void SaveSelection ();
         void UpdateAggregates ();
+        void UpdateSelectionAggregates (Action<IDataReader> handler);
         void RestoreSelection ();
         long Count { get; }
         void Reload ();

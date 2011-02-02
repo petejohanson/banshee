@@ -139,6 +139,7 @@ namespace Banshee.Fixup
             count = 0;
             selected_count = 0;
             ServiceManager.DbConnection.Execute ("DELETE FROM MetadataProblems");
+            Problem.Provider.ClearCache ();
             OnCleared ();
         }
 
