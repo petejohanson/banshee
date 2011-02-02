@@ -60,7 +60,7 @@ namespace Banshee.GStreamerSharp
 
             // Setup the gst plugins/registry paths if running Windows
             if (PlatformDetection.IsWindows) {
-                var gst_paths = new string [] { "gst-plugins" };
+                var gst_paths = new string [] { Hyena.Paths.Combine (Hyena.Paths.InstalledApplicationPrefix, "gst-plugins") };
                 Environment.SetEnvironmentVariable ("GST_PLUGIN_PATH", String.Join (";", gst_paths));
                 Environment.SetEnvironmentVariable ("GST_PLUGIN_SYSTEM_PATH", "");
                 Environment.SetEnvironmentVariable ("GST_DEBUG", "1");
