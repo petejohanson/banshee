@@ -6,7 +6,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>Banshee-1.9.3</OutputName>
     <OutputType>Package</OutputType>
-    <ApplicationIcon>..\..\data\banshee.ico</ApplicationIcon>
+    <ApplicationIcon>Bitmaps\banshee.ico</ApplicationIcon>
     <OutputPath>.</OutputPath>
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -30,9 +30,9 @@
     <Folder Include="Bitmaps\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Bitmaps\bannrbmp.bmp" />
-    <Content Include="Bitmaps\dlgbmp.bmp" />
-    <Content Include="Bitmaps\MonoDevelop.ico" />
+    <Content Include="Bitmaps\bannrbmp.jpg" />
+    <Content Include="Bitmaps\dlgbmp.jpg" />
+    <Content Include="Bitmaps\banshee.ico" />
     <Content Include="license.rtf" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
