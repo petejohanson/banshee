@@ -65,7 +65,7 @@ namespace Banshee.GStreamerSharp
                 Environment.SetEnvironmentVariable ("GST_PLUGIN_SYSTEM_PATH", "");
                 Environment.SetEnvironmentVariable ("GST_DEBUG", "1");
 
-                string registry = "registry.bin";
+                string registry = Hyena.Paths.Combine (Hyena.Paths.ApplicationData, "registry.bin");
                 if (!System.IO.File.Exists (registry)) {
                     System.IO.File.Create (registry).Close ();
                 }
