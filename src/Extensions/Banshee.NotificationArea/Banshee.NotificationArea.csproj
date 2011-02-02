@@ -31,7 +31,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
+    <OutputPath>..\..\..\bin\bin</OutputPath>
     <DefineConstants>INTERNAL_NOTIFY_SHARP, HAVE_GTK_2_10</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -59,11 +59,11 @@
     </Reference>
     <Reference Include="NDesk.DBus">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\NDesk.DBus.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\NDesk.DBus.dll</HintPath>
     </Reference>
     <Reference Include="NDesk.DBus.GLib">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\NDesk.DBus.GLib.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\NDesk.DBus.GLib.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\..\Hyena\Hyena.Gui\Hyena.Gui.csproj">
       <Project>{C856EFD8-E812-4E61-8B76-E3583D94C233}</Project>
@@ -92,7 +92,7 @@
     </Reference>
     <Reference Include="Mono.Posix">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\Mono.Posix.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

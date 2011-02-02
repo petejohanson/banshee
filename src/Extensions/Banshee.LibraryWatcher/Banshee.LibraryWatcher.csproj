@@ -26,7 +26,7 @@
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <WarningLevel>4</WarningLevel>
-    <OutputPath>..\..\..\bin</OutputPath>
+    <OutputPath>..\..\..\bin\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
@@ -56,14 +56,14 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Addins">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\Mono.Addins.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\Mono.Addins.dll</HintPath>
     </Reference>
     <Reference Include="gtk-sharp">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="taglib-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\taglib-sharp.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\taglib-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
