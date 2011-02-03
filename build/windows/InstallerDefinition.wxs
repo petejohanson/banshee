@@ -16,10 +16,11 @@
     <Package Id="*" Compressed="yes" Description="$(var.ProductShortName) $(var.ProductVersionText) ($(var.ProductVersion))" InstallerVersion="200" ShortNames="no" Manufacturer="$(var.Manufacturer)" />
     <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
 
-    <!-- Ensure .Net 3.5 is installed -->
-    <PropertyRef Id="NETFRAMEWORK35" />
-    <Condition Message="This setup requires the .NET Framework 3.5 to be installed.">
-      Installed OR NETFRAMEWORK35
+    <!-- Ensure .Net 3.5 SP1 or higher is installed -->
+    <PropertyRef Id="NETFRAMEWORK35_SP_LEVEL" />
+    <PropertyRef Id="NETFRAMEWORK40FULL" />
+    <Condition Message="This setup requires the .NET Framework 3.5 SP1 or higher to be installed.">
+      <![CDATA[Installed OR (NETFRAMEWORK35_SP_LEVEL and NOT NETFRAMEWORK35_SP_LEVEL = "#0") OR NETFRAMEWORK40FULL]]>
     </Condition>
 
     <!-- Major upgrade -->
@@ -27,6 +28,13 @@
       <UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes" Property="NEWERVERSIONDETECTED" />
       <UpgradeVersion Minimum="0.0.0" IncludeMinimum="yes" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
     </Upgrade>
+
+    <!-- Option to launch when finished with setup -->
+    <CustomAction Id="StartAppOnExit" Directory="bin" ExeCommand="Nereid.exe" Execute="immediate" Impersonate ="yes" Return="asyncNoWait" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Banshee when setup exits" />
+    <UI>
+      <Publish Dialog="ExitDialog" Control="Finish" Order="1" Event="DoAction" Value="StartAppOnExit">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
@@ -36,11 +44,17 @@
               <!-- Place Banshee path into registry -->
               <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Version' Value='$(var.ProductVersion)' />
               <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Path' Value='[INSTALLLOCATION]' />
+
+              <!-- App Paths to support Start,Run -> "banshee" -->
+              <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\banshee.exe" Value="[INSTALLLOCATION]bin\Nereid.exe" Type="string" />
+              <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\banshee.exe" Name="Path" Value="[INSTALLLOCATION]bin" Type="string" />
+
             </Component>
           </Directory>
         </Directory>
       </Directory>
 
+      <!-- Define directory structure for Start menu shortcut, and create shortcut -->
       <Directory Id="ProgramMenuFolder" Name="PMenu">
         <Directory Id="ProgramMenuDir" Name='$(var.ProductShortName)'>
           <Component Id="StartMenuShortcut" Guid="165DF12B-D970-49BC-B03B-880B62ABC308">
@@ -51,6 +65,7 @@
         </Directory>
       </Directory>
 
+      <!-- Define directory structure for Desktop shortcut, and create shortcut -->
       <Directory Id="DesktopFolder">
         <Component Id="DesktopShortcut" Guid="ACCE1EDB-87E3-4FE5-B2BF-93113E767381">
           <Shortcut Id="DesktopShortcut" Name="$(var.ProductShortName)" Icon="Nereid.exe" Target="[INSTALLLOCATION]bin\Nereid.exe" WorkingDirectory="bin"/>

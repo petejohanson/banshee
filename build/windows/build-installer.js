@@ -16,8 +16,8 @@ var heat = "\"" + env("WIX") + "bin\\heat.exe\"";
 //build ("..\\..\\Banshee.sln");
 
 // Delete some files that might be created by running uninstalled
-if (fs.FileExists (bin + "\\registry.bin")) fs.DeleteFile (bin + "\\registry.bin");
-if (fs.FolderExists (bin + "\\addin-db-001")) fs.DeleteFolder (bin + "\\addin-db-001");
+if (fs.FileExists (bin + "\\bin\\registry.bin")) fs.DeleteFile (bin + "\\bin\\registry.bin");
+if (fs.FolderExists (bin + "\\bin\\addin-db-001")) fs.DeleteFolder (bin + "\\bin\\addin-db-001");
 
 // We can't just heat the entire dir b/c it would include the .git/ directory
 heatDir ("bin");
