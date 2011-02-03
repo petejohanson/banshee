@@ -17,17 +17,19 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make" workingdir="${SolutionDir}" />
-        <Command type="Execute" command="make run" workingdir="${SolutionDir}" />
-      </CustomCommands>
-    </CustomCommands>
+    <OutputPath>..\..\..\bin</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
@@ -58,14 +60,37 @@
       <Project>{A3701765-E571-413D-808C-9788A22791AF}</Project>
       <Name>Banshee.Widgets</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Migo\Migo.csproj">
+      <Project>{9C7B8E9C-A4E6-4459-A2C4-3D2D199EA919}</Project>
+      <Name>Migo</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+    <Reference Include="gtk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="pango-sharp">
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+    <Reference Include="atk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gdk-sharp">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glib-sharp">
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="Mono.Addins">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\bin\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\bin\Mono.Posix.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Fixup.addin.xml">
