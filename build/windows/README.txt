@@ -6,7 +6,7 @@ Banshee on Windows.
 == Creating the Banshee.msi installer ==
 
 You need
-- WIX 3.5
+- WIX 3.5 installed
 - Banshee built
 
 With that, you should be able to run build-installer.js and have it produce the

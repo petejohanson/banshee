@@ -6,8 +6,10 @@
 <?define UpgradeCode = "9134F74C-E7E3-471A-9833-F86FB45CD38E" ?>
 
 <?define BuildRoot= "..\.." ?>
-<?define BinDir= "..\..\bin" ?>
-<?define ShareDir= "..\..\bin\share" ?>
+<?define binDir= "..\..\bin\bin" ?>
+<?define etcDir= "..\..\bin\etc" ?>
+<?define libDir= "..\..\bin\lib" ?>
+<?define shareDir= "..\..\bin\share" ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="$(var.ProductShortName) $(var.ProductVersionText)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
@@ -42,33 +44,41 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="Banshee" FileSource="$(var.BuildRoot)\bin">
-          <Component Id="ProductComponent" Guid="38703ED9-C1D1-4DC5-834B-31B8059BF7DF">
-            <File Name="Nereid.exe">
-              <Shortcut Id="banshee_shortcut" Directory="ProgramMenuDir" Name="$(var.ProductShortName)" WorkingDirectory="bin" Icon="Nereid.exe" IconIndex="0" Advertise="yes" />
-            </File>
-
-            <!-- Program Menu Shortcut -->
-            <RemoveFolder Id='ProgramMenuDir' Directory="ProgramMenuDir" On='uninstall' />
-                              
-            <!-- GTK# path -->
-            <RegistryValue Root='HKLM' Key='SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Nereid.exe' Type='string' Name='Path' Value='[GTKSHARPPATH]\bin' />
-
-            <!-- Place Banshee path into registry -->
-            <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Version' Value='$(var.ProductVersion)' />
-            <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Path' Value='[INSTALLLOCATION]' />
-
-          </Component>
+          <Directory Id="bin" Name="bin">
+            <Component Id="ProductComponent" Guid="38703ED9-C1D1-4DC5-834B-31B8059BF7DF">
+              <!-- Place Banshee path into registry -->
+              <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Version' Value='$(var.ProductVersion)' />
+              <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Path' Value='[INSTALLLOCATION]' />
+            </Component>
+          </Directory>
         </Directory>
       </Directory>
 
       <Directory Id="ProgramMenuFolder" Name="PMenu">
-        <Directory Id="ProgramMenuDir" Name='$(var.ProductShortName)' />
+        <Directory Id="ProgramMenuDir" Name='$(var.ProductShortName)'>
+          <Component Id="StartMenuShortcut" Guid="165DF12B-D970-49BC-B03B-880B62ABC308">
+            <Shortcut Id="StartMenuShortcut" Name="$(var.ProductShortName)" Icon="Nereid.exe" Target="[INSTALLLOCATION]bin\Nereid.exe" WorkingDirectory="bin"/>
+            <RemoveFolder Id="ProgramMenuSubfolder" On="uninstall"/>
+            <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.ProductShortName)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="DesktopFolder">
+        <Component Id="DesktopShortcut" Guid="ACCE1EDB-87E3-4FE5-B2BF-93113E767381">
+          <Shortcut Id="DesktopShortcut" Name="$(var.ProductShortName)" Icon="Nereid.exe" Target="[INSTALLLOCATION]bin\Nereid.exe" WorkingDirectory="bin"/>
+          <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.ProductShortName)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        </Component>
       </Directory>
     </Directory>
 
     <Feature Id="ProductFeature" Title="Banshee" Level="1">
       <ComponentRef Id="ProductComponent" />
-      <ComponentGroupRef Id="binaries" />
+      <ComponentRef Id="StartMenuShortcut" />
+      <ComponentRef Id="DesktopShortcut" />
+      <ComponentGroupRef Id="bin" />
+      <ComponentGroupRef Id="etc" />
+      <ComponentGroupRef Id="lib" />
       <ComponentGroupRef Id="share" />
     </Feature>
 
@@ -95,6 +105,8 @@
     <Property Id="ARPHELPLINK" Value="http://banshee.fm/" />
   </Product>
 
-  <?include generated_share.wxi ?>
-  <?include generated_binaries.wxi ?>
+  <?include obj\generated_bin.wxi ?>
+  <?include obj\generated_etc.wxi ?>
+  <?include obj\generated_lib.wxi ?>
+  <?include obj\generated_share.wxi ?>
 </Wix>
