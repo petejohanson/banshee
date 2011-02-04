@@ -92,9 +92,9 @@ namespace Banshee.ServiceStack
 #if WIN32
             // There are two sets of environement variables we need to impact with our LANG.
             // refer to : http://article.gmane.org/gmane.comp.gnu.mingw.user/8272
-            CultureInfo current_ci = CultureInfo.CurrentUICulture;
-            string env = String.Concat ("LANG=", current_ci.TwoLetterISOLanguageName);
-            Environment.SetEnvironmentVariable ("LANG", current_ci.TwoLetterISOLanguageName);
+            var lang_code = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            string env = String.Concat ("LANG=", lang_code);
+            Environment.SetEnvironmentVariable ("LANG", lang_code);
             _putenv (env);
 #endif
 
