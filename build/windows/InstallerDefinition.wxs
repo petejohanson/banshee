@@ -14,7 +14,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="$(var.ProductShortName) $(var.ProductVersionText)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
     <Package Id="*" Compressed="yes" Description="$(var.ProductShortName) $(var.ProductVersionText) ($(var.ProductVersion))" InstallerVersion="200" ShortNames="no" Manufacturer="$(var.Manufacturer)" />
-    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" CompressionLevel="high"/>
 
     <!-- Ensure .Net 3.5 SP1 or higher is installed -->
     <PropertyRef Id="NETFRAMEWORK35_SP_LEVEL" />
