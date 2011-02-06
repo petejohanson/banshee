@@ -12,6 +12,18 @@ var env = sh.Environment("Process");
 
 var heat = "\"" + env("WIX") + "bin\\heat.exe\"";
 
+// Look for msbuild.exe
+if (fs.FileExists(env("windir") + "\\Microsoft.NET\\Framework\\v4.0.30319\\msbuild.exe") == 1){
+	var msbuild = env("windir") + "\\Microsoft.NET\\Framework\\v4.0.30319\\msbuild.exe"
+}
+else if (fs.FileExists(env("windir") + "\\Microsoft.NET\\Framework\\v3.5\\msbuild.exe") == 1){
+	var msbuild = env("windir") + "\\Microsoft.NET\\Framework\\v3.5\\msbuild.exe"
+}
+else {
+	WScript.Echo ('Build failed: Microsoft.NET MSBuild \(msbuild.exe\) not found');
+	WScript.Quit (1);
+}
+
 // Build Banshee
 //build ("..\\..\\Banshee.sln");
 
@@ -50,9 +62,9 @@ function run (cmd)
 
 function build (file)
 {
-	if (sh.run ("C:\\Windows\\Microsoft.NET\\Framework\\v3.5\\msbuild.exe " + file, 5, true) != 0) {
+	if (sh.run (msbuild + " " + file, 5, true) != 0) {
 		WScript.Echo ("Build failed");
-	  WScript.Quit (1);
+		WScript.Quit (1);
 	}
 }
 
