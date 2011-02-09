@@ -114,6 +114,8 @@ namespace Banshee.SmartPlaylist
                 relevant_fields.Clear ();
                 if (condition != null) {
                     condition_sql = condition.ToSql (BansheeQuery.FieldSet);
+                    //until bug in DB layer is fixed, escape String.Format chars
+                    condition_sql = condition_sql.Replace ("{", "{{").Replace ("}", "}}");
                     condition_xml = condition.ToXml (BansheeQuery.FieldSet);
 
                     foreach (QueryTermNode term in condition.GetTerms ()) {
