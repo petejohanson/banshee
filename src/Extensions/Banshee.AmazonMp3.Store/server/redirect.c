@@ -109,7 +109,7 @@ main (gint argc, gchar **argv)
     }
 
     if (dest_url == NULL) {
-        dest_url = g_strdup_printf ("http://www.amazon.%s/mp3/", domain);
+        dest_url = g_strdup_printf ("http://www.amazon.%s/mp3", domain);
     }
 
     if (direct_url) {
