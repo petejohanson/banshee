@@ -515,6 +515,17 @@ namespace Banshee.PlaybackController
             }
         }
 
+        string prev_shuffle;
+        public void ToggleShuffle ()
+        {
+            if (ShuffleMode == "off") {
+                ShuffleMode = prev_shuffle ?? "song";
+            } else {
+                prev_shuffle = ShuffleMode;
+                ShuffleMode = "off";
+            }
+        }
+
         public PlaybackRepeatMode RepeatMode {
             get { return repeat_mode; }
             set {
@@ -523,6 +534,17 @@ namespace Banshee.PlaybackController
                 if (handler != null) {
                     handler (this, new EventArgs<PlaybackRepeatMode> (repeat_mode));
                 }
+            }
+        }
+
+        PlaybackRepeatMode? prev_repeat;
+        public void ToggleRepeat ()
+        {
+            if (RepeatMode == PlaybackRepeatMode.None) {
+                RepeatMode = prev_repeat != null ? prev_repeat.Value : PlaybackRepeatMode.RepeatAll;
+            } else {
+                prev_repeat = RepeatMode;
+                RepeatMode = PlaybackRepeatMode.None;
             }
         }
 
