@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Xml.XPath;
 using System.Collections.Generic;
 
@@ -22,7 +23,13 @@ internal static class AddinXmlStringCatalog
         var paths = new List<string> (args);
         paths.Sort ();
 
+        var blacklist = new string [] { "GStreamer", "Gnome", "Osx", "Unix", "MeeGo", "Gio", "NowPlaying",
+            "Hal", "src/Core", "Banshee.Dap/", "RemoteAudio", "Sample", "SqlDebugConsole", "Template" };
+
         foreach (var path in paths) {
+            if (blacklist.Any (path.Contains))
+                continue;
+
             Console.WriteLine ("        // {0}", path);
             var xpath = new XPathDocument (path);
             var nav = xpath.CreateNavigator ();
