@@ -77,6 +77,12 @@ gstreamer_test_pipeline (gchar *pipeline)
     return error == NULL;
 }
 
+MYEXPORT gchar *
+gstreamer_version_string ()
+{
+    return g_strdup_printf ("%i.%i.%i.%i", GST_VERSION_MAJOR, GST_VERSION_MINOR, GST_VERSION_MICRO, GST_VERSION_NANO);
+}
+
 gboolean
 banshee_is_debugging ()
 {

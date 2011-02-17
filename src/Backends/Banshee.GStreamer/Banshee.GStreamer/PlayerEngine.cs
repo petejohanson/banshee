@@ -197,6 +197,7 @@ namespace Banshee.GStreamer
             InstallPreferences ();
             ReplayGainEnabled = ReplayGainEnabledSchema.Get ();
             GaplessEnabled = GaplessEnabledSchema.Get ();
+            Log.InformationFormat ("GStreamer version {0}, gapless: {1}, replaygain: {2}", gstreamer_version_string (), GaplessEnabled, ReplayGainEnabled);
 
             is_initialized = true;
 
@@ -1005,5 +1006,8 @@ namespace Banshee.GStreamer
 
         [DllImport ("libbanshee.dll")]
         private static extern IntPtr bp_get_subtitle_description (HandleRef player, int index);
+
+        [DllImport ("libbanshee.dll")]
+        private static extern string gstreamer_version_string ();
    }
 }
