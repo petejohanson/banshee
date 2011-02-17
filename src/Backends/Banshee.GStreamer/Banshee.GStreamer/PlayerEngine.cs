@@ -104,6 +104,7 @@ namespace Banshee.GStreamer
 
         private bool next_track_pending;
         private SafeUri pending_uri;
+        private bool pending_maybe_video;
 
         private bool buffering_finished;
         private bool xid_is_set = false;
@@ -221,7 +222,7 @@ namespace Banshee.GStreamer
             base.Close (fullShutdown);
         }
 
-        protected override void OpenUri (SafeUri uri)
+        protected override void OpenUri (SafeUri uri, bool maybeVideo)
         {
             // The GStreamer engine can use the XID of the main window if it ever
             // needs to bring up the plugin installer so it can be transient to
@@ -236,7 +237,7 @@ namespace Banshee.GStreamer
 
             IntPtr uri_ptr = GLib.Marshaller.StringToPtrGStrdup (uri.AbsoluteUri);
             try {
-                if (!bp_open (handle, uri_ptr)) {
+                if (!bp_open (handle, uri_ptr, maybeVideo)) {
                     throw new ApplicationException ("Could not open resource");
                 }
             } finally {
@@ -254,7 +255,7 @@ namespace Banshee.GStreamer
             bp_pause (handle);
         }
 
-        public override void SetNextTrackUri (SafeUri uri)
+        public override void SetNextTrackUri (SafeUri uri, bool maybeVideo)
         {
             next_track_pending = false;
             if (next_track_set.WaitOne (0, false)) {
@@ -262,6 +263,7 @@ namespace Banshee.GStreamer
                 // This means that we've missed the window for gapless.
                 // Save this URI to be played when we receive EOS.
                 pending_uri = uri;
+                pending_maybe_video = maybeVideo;
                 return;
             }
             // If there isn't a next track for us, release the block on the about-to-finish callback.
@@ -271,7 +273,7 @@ namespace Banshee.GStreamer
             }
             IntPtr uri_ptr = GLib.Marshaller.StringToPtrGStrdup (uri.AbsoluteUri);
             try {
-                bp_set_next_track (handle, uri_ptr);
+                bp_set_next_track (handle, uri_ptr, maybeVideo);
             } finally {
                 GLib.Marshaller.Free (uri_ptr);
                 next_track_set.Set ();
@@ -310,7 +312,7 @@ namespace Banshee.GStreamer
                     "was too slow at calculating what track to play next.  " +
                     "If this happens frequently, please file a bug");
                 OnStateChanged (PlayerState.Loading);
-                OpenUri (pending_uri);
+                OpenUri (pending_uri, pending_maybe_video);
                 Play ();
                 pending_uri = null;
             } else {
@@ -899,7 +901,7 @@ namespace Banshee.GStreamer
         private static extern bool bp_supports_gapless (HandleRef player);
 
         [DllImport ("libbanshee.dll")]
-        private static extern bool bp_open (HandleRef player, IntPtr uri);
+        private static extern bool bp_open (HandleRef player, IntPtr uri, bool maybeVideo);
 
         [DllImport ("libbanshee.dll")]
         private static extern void bp_stop (HandleRef player, bool nullstate);
@@ -911,7 +913,7 @@ namespace Banshee.GStreamer
         private static extern void bp_play (HandleRef player);
 
         [DllImport ("libbanshee.dll")]
-        private static extern bool bp_set_next_track (HandleRef player, IntPtr uri);
+        private static extern bool bp_set_next_track (HandleRef player, IntPtr uri, bool maybeVideo);
 
         [DllImport ("libbanshee.dll")]
         private static extern void bp_set_volume (HandleRef player, double volume);

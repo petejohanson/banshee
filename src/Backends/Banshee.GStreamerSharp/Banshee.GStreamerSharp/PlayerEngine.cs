@@ -171,7 +171,7 @@ namespace Banshee.GStreamerSharp
             }
         }
 
-        protected override void OpenUri (SafeUri uri)
+        protected override void OpenUri (SafeUri uri, bool maybeVideo)
         {
             Console.WriteLine ("Gst# PlayerEngine OpenUri: {0}", uri);
             if (pipeline.CurrentState == State.Playing) {

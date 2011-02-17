@@ -35,7 +35,7 @@ namespace Banshee.MediaEngine
 {
     public class NullPlayerEngine : MediaEngine.PlayerEngine
     {
-        protected override void OpenUri (SafeUri uri)
+        protected override void OpenUri (SafeUri uri, bool maybeVideo)
         {
         }
 
