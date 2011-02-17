@@ -319,6 +319,10 @@ namespace Banshee.Gui.Widgets
 
             popup.Label = String.Format ("{0} - {1}", CurrentTrack.DisplayArtistName,
                 CurrentTrack.DisplayAlbumTitle);
+
+            if (popup.Image != null) {
+                ArtworkManager.DisposePixbuf (popup.Image);
+            }
             popup.Image = pixbuf;
 
             if (in_thumbnail_region) {
