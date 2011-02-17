@@ -1,18 +1,19 @@
 # Czech translation of banshee.
 # Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010 the author(s) of banshee.
 # This file is distributed under the same license as the banshee package.
+#
 # Lukáš Novotný <lukasnov@cvs.gnome.org>, 2005, 2006.
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 # Jiří Eischmann <jiri@eischmann.cz>, 2009.
-# Marek Černocký <marek@manet.cz>, 2010.
+# Marek Černocký <marek@manet.cz>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: banshee\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=banshee&component=general\n"
-"POT-Creation-Date: 2010-12-29 16:54+0000\n"
-"PO-Revision-Date: 2010-12-30 09:13+0100\n"
+"POT-Creation-Date: 2011-02-16 23:31+0000\n"
+"PO-Revision-Date: 2011-02-17 08:10+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,111 +22,46 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#. ../src/Backends/Banshee.Gio/Banshee.Gio.addin.xml
-#: ../data/addin-xml-strings.cs:8
-msgid "GIO IO and Hardware backends"
-msgstr "Podpůrná vrstva V/V sběrnice a hardwaru GIO"
-
-#. ../src/Backends/Banshee.Gnome/Banshee.Gnome.addin.xml
-#: ../data/addin-xml-strings.cs:11
-msgid ""
-"Backend providers for the GNOME platform. Includes GConf support and general "
-"GNOME integration."
-msgstr ""
-"Poskytovatelé podpůrných vrstev pro platformu GNOME. Zahrnuje podporu GConf "
-"a obecnou integraci do GNOME."
-
-#. ../src/Backends/Banshee.GStreamer/Banshee.GStreamer.addin.xml
-#. ../src/Backends/Banshee.GStreamerSharp/Banshee.GStreamerSharp.addin.xml
-#: ../data/addin-xml-strings.cs:14 ../data/addin-xml-strings.cs:17
-msgid ""
-"GStreamer multimedia services including playback, CD ripping, and "
-"transcoding."
-msgstr ""
-"Multimediální služby GStreamer zahrnující přehrávání, extrahování CD a "
-"překódovávání."
-
-#. ../src/Backends/Banshee.Hal/Banshee.Hal.addin.xml
-#: ../data/addin-xml-strings.cs:20
-msgid "Provides hardware support through HAL."
-msgstr "Poskytuje podporu hardwaru prostřednictvím HAL."
-
-#. ../src/Backends/Banshee.NowPlaying.X11/Banshee.NowPlaying.X11.addin.xml
-#: ../data/addin-xml-strings.cs:23
-msgid ""
-"Provides an X11 backend for video support, which enables proper fullscreen "
-"support."
-msgstr ""
-"Poskytuje podpůrnou vrstvu X11 pro video, která dovoluje skutečnou podporu "
-"režimu celé obrazovky."
-
-#. ../src/Backends/Banshee.Osx/Banshee.Osx.addin.xml
-#: ../data/addin-xml-strings.cs:26
-msgid ""
-"Backend providers for the OSX platform. Includes general OSX integration."
-msgstr ""
-"Poskytovatelé podpůrných vrstev pro platformu OSX. Zahrnuje obecnou "
-"integraci do OSX."
-
-#. ../src/Backends/Banshee.Unix/Banshee.Unix.addin.xml
-#: ../data/addin-xml-strings.cs:29
-msgid "Provides POSIX/UNIX support, including IO."
-msgstr "Poskytuje podporu pro POSIX/UNIX, včetně V/V."
-
-#. ../src/Core/Banshee.Core/Banshee.Core.addin.xml
-#: ../data/addin-xml-strings.cs:32
-msgid "Provides low level non-GUI utilities."
-msgstr "Poskytuje nízkoúrovňové nástroje bez grafického rozhraní."
-
-#. ../src/Core/Banshee.Services/Banshee.Services.addin.xml
-#: ../data/addin-xml-strings.cs:35
-msgid "Provides non-GUI utilities and services."
-msgstr "Poskytuje služby a nástroje bez grafického rozhraní."
-
-#. ../src/Core/Banshee.ThickClient/Banshee.ThickClient.addin.xml
-#: ../data/addin-xml-strings.cs:38
-msgid "Provides GUI utilities and services."
-msgstr "Poskytuje služby a nástroje s grafickým rozhraním."
-
 #. ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice.addin.xml
-#: ../data/addin-xml-strings.cs:41
-msgid "Apple device Support"
+#: ../data/addin-xml-strings.cs:8
+#| msgid "Apple device Support"
+msgid "Apple Devices Support"
 msgstr "Podpora zařízení Apple"
 
-#: ../data/addin-xml-strings.cs:42
+#: ../data/addin-xml-strings.cs:9
 msgid "Support for most iPod/iPhone/iPad devices."
 msgstr "Podpora pro většinu zařízení iPod/iPhone/iPad."
 
-#: ../data/addin-xml-strings.cs:43 ../data/addin-xml-strings.cs:48
-#: ../data/addin-xml-strings.cs:53 ../data/addin-xml-strings.cs:58
-#: ../data/addin-xml-strings.cs:63
+#: ../data/addin-xml-strings.cs:10 ../data/addin-xml-strings.cs:15
+#: ../data/addin-xml-strings.cs:20 ../data/addin-xml-strings.cs:25
+#: ../data/addin-xml-strings.cs:30
 msgid "Device Support"
 msgstr "Podpora zařízení"
 
 #. ../src/Dap/Banshee.Dap.Ipod/Banshee.Dap.Ipod.addin.xml
-#: ../data/addin-xml-strings.cs:46
+#: ../data/addin-xml-strings.cs:13
 msgid "iPod Support"
 msgstr "Podpora pro iPod"
 
-#: ../data/addin-xml-strings.cs:47
+#: ../data/addin-xml-strings.cs:14
 msgid "Support for most iPod devices."
 msgstr "Podpora pro většinu zařízení iPod."
 
 #. ../src/Dap/Banshee.Dap.Karma/Banshee.Dap.Karma.addin.xml
-#: ../data/addin-xml-strings.cs:51
+#: ../data/addin-xml-strings.cs:18
 msgid "Karma Support"
 msgstr "Podpora pro Karmu"
 
-#: ../data/addin-xml-strings.cs:52
+#: ../data/addin-xml-strings.cs:19
 msgid "Support for Rio Karma devices."
 msgstr "Podpora pro zařízení Rio Karma."
 
 #. ../src/Dap/Banshee.Dap.MassStorage/Banshee.Dap.MassStorage.addin.xml
-#: ../data/addin-xml-strings.cs:56
+#: ../data/addin-xml-strings.cs:23
 msgid "Mass Storage Media Player Support"
 msgstr "Podpora pro multimediální přehrávače s Mass Storage"
 
-#: ../data/addin-xml-strings.cs:57
+#: ../data/addin-xml-strings.cs:24
 msgid ""
 "Support for USB-drive based devices, including many iAudio devices and "
 "Android, Pre, and Galaxy phones."
@@ -134,210 +70,197 @@ msgstr ""
 "telefonů Android, Pre a Galaxy."
 
 #. ../src/Dap/Banshee.Dap.Mtp/Banshee.Dap.Mtp.addin.xml
-#: ../data/addin-xml-strings.cs:61
+#: ../data/addin-xml-strings.cs:28
 msgid "MTP Media Player Support"
 msgstr "Podpora pro multimediální přehrávače MTP"
 
-#: ../data/addin-xml-strings.cs:62
+#: ../data/addin-xml-strings.cs:29
 msgid "Support for MTP devices, including many Creative Zen devices."
 msgstr "Podpora pro zařízení MTP, včetně řady zařízení Creative Zen."
 
-#. ../src/Dap/Banshee.Dap/Banshee.Dap.addin.xml
-#: ../data/addin-xml-strings.cs:66
-msgid "Digital Media Player Support"
-msgstr "Podpora pro přehrávače digitálních médií"
-
-#: ../data/addin-xml-strings.cs:67
-msgid "Provides general support for many kinds of media player devices."
-msgstr "Poskytuje obecnou podporu pro řadu typů multimediálních přehrávačů."
-
 #. ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store.addin.xml
-#: ../data/addin-xml-strings.cs:70
+#: ../data/addin-xml-strings.cs:33
 msgid "Amazon MP3 Store Source"
 msgstr "Zdroj obchod s MP3 Amazon"
 
-#: ../data/addin-xml-strings.cs:71
-msgid "Browse, search, and purchase music from the Amazon MP3 store"
-msgstr "Procházet, hledat a nakupovat hudbu v obchodě s MP3 Amazon"
+#: ../data/addin-xml-strings.cs:34
+#| msgid "Browse, search, and purchase music from the Amazon MP3 store"
+msgid "Browse, search, and purchase music from the Amazon MP3 store."
+msgstr "Procházet, hledat a nakupovat hudbu v obchodě s MP3 Amazon."
 
-#: ../data/addin-xml-strings.cs:72 ../data/addin-xml-strings.cs:77
-#: ../data/addin-xml-strings.cs:112 ../data/addin-xml-strings.cs:127
-#: ../data/addin-xml-strings.cs:137 ../data/addin-xml-strings.cs:142
-#: ../data/addin-xml-strings.cs:161 ../data/addin-xml-strings.cs:224
+#: ../data/addin-xml-strings.cs:35 ../data/addin-xml-strings.cs:40
+#: ../data/addin-xml-strings.cs:75 ../data/addin-xml-strings.cs:90
+#: ../data/addin-xml-strings.cs:100 ../data/addin-xml-strings.cs:105
+#: ../data/addin-xml-strings.cs:120 ../data/addin-xml-strings.cs:165
 msgid "Online Sources"
 msgstr "Zdroje on-line"
 
 #. ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3.addin.xml
-#: ../data/addin-xml-strings.cs:75
+#: ../data/addin-xml-strings.cs:38
 msgid "Amazon MP3 Import"
 msgstr "Import MP3 z Amazon"
 
-#: ../data/addin-xml-strings.cs:76
-msgid "Download and import music purchased from Amazon.com"
-msgstr "Stahování a import hudby koupené na Amazon.com"
+#: ../data/addin-xml-strings.cs:39
+#| msgid "Download and import music purchased from Amazon.com"
+msgid "Download and import music purchased from Amazon.com."
+msgstr "Stahovat a importovat hudbu koupenou na Amazon.com."
 
 #. ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook.addin.xml
-#: ../data/addin-xml-strings.cs:80
+#: ../data/addin-xml-strings.cs:43
 msgid "Audiobooks Library"
 msgstr "Knihovna mluvených knih"
 
-#: ../data/addin-xml-strings.cs:81
+#: ../data/addin-xml-strings.cs:44
 msgid "Organize audiobooks, lectures, etc."
 msgstr "Organizování mluvených knih, přednášek atd."
 
-#: ../data/addin-xml-strings.cs:82 ../data/addin-xml-strings.cs:87
-#: ../data/addin-xml-strings.cs:117 ../data/addin-xml-strings.cs:132
-#: ../data/addin-xml-strings.cs:190 ../data/addin-xml-strings.cs:195
+#: ../data/addin-xml-strings.cs:45 ../data/addin-xml-strings.cs:50
+#: ../data/addin-xml-strings.cs:80 ../data/addin-xml-strings.cs:95
+#: ../data/addin-xml-strings.cs:145 ../data/addin-xml-strings.cs:150
 msgid "Core"
 msgstr "Jádro"
 
 #. ../src/Extensions/Banshee.AudioCd/Banshee.AudioCd.addin.xml
-#: ../data/addin-xml-strings.cs:85
+#: ../data/addin-xml-strings.cs:48
 msgid "Audio CD Support"
 msgstr "Podpora pro zvuková CD"
 
-#: ../data/addin-xml-strings.cs:86
+#: ../data/addin-xml-strings.cs:49
 msgid "Listen to and rip Audio CDs."
 msgstr "Poslech a extrahování zvukových CD."
 
 #. ../src/Extensions/Banshee.BooScript/Banshee.BooScript.addin.xml
-#: ../data/addin-xml-strings.cs:90
+#: ../data/addin-xml-strings.cs:53
 msgid "Boo Scripting"
 msgstr "Skriptování v jazyce Boo"
 
-#: ../data/addin-xml-strings.cs:91
+#: ../data/addin-xml-strings.cs:54
 msgid "Customize and extend Banshee with Boo-language scripts."
 msgstr ""
 "Přizpůsobení a rozšíření přehrávač Banshee pomocí skriptů v jazyce Boo."
 
-#: ../data/addin-xml-strings.cs:92 ../data/addin-xml-strings.cs:97
-#: ../data/addin-xml-strings.cs:102 ../data/addin-xml-strings.cs:107
-#: ../data/addin-xml-strings.cs:122 ../data/addin-xml-strings.cs:147
-#: ../data/addin-xml-strings.cs:156 ../data/addin-xml-strings.cs:166
-#: ../data/addin-xml-strings.cs:171 ../data/addin-xml-strings.cs:176
-#: ../data/addin-xml-strings.cs:185 ../data/addin-xml-strings.cs:209
-#: ../data/addin-xml-strings.cs:219
+#: ../data/addin-xml-strings.cs:55 ../data/addin-xml-strings.cs:60
+#: ../data/addin-xml-strings.cs:65 ../data/addin-xml-strings.cs:70
+#: ../data/addin-xml-strings.cs:85 ../data/addin-xml-strings.cs:110
+#: ../data/addin-xml-strings.cs:115 ../data/addin-xml-strings.cs:125
+#: ../data/addin-xml-strings.cs:130 ../data/addin-xml-strings.cs:135
+#: ../data/addin-xml-strings.cs:140 ../data/addin-xml-strings.cs:155
+#: ../data/addin-xml-strings.cs:160
 msgid "Utilities"
 msgstr "Pomůcky"
 
 #. ../src/Extensions/Banshee.Bpm/Banshee.Bpm.addin.xml
-#: ../data/addin-xml-strings.cs:95
+#: ../data/addin-xml-strings.cs:58
 msgid "BPM Detection"
 msgstr "Rozpoznání BPM"
 
-#: ../data/addin-xml-strings.cs:96
+#: ../data/addin-xml-strings.cs:59
 msgid "Detect the beats per minute (BPM) of your music."
 msgstr "Rozpoznání tempa BMP (beats per minute / úderů za minutu) vaší hudby."
 
 #. ../src/Extensions/Banshee.CoverArt/Banshee.CoverArt.addin.xml
-#: ../data/addin-xml-strings.cs:100
+#: ../data/addin-xml-strings.cs:63
 msgid "Cover Art Fetching"
 msgstr "Získání přebalu"
 
-#: ../data/addin-xml-strings.cs:101
+#: ../data/addin-xml-strings.cs:64
 msgid "Fetch cover art for all items in your library."
 msgstr "Získá přebaly pro všechny položky ve vaší knihovně."
 
 #. ../src/Extensions/Banshee.Daap/Banshee.Daap.addin.xml
-#: ../data/addin-xml-strings.cs:105
+#: ../data/addin-xml-strings.cs:68
 msgid "DAAP Sharing"
 msgstr "Sdílení DAAP"
 
-#: ../data/addin-xml-strings.cs:106
+#: ../data/addin-xml-strings.cs:69
 msgid "Browse and listen to music shared over your local network."
 msgstr "Procházení a poslech hudby sdílené přes vaši místní síť."
 
 #. ../src/Extensions/Banshee.Emusic/Banshee.Emusic.addin.xml
-#: ../data/addin-xml-strings.cs:110
+#: ../data/addin-xml-strings.cs:73
 msgid "eMusic Import"
 msgstr "Import z eMusic"
 
-#: ../data/addin-xml-strings.cs:111
-msgid "Download and import music purchased from eMusic"
-msgstr "Stahování a import hudby koupené na eMusic"
+#: ../data/addin-xml-strings.cs:74
+#| msgid "Download and import music purchased from eMusic"
+msgid "Download and import music purchased from eMusic."
+msgstr "Stahovat a importovat hudbu koupenou na eMusic."
 
 #. ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue.addin.xml
-#: ../data/addin-xml-strings.cs:115
+#: ../data/addin-xml-strings.cs:78
 msgid "File System Preview Queue"
 msgstr "Fronta náhledu souborového systému"
 
-#: ../data/addin-xml-strings.cs:116
+#: ../data/addin-xml-strings.cs:79
 msgid "Preview files without importing to your library."
 msgstr "Náhled souborů aniž by se importovaly do vaší knihovny."
 
 #. ../src/Extensions/Banshee.Fixup/Banshee.Fixup.addin.xml
-#: ../data/addin-xml-strings.cs:120
+#: ../data/addin-xml-strings.cs:83
 msgid "Metadata Fixup"
 msgstr "Oprava metadat"
 
-#: ../data/addin-xml-strings.cs:121
-msgid "Fix broken and missing metadata using bulk operations"
-msgstr "Opravit poškozená a chybějící metadata pomocí hromadných operací"
+#: ../data/addin-xml-strings.cs:84
+#| msgid "Fix broken and missing metadata using bulk operations"
+msgid "Fix broken and missing metadata using bulk operations."
+msgstr "Opravit poškozená a chybějící metadata pomocí hromadných operací."
 
 #. ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive.addin.xml
-#: ../data/addin-xml-strings.cs:125
+#: ../data/addin-xml-strings.cs:88
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/HomeSource.cs:58
 msgid "Internet Archive"
 msgstr "Internetový archiv"
 
-#: ../data/addin-xml-strings.cs:126
+#: ../data/addin-xml-strings.cs:89
 msgid "Browse and search the Internet Archive's vast media collection."
 msgstr ""
 "Procházení a prohledávání rozsáhlé multimediální sbírky Internetového archivu"
 
 #. ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio.addin.xml
-#: ../data/addin-xml-strings.cs:130
+#: ../data/addin-xml-strings.cs:93
 msgid "Internet Radio"
 msgstr "Internetové rádio"
 
-#: ../data/addin-xml-strings.cs:131
+#: ../data/addin-xml-strings.cs:94
 msgid "Listen to and organize Internet Radio stations."
 msgstr "Poslech a organizování stanic internetových rádií."
 
 #. ../src/Extensions/Banshee.Lastfm/Banshee.Lastfm.addin.xml
-#: ../data/addin-xml-strings.cs:135
+#: ../data/addin-xml-strings.cs:98
 msgid "Last.fm Scrobbling"
 msgstr "Služba Scrobbling rádia Last.fm"
 
-#: ../data/addin-xml-strings.cs:136
+#: ../data/addin-xml-strings.cs:99
 msgid "Last.fm scrobbling and context pane recommendations."
 msgstr ""
 "Služba sdílení seznamů skladeb Scrobble rádia Last.fm a doporučení v "
 "kontextovém panelu."
 
 #. ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming.addin.xml
-#: ../data/addin-xml-strings.cs:140
+#: ../data/addin-xml-strings.cs:103
 msgid "Last.fm Radio"
 msgstr "Rádio Last.fm"
 
-#: ../data/addin-xml-strings.cs:141
+#: ../data/addin-xml-strings.cs:104
 msgid "Last.fm streaming radio for paid subscribers."
 msgstr "Proudové rádio Last.fm pro platící posluchače."
 
 #. ../src/Extensions/Banshee.LibraryWatcher/Banshee.LibraryWatcher.addin.xml
-#: ../data/addin-xml-strings.cs:145
+#: ../data/addin-xml-strings.cs:108
 msgid "Library Watcher"
 msgstr "Hlídač knihovny"
 
-#: ../data/addin-xml-strings.cs:146
-msgid "Automatically update music and video libraries"
-msgstr "Automaticky aktualizuje knihovny hudby a videa"
-
-#. ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo.addin.xml
-#: ../data/addin-xml-strings.cs:150
-msgid "MeeGo Support"
-msgstr "Podpora MeeGo"
-
-#: ../data/addin-xml-strings.cs:151
-msgid "Provides MeeGo integration, including a custom media panel."
-msgstr "Poskytuje integraci do MeeGo, včetně vlastní lišty médií."
+#: ../data/addin-xml-strings.cs:109
+#| msgid "Automatically update music and video libraries"
+msgid "Automatically update music and video libraries."
+msgstr "Automaticky aktualizovat knihovny hudby a videa."
 
 #. ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
-#: ../data/addin-xml-strings.cs:154
+#: ../data/addin-xml-strings.cs:113
 msgid "Mini Mode"
 msgstr "Minimalistický režim"
 
-#: ../data/addin-xml-strings.cs:155
+#: ../data/addin-xml-strings.cs:114
 msgid ""
 "Control Banshee through a small window with only playback controls and track "
 "information."
@@ -346,83 +269,68 @@ msgstr ""
 "prvky přehrávání a informace o stopě."
 
 #. ../src/Extensions/Banshee.MiroGuide/Banshee.MiroGuide.addin.xml
-#: ../data/addin-xml-strings.cs:159
+#: ../data/addin-xml-strings.cs:118
 msgid "Miro Guide Podcast Directory"
 msgstr "Adresář podcastů Miro Guide"
 
-#: ../data/addin-xml-strings.cs:160
+#: ../data/addin-xml-strings.cs:119
 msgid "Browse and subscribe to thousands of audio and video podcasts."
 msgstr "Procházet a odebírat tisíce zvukových a video podcastů."
 
 #. ../src/Extensions/Banshee.Mpris/Banshee.Mpris.addin.xml
-#: ../data/addin-xml-strings.cs:164
+#: ../data/addin-xml-strings.cs:123
 msgid "MPRIS D-Bus interface"
 msgstr "Rozhraní MPRIS D-Bus"
 
-#: ../data/addin-xml-strings.cs:165
+#: ../data/addin-xml-strings.cs:124
 msgid "Control Banshee using the MPRIS D-Bus interface."
 msgstr "Ovládat Banshee pomocí rozhraní MPRIS D-Bus."
 
 #. ../src/Extensions/Banshee.MultimediaKeys/Banshee.MultimediaKeys.addin.xml
-#: ../data/addin-xml-strings.cs:169
+#: ../data/addin-xml-strings.cs:128
 msgid "Multimedia Keys"
 msgstr "Multimediální klávesy"
 
-#: ../data/addin-xml-strings.cs:170
+#: ../data/addin-xml-strings.cs:129
 msgid "Control playback via the multimedia keys on your keyboard."
 msgstr ""
 "Ovládání přehrávání prostřednictvím multimediálních kláves na vaší "
 "klávesnici."
 
 #. ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea.addin.xml
-#: ../data/addin-xml-strings.cs:174
+#: ../data/addin-xml-strings.cs:133
 msgid "Notification Area Icon"
 msgstr "Ikona oznamovací oblasti"
 
-#: ../data/addin-xml-strings.cs:175
+#: ../data/addin-xml-strings.cs:134
 msgid "Display an icon in the notification area for controlling Banshee."
 msgstr ""
 "Zobrazení ikony umožňující ovládání přehrávače Banshee z oznamovací oblasti."
 
-#. ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying.addin.xml
-#: ../data/addin-xml-strings.cs:179
-#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:168
-#: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:50
-msgid "Now Playing"
-msgstr "Právě se přehrává"
-
-#: ../data/addin-xml-strings.cs:180
-msgid ""
-"Provides a source that displays embedded video and provides fullscreen video "
-"playback and controls."
-msgstr ""
-"Poskytuje zdroj, který zobrazí vložené video a poskytuje přehrávání a "
-"ovládání videa v režimu celé obrazovky."
-
 #. ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration.addin.xml
-#: ../data/addin-xml-strings.cs:183
+#: ../data/addin-xml-strings.cs:138
 msgid "Importers for Amarok, Rhythmbox and iTunes"
 msgstr "Import pro přehrávače Amarok, Rhythmbox a iTunes"
 
-#: ../data/addin-xml-strings.cs:184
+#: ../data/addin-xml-strings.cs:139
 msgid "Import your library from Amarok, Rhythmbox or iTunes."
 msgstr "Import vaší knihovny z přehrávačů Amarok, Rhythmbox nebo iTunes."
 
 #. ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue.addin.xml
-#: ../data/addin-xml-strings.cs:188
+#: ../data/addin-xml-strings.cs:143
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:58
 #: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:79
 msgid "Play Queue"
 msgstr "Fronta přehrávání"
 
-#: ../data/addin-xml-strings.cs:189
+#: ../data/addin-xml-strings.cs:144
 msgid "Queue tracks in an ad-hoc playlist, or let the Auto DJ take over."
 msgstr ""
 "Řazení stop do fronty v účelovém seznamu skladeb, případně umožňuje řízení "
 "automatickým diskžokejem."
 
 #. ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.addin.xml
-#: ../data/addin-xml-strings.cs:193
+#: ../data/addin-xml-strings.cs:148
 #: ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice/AppleDeviceSource.cs:194
 #: ../src/Dap/Banshee.Dap/Banshee.Dap/PodcastGroupSource.cs:38
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/MediaType.cs:107
@@ -430,75 +338,38 @@ msgstr ""
 msgid "Podcasts"
 msgstr "Podcasty"
 
-#: ../data/addin-xml-strings.cs:194
+#: ../data/addin-xml-strings.cs:149
 msgid "Subscribe to podcasts and stream or download episodes."
 msgstr "Přihlášení se do podcastu a příjem nebo stahování dílů."
 
-#. ../src/Extensions/Banshee.RemoteAudio/Banshee.RemoteAudio.addin.xml
-#: ../data/addin-xml-strings.cs:198
-msgid "Remote Audio"
-msgstr "Vzdálené audio"
-
-#: ../data/addin-xml-strings.cs:199
-msgid "Provides support for remote speakers like the Airport Express"
-msgstr "Poskytuje podporu pro vzdálené reproduktory, jako jsou Airport Express"
-
-#. ../src/Extensions/Banshee.Sample/Banshee.Sample.addin.xml
-#: ../data/addin-xml-strings.cs:202
-#: ../src/Extensions/Banshee.Sample/Banshee.Sample/SampleSource.cs:40
-msgid "Sample"
-msgstr "Ukázka"
-
-#: ../data/addin-xml-strings.cs:203
-msgid "A sample source useful to developers."
-msgstr "Ukázkový zdroj použitelný pro vývojáře."
-
-#: ../data/addin-xml-strings.cs:204
-msgid "Sources"
-msgstr "Zdroje"
-
 #. ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu.addin.xml
-#: ../data/addin-xml-strings.cs:207
-msgid "Sound Menu integration for Banshee"
-msgstr "Integrace Banshee do Nabídky zvuku"
+#: ../data/addin-xml-strings.cs:153
+#| msgid "Sound Menu integration for Banshee"
+msgid "Sound Menu Integration"
+msgstr "Integrace do Nabídky zvuku"
 
-#: ../data/addin-xml-strings.cs:208
+#: ../data/addin-xml-strings.cs:154
 msgid "Control Banshee from the Sound Menu."
 msgstr "Ovládat Banshee z nabídky zvuku"
 
-#. ../src/Extensions/Banshee.SqlDebugConsole/Banshee.SqlDebugConsole.addin.xml
-#: ../data/addin-xml-strings.cs:212
-msgid "SQL Debug Console"
-msgstr "Ladicí konzola SQL"
-
-#: ../data/addin-xml-strings.cs:213
-msgid "Provides a UI for monitoring Banshee's SQL usage, and running queries."
-msgstr ""
-"Poskytuje uživatelské rozhraní na sledování využití SQL v Banshee a běžící "
-"dotazy."
-
-#: ../data/addin-xml-strings.cs:214
-msgid "Debug"
-msgstr "Ladit"
-
 #. ../src/Extensions/Banshee.Torrent/Banshee.Torrent.addin.xml
-#: ../data/addin-xml-strings.cs:217
+#: ../data/addin-xml-strings.cs:158
 msgid "Torrent Downloader"
 msgstr "Stahování protokolem torrent"
 
-#: ../data/addin-xml-strings.cs:218
+#: ../data/addin-xml-strings.cs:159
 msgid "Support downloading BitTorrent files from podcasts."
 msgstr "Podpora stahování souborů BitTorrent z podcastů."
 
 #. ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore.addin.xml
-#: ../data/addin-xml-strings.cs:222
+#: ../data/addin-xml-strings.cs:163
 #: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:49
 #: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:50
 #: ../src/Extensions/Banshee.UbuntuOneMusicStore/Banshee.UbuntuOneMusicStore/UbuntuOneMusicStoreSource.cs:90
 msgid "Ubuntu One Music Store"
 msgstr "Ubuntu One Music Store"
 
-#: ../data/addin-xml-strings.cs:223
+#: ../data/addin-xml-strings.cs:164
 msgid ""
 "This extension grants access to the Ubuntu One Music Store, powered by "
 "7digital."
@@ -507,29 +378,30 @@ msgstr ""
 "fungujícím na 7digital."
 
 #. ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia.addin.xml
-#: ../data/addin-xml-strings.cs:227
+#: ../data/addin-xml-strings.cs:168
 #: ../src/Extensions/Banshee.Wikipedia/Banshee.Wikipedia/ContextPage.cs:44
 msgid "Wikipedia"
 msgstr "Wikipedie"
 
-#: ../data/addin-xml-strings.cs:228
+#: ../data/addin-xml-strings.cs:169
 msgid "View artist information from Wikipedia in the context pane."
 msgstr ""
 "Zobrazovat v kontextovém panelu informace o umělci z encyklopedie Wikipedie."
 
-#: ../data/addin-xml-strings.cs:229 ../data/addin-xml-strings.cs:234
+#: ../data/addin-xml-strings.cs:170 ../data/addin-xml-strings.cs:175
 msgid "Context Pane"
 msgstr "Kontextový panel"
 
 #. ../src/Extensions/Banshee.YouTube/Banshee.YouTube.addin.xml
-#: ../data/addin-xml-strings.cs:232
+#: ../data/addin-xml-strings.cs:173
 #: ../src/Extensions/Banshee.YouTube/Banshee.YouTube/ContextPage.cs:44
 msgid "YouTube"
 msgstr "YouTube"
 
-#: ../data/addin-xml-strings.cs:233
-msgid "Show related YouTube videos in the context pane"
-msgstr "Zobrazit odpovídající videa z YouTube v kontextovém panelu"
+#: ../data/addin-xml-strings.cs:174
+#| msgid "Show related YouTube videos in the context pane"
+msgid "Show related YouTube videos in the context pane."
+msgstr "Zobrazit odpovídající videa z YouTube v kontextovém panelu."
 
 #: ../data/audio-profiles/aac-novell.xml.in.h:1
 msgid "3GPP"
@@ -918,13 +790,13 @@ msgstr ""
 msgid "Could not create transcoder"
 msgstr "Nelze vytvořit transkodér"
 
-#: ../src/Backends/Banshee.GStreamerSharp/Banshee.GStreamerSharp/PlayerEngine.cs:229
+#: ../src/Backends/Banshee.GStreamerSharp/Banshee.GStreamerSharp/PlayerEngine.cs:249
 msgid "GStreamer# 0.10"
 msgstr "GStreamer# 0.10"
 
 #: ../src/Backends/Banshee.Osx/Banshee.OsxBackend/OsxService.cs:91
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:132
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:111
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:110
 msgid "_Close"
 msgstr "_Zavřít"
 
@@ -932,7 +804,7 @@ msgstr "_Zavřít"
 #: ../src/Clients/Nereid/Nereid/PlayerInterface.cs:251
 #: ../src/Extensions/Banshee.Fixup/Banshee.Fixup/FixSource.cs:79
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:133
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:112
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:111
 msgid "Close"
 msgstr "Zavřít"
 
@@ -1611,7 +1483,7 @@ msgid "Remove From Library"
 msgstr "Odstranit z knihovny"
 
 #. Translators: {0} is the library name, eg 'Music Library' or 'Podcasts'
-#: ../src/Core/Banshee.Services/Banshee.Library/LibrarySource.cs:122
+#: ../src/Core/Banshee.Services/Banshee.Library/LibrarySource.cs:121
 #, csharp-format
 msgid "{0} Folder"
 msgstr "Složka {0}"
@@ -2609,7 +2481,7 @@ msgid "Delete Smart Playlist"
 msgstr "Odstranit chytrý seznam skladeb"
 
 #: ../src/Core/Banshee.Services/Banshee.Sources/DatabaseSource.cs:147
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:161
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:160
 #, csharp-format
 msgid "All Genres ({0})"
 msgstr "Všechny žánry ({0})"
@@ -5134,11 +5006,11 @@ msgstr[2] "Načítá se {0} stop"
 msgid "Loading playlists"
 msgstr "Načítají se seznamy skladeb"
 
-#: ../src/Extensions/Banshee.Daap/Banshee.Daap/OpenRemoteServer.cs:45
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/OpenRemoteServer.cs:46
 msgid "Open remote DAAP server"
 msgstr "Otevřít vzdálený server DAAP"
 
-#: ../src/Extensions/Banshee.Daap/Banshee.Daap/OpenRemoteServer.cs:50
+#: ../src/Extensions/Banshee.Daap/Banshee.Daap/OpenRemoteServer.cs:51
 msgid "Enter server IP address and port:"
 msgstr "Zadejte adresu IP serveru a port:"
 
@@ -5348,8 +5220,8 @@ msgstr "Chyba při získávání podrobností položky z Internetového archivu"
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/DetailsView.cs:205
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:130
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:66
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:136
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:281
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:135
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:280
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:89
 msgid "Description"
 msgstr "Popis"
@@ -5622,7 +5494,7 @@ msgstr "Získat více"
 #: ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive/SearchView.cs:128
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Field.cs:61
 #: ../src/Extensions/Banshee.InternetArchive/InternetArchive/Sort.cs:98
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:135
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:134
 msgid "Creator"
 msgstr "Tvůrce"
 
@@ -5839,20 +5711,20 @@ msgstr "Přidat stanici"
 msgid "Add a new Internet Radio station or playlist"
 msgstr "Přidat novou internetovou rozhlasovou stanici nebo seznam skladeb"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:83
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:82
 msgid "Search your stations"
 msgstr "Hledat své stanice"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:84
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:83
 #: ../src/Extensions/Banshee.LastfmStreaming/Banshee.LastfmStreaming/StationEditor.cs:60
 msgid "Edit Station"
 msgstr "Upravit stanici"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:134
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:133
 msgid "Station"
 msgstr "Stanice"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:155
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:154
 #, csharp-format
 msgid "{0} station"
 msgid_plural "{0} stations"
@@ -5860,15 +5732,15 @@ msgstr[0] "{0} stanice"
 msgstr[1] "{0} stanice"
 msgstr[2] "{0} stanic"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:241
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:240
 msgid "Please provide a valid station URI"
 msgstr "Zadejte prosím správnou URI stanice"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:254
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:253
 msgid "Please provide a station genre"
 msgstr "Zadejte prosím žánr stanice"
 
-#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:262
+#: ../src/Extensions/Banshee.InternetRadio/Banshee.InternetRadio/InternetRadioSource.cs:261
 msgid "Please provide a station title"
 msgstr "Zadejte prosím název stanice"
 
@@ -6334,6 +6206,11 @@ msgstr "Knihovna"
 msgid "Launch the Banshee Media Player"
 msgstr "Spustit multimediální přehrávač Banshee"
 
+#: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MediaPanelContents.cs:168
+#: ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying/NowPlayingSource.cs:50
+msgid "Now Playing"
+msgstr "Právě se přehrává"
+
 #: ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo/MeeGoPanel.cs:60
 #: ../src/Extensions/Banshee.MeeGo/meego-panel-banshee.desktop.in.in.h:2
 msgid "media"
@@ -6388,7 +6265,6 @@ msgid "Show notifications when item changes"
 msgstr "Zobrazovat oznámení při změně položky"
 
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:344
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:209
 msgid "Still Running"
 msgstr "Stále běží"
 
@@ -6401,7 +6277,7 @@ msgstr ""
 "volbu <i>Ukončit</i>."
 
 #: ../src/Extensions/Banshee.NotificationArea/Banshee.NotificationArea/NotificationAreaService.cs:480
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:340
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:326
 msgid "Skip this item"
 msgstr "Přeskočit tuto položku"
 
@@ -6523,11 +6399,11 @@ msgstr "Hudební přehrávač Rhythmbox"
 msgid "Import _playlists"
 msgstr "Importovat _seznam skladeb"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:59
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:61
 msgid "_Fill"
 msgstr "_Vyplnit"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:71
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs:73
 msgid "f_rom"
 msgstr "_z"
 
@@ -6601,16 +6477,16 @@ msgstr "Vyprázdnit frontu při ukončení"
 msgid "Remove From Play Queue"
 msgstr "Odstranit z fronty"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:967
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:965
 msgid "Number of _played songs to show"
 msgstr "Počet _přehraných skladeb, které se mají zobrazit"
 
-#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:973
+#: ../src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs:971
 msgid "Number of _upcoming songs to show"
 msgstr "Počet _nadcházejících skladeb, které se mají zobrazit"
 
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastFeedModel.cs:47
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:280
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:279
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastActions.cs:89
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:86
 msgid "Podcast"
@@ -6661,21 +6537,21 @@ msgstr "Hledat své podcasty"
 msgid "Episode Properties"
 msgstr "Vlastnosti dílu"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:280
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:279
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/PodcastEpisodePage.cs:88
 msgid "Published"
 msgstr "Zveřejněno"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:280
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:279
 msgid "New"
 msgstr "Nový"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:281
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:280
 #: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Gui/ColumnCellPodcastStatusIndicator.cs:66
 msgid "Downloaded"
 msgstr "Stažené"
 
-#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:307
+#: ../src/Extensions/Banshee.Podcasting/Banshee.Podcasting.Data/PodcastSource.cs:306
 #, csharp-format
 msgid "{0} episode"
 msgid_plural "{0} episodes"
@@ -6889,41 +6765,37 @@ msgstr "Nechat mě vybrat díly ke stažení"
 msgid "_Speaker:"
 msgstr "_Reproduktor:"
 
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:211
-msgid ""
-"Banshee was closed to the sound menu. Use the <i>Quit</i> option to end your "
-"session."
-msgstr ""
-"Aplikace Banshee byla zavřena do nabídky zvuku. Pro ukončení svého sezení "
-"použijte volbu <i>Ukončit</i>."
+#: ../src/Extensions/Banshee.Sample/Banshee.Sample/SampleSource.cs:40
+msgid "Sample"
+msgstr "Ukázka"
 
 #. Translators: {0} and {1} are Artist Name and
 #. Album Title, respectively;
 #. e.g. 'by Parkway Drive from Killing with a Smile'
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:257
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:243
 #, csharp-format
 msgid "by '{0}' from '{1}'"
 msgstr "od umělce „{0}“ z alba „{1}“"
 
 #. Translators: {0} is for Album Title;
 #. e.g. 'from Killing with a Smile'
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:262
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:248
 #, csharp-format
 msgid "from '{0}'"
 msgstr "z alba „{0}“"
 
 #. Translators: {0} is for Artist Name;
 #. e.g. 'by Parkway Drive'
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:267
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:253
 #, csharp-format
 msgid "by '{0}'"
 msgstr "od umělce „{0}“"
 
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:376
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:362
 msgid "_Show Banshee in the sound menu"
 msgstr "Zobrazit Ban_shee v nabídce zvuku"
 
-#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:377
+#: ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu/SoundMenuService.cs:363
 msgid "Control Banshee through the sound menu"
 msgstr "Ovládat Banshee přes nabídku zvuku"
 
@@ -7258,6 +7130,102 @@ msgstr "Připojeno k Last.fm."
 #: ../src/Libraries/Migo/Migo.Syndication/RssParser.cs:100
 msgid "Unknown Podcast"
 msgstr "Neznámý podcast"
+
+#~ msgid "GIO IO and Hardware backends"
+#~ msgstr "Podpůrná vrstva V/V sběrnice a hardwaru GIO"
+
+#~ msgid ""
+#~ "Backend providers for the GNOME platform. Includes GConf support and "
+#~ "general GNOME integration."
+#~ msgstr ""
+#~ "Poskytovatelé podpůrných vrstev pro platformu GNOME. Zahrnuje podporu "
+#~ "GConf a obecnou integraci do GNOME."
+
+#~ msgid ""
+#~ "GStreamer multimedia services including playback, CD ripping, and "
+#~ "transcoding."
+#~ msgstr ""
+#~ "Multimediální služby GStreamer zahrnující přehrávání, extrahování CD a "
+#~ "překódovávání."
+
+#~ msgid "Provides hardware support through HAL."
+#~ msgstr "Poskytuje podporu hardwaru prostřednictvím HAL."
+
+#~ msgid ""
+#~ "Provides an X11 backend for video support, which enables proper "
+#~ "fullscreen support."
+#~ msgstr ""
+#~ "Poskytuje podpůrnou vrstvu X11 pro video, která dovoluje skutečnou "
+#~ "podporu režimu celé obrazovky."
+
+#~ msgid ""
+#~ "Backend providers for the OSX platform. Includes general OSX integration."
+#~ msgstr ""
+#~ "Poskytovatelé podpůrných vrstev pro platformu OSX. Zahrnuje obecnou "
+#~ "integraci do OSX."
+
+#~ msgid "Provides POSIX/UNIX support, including IO."
+#~ msgstr "Poskytuje podporu pro POSIX/UNIX, včetně V/V."
+
+#~ msgid "Provides low level non-GUI utilities."
+#~ msgstr "Poskytuje nízkoúrovňové nástroje bez grafického rozhraní."
+
+#~ msgid "Provides non-GUI utilities and services."
+#~ msgstr "Poskytuje služby a nástroje bez grafického rozhraní."
+
+#~ msgid "Provides GUI utilities and services."
+#~ msgstr "Poskytuje služby a nástroje s grafickým rozhraním."
+
+#~ msgid "Digital Media Player Support"
+#~ msgstr "Podpora pro přehrávače digitálních médií"
+
+#~ msgid "Provides general support for many kinds of media player devices."
+#~ msgstr "Poskytuje obecnou podporu pro řadu typů multimediálních přehrávačů."
+
+#~ msgid "MeeGo Support"
+#~ msgstr "Podpora MeeGo"
+
+#~ msgid "Provides MeeGo integration, including a custom media panel."
+#~ msgstr "Poskytuje integraci do MeeGo, včetně vlastní lišty médií."
+
+#~ msgid ""
+#~ "Provides a source that displays embedded video and provides fullscreen "
+#~ "video playback and controls."
+#~ msgstr ""
+#~ "Poskytuje zdroj, který zobrazí vložené video a poskytuje přehrávání a "
+#~ "ovládání videa v režimu celé obrazovky."
+
+#~ msgid "Remote Audio"
+#~ msgstr "Vzdálené audio"
+
+#~ msgid "Provides support for remote speakers like the Airport Express"
+#~ msgstr ""
+#~ "Poskytuje podporu pro vzdálené reproduktory, jako jsou Airport Express"
+
+#~ msgid "A sample source useful to developers."
+#~ msgstr "Ukázkový zdroj použitelný pro vývojáře."
+
+#~ msgid "Sources"
+#~ msgstr "Zdroje"
+
+#~ msgid "SQL Debug Console"
+#~ msgstr "Ladicí konzola SQL"
+
+#~ msgid ""
+#~ "Provides a UI for monitoring Banshee's SQL usage, and running queries."
+#~ msgstr ""
+#~ "Poskytuje uživatelské rozhraní na sledování využití SQL v Banshee a "
+#~ "běžící dotazy."
+
+#~ msgid "Debug"
+#~ msgstr "Ladit"
+
+#~ msgid ""
+#~ "Banshee was closed to the sound menu. Use the <i>Quit</i> option to end "
+#~ "your session."
+#~ msgstr ""
+#~ "Aplikace Banshee byla zavřena do nabídky zvuku. Pro ukončení svého sezení "
+#~ "použijte volbu <i>Ukončit</i>."
 
 #~ msgid "Loved"
 #~ msgstr "Oblíbené"
