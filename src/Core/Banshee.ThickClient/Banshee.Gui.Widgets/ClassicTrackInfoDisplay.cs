@@ -299,7 +299,7 @@ namespace Banshee.Gui.Widgets
 
         private bool UpdatePopup ()
         {
-            if (CurrentTrack == null || ArtworkManager == null) {
+            if (CurrentTrack == null || ArtworkManager == null || !in_thumbnail_region) {
                 HidePopup ();
                 return false;
             }
