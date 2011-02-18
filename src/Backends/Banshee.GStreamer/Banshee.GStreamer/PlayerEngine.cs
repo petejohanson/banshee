@@ -303,6 +303,7 @@ namespace Banshee.GStreamer
 
         private void OnEos (IntPtr player)
         {
+            StopIterating ();
             Close (false);
             OnEventChanged (PlayerEvent.EndOfStream);
             if (!next_track_pending) {
@@ -337,6 +338,7 @@ namespace Banshee.GStreamer
         {
             if (iterate_timeout_id > 0) {
                 GLib.Source.Remove (iterate_timeout_id);
+                iterate_timeout_id = 0;
             }
 
             iterate_timeout_id = GLib.Timeout.Add (200, OnIterate);
@@ -346,6 +348,7 @@ namespace Banshee.GStreamer
         {
             if (iterate_timeout_id > 0) {
                 GLib.Source.Remove (iterate_timeout_id);
+                iterate_timeout_id = 0;
             }
         }
 
