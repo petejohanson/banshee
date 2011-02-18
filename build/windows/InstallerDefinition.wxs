@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?define ProductShortName = "Banshee" ?>
+
+<!-- Change per release -->
 <?define ProductVersion = "1.9.3" ?>
-<?define ProductVersionText = "1.9.3 - PRE-ALPHA" ?>
-<?define Manufacturer = "Novell" ?>
-<?define UpgradeCode = "9134F74C-E7E3-471A-9833-F86FB45CD38E" ?>
+<?define ProductVersionText = "1.9.3 - ALPHA" ?>
+
+<!-- Should not be changed -->
+<?define ProductShortName = "Banshee" ?>
+<?define ProductLongName = "Banshee Media Player" ?>
+<?define Manufacturer = "Banshee Project" ?>
+<?define UpgradeCode = "9C65FB23-64AE-41AC-AA33-272729423F60" ?>
 
 <?define BuildRoot= "..\.." ?>
 <?define binDir= "..\..\bin\bin" ?>
@@ -13,7 +18,7 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="$(var.ProductShortName) $(var.ProductVersionText)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
-    <Package Id="*" Compressed="yes" Description="$(var.ProductShortName) $(var.ProductVersionText) ($(var.ProductVersion))" InstallerVersion="200" ShortNames="no" Manufacturer="$(var.Manufacturer)" />
+    <Package Id="*" Compressed="yes" Description="$(var.ProductLongName) $(var.ProductVersionText)" InstallerVersion="200" ShortNames="no" Manufacturer="$(var.Manufacturer)" />
     <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" CompressionLevel="high"/>
 
     <!-- Ensure .Net 3.5 SP1 or higher is installed -->
@@ -23,10 +28,12 @@
       <![CDATA[Installed OR (NETFRAMEWORK35_SP_LEVEL and NOT NETFRAMEWORK35_SP_LEVEL = "#0") OR NETFRAMEWORK40FULL]]>
     </Condition>
 
-    <!-- Major upgrade -->
+    <!-- Define which previous versions we should be able to upgrade/replace -->
     <Upgrade Id="$(var.UpgradeCode)">
       <UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes" Property="NEWERVERSIONDETECTED" />
-      <UpgradeVersion Minimum="0.0.0" IncludeMinimum="yes" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
+      <UpgradeVersion OnlyDetect="no" Property="OLDERVERSIONBEINGUPGRADED"
+        Minimum="0.0.0" IncludeMinimum="yes"
+        Maximum="$(var.ProductVersion)" IncludeMaximum="no" />
     </Upgrade>
 
     <!-- Option to launch when finished with setup -->
@@ -40,7 +47,8 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="Banshee" FileSource="$(var.BuildRoot)\bin">
           <Directory Id="bin" Name="bin">
-            <Component Id="ProductComponent" Guid="38703ED9-C1D1-4DC5-834B-31B8059BF7DF">
+            <Component Id="ProductComponent" Guid="55C2C651-CFF2-4607-ADE0-0BB43D5D1086">
+
               <!-- Place Banshee path into registry -->
               <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Version' Value='$(var.ProductVersion)' />
               <RegistryValue Root='HKLM' Key='SOFTWARE\Novell\Banshee' Type='string' Name='Path' Value='[INSTALLLOCATION]' />
@@ -57,7 +65,7 @@
       <!-- Define directory structure for Start menu shortcut, and create shortcut -->
       <Directory Id="ProgramMenuFolder" Name="PMenu">
         <Directory Id="ProgramMenuDir" Name='$(var.ProductShortName)'>
-          <Component Id="StartMenuShortcut" Guid="165DF12B-D970-49BC-B03B-880B62ABC308">
+          <Component Id="StartMenuShortcut" Guid="872AA14E-EFCB-4F0B-B3B8-102162257EC1">
             <Shortcut Id="StartMenuShortcut" Name="$(var.ProductShortName)" Icon="Nereid.exe" Target="[INSTALLLOCATION]bin\Nereid.exe" WorkingDirectory="bin"/>
             <RemoveFolder Id="ProgramMenuSubfolder" On="uninstall"/>
             <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.ProductShortName)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
@@ -67,7 +75,7 @@
 
       <!-- Define directory structure for Desktop shortcut, and create shortcut -->
       <Directory Id="DesktopFolder">
-        <Component Id="DesktopShortcut" Guid="ACCE1EDB-87E3-4FE5-B2BF-93113E767381">
+        <Component Id="DesktopShortcut" Guid="5F62AA2F-A4C3-404B-A448-4E8154A04AD0">
           <Shortcut Id="DesktopShortcut" Name="$(var.ProductShortName)" Icon="Nereid.exe" Target="[INSTALLLOCATION]bin\Nereid.exe" WorkingDirectory="bin"/>
           <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.ProductShortName)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
         </Component>
@@ -107,6 +115,7 @@
     <Property Id="ARPHELPLINK" Value="http://banshee.fm/" />
   </Product>
 
+  <!-- Include the heat.exe generated lists of files -->
   <?include obj\generated_bin.wxi ?>
   <?include obj\generated_etc.wxi ?>
   <?include obj\generated_lib.wxi ?>

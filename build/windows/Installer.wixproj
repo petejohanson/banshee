@@ -15,8 +15,10 @@
     <Compile Include="InstallerDefinition.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="generated_binaries.wxi" />
-    <None Include="generated_share.wxi" />
+    <None Include="obj\generated_bin.wxi" />
+    <None Include="obj\generated_etc.wxi" />
+    <None Include="obj\generated_lib.wxi" />
+    <None Include="obj\generated_share.wxi" />
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixNetFxExtension">
