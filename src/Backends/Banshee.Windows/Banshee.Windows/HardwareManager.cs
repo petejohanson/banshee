@@ -31,101 +31,84 @@ using System.Collections.Generic;
 using Banshee.Hardware;
 using System.Management;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Banshee.Windows
 {
-    public class UsbDevice : IUsbDevice
+    public class Device : IDevice
     {
-        // Expects a CIM_USBDevice entry
+        internal IUsbDevice UsbDevice { get; set; }
+
+        public IUsbDevice ResolveRootUsbDevice () { return UsbDevice; }
+        public IUsbPortInfo ResolveUsbPortInfo () { return null; }
+
+        public string Uuid { get; set; }
+        public string Serial { get; set; }
+        public string Name { get; set; }
+        public string Product { get; set; }
+        public string Vendor { get; set; }
+        public IDeviceMediaCapabilities MediaCapabilities { get; set; }
+    }
+
+    public class UsbDevice : Device, IUsbDevice
+    {
+        // Expects a CIM_USBDevice object
+        // http://msdn.microsoft.com/en-us/library/aa388649%28v=vs.85%29.aspx
         internal UsbDevice (ManagementObject o)
         {
             Uuid = o.Str ("DeviceID");
-            int i = Uuid.IndexOf ("VID_");
-            VendorId = Int32.Parse (Uuid.Substring (i + 4, 4), NumberStyles.HexNumber);
-            i = Uuid.IndexOf ("PID_");
-            ProductId = Int32.Parse (Uuid.Substring (i + 4, 4), NumberStyles.HexNumber);
+            UsbDevice = this;
+
+            // Parse the vendor and product IDs out; best way I could find; patches welcome
+            VendorId  = Int32.Parse (Uuid.Substring (Uuid.IndexOf ("VID_") + 4, 4), NumberStyles.HexNumber);
+            ProductId = Int32.Parse (Uuid.Substring (Uuid.IndexOf ("PID_") + 4, 4), NumberStyles.HexNumber);
         }
 
         public int ProductId { get; set; }
         public int VendorId { get; set; }
         public double Speed { get; set; }
         public double Version { get; set; }
-
-        // IDevice
-        public string Uuid { get; set; }
-        public string Serial { get; set; }
-        public string Name { get; set; }
-        public string Product { get; set; }
-        public string Vendor { get; set; }
-
-        public IDeviceMediaCapabilities MediaCapabilities { get; set; }
-
-        public virtual IUsbDevice ResolveRootUsbDevice ()
-        {
-            return null;
-        }
-
-        public IUsbPortInfo ResolveUsbPortInfo ()
-        {
-            return null;
-        }
     }
 
-    public class Volume : IVolume
+    public class Volume : Device, IVolume
     {
-        UsbDevice usb_device;
+        // Regex to grab the alphanumeric code before the ending "&0".  Example inputs:
+        //  USBSTOR\DISK&VEN_HTC&PROD_ANDROID_PHONE&REV_0100\8&5901EA1&0&HT851N003062&0
+        //  USBSTOR\DISK&VEN_KINGSTON&PROD_DATATRAVELER_2.0&REV_1.00\89900000000000006CB02B99&0
+        static Regex regex = new Regex ("[^a-zA-Z0-9]([a-zA-Z0-9]+)&0$", RegexOptions.Compiled);
 
         // Expects a Win32_DiskDrive object
+        // http://msdn.microsoft.com/en-us/library/aa394132%28v=VS.85%29.aspx
         internal Volume (ManagementObject o)
         {
+            if (o.ClassPath.ClassName != "Win32_DiskDrive")
+                throw new ArgumentException (o.ClassPath.ClassName, "o");
+
             Uuid = o.Str ("DeviceID");
+            Name = o.Str ("Caption");
 
-            string cc = o.Str ("PNPDeviceID");
-            int i =  cc.LastIndexOf ('&');
-            if (i >= 0) {
-                cc = cc.Substring (0, cc.LastIndexOf ('&'));
-                i = cc.LastIndexOf ('&');
-                if (i >= 0) {
-                    cc = cc.Substring (i + 1, cc.Length - i - 1);
-                    cc = HardwareManager.Escape (cc);
-                    //= USBSTOR\DISK&VEN_HTC&PROD_ANDROID_PHONE&REV_0100\8&5901EA1&0&HT851N003062&0
-                    var query = String.Format ("SELECT * FROM CIM_USBDevice WHERE DeviceID LIKE '%{0}'", cc);
-
-                    Console.WriteLine ("query = {0}", query);
-                    var u = HardwareManager.Query (query).FirstOrDefault ();
-                    if (u != null) {
-                        usb_device = new UsbDevice (u);
-                    }
-                }
+            // Get USB vendor/product ids from the associated CIM_USBDevice
+            // This way of associating them (via a substring of the PNPDeviceID) is quite a hack; patches welcome
+            var match = regex.Match (o.Str ("PNPDeviceID"));
+            if (match.Success) {
+                string query = String.Format ("SELECT * FROM CIM_USBDevice WHERE DeviceID LIKE '%{0}'", match.Groups[1].Captures[0].Value);
+                UsbDevice = HardwareManager.Query (query).Select (u => new UsbDevice (u)).FirstOrDefault ();
             }
 
-            // Look up the MountPoint, going from DiskDrive -> Partition -> LogicalDisk
-            ManagementObject logical_disk = null;
-            foreach (ManagementObject b in o.GetRelated("Win32_DiskPartition")) {
-                Console.WriteLine("  PartName: {0}", b["Name"]);
-                /*foreach (var p in b.Properties) {
-                    Console.WriteLine ("  part prop {0} = {1}", p.Name, p.Value);
-                }*/
-                foreach (ManagementObject c in b.GetRelated("Win32_LogicalDisk")) {
-                    Console.WriteLine("    LDName: {0}", c["Name"]); // here it will print drive letter
-                    logical_disk = c;
+            // Get MountPoint and more from the associated LogicalDisk
+            // FIXME this assumes one partition for the device
+            foreach (ManagementObject partition in o.GetRelated ("Win32_DiskPartition")) {
+                foreach (ManagementObject disk in partition.GetRelated ("Win32_LogicalDisk")) {
+                    //IsMounted = (bool)ld.GetPropertyValue ("Automount") == true;
+                    //IsReadOnly = (ushort) ld.GetPropertyValue ("Access") == 1;
+                    MountPoint = disk.Str ("Name") + "/";
+                    FileSystem = disk.Str ("FileSystem");
+                    Capacity = (ulong) disk.GetPropertyValue ("Size");
+                    Available = (long)(ulong)disk.GetPropertyValue ("FreeSpace");
+                    return;
                 }
-            }
-
-            Console.WriteLine ("logical disk null? {0}", logical_disk == null);
-            if (logical_disk != null) {
-                var ld = logical_disk;
-                Console.WriteLine ("Got Logical disk!!");
-                //IsMounted = (bool)ld.GetPropertyValue ("Automount") == true;
-                //IsReadOnly = (ushort) ld.GetPropertyValue ("Access") == 1;
-                MountPoint = ld.Str ("Name") + "/";
-                FileSystem = ld.Str ("FileSystem");
-                Capacity = (ulong) ld.GetPropertyValue ("Size");
-                Available = (long)(ulong)ld.GetPropertyValue ("FreeSpace");
             }
         }
-
-        // IVolume
 
         public string DeviceNode { get; set; }
         public string MountPoint { get; set; }
@@ -145,25 +128,6 @@ namespace Banshee.Windows
 
         public bool CanUnmount { get; set; }
         public void Unmount () {}
-
-        // IDevice
-
-        public IUsbDevice ResolveRootUsbDevice ()
-        {
-            return usb_device;
-        }
-
-        public IUsbPortInfo ResolveUsbPortInfo ()
-        {
-            return null;
-        }
-
-        public string Uuid { get; set; }
-        public string Serial { get; set; }
-        public string Name { get; set; }
-        public string Product { get; set; }
-        public string Vendor { get; set; }
-        public IDeviceMediaCapabilities MediaCapabilities { get; set; }
     }
 
     public class HardwareManager : IHardwareManager
@@ -207,13 +171,6 @@ namespace Banshee.Windows
                     yield return o;
                 }
             }
-        }
-
-        public static string Escape (string input)
-        {
-            input = input.Replace ("_", "[_]"); // escape _'s
-            input = input.Replace ("\\", "\\\\"); // escape _'s
-            return input;
         }
 
         public void Dispose ()
