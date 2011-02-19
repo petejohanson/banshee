@@ -84,12 +84,12 @@ namespace Banshee.Windows
             if (o.ClassPath.ClassName != "Win32_DiskDrive")
                 throw new ArgumentException (o.ClassPath.ClassName, "o");
 
-            Uuid = o.Str ("DeviceID");
+            Uuid = o.Str ("PNPDeviceID");
             Name = o.Str ("Caption");
 
             // Get USB vendor/product ids from the associated CIM_USBDevice
             // This way of associating them (via a substring of the PNPDeviceID) is quite a hack; patches welcome
-            var match = regex.Match (o.Str ("PNPDeviceID"));
+            var match = regex.Match (Uuid);
             if (match.Success) {
                 string query = String.Format ("SELECT * FROM CIM_USBDevice WHERE DeviceID LIKE '%{0}'", match.Groups[1].Captures[0].Value);
                 UsbDevice = HardwareManager.Query (query).Select (u => new UsbDevice (u)).FirstOrDefault ();
@@ -132,12 +132,23 @@ namespace Banshee.Windows
 
     public class HardwareManager : IHardwareManager
     {
-        public HardwareManager ()
-        {
-        }
+        ManagementEventWatcher added_watcher;
+        ManagementEventWatcher removed_watcher;
 
         public event DeviceAddedHandler DeviceAdded;
         public event DeviceRemovedHandler DeviceRemoved;
+
+        public HardwareManager ()
+        {
+            // Listen for added/removed disks, with up to three seconds lag
+            added_watcher = new ManagementEventWatcher ("SELECT * FROM __InstanceCreationEvent WITHIN 3 WHERE TargetInstance ISA 'Win32_DiskDrive'");
+            added_watcher.EventArrived += OnDeviceAdded;
+            added_watcher.Start ();
+
+            removed_watcher = new ManagementEventWatcher ("SELECT * FROM __InstanceDeletionEvent WITHIN 3 WHERE TargetInstance ISA 'Win32_DiskDrive'");
+            removed_watcher.EventArrived += OnDeviceRemoved;
+            removed_watcher.Start ();
+        }
 
         public IEnumerable<IDevice> GetAllDevices ()
         {
@@ -164,26 +175,68 @@ namespace Banshee.Windows
             yield break;
         }
 
-        public static IEnumerable<ManagementObject> Query (string q)
+        public void Dispose ()
         {
+            added_watcher.EventArrived -= OnDeviceAdded;
+            added_watcher.Stop ();
+            added_watcher.Dispose ();
+            added_watcher = null;
+
+            removed_watcher.EventArrived -= OnDeviceRemoved;
+            removed_watcher.Stop ();
+            removed_watcher.Dispose ();
+            removed_watcher = null;
+        }
+
+        private void OnDeviceAdded (object sender, EventArrivedEventArgs args)
+        {
+            var handler = DeviceAdded;
+            if (handler != null) {
+                var target = (args.NewEvent["TargetInstance"] as ManagementBaseObject);
+                var o = Query ("SELECT * FROM Win32_DiskDrive WHERE PNPDeviceID = '{0}'", target.Str ("PNPDeviceID")).First ();
+                handler (this, new DeviceAddedArgs (new Volume (o)));
+            }
+        }
+
+        private void OnDeviceRemoved (object sender, EventArrivedEventArgs args)
+        {
+            var handler = DeviceRemoved;
+            if (handler != null) {
+                var target = (args.NewEvent["TargetInstance"] as ManagementBaseObject);
+                handler (this, new DeviceRemovedArgs (target.Str ("PNPDeviceID")));
+            }
+        }
+
+        public static IEnumerable<ManagementObject> Query (string q, params object [] args)
+        {
+            if (args != null && args.Length > 0) {
+                // Escape backslashes
+                args = args.Select (a => a.ToString ().Replace ("\\", "\\\\")).ToArray ();
+                q = String.Format (q, args);
+            }
+
             using (var s = new ManagementObjectSearcher (new ObjectQuery (q))) {
                 foreach (ManagementObject o in s.Get ()) {
                     yield return o;
                 }
             }
         }
-
-        public void Dispose ()
-        {
-        }
     }
 
     internal static class Extensions
     {
-        public static string Str (this ManagementObject o, string propName)
+        public static string Str (this ManagementBaseObject o, string propName)
         {
-            var p = o.GetPropertyValue (propName);
+            var p = o[propName];
             return p == null ? null : p.ToString ();
+        }
+
+        public static void DumpProperties (this ManagementBaseObject o)
+        {
+            Console.WriteLine ("{0} is a {1}", o, o.ClassPath.ClassName);
+            foreach (var p in o.Properties) {
+                Console.WriteLine ("  {0} = {1}", p.Name, p.Value);
+            }
         }
     }
 }
