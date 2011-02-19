@@ -24,7 +24,7 @@ internal static class AddinXmlStringCatalog
         paths.Sort ();
 
         var blacklist = new string [] { "GStreamer", "Gnome", "Osx", "Unix", "MeeGo", "Gio", "NowPlaying",
-            "Hal", "src/Core", "Banshee.Dap/", "RemoteAudio", "Sample", "SqlDebugConsole", "Template" };
+            "Hal", "src/Core", "Banshee.Dap/", "RemoteAudio", "Sample", "SqlDebugConsole", "Template", "Windows" };
 
         foreach (var path in paths) {
             if (blacklist.Any (path.Contains))
