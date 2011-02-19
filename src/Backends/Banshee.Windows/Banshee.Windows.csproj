@@ -83,7 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banshee.Windows\WindowsService.cs" />
-    <Compile Include="Banshee.Windows\HardwareManager.cs" />
+    <Compile Include="Banshee.Windows.Hardware\HardwareManager.cs" />
+    <Compile Include="Banshee.Windows.Hardware\Device.cs" />
+    <Compile Include="Banshee.Windows.Hardware\UsbDevice.cs" />
+    <Compile Include="Banshee.Windows.Hardware\Volume.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Banshee.Windows.addin.xml">
@@ -106,4 +109,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Banshee.Windows.Hardware\" />
+  </ItemGroup>
 </Project>
