@@ -53,6 +53,7 @@ namespace Banshee.GStreamerSharp
     {
         Pipeline pipeline;
         PlayBin2 playbin;
+        uint iterate_timeout_id = 0;
 
         public PlayerEngine ()
         {
@@ -88,12 +89,6 @@ namespace Banshee.GStreamerSharp
             playbin.AddNotification ("volume", OnVolumeChanged);
             pipeline.Bus.AddWatch (OnBusMessage);
 
-            // TODO pretty sure we should only iterate when playing
-            Banshee.ServiceStack.Application.RunTimeout (200, delegate {
-                OnEventChanged (PlayerEvent.Iterate);
-                return true;
-            });
-
             OnStateChanged (PlayerState.Ready);
         }
 
@@ -101,6 +96,7 @@ namespace Banshee.GStreamerSharp
         {
             switch (msg.Type) {
                 case MessageType.Eos:
+                    StopIterating ();
                     Close (false);
                     OnEventChanged (PlayerEvent.EndOfStream);
                     OnEventChanged (PlayerEvent.RequestNextTrack);
@@ -149,6 +145,7 @@ namespace Banshee.GStreamerSharp
 
         private void HandleStateChange (State old_state, State new_state, State pending_state)
         {
+            StopIterating ();
             if (CurrentState != PlayerState.Loaded && old_state == State.Ready && new_state == State.Paused && pending_state == State.Playing) {
                 OnStateChanged (PlayerState.Loaded);
             } else if (old_state == State.Paused && new_state == State.Playing && pending_state == State.VoidPending) {
@@ -156,6 +153,7 @@ namespace Banshee.GStreamerSharp
                     OnEventChanged (PlayerEvent.StartOfStream);
                 }
                 OnStateChanged (PlayerState.Playing);
+                StartIterating ();
             } else if (CurrentState == PlayerState.Playing && old_state == State.Playing && new_state == State.Paused) {
                 OnStateChanged (PlayerState.Paused);
             }
@@ -177,6 +175,32 @@ namespace Banshee.GStreamerSharp
                 foreach (object o in tags) {
                     OnTagFound (new StreamTag () { Name = tag, Value = o });
                 }
+            }
+        }
+
+        private bool OnIterate ()
+        {
+            // Actual iteration.
+            OnEventChanged (PlayerEvent.Iterate);
+            // Run forever until we are stopped
+            return true;
+        }
+
+        private void StartIterating ()
+        {
+            if (iterate_timeout_id > 0) {
+                GLib.Source.Remove (iterate_timeout_id);
+                iterate_timeout_id = 0;
+            }
+
+            iterate_timeout_id = GLib.Timeout.Add (200, OnIterate);
+        }
+
+        private void StopIterating ()
+        {
+            if (iterate_timeout_id > 0) {
+                GLib.Source.Remove (iterate_timeout_id);
+                iterate_timeout_id = 0;
             }
         }
 
