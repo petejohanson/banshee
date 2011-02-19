@@ -56,7 +56,8 @@ namespace Banshee.GStreamerSharp
 
         public PlayerEngine ()
         {
-            Console.WriteLine ("Gst# PlayerEngine ctor - completely experimental, still a WIP");
+            Log.InformationFormat ("GStreamer# {0} Initializing; {1}.{2}",
+                typeof (Gst.Version).Assembly.GetName ().Version, Gst.Version.Description, Gst.Version.Nano);
 
             // Setup the gst plugins/registry paths if running Windows
             if (PlatformDetection.IsWindows) {
@@ -81,8 +82,13 @@ namespace Banshee.GStreamerSharp
             playbin = new PlayBin2 ();
             pipeline.Add (playbin);
 
+            // Remember the volume from last time
+            Volume = (ushort)PlayerEngineService.VolumeSchema.Get ();
+
+            playbin.AddNotification ("volume", OnVolumeChanged);
             pipeline.Bus.AddWatch (OnBusMessage);
 
+            // TODO pretty sure we should only iterate when playing
             Banshee.ServiceStack.Application.RunTimeout (200, delegate {
                 OnEventChanged (PlayerEvent.Iterate);
                 return true;
@@ -99,38 +105,41 @@ namespace Banshee.GStreamerSharp
                     OnEventChanged (PlayerEvent.EndOfStream);
                     OnEventChanged (PlayerEvent.RequestNextTrack);
                     break;
+
                 case MessageType.StateChanged:
                     State old_state, new_state, pending_state;
                     msg.ParseStateChanged (out old_state, out new_state, out pending_state);
-
                     HandleStateChange (old_state, new_state, pending_state);
-
                     break;
+
                 case MessageType.Buffering:
                     int buffer_percent;
                     msg.ParseBuffering (out buffer_percent);
-
                     HandleBuffering (buffer_percent);
                     break;
+
                 case MessageType.Tag:
                     Pad pad;
                     TagList tag_list;
                     msg.ParseTag (out pad, out tag_list);
 
                     HandleTag (pad, tag_list);
-
                     break;
+
                 case MessageType.Error:
                     Enum error_type;
                     string err_msg, debug;
                     msg.ParseError (out error_type, out err_msg, out debug);
-
-                    // TODO: What to do with the error?
-
+                    Log.Error (err_msg, debug);
                     break;
             }
 
             return true;
+        }
+
+        private void OnVolumeChanged (object o, Gst.GLib.NotifyArgs args)
+        {
+            OnEventChanged (PlayerEvent.Volume);
         }
 
         private void HandleBuffering (int buffer_percent)
@@ -173,23 +182,24 @@ namespace Banshee.GStreamerSharp
 
         protected override void OpenUri (SafeUri uri, bool maybeVideo)
         {
-            Console.WriteLine ("Gst# PlayerEngine OpenUri: {0}", uri);
-            if (pipeline.CurrentState == State.Playing) {
-                pipeline.SetState (Gst.State.Null);
+            if (pipeline.CurrentState == State.Playing || pipeline.CurrentState == State.Paused) {
+                pipeline.SetState (Gst.State.Ready);
             }
+
             playbin.Uri = uri.AbsoluteUri;
         }
 
         public override void Play ()
         {
-            Console.WriteLine ("Gst# PlayerEngine play");
+            // HACK, I think that directsoundsink has a bug that resets its volume to 1.0 every time
+            // This seems to fix bgo#641427
+            Volume = Volume;
             pipeline.SetState (Gst.State.Playing);
             OnStateChanged (PlayerState.Playing);
         }
 
         public override void Pause ()
         {
-            Console.WriteLine ("Gst# PlayerEngine pause");
             pipeline.SetState (Gst.State.Paused);
             OnStateChanged (PlayerState.Paused);
         }
@@ -204,7 +214,11 @@ namespace Banshee.GStreamerSharp
 
         public override ushort Volume {
             get { return (ushort) Math.Round (playbin.Volume * 100.0); }
-            set { playbin.Volume = (value / 100.0); }
+            set {
+                double volume = Math.Min (1.0, Math.Max (0, value / 100.0));
+                playbin.Volume = volume;
+                PlayerEngineService.VolumeSchema.Set (value);
+            }
         }
 
         public override bool CanSeek {
