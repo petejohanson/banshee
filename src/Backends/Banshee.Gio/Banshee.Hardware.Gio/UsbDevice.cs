@@ -194,6 +194,7 @@ namespace Banshee.Hardware.Gio
             Device = device;
         }
 
+#if LEGACY_IPOD_SUPPORT
         bool IDevice.PropertyExists (string key)
         {
             return Device.PropertyExists (key);
@@ -228,6 +229,7 @@ namespace Banshee.Hardware.Gio
         {
             return Device.GetPropertyStringList (key);
         }
+#endif
     }
 }
 #endif
