@@ -28,6 +28,17 @@ RELEASE_RC_FILE="release-rc"
 [[ -z "${PACKAGE_NAME}" || -z "${PACKAGE_VERSION}" ]] \
 	&& bail "Could not figure out package information. Do you have a configure?"
 
+case "$(uname)" in
+    FreeBSD)
+        MAKE=gmake
+        SHA256="sha256 -r"
+        ;;
+    *)
+        MAKE=make
+        SHA256=sha256sum
+        ;;
+esac
+
 cat <<EOF
 Release Summary
 
@@ -71,7 +82,7 @@ function run_hook () {
 
 function distcheck () {
 	preparing_to "make distcheck"
-	make distcheck || bail "distcheck failed"
+	$MAKE distcheck || bail "distcheck failed"
 }
 
 function prepare_upload () {
@@ -80,7 +91,7 @@ function prepare_upload () {
 	rm -rf release-data
 	mkdir release-data || bail "Could not create release directory"
 
-	find -maxdepth 1 \( \
+	find . -maxdepth 1 \( \
 		-name \*.zip -o \
 		-name \*.bz2 -o \
 		-name \*.gz -o \
@@ -91,7 +102,7 @@ function prepare_upload () {
 		|| bail "Could not copy NEWS file"
 
 	(cd release-data && {
-		sha256sum * > ${PACKAGE_NAME}-${PACKAGE_VERSION}.sha256sum \
+		$SHA256 * > ${PACKAGE_NAME}-${PACKAGE_VERSION}.sha256sum \
 			|| bail "Could not sha256sum the release files"
 	}) || exit 1
 }
