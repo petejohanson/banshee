@@ -44,7 +44,6 @@ struct GstTranscoder {
     guint iterate_timeout_id;
     GstElement *pipeline;
     GstElement *sink_bin;
-    GstElement *conv_elem;
     gchar *output_uri;
     GstTranscoderProgressCallback progress_cb;
     GstTranscoderFinishedCallback finished_cb;
@@ -227,6 +226,7 @@ gst_transcoder_create_pipeline(GstTranscoder *transcoder,
     GstElement *encoder_elem;
     GstElement *sink_elem;
     GstElement *conv_elem;
+    GstElement *resample_elem;
     GstPad *encoder_pad;
 
     if(transcoder == NULL) {
@@ -265,6 +265,12 @@ gst_transcoder_create_pipeline(GstTranscoder *transcoder,
         return FALSE;
     }
     
+    resample_elem = gst_element_factory_make("audioresample", "audioresample");
+    if(resample_elem == NULL) {
+        gst_transcoder_raise_error(transcoder, _("Could not create 'audioresample' plugin"), NULL);
+        return FALSE;
+    }
+
     encoder_elem = gst_transcoder_build_encoder(encoder_pipeline);
     if(encoder_elem == NULL) {
          gst_transcoder_raise_error(transcoder, _("Could not create encoding pipeline"), encoder_pipeline);
@@ -277,8 +283,8 @@ gst_transcoder_create_pipeline(GstTranscoder *transcoder,
         return FALSE;
     }
     
-    gst_bin_add_many(GST_BIN(transcoder->sink_bin), conv_elem, encoder_elem, sink_elem, NULL);
-    gst_element_link_many(conv_elem, encoder_elem, sink_elem, NULL);
+    gst_bin_add_many(GST_BIN(transcoder->sink_bin), conv_elem, resample_elem, encoder_elem, sink_elem, NULL);
+    gst_element_link_many(conv_elem, resample_elem, encoder_elem, sink_elem, NULL);
     
     gst_element_add_pad(transcoder->sink_bin, gst_ghost_pad_new("sink", encoder_pad));
     gst_object_unref(encoder_pad);
@@ -293,8 +299,6 @@ gst_transcoder_create_pipeline(GstTranscoder *transcoder,
 
     gst_bus_add_watch(gst_pipeline_get_bus(GST_PIPELINE(transcoder->pipeline)), 
         gst_transcoder_bus_callback, transcoder);
-        
-    transcoder->conv_elem = conv_elem;
     
     return TRUE;
 }
