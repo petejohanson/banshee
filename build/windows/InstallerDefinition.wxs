@@ -37,7 +37,7 @@
     </Upgrade>
 
     <!-- Option to launch when finished with setup -->
-    <CustomAction Id="StartAppOnExit" Directory="bin" ExeCommand="Nereid.exe" Execute="immediate" Impersonate ="yes" Return="asyncNoWait" />
+    <CustomAction Id="StartAppOnExit" FileKey="Nereid.exe" ExeCommand="" Execute="immediate" Impersonate="yes" Return="asyncNoWait" />
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Banshee when setup exits" />
     <UI>
       <Publish Dialog="ExitDialog" Control="Finish" Order="1" Event="DoAction" Value="StartAppOnExit">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
@@ -46,7 +46,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="Banshee" FileSource="$(var.BuildRoot)\bin">
-          <Directory Id="bin" Name="bin">
+          <Directory Id="bindirectory" Name="bin">
             <Component Id="ProductComponent" Guid="55C2C651-CFF2-4607-ADE0-0BB43D5D1086">
 
               <!-- Place Banshee path into registry -->
@@ -66,7 +66,7 @@
       <Directory Id="ProgramMenuFolder" Name="PMenu">
         <Directory Id="ProgramMenuDir" Name='$(var.ProductShortName)'>
           <Component Id="StartMenuShortcut" Guid="872AA14E-EFCB-4F0B-B3B8-102162257EC1">
-            <Shortcut Id="StartMenuShortcut" Name="$(var.ProductShortName)" Icon="Nereid.exe" Target="[INSTALLLOCATION]bin\Nereid.exe" WorkingDirectory="bin"/>
+            <Shortcut Id="StartMenuShortcut" Name="$(var.ProductShortName)" Icon="Nereid.exe" Target="[INSTALLLOCATION]bin\Nereid.exe" WorkingDirectory="bindirectory"/>
             <RemoveFolder Id="ProgramMenuSubfolder" On="uninstall"/>
             <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.ProductShortName)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
           </Component>

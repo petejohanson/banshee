@@ -44,8 +44,13 @@ WScript.Echo ("Setup successfully generated");
 
 function heatDir (dir)
 {
+  var params = ' -cg ' + dir + ' -scom -sreg -ag -sfrag -indent 2 -var var.' + dir + 'Dir -dr INSTALLLOCATION ';
+  if (dir == 'bin') {
+    // Do not auto-generate ids for files in the bin directory
+    params += '-suid '
+  }
   // Generate the list of binary files (managed and native .dlls and .pdb and .config files)
-  run (heat + ' dir ..\\..\\bin\\' + dir + ' -cg ' + dir + ' -scom -sreg -ag -sfrag -indent 2 -var var.' + dir + 'Dir -dr INSTALLLOCATION -out obj\\generated_'+dir+'.wxi');
+  run (heat + ' dir ..\\..\\bin\\' + dir + params + ' -out obj\\generated_'+dir+'.wxi');
 
   // Heat has no option to output Include (wxi) files instead of Wix (wxs) ones, so do a little regex
   regexreplace ('obj\\generated_'+dir+'.wxi', /Wix xmlns/, 'Include xmlns');
