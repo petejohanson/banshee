@@ -126,7 +126,9 @@ namespace Banshee.GStreamerSharp
                     Enum error_type;
                     string err_msg, debug;
                     msg.ParseError (out error_type, out err_msg, out debug);
-                    Log.Error (err_msg, debug);
+
+                    HandleError (error_type, err_msg, debug);
+
                     break;
             }
 
@@ -136,6 +138,59 @@ namespace Banshee.GStreamerSharp
         private void OnVolumeChanged (object o, Gst.GLib.NotifyArgs args)
         {
             OnEventChanged (PlayerEvent.Volume);
+        }
+
+        private void HandleError (Enum domain, string error_message, string debug)
+        {
+            Close (true);
+
+            error_message = error_message ?? Catalog.GetString ("Unknown Error");
+
+            if (domain is ResourceError) {
+                ResourceError domain_code = (ResourceError)domain;
+                if (CurrentTrack != null) {
+                    switch (domain_code) {
+                    case ResourceError.NotFound:
+                        CurrentTrack.SavePlaybackError (StreamPlaybackError.ResourceNotFound);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                Log.Error (String.Format ("GStreamer resource error: {0}", domain_code), false);
+            } else if (domain is StreamError) {
+                StreamError domain_code = (StreamError)domain;
+                if (CurrentTrack != null) {
+                    switch (domain_code) {
+                    case StreamError.CodecNotFound:
+                        CurrentTrack.SavePlaybackError (StreamPlaybackError.CodecNotFound);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+
+                Log.Error (String.Format ("GStreamer stream error: {0}", domain_code), false);
+            } else if (domain is CoreError) {
+                CoreError domain_code = (CoreError)domain;
+                if (CurrentTrack != null) {
+                    switch (domain_code) {
+                    case CoreError.MissingPlugin:
+                        CurrentTrack.SavePlaybackError (StreamPlaybackError.CodecNotFound);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+
+                if (domain_code != CoreError.MissingPlugin) {
+                    Log.Error (String.Format ("GStreamer core error: {0}", (CoreError)domain), false);
+                }
+            } else if (domain is LibraryError) {
+                Log.Error (String.Format ("GStreamer library error: {0}", (LibraryError)domain), false);
+            }
+
+            OnEventChanged (new PlayerEventErrorArgs (error_message));
         }
 
         private void HandleBuffering (int buffer_percent)
@@ -226,6 +281,12 @@ namespace Banshee.GStreamerSharp
         {
             pipeline.SetState (Gst.State.Paused);
             OnStateChanged (PlayerState.Paused);
+        }
+
+        public override void Close (bool fullShutdown)
+        {
+            pipeline.SetState (State.Null);
+            base.Close (fullShutdown);
         }
 
         public override string GetSubtitleDescription (int index)
