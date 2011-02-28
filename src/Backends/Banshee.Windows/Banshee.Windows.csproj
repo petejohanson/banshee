@@ -101,6 +101,12 @@
       <LogicalName>Banshee.Windows.addin.xml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="media-playback-pause.ico" />
+    <EmbeddedResource Include="media-playback-start.ico" />
+    <EmbeddedResource Include="media-skip-backward.ico" />
+    <EmbeddedResource Include="media-skip-forward.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
