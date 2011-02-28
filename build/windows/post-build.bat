@@ -1,3 +1,5 @@
+REM This file is called/ran after Banshee.Core.dll is built, see src/Core/Banshee.Core/Banshee.Core.csproj
+
 mkdir bin\share\icons\hicolor\128x128\devices
 mkdir bin\share\icons\hicolor\16x16\actions
 mkdir bin\share\icons\hicolor\16x16\categories
@@ -132,6 +134,12 @@ copy /Y "src\Extensions\Banshee.Wikipedia\ThemeIcons\48x48\categories\wikipedia.
 copy /Y "src\Extensions\Banshee.YouTube\ThemeIcons\16x16\categories\youtube.png" bin\share\icons\hicolor\16x16\categories\youtube.png
 copy /Y "src\Extensions\Banshee.YouTube\ThemeIcons\22x22\categories\youtube.png" bin\share\icons\hicolor\22x22\categories\youtube.png
 copy /Y "src\Extensions\Banshee.YouTube\ThemeIcons\24x24\categories\youtube.png" bin\share\icons\hicolor\24x24\categories\youtube.png
+mkdir bin\share\icons\hicolor\16x16\apps
+mkdir bin\share\icons\hicolor\192x192\apps
+mkdir bin\share\icons\hicolor\22x22\apps
+mkdir bin\share\icons\hicolor\24x24\apps
+mkdir bin\share\icons\hicolor\32x32\apps
+mkdir bin\share\icons\hicolor\48x48\apps
 copy /Y data\icon-theme-hicolor\media-player-banshee-16.png bin\share\icons\hicolor\16x16\apps\media-player-banshee.png
 copy /Y data\icon-theme-hicolor\media-player-banshee-192.png bin\share\icons\hicolor\192x192\apps\media-player-banshee.png
 copy /Y data\icon-theme-hicolor\media-player-banshee-22.png bin\share\icons\hicolor\22x22\apps\media-player-banshee.png

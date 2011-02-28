@@ -140,7 +140,7 @@ bp_initialize_pipeline (BansheePlayer *player)
 }
 
 P_INVOKE gboolean
-bp_open (BansheePlayer *player, const gchar *uri)
+bp_open (BansheePlayer *player, const gchar *uri, gboolean maybe_video)
 {
     GstState state;
     
@@ -169,8 +169,10 @@ bp_open (BansheePlayer *player, const gchar *uri)
     // Pass the request off to playbin
     g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);
     
-    // Lookup for subtitle files with same name/folder
-    bp_lookup_for_subtitle (player, uri);
+    if (maybe_video) {
+        // Lookup for subtitle files with same name/folder
+        bp_lookup_for_subtitle (player, uri);
+    }
 
     player->in_gapless_transition = FALSE;
     
@@ -211,12 +213,14 @@ bp_play (BansheePlayer *player)
 }
 
 P_INVOKE gboolean
-bp_set_next_track (BansheePlayer *player, const gchar *uri)
+bp_set_next_track (BansheePlayer *player, const gchar *uri, gboolean maybe_video)
 {
     g_return_val_if_fail (IS_BANSHEE_PLAYER (player), FALSE);
     g_return_val_if_fail (player->playbin != NULL, FALSE);
     g_object_set (G_OBJECT (player->playbin), "uri", uri, NULL);
-    bp_lookup_for_subtitle (player, uri);
+    if (maybe_video) {
+        bp_lookup_for_subtitle (player, uri);
+    }
     return TRUE;
 }
 

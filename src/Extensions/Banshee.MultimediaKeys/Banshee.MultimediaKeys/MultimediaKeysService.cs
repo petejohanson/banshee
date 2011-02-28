@@ -150,6 +150,9 @@ namespace Banshee.MultimediaKeys
                 case "Play":
                     ServiceManager.PlayerEngine.TogglePlaying ();
                     break;
+                case "Pause":
+                    ServiceManager.PlayerEngine.Pause ();
+                    break;
                 case "Next":
                     ServiceManager.PlaybackController.Next ();
                     break;
@@ -158,6 +161,22 @@ namespace Banshee.MultimediaKeys
                     break;
                 case "Stop":
                     ServiceManager.PlayerEngine.Close ();
+                    break;
+                case "Repeat":
+                    ServiceManager.PlaybackController.ToggleRepeat ();
+                    break;
+                case "Shuffle":
+                    ServiceManager.PlaybackController.ToggleShuffle ();
+                    break;
+                case "FastForward":
+                    if (ServiceManager.PlayerEngine.CanSeek) {
+                        ServiceManager.PlayerEngine.Position += 20*1000;
+                    }
+                    break;
+                case "Rewind":
+                    if (ServiceManager.PlayerEngine.CanSeek) {
+                        ServiceManager.PlayerEngine.Position -= 10*1000;
+                    }
                     break;
             }
         }

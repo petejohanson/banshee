@@ -44,11 +44,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>..\..\..\bin</OutputPath>
+    <OutputPath>..\..\..\bin\bin</OutputPath>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
     <ConsolePause>false</ConsolePause>
     <Commandlineparameters>--debug --uninstalled</Commandlineparameters>
+    <DefineConstants>WIN32</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Windows' ">
     <StartAction>Project</StartAction>
@@ -72,7 +73,7 @@
     <Reference Include="System" />
     <Reference Include="Mono.Posix">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\Mono.Posix.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>

@@ -56,7 +56,6 @@ namespace Banshee.Library
         {
             Properties.SetString ("GtkActionPath", "/LibraryContextMenu");
             Properties.SetString ("RemoveTracksActionLabel", Catalog.GetString ("Remove From Library"));
-            Properties.Set<bool> ("SourceView.HideCount", true);
             IsLocal = true;
             base_dir_schema = CreateSchema<string> ("library-location", null, "The base directory under which files for this library are stored", null);
             AfterInitialized ();

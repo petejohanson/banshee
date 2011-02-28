@@ -49,6 +49,7 @@ namespace Banshee.Gui.Widgets
     public abstract class TrackInfoDisplay : Widget
     {
         private string current_artwork_id;
+        private bool idle;
 
         private ArtworkManager artwork_manager;
         protected ArtworkManager ArtworkManager {
@@ -134,6 +135,7 @@ namespace Banshee.Gui.Widgets
                 if (ServiceManager.PlayerEngine != null) {
                     connected = value;
                     if (value) {
+                        idle = ServiceManager.PlayerEngine.CurrentState == PlayerState.Idle;
                         ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
                             PlayerEvent.StartOfStream |
                             PlayerEvent.TrackInfoUpdated |
@@ -188,7 +190,7 @@ namespace Banshee.Gui.Widgets
 
             ResetMissingImages ();
 
-            if (current_track == null) {
+            if (current_track == null && !idle) {
                 LoadCurrentTrack ();
             } else {
                 Invalidate ();
@@ -379,6 +381,7 @@ namespace Banshee.Gui.Widgets
         private void OnPlayerEvent (PlayerEventArgs args)
         {
             if (args.Event == PlayerEvent.StartOfStream) {
+                idle = false;
                 LoadCurrentTrack ();
             } else if (args.Event == PlayerEvent.TrackInfoUpdated) {
                 LoadCurrentTrack (true);
@@ -399,7 +402,11 @@ namespace Banshee.Gui.Widgets
                 ServiceManager.PlayerEngine.CurrentState == PlayerState.Idle) {
                 incoming_track = null;
                 incoming_image = null;
+
                 current_artwork_id = null;
+                current_track = null;
+                current_image = null;
+                idle = true;
 
                 if (stage != null && stage.Actor == null) {
                     stage.Reset ();

@@ -1,5 +1,5 @@
 ===============================================================================
-WELCOME TO BANSHEE 1.9.2 - Released January 12, 2011
+WELCOME TO BANSHEE 1.9.4 - Released February 23, 2011
 ===============================================================================
 
   * Banshee is a multimedia management and playback application for GNOME.
@@ -8,39 +8,31 @@ WELCOME TO BANSHEE 1.9.2 - Released January 12, 2011
     and video podcasts.  Sync your Android, iPod, and other devices. We think
     you'll love the new Banshee!"
 
-  * Learn More: http://banshee.fm/download/archives/1.9.2
+  * Learn More: http://banshee.fm/download/archives/1.9.4
 
 
 ===============================================================================
 NEW AWESOME FEATURES AND ENHANCEMENTS
 ===============================================================================
 
-    Banshee 1.9.2 is a development release, the third of the 1.9.x series
+    Banshee 1.9.4 is a development release, part of the 1.9.x series
     leading up to Banshee 2.0.
 
     Enhancements:
 
-      * Add support for Nexus S and Xperia X10 mini pro
-      * Many improvements and fixes to the F1 user guide
-      * SoundMenu: Implement the proper close/quit behavior
-      * MPRIS: Implement the Playlists interface
-      * Improved write-metadata-to-file performance
+      * Various fixes and improvements to the Windows build
+      * MultimediaKeys: Support Pause, FastForward, Rewind, Repeat and Shuffle
+      * Advertise lastfm scheme handling in the .desktop files
 
-    Notable Bugs Fixed (33 fixed since 1.9.1):
+    Notable Bugs Fixed (25 fixed since 1.9.3):
 
-      * bgo#637333: MeeGo: Fix NRE at start up
-      * bgo#637350: Fix SimpleTable crash
-      * bgo#636077: Fix Podcasts selection bug w/ DAP plugged in
-      * bgo#637366: SmartPlaylistSource: Fix NRE with "selected by random"
-      * bgo#637365: SmartPlaylistSource: Clear the condition when it's not enabled
-      * bgo#637303: FileChooserDialog: Fix error message on first launch
-      * bgo#637627: FullscreenWindow: Keep fullscreen when showing volume osd
-      * bgo#634652: AppleDevice: Remove invalid tracks before syncing
-      * bgo#638477: X11NotificationArea: Enhance check for RGBA visual
-      * bgo#637991: SourceRowRenderer: Fix vertical alignment calculation
-      * bgo#611796: [Preferences] Have source list use theme icon size
-      * bgo#639044: UnknownTrackInfo: Avoid NRE if URI is null
-      * bgo#639032: LastfmStreaming: Delete the Loved stations from the database
+      * AmazonMp3.Store: Fix the server 'Home' redirect
+      * Misc theme and string fixes
+      * bgo#638541: Don't try to find subtitle files for music
+      * Fix the position label when the stream ends
+      * TrackInfoDisplay: Don't display last track when idle
+      * bgo#614530: Fixed a ListView glitch
+      * bgo#642717: SoundMenu: don't call BlacklistMediaPlayer on startup
 
 ===============================================================================
 SOURCES / PACKAGES
@@ -49,10 +41,10 @@ SOURCES / PACKAGES
 Sources
 -------
 
-    * Banshee 1.9.2 Tarballs:
-      http://download.banshee.fm/banshee/unstable/1.9.2/banshee-1-1.9.2.tar.bz2
-      http://download.banshee.fm/banshee/unstable/1.9.2/banshee-1-1.9.2.tar.gz
-    * http://download.banshee.fm/banshee/unstable/1.9.2/banshee-1-1.9.2.sha256sum
+    * Banshee 1.9.4 Tarballs:
+      http://download.banshee.fm/banshee/unstable/1.9.4/banshee-1-1.9.4.tar.bz2
+      http://download.banshee.fm/banshee/unstable/1.9.4/banshee-1-1.9.4.tar.gz
+      http://download.banshee.fm/banshee/unstable/1.9.4/banshee-1-1.9.4.sha256sum
 
 Packages
 --------
@@ -139,7 +131,7 @@ REPORT BUGS - HELP THE PROJECT - GROW THE COMMUNITY
     hesitate to file bugs!
 
     * http://banshee.fm/contribute/file-bugs
-    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.9.2
+    * http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&version=1.9.4
 
 
 ===============================================================================
@@ -153,15 +145,13 @@ Contributors For This Release
     of Banshee. Without their help, there would be no release!
 
       Alex Launi, Alexander Kojevnikov, Andrés G. Aragoneses, Bertrand Lorentz,
-      Christian Krause, Gabriel Burt, Jensen Somers, Jordi Mas,
-      Kentaro KAZUHAMA, Paul Cutler, Zhou Ting
+      Chow Loong Jin, Dustin C. Hatch, Gabriel Burt, Iain Lane, Matt Sturgeon
 
     The following people contributed updated translations to this release.
     Without them, our project's reach would be much more limited.
 
-      Andika Triwidada, Andrej Žnidaršič, Aron Xu, Benjamín Valero Espinosa,
-      Gabor Kelemen, Gabriel F. Vilar, Joe Hansen, Jordi Mas, Mario Blättermann,
-      Petr Kovar, Ville-Pekka Vainio, Yaron Shahrabani
+      Andrej Žnidaršič, Ángel Sanz, Benjamín Valero, Fran Diéguez,
+      Krix Apolinário, Marek Černocký
 
 Contributors In Past Releases
 -----------------------------
@@ -179,28 +169,28 @@ Contributors In Past Releases
     Christopher James Halse Rogers, Claude Paroz, Cody Russell, Cosmin Banu,
     Dan Wilson, Dan Winship, Daniel Munkton, Daniel Siegel, David Nielsen,
     David Spreen, David Stone, Diego E. Pettenò, Dougal Stanton,
-    Eitan Isaacson, Elena Grassi, Eoin Hennessy, Eric Butler, Erik Schmidt,
-    Fabian Jost, Felipe Almeida Lessa, Fernando Casanova, Florent Thoumie,
-    Fredrik Hedberg, Félix Velasco, Gabriel Burt, Garrett LeSage,
-    Ghislain Lacroix, Götz Waschk, Haitao Feng, Hans Petter Jansson,
-    Harold Schreckengost, Iain Lane, Igor Guerrero Fonseca, Ilya Konstantinov,
-    Ivan N. Zlatev, Jack Deslippe, Jakub Steiner, James Willcox,
-    Jan Arne Petersen, Jason Conti, Jason Taylor, Jeff Tickle, Jeff Wheeler,
-    Jensen Somers, Jeroen Budts, Jo Shields, Johannes Kuhn, John Millikin,
-    Jordi Mas, Jorge Castro, Julien Moutte, Juri Pakaste, Ján Sokoly,
-    Jérémie Laval, K. Vishnoo Charan Reddy, Ken Vandine, Kentaro KAZUHAMA,
-    Kevin Duffus, Konstantin Oshiyko, Larry Ewing, Lauri Kotilainen,
-    Lukas Lipka, Marijn Ros, Matt Enright, Michael Kaiser,
-    Michael Martin-Smucker, Michael Monreal, Michael Monreal, Michał Sawicz,
-    Miguel de Icaza, Mike Gemünde, Mike Urbanski, Moritz Schallaböck,
-    Nathan Palmer, Neil Loknath, Nicholas Doyle, Nicholas Parker,
-    Nicolò Chieffo, Nils Naumann, Oben Sonne, Olivier Dufour, Oscar Forero,
-    Pacho Ramos, Patrick van Staveren, Paul Cutler, Paul Lange, Pavel Antonov,
-    Pepijn van de Geer, Pete Johanson, Peter de Kraker, Pratik Patel,
-    Przemysław Grzegorczyk, Raimo Radczewski, Robin Stocker, Roderich Schupp,
-    Rodney Dawes, Romain Tartière, Ruben Vermeersch, Ryan Collier,
-    Samuel Gyger, Sandy Armstrong, Scott Peterson, Sebastian Dröge,
-    Shaun McCance, Tim Fisken, Tim Yamin, Tobias Mueller, Todd Berman,
-    Travis Glenn Hansen, Travis Reitter, Trey Ethridge, Valentin Sawadski,
-    Will Farrington, William Friesen, William Pettersson, Wouter Bolsterlee,
-    Zhou Ting
+    Dustin C. Hatch, Eitan Isaacson, Elena Grassi, Eoin Hennessy, Eric Butler,
+    Erik Schmidt, Fabian Jost, Felipe Almeida Lessa, Fernando Casanova,
+    Florent Thoumie, Fredrik Hedberg, Félix Velasco, Gabriel Burt,
+    Garrett LeSage, Ghislain Lacroix, Götz Waschk, Haitao Feng,
+    Hans Petter Jansson, Harold Schreckengost, Iain Lane,
+    Igor Guerrero Fonseca, Ilya Konstantinov, Ivan N. Zlatev, Jack Deslippe,
+    Jakub Steiner, James Willcox, Jan Arne Petersen, Jason Conti, Jason Taylor,
+    Jeff Tickle, Jeff Wheeler, Jensen Somers, Jeroen Budts, Jo Shields,
+    Johannes Kuhn, John Millikin, Jordi Mas, Jorge Castro, Julien Moutte,
+    Juri Pakaste, Ján Sokoly, Jérémie Laval, K. Vishnoo Charan Reddy,
+    Ken Vandine, Kentaro KAZUHAMA, Kevin Duffus, Konstantin Oshiyko,
+    Larry Ewing, Lauri Kotilainen, Lukas Lipka, Marijn Ros, Matt Enright,
+    Matt Sturgeon, Michael Kaiser, Michael Martin-Smucker, Michael Monreal,
+    Michael Monreal, Michał Sawicz, Miguel de Icaza, Mike Gemünde,
+    Mike Urbanski, Moritz Schallaböck, Nathan Palmer, Neil Loknath,
+    Nicholas Doyle, Nicholas Parker, Nicolò Chieffo, Nils Naumann, Oben Sonne,
+    Olivier Dufour, Oscar Forero, Pacho Ramos, Patrick van Staveren,
+    Paul Cutler, Paul Lange, Pavel Antonov, Pepijn van de Geer, Pete Johanson,
+    Peter de Kraker, Pratik Patel, Przemysław Grzegorczyk, Raimo Radczewski,
+    Robin Stocker, Roderich Schupp, Rodney Dawes, Romain Tartière,
+    Ruben Vermeersch, Ryan Collier, Samuel Gyger, Sandy Armstrong,
+    Scott Peterson, Sebastian Dröge, Shaun McCance, Sjoerd Simons, Tim Fisken,
+    Tim Yamin, Tobias Mueller, Todd Berman, Travis Glenn Hansen,
+    Travis Reitter, Trey Ethridge, Valentin Sawadski, Will Farrington,
+    William Friesen, William Pettersson, Wouter Bolsterlee, Zhou Ting

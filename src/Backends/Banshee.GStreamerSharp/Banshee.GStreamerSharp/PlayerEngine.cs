@@ -53,19 +53,21 @@ namespace Banshee.GStreamerSharp
     {
         Pipeline pipeline;
         PlayBin2 playbin;
+        uint iterate_timeout_id = 0;
 
         public PlayerEngine ()
         {
-            Console.WriteLine ("Gst# PlayerEngine ctor - completely experimental, still a WIP");
+            Log.InformationFormat ("GStreamer# {0} Initializing; {1}.{2}",
+                typeof (Gst.Version).Assembly.GetName ().Version, Gst.Version.Description, Gst.Version.Nano);
 
             // Setup the gst plugins/registry paths if running Windows
             if (PlatformDetection.IsWindows) {
-                var gst_paths = new string [] { "gst-plugins" };
+                var gst_paths = new string [] { Hyena.Paths.Combine (Hyena.Paths.InstalledApplicationPrefix, "gst-plugins") };
                 Environment.SetEnvironmentVariable ("GST_PLUGIN_PATH", String.Join (";", gst_paths));
                 Environment.SetEnvironmentVariable ("GST_PLUGIN_SYSTEM_PATH", "");
                 Environment.SetEnvironmentVariable ("GST_DEBUG", "1");
 
-                string registry = "registry.bin";
+                string registry = Hyena.Paths.Combine (Hyena.Paths.ApplicationData, "registry.bin");
                 if (!System.IO.File.Exists (registry)) {
                     System.IO.File.Create (registry).Close ();
                 }
@@ -81,12 +83,11 @@ namespace Banshee.GStreamerSharp
             playbin = new PlayBin2 ();
             pipeline.Add (playbin);
 
-            pipeline.Bus.AddWatch (OnBusMessage);
+            // Remember the volume from last time
+            Volume = (ushort)PlayerEngineService.VolumeSchema.Get ();
 
-            Banshee.ServiceStack.Application.RunTimeout (200, delegate {
-                OnEventChanged (PlayerEvent.Iterate);
-                return true;
-            });
+            playbin.AddNotification ("volume", OnVolumeChanged);
+            pipeline.Bus.AddWatch (OnBusMessage);
 
             OnStateChanged (PlayerState.Ready);
         }
@@ -95,42 +96,101 @@ namespace Banshee.GStreamerSharp
         {
             switch (msg.Type) {
                 case MessageType.Eos:
+                    StopIterating ();
                     Close (false);
                     OnEventChanged (PlayerEvent.EndOfStream);
                     OnEventChanged (PlayerEvent.RequestNextTrack);
                     break;
+
                 case MessageType.StateChanged:
                     State old_state, new_state, pending_state;
                     msg.ParseStateChanged (out old_state, out new_state, out pending_state);
-
                     HandleStateChange (old_state, new_state, pending_state);
-
                     break;
+
                 case MessageType.Buffering:
                     int buffer_percent;
                     msg.ParseBuffering (out buffer_percent);
-
                     HandleBuffering (buffer_percent);
                     break;
+
                 case MessageType.Tag:
                     Pad pad;
                     TagList tag_list;
                     msg.ParseTag (out pad, out tag_list);
 
                     HandleTag (pad, tag_list);
-
                     break;
+
                 case MessageType.Error:
                     Enum error_type;
                     string err_msg, debug;
                     msg.ParseError (out error_type, out err_msg, out debug);
 
-                    // TODO: What to do with the error?
+                    HandleError (error_type, err_msg, debug);
 
                     break;
             }
 
             return true;
+        }
+
+        private void OnVolumeChanged (object o, Gst.GLib.NotifyArgs args)
+        {
+            OnEventChanged (PlayerEvent.Volume);
+        }
+
+        private void HandleError (Enum domain, string error_message, string debug)
+        {
+            Close (true);
+
+            error_message = error_message ?? Catalog.GetString ("Unknown Error");
+
+            if (domain is ResourceError) {
+                ResourceError domain_code = (ResourceError)domain;
+                if (CurrentTrack != null) {
+                    switch (domain_code) {
+                    case ResourceError.NotFound:
+                        CurrentTrack.SavePlaybackError (StreamPlaybackError.ResourceNotFound);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                Log.Error (String.Format ("GStreamer resource error: {0}", domain_code), false);
+            } else if (domain is StreamError) {
+                StreamError domain_code = (StreamError)domain;
+                if (CurrentTrack != null) {
+                    switch (domain_code) {
+                    case StreamError.CodecNotFound:
+                        CurrentTrack.SavePlaybackError (StreamPlaybackError.CodecNotFound);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+
+                Log.Error (String.Format ("GStreamer stream error: {0}", domain_code), false);
+            } else if (domain is CoreError) {
+                CoreError domain_code = (CoreError)domain;
+                if (CurrentTrack != null) {
+                    switch (domain_code) {
+                    case CoreError.MissingPlugin:
+                        CurrentTrack.SavePlaybackError (StreamPlaybackError.CodecNotFound);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+
+                if (domain_code != CoreError.MissingPlugin) {
+                    Log.Error (String.Format ("GStreamer core error: {0}", (CoreError)domain), false);
+                }
+            } else if (domain is LibraryError) {
+                Log.Error (String.Format ("GStreamer library error: {0}", (LibraryError)domain), false);
+            }
+
+            OnEventChanged (new PlayerEventErrorArgs (error_message));
         }
 
         private void HandleBuffering (int buffer_percent)
@@ -140,6 +200,7 @@ namespace Banshee.GStreamerSharp
 
         private void HandleStateChange (State old_state, State new_state, State pending_state)
         {
+            StopIterating ();
             if (CurrentState != PlayerState.Loaded && old_state == State.Ready && new_state == State.Paused && pending_state == State.Playing) {
                 OnStateChanged (PlayerState.Loaded);
             } else if (old_state == State.Paused && new_state == State.Playing && pending_state == State.VoidPending) {
@@ -147,6 +208,7 @@ namespace Banshee.GStreamerSharp
                     OnEventChanged (PlayerEvent.StartOfStream);
                 }
                 OnStateChanged (PlayerState.Playing);
+                StartIterating ();
             } else if (CurrentState == PlayerState.Playing && old_state == State.Playing && new_state == State.Paused) {
                 OnStateChanged (PlayerState.Paused);
             }
@@ -171,27 +233,60 @@ namespace Banshee.GStreamerSharp
             }
         }
 
-        protected override void OpenUri (SafeUri uri)
+        private bool OnIterate ()
         {
-            Console.WriteLine ("Gst# PlayerEngine OpenUri: {0}", uri);
-            if (pipeline.CurrentState == State.Playing) {
-                pipeline.SetState (Gst.State.Null);
+            // Actual iteration.
+            OnEventChanged (PlayerEvent.Iterate);
+            // Run forever until we are stopped
+            return true;
+        }
+
+        private void StartIterating ()
+        {
+            if (iterate_timeout_id > 0) {
+                GLib.Source.Remove (iterate_timeout_id);
+                iterate_timeout_id = 0;
             }
+
+            iterate_timeout_id = GLib.Timeout.Add (200, OnIterate);
+        }
+
+        private void StopIterating ()
+        {
+            if (iterate_timeout_id > 0) {
+                GLib.Source.Remove (iterate_timeout_id);
+                iterate_timeout_id = 0;
+            }
+        }
+
+        protected override void OpenUri (SafeUri uri, bool maybeVideo)
+        {
+            if (pipeline.CurrentState == State.Playing || pipeline.CurrentState == State.Paused) {
+                pipeline.SetState (Gst.State.Ready);
+            }
+
             playbin.Uri = uri.AbsoluteUri;
         }
 
         public override void Play ()
         {
-            Console.WriteLine ("Gst# PlayerEngine play");
+            // HACK, I think that directsoundsink has a bug that resets its volume to 1.0 every time
+            // This seems to fix bgo#641427
+            Volume = Volume;
             pipeline.SetState (Gst.State.Playing);
             OnStateChanged (PlayerState.Playing);
         }
 
         public override void Pause ()
         {
-            Console.WriteLine ("Gst# PlayerEngine pause");
             pipeline.SetState (Gst.State.Paused);
             OnStateChanged (PlayerState.Paused);
+        }
+
+        public override void Close (bool fullShutdown)
+        {
+            pipeline.SetState (State.Null);
+            base.Close (fullShutdown);
         }
 
         public override string GetSubtitleDescription (int index)
@@ -204,7 +299,11 @@ namespace Banshee.GStreamerSharp
 
         public override ushort Volume {
             get { return (ushort) Math.Round (playbin.Volume * 100.0); }
-            set { playbin.Volume = (value / 100.0); }
+            set {
+                double volume = Math.Min (1.0, Math.Max (0, value / 100.0));
+                playbin.Volume = volume;
+                PlayerEngineService.VolumeSchema.Set (value);
+            }
         }
 
         public override bool CanSeek {

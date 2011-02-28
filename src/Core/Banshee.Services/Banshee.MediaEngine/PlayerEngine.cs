@@ -53,7 +53,7 @@ namespace Banshee.MediaEngine
         // will be changed to PlayerState.Idle after going to PlayerState.Ready
         private PlayerState idle_state = PlayerState.NotReady;
 
-        protected abstract void OpenUri (SafeUri uri);
+        protected abstract void OpenUri (SafeUri uri, bool maybeVideo);
 
         internal protected virtual bool DelayedInitialize {
             get { return false; }
@@ -120,7 +120,8 @@ namespace Banshee.MediaEngine
 
             try {
                 // Setting the next track doesn't change the player state.
-                SetNextTrackUri (track == null ? null : track.Uri);
+                SetNextTrackUri (track == null ? null : track.Uri,
+                    track == null || track.HasAttribute (TrackMediaAttributes.VideoStream) || track is UnknownTrackInfo);
             } catch (Exception e) {
                 Log.Exception ("Failed to pre-buffer next track", e);
             }
@@ -136,7 +137,7 @@ namespace Banshee.MediaEngine
             try {
                 current_track = track;
                 OnStateChanged (PlayerState.Loading);
-                OpenUri (uri);
+                OpenUri (uri, track.HasAttribute (TrackMediaAttributes.VideoStream) || track is UnknownTrackInfo);
             } catch (Exception e) {
                 Close (true);
                 OnEventChanged (new PlayerEventErrorArgs (e.Message));
@@ -147,11 +148,11 @@ namespace Banshee.MediaEngine
 
         public abstract void Pause ();
 
-        public virtual void SetNextTrackUri (SafeUri uri)
+        public virtual void SetNextTrackUri (SafeUri uri, bool maybeVideo)
         {
             // Opening files on SetNextTrack is a sane default behaviour.
             // This only wants to be overridden if the PlayerEngine sends out RequestNextTrack signals before EoS
-            OpenUri (uri);
+            OpenUri (uri, maybeVideo);
         }
 
         public virtual void VideoExpose (IntPtr displayContext, bool direct)

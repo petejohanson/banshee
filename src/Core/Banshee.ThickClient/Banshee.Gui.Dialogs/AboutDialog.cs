@@ -98,7 +98,7 @@ namespace Banshee.Gui.Dialogs
                 "Copyright \u00a9 2005\u2013{0} Novell, Inc.\n" +
                 "Copyright \u00a9 2005\u2013{0} Others\n" +
                 "Copyright \u00a9 2005 Aaron Bockover"
-            ), "2010");
+            ), "2011");
 
             Website = "http://banshee.fm/";
             WebsiteLabel = Catalog.GetString ("Banshee Website");

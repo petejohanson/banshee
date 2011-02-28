@@ -4,41 +4,8 @@ internal static class AddinXmlStringCatalog
 {
     private static void Strings ()
     {
-        // ../src/Backends/Banshee.Gio/Banshee.Gio.addin.xml
-        Catalog.GetString (@"GIO IO and Hardware backends");
-
-        // ../src/Backends/Banshee.Gnome/Banshee.Gnome.addin.xml
-        Catalog.GetString (@"Backend providers for the GNOME platform. Includes GConf support and general GNOME integration.");
-
-        // ../src/Backends/Banshee.GStreamer/Banshee.GStreamer.addin.xml
-        Catalog.GetString (@"GStreamer multimedia services including playback, CD ripping, and transcoding.");
-
-        // ../src/Backends/Banshee.GStreamerSharp/Banshee.GStreamerSharp.addin.xml
-        Catalog.GetString (@"GStreamer multimedia services including playback, CD ripping, and transcoding.");
-
-        // ../src/Backends/Banshee.Hal/Banshee.Hal.addin.xml
-        Catalog.GetString (@"Provides hardware support through HAL.");
-
-        // ../src/Backends/Banshee.NowPlaying.X11/Banshee.NowPlaying.X11.addin.xml
-        Catalog.GetString (@"Provides an X11 backend for video support, which enables proper fullscreen support.");
-
-        // ../src/Backends/Banshee.Osx/Banshee.Osx.addin.xml
-        Catalog.GetString (@"Backend providers for the OSX platform. Includes general OSX integration.");
-
-        // ../src/Backends/Banshee.Unix/Banshee.Unix.addin.xml
-        Catalog.GetString (@"Provides POSIX/UNIX support, including IO.");
-
-        // ../src/Core/Banshee.Core/Banshee.Core.addin.xml
-        Catalog.GetString (@"Provides low level non-GUI utilities.");
-
-        // ../src/Core/Banshee.Services/Banshee.Services.addin.xml
-        Catalog.GetString (@"Provides non-GUI utilities and services.");
-
-        // ../src/Core/Banshee.ThickClient/Banshee.ThickClient.addin.xml
-        Catalog.GetString (@"Provides GUI utilities and services.");
-
         // ../src/Dap/Banshee.Dap.AppleDevice/Banshee.Dap.AppleDevice.addin.xml
-        Catalog.GetString (@"Apple device Support");
+        Catalog.GetString (@"Apple Devices Support");
         Catalog.GetString (@"Support for most iPod/iPhone/iPad devices.");
         Catalog.GetString (@"Device Support");
 
@@ -62,18 +29,14 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Support for MTP devices, including many Creative Zen devices.");
         Catalog.GetString (@"Device Support");
 
-        // ../src/Dap/Banshee.Dap/Banshee.Dap.addin.xml
-        Catalog.GetString (@"Digital Media Player Support");
-        Catalog.GetString (@"Provides general support for many kinds of media player devices.");
-
         // ../src/Extensions/Banshee.AmazonMp3.Store/Banshee.AmazonMp3.Store.addin.xml
         Catalog.GetString (@"Amazon MP3 Store Source");
-        Catalog.GetString (@"Browse, search, and purchase music from the Amazon MP3 store");
+        Catalog.GetString (@"Browse, search, and purchase music from the Amazon MP3 store.");
         Catalog.GetString (@"Online Sources");
 
         // ../src/Extensions/Banshee.AmazonMp3/Banshee.AmazonMp3.addin.xml
         Catalog.GetString (@"Amazon MP3 Import");
-        Catalog.GetString (@"Download and import music purchased from Amazon.com");
+        Catalog.GetString (@"Download and import music purchased from Amazon.com.");
         Catalog.GetString (@"Online Sources");
 
         // ../src/Extensions/Banshee.Audiobook/Banshee.Audiobook.addin.xml
@@ -108,7 +71,7 @@ internal static class AddinXmlStringCatalog
 
         // ../src/Extensions/Banshee.Emusic/Banshee.Emusic.addin.xml
         Catalog.GetString (@"eMusic Import");
-        Catalog.GetString (@"Download and import music purchased from eMusic");
+        Catalog.GetString (@"Download and import music purchased from eMusic.");
         Catalog.GetString (@"Online Sources");
 
         // ../src/Extensions/Banshee.FileSystemQueue/Banshee.FileSystemQueue.addin.xml
@@ -118,7 +81,7 @@ internal static class AddinXmlStringCatalog
 
         // ../src/Extensions/Banshee.Fixup/Banshee.Fixup.addin.xml
         Catalog.GetString (@"Metadata Fixup");
-        Catalog.GetString (@"Fix broken and missing metadata using bulk operations");
+        Catalog.GetString (@"Fix broken and missing metadata using bulk operations.");
         Catalog.GetString (@"Utilities");
 
         // ../src/Extensions/Banshee.InternetArchive/Banshee.InternetArchive.addin.xml
@@ -143,12 +106,8 @@ internal static class AddinXmlStringCatalog
 
         // ../src/Extensions/Banshee.LibraryWatcher/Banshee.LibraryWatcher.addin.xml
         Catalog.GetString (@"Library Watcher");
-        Catalog.GetString (@"Automatically update music and video libraries");
+        Catalog.GetString (@"Automatically update music and video libraries.");
         Catalog.GetString (@"Utilities");
-
-        // ../src/Extensions/Banshee.MeeGo/Banshee.MeeGo.addin.xml
-        Catalog.GetString (@"MeeGo Support");
-        Catalog.GetString (@"Provides MeeGo integration, including a custom media panel.");
 
         // ../src/Extensions/Banshee.MiniMode/Banshee.MiniMode.addin.xml
         Catalog.GetString (@"Mini Mode");
@@ -175,10 +134,6 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Display an icon in the notification area for controlling Banshee.");
         Catalog.GetString (@"Utilities");
 
-        // ../src/Extensions/Banshee.NowPlaying/Banshee.NowPlaying.addin.xml
-        Catalog.GetString (@"Now Playing");
-        Catalog.GetString (@"Provides a source that displays embedded video and provides fullscreen video playback and controls.");
-
         // ../src/Extensions/Banshee.PlayerMigration/Banshee.PlayerMigration.addin.xml
         Catalog.GetString (@"Importers for Amarok, Rhythmbox and iTunes");
         Catalog.GetString (@"Import your library from Amarok, Rhythmbox or iTunes.");
@@ -194,24 +149,10 @@ internal static class AddinXmlStringCatalog
         Catalog.GetString (@"Subscribe to podcasts and stream or download episodes.");
         Catalog.GetString (@"Core");
 
-        // ../src/Extensions/Banshee.RemoteAudio/Banshee.RemoteAudio.addin.xml
-        Catalog.GetString (@"Remote Audio");
-        Catalog.GetString (@"Provides support for remote speakers like the Airport Express");
-
-        // ../src/Extensions/Banshee.Sample/Banshee.Sample.addin.xml
-        Catalog.GetString (@"Sample");
-        Catalog.GetString (@"A sample source useful to developers.");
-        Catalog.GetString (@"Sources");
-
         // ../src/Extensions/Banshee.SoundMenu/Banshee.SoundMenu.addin.xml
-        Catalog.GetString (@"Sound Menu integration for Banshee");
+        Catalog.GetString (@"Sound Menu Integration");
         Catalog.GetString (@"Control Banshee from the Sound Menu.");
         Catalog.GetString (@"Utilities");
-
-        // ../src/Extensions/Banshee.SqlDebugConsole/Banshee.SqlDebugConsole.addin.xml
-        Catalog.GetString (@"SQL Debug Console");
-        Catalog.GetString (@"Provides a UI for monitoring Banshee's SQL usage, and running queries.");
-        Catalog.GetString (@"Debug");
 
         // ../src/Extensions/Banshee.Torrent/Banshee.Torrent.addin.xml
         Catalog.GetString (@"Torrent Downloader");
@@ -230,10 +171,8 @@ internal static class AddinXmlStringCatalog
 
         // ../src/Extensions/Banshee.YouTube/Banshee.YouTube.addin.xml
         Catalog.GetString (@"YouTube");
-        Catalog.GetString (@"Show related YouTube videos in the context pane");
+        Catalog.GetString (@"Show related YouTube videos in the context pane.");
         Catalog.GetString (@"Context Pane");
-
-        // ../src/Extensions/Template/Template.addin.xml
 
     }
 }

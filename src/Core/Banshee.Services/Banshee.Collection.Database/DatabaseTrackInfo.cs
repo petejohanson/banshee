@@ -209,7 +209,7 @@ namespace Banshee.Collection.Database
 
             bool is_new = (TrackId == 0);
             if (is_new) {
-                DateAdded = DateUpdated = DateTime.Now;
+                LastSyncedStamp = DateAdded = DateUpdated = DateTime.Now;
             }
 
             ProviderSave ();

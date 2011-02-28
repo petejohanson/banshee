@@ -31,7 +31,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\bin</OutputPath>
+    <OutputPath>..\..\..\bin\bin</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Banshee.Core\Banshee.Core.csproj">
@@ -63,15 +63,15 @@
     </ProjectReference>
     <Reference Include="dbus-sharp">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\dbus-sharp.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\dbus-sharp.dll</HintPath>
     </Reference>
     <Reference Include="dbus-sharp-glib">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\dbus-sharp.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\dbus-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Posix">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\Mono.Posix.dll</HintPath>
+      <HintPath>..\..\..\bin\bin\Mono.Posix.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\..\Hyena\Hyena.Data.Sqlite\Hyena.Data.Sqlite.csproj">
       <Project>{95374549-9553-4C1E-9D89-667755F90E13}</Project>

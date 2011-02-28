@@ -126,7 +126,7 @@ namespace Banshee.SoundMenu
             InstallPreferences ();
             sound_menu = new SoundMenuProxy ();
             if (Enabled) {
-                sound_menu.Register ();
+                sound_menu.Register (true);
             }
 
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
@@ -379,7 +379,7 @@ namespace Banshee.SoundMenu
             get { return EnabledSchema.Get (); }
             set {
                 if (value) {
-                    sound_menu.Register ();
+                    sound_menu.Register (false);
                     RegisterCloseHandler ();
                 } else {
                     sound_menu.Unregister ();

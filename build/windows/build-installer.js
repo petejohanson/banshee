@@ -1,81 +1,79 @@
 // This script was started by copying MonoDevelop's, available at 
 // https://github.com/mono/monodevelop/tree/master/setup/WixSetup
 
-var version = "1.9.3";
+// HEAT manual: http://wix.sourceforge.net/manual-wix3/heat.htm
 
+var bin = '..\\..\\bin';
 var sh = new ActiveXObject("WScript.Shell");
 var fs = new ActiveXObject("Scripting.FileSystemObject");
-
 var env = sh.Environment("Process");
-
-// FIXME if heat isn't here, it might be at v3.x\bin
 var heat = "\"" + env("WIX") + "bin\\heat.exe\"";
 
-// Build Banshee
+// Look for msbuild.exe
+if (fs.FileExists (env("windir") + "\\Microsoft.NET\\Framework\\v4.0.30319\\msbuild.exe") == 1) {
+  var msbuild = env("windir") + "\\Microsoft.NET\\Framework\\v4.0.30319\\msbuild.exe"
+} else if (fs.FileExists(env("windir") + "\\Microsoft.NET\\Framework\\v3.5\\msbuild.exe") == 1) {
+  var msbuild = env("windir") + "\\Microsoft.NET\\Framework\\v3.5\\msbuild.exe"
+} else {
+  WScript.Echo ('Build failed: Microsoft.NET MSBuild \(msbuild.exe\) not found');
+  WScript.Quit (1);
+}
+
+// Could build Banshee from here, but atm at least I prefer to assume it's already built
 //build ("..\\..\\Banshee.sln");
 
-// Copy binaries into a new folder so we can generate a file list w/o .git/* being included
-if (fs.FolderExists ("dlls")) fs.DeleteFolder ("dlls");
-fs.CreateFolder ("dlls");
-run ('xcopy /D ..\\..\\bin\\*.dll dlls\\');
-run ('xcopy /D ..\\..\\bin\\*.config dlls\\');
-run ('xcopy /D ..\\..\\bin\\*.pdb dlls\\');
-run ('xcopy /D ..\\..\\bin\\*.exe dlls\\');
-fs.CreateFolder ("dlls\\gst-plugins");
-run ('xcopy /D ..\\..\\bin\\gst-plugins\\* dlls\\gst-plugins\\');
+// Delete some files that might be created by running uninstalled
+if (fs.FileExists (bin + "\\bin\\registry.bin")) fs.DeleteFile (bin + "\\bin\\registry.bin");
+if (fs.FolderExists (bin + "\\bin\\addin-db-001")) fs.DeleteFolder (bin + "\\bin\\addin-db-001");
 
-// We already mention Nereid.exe specifically in Product.wxs so we can make a shortcut based off it
-if (fs.FileExists ("dlls\\Nereid.exe")) fs.DeleteFile ("dlls\\Nereid.exe");
+// We can't just heat the entire dir b/c it would include the .git/ directory
+heatDir ("bin");
+heatDir ("etc");
+heatDir ("lib");
+heatDir ("share");
 
-// Generate the list of binary files (managed and native .dlls and .pdb and .config files)
-run (heat + ' dir dlls -cg binaries -srd -scom -sreg -ag -sfrag -suid -indent 2 -var var.BinDir -dr INSTALLLOCATION -out generated_binaries.wxi');
-if (fs.FolderExists ("dlls")) fs.DeleteFolder ("dlls");
-
-// Heat has no option to output Include (wxi) files instead of Wix (wxs) ones, so do a little regex
-regexreplace ('generated_binaries.wxi', /Wix xmlns/, 'Include xmlns');
-regexreplace ('generated_binaries.wxi', /Wix>/, 'Include>');
-
-// Generate the list of files in share/ (icons, i18n, and GStreamer audio-profiles)
-run (heat + ' dir ..\\..\\bin\\share -cg share -scom -ag -sfrag -suid -indent 2 -var var.ShareDir -dr INSTALLLOCATION -out generated_share.wxi');
-regexreplace ('generated_share.wxi', /Wix xmlns/, 'Include xmlns');
-regexreplace ('generated_share.wxi', /Wix>/, 'Include>');
-
-// Create the installer, will be outputted to bin/Debug/
+// Create the installer, will be outputted to Banshee-1.9.3.msi in build/windows/
 build ("Installer.wixproj")
-
 WScript.Echo ("Setup successfully generated");
+
+function heatDir (dir)
+{
+  var params = ' -cg ' + dir + ' -scom -sreg -ag -sfrag -indent 2 -var var.' + dir + 'Dir -dr INSTALLLOCATION ';
+  if (dir == 'bin') {
+    // Do not auto-generate ids for files in the bin directory
+    params += '-suid '
+  }
+  // Generate the list of binary files (managed and native .dlls and .pdb and .config files)
+  run (heat + ' dir ..\\..\\bin\\' + dir + params + ' -out obj\\generated_'+dir+'.wxi');
+
+  // Heat has no option to output Include (wxi) files instead of Wix (wxs) ones, so do a little regex
+  regexreplace ('obj\\generated_'+dir+'.wxi', /Wix xmlns/, 'Include xmlns');
+  regexreplace ('obj\\generated_'+dir+'.wxi', /Wix>/, 'Include>');
+}
 
 function run (cmd)
 {
-	if (sh.run (cmd, 5, true) != 0) {
-		WScript.Echo ("Failed to run cmd:\n" + cmd);
-	  WScript.Quit (1);
+  if (sh.run (cmd, 5, true) != 0) {
+    WScript.Echo ("Failed to run cmd:\n" + cmd);
+    WScript.Quit (1);
   }
 }
 
 function build (file)
 {
-	if (sh.run ("C:\\Windows\\Microsoft.NET\\Framework\\v3.5\\msbuild.exe " + file, 5, true) != 0) {
-		WScript.Echo ("Build failed");
-	  WScript.Quit (1);
-	}
+  if (sh.run (msbuild + " " + file, 5, true) != 0) {
+    WScript.Echo ("Build failed");
+    WScript.Quit (1);
+  }
 }
 
 function regexreplace (file, regex, replacement)
 {
-   var f = fs.OpenTextFile (file, 1);
-   var content = f.ReadAll ();
-   f.Close ();
-   content = content.replace (regex, replacement);
-   f = fs.CreateTextFile (file, true);
-   f.Write (content);
-   f.Close ();
-}
-
-function format (num, len)
-{
-	var res = num.toString ();
-	while (res.length < len)
-		res = "0" + res;
-	return res;
+  var f = fs.OpenTextFile (file, 1);
+  var content = f.ReadAll ();
+  f.Close ();
+  content = content.replace (regex, replacement);
+  f = fs.CreateTextFile (file, true);
+  f.Write (content);
+  f.Close ();
 }

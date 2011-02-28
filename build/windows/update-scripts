@@ -2,6 +2,9 @@
 
 cd ../..
 
+echo "REM This file is called/ran after Banshee.Core.dll is built, see src/Core/Banshee.Core/Banshee.Core.csproj
+"> build/windows/post-build.bat
+
 # Find all ThemeIcon PNGs and produce a Windows BAT script
 # to move them into bin/share/icon/hicolor, creating
 # all necessary directories
@@ -11,9 +14,15 @@ find src/ -name *.png | \
     sed -r 's!^(.*)ThemeIcons((.*)\\.*\.png)$!000GBmkdir DEST\3\ncopy /Y "\0" DEST\2!' | \
     sed 's!DEST!bin\\share\\icons\\hicolor!g' | \
     sort | uniq | \
-    sed 's!000GB!!' > build/windows/post-build.bat
+    sed 's!000GB!!' >> build/windows/post-build.bat
 
-echo "copy /Y data\icon-theme-hicolor\media-player-banshee-16.png bin\share\icons\hicolor\16x16\apps\media-player-banshee.png
+echo "mkdir bin\share\icons\hicolor\16x16\apps
+mkdir bin\share\icons\hicolor\192x192\apps
+mkdir bin\share\icons\hicolor\22x22\apps
+mkdir bin\share\icons\hicolor\24x24\apps
+mkdir bin\share\icons\hicolor\32x32\apps
+mkdir bin\share\icons\hicolor\48x48\apps
+copy /Y data\icon-theme-hicolor\media-player-banshee-16.png bin\share\icons\hicolor\16x16\apps\media-player-banshee.png
 copy /Y data\icon-theme-hicolor\media-player-banshee-192.png bin\share\icons\hicolor\192x192\apps\media-player-banshee.png
 copy /Y data\icon-theme-hicolor\media-player-banshee-22.png bin\share\icons\hicolor\22x22\apps\media-player-banshee.png
 copy /Y data\icon-theme-hicolor\media-player-banshee-24.png bin\share\icons\hicolor\24x24\apps\media-player-banshee.png
